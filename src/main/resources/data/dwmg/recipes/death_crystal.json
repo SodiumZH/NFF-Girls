@@ -1,0 +1,43 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"SNS",
+	"ADA",
+	"BPB"	
+	],
+	
+	"key":{ 
+	
+		"S":{
+		"item": "hmag:necrofiber"
+		},
+		
+		"D":{ 
+		"tag": "forge:gems/diamond"
+		},
+		
+		"A":{ 
+		"item": "hmag:lich_cloth"
+		},
+		
+		"P":{ 
+		"item": "hmag:lightning_particle"
+		},
+
+		"B":{ 
+		"item": "hmag:evil_crystal"
+		},
+		
+		"N":{ 
+		"tag": "forge:nuggets/nether_star"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "dwmg:death_crystal",
+		"count": 1
+	}
+}

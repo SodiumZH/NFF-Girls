@@ -19,10 +19,16 @@ public class ModBlocks {
 
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, DwMG.MOD_ID);
 	
+	// General register function of blocks (for simplification)
+	public static RegistryObject<Block> regBlock(String name, BlockBehaviour.Properties properties)
+	{
+		return ModBlocks.BLOCKS.register(name, () -> new Block(properties));	
+	}
+	
 	/* Blocks */
 	
-	public static final RegistryObject<Block> EXAMPLE_BLOCK = BLOCKS.register("example_block", () -> new Block(BlockBehaviour.Properties.of
-		(Material.METAL, MaterialColor.COLOR_PURPLE).strength(3.0f).sound(SoundType.METAL).requiresCorrectToolForDrops()));		
+	public static final RegistryObject<Block> EXAMPLE_BLOCK = regBlock("example_block",BlockBehaviour.Properties.of
+		(Material.METAL, MaterialColor.COLOR_PURPLE).strength(3.0f).sound(SoundType.METAL).requiresCorrectToolForDrops());		
 
 	
 	// Auto register block items
@@ -38,7 +44,7 @@ public class ModBlocks {
 	    });
 	}
 	
-	
+	// Register to event bus
 	public static void register(IEventBus eventBus) {
 	    BLOCKS.register(eventBus);
 	}

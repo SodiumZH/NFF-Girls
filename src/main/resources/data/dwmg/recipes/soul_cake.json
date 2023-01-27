@@ -1,0 +1,38 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"SSS",
+	"EDE",
+	"TCT"	
+	],
+	
+	"key":{ 
+	
+		"S":{
+		"item": "hmag:soul_powder"
+		},
+		
+		"E":{ 
+		"item": "hmag:evil_crystal"
+		},
+		
+		"D":{ 
+		"item": "hmagplus:death_crystal"
+		},
+		
+		"T":{ 
+		"item": "minecraft:soul_torch"
+		},
+
+		"C":{ 
+		"item": "minecraft:cake"
+		}
+	},
+	
+	"result":{ 
+		"item": "hmagplus:soul_cake",
+		"count": 1
+	}
+}
