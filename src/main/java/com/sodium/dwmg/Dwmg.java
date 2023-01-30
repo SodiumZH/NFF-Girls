@@ -14,15 +14,15 @@ import org.slf4j.Logger;
 
 import com.sodium.dwmg.registries.*;
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(DwMG.MOD_ID)
-public class DwMG
+@Mod(Dwmg.MODID)
+public class Dwmg
 {
     // Define mod id in a common place for everything to reference
-    public static final String MOD_ID = "dwmg";
+    public static final String MODID = "dwmg";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public DwMG()
+    public Dwmg()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -52,7 +52,7 @@ public class DwMG
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents
     {
         @SubscribeEvent

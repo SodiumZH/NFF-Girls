@@ -14,9 +14,9 @@ import com.sodium.dwmg.registries.*;
 
 public class ModItems {
 	
-	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, DwMG.MOD_ID);
+	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Dwmg.MODID);
 	
-	public static final CreativeModeTab TAB = DwMGTab.TAB;
+	public static final CreativeModeTab TAB = DwmgTab.TAB;
 	// General register function for items
 	
 	// Register basic item with properties, not supporting item subclasses

@@ -5,9 +5,9 @@ import com.sodium.dwmg.registries.ModItems;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
-public class DwMGTab extends CreativeModeTab{
+public class DwmgTab extends CreativeModeTab{
     
-	private DwMGTab(int index, String label) {
+	private DwmgTab(int index, String label) {
         super(index, label);
     }
 
@@ -16,6 +16,6 @@ public class DwMGTab extends CreativeModeTab{
         return new ItemStack(ModItems.DEATH_CRYSTAL.get());
     }
     
-	public static final CreativeModeTab TAB = new DwMGTab(CreativeModeTab.TABS.length, "dwmg");
+	public static final CreativeModeTab TAB = new DwmgTab(CreativeModeTab.TABS.length, "Days with Monster Girls");
 	
 }
