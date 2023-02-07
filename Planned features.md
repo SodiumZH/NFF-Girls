@@ -1,12 +1,34 @@
-# *HMaG-Plus* Development Plan
+# *Days with Monster Girls* Development Plan
 
-This expansion mod of *HMaG* is intended to (1) allow to tame mobs and let them fight for you, and (2) add more usages of HMaG items & materials.
+## Development Targets
+
+This mod is intended to allow monster girls of several other mods to be friendly and to interact with them.
+
+Also, some additional features will be added as enhancements of the dependent mods.
+
+Current dependencies:
+
+Hostile Mobs and Girls (by Mechalopa) (mandatory)
+
+Grimoire of Gaia 4 (by  Silentine & Mrbysco) (mandatory)
+
+
+
+## Key Concepts
+
+### Taming
+
+To make a mob permanently friendly and interactable. A tamed mob can fight for you, and also have some behaviors on daily Minecraft actions. 
+
+This is for making the player feel they are "living with" the mobs instead of just regard them as tools for fighting.
+
+The term "taming" is just for intelligibility for developers. The formal name should be "befriending".
 
 
 
 ## Systems
 
-### Favorability (Kizuna Level)
+### Favorability Level
 
 A value indicating how tight your connection with your tamed mob.
 
@@ -18,193 +40,141 @@ If it's higher, more new commands will be unlocked, and better items will drop w
 
 Some mobs don't have this value. 
 
-## Items
-
-### Content
-
-#### Materials
-
-Crystal of Death
-
-Soul Flour
-
-Cloth of Death
-
-#### Foods
-
-Soul Cookie
-
-Soul Pancake
 
 
 
 
+## Features
 
 ### Undead Related
 
-#### Crystal of Death
+#### Effects
 
-##### Crafting
+##### Death Affinity
 
-N	Ns	N
+The key effect for the whole features of undead.
 
-Lc	D	Lc
+It will make the undead mobs neutral. And some actions are available only with this effect.
 
-Ec	Pl	Ec
 
-N = *Necrofiber	Ns = *Nether Star Fragment*	Lc = *Lich's Cloth*	Ec = *Evil Crystal*	D = *Diamond*	Pl = *Particle of Lightning*
 
-##### Usage
+#### Materials
 
-Brewing with *Raw Portions* to make *Death Affinity Portions*.
+##### Crystal of Death
 
-Making Soul Flour.
+A key material for several undead-related features.
 
+Expensive, using multiple products from undead mobs.
 
+##### Cloth of Death
 
-#### Soul Flour
+An undead material for making related armor and decorative blocks.
 
-##### Crafting
+Not very expensive.
 
-Crystal of Death + 3 Soul Powder + 3 Wheat => 3 Soul Flour
 
-##### Usage
 
-Making soul foods.
+#### Foods
 
+Undead foods are edibles providing some effects and applied for interaction with undead mobs.
 
+Usually undead foods provide Death Affinity, and sometimes other effects.
 
-#### Soul Cookie
+Those applied on taming should be VERY expensive.
 
-##### Crafting
+##### Soul Flour
 
-2 Soul Flour + Cocoa Bean + Sugar => 4 Soul Cookie
+A key material for making undead foods.
 
-##### Usage
+##### Soul Cookie
 
-Eating: nutrition of vanilla cookie + Invisibility effect
+The undead version of Cookie.
 
+Not very expensive.
 
+##### Soul Pancake
 
-#### Soul Pancake
+The undead version of Pumpkin Pie.
 
-##### Crafting
+Expensive.
 
-3 Soul Flour + 2 Egg + Milk Bucket => Soul Pancake (leaving a bucket)
+##### Soul Cake
 
-##### Usage
+The undead version of Cake. 
 
-Eating: nutrition of vanilla pumpkin pie + Death Affinity effect
+Very expensive. For taming.
 
-Taming undead mobs
+##### Soul Cake Slice
 
+The non-block version of Soul Cake.
 
+Very expensive. For taming.
 
-#### Cloth of Death
 
-##### Crafting
 
-S	N	S
+#### Blocks
 
-S	Lc	S
+##### Soul Carpet
 
-S	S	S
+The undead version of Carpet. 
 
-S = String	N = Necrofiber	Lc = Lich's Cloth
+Undead mobs or players having *Death Affinity* effect will get *Strength II* and *Regeneration I* effects when standing on it.
 
-##### Usage
+It could have a pure-decorative version, which is cheaper and not providing any effects.
 
-Making *Necromancer's Hat*.
 
-Making *Soul Carpet*.
 
+#### Equipment
 
+##### Necromancer's Hat
 
-#### Soul Carpet
+A helmet providing several positive effects as well as **Wither**. (Wearing this hat will lead to consistent HP loss)
 
-##### Crafting
+Some actions are available only wearing this hat.
 
-*Cloth of Death* + *Soul Powder* *2 -> *Soul Carpet* *8
+##### Necromancer's Wand
 
-Same as vanilla carpets. Undead mobs (tamed or not) or players having *Death Affinity* effect will get *Strength II* and *Regeneration I* effects when standing on it.
+A weapon allowing to attack non-undead mobs with negative effects, and heal undead mobs.
 
-
-
-#### Necromancer's Hat
-
-##### Crafting
-
-4 *Cloth of Death* + *Evil Crystal* => Necromancer's Hat
-
-
-
-
-
-### Creeper Related
-
-#### Creeper Controller
-
-##### Crafting
-
-Rt	As	Rt
-
-I	As	I
-
-Ec	Ab	Ec
-
-Rt = *Redstone Torch*	As = *Amethyst Shard*	I = *Iron Ingot*	Ec = *Evil Crystal*	Ab = *Amethyst Block*
-
-##### Usage
-
-Bind to a tamed Creeper Girl to configure its behaviors.
+Some other actions need this weapon.
 
 
 
 ### Ender Related
 
-#### Enderberry / Enderberry Jam
+#### Foods
 
-##### Crafting
+##### Enderberry / Enderberry Jam
 
-(Any berries in HMaG) + *Ender Plasm* + *Eye of Ender* + *Particle of Lightning* + Evil Crystal => Enderberry Seed =Planting=> Enderberry 1-2 
+The key material for all Ender foods.
 
-2 Enderberry + Mysterious Petal + Core Nucleus + Honey Bottle  => Enderberry Jam (in a bottle)
+Obtaining Enderberry should be very hard.  It's a treasure, and can also be made in a very complex way.
 
-**Usage**
+##### Ender Pie
 
-Eating (Enderberry) : 6 hunger + 3.6 saturation + 0.2s (4 ticks) *Saturation I* effect + teleporting (like chorus fruit)
+The Ender version of Pumpkin Pie.
 
-Making *Ender Pie*.
+Just like the Chorus Fruit, it can teleport the player.
 
-
-
-#### Ender Pie
-
-##### Crafting
-
-Enderberry Jam +  *Soul Apple* + 3 Wheat + Egg + Milk Bucket => Ender Pie (leaving a bottle and a bucket)
-
-##### Usage
-
-Eating: 12 hunger + 7.2 saturation + 0.5s (10 ticks) *Saturation II* effect + teleporting
-
-Taming *Ender Executors*.
+Very expensive.
 
 
 
-#### Enderite
+#### Minerals
 
-##### Crafting
+##### Enderite
 
-Netherite Ingot + Evil Crystal + Ancient Stone Block + 6 Ender Plasm => Raw Enderite =Blasting=> Enderite Ingot (32 * blasting time for iron)
+A rare mineral (even more hard to obtain than Netherite).
 
-9 Enderite Ingot <=> Enderite Block
+For making Ender tools/weapons/armor, mostly featured with teleporting.
 
-##### Usage
+##### Enderite Tools/Weapons
 
-Upgrading Ancient Suit on Smithing Table to make Ender Ancient Suit
+Allowing the player or the attacked target to teleport (switchable).
 
+##### Enderite Armor
 
+Allowing the player to teleport when getting hurt (switchable).
 
 
 
@@ -219,48 +189,6 @@ Berry  => Berry Seed
 Berry Seed =Planting=> Berry 1-2
 
 
-
-### Equipment
-
-#### Necromancer's Hat
-
-4 Cloth of Death + Evil Crystal => Necromancer's Hat
-
-Same defense as *Leather Helmet*. It provides *Strength II*, *Night Vision*, *Haste II* , *Death Affinity* and *Wither I*.
-
-
-
-#### Insomnia Set
-
-4 Dyssomnia's Skin + Evil Crystal => Insomnia Cap 	(Lv) + (Lv-1) + (0.3Lv)
-
-6 Dyssomnia's Skin + 2 Evil Crystal => Insomnia Tunic	(1+2Lv) + (Lv-1) + (0.3Lv)
-
-5 Dyssomnia's Skin + 2 Evil Crystal => Insomnia Pants	(2Lv) + (Lv-1) + (0.3Lv)
-
-4 Dyssomnia's Skin + 2 Evil Crystal => Insomnia Boots	(Lv) + (Lv-1) + (0.3Lv)
-
-Lv increase by 1 each 2 days no sleeping; No Lv calculated when Lv=1
-
-Can be repaired on Anvil with Dyssomnia's Skin
-
-
-
-#### Ender Ancient Set
-
-Obtained by upgrading Ancient Set with Enderite Ingot
-
-Same armor to Netherite Set; all set bonus of Ancient Set, added by set bonus below:
-
-2 => Immune to Levitation effect
-
-3 => 50% chance to teleport when hit by projectile (consuming a chorus fruit, only when having chorus fruits in the shortcut bar)
-
-4 => 100% chance to teleport 
-
-No teleporting when no chorus fruit in shortcut bar
-
-(Chorus fruit acts as a switch of teleporting)
 
 
 
