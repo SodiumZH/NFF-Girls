@@ -29,7 +29,6 @@ public class ModBlocks {
 	
 	public static final RegistryObject<Block> EXAMPLE_BLOCK = regBlock("example_block",BlockBehaviour.Properties.of
 		(Material.METAL, MaterialColor.COLOR_PURPLE).strength(3.0f).sound(SoundType.METAL).requiresCorrectToolForDrops());		
-
 	
 	// Auto register block items
 	@SubscribeEvent
