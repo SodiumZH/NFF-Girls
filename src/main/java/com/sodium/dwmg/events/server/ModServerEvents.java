@@ -1,4 +1,4 @@
-package com.sodium.dwmg.events;
+package com.sodium.dwmg.events.server;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -25,35 +25,7 @@ public class ModServerEvents
 		
 	}
 	
-	
-	@SubscribeEvent
-	public static void onLivingSetAttackTargetEvent(LivingSetAttackTargetEvent event)
-	{
-		LivingEntity lastHurtBy = event.getEntityLiving().getLastHurtByMob();
-		if (event.getTarget() != null && event.getEntity() instanceof Mob mob)
-		{
-        	
-	        // Undead mobs keep neutral to mobs with Death Affinity effect 
-	           if (mob.getMobType() == MobType.UNDEAD) 
-				{
-					if (event.getTarget().hasEffect(ModEffects.DEATH_AFFINITY.get())) 
-					{
-						if (event.getEntityLiving().getLastHurtByMob() != event.getTarget()) 
-						{
-							mob.setTarget(null);
-							Dwmg.logInfo("Death Affinity worked");
-							Dwmg.logInfo("Last hurt by: " + Debug.getMobNameString(lastHurtBy));
-						}
-						else
-						{
-							Dwmg.logInfo("Death Affinity not working because attacked");
-							Dwmg.logInfo("Last hurt by: " + Debug.getMobNameString(lastHurtBy));
-						}
-					}
-				}
-	        } 
-	}
-	
+
 	/*
 		@SubscribeEvent
 		public static void onLivingChangeTargetEvent(LivingChangeTargetEvent event) 

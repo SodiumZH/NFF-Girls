@@ -12,16 +12,16 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.LivingEntity;
 
-public class CapHostileMob implements ICapHostileMob {
+public class CapUndeadMob implements ICapUndeadMob {
 	
 	// The mob should be hostile to this entity
 	protected UUID nowHostile = null;
 	
 	// Once this mob has ever been hostile to a certain mob, the latter's UUID will be present in this list
 	// Some actions about befriending will check this, including taming, Death Affinity undead neutral, ...
-	protected Vector<UUID> everBeenHostile = Vector<UUID>();
+	protected Vector<UUID> everBeenHostile = new Vector<UUID>();
 	
-	public CapHostileMob() 
+	public CapUndeadMob() 
 	{		
 	}
 	
@@ -29,9 +29,9 @@ public class CapHostileMob implements ICapHostileMob {
 	/* Cap Interface Overrides */
 	
 	@Override
-	public UUID getHostileTo()
+	public UUID getBeingHostileTo()
 	{
-		return Util.getUUIDIfExists(nowHostile);
+		return nowHostile;
 	}
 	
 	@Override
@@ -50,24 +50,45 @@ public class CapHostileMob implements ICapHostileMob {
 	public CompoundTag serializeNBT() 
 	{
 		CompoundTag tag = new CompoundTag();
+		// Now hostile
 		tag.putUUID("now_hostile", nowHostile);
+		// Ever been hostile as list
 		ListTag hostileList = new ListTag();
 		for (UUID id : everBeenHostile)
 		{
 			hostileList.add(NbtUtils.createUUID(id));
 		}
 		tag.put("ever_hostile", hostileList);
+		return tag;
 	}
 	
 	@Override 
 	public void deserializeNBT(CompoundTag nbt)
 	{
+		// Load now hostile
 		this.nowHostile = nbt.getUUID("now_hostile");
+		// Load been hostile list
 		ListTag everHostileList = nbt.getList("ever_hostile", Tag.TAG_INT_ARRAY);
 		everBeenHostile.clear();
 		for(Tag tag : everHostileList)
 		{
-			//everBeenHostile.add(((IntArrayTag)tag).)
+			everBeenHostile.add(NbtUtils.loadUUID(tag));
+		}
+	}
+	
+	@Override
+	public void setHostileTo(LivingEntity mob) {
+		if(mob != null)
+		{
+			nowHostile = mob.getUUID();
+			if(!everBeenHostile.contains(mob.getUUID()))
+			{
+				everBeenHostile.add(mob.getUUID());
+			}
+		}
+		else
+		{
+			nowHostile = Util.UUID_NULL;
 		}
 	}
 }
