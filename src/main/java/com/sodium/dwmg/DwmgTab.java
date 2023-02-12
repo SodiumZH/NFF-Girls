@@ -16,6 +16,6 @@ public class DwmgTab extends CreativeModeTab{
         return new ItemStack(ModItems.DEATH_CRYSTAL.get());
     }
     
-	public static final CreativeModeTab TAB = new DwmgTab(CreativeModeTab.TABS.length, "Days with Monster Girls");
+	public static final CreativeModeTab TAB = new DwmgTab(CreativeModeTab.TABS.length, "dwmg_tab");
 	
 }

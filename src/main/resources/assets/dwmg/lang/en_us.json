@@ -1,6 +1,10 @@
 {
 	"item.dwmg.death_crystal": "Crystal of Death",
+	"item.dwmg.death_crystal_powder": "Death Crystal Powder",
+	"item.dwmg.soul_flour": "Soul Flour",
 	"item.dwmg.soul_cake": "Soul Cake",
+	"item.dwmg.soul_cake_slice": "Soul Cake Slice",
 	"block.dwmg.soul_cake": "Soul Cake",
-	"item.dwmg.soul_cake_slice": "Soul Cake Slice"
+	"itemGroup.dwmg_tab" : "Days with Monster Girls"
+
 }

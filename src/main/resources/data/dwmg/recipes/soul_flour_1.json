@@ -1,0 +1,30 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"PDP",	
+	"WWW"
+	],
+	
+	"key":{ 
+	
+		"P":{
+		"item": "hmag:soul_powder"
+		},
+		
+		"D":{ 
+		"item": "dwmg:death_crystal_powder"
+		},
+		
+		"W":{ 
+		"tag": "forge:crops/wheat"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "dwmg:soul_flour",
+		"count": 4
+	}
+}

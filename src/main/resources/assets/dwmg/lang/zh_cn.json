@@ -1,6 +1,9 @@
 {
-	"item.dwmg.death_crystal": "死亡晶石",
-	"item.dwmg.soul_cake": "灵魂蛋糕",
-	"block.dwmg.soul_cake": "灵魂蛋糕",
-	"item.dwmg.soul_cake_slice": "灵魂蛋糕切片"
+  	"item.dwmg.death_crystal" : "死亡晶石",
+  	"item.dwmg.death_crystal_powder": "死亡晶石粉",
+  	"item.dwmg.soul_flour": "灵魂麦粉",
+  	"item.dwmg.soul_cake" : "灵魂蛋糕",
+  	"item.dwmg.soul_cake_slice" : "灵魂蛋糕切片",
+  	"block.dwmg.soul_cake" : "灵魂蛋糕",
+  	"itemGroup.dwmg_tab" : "与怪物娘的日常"
 }
