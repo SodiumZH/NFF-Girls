@@ -2,6 +2,7 @@ package com.sodium.dwmg.registries;
 
 import com.sodium.dwmg.Dwmg;
 import com.sodium.dwmg.DwmgTab;
+import com.sodium.dwmg.registries.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -19,29 +20,31 @@ public class ModBlocks {
 
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Dwmg.MODID);
 	
-	// General register function of blocks (for simplification)
+	// General register function for blocks (for simplification)
 	public static RegistryObject<Block> regBlock(String name, BlockBehaviour.Properties properties)
 	{
 		return ModBlocks.BLOCKS.register(name, () -> new Block(properties));	
 	}
 	
+	// Register block items. Must be called after the corresponding block is registered!!
+	public static RegistryObject<Item> regBlockItem(String name, RegistryObject<Block> block, Item.Properties properties)
+	{
+		return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), properties.tab(ModItems.TAB)));
+	}
+	
+	
+	
+	
 	/* Blocks */
 	
-	public static final RegistryObject<Block> EXAMPLE_BLOCK = regBlock("example_block",BlockBehaviour.Properties.of
+	public static final RegistryObject<Block> EXAMPLE_BLOCK = regBlock("example_block", BlockBehaviour.Properties.of
 		(Material.METAL, MaterialColor.COLOR_PURPLE).strength(3.0f).sound(SoundType.METAL).requiresCorrectToolForDrops());		
 	
-	// Auto register block items
-	@SubscribeEvent
-	public static void onRegisterItems(final RegistryEvent.Register<Item> event) {
-	    final IForgeRegistry<Item> registry = event.getRegistry();
 
-	    BLOCKS.getEntries().stream().map(RegistryObject::get).forEach( (block) -> {
-	        final Item.Properties properties = new Item.Properties().tab(DwmgTab.TAB);
-	        final BlockItem blockItem = new BlockItem(block, properties);
-	        blockItem.setRegistryName(block.getRegistryName());
-	        registry.register(blockItem);
-	    });
-	}
+	
+	
+	/* Block Items */
+	public static final RegistryObject<Item> ITEM_EXAMPLE_BLOCK = regBlockItem("example_block", EXAMPLE_BLOCK, new Item.Properties());
 	
 	// Register to event bus
 	public static void register(IEventBus eventBus) {

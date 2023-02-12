@@ -1,8 +1,6 @@
 package com.sodium.dwmg.registries;
 
-import com.github.mechalopa.hmag.world.item.ModFoodItem;
 import com.sodium.dwmg.*;
-import java.util.HashMap;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -10,7 +8,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import com.sodium.dwmg.registries.*;
 
 public class ModItems {
 	
@@ -23,12 +20,6 @@ public class ModItems {
 	public static RegistryObject<Item> regItem(String name, Item.Properties properties)
 	{
 		return ITEMS.register(name, ()->new Item(properties.tab(TAB)));
-	}
-	
-	// Register from item object, supporting item subclasses
-	public static RegistryObject<Item> regItem(String name, Item item)
-	{
-		return ITEMS.register(name, ()->item);
 	}
 	
 	// Register basic item using default properties
@@ -45,7 +36,8 @@ public class ModItems {
 	
 	// Crafting intermediates
 	public static final RegistryObject<Item> DEATH_CRYSTAL = regItemDefault("death_crystal");
-   
+	public static final RegistryObject<Item> SOUL_CAKE= regItemDefault("soul_cake");
+	public static final RegistryObject<Item> SOUL_CAKE_SLICE = regItem("soul_cake_slice", new Item.Properties().food(ModFoodProperties.SOUL_CAKE_SLICE));
 	
 	
 	// Foods

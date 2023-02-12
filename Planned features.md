@@ -276,7 +276,7 @@ It can be healed by feeding with *Chorus Fruit*.
 
 If it's given an *apple* or a *lemon*, it will drop an *Ender Pearl */ *Ender Plasm* / *Evil Crystal Fragment* . 
 
-If it's given an HMaG berry (tag hmagplus:hmag_berries),  it will drop an *Ender Eye* / *Ender Plasm* / *Shulker Shell* / *Shulker Shell* *2 (10%), added with *Evil Crystal Fragments* 1~3.  (Shared cooldown 5min)
+If it's given an HMaG berry (tag dwmg:hmag_berries),  it will drop an *Ender Eye* / *Ender Plasm* / *Shulker Shell* / *Shulker Shell* *2 (10%), added with *Evil Crystal Fragments* 1~3.  (Shared cooldown 5min)
 
 For other mods:
 

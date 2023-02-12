@@ -173,6 +173,7 @@ dependencies {
     // Real mod deobf dependency examples - these get remapped to your current mappings
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
+    implementation fg.deobf("curse.maven:jade-324717:4082408")
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
 
     // Examples using mod jars from ./libs
@@ -185,6 +186,8 @@ dependencies {
     implementation fg.deobf("curse.maven:hmag-537613:3879316")
     // Grimore of Gaia 4
 	implementation fg.deobf("curse.maven:gog4-228948:4249761")
+	
+	
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

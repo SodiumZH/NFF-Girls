@@ -19,7 +19,7 @@
 		},
 		
 		"D":{ 
-		"item": "hmagplus:death_crystal"
+		"item": "dwmg:death_crystal"
 		},
 		
 		"T":{ 
@@ -32,7 +32,7 @@
 	},
 	
 	"result":{ 
-		"item": "hmagplus:soul_cake",
+		"item": "dwmg:soul_cake",
 		"count": 1
 	}
 }
