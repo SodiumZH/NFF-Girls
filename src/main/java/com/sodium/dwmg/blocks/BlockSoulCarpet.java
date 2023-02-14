@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.CarpetBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Soul Carpet is a carpet which provides mobs 3s Death Affinity effect on it
+ * Soul Carpet is a carpet which provides mobs 30s Death Affinity effect on it
  */
 
 public class BlockSoulCarpet extends CarpetBlock 
@@ -26,9 +26,9 @@ public class BlockSoulCarpet extends CarpetBlock
 		if (!level.isClientSide && entityIn != null && entityIn instanceof LivingEntity)
 		{
 			LivingEntity livingentity = (LivingEntity) entityIn;
-			if (!ModEffects.hasDeathAffinity(livingentity))
+			if (livingentity.hasEffect(ModEffects.DEATH_AFFINITY.get()))
 			{
-				livingentity.addEffect(new MobEffectInstance(ModEffects.DEATH_AFFINITY_CARPET.get(), 60, 0));
+				livingentity.addEffect(new MobEffectInstance(ModEffects.DEATH_AFFINITY.get(), 600, 0));
 			}
 		}
 	}
