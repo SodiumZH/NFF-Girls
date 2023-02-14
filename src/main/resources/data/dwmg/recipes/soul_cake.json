@@ -3,18 +3,15 @@
 	
 	"pattern": 
 	[ 
-	"SSS",
-	"EDE",
-	"TCT"	
+	"CDC",
+	"SES",
+	"WWW"	
 	],
 	
 	"key":{ 
 	
-		"S":{
-		"item": "hmag:soul_powder"
-		},
-		
-		"E":{ 
+
+		"C":{ 
 		"item": "hmag:evil_crystal"
 		},
 		
@@ -22,12 +19,16 @@
 		"item": "dwmg:death_crystal"
 		},
 		
-		"T":{ 
-		"item": "minecraft:soul_torch"
+		"S":{ 
+		"item": "minecraft:sugar"
 		},
-
-		"C":{ 
-		"item": "minecraft:cake"
+		
+		"E":{ 
+		"item": "minecraft:egg"
+		},
+		
+		"W":{ 
+		"item": "dwmg:soul_flour"
 		}
 	},
 	

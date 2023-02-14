@@ -2,6 +2,7 @@ package com.sodium.dwmg.registries;
 
 import com.sodium.dwmg.Dwmg;
 import com.sodium.dwmg.DwmgTab;
+import com.sodium.dwmg.blocks.BlockSoulCarpet;
 import com.sodium.dwmg.registries.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -33,18 +34,18 @@ public class ModBlocks {
 	}
 	
 	
-	
-	
 	/* Blocks */
 	
-	public static final RegistryObject<Block> EXAMPLE_BLOCK = regBlock("example_block", BlockBehaviour.Properties.of
-		(Material.METAL, MaterialColor.COLOR_PURPLE).strength(3.0f).sound(SoundType.METAL).requiresCorrectToolForDrops());		
-	
+	//public static final RegistryObject<Block> EXAMPLE_BLOCK = regBlock("example_block", BlockBehaviour.Properties.of
+	//	(Material.METAL, MaterialColor.COLOR_PURPLE).strength(3.0f).sound(SoundType.METAL).requiresCorrectToolForDrops());		
+	public static final RegistryObject<Block> SOUL_CARPET = ModBlocks.BLOCKS.register("soul_carpet", () -> new BlockSoulCarpet(BlockBehaviour.Properties.of
+		(Material.WOOL, MaterialColor.COLOR_PURPLE).strength(0.1f).sound(SoundType.WOOL)));
 
 	
 	
 	/* Block Items */
-	public static final RegistryObject<Item> ITEM_EXAMPLE_BLOCK = regBlockItem("example_block", EXAMPLE_BLOCK, new Item.Properties());
+	//public static final RegistryObject<Item> ITEM_EXAMPLE_BLOCK = regBlockItem("example_block", EXAMPLE_BLOCK, new Item.Properties());
+	public static final RegistryObject<Item> ITEM_SOUL_CARPET = regBlockItem("soul_carpet", SOUL_CARPET, new Item.Properties());
 	
 	// Register to event bus
 	public static void register(IEventBus eventBus) {

@@ -41,7 +41,8 @@ public class ModEntityEvents
 	public static void onLivingSetAttackTargetEvent(LivingSetAttackTargetEvent event)
 	{
 		LivingEntity lastHurtBy = event.getEntityLiving().getLastHurtByMob();
-		if (event.getTarget() != null && event.getEntity() instanceof Mob mob)
+		LivingEntity target = event.getTarget();
+		if (target != null && event.getEntity() instanceof Mob mob)
 		{
         	// Undead mobs handler start //
 	        // Undead mobs keep neutral to mobs with Death Affinity effect 
@@ -49,17 +50,17 @@ public class ModEntityEvents
 	        {
 	        	mob.getCapability(ModCapabilities.CAP_UNDEAD_MOB).ifPresent((cp) ->
 	        	{
-	        		if (event.getTarget() != null && event.getTarget().hasEffect(ModEffects.DEATH_AFFINITY.get()) && lastHurtBy != event.getTarget() && cp.getBeingHostileTo() != event.getTarget().getUUID())
+	        		if (target != null && ModEffects.hasDeathAffinity(target) && lastHurtBy != target && cp.getBeingHostileTo() != target.getUUID())
 	        		{
 	        			mob.setTarget(null);
 	        			cp.setHostileTo(null);
 	        		}
 	        		else
 	        		{
-	        			cp.setHostileTo(event.getTarget());
+	        			cp.setHostileTo(target);
 	        		}
 	        	});
-	        }
+	        // Undead mobs handler end //
 	    } 
 	}
 	

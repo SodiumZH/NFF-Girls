@@ -3,6 +3,7 @@ package com.sodium.dwmg.registries;
 import com.sodium.dwmg.Dwmg;
 import com.sodium.dwmg.effects.EffectDeathAffinity;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -15,6 +16,7 @@ public class ModEffects {
 	
 
 	// Registry body
-	public static final RegistryObject<MobEffect> DEATH_AFFINITY = EFFECTS.register("death_affinity", () -> new EffectDeathAffinity());	
 	
+	public static final RegistryObject<MobEffect> DEATH_AFFINITY = EFFECTS.register("death_affinity", () -> new EffectDeathAffinity());
+
 }

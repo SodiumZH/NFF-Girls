@@ -4,7 +4,8 @@
 	"pattern": 
 	[ 
 	"PDP",	
-	"WWW"
+	"WWW",
+	"SSS"
 	],
 	
 	"key":{ 
@@ -25,6 +26,6 @@
 	
 	"result":{ 
 		"item": "dwmg:soul_flour",
-		"count": 4
+		"count": 3
 	}
 }
