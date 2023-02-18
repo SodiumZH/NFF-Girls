@@ -3,6 +3,7 @@ package com.sodium.dwmg.entities.capabilities;
 import java.util.UUID;
 import java.util.Vector;
 
+import com.sodium.dwmg.util.NbtHelper;
 import com.sodium.dwmg.util.Util;
 
 import net.minecraft.nbt.CompoundTag;
@@ -53,12 +54,7 @@ public class CapUndeadMob implements ICapUndeadMob {
 		// Now hostile
 		tag.putUUID("now_hostile", nowHostile);
 		// Ever been hostile as list
-		ListTag hostileList = new ListTag();
-		for (UUID id : everBeenHostile)
-		{
-			hostileList.add(NbtUtils.createUUID(id));
-		}
-		tag.put("ever_hostile", hostileList);
+		NbtHelper.serializeUUIDArray(tag, everBeenHostile, "ever_hostile");
 		return tag;
 	}
 	

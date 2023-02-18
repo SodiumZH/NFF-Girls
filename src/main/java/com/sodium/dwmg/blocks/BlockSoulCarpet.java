@@ -26,7 +26,7 @@ public class BlockSoulCarpet extends CarpetBlock
 		if (!level.isClientSide && entityIn != null && entityIn instanceof LivingEntity)
 		{
 			LivingEntity livingentity = (LivingEntity) entityIn;
-			if (livingentity.hasEffect(ModEffects.DEATH_AFFINITY.get()))
+			if (!livingentity.hasEffect(ModEffects.DEATH_AFFINITY.get()))
 			{
 				livingentity.addEffect(new MobEffectInstance(ModEffects.DEATH_AFFINITY.get(), 600, 0));
 			}

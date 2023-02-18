@@ -10,8 +10,10 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -36,7 +38,6 @@ public class ModEntityEvents
 	}
 	
 	
-	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public static void onLivingSetAttackTargetEvent(LivingSetAttackTargetEvent event)
 	{
@@ -50,7 +51,7 @@ public class ModEntityEvents
 	        {
 	        	mob.getCapability(ModCapabilities.CAP_UNDEAD_MOB).ifPresent((cp) ->
 	        	{
-	        		if (target != null && ModEffects.hasDeathAffinity(target) && lastHurtBy != target && cp.getBeingHostileTo() != target.getUUID())
+	        		if (target != null && !target.hasEffect(ModEffects.DEATH_AFFINITY.get()) && lastHurtBy != target && cp.getBeingHostileTo() != target.getUUID())
 	        		{
 	        			mob.setTarget(null);
 	        			cp.setHostileTo(null);
@@ -60,9 +61,14 @@ public class ModEntityEvents
 	        			cp.setHostileTo(target);
 	        		}
 	        	});
-	        // Undead mobs handler end //
-	    } 
-	}
+		    } 
+	     // Undead mobs handler end //
+		}
+	}	
 	
-	
+	//@SubscribeEvent
+	//public static void onRightClick(PlayerInteractEvent.RightClickBlock event) {
+	 //   Player player = event.getPlayer();
+	    
+	//}
 }
