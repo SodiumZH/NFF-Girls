@@ -5,19 +5,16 @@ import java.util.Vector;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public interface ICapUndeadMob extends INBTSerializable<CompoundTag>{
 
-	// UUID of the living entity this mob is now hostile to.
-	UUID getBeingHostileTo();
+	// Get this mob's hatred list
+	Vector<UUID> getHatred();
 	
-	// UUIDs of living entities this mob has ever been hostile to.
-	Vector<UUID> getEverHostileTo();
-	
-	// Check if the mob has ever been hostile to the input mob.
-	boolean haveEverBeenHostile(LivingEntity mob);
-	
-	void setHostileTo(LivingEntity mob);
+	// Add a player to the hatred list
+	// This action is permanent and there's no method to remove a player
+	void addHatred(LivingEntity entity);
 	
 }

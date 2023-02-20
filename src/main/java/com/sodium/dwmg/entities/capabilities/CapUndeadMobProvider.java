@@ -9,25 +9,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class CapUndeadMobProvider implements ICapabilityProvider, INBTSerializable<CompoundTag>
+public class CapUndeadMobProvider implements ICapabilitySerializable<CompoundTag>
 {
 
-	private ICapUndeadMob capability = null;
-	
-	
-	@Nonnull
-	public ICapUndeadMob getOrCreateCapability()
-	{
-		if(capability == null)
-		{
-			capability = new CapUndeadMob();
-		}
-		return capability;
-	}
-	
+	private ICapUndeadMob capability = new CapUndeadMob();
 	
 	/* Interface implementations */
 	
@@ -36,7 +25,7 @@ public class CapUndeadMobProvider implements ICapabilityProvider, INBTSerializab
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) 
 	{
 		if(cap == ModCapabilities.CAP_UNDEAD_MOB)
-			return LazyOptional.of(() -> {return this.getOrCreateCapability();}).cast();
+			return LazyOptional.of(() -> {return capability;}).cast();
 		else
 			return LazyOptional.empty();
 	}
@@ -44,14 +33,13 @@ public class CapUndeadMobProvider implements ICapabilityProvider, INBTSerializab
 	@Override
 	public CompoundTag serializeNBT() 
 	{
-		return capability != null ? capability.serializeNBT() : new CompoundTag();
+		return capability.serializeNBT();
 	}
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt) 
 	{
-		if(capability != null)
-			capability.deserializeNBT(nbt);
+		capability.deserializeNBT(nbt);
 	}
 
 }

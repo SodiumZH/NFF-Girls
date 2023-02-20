@@ -9,7 +9,7 @@ public class Util {
 	public static final UUID UUID_NULL = new UUID((long)0, (long)0);
 	
 	// Check if two objects are equal using UUID.
-	public static boolean objEqual(UUID a, UUID b)
+	public static boolean uuidEqual(UUID a, UUID b)
 	{
 		return a != UUID_NULL && a == b ;
 	}
@@ -19,5 +19,28 @@ public class Util {
 		return entity == null ? UUID_NULL : entity.getUUID();
 	}
 	
-	
+	/** A wrapper of boolean to provide an exterior value that can be changed inside a lambda function
+	 * e.g. in a provider or consumer
+	 * This is not a true "global" variable. "Global" refers to that the value is outside the lambda function
+	 */
+	public class GlobalBoolean
+	{
+		private boolean value;
+		
+		public GlobalBoolean(boolean value)
+		{
+			this.value = value;
+		}
+		
+		public boolean get()
+		{
+			return value;
+		}
+		
+		public boolean set(boolean value)
+		{
+			this.value = value;
+			return value;
+		}
+	}
 }

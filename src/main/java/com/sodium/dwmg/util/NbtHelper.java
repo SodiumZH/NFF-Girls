@@ -27,7 +27,7 @@ public class NbtHelper {
 	// Return a new vector containing the UUIDs.
 	public static Vector<UUID> deserializeUUIDArray(CompoundTag inTag, String key)
 	{
-		ListTag uuidArrayTag = inTag.getList("key", Tag.TAG_INT_ARRAY);
+		ListTag uuidArrayTag = inTag.getList(key, Tag.TAG_INT_ARRAY);
 		Vector<UUID> out = new Vector<UUID>();
 		for(Tag tag : uuidArrayTag)
 		{

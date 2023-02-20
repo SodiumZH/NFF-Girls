@@ -1,7 +1,9 @@
 package com.sodium.dwmg.registries;
 
 import com.sodium.dwmg.Dwmg;
+import com.sodium.dwmg.entities.capabilities.CapBefriendableMobProvider;
 import com.sodium.dwmg.entities.capabilities.CapUndeadMobProvider;
+import com.sodium.dwmg.util.TagHelper;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -22,7 +24,9 @@ public class ModCapabilityAttachment {
 		if(entity instanceof LivingEntity mob)
 		{
 			if (mob.getMobType() == MobType.UNDEAD)
-					event.addCapability(new ResourceLocation(Dwmg.MODID, "cap_undead"), new CapUndeadMobProvider());
+				event.addCapability(new ResourceLocation(Dwmg.MODID, "cap_undead"), new CapUndeadMobProvider());
+			if (TagHelper.hasTag(mob, "dwmg", "befriendable"))
+				event.addCapability(new ResourceLocation(Dwmg.MODID, "cap_befriendable"), new CapBefriendableMobProvider());
 		}
 	}
 	

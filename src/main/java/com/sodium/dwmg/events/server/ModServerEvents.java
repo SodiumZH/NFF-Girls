@@ -3,6 +3,7 @@ package com.sodium.dwmg.events.server;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -26,6 +27,11 @@ public class ModServerEvents
 	}
 	
 
+	@SubscribeEvent
+	public static void onWorldTick(TickEvent.WorldTickEvent event)
+	{
+		
+	}
 	/*
 		@SubscribeEvent
 		public static void onLivingChangeTargetEvent(LivingChangeTargetEvent event) 

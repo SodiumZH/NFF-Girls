@@ -38,6 +38,7 @@ public class Dwmg
         ModEffects.EFFECTS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
+        ModEntityTypes.ENTITY_TYPES.register(modEventBus);
         
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

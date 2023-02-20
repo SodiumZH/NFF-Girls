@@ -3,10 +3,10 @@ package com.sodium.dwmg.entities.capabilities;
 import java.util.UUID;
 import java.util.Vector;
 
+import com.sodium.dwmg.entities.IBefriendedMob;
+import com.sodium.dwmg.util.NbtHelper;
+
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
 
 public class CapBefriendableMob implements ICapBefriendableMob{
@@ -14,6 +14,9 @@ public class CapBefriendableMob implements ICapBefriendableMob{
 	
 	protected Vector<UUID> hatred = new Vector<UUID>();
 	
+	protected CapBefriendableMob()
+	{
+	}
 	@Override
 	public Vector<UUID> getHatred() 
 	{
@@ -33,22 +36,18 @@ public class CapBefriendableMob implements ICapBefriendableMob{
 	public CompoundTag serializeNBT() 
 	{
 		CompoundTag tag = new CompoundTag();
-		
-		ListTag hatredTag = new ListTag();
-		for (UUID id : hatred)
-		{
-			hatredTag.add(NbtUtils.createUUID(id));
-		}
-		tag.put("hatred", hatredTag);
+		NbtHelper.serializeUUIDArray(tag, hatred, "hatred");
 		return tag;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
-		ListTag everHostileList = nbt.getList("hatred", Tag.TAG_INT_ARRAY);
-		NBTUtil.
+		hatred = NbtHelper.deserializeUUIDArray(nbt, "hatred");
 	}
-
-
+	
+	@Override
+	public IBefriendedMob befriend() {
+		return null;
+	}
 
 }
