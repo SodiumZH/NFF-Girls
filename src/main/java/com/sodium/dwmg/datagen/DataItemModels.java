@@ -9,7 +9,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 public class DataItemModels extends ItemModelProvider {
 	
 	  public DataItemModels(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-	        super(generator, Dwmg.MODID, existingFileHelper);
+	        super(generator, Dwmg.MOD_ID, existingFileHelper);
 	    }
 
 	    @Override

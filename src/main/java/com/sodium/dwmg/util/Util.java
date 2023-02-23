@@ -19,11 +19,16 @@ public class Util {
 		return entity == null ? UUID_NULL : entity.getUUID();
 	}
 	
+	public static String getNameString(Entity target)
+	{
+			return target != null ? target.getName().getString() : "null";
+	}
+	
 	/** A wrapper of boolean to provide an exterior value that can be changed inside a lambda function
 	 * e.g. in a provider or consumer
 	 * This is not a true "global" variable. "Global" refers to that the value is outside the lambda function
 	 */
-	public class GlobalBoolean
+	public static class GlobalBoolean
 	{
 		private boolean value;
 		
@@ -42,5 +47,10 @@ public class Util {
 			this.value = value;
 			return value;
 		}
+	}
+	
+	public static Util.GlobalBoolean createGB(boolean value)
+	{
+		return new Util.GlobalBoolean(value);
 	}
 }

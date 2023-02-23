@@ -8,7 +8,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class DataBlockTags extends BlockTagsProvider{
     public DataBlockTags(DataGenerator generator, ExistingFileHelper helper) {
-        super(generator, Dwmg.MODID, helper);
+        super(generator, Dwmg.MOD_ID, helper);
     }
 
     @Override

@@ -19,7 +19,7 @@ import net.minecraftforge.registries.*;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBlocks {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Dwmg.MODID);
+	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Dwmg.MOD_ID);
 	
 	// General register function for blocks (for simplification)
 	public static RegistryObject<Block> regBlock(String name, BlockBehaviour.Properties properties)

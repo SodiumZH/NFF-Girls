@@ -9,7 +9,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 public class DataBlockStates extends BlockStateProvider {
 
     public DataBlockStates(DataGenerator gen, ExistingFileHelper helper) {
-        super(gen, Dwmg.MODID, helper);
+        super(gen, Dwmg.MOD_ID, helper);
     }
 
     @Override

@@ -10,7 +10,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 public class DataItemTags extends ItemTagsProvider {
 
     public DataItemTags(DataGenerator generator, BlockTagsProvider blockTags, ExistingFileHelper helper) {
-        super(generator, blockTags, Dwmg.MODID, helper);
+        super(generator, blockTags, Dwmg.MOD_ID, helper);
     }
 
     @Override

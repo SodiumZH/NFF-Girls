@@ -3,20 +3,22 @@ package com.sodium.dwmg.entities.capabilities;
 import java.util.UUID;
 import java.util.Vector;
 
-import com.sodium.dwmg.entities.IBefriendedMob;
 import com.sodium.dwmg.util.NbtHelper;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 
-public class CapBefriendableMob implements ICapBefriendableMob{
-
+public class CapBefriendableMob implements ICapBefriendableMob
+{
 	
 	protected Vector<UUID> hatred = new Vector<UUID>();
+	
+	public CompoundTag nbt = new CompoundTag();
 	
 	protected CapBefriendableMob()
 	{
 	}
+	
 	@Override
 	public Vector<UUID> getHatred() 
 	{
@@ -26,28 +28,38 @@ public class CapBefriendableMob implements ICapBefriendableMob{
 	@Override
 	public void addHatred(Player player) 
 	{
-		if(!hatred.contains(player.getUUID()))
+		if(!isInHatred(player))
 		{
 			hatred.add(player.getUUID());
 		}
 	}
 	
 	@Override
+	public boolean isInHatred(Player player) 
+	{
+		return hatred.contains(player.getUUID());
+	}
+	
+	@Override
+	public CompoundTag getNBT() 
+	{
+		return nbt;
+	}
+
+	@Override
 	public CompoundTag serializeNBT() 
 	{
 		CompoundTag tag = new CompoundTag();
 		NbtHelper.serializeUUIDArray(tag, hatred, "hatred");
+		tag.put("nbt", nbt);
 		return tag;
 	}
 
 	@Override
-	public void deserializeNBT(CompoundTag nbt) {
+	public void deserializeNBT(CompoundTag nbt) 
+	{
 		hatred = NbtHelper.deserializeUUIDArray(nbt, "hatred");
-	}
-	
-	@Override
-	public IBefriendedMob befriend() {
-		return null;
+		this.nbt = nbt.getCompound("nbt");
 	}
 
 }

@@ -3,10 +3,12 @@ package com.sodium.dwmg.util;
 import java.util.UUID;
 import java.util.Vector;
 
+import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.player.Player;
 
 public class NbtHelper {
 
@@ -35,5 +37,19 @@ public class NbtHelper {
 		}
 		return out;
 	}
+
+	// Check if a compound tag contains a compound subtag with player's string uuid as key.
+	public static boolean containsPlayer(CompoundTag inTag, Player player)
+	{
+		return inTag.contains(player.getStringUUID()) && (inTag.get(player.getStringUUID()) instanceof CompoundTag);
+	}
+	
+	// Check if a compound tag contains a player
+	public static boolean containsPlayerData(CompoundTag inTag, Player player, String key)
+	{
+		return containsPlayer(inTag, player) && inTag.getCompound(player.getStringUUID()).contains(key);
+	}
+	
+	
 	
 }

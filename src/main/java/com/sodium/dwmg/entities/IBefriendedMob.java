@@ -1,9 +1,12 @@
 package com.sodium.dwmg.entities;
 
+import java.util.UUID;
+
 import javax.annotation.Nonnull;
 
 import com.sodium.dwmg.entities.befriending.AIState;
 
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -17,17 +20,16 @@ public interface IBefriendedMob {
 	 */
 	public IBefriendedMob init(@Nonnull Player player, LivingEntity befriendedFrom);
 	
-	@Nonnull
 	public Player getOwner();
 	
+	public UUID getOwnerUUID();
+	
 	public IBefriendedMob setOwner(@Nonnull Player owner);
-
-	public boolean setAiState(AIState to, AIState from);
-		
+	
 	// Actions on player right click the mob
-	void onRightClicked(Player player);
+	boolean onInteraction(Player player);
 	
 	// Action on player shift+rightmouse click
-	void onShiftRightClicked(Player player);
+	boolean onInteractionShift(Player player);
 	
 }

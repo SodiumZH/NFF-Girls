@@ -12,16 +12,23 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
+import com.sodium.dwmg.entities.befriending.BefriendingMethod;
+import com.sodium.dwmg.entities.befriending.BefriendingMethodGetter;
 import com.sodium.dwmg.registries.*;
+import com.sodium.dwmg.util.Debug;
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(Dwmg.MODID)
+@Mod(Dwmg.MOD_ID)
 public class Dwmg
 {
     // Define mod id in a common place for everything to reference
-    public static final String MODID = "dwmg";
+    public static final String MOD_ID = "dwmg";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
+    // Whether this project is under debug, or for release.
+    // This controls if debug outputs should appear.
+    public static final boolean IS_DEBUG = true;
+    
     public static void logInfo(String info)
     {
     	LOGGER.info(info);
@@ -58,7 +65,7 @@ public class Dwmg
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents
     {
         @SubscribeEvent
@@ -68,5 +75,15 @@ public class Dwmg
             LOGGER.info("DwMG: Client started.");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
+    }
+    
+    /* Utils */
+    
+    // You can reset this value to add implementations of befriending more mobs 
+    public static BefriendingMethodGetter befriendingMethodGetter = new BefriendingMethodGetter();
+    
+    public static void setBefriendingMethod(BefriendingMethod newMethod)
+    {
+    	befriendingMethodGetter = new BefriendingMethodGetter(newMethod);
     }
 }

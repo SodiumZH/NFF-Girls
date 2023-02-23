@@ -14,7 +14,7 @@ import com.sodium.dwmg.registries.ModEffects;
 import com.sodium.dwmg.util.Debug;
 
 
-@Mod.EventBusSubscriber(modid = Dwmg.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModServerEvents 
 {
 

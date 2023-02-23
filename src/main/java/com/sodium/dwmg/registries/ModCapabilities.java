@@ -27,4 +27,5 @@ public class ModCapabilities
 		event.register(ICapBefriendableMob.class);
 	}
 	
+	
 }

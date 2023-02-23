@@ -1,5 +1,7 @@
 package com.sodium.dwmg.entities;
 
+import java.util.UUID;
+
 import com.github.mechalopa.hmag.world.entity.ZombieGirlEntity;
 import com.sodium.dwmg.entities.befriending.AIState;
 import com.sodium.dwmg.util.Debug;
@@ -19,9 +21,9 @@ public class ZombieGirlFriendly extends ZombieGirlEntity implements IBefriendedM
 		this.xpReward = 0;
 	}
 
-	Player owner = null;
-	boolean sunlightImmune = true;
-	AIState aiState = AIState.WAIT;
+	protected UUID ownerUUID = null;
+	//public boolean sunlightImmune = true;
+	public AIState aiState = AIState.WAIT;
 	
 	@Override
 	protected void registerGoals()
@@ -37,43 +39,51 @@ public class ZombieGirlFriendly extends ZombieGirlEntity implements IBefriendedM
 	@Override
 	public IBefriendedMob init(Player player, LivingEntity befriendedFrom) 
 	{
-		owner = player;
+		ownerUUID = player.getUUID();
+		if(!player.level.isClientSide())
+		{
+			this.setHealth(befriendedFrom.getHealth());
+		}
 		return this;
 	}
 
 	@Override
 	public Player getOwner()
 	{
-		return owner;
+		return ownerUUID == null ? null : this.level.getPlayerByUUID(ownerUUID);
 	}
 
 	@Override
 	public IBefriendedMob setOwner(Player owner) 
 	{
-		this.owner = owner;
+		this.ownerUUID = owner.getUUID();
 		return this;
 	}
 
 	@Override
-	public boolean setAiState(AIState to, AIState from) {
-		aiState = to;
-		return true;
+	public boolean onInteraction(Player player) {
+		if(player.getUUID() == ownerUUID)
+		{
+			if (player.level.isClientSide())
+				Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
+			return true;
+		}
+		else return false;
 	}
 
 	@Override
-	public void onRightClicked(Player player) {
-		if(player == owner)
+	public boolean onInteractionShift(Player player) {
+		if(player.getUUID() == ownerUUID)
 		{
-			Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
+			if (player.level.isClientSide())
+				Debug.printToScreen("Friendly Zombie Girl shift + right clicked", player, this);
+			return true;
 		}
+		else return false;
 	}
 
 	@Override
-	public void onShiftRightClicked(Player player) {
-		if(player == owner)
-		{
-			Debug.printToScreen("Friendly Zombie Girl shift + right clicked", player, this);
-		}
-		
+	public UUID getOwnerUUID() {
+		return ownerUUID == null ? null : ownerUUID;
 	}
 }

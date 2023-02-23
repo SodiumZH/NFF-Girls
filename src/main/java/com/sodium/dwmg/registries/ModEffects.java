@@ -12,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEffects {
 
-	public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Dwmg.MODID);
+	public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Dwmg.MOD_ID);
 	
 
 	// Registry body
