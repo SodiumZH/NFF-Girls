@@ -28,4 +28,6 @@ public interface ICapBefriendableMob extends INBTSerializable<CompoundTag> {
 	// Get NBT tag
 	CompoundTag getNBT();
 
+	// Get the player data tag under NBT
+	CompoundTag getPlayerData();
 }

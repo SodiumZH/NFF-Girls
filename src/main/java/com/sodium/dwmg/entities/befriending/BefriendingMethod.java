@@ -8,8 +8,11 @@ import com.sodium.dwmg.entities.ZombieGirlFriendly;
 import com.sodium.dwmg.registries.ModCapabilities;
 import com.sodium.dwmg.registries.ModEntityTypes;
 import com.sodium.dwmg.registries.ModItems;
+import com.sodium.dwmg.util.Debug;
 import com.sodium.dwmg.util.NbtHelper;
 
+import net.minecraft.nbt.IntTag;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -55,36 +58,45 @@ public class BefriendingMethod
 			throw new RuntimeException("Befriending: Entity type after befriending not implementing IBefriendedMob interface.");
 		IBefriendedMob result = (IBefriendedMob)resultRaw;
 		result.init(player, target);		
+		Debug.printToScreen("Mob "+target.toString()+" befriended", player, target);
 		return result;
 	}
 	
-	public IBefriendedMob onBefriendingMobInteract(EntityInteract event)
+	public BefriendableMobInteractionResult onBefriendingMobInteract(EntityInteract event)
 	{
 		LivingEntity entity = (LivingEntity)event.getEntity();
 		EntityType<?> type = event.getEntity().getType();
 		Player player = event.getPlayer();
-		IBefriendedMob result = null;
+		BefriendableMobInteractionResult result = new BefriendableMobInteractionResult();
 		
 		entity.getCapability(ModCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> {
+
 			
-			// Server-side actions
-			if (event.getSide() != LogicalSide.CLIENT)
+			// -------------------------
+			if (type == com.github.mechalopa.hmag.registry.ModEntityTypes.ZOMBIE_GIRL.get())
 			{
-				if (!l.isInHatred(player))
+				if (!player.isShiftKeyDown() && player.getMainHandItem().getItem() == ModItems.SOUL_CAKE_SLICE.get())
 				{
-					if (type == com.github.mechalopa.hmag.registry.ModEntityTypes.ZOMBIE_GIRL.get())
+					IntTag playerCakeNeededTag = (IntTag)NbtHelper.getPlayerData(l.getPlayerData(), player, "cakes_needed");
+					int playerCakeNeeded = playerCakeNeededTag == null ? l.getNBT().getInt("cakes_required") : playerCakeNeededTag.getAsInt();
+					playerCakeNeeded --;
+					player.getMainHandItem().shrink(1);
+					Debug.printToScreen("Cakes needed remaining: " + Integer.toString(playerCakeNeeded), player, entity);
+					if (playerCakeNeeded == 0)
 					{
-						if (!player.isShiftKeyDown() && player.getMainHandItem().getItem() == ModItems.SOUL_CAKE_SLICE.get())
-						{
-							if (l.getNBT().getCompound("player_data").contains(player.getStringUUID())
-									&& l.getNBT().getCompound("player_data").getCompound(player.getStringUUID()).contains("cakes_needed"))
-								l.getNBT().getCompound("player_data").);
-							
-					
-						}
+						result.befriended = befriend(player, entity);
+						result.hasInteracted = true;
+					}
+					else
+					{
+						NbtHelper.putPlayerData(IntTag.valueOf(playerCakeNeeded), l.getPlayerData(), player, "cakes_needed");
+						result.hasInteracted = true;
 					}
 				}
 			}
+			// --------------------------
+					
+			
 		});
 		return result;
 	}

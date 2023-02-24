@@ -47,6 +47,12 @@ public class CapBefriendableMob implements ICapBefriendableMob
 	}
 
 	@Override
+	public CompoundTag getPlayerData()
+	{
+		return nbt.getCompound("player_data");
+	}
+	
+	@Override
 	public CompoundTag serializeNBT() 
 	{
 		CompoundTag tag = new CompoundTag();

@@ -53,7 +53,7 @@ public class ModCapabilityAttachment {
 			if (type == ModEntityTypes.ZOMBIE_GIRL.get())
 			{
 				float rnd = new Random().nextFloat();
-				l.getNBT().put("cakes_needed", IntTag.valueOf(rnd < 0.1 ? 1 : (rnd < 0.4 ? 2 : 3)));
+				l.getNBT().put("cakes_required", IntTag.valueOf(rnd < 0.1 ? 1 : (rnd < 0.4 ? 2 : 3)));
 			}
 		});
 	}

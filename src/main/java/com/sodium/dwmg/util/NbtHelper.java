@@ -44,12 +44,23 @@ public class NbtHelper {
 		return inTag.contains(player.getStringUUID()) && (inTag.get(player.getStringUUID()) instanceof CompoundTag);
 	}
 	
-	// Check if a compound tag contains a player
+	// Check if a compound tag contains a player's string uuid as subtag, and a tag with given key under it
 	public static boolean containsPlayerData(CompoundTag inTag, Player player, String key)
 	{
 		return containsPlayer(inTag, player) && inTag.getCompound(player.getStringUUID()).contains(key);
 	}
 	
+	// Get tag if a compound tag has a player-uuid-named subtag which contains subtag with given key
+	// Return null if not present
+	public static Tag getPlayerData(CompoundTag inTag, Player player, String key)
+	{
+		return containsPlayerData(inTag, player, key) ? inTag.getCompound(player.getStringUUID()).get(key) : null;
+	}
 	
-	
+	public static void putPlayerData(Tag inTag, CompoundTag putTo, Player player, String key)
+	{
+		if (!containsPlayer(putTo, player))
+			putTo.put(player.getStringUUID(), new CompoundTag());
+		putTo.getCompound(player.getStringUUID()).put(key, inTag);
+	}
 }
