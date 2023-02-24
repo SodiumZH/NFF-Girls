@@ -1,0 +1,125 @@
+---- Minecraft Crash Report ----
+// Hey, that tickles! Hehehe!
+
+Time: 2/11/23, 11:31 PM
+Description: Saving entity NBT
+
+java.lang.NullPointerException: Cannot invoke "com.sodium.dwmg.entities.capabilities.ICapUndeadMob.serializeNBT()" because "this.capability" is null
+	at com.sodium.dwmg.entities.capabilities.CapUndeadMobProvider.serializeNBT(CapUndeadMobProvider.java:47) ~[%2384!/:?] {re:classloading}
+	at com.sodium.dwmg.entities.capabilities.CapUndeadMobProvider.serializeNBT(CapUndeadMobProvider.java:15) ~[%2384!/:?] {re:classloading}
+	at net.minecraftforge.common.capabilities.CapabilityDispatcher.serializeNBT(CapabilityDispatcher.java:115) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2378%2385!/:?] {re:classloading}
+	at net.minecraftforge.common.capabilities.CapabilityProvider.serializeCaps(CapabilityProvider.java:132) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2378%2385!/:?] {re:classloading}
+	at net.minecraft.world.entity.Entity.saveWithoutId(Entity.java:1632) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.client.server.IntegratedPlayerList.save(IntegratedPlayerList.java:29) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.server.players.PlayerList.saveAll(PlayerList.java:647) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.server.MinecraftServer.saveEverything(MinecraftServer.java:572) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.client.server.IntegratedServer.tickServer(IntegratedServer.java:82) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:704) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:262) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at java.lang.Thread.run(Thread.java:833) [?:?] {}
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Server thread
+Stacktrace:
+	at com.sodium.dwmg.entities.capabilities.CapUndeadMobProvider.serializeNBT(CapUndeadMobProvider.java:47) ~[%2384!/:?] {re:classloading}
+	at com.sodium.dwmg.entities.capabilities.CapUndeadMobProvider.serializeNBT(CapUndeadMobProvider.java:15) ~[%2384!/:?] {re:classloading}
+	at net.minecraftforge.common.capabilities.CapabilityDispatcher.serializeNBT(CapabilityDispatcher.java:115) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2378%2385!/:?] {re:classloading}
+	at net.minecraftforge.common.capabilities.CapabilityProvider.serializeCaps(CapabilityProvider.java:132) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2378%2385!/:?] {re:classloading}
+-- Entity being saved --
+Details:
+	Entity Type: minecraft:player (net.minecraft.server.level.ServerPlayer)
+	Entity ID: 102
+	Entity Name: Dev
+	Entity's Exact location: 122.46, 54.00, 74.86
+	Entity's Block location: World: (122,54,74), Section: (at 10,6,10 in 7,3,4; chunk contains blocks 112,-64,64 to 127,319,79), Region: (0,0; contains chunks 0,0 to 31,31, blocks 0,-64,0 to 511,319,511)
+	Entity's Momentum: 0.00, -0.08, 0.00
+	Entity's Passengers: []
+	Entity's Vehicle: null
+Stacktrace:
+	at net.minecraft.world.entity.Entity.saveWithoutId(Entity.java:1632) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.client.server.IntegratedPlayerList.save(IntegratedPlayerList.java:29) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.server.players.PlayerList.saveAll(PlayerList.java:647) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.server.MinecraftServer.saveEverything(MinecraftServer.java:572) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.client.server.IntegratedServer.tickServer(IntegratedServer.java:82) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:704) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:262) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at java.lang.Thread.run(Thread.java:833) [?:?] {}
+
+
+-- System Details --
+Details:
+	Minecraft Version: 1.18.2
+	Minecraft Version ID: 1.18.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 17.0.4.1, Eclipse Adoptium
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode), Eclipse Adoptium
+	Memory: 1576946992 bytes (1503 MiB) / 2650800128 bytes (2528 MiB) up to 12876513280 bytes (12280 MiB)
+	CPUs: 12
+	Processor Vendor: AuthenticAMD
+	Processor Name: AMD Ryzen 5 3600 6-Core Processor              
+	Identifier: AuthenticAMD Family 23 Model 113 Stepping 0
+	Microarchitecture: Zen 2
+	Frequency (GHz): 3.60
+	Number of physical packages: 1
+	Number of physical CPUs: 6
+	Number of logical CPUs: 12
+	Graphics card #0 name: NVIDIA GeForce RTX 2060 SUPER
+	Graphics card #0 vendor: NVIDIA (0x10de)
+	Graphics card #0 VRAM (MB): 4095.00
+	Graphics card #0 deviceId: 0x1f06
+	Graphics card #0 versionInfo: DriverVersion=31.0.15.1694
+	Memory slot #0 capacity (MB): 16384.00
+	Memory slot #0 clockSpeed (GHz): 2.13
+	Memory slot #0 type: DDR4
+	Memory slot #1 capacity (MB): 8192.00
+	Memory slot #1 clockSpeed (GHz): 2.13
+	Memory slot #1 type: DDR4
+	Memory slot #2 capacity (MB): 16384.00
+	Memory slot #2 clockSpeed (GHz): 2.13
+	Memory slot #2 type: DDR4
+	Memory slot #3 capacity (MB): 8192.00
+	Memory slot #3 clockSpeed (GHz): 2.13
+	Memory slot #3 type: DDR4
+	Virtual memory max (MB): 58829.11
+	Virtual memory used (MB): 25275.97
+	Swap memory total (MB): 9728.00
+	Swap memory used (MB): 163.14
+	JVM Flags: 1 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump
+	Server Running: true
+	Player Count: 1 / 8; [ServerPlayer['Dev'/102, l='ServerLevel[新的世界]', x=122.46, y=54.00, z=74.86]]
+	Data Packs: vanilla, mod:dwmg, mod:forge, mod:grimoireofgaia, mod:hmag, mod:jei (incompatible)
+	World Generation: Stable
+	Type: Integrated Server (map_client.txt)
+	Is Modded: Definitely; Client brand changed to 'forge'; Server brand changed to 'forge'
+	ModLauncher: 9.1.3+9.1.3+main.9b69c82a
+	ModLauncher launch target: forgeclientuserdev
+	ModLauncher naming: mcp
+	ModLauncher services: 
+		 mixin PLUGINSERVICE 
+		 eventbus PLUGINSERVICE 
+		 slf4jfixer PLUGINSERVICE 
+		 object_holder_definalize PLUGINSERVICE 
+		 runtime_enum_extender PLUGINSERVICE 
+		 capability_token_subclass PLUGINSERVICE 
+		 accesstransformer PLUGINSERVICE 
+		 runtimedistcleaner PLUGINSERVICE 
+		 mixin TRANSFORMATIONSERVICE 
+		 fml TRANSFORMATIONSERVICE 
+	FML Language Providers: 
+		minecraft@1.0
+		lowcodefml@null
+		javafml@null
+	Mod List: 
+		forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.|Minecraft                     |minecraft                     |1.18.2              |DONE      |Manifest: a1:d4:5e:04:4f:d3:d6:e0:7b:37:97:cf:77:b0:de:ad:4a:47:ce:8c:96:49:5f:0a:cf:8c:ae:b2:6d:4b:8a:3f
+		main                                              |Days with Monster Girls       |dwmg                          |0.0NONE             |DONE      |Manifest: NOSIGNATURE
+		                                                  |Forge                         |forge                         |40.2.0              |DONE      |Manifest: NOSIGNATURE
+		gog4-228948-4249761_mapped_parchment_2022.08.07-1.|Grimoire of Gaia 4            |grimoireofgaia                |2.0.0-alpha.23      |DONE      |Manifest: NOSIGNATURE
+		hmag-537613-3879316_mapped_parchment_2022.08.07-1.|Hostile Mobs and Girls        |hmag                          |5.1.0               |DONE      |Manifest: NOSIGNATURE
+		jei-1.18.2-9.7.0.194_mapped_parchment_2022.08.07-1|Just Enough Items             |jei                           |9.7.0.194           |DONE      |Manifest: NOSIGNATURE
+	Crash Report UUID: b972a6cd-c275-47e5-98c2-4bcace4aceb5
+	FML: 40.2
+	Forge: net.minecraftforge:40.2.0

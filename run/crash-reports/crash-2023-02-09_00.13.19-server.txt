@@ -1,0 +1,185 @@
+---- Minecraft Crash Report ----
+// Uh... Did I do that?
+
+Time: 2/9/23, 12:13 AM
+Description: Ticking entity
+
+java.lang.NullPointerException: Cannot invoke "net.minecraft.world.entity.LivingEntity.getName()" because the return value of "net.minecraft.world.entity.LivingEntity.getLastHurtByMob()" is null
+	at com.sodium.dwmg.events.ServerEvents.onLivingChangeTargetEvent(ServerEvents.java:61) ~[%2384!/:?] {re:classloading}
+	at net.minecraftforge.eventbus.ASMEventHandler_5_ServerEvents_onLivingChangeTargetEvent_LivingChangeTargetEvent.invoke(.dynamic) ~[?:?] {}
+	at net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:85) ~[eventbus-5.0.7.jar%2310!/:?] {}
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:302) ~[eventbus-5.0.7.jar%2310!/:?] {}
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:283) ~[eventbus-5.0.7.jar%2310!/:?] {}
+	at net.minecraftforge.common.ForgeHooks.onLivingChangeTarget(ForgeHooks.java:317) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2378%2385!/:?] {re:classloading}
+	at net.minecraft.world.entity.Mob.setTarget(Mob.java:208) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal.start(NearestAttackableTargetGoal.java:67) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.entity.ai.goal.WrappedGoal.start(WrappedGoal.java:35) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.world.entity.ai.goal.GoalSelector.tick(GoalSelector.java:107) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.world.entity.Mob.serverAiStep(Mob.java:698) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.entity.LivingEntity.aiStep(LivingEntity.java:2506) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.world.entity.Mob.aiStep(Mob.java:498) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.entity.monster.Monster.aiStep(Monster.java:41) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.world.entity.monster.Zombie.aiStep(Zombie.java:235) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.world.entity.LivingEntity.tick(LivingEntity.java:2253) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.world.entity.Mob.tick(Mob.java:310) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.entity.monster.Zombie.tick(Zombie.java:209) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.server.level.ServerLevel.tickNonPassenger(ServerLevel.java:652) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.level.Level.guardEntityTick(Level.java:487) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.level.ServerLevel.lambda$tick$3(ServerLevel.java:319) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.level.entity.EntityTickList.forEach(EntityTickList.java:54) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.server.level.ServerLevel.tick(ServerLevel.java:299) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:902) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:842) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.client.server.IntegratedServer.tickServer(IntegratedServer.java:84) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:685) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:261) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at java.lang.Thread.run(Thread.java:833) [?:?] {}
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Server thread
+Stacktrace:
+	at com.sodium.dwmg.events.ServerEvents.onLivingChangeTargetEvent(ServerEvents.java:61) ~[%2384!/:?] {re:classloading}
+	at net.minecraftforge.eventbus.ASMEventHandler_5_ServerEvents_onLivingChangeTargetEvent_LivingChangeTargetEvent.invoke(.dynamic) ~[?:?] {}
+	at net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:85) ~[eventbus-5.0.7.jar%2310!/:?] {}
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:302) ~[eventbus-5.0.7.jar%2310!/:?] {}
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:283) ~[eventbus-5.0.7.jar%2310!/:?] {}
+	at net.minecraftforge.common.ForgeHooks.onLivingChangeTarget(ForgeHooks.java:317) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2378%2385!/:?] {re:classloading}
+	at net.minecraft.world.entity.Mob.setTarget(Mob.java:208) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal.start(NearestAttackableTargetGoal.java:67) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.entity.ai.goal.WrappedGoal.start(WrappedGoal.java:35) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.world.entity.ai.goal.GoalSelector.tick(GoalSelector.java:107) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.world.entity.Mob.serverAiStep(Mob.java:698) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.entity.LivingEntity.aiStep(LivingEntity.java:2506) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.world.entity.Mob.aiStep(Mob.java:498) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.entity.monster.Monster.aiStep(Monster.java:41) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.world.entity.monster.Zombie.aiStep(Zombie.java:235) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.world.entity.LivingEntity.tick(LivingEntity.java:2253) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.world.entity.Mob.tick(Mob.java:310) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.entity.monster.Zombie.tick(Zombie.java:209) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.server.level.ServerLevel.tickNonPassenger(ServerLevel.java:652) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.level.Level.guardEntityTick(Level.java:487) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.level.ServerLevel.lambda$tick$3(ServerLevel.java:319) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.level.entity.EntityTickList.forEach(EntityTickList.java:54) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.server.level.ServerLevel.tick(ServerLevel.java:299) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+-- Entity being ticked --
+Details:
+	Entity Type: minecraft:zombie (net.minecraft.world.entity.monster.Zombie)
+	Entity ID: 1
+	Entity Name: 僵尸
+	Entity's Exact location: 120.05, 54.00, 69.54
+	Entity's Block location: World: (120,54,69), Section: (at 8,6,5 in 7,3,4; chunk contains blocks 112,-64,64 to 127,319,79), Region: (0,0; contains chunks 0,0 to 31,31, blocks 0,-64,0 to 511,319,511)
+	Entity's Momentum: 0.00, -0.08, 0.00
+	Entity's Passengers: []
+	Entity's Vehicle: null
+Stacktrace:
+	at net.minecraft.world.level.Level.guardEntityTick(Level.java:487) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.level.ServerLevel.lambda$tick$3(ServerLevel.java:319) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.world.level.entity.EntityTickList.forEach(EntityTickList.java:54) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading}
+	at net.minecraft.server.level.ServerLevel.tick(ServerLevel.java:299) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:902) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:842) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.client.server.IntegratedServer.tickServer(IntegratedServer.java:84) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:685) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:261) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at java.lang.Thread.run(Thread.java:833) [?:?] {}
+
+
+-- Affected level --
+Details:
+	All players: 1 total; [ServerPlayer['Dev'/114, l='ServerLevel[新的世界]', x=120.86, y=55.18, z=72.81]]
+	Chunk stats: 2809
+	Level dimension: minecraft:overworld
+	Level spawn location: World: (122,53,70), Section: (at 10,5,6 in 7,3,4; chunk contains blocks 112,-64,64 to 127,319,79), Region: (0,0; contains chunks 0,0 to 31,31, blocks 0,-64,0 to 511,319,511)
+	Level time: 46719 game time, 6000 day time
+	Level name: 新的世界
+	Level game mode: Game mode: creative (ID 1). Hardcore: false. Cheats: true
+	Level weather: Rain time: 8323 (now: true), thunder time: 108186 (now: false)
+	Known server brands: forge
+	Level was modded: true
+	Level storage version: 0x04ABD - Anvil
+Stacktrace:
+	at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:902) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:842) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.client.server.IntegratedServer.tickServer(IntegratedServer.java:84) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:685) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:261) ~[forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
+	at java.lang.Thread.run(Thread.java:833) [?:?] {}
+
+
+-- System Details --
+Details:
+	Minecraft Version: 1.18.2
+	Minecraft Version ID: 1.18.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 17.0.4.1, Eclipse Adoptium
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode), Eclipse Adoptium
+	Memory: 948952504 bytes (904 MiB) / 2441084928 bytes (2328 MiB) up to 12876513280 bytes (12280 MiB)
+	CPUs: 12
+	Processor Vendor: AuthenticAMD
+	Processor Name: AMD Ryzen 5 3600 6-Core Processor              
+	Identifier: AuthenticAMD Family 23 Model 113 Stepping 0
+	Microarchitecture: Zen 2
+	Frequency (GHz): 3.60
+	Number of physical packages: 1
+	Number of physical CPUs: 6
+	Number of logical CPUs: 12
+	Graphics card #0 name: NVIDIA GeForce RTX 2060 SUPER
+	Graphics card #0 vendor: NVIDIA (0x10de)
+	Graphics card #0 VRAM (MB): 4095.00
+	Graphics card #0 deviceId: 0x1f06
+	Graphics card #0 versionInfo: DriverVersion=31.0.15.1694
+	Memory slot #0 capacity (MB): 16384.00
+	Memory slot #0 clockSpeed (GHz): 2.13
+	Memory slot #0 type: DDR4
+	Memory slot #1 capacity (MB): 8192.00
+	Memory slot #1 clockSpeed (GHz): 2.13
+	Memory slot #1 type: DDR4
+	Memory slot #2 capacity (MB): 16384.00
+	Memory slot #2 clockSpeed (GHz): 2.13
+	Memory slot #2 type: DDR4
+	Memory slot #3 capacity (MB): 8192.00
+	Memory slot #3 clockSpeed (GHz): 2.13
+	Memory slot #3 type: DDR4
+	Virtual memory max (MB): 62994.57
+	Virtual memory used (MB): 33422.10
+	Swap memory total (MB): 13893.46
+	Swap memory used (MB): 773.06
+	JVM Flags: 2 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -XX:+ShowCodeDetailsInExceptionMessages
+	Server Running: true
+	Player Count: 1 / 8; [ServerPlayer['Dev'/114, l='ServerLevel[新的世界]', x=120.86, y=55.18, z=72.81]]
+	Data Packs: vanilla, mod:dwmg, mod:forge, mod:grimoireofgaia, mod:hmag, mod:jei (incompatible)
+	World Generation: Stable
+	Type: Integrated Server (map_client.txt)
+	Is Modded: Definitely; Client brand changed to 'forge'; Server brand changed to 'forge'
+	ModLauncher: 9.1.3+9.1.3+main.9b69c82a
+	ModLauncher launch target: forgeclientuserdev
+	ModLauncher naming: mcp
+	ModLauncher services: 
+		 mixin PLUGINSERVICE 
+		 eventbus PLUGINSERVICE 
+		 slf4jfixer PLUGINSERVICE 
+		 object_holder_definalize PLUGINSERVICE 
+		 runtime_enum_extender PLUGINSERVICE 
+		 capability_token_subclass PLUGINSERVICE 
+		 accesstransformer PLUGINSERVICE 
+		 runtimedistcleaner PLUGINSERVICE 
+		 mixin TRANSFORMATIONSERVICE 
+		 fml TRANSFORMATIONSERVICE 
+	FML Language Providers: 
+		minecraft@1.0
+		lowcodefml@null
+		javafml@null
+	Mod List: 
+		forge-1.18.2-40.2.0_mapped_official_1.18.2-recomp.|Minecraft                     |minecraft                     |1.18.2              |DONE      |Manifest: a1:d4:5e:04:4f:d3:d6:e0:7b:37:97:cf:77:b0:de:ad:4a:47:ce:8c:96:49:5f:0a:cf:8c:ae:b2:6d:4b:8a:3f
+		main                                              |Days with Monster Girls       |dwmg                          |0.0NONE             |DONE      |Manifest: NOSIGNATURE
+		                                                  |Forge                         |forge                         |40.2.0              |DONE      |Manifest: NOSIGNATURE
+		gog4-228948-4249761_mapped_official_1.18.2.jar    |Grimoire of Gaia 4            |grimoireofgaia                |2.0.0-alpha.23      |DONE      |Manifest: NOSIGNATURE
+		hmag-537613-3879316_mapped_official_1.18.2.jar    |Hostile Mobs and Girls        |hmag                          |5.1.0               |DONE      |Manifest: NOSIGNATURE
+		jei-1.18.2-9.7.0.194_mapped_official_1.18.2.jar   |Just Enough Items             |jei                           |9.7.0.194           |DONE      |Manifest: NOSIGNATURE
+	Crash Report UUID: 743f175f-0d27-4c34-8719-9cc0709b9b80
+	FML: 40.2
+	Forge: net.minecraftforge:40.2.0
