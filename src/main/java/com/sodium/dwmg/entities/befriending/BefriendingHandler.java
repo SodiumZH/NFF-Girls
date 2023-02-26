@@ -102,6 +102,7 @@ public class BefriendingHandler
 							}
 							else
 							{
+								EntityHelper.sendStarParticlesToMob(target);
 								// Not satisfied, put data
 								NbtHelper.putPlayerData(IntTag.valueOf(alreadyGiven), l.getPlayerData(), player, "already_given");
 								result.handled = true;

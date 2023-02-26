@@ -2,7 +2,7 @@ package com.sodium.dwmg.client;
 
 import com.github.mechalopa.hmag.client.renderer.ZombieGirlRenderer;
 import com.sodium.dwmg.Dwmg;
-import com.sodium.dwmg.entities.ZombieGirlFriendly;
+import com.sodium.dwmg.entities.EntityZombieGirlFriendly;
 import com.sodium.dwmg.registries.ModEntityTypes;
 
 import net.minecraftforge.fml.common.Mod;
@@ -26,6 +26,6 @@ public class ModClientEvents
 
 	@SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
-        event.put(ModEntityTypes.ZOMBIE_GIRL_FRIENDLY.get(), ZombieGirlFriendly.createAttributes().build());
+        event.put(ModEntityTypes.ZOMBIE_GIRL_FRIENDLY.get(), EntityZombieGirlFriendly.createAttributes().build());
     }
 }

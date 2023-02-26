@@ -23,9 +23,5 @@ eclipse
 
 run
 
-!run/saves
-
-!run/config
-
 # Files from Forge MDK
 forge*changelog.txt
