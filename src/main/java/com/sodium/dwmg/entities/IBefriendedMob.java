@@ -29,7 +29,7 @@ public interface IBefriendedMob {
 	// Actions on player right click the mob
 	boolean onInteraction(Player player);
 	
-	// Action on player shift+rightmouse click
+	// Action on player shift + rightmouse click
 	boolean onInteractionShift(Player player);
 	
 }

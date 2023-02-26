@@ -14,6 +14,7 @@ public class Debug {
 	public static void printToScreen(String text, Entity receiver, Entity sender)
 	{
 		if(receiver instanceof Player player && Dwmg.IS_DEBUG)
+			
 			player.sendMessage(new TextComponent(text), sender.getUUID());
 	}
 	

@@ -12,8 +12,8 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
-import com.sodium.dwmg.entities.befriending.BefriendingMethod;
-import com.sodium.dwmg.entities.befriending.BefriendingMethodGetter;
+import com.sodium.dwmg.entities.befriending.BefriendingHandler;
+import com.sodium.dwmg.entities.befriending.BefriendingHandlerGetter;
 import com.sodium.dwmg.registries.*;
 import com.sodium.dwmg.util.Debug;
 // The value here should match an entry in the META-INF/mods.toml file
@@ -80,10 +80,10 @@ public class Dwmg
     /* Utils */
     
     // You can reset this value to add implementations of befriending more mobs 
-    public static BefriendingMethodGetter befriendingMethodGetter = new BefriendingMethodGetter();
+    public static BefriendingHandlerGetter befriendingHandlerGetter = new BefriendingHandlerGetter();
     
-    public static void setBefriendingMethod(BefriendingMethod newMethod)
+    public static void setBefriendingHandler(BefriendingHandler newHandler)
     {
-    	befriendingMethodGetter = new BefriendingMethodGetter(newMethod);
+    	befriendingHandlerGetter = new BefriendingHandlerGetter(newHandler);
     }
 }

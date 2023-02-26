@@ -182,11 +182,11 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    // HMaG
+
     implementation fg.deobf("curse.maven:hmag-537613:4392755")
-    // Grimoire of Gaia 4
 	implementation fg.deobf("curse.maven:gog4-228948:4249761")
-	
+	//implementation fg.deobf("curse.maven:citadel-331936:3683007")
+	//implementation fg.deobf("curse.maven:am-426558:3853078")
 	
 }
 

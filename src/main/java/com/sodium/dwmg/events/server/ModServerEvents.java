@@ -1,15 +1,20 @@
 package com.sodium.dwmg.events.server;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import com.sodium.dwmg.Dwmg;
+import com.sodium.dwmg.registries.ModCapabilities;
 import com.sodium.dwmg.registries.ModEffects;
 import com.sodium.dwmg.util.Debug;
 
@@ -30,36 +35,23 @@ public class ModServerEvents
 	@SubscribeEvent
 	public static void onWorldTick(TickEvent.WorldTickEvent event)
 	{
-		
-	}
-	/*
-		@SubscribeEvent
-		public static void onLivingChangeTargetEvent(LivingChangeTargetEvent event) 
+		// Update all befriendable mobs near players
+		if (event.side == LogicalSide.SERVER)
 		{
-			LivingEntity lastHurtBy = event.getEntityLiving().getLastHurtByMob();
-			
-			if (event.getNewTarget() != null && event.getEntity() instanceof Mob mob) 
+			for (Player player : event.world.players())
 			{
-				// Undead mobs keep neutral to mobs with Death Affinity effect
-				if (mob.getMobType() == MobType.UNDEAD) 
+				for (Entity entity : event.world.getEntities(player, new AABB(player.position().subtract(64.0, 64.0, 64.0), player.position().add(64.0, 64.0, 64.0))))
 				{
-					if (event.getNewTarget().hasEffect(ModEffects.DEATH_AFFINITY.get())) 
+					if (entity instanceof LivingEntity living)
 					{
-						if (event.getEntityLiving().getLastHurtByMob() != event.getNewTarget()) 
+						living.getCapability(ModCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> 
 						{
-							mob.setTarget(null);
-							Dwmg.logInfo("Death Affinity worked");
-							Dwmg.logInfo("Last hurt by: " + Debug.getMobNameString(lastHurtBy));
-						}
-						else
-						{
-							Dwmg.logInfo("Death Affinity not working because attacked");
-							Dwmg.logInfo("Last hurt by: " + Debug.getMobNameString(lastHurtBy));
-						}
+							l.updateTimers();
+						});
 					}
 				}
 			}
 		}
 	}
-*/
+
 }

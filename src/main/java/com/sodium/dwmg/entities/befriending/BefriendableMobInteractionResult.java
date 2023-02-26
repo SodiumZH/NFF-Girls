@@ -4,15 +4,18 @@ import com.sodium.dwmg.entities.IBefriendedMob;
 
 public class BefriendableMobInteractionResult {
 	
-	public IBefriendedMob befriended = null;
-	public boolean hasInteracted = false;
-	
-	public static BefriendableMobInteractionResult of(IBefriendedMob befriended, boolean hasInteracted)
+	public boolean handled = false;
+	public boolean shouldCancelEvent = false;
+	public IBefriendedMob befriendedMob = null;
+
+	public static BefriendableMobInteractionResult of(boolean handled, boolean shouldCancelEvent, IBefriendedMob befriended)
 	{
 		BefriendableMobInteractionResult res = new BefriendableMobInteractionResult();
-		res.befriended = befriended;
-		res.hasInteracted = hasInteracted;
+		res.befriendedMob = befriended;
+		res.handled = handled;
+		res.shouldCancelEvent = shouldCancelEvent;
 		return res;
 	}
 
+	
 }

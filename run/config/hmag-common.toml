@@ -202,12 +202,26 @@
 	enableCombustionPotionBrewingRecipes = true
 	enableSlownessPotionBrewingRecipes = true
 	enableInvisibilityPotionBrewingRecipes = true
-	enableRegenerationPotionBrewingRecipes = true
-	enableBlastingBottleBrewingRecipes = true
-	enableLightningBottleBrewingRecipes = true
+	enableRegenerationIIIPotionBrewingRecipes = true
+	enableBlastingBottleBrewingRecipe = true
+	enableLightningBottleBrewingRecipe = true
 
 [world]
 	additionalChestLoots = true
 	additionalVillagerTrades = true
 	additionalWandererTrades = true
+
+[item]
+	#Range: 0 ~ 240000
+	insomuniaFruitCooldownLevel0 = 1800
+	#Range: 0 ~ 240000
+	insomuniaFruitCooldownLevel1 = 1800
+	#Range: 0 ~ 240000
+	insomuniaFruitCooldownLevel2 = 1800
+	#Range: 0 ~ 240000
+	insomuniaFruitCooldownLevel3 = 1600
+	#Range: 0 ~ 240000
+	insomuniaFruitCooldownLevel4 = 1400
+	#Range: 0 ~ 240000
+	insomuniaFruitCooldownLevel5 = 1200
 

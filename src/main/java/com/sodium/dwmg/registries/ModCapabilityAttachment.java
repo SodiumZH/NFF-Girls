@@ -27,29 +27,30 @@ public class ModCapabilityAttachment {
 
 	// Attach capabilities
 	@SubscribeEvent
-	public static void attachLivingEntityCapabilities(AttachCapabilitiesEvent<LivingEntity> event)
+	public static void attachLivingEntityCapabilities(AttachCapabilitiesEvent<Entity> event)
 	{
-		LivingEntity living = event.getObject();
-
-		if (living.getMobType() == MobType.UNDEAD && !(living instanceof IBefriendedMob) && !TagHelper.hasTag(living, "dwmg", "ignore_death_affinity"))	// Befriended mobs aren't affected by Death Affinity
-			event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_undead"), new CapUndeadMobProvider());
-		if (TagHelper.hasTag(living, "dwmg", "befriendable") && !(living instanceof IBefriendedMob))
+		if(event.getObject() instanceof LivingEntity living)
 		{
-			// TODO: make this action overridable
-			event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_befriendable"), new CapBefriendableMobProvider());
-			befriendableMobInit(event);
+			if (living.getMobType() == MobType.UNDEAD && !(living instanceof IBefriendedMob) && !TagHelper.hasTag(living, "dwmg", "ignore_death_affinity"))	// Befriended mobs aren't affected by Death Affinity
+				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_undead"), new CapUndeadMobProvider());
+			if (TagHelper.hasTag(living, "dwmg", "befriendable") && !(living instanceof IBefriendedMob))
+			{
+				// TODO: make this action overridable
+				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_befriendable"), new CapBefriendableMobProvider());
+				//befriendableMobInit(event);
+			}
 		}
 	}
 	
 	// Actions to initialize befriendable mob capability on spawn
 	// TODO: make this method overridable
-	public static void befriendableMobInit(AttachCapabilitiesEvent<LivingEntity> event)
+	/*
+	public static void befriendableMobInit(AttachCapabilitiesEvent<Entity> event)
 	{
-		LivingEntity living = event.getObject();
+		LivingEntity living = (LivingEntity)event.getObject();
 		EntityType<?> type = living.getType();
 		
 		living.getCapability(ModCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> {
-			l.getNBT().put("player_data", new CompoundTag());
 			if (type == ModEntityTypes.ZOMBIE_GIRL.get())
 			{
 				float rnd = new Random().nextFloat();
@@ -57,5 +58,5 @@ public class ModCapabilityAttachment {
 			}
 		});
 	}
-	
+*/
 }

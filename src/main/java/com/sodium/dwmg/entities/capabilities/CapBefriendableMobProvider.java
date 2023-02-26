@@ -14,7 +14,9 @@ import net.minecraftforge.common.util.LazyOptional;
 
 public class CapBefriendableMobProvider implements ICapabilitySerializable<CompoundTag> {
 
-	private ICapBefriendableMob capability = new CapBefriendableMob();
+	private ICapBefriendableMob capability = new CapBefriendableMobImpl();
+	
+	
 	
 	@Override
 	public CompoundTag serializeNBT()
