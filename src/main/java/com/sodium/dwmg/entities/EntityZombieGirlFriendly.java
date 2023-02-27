@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.github.mechalopa.hmag.world.entity.ZombieGirlEntity;
 import com.sodium.dwmg.entities.ai.BefriendedAIState;
+import com.sodium.dwmg.entities.ai.goals.BefriendedFollowOwnerGoal;
 import com.sodium.dwmg.entities.befriending.AIState;
 import com.sodium.dwmg.util.Debug;
 
@@ -33,6 +34,7 @@ public class EntityZombieGirlFriendly extends ZombieGirlEntity implements IBefri
 	@Override
 	protected void registerGoals()
 	{		
+		goalSelector.addGoal(1, new BefriendedFollowOwnerGoal(this, 1.0d, 10.0f, 2.0f, false));
 	}
 	
 	public static Builder createAttributes() {
@@ -150,6 +152,11 @@ public class EntityZombieGirlFriendly extends ZombieGirlEntity implements IBefri
 		{
 			if (player.level.isClientSide())
 				Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
+			else 
+				{
+				switchAIState();
+				Debug.printToScreen(getAIState().toString(), player, this);
+				}
 			return true;
 		}
 		else return false;

@@ -86,21 +86,19 @@ public class ModEntityEventHandler
 				// Handle befriended mob start //
 				else if (living instanceof IBefriendedMob bef)
 				{
-					if (!isClientSide && isMainHand)
-						Debug.printToScreen("Befriended mob interacting...", player, living);
-					if (isMainHand)
-					{				
-						if (player.isShiftKeyDown() && player.getMainHandItem().getItem() == ModItems.DEBUG_BEFRIENDER.get())
-						{
-							bef.init(player, null);
-							result.add(0, InteractionResult.sidedSuccess(isClientSide));
-						}
-						else 
-						{					
-							result.add(0, (player.isShiftKeyDown() ? bef.onInteractionShift(player) : bef.onInteraction(player))
-									? InteractionResult.sidedSuccess(isClientSide) : result.get(0));
-						}
+					//if (!isClientSide && isMainHand)
+						//Debug.printToScreen("Befriended mob interacting...", player, living);		
+					if (player.isShiftKeyDown() && player.getMainHandItem().getItem() == ModItems.DEBUG_BEFRIENDER.get())
+					{
+						bef.init(player, null);
+						result.add(0, InteractionResult.sidedSuccess(isClientSide));
 					}
+					else 
+					{					
+						result.add(0, (player.isShiftKeyDown() ? bef.onInteractionShift(player) : bef.onInteraction(player))
+								? InteractionResult.sidedSuccess(isClientSide) : result.get(0));
+					}
+					
 				}
 				// Handle befriended mob end //
 			}
