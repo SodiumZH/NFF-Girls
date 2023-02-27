@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.sodium.dwmg.entities.IBefriendedMob;
 import com.sodium.dwmg.registries.ModCapabilities;
+import com.sodium.dwmg.registries.ModEffects;
 import com.sodium.dwmg.registries.ModEntityTypes;
 import com.sodium.dwmg.registries.ModItems;
 import com.sodium.dwmg.util.Debug;
@@ -21,7 +22,6 @@ import net.minecraftforge.fml.LogicalSide;
 
 public class BefriendingHandler 
 {
-
 	public BefriendingHandler()
 	{	
 	}
@@ -59,7 +59,7 @@ public class BefriendingHandler
 		Debug.printToScreen("Mob "+target.toString()+" befriended", player, target);
 		return result;
 	}
-	
+
 	public BefriendableMobInteractionResult onBefriendableMobInteract(BefriendableMobInteractArguments args)
 	{
 		LivingEntity target = (LivingEntity)args.getTarget();
@@ -71,44 +71,63 @@ public class BefriendingHandler
 			if (type == com.github.mechalopa.hmag.registry.ModEntityTypes.ZOMBIE_GIRL.get())
 			{
 				args.execServer((l) -> {
-					if (!l.isInHatred(player))
-					{
-						if (!player.isShiftKeyDown() && player.getMainHandItem().getItem() == ModItems.SOUL_CAKE_SLICE.get())
+			
+						if (!player.isShiftKeyDown() && player.getMainHandItem().getItem() == ModItems.SOUL_CAKE_SLICE.get() && player.hasEffect(ModEffects.DEATH_AFFINITY.get()))
 						{
-							// Get overall cake amount needed, or create if not existing
-							IntTag overallAmountTag = (IntTag)NbtHelper.getPlayerData(l.getPlayerData(), player, "overall_amount");
-							int overallAmount;
-							if (overallAmountTag == null)
+							// Block if in hatred
+							if (l.isInHatred(player))
 							{
-								float rnd = new Random().nextFloat();
-								overallAmount = rnd < 0.1 ? 1 : (rnd < 0.4 ? 2 : 3);	// 10% for 1, 30% for 2, 60% for 3
-								NbtHelper.putPlayerData(IntTag.valueOf(overallAmount), l.getPlayerData(), player, "overall_amount");
+								EntityHelper.sendAngryParticlesToMob(target);
+								Debug.printToScreen("Unable to befriend: in hatred list.", player, target);
+								result.setHandled();
+								
 							}
-							else
-								overallAmount = overallAmountTag.getAsInt();
-							// Get amount already given
-							IntTag alreadyGivenTag = (IntTag)NbtHelper.getPlayerData(l.getPlayerData(), player, "already_given");
-							int alreadyGiven = alreadyGivenTag == null ? 0 : alreadyGivenTag.getAsInt();
-							// Give cake
-							player.getMainHandItem().shrink(1);
-							alreadyGiven ++;
-							Debug.printToScreen("Cakes given: " + Integer.toString(alreadyGiven) + " / " + Integer.toString(overallAmount), player, target);
-							if (alreadyGiven == overallAmount)
+							// Block if in cooldown 
+							else if (l.getTimerPS(player, "cake_cooldown") > 0)
 							{
-								// Satisfied
-								EntityHelper.sendHeartParticlesToMob(target);
-								result.befriendedMob = befriend(player, target);
-								result.handled = true;
+								//EntityHelper.sendSmokeParticlesToMob(target);
+								Debug.printToScreen("Action cooldown " + Integer.toString(l.getTimerPS(player, "cake_cooldown") / 20) + " s.", player, target);
+								// result.setHandled();
 							}
 							else
 							{
-								EntityHelper.sendStarParticlesToMob(target);
-								// Not satisfied, put data
-								NbtHelper.putPlayerData(IntTag.valueOf(alreadyGiven), l.getPlayerData(), player, "already_given");
-								result.handled = true;
+								// Get overall cake amount needed, or create if not existing
+								IntTag overallAmountTag = (IntTag)NbtHelper.getPlayerData(l.getPlayerData(), player, "overall_amount");
+								int overallAmount;
+								if (overallAmountTag == null)
+								{
+									float rnd = new Random().nextFloat();
+									overallAmount = rnd < 0.1 ? 1 : (rnd < 0.4 ? 2 : 3);	// 10% for 1, 30% for 2, 60% for 3
+									NbtHelper.putPlayerData(IntTag.valueOf(overallAmount), l.getPlayerData(), player, "overall_amount");
+								}
+								else
+									overallAmount = overallAmountTag.getAsInt();
+								// Get amount already given
+								IntTag alreadyGivenTag = (IntTag)NbtHelper.getPlayerData(l.getPlayerData(), player, "already_given");
+								int alreadyGiven = alreadyGivenTag == null ? 0 : alreadyGivenTag.getAsInt();
+								// Give cake
+								if (!player.isCreative())
+									player.getMainHandItem().shrink(1);
+								alreadyGiven ++;
+								Debug.printToScreen("Cakes given: " + Integer.toString(alreadyGiven) + " / " + Integer.toString(overallAmount), player, target);
+								if (alreadyGiven == overallAmount)
+								{
+									// Satisfied
+									EntityHelper.sendHeartParticlesToMob(target);
+									result.befriendedMob = befriend(player, target);
+									result.setHandled();
+								}
+								else
+								{
+									EntityHelper.sendStarParticlesToMob(target);
+									// Not satisfied, put data
+									NbtHelper.putPlayerData(IntTag.valueOf(alreadyGiven), l.getPlayerData(), player, "already_given");
+									l.setTimerPS(player, "cake_cooldown", 200);	// Set 10s cooldown
+									result.setHandled();
+								}
 							}
 						}
-					}
+					
 				});	
 			}
 			//...................................
@@ -117,12 +136,11 @@ public class BefriendingHandler
 					{
 						if (!l.isInHatred(player))
 						{
-							if (!player.isShiftKeyDown() && player.getMainHandItem().getItem() == ModItems.SOUL_CAKE_SLICE.get())
+							if (!player.isShiftKeyDown() && player.getMainHandItem().getItem() == ModItems.SOUL_CAKE_SLICE.get() && player.hasEffect(ModEffects.DEATH_AFFINITY.get()))
 								result.handled = true;
 						}
 						else
 						{
-							// TODO: Particle effects for cases that player in hatred
 						}
 					}
 				});

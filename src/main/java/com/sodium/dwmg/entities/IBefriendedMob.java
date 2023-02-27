@@ -6,8 +6,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.sodium.dwmg.entities.ai.BefriendedAIState;
-import com.sodium.dwmg.entities.befriending.AIState;
-
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -36,6 +34,8 @@ public interface IBefriendedMob {
 	public BefriendedAIState switchAIState();
 	
 	public void setAIState(BefriendedAIState state);
+	
+	public boolean wantsToAttack(LivingEntity pTarget, LivingEntity pOwner);
 	
 	// Actions on player right click the mob
 	boolean onInteraction(Player player);

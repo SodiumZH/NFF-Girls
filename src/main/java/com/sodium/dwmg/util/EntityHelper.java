@@ -90,12 +90,22 @@ public class EntityHelper {
 	
 	public static void sendHeartParticlesToMob(LivingEntity entity)
 	{
-		sendParticlesToMob(entity, ParticleTypes.HEART, new Vec3(0, -0.5, 0), 5, 5, 2, 1);
+		sendParticlesToMob(entity, ParticleTypes.HEART, new Vec3(0, -0.5, 0), 5, 5, 4, 1);
 	}
 	
 	public static void sendStarParticlesToMob(LivingEntity entity)
 	{
-		sendParticlesToMob(entity, ParticleTypes.HAPPY_VILLAGER, new Vec3(0, -0.5, 0), 10, 0, 4, 0);
+		sendParticlesToMob(entity, ParticleTypes.HAPPY_VILLAGER, new Vec3(0, -0.5, 0), 10, 0, 5, 0);
+	}
+	
+	public static void sendSmokeParticlesToMob(LivingEntity entity)
+	{
+		sendParticlesToMob(entity, ParticleTypes.LARGE_SMOKE, new Vec3(0, -0.5, 0), 5, 5, 10, -10);
+	}
+	
+	public static void sendAngryParticlesToMob(LivingEntity entity)
+	{
+		sendParticlesToMob(entity, ParticleTypes.ANGRY_VILLAGER, new Vec3(0, -0.5, 0), 5, 5, 3, 1);
 	}
 	
 } 

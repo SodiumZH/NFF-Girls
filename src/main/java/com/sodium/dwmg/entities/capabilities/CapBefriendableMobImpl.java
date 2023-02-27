@@ -99,6 +99,8 @@ public class CapBefriendableMobImpl implements ICapBefriendableMob
 	@Override
 	public IntTag setTimer(String key, int ticks)
 	{
+		if (ticks <= 0)
+			throw new IllegalArgumentException("CapBefriendableMob: timer \"" + key + " setting non-positive value.");
 		IntTag newTag = IntTag.valueOf(ticks);
 		nbt.getCompound("timers").put(key, newTag);
 		return newTag;
@@ -108,6 +110,8 @@ public class CapBefriendableMobImpl implements ICapBefriendableMob
 	@Override
 	public IntTag setTimerPS(Player player, String key, int ticks)
 	{
+		if (ticks <= 0)
+			throw new IllegalArgumentException("CapBefriendableMob: player-specified timer \"" + key + "\" for \"" + player.getName().getString() + " setting non-positive value.");
 		IntTag newTag = IntTag.valueOf(ticks);
 		nbt.getCompound("timers").put(key + "_ps_" + player.getStringUUID(), newTag);
 		return newTag;

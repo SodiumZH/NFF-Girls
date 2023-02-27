@@ -17,5 +17,8 @@ public class BefriendableMobInteractionResult {
 		return res;
 	}
 
-	
+	public void setHandled()
+	{
+		handled = true;
+	}
 }

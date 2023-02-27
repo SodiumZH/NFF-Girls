@@ -112,6 +112,12 @@
     },
     "done": true
   },
+  "minecraft:recipes/decorations/campfire": {
+    "criteria": {
+      "has_coal": "2023-02-28 07:44:08 +0800"
+    },
+    "done": true
+  },
   "minecraft:recipes/building_blocks/polished_granite_stairs": {
     "criteria": {
       "has_polished_granite": "2023-02-08 02:55:39 +0800"
@@ -181,6 +187,12 @@
   "minecraft:adventure/root": {
     "criteria": {
       "killed_by_something": "2023-02-08 02:15:23 +0800"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/coal_block": {
+    "criteria": {
+      "has_coal": "2023-02-28 07:44:08 +0800"
     },
     "done": true
   },

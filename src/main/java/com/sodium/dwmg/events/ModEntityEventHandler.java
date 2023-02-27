@@ -159,6 +159,12 @@ public class ModEntityEventHandler
 	        	});
 	        }
 	        // Handle befriendable mobs end //
+	        if (mob instanceof IBefriendedMob bef)
+	        {
+	        	// Befriended mob should never attack the owner
+	        	if (target == bef.getOwner())
+	        		mob.setTarget(null);
+	        }
 		}
 		// Handle mobs end //
 	}	

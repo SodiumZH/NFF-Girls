@@ -68,17 +68,20 @@ public class BefriendableMobInteractArguments {
 		return hand == InteractionHand.MAIN_HAND;
 	}
 	
+	// Do something with the mob's capability, both on server and client
 	public void exec(NonNullConsumer<ICapBefriendableMob> consumer)
 	{
 		target.getCapability(ModCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent(consumer);
 	}
 	
+	// Do something with the mob's capability, only on client
 	public void execClient(NonNullConsumer<ICapBefriendableMob> consumer)
 	{
 		if (isClient())
 			exec(consumer);
 	}
 	
+	// Do something with the mob's capability, only on server	
 	public void execServer(NonNullConsumer<ICapBefriendableMob> consumer)
 	{
 		if (!isClient())
