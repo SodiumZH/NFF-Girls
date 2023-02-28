@@ -21,15 +21,19 @@ public enum BefriendedAIState {
 	public static BefriendedAIState fromID(byte id)
 	{
 		return id == 0 ? WAIT : (
-				id == 1 ? FOLLOW : WANDER);
+				id == 1 ? FOLLOW : 
+				id == 2 ? WANDER :
+					null);
+	}
+	
+	public static BefriendedAIState fromID(int id)
+	{
+		return fromID((byte)id);
 	}
 	
 	public BefriendedAIState defaultSwitch()
 	{
-		byte id = this.id();
-		if(id < 2)
-			return fromID((byte)(id + 1));
-		else return WAIT;
+		return fromID(id() + 1 ) != null ? fromID(id() + 1) : fromID(0);
 	}
 	
 }

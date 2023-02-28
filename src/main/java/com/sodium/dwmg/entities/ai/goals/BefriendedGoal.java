@@ -33,7 +33,6 @@ public abstract class BefriendedGoal extends Goal {
 			allowedStates.add(state);
 	}
 	
-	// Disable this goal
 	public void blockGoal()
 	{
 		isBlocked = true;

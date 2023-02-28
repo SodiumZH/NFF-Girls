@@ -43,6 +43,8 @@ public class BefriendedRandomStrollGoal extends BefriendedGoal {
 	 * necessary for execution in this method as well.
 	 */
 	public boolean canUse() {
+		if (isDisabled())
+			return false;
 		if (getPathfinder().isVehicle()) {
 			return false;
 		} else {

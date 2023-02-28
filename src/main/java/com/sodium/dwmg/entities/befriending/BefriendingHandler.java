@@ -29,7 +29,7 @@ public class BefriendingHandler
 	public EntityType<?> getTypeAfterBefriending(EntityType<?> type)
 	{
 		if (type == com.github.mechalopa.hmag.registry.ModEntityTypes.ZOMBIE_GIRL.get())
-			return ModEntityTypes.ZOMBIE_GIRL_FRIENDLY.get();
+			return ModEntityTypes.BEF_ZOMBIE_GIRL.get();
 		// Add more types here using else if
 		
 		else return null;

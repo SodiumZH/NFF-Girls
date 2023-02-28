@@ -22,9 +22,15 @@ public class BefriendedRestrictSunGoal extends BefriendedGoal {
 	 * necessary for execution in this method as well.
 	 */
 	public boolean canUse() {
-		return !isDisabled() && getPathfinder().level.isDay() && 
-				ignoreHelmet ? true	: getPathfinder().getItemBySlot(EquipmentSlot.HEAD).isEmpty() && 
-						GoalUtils.hasGroundPathNavigation(getPathfinder());
+		if (isDisabled())
+			return false;
+		else if (!getPathfinder().level.isDay())
+			return false;
+		else if (!ignoreHelmet && !getPathfinder().getItemBySlot(EquipmentSlot.HEAD).isEmpty())
+			return false;
+		else if (GoalUtils.hasGroundPathNavigation(getPathfinder()))
+			return false;
+		else return true;
 	}
 
 	/**

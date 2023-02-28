@@ -44,6 +44,8 @@ public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 	 * necessary for execution in this method as well.
 	 */
 	public boolean canUse() {
+		if (isDisabled())
+			return false;
 		int i = getMob().getLastHurtByMobTimestamp();
 		LivingEntity livingentity = getMob().getLastHurtByMob();
 		if (i != this.timestamp && livingentity != null) {
@@ -56,8 +58,9 @@ public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 						return false;
 					}
 				}
-
-				return this.canAttack(livingentity, HURT_BY_TARGETING);
+				if (this.canAttack(livingentity, HURT_BY_TARGETING))
+					return true;
+				else return false;
 			}
 		} else {
 			return false;
@@ -90,7 +93,6 @@ public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 		AABB aabb = AABB.unitCubeFromLowerCorner(getMob().position()).inflate(d0, 10.0D, d0);
 		List<? extends Mob> list = getMob().level.getEntitiesOfClass(getMob().getClass(), aabb,
 				EntitySelector.NO_SPECTATORS);
-		Iterator<? extends Mob> iterator = list.iterator();
 
 		for (Mob other : list) {
 			boolean dontAlert = false;

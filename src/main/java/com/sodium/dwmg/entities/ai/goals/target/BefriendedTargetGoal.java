@@ -55,7 +55,7 @@ public abstract class BefriendedTargetGoal extends TargetGoal {
 	
 	public boolean isDisabled()
 	{
-		return isBlocked || !allowedStates.contains(mob.getAIState());
+		return isBlocked || !isStateAllowed();
 	}
 	
 	public LivingEntity getLiving()

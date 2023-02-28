@@ -59,17 +59,22 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal {
 					if (--this.ticksUntilNextPathRecalculation <= 0) {
 						this.path = getPathfinder().getNavigation().createPath(livingentity, 0);
 						this.ticksUntilNextPathRecalculation = 4 + getPathfinder().getRandom().nextInt(7);
-						return this.path != null;
-					} else {
+						if (this.path != null)
+							return true;
+						else return false;
+					} 
+					else
 						return true;
-					}
 				}
 				this.path = getPathfinder().getNavigation().createPath(livingentity, 0);
-				if (this.path != null) {
+				if (this.path != null)
 					return true;
-				} else {
-					return this.getAttackReachSqr(livingentity) >= getPathfinder().distanceToSqr(livingentity.getX(),
-							livingentity.getY(), livingentity.getZ());
+				else 
+				{
+					if (this.getAttackReachSqr(livingentity) >= getPathfinder().distanceToSqr(livingentity.getX(),
+							livingentity.getY(), livingentity.getZ()))
+						return true;
+					else return false;
 				}
 			}
 		}

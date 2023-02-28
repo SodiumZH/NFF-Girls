@@ -43,8 +43,9 @@ public class BefriendedFleeSunGoal extends BefriendedGoal {
 			return false;
 		else if (!ignoreHelmet && !getPathfinder().getItemBySlot(EquipmentSlot.HEAD).isEmpty())
 			return false;
-		else 
-			return this.setWantedPos();
+		else if	(!this.setWantedPos())
+			return false;
+		else return true;
 	}
 
 	protected boolean setWantedPos() {

@@ -7,6 +7,7 @@ import com.sodium.dwmg.entities.IBefriendedMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.player.Player;
 
 public class BefriendedOwnerHurtTargetGoal extends BefriendedTargetGoal {
 	
@@ -26,19 +27,19 @@ public class BefriendedOwnerHurtTargetGoal extends BefriendedTargetGoal {
 	 * necessary for execution in this method as well.
 	 */
 	public boolean canUse() {
-		if (!isDisabled()) {
-			LivingEntity livingentity = mob.getOwner();
-			if (livingentity == null) {
-				return false;
-			} else {
-				this.ownerLastHurt = livingentity.getLastHurtMob();
-				int i = livingentity.getLastHurtMobTimestamp();
-				return i != this.timestamp && this.canAttack(this.ownerLastHurt, TargetingConditions.DEFAULT)
-						&& mob.wantsToAttack(this.ownerLastHurt, livingentity);
-			}
-		} else {
+		if (isDisabled())
 			return false;
-		}
+		Player owner = mob.getOwner();
+		this.ownerLastHurt = owner.getLastHurtMob();
+		int i = owner.getLastHurtMobTimestamp();
+		if (i == this.timestamp)
+			return false;
+		else if (!this.canAttack(this.ownerLastHurt, TargetingConditions.DEFAULT))
+			return false;
+		else if (!mob.wantsToAttack(this.ownerLastHurt, owner))
+			return false;
+		else return true;
+
 	}
 
 	/**

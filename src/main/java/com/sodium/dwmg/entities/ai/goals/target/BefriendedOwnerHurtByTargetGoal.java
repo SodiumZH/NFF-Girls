@@ -25,18 +25,22 @@ public class BefriendedOwnerHurtByTargetGoal extends BefriendedTargetGoal {
 	 * necessary for execution in this method as well.
 	 */
 	public boolean canUse() {
-		if (!isDisabled()) {
-			LivingEntity livingentity = mob.getOwner();
-			if (livingentity == null) {
+		if (isDisabled())
+			return false;
+		LivingEntity livingentity = mob.getOwner();
+		if (livingentity == null) {
+			return false;
+		} else {
+			this.ownerLastHurtBy = livingentity.getLastHurtByMob();
+			int i = livingentity.getLastHurtByMobTimestamp();
+			if (i == this.timestamp)
 				return false;
-			} else {
-				this.ownerLastHurtBy = livingentity.getLastHurtByMob();
-				int i = livingentity.getLastHurtByMobTimestamp();
-				return i != this.timestamp && this.canAttack(this.ownerLastHurtBy, TargetingConditions.DEFAULT)
-						&& mob.wantsToAttack(this.ownerLastHurtBy, livingentity);
-			}
-		} 
-		else return false;
+			else if (!this.canAttack(this.ownerLastHurtBy, TargetingConditions.DEFAULT))
+				return false;
+			else if (!mob.wantsToAttack(this.ownerLastHurtBy, livingentity))
+				return false;
+			else return true;
+		}
 	}
 
 	/**
