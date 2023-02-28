@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import com.github.mechalopa.hmag.world.entity.ZombieGirlEntity;
 import com.sodium.dwmg.entities.ai.BefriendedAIState;
 import com.sodium.dwmg.entities.ai.goals.*;
@@ -14,6 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
@@ -57,10 +60,10 @@ public class EntityZombieGirlFriendly extends ZombieGirlEntity implements IBefri
 	}
 	
 	@Override
-	public IBefriendedMob init(Player player, LivingEntity befriendedFrom) 
+	public IBefriendedMob init(@Nonnull UUID playerUUID, LivingEntity befriendedFrom) 
 	{
-		setOwner(player);
-		if(!player.level.isClientSide() && befriendedFrom != null)
+		setOwnerUUID(playerUUID);
+		if(!((LivingEntity)this).level.isClientSide() && befriendedFrom != null)
 		{
 			this.setHealth(befriendedFrom.getHealth());
 		}
@@ -106,19 +109,21 @@ public class EntityZombieGirlFriendly extends ZombieGirlEntity implements IBefri
 	{
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, (byte)0);		
+		entityData.define(DATA_AISTATE, (byte)0);	
 	}
 	
 	// ------------------ Data sync end ------------------ //
 	
 	// ------------------ Serialization ------------------ //
 	
+	UUID playerUUID = null;
+	
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt)
 	{
 	      super.addAdditionalSaveData(nbt);
-	     
-	      if (this.getOwnerUUID() != null && this.getOwner() != null) 
+	     playerUUID = this.getOwnerUUID();
+	      if (this.getOwnerUUID() != null) 
 	         nbt.putUUID("owner", this.getOwnerUUID());
 	      else throw new IllegalStateException("Writing befriended mob data error: invalid owner. Was IBefriendedMob.init() not called?");
 	      
@@ -129,10 +134,10 @@ public class EntityZombieGirlFriendly extends ZombieGirlEntity implements IBefri
 	   super.readAdditionalSaveData(nbt);
 	      
 	   UUID uuid = nbt.getUUID("owner");
-	   if (level.getPlayerByUUID(uuid) == null)
+	   if (uuid == null)
 	 	  throw new IllegalStateException("Reading befriended mob data error: invalid owner. Was IBefriendedMob.init() not called?");      
 	   setOwnerUUID(uuid);
-	   init(getOwner(), null);
+	   init(getOwnerUUID(), null);
 	   setAIState(BefriendedAIState.fromID(nbt.getByte("ai_state"))); 
 	   }
 	
@@ -181,34 +186,57 @@ public class EntityZombieGirlFriendly extends ZombieGirlEntity implements IBefri
 	{
 		entityData.set(DATA_AISTATE, getAIState().defaultSwitch().id());
 		return getAIState();
-	}
+	}	
 	
+	protected LivingEntity PreviousTarget = null;
 	
 	@Override
-	public boolean onInteraction(Player player) {
-		if(player.getUUID() == getOwnerUUID())
+	public LivingEntity getPreviousTarget()
+	{
+		return PreviousTarget;
+	}
+	
+	@Override
+	public void setPreviousTarget(LivingEntity target)
+	{
+		PreviousTarget = target;
+	}
+	
+	@Override
+	public boolean onInteraction(Player player, InteractionHand hand) {
+		
+		if(player.getUUID().equals(getOwnerUUID()))
 		{
 			if (player.level.isClientSide())
 				Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
 			else 
 				{
-				switchAIState();
-				Debug.printToScreen(getAIState().toString(), player, this);
+					switchAIState();
+					Debug.printToScreen(getAIState().toString(), player, this);
 				}
 			return true;
 		}
-		else return false;
+		else 
+			if (!player.level.isClientSide())
+			{
+				Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
+				Debug.printToScreen("Player UUID: "+ player.getUUID(), player, this);
+			}
+		return false;
+		
 	}
 	
 	@Override
-	public boolean onInteractionShift(Player player) {
-		if(player.getUUID() == getOwnerUUID())
+	public boolean onInteractionShift(Player player, InteractionHand hand) {
+		if(player.getUUID().equals(getOwnerUUID()))
 		{
 			if (!player.level.isClientSide())
 				switchAIState();
 			return true;
 		}
-		else return false;
+		else
+			Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
+		return false;
 	}
 
 	// ------------------ IBefriendedMob interface end ------------------ //

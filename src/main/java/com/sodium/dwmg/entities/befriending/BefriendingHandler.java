@@ -55,7 +55,7 @@ public class BefriendingHandler
 		if(!(resultRaw instanceof IBefriendedMob))
 			throw new RuntimeException("Befriending: Entity type after befriending not implementing IBefriendedMob interface.");
 		IBefriendedMob result = (IBefriendedMob)resultRaw;
-		result.init(player, target);		
+		result.init(player.getUUID(), target);		
 		Debug.printToScreen("Mob "+target.toString()+" befriended", player, target);
 		return result;
 	}

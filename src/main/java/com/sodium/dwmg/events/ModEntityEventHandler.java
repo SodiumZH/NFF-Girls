@@ -90,12 +90,12 @@ public class ModEntityEventHandler
 						//Debug.printToScreen("Befriended mob interacting...", player, living);		
 					if (player.isShiftKeyDown() && player.getMainHandItem().getItem() == ModItems.DEBUG_BEFRIENDER.get())
 					{
-						bef.init(player, null);
+						bef.init(player.getUUID(), null);
 						result.add(0, InteractionResult.sidedSuccess(isClientSide));
 					}
 					else 
 					{					
-						result.add(0, (player.isShiftKeyDown() ? bef.onInteractionShift(player) : bef.onInteraction(player))
+						result.add(0, (player.isShiftKeyDown() ? bef.onInteractionShift(player, event.getHand()) : bef.onInteraction(player, event.getHand()))
 								? InteractionResult.sidedSuccess(isClientSide) : result.get(0));
 					}
 					
@@ -163,7 +163,9 @@ public class ModEntityEventHandler
 	        {
 	        	// Befriended mob should never attack the owner
 	        	if (target == bef.getOwner())
-	        		mob.setTarget(null);
+	        		mob.setTarget(bef.getPreviousTarget());
+	        	else
+	        		bef.setPreviousTarget(target);
 	        }
 		}
 		// Handle mobs end //

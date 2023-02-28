@@ -6,6 +6,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.sodium.dwmg.entities.ai.BefriendedAIState;
+
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +21,7 @@ public interface IBefriendedMob {
 	 * @param befriendedFrom The source mob from which this mob was befriended. E.g. a ZombieGirlFriendly was befriended from a ZombieGirlEntity.
 	 * @return This mob.
 	 */
-	public IBefriendedMob init(@Nonnull Player player, @Nullable LivingEntity befriendedFrom);
+	public IBefriendedMob init(@Nonnull UUID playerUUID, @Nullable LivingEntity befriendedFrom);
 	
 	public Player getOwner();
 	
@@ -37,11 +39,15 @@ public interface IBefriendedMob {
 	
 	public boolean wantsToAttack(LivingEntity pTarget, LivingEntity pOwner);
 	
+	public LivingEntity getPreviousTarget();
+	
+	public void setPreviousTarget(LivingEntity target);
+	
 	// Actions on player right click the mob
-	boolean onInteraction(Player player);
+	boolean onInteraction(Player player, InteractionHand hand);
 	
 	// Action on player shift + rightmouse click
-	boolean onInteractionShift(Player player);
+	boolean onInteractionShift(Player player, InteractionHand hand);
 	
 	
 	
