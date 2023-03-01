@@ -359,3 +359,4 @@ com.google.gson.JsonSyntaxException: Pattern references symbol 'S' but it's not 
 [28Feb2023 23:26:10.717] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
 [28Feb2023 23:26:10.717] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
 [28Feb2023 23:26:10.717] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[28Feb2023 23:29:29.875] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!

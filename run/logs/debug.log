@@ -984,3 +984,4 @@ com.google.gson.JsonSyntaxException: Pattern references symbol 'S' but it's not 
 [28Feb2023 23:26:11.207] [Server thread/DEBUG] [net.minecraftforge.fml.loading.FileUtils/CORE]: Found existing serverconfig directory : .\saves\新的世界\serverconfig
 [28Feb2023 23:26:11.207] [Server thread/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Unloading configs type SERVER
 [28Feb2023 23:26:11.208] [Thread-0/DEBUG] [net.minecraftforge.fml.config.ConfigFileTypeHandler/CONFIG]: Config file jei-server.toml changed, sending notifies
+[28Feb2023 23:29:29.875] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!

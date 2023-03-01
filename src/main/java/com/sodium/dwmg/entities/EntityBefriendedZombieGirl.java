@@ -93,6 +93,44 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		else return true;
 	}
 	
+	
+	@Override
+	public boolean onInteraction(Player player, InteractionHand hand) {
+		
+		if(player.getUUID().equals(getOwnerUUID()))
+		{
+			if (player.level.isClientSide())
+				Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
+			else 
+				{
+					switchAIState();
+					Debug.printToScreen(getAIState().toString(), player, this);
+				}
+			return true;
+		}
+		else 
+			if (!player.level.isClientSide())
+			{
+				Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
+				Debug.printToScreen("Player UUID: "+ player.getUUID(), player, this);
+			}
+		return false;
+		
+	}
+	
+	@Override
+	public boolean onInteractionShift(Player player, InteractionHand hand) {
+		if(player.getUUID().equals(getOwnerUUID()))
+		{
+			if (!player.level.isClientSide())
+				switchAIState();
+			return true;
+		}
+		else
+			Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
+		return false;
+	}
+	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// ==================================================================== //
@@ -201,43 +239,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	{
 		PreviousTarget = target;
 	}
-	
-	@Override
-	public boolean onInteraction(Player player, InteractionHand hand) {
-		
-		if(player.getUUID().equals(getOwnerUUID()))
-		{
-			if (player.level.isClientSide())
-				Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
-			else 
-				{
-					switchAIState();
-					Debug.printToScreen(getAIState().toString(), player, this);
-				}
-			return true;
-		}
-		else 
-			if (!player.level.isClientSide())
-			{
-				Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
-				Debug.printToScreen("Player UUID: "+ player.getUUID(), player, this);
-			}
-		return false;
-		
-	}
-	
-	@Override
-	public boolean onInteractionShift(Player player, InteractionHand hand) {
-		if(player.getUUID().equals(getOwnerUUID()))
-		{
-			if (!player.level.isClientSide())
-				switchAIState();
-			return true;
-		}
-		else
-			Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
-		return false;
-	}
+
 
 	// ------------------ IBefriendedMob interface end ------------------ //
 	
