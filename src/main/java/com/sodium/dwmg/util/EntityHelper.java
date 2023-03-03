@@ -28,6 +28,7 @@ public class EntityHelper {
 	 * @param from The entity to be replaced.
 	 * @return New entity
 	 */
+	@Deprecated
 	public static Entity replaceLivingEntity(EntityType<?> newType, LivingEntity from, boolean allowNewEntityDespawn)
 	{
 		if (from.level.isClientSide())
@@ -65,9 +66,22 @@ public class EntityHelper {
 		return newEntity;
 	}
 	
-	public static Entity replaceLivingEntity(EntityType<?> newType, LivingEntity from)
+	@Deprecated
+	public static Entity replaceLivingEntity(EntityType<? extends Mob> newType, LivingEntity from)
 	{
 		return replaceLivingEntity(newType, from, false);
+	}
+	
+	public static <T extends Mob> Mob replaceMob(EntityType<T> newType, Mob from, boolean allowNewEntityDespawn)
+	{
+		if (!allowNewEntityDespawn)
+			from.setPersistenceRequired();
+		return from.convertTo(newType, true);
+	}
+	
+	public static <T extends Mob> Mob replaceMob(EntityType<T> newType, Mob from)
+	{
+		return replaceMob(newType, from, false);
 	}
 	
 	public static void sendParticlesToMob(LivingEntity entity, ParticleOptions options, Vec3 offset, int amount, double speed, double positionRndScale, double speedRndScale)
