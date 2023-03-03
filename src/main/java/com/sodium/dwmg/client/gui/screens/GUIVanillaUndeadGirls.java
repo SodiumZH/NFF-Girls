@@ -39,7 +39,6 @@ public class GUIVanillaUndeadGirls extends AbstractGUIBefriended<InventoryMenuVa
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
 		this.blit(pPoseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
-
 		InventoryScreen.renderEntityInInventory(i + 51, j + 60, 17, (float) (i + 51) - this.xMouse,
 				(float) (j + 75 - 50) - this.yMouse, (LivingEntity)mob);
 	}

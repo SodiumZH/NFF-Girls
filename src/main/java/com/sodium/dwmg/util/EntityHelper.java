@@ -67,7 +67,7 @@ public class EntityHelper {
 	}
 	
 	@Deprecated
-	public static Entity replaceLivingEntity(EntityType<? extends Mob> newType, LivingEntity from)
+	public static Entity replaceLivingEntity(EntityType<?> newType, LivingEntity from)
 	{
 		return replaceLivingEntity(newType, from, false);
 	}
