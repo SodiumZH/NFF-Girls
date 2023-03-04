@@ -3,12 +3,16 @@ package com.sodium.dwmg.util;
 import java.util.UUID;
 import java.util.Vector;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 public class NbtHelper {
 
@@ -63,4 +67,30 @@ public class NbtHelper {
 			putTo.put(player.getStringUUID(), new CompoundTag());
 		putTo.getCompound(player.getStringUUID()).put(key, inTag);
 	}
+	
+	public static CompoundTag saveItemStack(@Nullable ItemStack stack, @Nonnull CompoundTag saveTo, String key)
+	{
+		if (stack == null || stack.isEmpty())
+			return null;
+		else
+		{
+			CompoundTag newTag = new CompoundTag();
+			stack.save(newTag);
+			saveTo.put(key, newTag);
+			return newTag;
+		}
+	}
+	
+	public static ItemStack readItemStack(CompoundTag nbt, String key)
+	{
+		if (nbt.contains(key, 10))
+		{
+			ItemStack stack = ItemStack.of(nbt.getCompound(key));
+			if (stack != null && !stack.isEmpty())
+				return stack;
+			else return ItemStack.EMPTY;
+		}
+		else return ItemStack.EMPTY;
+	}
+	
 }

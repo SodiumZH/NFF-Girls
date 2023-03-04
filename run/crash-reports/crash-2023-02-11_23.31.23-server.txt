@@ -4,9 +4,9 @@
 Time: 2/11/23, 11:31 PM
 Description: Saving entity NBT
 
-java.lang.NullPointerException: Cannot invoke "com.sodium.dwmg.entities.capabilities.ICapUndeadMob.serializeNBT()" because "this.capability" is null
-	at com.sodium.dwmg.entities.capabilities.CapUndeadMobProvider.serializeNBT(CapUndeadMobProvider.java:47) ~[%2384!/:?] {re:classloading}
-	at com.sodium.dwmg.entities.capabilities.CapUndeadMobProvider.serializeNBT(CapUndeadMobProvider.java:15) ~[%2384!/:?] {re:classloading}
+java.lang.NullPointerException: Cannot invoke "com.sodium.dwmg.entities.capabilities.CUndeadMob.serializeNBT()" because "this.capability" is null
+	at com.sodium.dwmg.entities.capabilities.CUndeadMobProvider.serializeNBT(CapUndeadMobProvider.java:47) ~[%2384!/:?] {re:classloading}
+	at com.sodium.dwmg.entities.capabilities.CUndeadMobProvider.serializeNBT(CapUndeadMobProvider.java:15) ~[%2384!/:?] {re:classloading}
 	at net.minecraftforge.common.capabilities.CapabilityDispatcher.serializeNBT(CapabilityDispatcher.java:115) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2378%2385!/:?] {re:classloading}
 	at net.minecraftforge.common.capabilities.CapabilityProvider.serializeCaps(CapabilityProvider.java:132) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2378%2385!/:?] {re:classloading}
 	at net.minecraft.world.entity.Entity.saveWithoutId(Entity.java:1632) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2379!/:?] {re:classloading,pl:accesstransformer:B}
@@ -25,8 +25,8 @@ A detailed walkthrough of the error, its code path and all known details is as f
 -- Head --
 Thread: Server thread
 Stacktrace:
-	at com.sodium.dwmg.entities.capabilities.CapUndeadMobProvider.serializeNBT(CapUndeadMobProvider.java:47) ~[%2384!/:?] {re:classloading}
-	at com.sodium.dwmg.entities.capabilities.CapUndeadMobProvider.serializeNBT(CapUndeadMobProvider.java:15) ~[%2384!/:?] {re:classloading}
+	at com.sodium.dwmg.entities.capabilities.CUndeadMobProvider.serializeNBT(CapUndeadMobProvider.java:47) ~[%2384!/:?] {re:classloading}
+	at com.sodium.dwmg.entities.capabilities.CUndeadMobProvider.serializeNBT(CapUndeadMobProvider.java:15) ~[%2384!/:?] {re:classloading}
 	at net.minecraftforge.common.capabilities.CapabilityDispatcher.serializeNBT(CapabilityDispatcher.java:115) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2378%2385!/:?] {re:classloading}
 	at net.minecraftforge.common.capabilities.CapabilityProvider.serializeCaps(CapabilityProvider.java:132) ~[forge-1.18.2-40.2.0_mapped_parchment_2022.08.07-1.18.2-recomp.jar%2378%2385!/:?] {re:classloading}
 -- Entity being saved --

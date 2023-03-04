@@ -16,6 +16,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.phys.AABB;
 
@@ -46,25 +47,25 @@ public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 	public boolean canUse() {
 		if (isDisabled())
 			return false;
-		int i = getMob().getLastHurtByMobTimestamp();
-		LivingEntity livingentity = getMob().getLastHurtByMob();
-		if (i != this.timestamp && livingentity != null) {
-			if (livingentity.getType() == EntityType.PLAYER
-					&& getMob().level.getGameRules().getBoolean(GameRules.RULE_UNIVERSAL_ANGER)) {
+		LivingEntity lastHurt = getMob().getLastHurtByMob();
+		if (getMob().getLastHurtByMobTimestamp() != this.timestamp && lastHurt != null) 
+		{
+			if (lastHurt instanceof Player && mob.getOwner() != (Player)lastHurt) 
 				return false;
-			} else {
-				for (Class<?> oclass : this.toIgnoreDamage) {
-					if (oclass.isAssignableFrom(livingentity.getClass())) {
+			else 
+			{
+				for (Class<?> oclass : this.toIgnoreDamage) 
+				{
+					if (oclass.isAssignableFrom(lastHurt.getClass())) {
 						return false;
 					}
 				}
-				if (this.canAttack(livingentity, HURT_BY_TARGETING))
+				if (this.canAttack(lastHurt, HURT_BY_TARGETING) && mob.wantsToAttack(lastHurt))
 					return true;
 				else return false;
 			}
-		} else {
-			return false;
-		}
+		} 
+		else return false;
 	}
 
 	public BefriendedHurtByTargetGoal setAlertOthers(Class<?>... pReinforcementTypes) {

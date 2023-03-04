@@ -18,7 +18,7 @@ public class InventoryMenuVanillaUndeadGirls extends AbstractInventoryMenuBefrie
 		super(containerId, playerInventory, container, mob);
 		container.startOpen(playerInventory.player);
 		// Helmet
-		addSlot(new Slot(container, 0, 8, 18) {
+		addSlot(new Slot(container, 0, 8, 6) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
@@ -26,7 +26,7 @@ public class InventoryMenuVanillaUndeadGirls extends AbstractInventoryMenuBefrie
 			}
 		});
 		// Chest
-		addSlot(new Slot(container, 1, 8, 36) {
+		addSlot(new Slot(container, 1, 8, 6+18) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
@@ -34,7 +34,7 @@ public class InventoryMenuVanillaUndeadGirls extends AbstractInventoryMenuBefrie
 			}
 		});
 		// Legs
-		addSlot(new Slot(container, 2, 8, 54) {
+		addSlot(new Slot(container, 2, 8, 6+18*2) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
@@ -42,7 +42,7 @@ public class InventoryMenuVanillaUndeadGirls extends AbstractInventoryMenuBefrie
 			}
 		});
 		// Feet
-		addSlot(new Slot(container, 3, 8, 54) {
+		addSlot(new Slot(container, 3, 8, 6+18*3) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
@@ -50,31 +50,45 @@ public class InventoryMenuVanillaUndeadGirls extends AbstractInventoryMenuBefrie
 			}
 		});
 		// Main hand
-		addSlot(new Slot(container, 4, 8, 72) {
+		addSlot(new Slot(container, 4, 80, 6) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return !this.hasItem();
 			}
 		});
 		// Off hand
-		addSlot(new Slot(container, 5, 8, 90) {
+		addSlot(new Slot(container, 5, 80, 6+18) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return !this.hasItem();
 			}
 		});
 		// Two bauble slots
-		addSlot(new Slot(container, 6, 8, 90) {
+		addSlot(new Slot(container, 6, 80, 6+18*2) {
+			
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return !this.hasItem() && TagHelper.hasTag(stack.getItem(), "dwmg", "baubles");
 			}
+			
+			@Override
+			public int getMaxStackSize() {
+	            return 1;
+	        }
+			
 		});
-		addSlot(new Slot(container, 7, 8, 90) {
+		addSlot(new Slot(container, 7, 80, 6+18*3) {
+			
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return !this.hasItem() && TagHelper.hasTag(stack.getItem(), "dwmg", "baubles");
 			}
+			
+			@Override
+			public int getMaxStackSize() {
+	            return 1;
+	        }
+			
 		});
 		// Player from 8 to 44(exclude)
 		addPlayerInventorySlots(playerInventory, 8, 8, 84);

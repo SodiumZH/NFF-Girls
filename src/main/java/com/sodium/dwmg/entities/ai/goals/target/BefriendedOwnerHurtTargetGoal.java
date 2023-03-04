@@ -36,7 +36,7 @@ public class BefriendedOwnerHurtTargetGoal extends BefriendedTargetGoal {
 			return false;
 		else if (!this.canAttack(this.ownerLastHurt, TargetingConditions.DEFAULT))
 			return false;
-		else if (!mob.wantsToAttack(this.ownerLastHurt, owner))
+		else if (!mob.wantsToAttack(this.ownerLastHurt))
 			return false;
 		else return true;
 

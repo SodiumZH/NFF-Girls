@@ -11,14 +11,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.world.entity.player.Player;
 
-public class CapBefriendableMobImpl implements ICapBefriendableMob
+public class CBefriendableMobImpl implements CBefriendableMob
 {
 	
 	protected Vector<UUID> hatred = new Vector<UUID>();
 	
 	protected CompoundTag nbt = new CompoundTag();
 	
-	protected CapBefriendableMobImpl()
+	protected CBefriendableMobImpl()
 	{
 		nbt.put("player_data", new CompoundTag());
 		nbt.put("timers", new CompoundTag());

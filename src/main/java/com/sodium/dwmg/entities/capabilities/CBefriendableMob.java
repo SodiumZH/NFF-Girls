@@ -12,7 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public interface ICapBefriendableMob extends INBTSerializable<CompoundTag> {
+public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 
 	// ======== Hatred List related
 	

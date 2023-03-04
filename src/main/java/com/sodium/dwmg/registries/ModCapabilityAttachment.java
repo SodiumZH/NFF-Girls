@@ -2,8 +2,8 @@ package com.sodium.dwmg.registries;
 
 import com.sodium.dwmg.Dwmg;
 import com.sodium.dwmg.entities.IBefriendedMob;
-import com.sodium.dwmg.entities.capabilities.CapBefriendableMobProvider;
-import com.sodium.dwmg.entities.capabilities.CapUndeadMobProvider;
+import com.sodium.dwmg.entities.capabilities.CBefriendableMobProvider;
+import com.sodium.dwmg.entities.capabilities.CUndeadMobProvider;
 import com.sodium.dwmg.util.NbtHelper;
 import com.sodium.dwmg.util.TagHelper;
 
@@ -32,11 +32,11 @@ public class ModCapabilityAttachment {
 		if(event.getObject() instanceof LivingEntity living)
 		{
 			if (living.getMobType() == MobType.UNDEAD && !(living instanceof IBefriendedMob) && !TagHelper.hasTag(living, "dwmg", "ignore_death_affinity"))	// Befriended mobs aren't affected by Death Affinity
-				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_undead"), new CapUndeadMobProvider());
+				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_undead"), new CUndeadMobProvider());
 			if (TagHelper.hasTag(living, "dwmg", "befriendable") && !(living instanceof IBefriendedMob))
 			{
 				// TODO: make this action overridable
-				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_befriendable"), new CapBefriendableMobProvider());
+				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_befriendable"), new CBefriendableMobProvider());
 				//befriendableMobInit(event);
 			}
 		}

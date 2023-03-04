@@ -11,13 +11,19 @@ import com.sodium.dwmg.entities.ai.BefriendedAIState;
 import com.sodium.dwmg.entities.ai.goals.*;
 import com.sodium.dwmg.entities.ai.goals.target.*;
 import com.sodium.dwmg.util.Debug;
+import com.sodium.dwmg.util.NbtHelper;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerListener;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
@@ -28,177 +34,211 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBefriendedMob {
+public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBefriendedMob, ContainerListener {
+
+	/* Initialization */
 
 	public EntityBefriendedZombieGirl(EntityType<? extends EntityBefriendedZombieGirl> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
-	    Arrays.fill(this.armorDropChances, 1f);
-	    Arrays.fill(this.handDropChances, 1f);
+		Arrays.fill(this.armorDropChances, 2.0f);
+		Arrays.fill(this.handDropChances, 2.0f);
+	}
+
+	public static Builder createAttributes() {
+		return ZombieGirlEntity.createAttributes().add(Attributes.MAX_HEALTH, 30.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.28D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.ARMOR, 4.0D);
 	}
 
 	@Override
-	protected void registerGoals()
-	{		
+	public IBefriendedMob init(@Nonnull UUID playerUUID, LivingEntity befriendedFrom) {
+		setOwnerUUID(playerUUID);
+		if (!((LivingEntity) this).level.isClientSide() && befriendedFrom != null) {
+			this.setHealth(befriendedFrom.getHealth());
+		}
+		return this;
+	}
+
+	/* AI */
+
+	@Override
+	protected void registerGoals() {
 		goalSelector.addGoal(1, new BefriendedRestrictSunGoal(this));
 		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
 		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0d, true));
 		goalSelector.addGoal(4, new BefriendedSunAvoidingFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
-	    goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-	    goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
 
 	}
-	
-	public static Builder createAttributes() {
-		return ZombieGirlEntity.createAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.28D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.ARMOR, 4.0D);
-	}
-	
+
 	@Override
-	public IBefriendedMob init(@Nonnull UUID playerUUID, LivingEntity befriendedFrom) 
-	{
-		setOwnerUUID(playerUUID);
-		if(!((LivingEntity)this).level.isClientSide() && befriendedFrom != null)
-		{
-			this.setHealth(befriendedFrom.getHealth());
-		}
-		return this;
+	public boolean wantsToAttack(LivingEntity target) {
+		return BefriendedHelper.wantsToAttackDefault(this, target);
 	}
-	
-	// Adjusted from vanilla wolf
-	@Override
-	public boolean wantsToAttack(LivingEntity pTarget, LivingEntity pOwner)
-	{
-		// Don't attack creeper or ghast
-		if ((pTarget instanceof Creeper) || (pTarget instanceof Ghast)) 
-			return false;
-		// For tamable mobs: attack untamed or (others' mobs if pvp allowed)
-		else if (pTarget instanceof TamableAnimal tamable) 
-			return !tamable.isTame() || (tamable.getOwner() != pOwner && ((Player)pOwner).canHarmPlayer((Player)(tamable.getOwner())));
-		// For players: attack if pvp allowed
-		else if (pTarget instanceof Player) 
-			return ((Player)pOwner).canHarmPlayer((Player)pOwner);
-		// For IBefriendedMob: similar to tamable mobs
-		else if (pTarget instanceof IBefriendedMob bef) 
-			return bef.getOwner() != pOwner && ((Player)pOwner).canHarmPlayer((Player)(bef.getOwner()));
-		// For horses: attack untamed only
-		else if (pTarget instanceof AbstractHorse && ((AbstractHorse) pTarget).isTamed()) 
-			return false;
-		// Can attack other
-		else return true;
-	}
-	
-	
+
+	/* Interaction */
+
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
-		
-		if(player.getUUID().equals(getOwnerUUID()))
-		{
+
+		if (player.getUUID().equals(getOwnerUUID())) {
 			if (player.level.isClientSide())
 				Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
-			else 
-				{
-					switchAIState();
-					Debug.printToScreen(getAIState().toString(), player, this);
-				}
-			return true;
-		}
-		else 
-			if (!player.level.isClientSide())
-			{
-				Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
-				Debug.printToScreen("Player UUID: "+ player.getUUID(), player, this);
+			else {
+				switchAIState();
+				Debug.printToScreen(getAIState().toString(), player, this);
 			}
+			return true;
+		} else if (!player.level.isClientSide()) {
+			Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
+			Debug.printToScreen("Player UUID: " + player.getUUID(), player, this);
+		}
 		return false;
-		
+
 	}
-	
+
 	@Override
 	public boolean onInteractionShift(Player player, InteractionHand hand) {
-		if(player.getUUID().equals(getOwnerUUID()))
-		{
+		if (player.getUUID().equals(getOwnerUUID())) {
 			if (!player.level.isClientSide())
 				switchAIState();
 			return true;
-		}
-		else
+		} else
 			Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
 		return false;
 	}
+
+	/* Inventory */
+
+	SimpleContainer inventory = null;
+	
+	@Override
+	public SimpleContainer getInventory() {
+		return inventory;
+	}
+
+	public void createInventory()
+	{
+		  SimpleContainer simplecontainer = this.inventory;
+	      this.inventory = new SimpleContainer(8);
+	      if (simplecontainer != null) {
+	         simplecontainer.removeListener(this);
+	         int i = Math.min(simplecontainer.getContainerSize(), this.inventory.getContainerSize());
+
+	         for(int j = 0; j < i; ++j) {
+	            ItemStack itemstack = simplecontainer.getItem(j);
+	            if (!itemstack.isEmpty()) {
+	               this.inventory.setItem(j, itemstack.copy());
+	            }
+	         }
+	      }
+
+	      this.inventory.addListener(this);
+	      this.updateFromInventory();
+	}
+
+	@Override
+	public void updateFromInventory() {
+		if (!this.level.isClientSide) {
+			setItemSlot(EquipmentSlot.HEAD, getInventory().getItem(0));
+			setItemSlot(EquipmentSlot.CHEST, getInventory().getItem(1));
+			setItemSlot(EquipmentSlot.LEGS, getInventory().getItem(2));
+			setItemSlot(EquipmentSlot.FEET, getInventory().getItem(3));
+			setItemInHand(InteractionHand.MAIN_HAND, getInventory().getItem(4));
+			setItemInHand(InteractionHand.OFF_HAND, getInventory().getItem(5));
+		}
+	}
+
+	@Override
+	public ItemStack getBauble(int index) 
+	{
+		if (index == 0)
+			return getInventory().getItem(6);
+		else if (index == 1)
+			return getInventory().getItem(7);
+		else
+			return null;
+	}
+
+	@Override
+	public void setBauble(ItemStack item, int index)
+	{
+		if (item == null || item.isEmpty())
+			return;
+		if (index == 0)
+			inventory.setItem(6, item);
+		else if (index == 1)
+			inventory.setItem(7, item);
+		else throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
+		updateFromInventory();
+	}
+	@Override
+	public void containerChanged(Container pContainer)
+	{
+		this.updateFromInventory();
+	}
+	
+	/* Save and Load*/ 
+	
+	@Override
+	public void addAdditionalSaveData(CompoundTag nbt) {
+		super.addAdditionalSaveData(nbt);
+		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
+		NbtHelper.saveItemStack(inventory.getItem(6), nbt, "bauble_0");
+	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag nbt) {
+		super.readAdditionalSaveData(nbt);
+		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
+		setBauble(NbtHelper.readItemStack(nbt, "bauble_0"), 0);		
+		setBauble(NbtHelper.readItemStack(nbt, "bauble_1"), 1);
+	}
+
 	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
-	// ==================================================================== //
-	//  Generally these can be copy-pasted to other IBefriendedMob classes  //
-	// ==================================================================== //
-	
+	// Generally these can be copy-pasted to other IBefriendedMob classes //
+
 	// ------------------ Data sync ------------------ //
 
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData.defineId(EntityBefriendedZombieGirl.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData.defineId(EntityBefriendedZombieGirl.class, EntityDataSerializers.BYTE);
+	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
+			.defineId(EntityBefriendedZombieGirl.class, EntityDataSerializers.OPTIONAL_UUID);
+	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
+			.defineId(EntityBefriendedZombieGirl.class, EntityDataSerializers.BYTE);
 
 	@Override
-	protected void defineSynchedData() 
-	{
+	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, (byte)0);	
+		entityData.define(DATA_AISTATE, (byte) 0);
 	}
-	
+
 	// ------------------ Data sync end ------------------ //
-	
-	// ------------------ Serialization ------------------ //
-	
-	UUID playerUUID = null;
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt)
-	{
-	      super.addAdditionalSaveData(nbt);
-	     playerUUID = this.getOwnerUUID();
-	      if (this.getOwnerUUID() != null) 
-	         nbt.putUUID("owner", this.getOwnerUUID());
-	      else throw new IllegalStateException("Writing befriended mob data error: invalid owner. Was IBefriendedMob.init() not called?");
-	      
-	      nbt.putByte("ai_state", this.getAIState().id());		
-	}
-	
-	public void readAdditionalSaveData(CompoundTag nbt) {
-	   super.readAdditionalSaveData(nbt);
-	      
-	   UUID uuid = nbt.getUUID("owner");
-	   if (uuid == null)
-	 	  throw new IllegalStateException("Reading befriended mob data error: invalid owner. Was IBefriendedMob.init() not called?");      
-	   setOwnerUUID(uuid);
-	   init(getOwnerUUID(), null);
-	   setAIState(BefriendedAIState.fromID(nbt.getByte("ai_state"))); 
-	   }
-	
-	// ------------------ Serialization End ------------------ //
-	   
+
 	// ------------------ IBefriendedMob interface ------------------ //
 
 	// Owner related
 	@Override
-	public Player getOwner()
-	{
+	public Player getOwner() {
 		return level.getPlayerByUUID(getOwnerUUID());
 	}
 
 	@Override
-	public void setOwner(Player owner) 
-	{
+	public void setOwner(Player owner) {
 		entityData.set(DATA_OWNERUUID, Optional.of(owner.getUUID()));
 	}
 
 	@Override
-	public UUID getOwnerUUID() 
-	{
+	public UUID getOwnerUUID() {
 		return entityData.get(DATA_OWNERUUID).orElse(null);
 	}
 
@@ -208,64 +248,53 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	}
 
 	@Override
-	public BefriendedAIState getAIState()
-	{
+	public BefriendedAIState getAIState() {
 		return BefriendedAIState.fromID(entityData.get(DATA_AISTATE));
 	}
-	
+
 	@Override
-	public void setAIState(BefriendedAIState state)
-	{
+	public void setAIState(BefriendedAIState state) {
 		entityData.set(DATA_AISTATE, state.id());
 	}
-	
+
 	@Override
-	public BefriendedAIState switchAIState()
-	{
+	public BefriendedAIState switchAIState() {
 		entityData.set(DATA_AISTATE, getAIState().defaultSwitch().id());
 		return getAIState();
-	}	
-	
+	}
+
 	protected LivingEntity PreviousTarget = null;
-	
+
 	@Override
-	public LivingEntity getPreviousTarget()
-	{
+	public LivingEntity getPreviousTarget() {
 		return PreviousTarget;
 	}
-	
+
 	@Override
-	public void setPreviousTarget(LivingEntity target)
-	{
+	public void setPreviousTarget(LivingEntity target) {
 		PreviousTarget = target;
 	}
 
-
 	// ------------------ IBefriendedMob interface end ------------------ //
-	
+
 	// ------------------ Misc ------------------ //
-	
+
 	@Override
-	public boolean isPersistenceRequired()
-	{
+	public boolean isPersistenceRequired() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isPreventingPlayerRest(Player pPlayer) {
-	   return false;
+		return false;
 	}
 
 	@Override
-	protected boolean shouldDespawnInPeaceful()
-	{
+	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-	
+
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
-	
-	
-	
-	
+
 }

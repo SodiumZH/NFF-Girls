@@ -12,9 +12,9 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class CapBefriendableMobProvider implements ICapabilitySerializable<CompoundTag> {
+public class CBefriendableMobProvider implements ICapabilitySerializable<CompoundTag> {
 
-	private ICapBefriendableMob capability = new CapBefriendableMobImpl();
+	private CBefriendableMob capability = new CBefriendableMobImpl();
 	
 	
 	

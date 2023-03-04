@@ -14,15 +14,19 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+/** GUI template for all vanilla-undead-mob-like befriended mobs.
+*/
+
 @OnlyIn(Dist.CLIENT)
-public class GUIVanillaUndeadGirls extends AbstractGUIBefriended<InventoryMenuVanillaUndeadGirls> {
+public class GUIVanillaUndead extends AbstractGUIBefriended<InventoryMenuVanillaUndeadGirls> {
 	public static final ResourceLocation INVENTORY_LOCATION = new ResourceLocation("dwmg",
 			"textures/gui/container/bef_undead_girls.png");
 
-	public GUIVanillaUndeadGirls(InventoryMenuVanillaUndeadGirls pMenu, Inventory pPlayerInventory, Component pTitle,
+	public GUIVanillaUndead(InventoryMenuVanillaUndeadGirls pMenu, Inventory pPlayerInventory, Component pTitle,
 			IBefriendedMob mob) {
 		super(pMenu, pPlayerInventory, pTitle, mob);
-		// TODO Auto-generated constructor stub
+		imageWidth = 176;
+		imageHeight = 166;
 	}
 
 	@Override
@@ -38,8 +42,15 @@ public class GUIVanillaUndeadGirls extends AbstractGUIBefriended<InventoryMenuVa
 		RenderSystem.setShaderTexture(0, INVENTORY_LOCATION);
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
+		// Main window
 		this.blit(pPoseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
-		InventoryScreen.renderEntityInInventory(i + 51, j + 60, 17, (float) (i + 51) - this.xMouse,
+		// Armor slots
+		this.blit(pPoseStack, i + 7, j + 5, imageWidth, 0, this.imageWidth + 18, 4 * 18);
+		// Hand and bauble slots
+		this.blit(pPoseStack, i + 79, j + 5, imageWidth + 18, 0, this.imageWidth + 18 * 2, 4 * 18);
+		// Info box
+		this.blit(pPoseStack, i + 99, j + 5, imageWidth, 18 * 4, this.imageWidth + 70, 4 * 18 + 72);
+		InventoryScreen.renderEntityInInventory(i + 52, j + 70, 17, (float) (i + 52) - this.xMouse,
 				(float) (j + 75 - 50) - this.yMouse, (LivingEntity)mob);
 	}
 

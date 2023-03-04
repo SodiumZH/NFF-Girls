@@ -13,10 +13,10 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class CapUndeadMobProvider implements ICapabilitySerializable<CompoundTag>
+public class CUndeadMobProvider implements ICapabilitySerializable<CompoundTag>
 {
 
-	private ICapUndeadMob capability = new CapUndeadMobImpl();
+	private CUndeadMob capability = new CUndeadMobImpl();
 	
 	/* Interface implementations */
 	

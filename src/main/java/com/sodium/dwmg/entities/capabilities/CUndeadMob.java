@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public interface ICapUndeadMob extends INBTSerializable<CompoundTag>{
+public interface CUndeadMob extends INBTSerializable<CompoundTag>{
 
 	// Get this mob's hatred list
 	Vector<UUID> getHatred();
