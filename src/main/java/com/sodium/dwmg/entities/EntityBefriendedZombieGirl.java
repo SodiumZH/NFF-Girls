@@ -1,5 +1,6 @@
 package com.sodium.dwmg.entities;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
@@ -7,14 +8,19 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 
 import com.github.mechalopa.hmag.world.entity.ZombieGirlEntity;
+import com.sodium.dwmg.client.gui.screens.AbstractGuiBefriended;
+import com.sodium.dwmg.client.gui.screens.GuiVanillaUndead;
+import com.sodium.dwmg.client.gui.screens.GuiZombieGirl;
 import com.sodium.dwmg.entities.ai.BefriendedAIState;
 import com.sodium.dwmg.entities.ai.goals.*;
 import com.sodium.dwmg.entities.ai.goals.target.*;
+import com.sodium.dwmg.inventory.AbstractInventoryMenuBefriended;
+import com.sodium.dwmg.inventory.InventoryMenuZombieGirl;
 import com.sodium.dwmg.util.Debug;
 import com.sodium.dwmg.util.NbtHelper;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -25,14 +31,11 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
-import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -46,6 +49,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 2.0f);
 		Arrays.fill(this.handDropChances, 2.0f);
+		createInventory();
 	}
 
 	public static Builder createAttributes() {
@@ -108,8 +112,13 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	@Override
 	public boolean onInteractionShift(Player player, InteractionHand hand) {
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide())
-				switchAIState();
+			try {
+				BefriendedHelper.openBefriendedInventory(player, this);
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return true;
 		} else
 			Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
@@ -180,29 +189,45 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		else throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();
 	}
+	
+	@Override
+	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container)
+	{
+		return new InventoryMenuZombieGirl(containerId, playerInventory, container, this);
+	}
+	
 	@Override
 	public void containerChanged(Container pContainer)
 	{
 		this.updateFromInventory();
 	}
 	
-	/* Save and Load*/ 
+	/* Save and Load */ 
 	
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
 		NbtHelper.saveItemStack(inventory.getItem(6), nbt, "bauble_0");
+		NbtHelper.saveItemStack(inventory.getItem(7), nbt, "bauble_1");
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
+		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
 		setBauble(NbtHelper.readItemStack(nbt, "bauble_0"), 0);		
 		setBauble(NbtHelper.readItemStack(nbt, "bauble_1"), 1);
 	}
 
+	/* GUI */
+	
+	@Override
+	public AbstractGuiBefriended makeGui(AbstractInventoryMenuBefriended menu, Inventory playerInventory, Component title)
+	{
+		return new GuiZombieGirl(menu, playerInventory, title, this);
+	}
+	
 	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //

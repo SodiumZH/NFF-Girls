@@ -68,17 +68,14 @@ public class NbtHelper {
 		putTo.getCompound(player.getStringUUID()).put(key, inTag);
 	}
 	
-	public static CompoundTag saveItemStack(@Nullable ItemStack stack, @Nonnull CompoundTag saveTo, String key)
-	{
+	public static CompoundTag saveItemStack(@Nullable ItemStack stack, @Nonnull CompoundTag saveTo, String key) {
+		CompoundTag newTag = new CompoundTag();
 		if (stack == null || stack.isEmpty())
-			return null;
+			ItemStack.EMPTY.save(newTag);
 		else
-		{
-			CompoundTag newTag = new CompoundTag();
 			stack.save(newTag);
-			saveTo.put(key, newTag);
-			return newTag;
-		}
+		saveTo.put(key, newTag);
+		return newTag;
 	}
 	
 	public static ItemStack readItemStack(CompoundTag nbt, String key)

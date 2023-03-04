@@ -1,16 +1,22 @@
 package com.sodium.dwmg.entities;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
 import com.sodium.dwmg.entities.ai.BefriendedAIState;
+import com.sodium.dwmg.network.ClientboundBefriendedGuiOpenPacket;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
 
 /** A function library for setting up befriended mobs
  */
@@ -60,4 +66,24 @@ public class BefriendedHelper {
 		mob.setAIState(BefriendedAIState.fromID(nbt.getByte("ai_state")));
 	}
 
+	public static void openBefriendedInventory(Player player, IBefriendedMob target)
+			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException {
+		LivingEntity living = (LivingEntity) target;
+		if (!player.level.isClientSide && player instanceof ServerPlayer sp
+				&& (!living.isVehicle() || living.hasPassenger(player))) {
+			if (player.containerMenu != player.inventoryMenu) {
+				player.closeContainer();
+			}
+
+			sp.nextContainerCounter();
+			sp.connection.send(new ClientboundBefriendedGuiOpenPacket(sp.containerCounter,
+					target.getInventory().getContainerSize(), living.getId()));
+			sp.containerMenu = target.makeMenu(sp.containerCounter, sp.getInventory(), target.getInventory());
+			sp.initMenu(sp.containerMenu);
+			MinecraftForge.EVENT_BUS.post(
+					new net.minecraftforge.event.entity.player.PlayerContainerEvent.Open(player, player.containerMenu));
+		}
+	}
+	
 }

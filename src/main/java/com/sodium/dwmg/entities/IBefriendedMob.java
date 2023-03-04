@@ -5,12 +5,17 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.sodium.dwmg.client.gui.screens.AbstractGuiBefriended;
 import com.sodium.dwmg.entities.ai.BefriendedAIState;
+import com.sodium.dwmg.inventory.AbstractInventoryMenuBefriended;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -90,4 +95,9 @@ public interface IBefriendedMob {
 	public ItemStack getBauble(int index);
 	
 	public void setBauble(ItemStack item, int index);
+
+	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container);
+	
+	/* GUI related */
+	public AbstractGuiBefriended makeGui(AbstractInventoryMenuBefriended menu, Inventory playerInventory, Component title);
 }
