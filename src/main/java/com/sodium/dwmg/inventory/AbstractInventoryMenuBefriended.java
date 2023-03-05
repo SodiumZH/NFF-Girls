@@ -20,17 +20,20 @@ public abstract class AbstractInventoryMenuBefriended extends AbstractContainerM
 		this.container = container;
 	}
 
-	protected void addPlayerInventorySlots(Inventory playerInventory, int startSlotIndex, int startX, int startY) {
+	protected void addPlayerInventorySlots(Inventory playerInventory, int startX, int startY) 
+	{
 
-		for (int i1 = 0; i1 < 3; ++i1) {
-			for (int k1 = 0; k1 < 9; ++k1) {
-				this.addSlot(new Slot(playerInventory, startSlotIndex + k1 + i1 * 9 + 9, startX + k1 * 18,
+		for (int i1 = 0; i1 < 3; ++i1) 
+		{
+			for (int k1 = 0; k1 < 9; ++k1)
+			{
+				this.addSlot(new Slot(playerInventory, k1 + i1 * 9 + 9, startX + k1 * 18,
 						startY + i1 * 18));
 			}
 		}
-
-		for (int j1 = 0; j1 < 9; ++j1) {
-			this.addSlot(new Slot(playerInventory, startSlotIndex + j1, startX + j1 * 18, startY + 58));
+		for (int j1 = 0; j1 < 9; ++j1) 
+		{
+			this.addSlot(new Slot(playerInventory, j1, startX + j1 * 18, startY + 58));
 		}
 	}
 

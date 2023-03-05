@@ -51,14 +51,14 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 			}
 		});
 		// Main hand
-		addSlot(new Slot(container, 4, 80, 6) {
+		addSlot(new Slot(container, 4, 80, 6+18*3) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return !this.hasItem();
 			}
 		});
 		// Off hand
-		addSlot(new Slot(container, 5, 80, 6+18) {
+		addSlot(new Slot(container, 5, 80, 6+18*2) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return !this.hasItem();
@@ -67,7 +67,7 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 		// Bauble slots
 		for (int i = 0; i < getBaubleSlotAmount(); ++i)
 			
-			addSlot(new Slot(container, 6 + i, getBaubleSlotPositionOffsetX(i), getBaubleSlotPositionY(i)) {
+			addSlot(new Slot(container, 6 + i, getBaubleSlotPositionX(i), getBaubleSlotPositionY(i)) {
 				
 				@Override
 				public boolean mayPlace(ItemStack stack) {
@@ -79,8 +79,8 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 		            return 1;
 		        }			
 		});
-
-		addPlayerInventorySlots(playerInventory, 6 + getBaubleSlotAmount(), 8, 89);
+		
+		addPlayerInventorySlots(playerInventory, 6 + getBaubleSlotAmount(), 89);
 
 	}
 
@@ -131,14 +131,14 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 		return 2;
 	}
 	
-	public int getBaubleSlotPositionOffsetX(int index)
+	public int getBaubleSlotPositionX(int index)
 	{
 		return 80;
 	}
 	
 	public int getBaubleSlotPositionY(int index)
 	{
-		return 6 + 18 * (index + 2);
+		return 6 + 18 * index;
 	}
 	
 }

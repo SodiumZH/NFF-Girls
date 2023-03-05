@@ -32,6 +32,7 @@ public abstract class AbstractGuiBefriended extends AbstractContainerScreen<Abst
 		this.passEvents = false;
 	}
 
+	// Background, mouse XY and tooltip are rendered here. Do not render them again in subclasses.
 	public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
 		this.renderBackground(pPoseStack);
 		this.xMouse = (float) pMouseX;

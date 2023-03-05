@@ -35,7 +35,7 @@ public class GuiVanillaUndead extends AbstractGuiBefriended {
 	@Override
 	protected void init() {
 		super.init();
-		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
+		//this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
 	}
 
 	@Override
@@ -59,11 +59,7 @@ public class GuiVanillaUndead extends AbstractGuiBefriended {
 
 	@Override
 	   public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-	      this.renderBackground(pPoseStack);
-	      this.xMouse = (float)pMouseX;
-	      this.yMouse = (float)pMouseY;
 	      super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-	      this.renderTooltip(pPoseStack, pMouseX, pMouseY);
 	   }
 	
 }

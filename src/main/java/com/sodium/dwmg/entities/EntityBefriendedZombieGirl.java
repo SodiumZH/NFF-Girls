@@ -112,13 +112,9 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	@Override
 	public boolean onInteractionShift(Player player, InteractionHand hand) {
 		if (player.getUUID().equals(getOwnerUUID())) {
-			try {
-				BefriendedHelper.openBefriendedInventory(player, this);
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
+			BefriendedHelper.openBefriendedInventory(player, this);
+
 			return true;
 		} else
 			Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
@@ -128,30 +124,29 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	/* Inventory */
 
 	SimpleContainer inventory = null;
-	
+
 	@Override
 	public SimpleContainer getInventory() {
 		return inventory;
 	}
 
-	public void createInventory()
-	{
-		  SimpleContainer simplecontainer = this.inventory;
-	      this.inventory = new SimpleContainer(8);
-	      if (simplecontainer != null) {
-	         simplecontainer.removeListener(this);
-	         int i = Math.min(simplecontainer.getContainerSize(), this.inventory.getContainerSize());
+	public void createInventory() {
+		SimpleContainer simplecontainer = this.inventory;
+		this.inventory = new SimpleContainer(8);
+		if (simplecontainer != null) {
+			simplecontainer.removeListener(this);
+			int i = Math.min(simplecontainer.getContainerSize(), this.inventory.getContainerSize());
 
-	         for(int j = 0; j < i; ++j) {
-	            ItemStack itemstack = simplecontainer.getItem(j);
-	            if (!itemstack.isEmpty()) {
-	               this.inventory.setItem(j, itemstack.copy());
-	            }
-	         }
-	      }
+			for (int j = 0; j < i; ++j) {
+				ItemStack itemstack = simplecontainer.getItem(j);
+				if (!itemstack.isEmpty()) {
+					this.inventory.setItem(j, itemstack.copy());
+				}
+			}
+		}
 
-	      this.inventory.addListener(this);
-	      this.updateFromInventory();
+		this.inventory.addListener(this);
+		this.updateFromInventory();
 	}
 
 	@Override
@@ -167,8 +162,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	}
 
 	@Override
-	public ItemStack getBauble(int index) 
-	{
+	public ItemStack getBauble(int index) {
 		if (index == 0)
 			return getInventory().getItem(6);
 		else if (index == 1)
@@ -178,32 +172,30 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	}
 
 	@Override
-	public void setBauble(ItemStack item, int index)
-	{
+	public void setBauble(ItemStack item, int index) {
 		if (item == null || item.isEmpty())
 			return;
 		if (index == 0)
 			inventory.setItem(6, item);
 		else if (index == 1)
 			inventory.setItem(7, item);
-		else throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
+		else
+			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();
 	}
-	
+
 	@Override
-	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container)
-	{
+	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuZombieGirl(containerId, playerInventory, container, this);
 	}
-	
+
 	@Override
-	public void containerChanged(Container pContainer)
-	{
+	public void containerChanged(Container pContainer) {
 		this.updateFromInventory();
 	}
-	
-	/* Save and Load */ 
-	
+
+	/* Save and Load */
+
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
@@ -216,19 +208,18 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		setBauble(NbtHelper.readItemStack(nbt, "bauble_0"), 0);		
+		setBauble(NbtHelper.readItemStack(nbt, "bauble_0"), 0);
 		setBauble(NbtHelper.readItemStack(nbt, "bauble_1"), 1);
 	}
 
 	/* GUI */
-	
+
 	@Override
-	public AbstractGuiBefriended makeGui(AbstractInventoryMenuBefriended menu, Inventory playerInventory, Component title)
-	{
+	public AbstractGuiBefriended makeGui(AbstractInventoryMenuBefriended menu, Inventory playerInventory,
+			Component title) {
 		return new GuiZombieGirl(menu, playerInventory, title, this);
 	}
-	
-	
+
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //

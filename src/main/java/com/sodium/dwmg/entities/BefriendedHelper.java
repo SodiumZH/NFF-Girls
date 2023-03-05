@@ -18,7 +18,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 
-/** A function library for setting up befriended mobs
+/**
+ * A function library for setting up befriended mobs
  */
 
 public class BefriendedHelper {
@@ -53,24 +54,24 @@ public class BefriendedHelper {
 		if (mob.getOwnerUUID() != null)
 			nbt.putUUID("owner", mob.getOwnerUUID());
 		else
-			throw new IllegalStateException("Writing befriended mob data error: invalid owner. Was IBefriendedMob.init() not called?");
+			throw new IllegalStateException(
+					"Writing befriended mob data error: invalid owner. Was IBefriendedMob.init() not called?");
 		nbt.putByte("ai_state", mob.getAIState().id());
 	}
 
 	public static void readBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt) {
 		UUID uuid = nbt.getUUID("owner");
 		if (uuid == null)
-			throw new IllegalStateException("Reading befriended mob data error: invalid owner. Was IBefriendedMob.init() not called?");
+			throw new IllegalStateException(
+					"Reading befriended mob data error: invalid owner. Was IBefriendedMob.init() not called?");
 		mob.setOwnerUUID(uuid);
 		mob.init(mob.getOwnerUUID(), null);
 		mob.setAIState(BefriendedAIState.fromID(nbt.getByte("ai_state")));
 	}
-	
+
 	/* Inventory */
 
-	public static void openBefriendedInventory(Player player, IBefriendedMob target)
-			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-			NoSuchMethodException, SecurityException {
+	public static void openBefriendedInventory(Player player, IBefriendedMob target) {
 		LivingEntity living = (LivingEntity) target;
 		if (!player.level.isClientSide && player instanceof ServerPlayer sp
 				&& (!living.isVehicle() || living.hasPassenger(player))) {
@@ -88,5 +89,5 @@ public class BefriendedHelper {
 					new net.minecraftforge.event.entity.player.PlayerContainerEvent.Open(player, player.containerMenu));
 		}
 	}
-	
+
 }
