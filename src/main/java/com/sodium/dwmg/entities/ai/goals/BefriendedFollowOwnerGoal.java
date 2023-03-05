@@ -60,6 +60,8 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 		if (isDisabled())
 			return false;
 		LivingEntity livingentity = mob.getOwner();
+		if (livingentity == null)
+			return false;
 		if (livingentity.isSpectator()) {
 			return false;
 		} else if (!isStateAllowed()) {

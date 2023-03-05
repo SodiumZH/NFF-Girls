@@ -9,7 +9,7 @@ public class GuiZombieGirl extends GuiVanillaUndead {
 
 	public GuiZombieGirl(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory, Component pTitle,
 			IBefriendedMob mob) {
-		super(pMenu, pPlayerInventory, pTitle, mob);
+		super(pMenu, pPlayerInventory, mob);
 	}
 
 

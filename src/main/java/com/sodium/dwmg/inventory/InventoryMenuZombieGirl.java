@@ -8,8 +8,8 @@ import net.minecraft.world.entity.player.Inventory;
 public class InventoryMenuZombieGirl extends InventoryMenuVanillaUndead{
 
 	public InventoryMenuZombieGirl(int containerId, Inventory playerInventory, Container container,
-			IBefriendedMob mob, int x, int y) {
-		super(containerId, playerInventory, container, mob, x, y);
+			IBefriendedMob mob) {
+		super(containerId, playerInventory, container, mob);
 	}
 
 }

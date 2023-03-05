@@ -18,39 +18,53 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiVanillaUndead extends AbstractGuiBefriended {
-	public static final ResourceLocation INVENTORY_LOCATION = new ResourceLocation("dwmg",
-			"textures/gui/container/bef_undead_girls.png");
 	
-	public GuiVanillaUndead(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory, Component pTitle,
-			IBefriendedMob mob) {
-		super(pMenu, pPlayerInventory, pTitle, mob);
+	@Override
+	public ResourceLocation getTextureLocation() {
+		return new ResourceLocation("dwmg",
+			"textures/gui/container/bef_vanilla_undead.png");
+	}
+	
+	public GuiVanillaUndead(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory, IBefriendedMob mob) {
+		super(pMenu, pPlayerInventory, mob);
 		imageWidth = 176;
-		imageHeight = 166;
+		imageHeight = 171;
+		inventoryLabelY = imageHeight - 93;
 	}
 
 	@Override
 	protected void init() {
+		super.init();
 		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		// state = new Component()
 	}
 
 	@Override
 	protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, INVENTORY_LOCATION);
+		RenderSystem.setShaderTexture(0, getTextureLocation());
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
 		// Main window
-		this.blit(pPoseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
+		this.blit(pPoseStack, i, j, 0, 0, imageWidth, imageHeight);		
 		// Armor slots
-		this.blit(pPoseStack, i + 7, j + 5, imageWidth, 0, this.imageWidth + 18, 4 * 18);
+		this.blit(pPoseStack, i + 7, j + 5, imageWidth, 0, 18, 4*18);
 		// Hand and bauble slots
-		this.blit(pPoseStack, i + 79, j + 5, imageWidth + 18, 0, this.imageWidth + 18 * 2, 4 * 18);
+		this.blit(pPoseStack, i + 79, j + 5, imageWidth+18, 0, 18, 4*18);
 		// Info box
-		this.blit(pPoseStack, i + 99, j + 5, imageWidth, 18 * 4, this.imageWidth + 70, 4 * 18 + 72);
-		InventoryScreen.renderEntityInInventory(i + 52, j + 70, 17, (float) (i + 52) - this.xMouse,
-				(float) (j + 75 - 50) - this.yMouse, (LivingEntity)mob);
+		this.blit(pPoseStack, i + 99, j + 5, imageWidth, 4*18, 70, 72);
+		InventoryScreen.renderEntityInInventory(i + 52, j + 70, 25, (float) (i + 52) - this.xMouse,
+				(float) (j + 75 - 50) - this.yMouse, (LivingEntity)mob);		
 	}
 
+	@Override
+	   public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+	      this.renderBackground(pPoseStack);
+	      this.xMouse = (float)pMouseX;
+	      this.yMouse = (float)pMouseY;
+	      super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+	      this.renderTooltip(pPoseStack, pMouseX, pMouseY);
+	   }
+	
 }
+

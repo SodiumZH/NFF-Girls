@@ -15,11 +15,11 @@ import net.minecraft.world.phys.Vec2;
 public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBefriended {
 
 	protected InventoryMenuVanillaUndead(int containerId, Inventory playerInventory, Container container,
-			IBefriendedMob mob, int x, int y) {
-		super(containerId, playerInventory, container, mob, x, y);
+			IBefriendedMob mob) {
+		super(containerId, playerInventory, container, mob);
 		container.startOpen(playerInventory.player);
 		// Helmet
-		addSlot(new Slot(container, 0, x+8, y+6) {
+		addSlot(new Slot(container, 0, 8, 6) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
@@ -80,7 +80,7 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 		        }			
 		});
 
-		addPlayerInventorySlots(playerInventory, 6 + getBaubleSlotAmount(), x+8, y+84);
+		addPlayerInventorySlots(playerInventory, 6 + getBaubleSlotAmount(), 8, 89);
 
 	}
 
@@ -96,8 +96,8 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 		ItemStack stack = slot.getItem();
 
 		// From mob equipment to player inventory
-		if (index < 8) {
-			if (!this.moveItemStackTo(stack, 8, 44, true)) {
+		if (index < 6+getBaubleSlotAmount()) {
+			if (!this.moveItemStackTo(stack, 6+getBaubleSlotAmount(), 6+getBaubleSlotAmount()+32, true)) {
 				return ItemStack.EMPTY;
 			} else {
 				done = true;
@@ -106,7 +106,7 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 		// From inventory to mob
 		else {
 			// Try each mob slot
-			for (int i = 0; i < 8; ++i) {
+			for (int i = 0; i < 6+getBaubleSlotAmount(); ++i) {
 				// If the item is suitable and slot isn't occupied
 				if (this.getSlot(i).mayPlace(stack) && !this.getSlot(i).hasItem()) {
 					// Try moving
