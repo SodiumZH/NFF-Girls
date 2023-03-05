@@ -4,8 +4,7 @@
 	"pattern": 
 	[ 
 	"PDP",	
-	"WWW",
-	"SSS"
+	"WWW"
 	],
 	
 	"key":{ 
@@ -21,7 +20,7 @@
 		"W":{ 
 		"tag": "forge:crops/wheat"
 		}
-		
+
 	},
 	
 	"result":{ 

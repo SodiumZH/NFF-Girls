@@ -30,6 +30,8 @@ public class BefriendedOwnerHurtTargetGoal extends BefriendedTargetGoal {
 		if (isDisabled())
 			return false;
 		Player owner = mob.getOwner();
+		if(owner == null)
+			return false;
 		this.ownerLastHurt = owner.getLastHurtMob();
 		int i = owner.getLastHurtMobTimestamp();
 		if (i == this.timestamp)

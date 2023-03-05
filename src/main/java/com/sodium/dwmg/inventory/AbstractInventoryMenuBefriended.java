@@ -12,20 +12,25 @@ public abstract class AbstractInventoryMenuBefriended extends AbstractContainerM
 
 	protected final Container container;
 	protected final IBefriendedMob mob;
+	int x = 0;
+	int y = 0;
 
 	protected AbstractInventoryMenuBefriended(int containerId, Inventory playerInventory, Container container,
-			IBefriendedMob mob) {
+			IBefriendedMob mob, int x, int y) {
 		super(null, containerId);
 		this.mob = mob;
 		this.container = container;
+		this.x = x;
+		this.y = y;
 	}
 
+	// Start X and Y doesn't include GUI offset. The GUI offset is automatically added.
 	protected void addPlayerInventorySlots(Inventory playerInventory, int startSlotIndex, int startX, int startY) {
 
 		for (int i1 = 0; i1 < 3; ++i1) {
 			for (int k1 = 0; k1 < 9; ++k1) {
-				this.addSlot(new Slot(playerInventory, startSlotIndex + k1 + i1 * 9 + 9, startX + k1 * 18,
-						startY + i1 * 18));
+				this.addSlot(new Slot(playerInventory, startSlotIndex + k1 + i1 * 9 + 9, x + startX + k1 * 18,
+						y + startY + i1 * 18));
 			}
 		}
 
@@ -47,4 +52,19 @@ public abstract class AbstractInventoryMenuBefriended extends AbstractContainerM
 		return (LivingEntity) mob;
 	}
 
+	public int getBaubleSlotAmount()
+	{
+		return 2;
+	}
+	
+	public int getBaubleSlotPositionX(int index)
+	{
+		return x;
+	}
+	
+	public int getBaubleSlotPositionY(int index)
+	{
+		return y;
+	}
+	
 }

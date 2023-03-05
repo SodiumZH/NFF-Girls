@@ -1,12 +1,18 @@
 package com.sodium.dwmg.network;
 
-import java.lang.reflect.InvocationTargetException;
+import com.sodium.dwmg.entities.IBefriendedMob;
+import com.sodium.dwmg.inventory.AbstractInventoryMenuBefriended;
 
-import com.sodium.dwmg.client.multiplayer.NaClientGamePacketListener;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.PacketUtils;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.Entity;
 
-public class ClientboundBefriendedGuiOpenPacket implements Packet<NaClientGamePacketListener> {
+public class ClientboundBefriendedGuiOpenPacket implements Packet<ClientGamePacketListener> {
 
 	protected final int containerId;
 	protected final int size;
@@ -24,24 +30,25 @@ public class ClientboundBefriendedGuiOpenPacket implements Packet<NaClientGamePa
 		this.entityId = pBuffer.readInt();
 	}
 
-	@Override
 	public void write(FriendlyByteBuf pBuffer) {
 		pBuffer.writeByte(this.containerId);
 		pBuffer.writeVarInt(this.size);
 		pBuffer.writeInt(this.entityId);
 	}
 
-	@Override
-	public void handle(NaClientGamePacketListener handler) {
-
-			try {
-				handler.handleBefriendedGuiOpen(this);
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
+	public void handle(ClientGamePacketListener handler) {
+		@SuppressWarnings("resource")
+		Minecraft mc = Minecraft.getInstance();
+		PacketUtils.ensureRunningOnSameThread(this, handler, mc);
+		Entity entity = mc.level.getEntity(getEntityId());
+		if (entity instanceof IBefriendedMob bef) {
+			LocalPlayer localplayer = mc.player;
+			SimpleContainer simplecontainer = new SimpleContainer(getSize());
+			AbstractInventoryMenuBefriended menu =
+					bef.makeMenu(getContainerId(), localplayer.getInventory(), simplecontainer);
+			localplayer.containerMenu = menu;
+			mc.setScreen(bef.makeGui(menu, localplayer.getInventory(), entity.getDisplayName()));
+		}
 	}
 
 	public int getContainerId() {

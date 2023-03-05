@@ -65,6 +65,8 @@ public class BefriendedHelper {
 		mob.init(mob.getOwnerUUID(), null);
 		mob.setAIState(BefriendedAIState.fromID(nbt.getByte("ai_state")));
 	}
+	
+	/* Inventory */
 
 	public static void openBefriendedInventory(Player player, IBefriendedMob target)
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
@@ -77,8 +79,9 @@ public class BefriendedHelper {
 			}
 
 			sp.nextContainerCounter();
-			sp.connection.send(new ClientboundBefriendedGuiOpenPacket(sp.containerCounter,
-					target.getInventory().getContainerSize(), living.getId()));
+			ClientboundBefriendedGuiOpenPacket packet = new ClientboundBefriendedGuiOpenPacket(sp.containerCounter,
+					target.getInventory().getContainerSize(), living.getId());
+			sp.connection.send(packet);
 			sp.containerMenu = target.makeMenu(sp.containerCounter, sp.getInventory(), target.getInventory());
 			sp.initMenu(sp.containerMenu);
 			MinecraftForge.EVENT_BUS.post(

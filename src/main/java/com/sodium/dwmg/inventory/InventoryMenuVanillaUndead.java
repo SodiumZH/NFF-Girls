@@ -15,11 +15,11 @@ import net.minecraft.world.phys.Vec2;
 public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBefriended {
 
 	protected InventoryMenuVanillaUndead(int containerId, Inventory playerInventory, Container container,
-			IBefriendedMob mob) {
-		super(containerId, playerInventory, container, mob);
+			IBefriendedMob mob, int x, int y) {
+		super(containerId, playerInventory, container, mob, x, y);
 		container.startOpen(playerInventory.player);
 		// Helmet
-		addSlot(new Slot(container, 0, 8, 6) {
+		addSlot(new Slot(container, 0, x+8, y+6) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
@@ -67,7 +67,7 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 		// Bauble slots
 		for (int i = 0; i < getBaubleSlotAmount(); ++i)
 			
-			addSlot(new Slot(container, 6 + i, getBaubleSlotPositionX(i), getBaubleSlotPositionY(i)) {
+			addSlot(new Slot(container, 6 + i, getBaubleSlotPositionOffsetX(i), getBaubleSlotPositionY(i)) {
 				
 				@Override
 				public boolean mayPlace(ItemStack stack) {
@@ -80,7 +80,7 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 		        }			
 		});
 
-		addPlayerInventorySlots(playerInventory, 6 + getBaubleSlotAmount(), 8, 84);
+		addPlayerInventorySlots(playerInventory, 6 + getBaubleSlotAmount(), x+8, y+84);
 
 	}
 
@@ -131,7 +131,7 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 		return 2;
 	}
 	
-	public int getBaubleSlotPositionX(int index)
+	public int getBaubleSlotPositionOffsetX(int index)
 	{
 		return 80;
 	}

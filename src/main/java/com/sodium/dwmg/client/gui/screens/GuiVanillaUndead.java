@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class GuiVanillaUndead extends AbstractGuiBefriended {
 	public static final ResourceLocation INVENTORY_LOCATION = new ResourceLocation("dwmg",
 			"textures/gui/container/bef_undead_girls.png");
-
+	
 	public GuiVanillaUndead(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory, Component pTitle,
 			IBefriendedMob mob) {
 		super(pMenu, pPlayerInventory, pTitle, mob);
