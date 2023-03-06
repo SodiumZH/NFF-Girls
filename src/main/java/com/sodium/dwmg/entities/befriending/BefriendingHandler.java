@@ -2,64 +2,27 @@ package com.sodium.dwmg.entities.befriending;
 
 import java.util.Random;
 
-import com.sodium.dwmg.entities.IBefriendedMob;
-import com.sodium.dwmg.registries.ModCapabilities;
+import com.sodium.dwmg.befriendmobsapi.entitiy.befriending.AbstractBefriendingHandler;
+import com.sodium.dwmg.befriendmobsapi.entitiy.befriending.BefriendableMobInteractArguments;
+import com.sodium.dwmg.befriendmobsapi.entitiy.befriending.BefriendableMobInteractionResult;
+import com.sodium.dwmg.befriendmobsapi.util.Debug;
+import com.sodium.dwmg.befriendmobsapi.util.EntityHelper;
+import com.sodium.dwmg.befriendmobsapi.util.NbtHelper;
 import com.sodium.dwmg.registries.ModEffects;
-import com.sodium.dwmg.registries.ModEntityTypes;
 import com.sodium.dwmg.registries.ModItems;
-import com.sodium.dwmg.util.Debug;
-import com.sodium.dwmg.util.EntityHelper;
-import com.sodium.dwmg.util.NbtHelper;
 
 import net.minecraft.nbt.IntTag;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.fml.LogicalSide;
 
-public class BefriendingHandler 
+public class BefriendingHandler extends AbstractBefriendingHandler 
 {
 	public BefriendingHandler()
 	{	
 	}
 
-	public EntityType<?> getTypeAfterBefriending(EntityType<?> type)
-	{
-		if (type == com.github.mechalopa.hmag.registry.ModEntityTypes.ZOMBIE_GIRL.get())
-			return ModEntityTypes.BEF_ZOMBIE_GIRL.get();
-		// Add more types here using else if
-		
-		else return null;
-	}
-	
-	public IBefriendedMob befriend(Player player, LivingEntity target)
-	{
-		// Don't execute on client
-		if (target.level.isClientSide())
-			return null;
-		// Don't execute on mobs already befriended
-		if (target instanceof IBefriendedMob)
-			return null;		
-
-		if(!target.getCapability(ModCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
-			throw new RuntimeException("Befriending: Target living entity not having CapBefriendableMob capability attached.");
-		EntityType<?> newType = getTypeAfterBefriending(target.getType());
-		if(newType == null)
-			throw new RuntimeException("Befriending: Entity type after befriending is not valid. Check BefriendingMethod.getTypeAfterBefriending function.");
-		Entity resultRaw = EntityHelper.replaceLivingEntity(newType, target);
-		if(!(resultRaw instanceof LivingEntity))
-			throw new RuntimeException("Befriending: Entity type after befriending is not a living entity. Check BefriendingMethod.getTypeAfterBefriending function.");
-		if(!(resultRaw instanceof IBefriendedMob))
-			throw new RuntimeException("Befriending: Entity type after befriending not implementing IBefriendedMob interface.");
-		IBefriendedMob result = (IBefriendedMob)resultRaw;
-		result.init(player.getUUID(), target);		
-		Debug.printToScreen("Mob "+target.toString()+" befriended", player, target);
-		return result;
-	}
-
+	@Override
 	public BefriendableMobInteractionResult onBefriendableMobInteract(BefriendableMobInteractArguments args)
 	{
 		LivingEntity target = (LivingEntity)args.getTarget();

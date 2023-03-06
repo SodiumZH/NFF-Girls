@@ -14,7 +14,7 @@ public interface CUndeadMob extends INBTSerializable<CompoundTag>{
 	Vector<UUID> getHatred();
 	
 	// Add a player to the hatred list
-	// This action is permanent and there's no method to remove a player
+	// This action is permanent and there's no handler to remove a player
 	void addHatred(LivingEntity entity);
 	
 }

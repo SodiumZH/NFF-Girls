@@ -2,8 +2,11 @@ package com.sodium.dwmg.client.gui.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.sodium.dwmg.entities.IBefriendedMob;
-import com.sodium.dwmg.inventory.AbstractInventoryMenuBefriended;
+import com.sodium.dwmg.Dwmg;
+import com.sodium.dwmg.befriendmobsapi.client.gui.screens.AbstractGuiBefriended;
+import com.sodium.dwmg.befriendmobsapi.entitiy.IBefriendedMob;
+import com.sodium.dwmg.befriendmobsapi.inventory.AbstractInventoryMenuBefriended;
+
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -21,7 +24,7 @@ public class GuiVanillaUndead extends AbstractGuiBefriended {
 	
 	@Override
 	public ResourceLocation getTextureLocation() {
-		return new ResourceLocation("dwmg",
+		return new ResourceLocation(Dwmg.MOD_ID,
 			"textures/gui/container/bef_vanilla_undead.png");
 	}
 	

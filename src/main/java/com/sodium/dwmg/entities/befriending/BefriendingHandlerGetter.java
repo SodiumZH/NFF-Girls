@@ -1,28 +1,30 @@
 package com.sodium.dwmg.entities.befriending;
 
-// This is a wrapper of befriending method for a static value in the main class
+import com.sodium.dwmg.befriendmobsapi.entitiy.befriending.AbstractBefriendingHandler;
+
+// This is a wrapper of befriending handler for a static value in the main class
 public class BefriendingHandlerGetter {
 
-	public BefriendingHandler method = new BefriendingHandler();
+	public AbstractBefriendingHandler handler = new BefriendingHandler();
 	
-	public BefriendingHandlerGetter(BefriendingHandler method)
+	public BefriendingHandlerGetter(AbstractBefriendingHandler handler)
 	{
-		this.method = method;
+		this.handler = handler;
 	}
 	
 	public BefriendingHandlerGetter()
 	{
-		this.method = new BefriendingHandler();
+		this.handler = new BefriendingHandler();
 	}
 	
-	public BefriendingHandler get() 
+	public AbstractBefriendingHandler get() 
 	{
-		return method;
+		return handler;
 	}
 	
-	public void set(BefriendingHandler method)
+	public void set(BefriendingHandler handler)
 	{
-		this.method = method;
+		this.handler = handler;
 	}
 	
 }

@@ -1,21 +1,26 @@
 package com.sodium.dwmg;
 
+import org.slf4j.Logger;
+
 import com.mojang.logging.LogUtils;
+import com.sodium.dwmg.befriendmobsapi.BefriendMobsAPI;
+import com.sodium.dwmg.befriendmobsapi.entitiy.befriending.AbstractBefriendingHandler;
+import com.sodium.dwmg.entities.befriending.BefriendingHandler;
+import com.sodium.dwmg.entities.befriending.BefriendingHandlerGetter;
+import com.sodium.dwmg.registries.ModBlocks;
+import com.sodium.dwmg.registries.ModEffects;
+import com.sodium.dwmg.registries.ModEntityTypes;
+import com.sodium.dwmg.registries.ModItems;
+
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.slf4j.Logger;
-
-import com.sodium.dwmg.entities.befriending.BefriendingHandler;
-import com.sodium.dwmg.entities.befriending.BefriendingHandlerGetter;
-import com.sodium.dwmg.registries.*;
-import com.sodium.dwmg.util.Debug;
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Dwmg.MOD_ID)
 public class Dwmg
@@ -24,7 +29,10 @@ public class Dwmg
     public static final String MOD_ID = "dwmg";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
-
+    // Temporary BefriendMobAPI instance.
+    // Will be removed after isolating BefriendMobAPI out as a library.
+    private static BefriendMobsAPI TEMP_BM_API;
+    
     // Whether this project is under debug, or for release.
     // This controls if debug outputs should appear.
     public static final boolean IS_DEBUG = true;
@@ -38,7 +46,7 @@ public class Dwmg
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        // Register the commonSetup method for mod loading
+        // Register the commonSetup handler for mod loading
         modEventBus.addListener(this::commonSetup);
 
         // Set up registries
@@ -46,6 +54,8 @@ public class Dwmg
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
+        
+        TEMP_BM_API = new BefriendMobsAPI();
         
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -68,7 +78,8 @@ public class Dwmg
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents
     {
-        @SubscribeEvent
+        @SuppressWarnings("resource")
+		@SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             // Some client setup code
@@ -79,11 +90,15 @@ public class Dwmg
     
     /* Utils */
     
-    // You can reset this value to add implementations of befriending more mobs 
-    public static BefriendingHandlerGetter befriendingHandlerGetter = new BefriendingHandlerGetter();
-    
-    public static void setBefriendingHandler(BefriendingHandler newHandler)
+    @Deprecated
+    public static AbstractBefriendingHandler getsetBefriendingHandler()
     {
-    	befriendingHandlerGetter = new BefriendingHandlerGetter(newHandler);
+    	return BefriendMobsAPI.getBefriendingHandler();
+    }
+    
+    @Deprecated
+    public static void setBefriendingHandler(AbstractBefriendingHandler newHandler)
+    {
+    	 BefriendMobsAPI.setBefriendingHandler(newHandler);
     }
 }

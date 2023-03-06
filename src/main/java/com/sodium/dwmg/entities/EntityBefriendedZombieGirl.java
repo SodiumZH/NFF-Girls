@@ -1,6 +1,5 @@
 package com.sodium.dwmg.entities;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
@@ -8,16 +7,23 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 
 import com.github.mechalopa.hmag.world.entity.ZombieGirlEntity;
-import com.sodium.dwmg.client.gui.screens.AbstractGuiBefriended;
-import com.sodium.dwmg.client.gui.screens.GuiVanillaUndead;
+import com.sodium.dwmg.befriendmobsapi.client.gui.screens.AbstractGuiBefriended;
+import com.sodium.dwmg.befriendmobsapi.entitiy.BefriendedHelper;
+import com.sodium.dwmg.befriendmobsapi.entitiy.IBefriendedMob;
+import com.sodium.dwmg.befriendmobsapi.entitiy.ai.BefriendedAIState;
+import com.sodium.dwmg.befriendmobsapi.entitiy.ai.goal.vanilla.BefriendedFleeSunGoal;
+import com.sodium.dwmg.befriendmobsapi.entitiy.ai.goal.vanilla.BefriendedRestrictSunGoal;
+import com.sodium.dwmg.befriendmobsapi.entitiy.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
+import com.sodium.dwmg.befriendmobsapi.entitiy.ai.goal.vanilla.BefriendedZombieAttackGoal;
+import com.sodium.dwmg.befriendmobsapi.entitiy.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
+import com.sodium.dwmg.befriendmobsapi.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
+import com.sodium.dwmg.befriendmobsapi.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
+import com.sodium.dwmg.befriendmobsapi.inventory.AbstractInventoryMenuBefriended;
+import com.sodium.dwmg.befriendmobsapi.util.Debug;
+import com.sodium.dwmg.befriendmobsapi.util.NbtHelper;
 import com.sodium.dwmg.client.gui.screens.GuiZombieGirl;
-import com.sodium.dwmg.entities.ai.BefriendedAIState;
 import com.sodium.dwmg.entities.ai.goals.*;
-import com.sodium.dwmg.entities.ai.goals.target.*;
-import com.sodium.dwmg.inventory.AbstractInventoryMenuBefriended;
 import com.sodium.dwmg.inventory.InventoryMenuZombieGirl;
-import com.sodium.dwmg.util.Debug;
-import com.sodium.dwmg.util.NbtHelper;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -40,7 +46,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBefriendedMob, ContainerListener {
+public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBefriendedMob {
 
 	/* Initialization */
 
@@ -55,15 +61,6 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	public static Builder createAttributes() {
 		return ZombieGirlEntity.createAttributes().add(Attributes.MAX_HEALTH, 30.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.28D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.ARMOR, 4.0D);
-	}
-
-	@Override
-	public IBefriendedMob init(@Nonnull UUID playerUUID, LivingEntity befriendedFrom) {
-		setOwnerUUID(playerUUID);
-		if (!((LivingEntity) this).level.isClientSide() && befriendedFrom != null) {
-			this.setHealth(befriendedFrom.getHealth());
-		}
-		return this;
 	}
 
 	/* AI */
@@ -81,11 +78,6 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
 
-	}
-
-	@Override
-	public boolean wantsToAttack(LivingEntity target) {
-		return BefriendedHelper.wantsToAttackDefault(this, target);
 	}
 
 	/* Interaction */
@@ -130,23 +122,15 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		return inventory;
 	}
 
-	public void createInventory() {
-		SimpleContainer simplecontainer = this.inventory;
-		this.inventory = new SimpleContainer(8);
-		if (simplecontainer != null) {
-			simplecontainer.removeListener(this);
-			int i = Math.min(simplecontainer.getContainerSize(), this.inventory.getContainerSize());
-
-			for (int j = 0; j < i; ++j) {
-				ItemStack itemstack = simplecontainer.getItem(j);
-				if (!itemstack.isEmpty()) {
-					this.inventory.setItem(j, itemstack.copy());
-				}
-			}
-		}
-
-		this.inventory.addListener(this);
-		this.updateFromInventory();
+	@Override
+	public void setInventory(SimpleContainer container) {
+		inventory = container;
+	}
+	
+	@Override
+	public int getInventorySize()
+	{
+		return 8;
 	}
 
 	@Override
@@ -187,11 +171,6 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	@Override
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuZombieGirl(containerId, playerInventory, container, this);
-	}
-
-	@Override
-	public void containerChanged(Container pContainer) {
-		this.updateFromInventory();
 	}
 
 	/* Save and Load */
@@ -271,12 +250,6 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	@Override
 	public void setAIState(BefriendedAIState state) {
 		entityData.set(DATA_AISTATE, state.id());
-	}
-
-	@Override
-	public BefriendedAIState switchAIState() {
-		entityData.set(DATA_AISTATE, getAIState().defaultSwitch().id());
-		return getAIState();
 	}
 
 	protected LivingEntity PreviousTarget = null;

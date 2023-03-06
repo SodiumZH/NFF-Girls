@@ -1,7 +1,7 @@
 package com.sodium.dwmg.registries;
 
 
-import com.sodium.dwmg.entities.capabilities.CBefriendableMob;
+import com.sodium.dwmg.befriendmobsapi.entitiy.capability.CBefriendableMob;
 import com.sodium.dwmg.entities.capabilities.CUndeadMob;
 
 import net.minecraftforge.common.capabilities.Capability;
@@ -16,7 +16,6 @@ public class ModCapabilities
 {
 
 	public static Capability<CUndeadMob> CAP_UNDEAD_MOB = CapabilityManager.get(new CapabilityToken<>(){});
-	public static Capability<CBefriendableMob> CAP_BEFRIENDABLE_MOB = CapabilityManager.get(new CapabilityToken<>(){});
 	
 	// Register capabilities
 	@SubscribeEvent
@@ -24,7 +23,6 @@ public class ModCapabilities
 	{
 		// Entities
 		event.register(CUndeadMob.class);
-		event.register(CBefriendableMob.class);
 	}
 	
 	

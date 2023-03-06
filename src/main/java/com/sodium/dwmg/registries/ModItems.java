@@ -44,7 +44,7 @@ public class ModItems {
 	public static final RegistryObject<Item> SOUL_CAKE_SLICE = regItem("soul_cake_slice", new Item.Properties().food(ModFoodProperties.SOUL_CAKE_SLICE));
 	
 	// Debug items
-	public static final RegistryObject<Item> DEBUG_BEFRIENDER = ITEMS.register("debug_befriender", () -> new Item(new Item.Properties()));
+
 	
 	/* Item register end */
 	

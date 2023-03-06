@@ -1,26 +1,19 @@
 package com.sodium.dwmg.registries;
 
 import com.sodium.dwmg.Dwmg;
-import com.sodium.dwmg.entities.IBefriendedMob;
-import com.sodium.dwmg.entities.capabilities.CBefriendableMobProvider;
+import com.sodium.dwmg.befriendmobsapi.BefriendMobsAPI;
+import com.sodium.dwmg.befriendmobsapi.entitiy.IBefriendedMob;
+import com.sodium.dwmg.befriendmobsapi.entitiy.capability.CBefriendableMobProvider;
+import com.sodium.dwmg.befriendmobsapi.util.TagHelper;
 import com.sodium.dwmg.entities.capabilities.CUndeadMobProvider;
-import com.sodium.dwmg.util.NbtHelper;
-import com.sodium.dwmg.util.TagHelper;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.Random;
-
-import com.github.mechalopa.hmag.registry.ModEntityTypes;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModCapabilityAttachment {
@@ -31,26 +24,20 @@ public class ModCapabilityAttachment {
 	{
 		if(event.getObject() instanceof LivingEntity living)
 		{
-			if (living.getMobType() == MobType.UNDEAD && !(living instanceof IBefriendedMob) && !TagHelper.hasTag(living, "dwmg", "ignore_death_affinity"))	// Befriended mobs aren't affected by Death Affinity
+			if (living.getMobType() == MobType.UNDEAD && !(living instanceof IBefriendedMob) && !TagHelper.hasTag(living, Dwmg.MOD_ID, "ignore_death_affinity"))	// Befriended mobs aren't affected by Death Affinity
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_undead"), new CUndeadMobProvider());
-			if (TagHelper.hasTag(living, "dwmg", "befriendable") && !(living instanceof IBefriendedMob))
-			{
-				// TODO: make this action overridable
-				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_befriendable"), new CBefriendableMobProvider());
-				//befriendableMobInit(event);
-			}
 		}
 	}
 	
 	// Actions to initialize befriendable mob capability on spawn
-	// TODO: make this method overridable
+	// TODO: make this handler overridable
 	/*
 	public static void befriendableMobInit(AttachCapabilitiesEvent<Entity> event)
 	{
 		LivingEntity living = (LivingEntity)event.getObject();
 		EntityType<?> type = living.getType();
 		
-		living.getCapability(ModCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> {
+		living.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> {
 			if (type == ModEntityTypes.ZOMBIE_GIRL.get())
 			{
 				float rnd = new Random().nextFloat();

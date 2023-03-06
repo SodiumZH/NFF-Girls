@@ -1,7 +1,10 @@
 package com.sodium.dwmg.inventory;
 
-import com.sodium.dwmg.entities.IBefriendedMob;
-import com.sodium.dwmg.util.TagHelper;
+import com.sodium.dwmg.befriendmobsapi.BefriendMobsAPI;
+import com.sodium.dwmg.befriendmobsapi.entitiy.IBefriendedMob;
+import com.sodium.dwmg.befriendmobsapi.inventory.AbstractInventoryMenuBefriended;
+import com.sodium.dwmg.befriendmobsapi.util.TagHelper;
+import com.sodium.dwmg.befriendmobsapi.util.math.IntVec2;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -18,72 +21,95 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 			IBefriendedMob mob) {
 		super(containerId, playerInventory, container, mob);
 		container.startOpen(playerInventory.player);
+		addMenuSlots();
+	}
+
+	@Override
+	protected void addMenuSlots()
+	{
 		// Helmet
-		addSlot(new Slot(container, 0, 8, 6) {
+		IntVec2 v = new IntVec2(8, 6);
+		addSlot(new Slot(container, 0, v.x, v.y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
 						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.HEAD && !this.hasItem();
 			}
 		});
+		
+		v.slotBelow();
 		// Chest
-		addSlot(new Slot(container, 1, 8, 6+18) {
+		addSlot(new Slot(container, 1, v.x, v.y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
 						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.CHEST && !this.hasItem();
 			}
 		});
+		
+		v.slotBelow();
 		// Legs
-		addSlot(new Slot(container, 2, 8, 6+18*2) {
+		addSlot(new Slot(container, 2, v.x, v.y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
 						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.LEGS && !this.hasItem();
 			}
 		});
+		
+		v.slotBelow();
 		// Feet
-		addSlot(new Slot(container, 3, 8, 6+18*3) {
+		addSlot(new Slot(container, 3, v.x, v.y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
 						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.FEET && !this.hasItem();
 			}
 		});
+		
+		v.set(80, 6).slotBelow(3);
 		// Main hand
-		addSlot(new Slot(container, 4, 80, 6+18*3) {
+		addSlot(new Slot(container, 4, v.x, v.y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return !this.hasItem();
 			}
 		});
+		
+		v.slotAbove();
 		// Off hand
-		addSlot(new Slot(container, 5, 80, 6+18*2) {
+		addSlot(new Slot(container, 5, v.x, v.y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return !this.hasItem();
 			}
 		});
+		
+		v.slotAbove(2);
 		// Bauble slots
 		for (int i = 0; i < getBaubleSlotAmount(); ++i)
-			
+		{
 			addSlot(new Slot(container, 6 + i, getBaubleSlotPositionX(i), getBaubleSlotPositionY(i)) {
 				
 				@Override
 				public boolean mayPlace(ItemStack stack) {
-					return !this.hasItem() && TagHelper.hasTag(stack.getItem(), "dwmg", "baubles");
+					return !this.hasItem() && TagHelper.hasTag(stack.getItem(), BefriendMobsAPI.modDomain(), "baubles");
 				}
 				
 				@Override
 				public int getMaxStackSize() {
 		            return 1;
-		        }			
-		});
+		        }	
+			});
+			v.slotBelow();
+		}
 		
 		addPlayerInventorySlots(playerInventory, 6 + getBaubleSlotAmount(), 89);
+		
 
 	}
-
+	
+	
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
 

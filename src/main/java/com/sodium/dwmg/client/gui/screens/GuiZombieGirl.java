@@ -1,7 +1,8 @@
 package com.sodium.dwmg.client.gui.screens;
 
-import com.sodium.dwmg.entities.IBefriendedMob;
-import com.sodium.dwmg.inventory.AbstractInventoryMenuBefriended;
+import com.sodium.dwmg.befriendmobsapi.entitiy.IBefriendedMob;
+import com.sodium.dwmg.befriendmobsapi.inventory.AbstractInventoryMenuBefriended;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
