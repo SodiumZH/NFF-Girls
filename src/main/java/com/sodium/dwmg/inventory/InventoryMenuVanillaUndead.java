@@ -28,7 +28,7 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 	protected void addMenuSlots()
 	{
 		// Helmet
-		IntVec2 v = new IntVec2(8, 6);
+		IntVec2 v = new IntVec2(8, 18);
 		addSlot(new Slot(container, 0, v.x, v.y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
@@ -67,7 +67,7 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 			}
 		});
 		
-		v.set(80, 6).slotBelow(3);
+		v.set(80, 18).slotBelow(3);
 		// Main hand
 		addSlot(new Slot(container, 4, v.x, v.y) {
 			@Override
@@ -104,7 +104,8 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 			v.slotBelow();
 		}
 		
-		addPlayerInventorySlots(playerInventory, 6 + getBaubleSlotAmount(), 89);
+		
+		addPlayerInventorySlots(playerInventory, 20, 101);
 		
 
 	}
@@ -164,7 +165,7 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 	
 	public int getBaubleSlotPositionY(int index)
 	{
-		return 6 + 18 * index;
+		return 12 + 18 * index;
 	}
 	
 }

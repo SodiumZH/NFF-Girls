@@ -21,9 +21,9 @@ import com.sodium.dwmg.befriendmobsapi.entitiy.ai.goal.vanilla.target.Befriended
 import com.sodium.dwmg.befriendmobsapi.inventory.AbstractInventoryMenuBefriended;
 import com.sodium.dwmg.befriendmobsapi.util.Debug;
 import com.sodium.dwmg.befriendmobsapi.util.NbtHelper;
-import com.sodium.dwmg.client.gui.screens.GuiZombieGirl;
+import com.sodium.dwmg.client.gui.screens.GuiVanillaUndeadTwoBaubles;
 import com.sodium.dwmg.entities.ai.goals.*;
-import com.sodium.dwmg.inventory.InventoryMenuZombieGirl;
+import com.sodium.dwmg.inventory.InventoryMenuVanillaUndeadTwoBaubles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -86,11 +86,11 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (player.level.isClientSide())
-				Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
+			if (player.level.isClientSide()) {}
+				//Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
 			else {
 				switchAIState();
-				Debug.printToScreen(getAIState().toString(), player, this);
+				//Debug.printToScreen(getAIState().toString(), player, this);
 			}
 			return true;
 		} else if (!player.level.isClientSide()) {
@@ -108,8 +108,8 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 			BefriendedHelper.openBefriendedInventory(player, this);
 
 			return true;
-		} else
-			Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
+		} //else
+			//Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
 		return false;
 	}
 
@@ -170,7 +170,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 
 	@Override
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuZombieGirl(containerId, playerInventory, container, this);
+		return new InventoryMenuVanillaUndeadTwoBaubles(containerId, playerInventory, container, this);
 	}
 
 	/* Save and Load */
@@ -196,7 +196,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	@Override
 	public AbstractGuiBefriended makeGui(AbstractInventoryMenuBefriended menu, Inventory playerInventory,
 			Component title) {
-		return new GuiZombieGirl(menu, playerInventory, title, this);
+		return new GuiVanillaUndeadTwoBaubles(menu, playerInventory, title, this);
 	}
 
 	// ==================================================================== //

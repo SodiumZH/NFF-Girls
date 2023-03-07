@@ -9,6 +9,7 @@ import com.sodium.dwmg.befriendmobsapi.util.Debug;
 import com.sodium.dwmg.befriendmobsapi.util.EntityHelper;
 import com.sodium.dwmg.befriendmobsapi.util.NbtHelper;
 import com.sodium.dwmg.registries.ModEffects;
+import com.sodium.dwmg.registries.ModEntityTypes;
 import com.sodium.dwmg.registries.ModItems;
 
 import net.minecraft.nbt.IntTag;
@@ -22,6 +23,18 @@ public class BefriendingHandler extends AbstractBefriendingHandler
 	{	
 	}
 
+	@Override 
+	public EntityType<?> getTypeAfterBefriending(EntityType<?> type)
+	{
+		if (type == com.github.mechalopa.hmag.registry.ModEntityTypes.ZOMBIE_GIRL.get())
+			return ModEntityTypes.BEF_ZOMBIE_GIRL.get();
+		//else if (type == com.github.mechalopa.hmag.registry.ModEntityTypes.SKELETON_GIRL.get())
+		//	return ModEntityTypes.
+		// Add more types here using else if
+		
+		else return super.getTypeAfterBefriending(type);
+	}
+	
 	@Override
 	public BefriendableMobInteractionResult onBefriendableMobInteract(BefriendableMobInteractArguments args)
 	{

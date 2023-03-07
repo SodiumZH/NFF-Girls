@@ -21,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.phys.AABB;
 
+@SuppressWarnings("unused")
 public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 
 	private static final TargetingConditions HURT_BY_TARGETING = TargetingConditions.forCombat().ignoreLineOfSight()

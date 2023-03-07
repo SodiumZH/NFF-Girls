@@ -66,7 +66,7 @@ public class EntityHelper {
 		return newEntity;
 	}
 	
-	@Deprecated
+	@Deprecated() // TODO: use replaceMob instead
 	public static Entity replaceLivingEntity(EntityType<?> newType, LivingEntity from)
 	{
 		return replaceLivingEntity(newType, from, false);

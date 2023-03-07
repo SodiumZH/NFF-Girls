@@ -6,6 +6,7 @@ import com.sodium.dwmg.Dwmg;
 import com.sodium.dwmg.befriendmobsapi.client.gui.screens.AbstractGuiBefriended;
 import com.sodium.dwmg.befriendmobsapi.entitiy.IBefriendedMob;
 import com.sodium.dwmg.befriendmobsapi.inventory.AbstractInventoryMenuBefriended;
+import com.sodium.dwmg.befriendmobsapi.util.math.IntVec2;
 
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -29,9 +30,9 @@ public class GuiVanillaUndead extends AbstractGuiBefriended {
 	}
 	
 	public GuiVanillaUndead(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory, IBefriendedMob mob) {
-		super(pMenu, pPlayerInventory, mob);
-		imageWidth = 176;
-		imageHeight = 171;
+		super(pMenu, pPlayerInventory, mob, true);
+		imageWidth = 200;
+		imageHeight = 183;
 		inventoryLabelY = imageHeight - 93;
 	}
 
@@ -48,22 +49,43 @@ public class GuiVanillaUndead extends AbstractGuiBefriended {
 		RenderSystem.setShaderTexture(0, getTextureLocation());
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
+		IntVec2 v = IntVec2.of(i, j);
 		// Main window
-		this.blit(pPoseStack, i, j, 0, 0, imageWidth, imageHeight);		
+		
+		this.blit(pPoseStack, v.x, v.y, 0, 0, imageWidth, imageHeight);	
 		// Armor slots
-		this.blit(pPoseStack, i + 7, j + 5, imageWidth, 0, 18, 4*18);
-		// Hand and bauble slots
-		this.blit(pPoseStack, i + 79, j + 5, imageWidth+18, 0, 18, 4*18);
+		v.add(7, 17);
+		IntVec2 ve = IntVec2.of(imageWidth, 0);	// for empty
+		IntVec2 vf = IntVec2.of(imageWidth + 36, 0);	//for filled
+		for (int k = 0; k < 4; ++k)
+		{
+			this.addSlotBg(pPoseStack, k, v, ve, vf);
+			v.slotBelow();
+			ve.slotBelow();
+		}
+		v.set(i, j).add(79, 17);
+		ve.set(imageWidth + 18, 0);
+		
+		// Hand items and baubles
+		int[] si = {6, 7, 5, 4};
+		for(int k = 0; k < 4; ++k)
+		{
+			this.addSlotBg(pPoseStack, si[k], v, ve, vf);
+			v.slotBelow();
+			ve.slotBelow();
+		}
+		
 		// Info box
-		this.blit(pPoseStack, i + 99, j + 5, imageWidth, 4*18, 70, 72);
+		this.blit(pPoseStack, i + 99, j + 17, 0, imageHeight, 96, 72);
+		addHealthInfo(pPoseStack, IntVec2.of(i + 102, j + 20));
 		InventoryScreen.renderEntityInInventory(i + 52, j + 70, 25, (float) (i + 52) - this.xMouse,
 				(float) (j + 75 - 50) - this.yMouse, (LivingEntity)mob);		
 	}
 
 	@Override
-	   public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-	      super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-	   }
-	
+	public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+	   super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+	}
+
 }
 

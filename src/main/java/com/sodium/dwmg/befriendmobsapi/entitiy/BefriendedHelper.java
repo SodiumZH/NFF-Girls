@@ -1,6 +1,5 @@
 package com.sodium.dwmg.befriendmobsapi.entitiy;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -11,13 +10,11 @@ import com.sodium.dwmg.befriendmobsapi.network.ClientboundBefriendedGuiOpenPacke
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 

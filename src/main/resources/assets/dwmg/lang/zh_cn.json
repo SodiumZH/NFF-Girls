@@ -5,5 +5,6 @@
   	"item.dwmg.soul_cake" : "灵魂蛋糕",
   	"item.dwmg.soul_cake_slice" : "灵魂蛋糕切片",
   	"block.dwmg.soul_cake" : "灵魂蛋糕",
-  	"itemGroup.dwmg_tab" : "与怪物娘的日常"
+  	"itemGroup.dwmg_tab" : "与怪物娘的日常",
+	"entity.dwmg.bef_zombie_girl" : "僵尸娘"
 }

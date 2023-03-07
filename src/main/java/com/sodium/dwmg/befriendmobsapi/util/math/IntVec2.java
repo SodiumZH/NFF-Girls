@@ -21,36 +21,67 @@ public class IntVec2
 		this(0, 0);
 	}
 	
+	public static IntVec2 of(int x, int y)
+	{
+		return new IntVec2(x, y);
+	}
+	
+	public static IntVec2 of(int val)
+	{
+		return new IntVec2(val);
+	}
+	
+	public static IntVec2 of()
+	{
+		return new IntVec2();
+	}
+	
+	public IntVec2 copy()
+	{
+		return new IntVec2(this.x, this.y);
+	}
+	
 	public IntVec2 set(int x, int y)
 	{
-		this.x += x;
-		this.y += y;
+		this.x = x;
+		this.y = y;
 		return this;		
 	}
 	
 	public IntVec2 add(IntVec2 other)
 	{
-		return new IntVec2(x + other.x, y + other.y);
+		x += other.x;
+		y += other.y;
+		return this;
 	}
 	
 	public IntVec2 minus(IntVec2 other)
 	{
-		return new IntVec2(x - other.x, y - other.y);
+		x -= other.x;
+		y -= other.y;
+		return this;
 	}
 	
 	public IntVec2 addX(int other)
 	{
-		return new IntVec2(x + other, y);
+		return add(other, 0);
 	}
 	
 	public IntVec2 addY(int other)
 	{
-		return new IntVec2(x, y + other);
+		return add(0, other);
 	}
 	
 	public IntVec2 add(int other)
 	{
-		return new IntVec2(x + other, y + other);
+		return add(other, other);
+	}
+	
+	public IntVec2 add(int x, int y)
+	{
+		this.x += x;
+		this.y += y;
+		return this;
 	}
 	
 	/* Utility for inventory menu XY handling */

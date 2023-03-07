@@ -31,7 +31,8 @@ public class Dwmg
     private static final Logger LOGGER = LogUtils.getLogger();
     // Temporary BefriendMobAPI instance.
     // Will be removed after isolating BefriendMobAPI out as a library.
-    private static BefriendMobsAPI TEMP_BM_API;
+    @SuppressWarnings("unused")
+	private static BefriendMobsAPI TEMP_BM_API;
     
     // Whether this project is under debug, or for release.
     // This controls if debug outputs should appear.

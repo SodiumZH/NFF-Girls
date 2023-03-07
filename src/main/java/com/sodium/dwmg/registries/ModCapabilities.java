@@ -1,7 +1,6 @@
 package com.sodium.dwmg.registries;
 
 
-import com.sodium.dwmg.befriendmobsapi.entitiy.capability.CBefriendableMob;
 import com.sodium.dwmg.entities.capabilities.CUndeadMob;
 
 import net.minecraftforge.common.capabilities.Capability;

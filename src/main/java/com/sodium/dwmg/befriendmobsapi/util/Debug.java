@@ -4,7 +4,6 @@ import com.sodium.dwmg.Dwmg;
 
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 // All debug output should work only in development.
