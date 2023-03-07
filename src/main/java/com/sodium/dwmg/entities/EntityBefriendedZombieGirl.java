@@ -191,14 +191,6 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		setBauble(NbtHelper.readItemStack(nbt, "bauble_1"), 1);
 	}
 
-	/* GUI */
-
-	@Override
-	public AbstractGuiBefriended makeGui(AbstractInventoryMenuBefriended menu, Inventory playerInventory,
-			Component title) {
-		return new GuiVanillaUndeadTwoBaubles(menu, playerInventory, title, this);
-	}
-
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //

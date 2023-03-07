@@ -1,8 +1,10 @@
 package com.sodium.dwmg.befriendmobsapi.inventory;
 
+import com.sodium.dwmg.befriendmobsapi.client.gui.screens.AbstractGuiBefriended;
 import com.sodium.dwmg.befriendmobsapi.entitiy.IBefriendedMob;
 import com.sodium.dwmg.befriendmobsapi.util.math.IntVec2;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,11 +25,22 @@ public abstract class AbstractInventoryMenuBefriended extends AbstractContainerM
 		this.mob = mob;
 		this.container = container;
 		this.playerInventory = playerInventory;
+		addMenuSlots();
+		if (doAddPlayerInventory())
+			addPlayerInventorySlots(playerInventory, getPlayerInventoryPosition().x, getPlayerInventoryPosition().y);
+		container.startOpen(playerInventory.player);
+	}
+
+	protected abstract void addMenuSlots();
+	
+	protected boolean doAddPlayerInventory()
+	{
+		return true;
 	}
 	
-	protected abstract void addMenuSlots();
-		
-	protected void addPlayerInventorySlots(Inventory playerInventory, int startX, int startY) 
+	protected abstract IntVec2 getPlayerInventoryPosition();
+	
+	private void addPlayerInventorySlots(Inventory playerInventory, int startX, int startY) 
 	{
 
 		for (int i1 = 0; i1 < 3; ++i1) 
@@ -43,8 +56,6 @@ public abstract class AbstractInventoryMenuBefriended extends AbstractContainerM
 			this.addSlot(new Slot(playerInventory, j1, startX + j1 * 18, startY + 58));
 		}
 	}
-
-
 
 	@Override
 	public boolean stillValid(Player player) {
@@ -77,4 +88,6 @@ public abstract class AbstractInventoryMenuBefriended extends AbstractContainerM
 	{
 		return 0;
 	}
+	
+	public abstract AbstractGuiBefriended makeGui(); 
 }

@@ -14,7 +14,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class BefriendMobsAPI {
 
 	public static final String MOD_ID = Dwmg.MOD_ID;
-	//public static final String MOD_ID = "befriended_mobs_api";
+	//public static final String MOD_ID = "befriendedmobsapi";
 	public static String modDomain()
 	{
 		return "befriendmobsapi";	// Temporary for locating resource

@@ -2,6 +2,7 @@ package com.sodium.dwmg.client.gui.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.sodium.dwmg.befriendmobsapi.client.gui.screens.templates.GuiVanillaUndead;
 import com.sodium.dwmg.befriendmobsapi.entitiy.IBefriendedMob;
 import com.sodium.dwmg.befriendmobsapi.inventory.AbstractInventoryMenuBefriended;
 import com.sodium.dwmg.befriendmobsapi.util.math.IntVec2;

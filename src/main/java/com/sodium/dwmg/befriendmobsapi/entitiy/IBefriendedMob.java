@@ -145,10 +145,7 @@ public interface IBefriendedMob extends ContainerListener  {
 	}
 
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container);
-	
-	/* GUI related */
-	public AbstractGuiBefriended makeGui(AbstractInventoryMenuBefriended menu, Inventory playerInventory, Component title);
-	
+
 	@Override
 	public default void containerChanged(Container pContainer) 
 	{

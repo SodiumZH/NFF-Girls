@@ -1,6 +1,8 @@
 package com.sodium.dwmg.inventory;
 
+import com.sodium.dwmg.befriendmobsapi.client.gui.screens.AbstractGuiBefriended;
 import com.sodium.dwmg.befriendmobsapi.entitiy.IBefriendedMob;
+import com.sodium.dwmg.befriendmobsapi.inventory.templates.InventoryMenuVanillaUndead;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,5 +23,11 @@ public class InventoryMenuVanillaUndeadOneBauble extends InventoryMenuVanillaUnd
 	public int getBaubleSlotAmount()
 	{
 		return 1;
+	}
+
+	@Override
+	public AbstractGuiBefriended makeGui() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

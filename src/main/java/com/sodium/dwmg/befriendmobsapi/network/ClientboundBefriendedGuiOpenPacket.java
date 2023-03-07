@@ -47,7 +47,7 @@ public class ClientboundBefriendedGuiOpenPacket implements Packet<ClientGamePack
 			AbstractInventoryMenuBefriended menu =
 					bef.makeMenu(getContainerId(), localplayer.getInventory(), simplecontainer);
 			localplayer.containerMenu = menu;
-			mc.setScreen(bef.makeGui(menu, localplayer.getInventory(), entity.getDisplayName()));
+			mc.setScreen(menu.makeGui());
 		}
 	}
 
