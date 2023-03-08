@@ -4,7 +4,7 @@ import com.github.mechalopa.hmag.client.renderer.ZombieGirlRenderer;
 import com.sodium.dwmg.Dwmg;
 import com.sodium.dwmg.befriendmobsapi.BefriendMobsAPI;
 import com.sodium.dwmg.entities.EntityBefriendedZombieGirl;
-import com.sodium.dwmg.registries.ModEntityTypes;
+import com.sodium.dwmg.registries.DwmgEntityTypes;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,11 +22,11 @@ public class ModClientEvents
     
     @SubscribeEvent
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(ModEntityTypes.BEF_ZOMBIE_GIRL.get(), ZombieGirlRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.BEF_ZOMBIE_GIRL.get(), ZombieGirlRenderer::new);
     }
 
 	@SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
-        event.put(ModEntityTypes.BEF_ZOMBIE_GIRL.get(), EntityBefriendedZombieGirl.createAttributes().build());
+        event.put(DwmgEntityTypes.BEF_ZOMBIE_GIRL.get(), EntityBefriendedZombieGirl.createAttributes().build());
     }
 }

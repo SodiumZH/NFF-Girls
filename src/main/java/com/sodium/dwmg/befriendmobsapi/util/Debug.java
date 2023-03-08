@@ -1,6 +1,6 @@
 package com.sodium.dwmg.befriendmobsapi.util;
 
-import com.sodium.dwmg.Dwmg;
+import com.sodium.dwmg.befriendmobsapi.BefriendMobsAPI;
 
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
@@ -10,11 +10,14 @@ import net.minecraft.world.entity.player.Player;
 public class Debug {
 	
 	// param receiver should be player
-	public static void printToScreen(String text, Entity receiver, Entity sender)
+	public static void printToScreen(String text, Player receiver, Entity sender)
 	{
-		if(receiver instanceof Player player && Dwmg.IS_DEBUG)
-			
-			player.sendMessage(new TextComponent(text), sender.getUUID());
+		if(BefriendMobsAPI.IS_DEBUG_MODE)			
+			receiver.sendMessage(new TextComponent(text), sender.getUUID());
 	}
 	
+	public static void printToScreen(String text, Player receiver)
+	{		
+		printToScreen(text, receiver, receiver);
+	}
 }

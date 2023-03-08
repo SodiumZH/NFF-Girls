@@ -151,4 +151,9 @@ public interface IBefriendedMob extends ContainerListener  {
 	{
 		updateFromInventory();
 	}
+	
+	public default LivingEntity asLiving()
+	{
+		return (LivingEntity)this;
+	}
 }

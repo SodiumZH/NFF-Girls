@@ -3,7 +3,6 @@ package com.sodium.dwmg.befriendmobsapi;
 import com.sodium.dwmg.Dwmg;
 import com.sodium.dwmg.befriendmobsapi.entitiy.befriending.AbstractBefriendingHandler;
 import com.sodium.dwmg.befriendmobsapi.registry.RegItems;
-import com.sodium.dwmg.entities.befriending.BefriendingHandlerGetter;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -31,17 +30,6 @@ public class BefriendMobsAPI {
         //MinecraftForge.EVENT_BUS.register(this);
 	}
 	
-    // You can reset this value to add implementations of befriending more mobs 
-    private static BefriendingHandlerGetter befriendingHandlerGetter = new BefriendingHandlerGetter();
-
-    public static AbstractBefriendingHandler getBefriendingHandler()
-    {
-    	return befriendingHandlerGetter.get();
-    }
-    
-    public static void setBefriendingHandler(AbstractBefriendingHandler newHandler)
-    {
-    	befriendingHandlerGetter = new BefriendingHandlerGetter(newHandler);
-    }
+    public static final boolean IS_DEBUG_MODE = true;
 	
 }

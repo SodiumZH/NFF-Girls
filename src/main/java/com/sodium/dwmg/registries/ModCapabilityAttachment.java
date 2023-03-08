@@ -38,7 +38,7 @@ public class ModCapabilityAttachment {
 		EntityType<?> type = living.getType();
 		
 		living.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> {
-			if (type == ModEntityTypes.ZOMBIE_GIRL.get())
+			if (type == DwmgEntityTypes.ZOMBIE_GIRL.get())
 			{
 				float rnd = new Random().nextFloat();
 				l.getNBT().put("cakes_required", IntTag.valueOf(rnd < 0.1 ? 1 : (rnd < 0.4 ? 2 : 3)));

@@ -6,10 +6,9 @@ import com.mojang.logging.LogUtils;
 import com.sodium.dwmg.befriendmobsapi.BefriendMobsAPI;
 import com.sodium.dwmg.befriendmobsapi.entitiy.befriending.AbstractBefriendingHandler;
 import com.sodium.dwmg.entities.befriending.BefriendingHandler;
-import com.sodium.dwmg.entities.befriending.BefriendingHandlerGetter;
 import com.sodium.dwmg.registries.ModBlocks;
 import com.sodium.dwmg.registries.ModEffects;
-import com.sodium.dwmg.registries.ModEntityTypes;
+import com.sodium.dwmg.registries.DwmgEntityTypes;
 import com.sodium.dwmg.registries.ModItems;
 
 import net.minecraft.client.Minecraft;
@@ -34,10 +33,6 @@ public class Dwmg
     @SuppressWarnings("unused")
 	private static BefriendMobsAPI TEMP_BM_API;
     
-    // Whether this project is under debug, or for release.
-    // This controls if debug outputs should appear.
-    public static final boolean IS_DEBUG = true;
-    
     public static void logInfo(String info)
     {
     	LOGGER.info(info);
@@ -54,7 +49,7 @@ public class Dwmg
         ModEffects.EFFECTS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
-        ModEntityTypes.ENTITY_TYPES.register(modEventBus);
+        DwmgEntityTypes.ENTITY_TYPES.register(modEventBus);
         
         TEMP_BM_API = new BefriendMobsAPI();
         
@@ -88,18 +83,5 @@ public class Dwmg
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
     }
-    
-    /* Utils */
-    
-    @Deprecated
-    public static AbstractBefriendingHandler getsetBefriendingHandler()
-    {
-    	return BefriendMobsAPI.getBefriendingHandler();
-    }
-    
-    @Deprecated
-    public static void setBefriendingHandler(AbstractBefriendingHandler newHandler)
-    {
-    	 BefriendMobsAPI.setBefriendingHandler(newHandler);
-    }
+
 }

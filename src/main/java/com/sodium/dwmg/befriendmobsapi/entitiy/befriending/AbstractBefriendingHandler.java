@@ -1,6 +1,7 @@
 package com.sodium.dwmg.befriendmobsapi.entitiy.befriending;
 
 import com.sodium.dwmg.befriendmobsapi.entitiy.IBefriendedMob;
+import com.sodium.dwmg.befriendmobsapi.event.events.MobBefriendEvent;
 import com.sodium.dwmg.befriendmobsapi.registry.RegCapabilities;
 import com.sodium.dwmg.befriendmobsapi.util.Debug;
 import com.sodium.dwmg.befriendmobsapi.util.EntityHelper;
@@ -8,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
 
 public abstract class AbstractBefriendingHandler 
 {
@@ -20,6 +22,9 @@ public abstract class AbstractBefriendingHandler
 		return null;
 	}
 	
+	/** If this method is overridden, it should invalidate the input target living entity.
+	 * And don't forget to post MobBefriendEvent in the end.
+	 */
 	public IBefriendedMob befriend(Player player, LivingEntity target)
 	{
 		// Don't execute on client
@@ -41,11 +46,11 @@ public abstract class AbstractBefriendingHandler
 			throw new RuntimeException("Befriending: Entity type after befriending not implementing IBefriendedMob interface.");
 		IBefriendedMob result = (IBefriendedMob)resultRaw;
 		result.init(player.getUUID(), target);		
-		Debug.printToScreen("Mob "+target.toString()+" befriended", player, target);
+		Debug.printToScreen("Mob \""+target.getDisplayName().getString()+"\" befriended", player, target);
+		if (result != null)
+			MinecraftForge.EVENT_BUS.post(new MobBefriendEvent(player, target, result));
 		return result;
 	}
-
 	
-	public abstract BefriendableMobInteractionResult onBefriendableMobInteract(BefriendableMobInteractArguments args);
-	
+	public abstract BefriendableMobInteractionResult handleInteract(BefriendableMobInteractArguments args);
 }
