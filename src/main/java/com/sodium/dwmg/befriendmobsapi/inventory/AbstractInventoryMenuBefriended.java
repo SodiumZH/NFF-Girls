@@ -70,13 +70,9 @@ public abstract class AbstractInventoryMenuBefriended extends AbstractContainerM
 	
 	/* Utils */
 
-	LivingEntity getLiving() {
-		return (LivingEntity) mob;
-	}
-
 	public int getBaubleSlotAmount()
 	{
-		return 2;
+		return 0;
 	}
 	
 	public int getBaubleSlotPositionX(int index)
@@ -89,5 +85,5 @@ public abstract class AbstractInventoryMenuBefriended extends AbstractContainerM
 		return 0;
 	}
 	
-	public abstract AbstractGuiBefriended makeGui(); 
+	public abstract AbstractGuiBefriended makeGui();
 }
