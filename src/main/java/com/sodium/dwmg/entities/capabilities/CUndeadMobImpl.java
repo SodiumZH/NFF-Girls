@@ -3,8 +3,8 @@ package com.sodium.dwmg.entities.capabilities;
 import java.util.UUID;
 import java.util.Vector;
 
-import com.sodium.dwmg.befriendmobsapi.util.NbtHelper;
-import com.sodium.dwmg.befriendmobsapi.util.Util;
+import com.sodium.dwmg.befriendmobs.util.NbtHelper;
+import com.sodium.dwmg.befriendmobs.util.Util;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;

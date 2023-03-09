@@ -1,7 +1,7 @@
 package com.sodium.dwmg.entities.ai.goals;
 
-import com.sodium.dwmg.befriendmobsapi.entitiy.IBefriendedMob;
-import com.sodium.dwmg.befriendmobsapi.entitiy.ai.goal.vanilla.BefriendedFollowOwnerGoal;
+import com.sodium.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import com.sodium.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedFollowOwnerGoal;
 
 import net.minecraft.world.entity.EquipmentSlot;
 

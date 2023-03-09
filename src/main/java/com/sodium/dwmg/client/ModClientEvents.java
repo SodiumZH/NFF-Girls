@@ -2,7 +2,7 @@ package com.sodium.dwmg.client;
 
 import com.github.mechalopa.hmag.client.renderer.ZombieGirlRenderer;
 import com.sodium.dwmg.Dwmg;
-import com.sodium.dwmg.befriendmobsapi.BefriendMobsAPI;
+import com.sodium.dwmg.befriendmobs.BefriendMobs;
 import com.sodium.dwmg.entities.EntityBefriendedZombieGirl;
 import com.sodium.dwmg.registries.DwmgEntityTypes;
 
@@ -12,7 +12,7 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = BefriendMobsAPI.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModClientEvents 
 {
 

@@ -1,10 +1,10 @@
 package com.sodium.dwmg.registries;
 
 import com.sodium.dwmg.Dwmg;
-import com.sodium.dwmg.befriendmobsapi.BefriendMobsAPI;
-import com.sodium.dwmg.befriendmobsapi.entitiy.IBefriendedMob;
-import com.sodium.dwmg.befriendmobsapi.entitiy.capability.CBefriendableMobProvider;
-import com.sodium.dwmg.befriendmobsapi.util.TagHelper;
+import com.sodium.dwmg.befriendmobs.BefriendMobs;
+import com.sodium.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import com.sodium.dwmg.befriendmobs.entitiy.capability.CBefriendableMobProvider;
+import com.sodium.dwmg.befriendmobs.util.TagHelper;
 import com.sodium.dwmg.entities.capabilities.CUndeadMobProvider;
 
 import net.minecraft.resources.ResourceLocation;

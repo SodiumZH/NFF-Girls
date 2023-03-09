@@ -3,9 +3,7 @@ package com.sodium.dwmg;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
-import com.sodium.dwmg.befriendmobsapi.BefriendMobsAPI;
-import com.sodium.dwmg.befriendmobsapi.entitiy.befriending.AbstractBefriendingHandler;
-import com.sodium.dwmg.entities.befriending.BefriendingHandler;
+import com.sodium.dwmg.befriendmobs.BefriendMobs;
 import com.sodium.dwmg.registries.ModBlocks;
 import com.sodium.dwmg.registries.ModEffects;
 import com.sodium.dwmg.registries.DwmgEntityTypes;
@@ -31,7 +29,7 @@ public class Dwmg
     // Temporary BefriendMobAPI instance.
     // Will be removed after isolating BefriendMobAPI out as a library.
     @SuppressWarnings("unused")
-	private static BefriendMobsAPI TEMP_BM_API;
+	private static BefriendMobs TEMP_BM = new BefriendMobs();
     
     public static void logInfo(String info)
     {
@@ -50,8 +48,6 @@ public class Dwmg
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         DwmgEntityTypes.ENTITY_TYPES.register(modEventBus);
-        
-        TEMP_BM_API = new BefriendMobsAPI();
         
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

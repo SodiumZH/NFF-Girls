@@ -2,10 +2,10 @@ package com.sodium.dwmg.client.gui.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.sodium.dwmg.befriendmobsapi.client.gui.screens.templates.GuiVanillaUndead;
-import com.sodium.dwmg.befriendmobsapi.entitiy.IBefriendedMob;
-import com.sodium.dwmg.befriendmobsapi.inventory.AbstractInventoryMenuBefriended;
-import com.sodium.dwmg.befriendmobsapi.util.math.IntVec2;
+import com.sodium.dwmg.befriendmobs.client.gui.screens.templates.GuiVanillaUndead;
+import com.sodium.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import com.sodium.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import com.sodium.dwmg.befriendmobs.util.math.IntVec2;
 
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
