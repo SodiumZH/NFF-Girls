@@ -1,6 +1,5 @@
 package net.sodiumstudio.dwmg.client.gui.screens;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.sodiumstudio.befriendmobs.client.gui.screens.templates.GuiVanillaUndead;
 import net.sodiumstudio.befriendmobs.entitiy.IBefriendedMob;
