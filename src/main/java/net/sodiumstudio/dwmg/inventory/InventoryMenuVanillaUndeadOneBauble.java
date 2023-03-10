@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.inventory;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.sodiumstudio.befriendmobs.client.gui.screens.AbstractGuiBefriended;
 import net.sodiumstudio.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.templates.InventoryMenuVanillaUndead;
@@ -29,4 +30,5 @@ public class InventoryMenuVanillaUndeadOneBauble extends InventoryMenuVanillaUnd
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }
