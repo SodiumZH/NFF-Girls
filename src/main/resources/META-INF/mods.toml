@@ -9,7 +9,7 @@ modLoader="javafml" #mandatory
 loaderVersion="[40,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
-license="LGPL-3.0"
+license="All rights reserved"
 # A URL to refer people to when problems occur with this mod
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
@@ -27,14 +27,14 @@ displayName="Days with Monster Girls" #mandatory
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-#logoFile="examplemod.png" #optional
-
-credits="Mechalopa (HMaG), Silentine & Mrbysco (GOG4)"
-
+logoFile="examplemod.png" #optional
+# A text field displayed in the mod UI
+credits="Thanks for this example mod goes to Java" #optional
+# A text field displayed in the mod UI
 authors="SodiumZH" #optional
-
+# The description text for the mod (multi line!) (#mandatory)
 description='''Enjoy your Minecraft days with monster girls!'''
-
+# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.dwmg]] #optional
     # the modid of the dependency
     modId="forge" #mandatory
@@ -54,17 +54,17 @@ description='''Enjoy your Minecraft days with monster girls!'''
     versionRange="[1.18.2,1.19)"
     ordering="NONE"
     side="BOTH"
-
+    
 [[dependencies.dwmg]]
     modId="hmag"
-    mandatory=false
+    mandatory=true
     versionRange="[5.1.0, 6.0)"
     ordering="NONE"
     side="BOTH"
     
 [[dependencies.dwmg]]
     modId="grimoireofgaia"
-    mandatory=false
+    mandatory=true
     versionRange="[2.0.0-alpha.23,)"
     ordering="NONE"
     side="BOTH"

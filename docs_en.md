@@ -36,13 +36,13 @@ A procedure to befriend a mob, i.e. convert a befriendable mob into the correspo
 
 ## How to create a befriended mob class
 
-1. Create a mob class (anything extends LivingEntity; PathfinderMob recommended) and **implement `IBefriendedMob` interface**. Register its entity type, client renderer, client attributes, etc. (Similar as creating any other entity classes.)
+1. Create a mob class (anything extends LivingEntity; PathfinderMob recommended) and **implement `IBefriendedMob` interface**. Register its entity type.
 
 2. Copy-paste code in "General Settings" box from the example mob class. (Of course you can adjust them if you know what you're doing.)
 
 3. Implement other functions. See comments in the example mob class for details.
 
-4. (Optional if you need GUI) Create the inventory menu. Inventory menu is for add the mob's inventory into the GUI. Inventory menu for befriended mob **inherits `AbstractInventoryMenuBefriended` class**. In this class you need to override `addMenuSlots` method for the inventory of your mob. 
+4. (Optional, if you need GUI) Create the inventory menu. Inventory menu is for add the mob's inventory into the GUI. Inventory menu for befriended mob **inherits `AbstractInventoryMenuBefriended` class**. In this class you need to override `addMenuSlots` method for the inventory of your mob. 
 
    By default, after running `addMenuSlots`, the player inventory will be automatically added just like in the vanilla inventory screen, at the position specified by `getPlayerInventoryPosition` method which you need to override. If player inventory is not needed, override `doAddPlayerInventory` to false.
 
