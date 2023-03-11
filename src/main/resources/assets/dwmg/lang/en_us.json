@@ -6,5 +6,6 @@
 	"item.dwmg.soul_cake_slice": "Soul Cake Slice",
 	"block.dwmg.soul_cake": "Soul Cake",
 	"itemGroup.dwmg_tab" : "Days with Monster Girls",
-	"entity.dwmg.bef_zombie_girl" : "Zombie Girl"
+	"entity.dwmg.bef_zombie_girl" : "Zombie Girl",
+	"entity.dwmg.bef_skeleton_girl" : "Skeleton Girl"
 }

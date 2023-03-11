@@ -5,6 +5,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.sodiumstudio.befriendmobs.client.gui.screens.AbstractGuiBefriended;
 import net.sodiumstudio.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.templates.InventoryMenuVanillaUndead;
+import net.sodiumstudio.dwmg.client.gui.screens.GuiVanillaUndeadOneBauble;
 
 public class InventoryMenuVanillaUndeadOneBauble extends InventoryMenuVanillaUndead{
 
@@ -26,7 +27,6 @@ public class InventoryMenuVanillaUndeadOneBauble extends InventoryMenuVanillaUnd
 
 	@Override
 	public AbstractGuiBefriended makeGui() {
-		// TODO Auto-generated method stub
-		return null;
+		return new GuiVanillaUndeadOneBauble(this, playerInventory, mob);
 	}
 }

@@ -3,6 +3,7 @@ package net.sodiumstudio.befriendmobs.event;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
@@ -45,42 +46,43 @@ public class EntityEvents
 		Util.GlobalBoolean shouldPostInteractEvent = Util.createGB(false);
 
 		// Mob interaction start //
-		if (target != null && target instanceof LivingEntity) 
+		if (target != null && target instanceof Mob) 
 		{
-			LivingEntity living = (LivingEntity) target;
+			Mob mob = (Mob) target;
+			EntityType<Mob> type = (EntityType<Mob>) mob.getType();
 			// Handle befriendable mob start //
-			if (living.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).isPresent()
-					&& !(living instanceof IBefriendedMob)) {
-				living.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> 
+			if (mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).isPresent()
+					&& !(mob instanceof IBefriendedMob)) {
+				mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> 
 				{
 					/* For debug befriender only */
 					if (player.getMainHandItem().getItem() == RegItems.DEBUG_BEFRIENDER.get()) 
 					{
 						if (!isClientSide && isMainHand) 
 						{
-							IBefriendedMob bef = BefriendingTypeRegistry.getHandler(living.getType()).befriend(player,
-									living);
+							IBefriendedMob bef = BefriendingTypeRegistry.getHandler(type).befriend(player,
+									mob);
 							if (bef != null) 
 							{
-								MinecraftForge.EVENT_BUS.post(new MobBefriendEvent(player, living, bef));
-								EntityHelper.sendHeartParticlesToMob(bef.asLiving()); // TODO: move this to a MobBefriendEvent listener
+								MinecraftForge.EVENT_BUS.post(new MobBefriendEvent(player, mob, bef));
+								EntityHelper.sendHeartParticlesToMob(bef.asMob()); // TODO: move this to a MobBefriendEvent listener
 								event.setCancellationResult(InteractionResult.sidedSuccess(isClientSide));
 								return;
 							} 
 							else throw new UnimplementedException("Entity type befriend method unimplemented: "
-										+ living.getType().toShortString() + ", handler class: "
-										+ BefriendingTypeRegistry.getHandler(living.getType()).toString());
+										+ mob.getType().toShortString() + ", handler class: "
+										+ BefriendingTypeRegistry.getHandler(type).toString());
 						}
 						MinecraftForge.EVENT_BUS.post(
-								new BefriendableMobInteractEvent(event.getSide(), player, living, event.getHand()));
+								new BefriendableMobInteractEvent(event.getSide(), player, mob, event.getHand()));
 						result[0] = InteractionResult.sidedSuccess(isClientSide);
 					}
 
 					/* Main actions */
 					else 
 					{
-						BefriendableMobInteractionResult res = BefriendingTypeRegistry.getHandler(living.getType())
-								.handleInteract(BefriendableMobInteractArguments.of(event.getSide(), player, living,
+						BefriendableMobInteractionResult res = BefriendingTypeRegistry.getHandler(type)
+								.handleInteract(BefriendableMobInteractArguments.of(event.getSide(), player, mob,
 										event.getHand()));
 						if (res.befriendedMob != null) // Directly exit if befriended, as this mob is no longer valid
 						{
@@ -94,14 +96,14 @@ public class EntityEvents
 							result[0] = InteractionResult.sidedSuccess(isClientSide);
 							shouldPostInteractEvent.set(true);
 							MinecraftForge.EVENT_BUS.post(
-									new BefriendableMobInteractEvent(event.getSide(), player, living, event.getHand()));
+									new BefriendableMobInteractEvent(event.getSide(), player, mob, event.getHand()));
 						}
 					}
 				});
 			}
 			// Handle befriendable mob end //
 			// Handle befriended mob start //
-			else if (living instanceof IBefriendedMob bef) 
+			else if (mob instanceof IBefriendedMob bef) 
 			{
 				// if (!isClientSide && isMainHand)
 

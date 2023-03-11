@@ -1,5 +1,7 @@
 package net.sodiumstudio.befriendmobs.example;
 
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.sodiumstudio.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entitiy.befriending.AbstractBefriendingHandler;
 import net.sodiumstudio.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
@@ -31,10 +33,10 @@ public class EXAMPLE_BefriendingHandlerZombie extends AbstractBefriendingHandler
 			// Check player has an EXAMPLE Zombie Befriending Item on main hand
 			if (args.isMainHand() && args.getPlayer().getMainHandItem().getItem() == RegItems.EXAMPLE_ZOMBIE_BEFRIENDING_ITEM.get())
 			{
-				IBefriendedMob bef = BefriendingTypeRegistry.getHandler(args.getTarget().getType())
+				IBefriendedMob bef = BefriendingTypeRegistry.getHandler((EntityType<? extends Mob>) args.getTarget().getType())
 					.befriend(args.getPlayer(), args.getTarget());
 				// WARNING: now args.getTarget() has been invalidated, so we must send particles to the new mob
-				EntityHelper.sendHeartParticlesToMob(bef.asLiving());
+				EntityHelper.sendHeartParticlesToMob(bef.asMob());
 				// Don't forget to set the result
 				result.befriendedMob = bef;
 				result.setHandled();

@@ -15,7 +15,7 @@ import net.sodiumstudio.befriendmobs.util.math.IntVec2;
 
 public class GuiVanillaUndeadOneBauble extends GuiVanillaUndead {
 
-	public GuiVanillaUndeadOneBauble(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory, Component pTitle,
+	public GuiVanillaUndeadOneBauble(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory,
 			IBefriendedMob mob) {
 		super(pMenu, pPlayerInventory, mob);
 	}

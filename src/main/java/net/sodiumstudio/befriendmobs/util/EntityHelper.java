@@ -71,11 +71,16 @@ public class EntityHelper {
 		return replaceLivingEntity(newType, from, false);
 	}
 	
-	public static <T extends Mob> Mob replaceMob(EntityType<T> newType, Mob from, boolean allowNewEntityDespawn)
+	public static <T extends Mob> Mob replaceMob(EntityType<T> newType, Mob from, boolean allowNewMobDespawn)
 	{
-		if (!allowNewEntityDespawn)
-			from.setPersistenceRequired();
-		return from.convertTo(newType, true);
+		Mob newMob = from.convertTo(newType, true);
+		
+		if (!allowNewMobDespawn || from.isPersistenceRequired()) 
+			newMob.setPersistenceRequired();
+		newMob.setBaby(from.isBaby());
+		newMob.setCustomName(from.getCustomName());
+		newMob.setCustomNameVisible(from.isCustomNameVisible());
+		return newMob;
 	}
 	
 	public static <T extends Mob> Mob replaceMob(EntityType<T> newType, Mob from)
@@ -96,6 +101,7 @@ public class EntityHelper {
 			((ServerLevel)(entity.level)).sendParticles(options, pos.x + offset.x + d0, pos.y + entity.getBbHeight() + offset.y + d1, pos.z + offset.z + d2, 1, 0, 0, 0, speed * d3);
 		}
 	}
+
 	
 	public static void sendParticlesToMob(LivingEntity entity, ParticleOptions options, Vec3 offset, int amount, double speed)
 	{

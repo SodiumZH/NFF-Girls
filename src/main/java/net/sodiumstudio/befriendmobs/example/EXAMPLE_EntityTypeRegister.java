@@ -8,7 +8,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.entities.EntityBefriendedZombieGirl;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedZombieGirl;
 
 // Register the new mob type
 // This is just the same as registering any other entity types. 

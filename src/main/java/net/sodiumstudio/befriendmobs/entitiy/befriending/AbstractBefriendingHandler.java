@@ -3,6 +3,7 @@ package net.sodiumstudio.befriendmobs.entitiy.befriending;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.sodiumstudio.befriendmobs.entitiy.IBefriendedMob;
@@ -11,6 +12,7 @@ import net.sodiumstudio.befriendmobs.event.events.MobBefriendEvent;
 import net.sodiumstudio.befriendmobs.registry.RegCapabilities;
 import net.sodiumstudio.befriendmobs.util.Debug;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
 
 public abstract class AbstractBefriendingHandler 
 {
@@ -21,7 +23,7 @@ public abstract class AbstractBefriendingHandler
 	/** If this method is overridden, it should invalidate the input target living entity.
 	 * And don't forget to post MobBefriendEvent in the end.
 	 */
-	public IBefriendedMob befriend(Player player, LivingEntity target)
+	public IBefriendedMob befriend(Player player, Mob target)
 	{
 		// Don't execute on client
 		if (target.level.isClientSide())
@@ -30,22 +32,26 @@ public abstract class AbstractBefriendingHandler
 		if (target instanceof IBefriendedMob)
 			return null;		
 
+		// Check if befriendable capability is attached
 		if(!target.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
 			throw new RuntimeException("Befriending: Target living entity not having CBefriendableMob capability attached.");
-		EntityType<?> newType = BefriendingTypeRegistry.getConvertTo(target.getType());
-		if(newType == null)
-			throw new RuntimeException("Befriending: Entity type after befriending is not valid. Check BefriendingMethod.getTypeAfterBefriending function.");
-		Entity resultRaw = EntityHelper.replaceLivingEntity(newType, target);
-		if(!(resultRaw instanceof LivingEntity))
-			throw new RuntimeException("Befriending: Entity type after befriending is not a living entity. Check BefriendingMethod.getTypeAfterBefriending function.");
-		if(!(resultRaw instanceof IBefriendedMob))
+		
+		// Get new type, and do check
+		@SuppressWarnings("unchecked")
+		EntityType<? extends Mob> newType = BefriendingTypeRegistry.getConvertTo((EntityType<? extends Mob>) target.getType());
+		if (newType == null)
+			throw new RuntimeException("Befriending: Entity type after befriending is not valid. Check if the befriendable mob has been registered to BefriendingTypeRegistry.");
+
+		Mob newMob = EntityHelper.replaceMob(newType, target);
+		if(!(newMob instanceof IBefriendedMob))
 			throw new RuntimeException("Befriending: Entity type after befriending not implementing IBefriendedMob interface.");
-		IBefriendedMob result = (IBefriendedMob)resultRaw;
-		result.init(player.getUUID(), target);		
+		IBefriendedMob newBefMob = (IBefriendedMob)newMob;
+		newBefMob.init(player.getUUID(), target);
+		newBefMob.setInventoryFromMob();
 		Debug.printToScreen("Mob \""+target.getDisplayName().getString()+"\" befriended", player, target);
-		if (result != null)
-			MinecraftForge.EVENT_BUS.post(new MobBefriendEvent(player, target, result));
-		return result;
+		if (newBefMob != null)
+			MinecraftForge.EVENT_BUS.post(new MobBefriendEvent(player, target, newBefMob));
+		return newBefMob;
 	}
 	
 	public abstract BefriendableMobInteractionResult handleInteract(BefriendableMobInteractArguments args);

@@ -5,16 +5,15 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.sodiumstudio.befriendmobs.client.gui.screens.AbstractGuiBefriended;
 import net.sodiumstudio.befriendmobs.entitiy.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 
@@ -27,7 +26,7 @@ public interface IBefriendedMob extends ContainerListener  {
 	 * @param player Player who owns this mob.
 	 * @param befriendedFrom The source mob from which this mob was befriended. E.g. a ZombieGirlFriendly was befriended from a ZombieGirlEntity. WARNING: Only on creating mob this value is valid. On reading from data it's null !!!
 	 */
-	public default void init(@Nonnull UUID playerUUID, @Nullable LivingEntity befriendedFrom)
+	public default void init(@Nonnull UUID playerUUID, @Nullable Mob befriendedFrom)
 	{
 		BefriendedHelper.initDefault(this, playerUUID, befriendedFrom);
 	}
@@ -123,8 +122,10 @@ public interface IBefriendedMob extends ContainerListener  {
 	}
 	
 	// Set mob data from inventory.
-	// Should be called only on tick.
 	public void updateFromInventory();
+	
+	// Set inventory from mob data
+	public void setInventoryFromMob();
 	
 	// Get bauble item stack from inventory.
 	// Baubles are extra items in inventory to define some extra functions.
@@ -150,8 +151,8 @@ public interface IBefriendedMob extends ContainerListener  {
 		updateFromInventory();
 	}
 	
-	public default LivingEntity asLiving()
+	public default Mob asMob()
 	{
-		return (LivingEntity)this;
+		return (Mob)this;
 	}
 }

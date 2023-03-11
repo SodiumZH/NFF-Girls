@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.NonNullConsumer;
 import net.minecraftforge.fml.LogicalSide;
@@ -15,7 +16,7 @@ public class BefriendableMobInteractArguments {
 
 	private LogicalSide side;
 	private Player player;
-	private LivingEntity target;
+	private Mob target;
 	private InteractionHand hand;
 	
 	private BefriendableMobInteractArguments()
@@ -26,7 +27,7 @@ public class BefriendableMobInteractArguments {
 		hand = null;
 	}
 	
-	public static BefriendableMobInteractArguments of(LogicalSide side, @Nonnull Player player, @Nonnull LivingEntity target, @Nonnull InteractionHand hand)
+	public static BefriendableMobInteractArguments of(LogicalSide side, @Nonnull Player player, @Nonnull Mob target, @Nonnull InteractionHand hand)
 	{
 		BefriendableMobInteractArguments res = new BefriendableMobInteractArguments();
 		res.side = side;
@@ -53,7 +54,7 @@ public class BefriendableMobInteractArguments {
 		return player;
 	}
 	
-	public LivingEntity getTarget()
+	public Mob getTarget()
 	{
 		return target;
 	}

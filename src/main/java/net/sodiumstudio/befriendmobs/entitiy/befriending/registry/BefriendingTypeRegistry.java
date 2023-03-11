@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.annotation.Nonnull;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -22,11 +23,11 @@ public class BefriendingTypeRegistry {
 	
 	private static class Entry
 	{
-		public EntityType<?> fromType = null;
-		public EntityType<?> convertToType = null;
+		public EntityType<? extends Mob> fromType = null;
+		public EntityType<? extends Mob> convertToType = null;
 		public AbstractBefriendingHandler handler = null;
 		
-		public Entry(EntityType<?> before, EntityType<?> after, AbstractBefriendingHandler handler)
+		public Entry(EntityType<? extends Mob> before, EntityType<? extends Mob> after, AbstractBefriendingHandler handler)
 		{
 			this.fromType = before;
 			this.convertToType = after;
@@ -38,7 +39,7 @@ public class BefriendingTypeRegistry {
 
 	/* Register */
 	
-	public static void register(@Nonnull EntityType<?> from, @Nonnull EntityType<?> convertTo, @Nonnull AbstractBefriendingHandler handler, boolean override)
+	public static void register(@Nonnull EntityType<? extends Mob> from, @Nonnull EntityType<? extends Mob> convertTo, @Nonnull AbstractBefriendingHandler handler, boolean override)
 	{
 		for (Entry entry: REGISTRY.map)
 		{
@@ -59,14 +60,14 @@ public class BefriendingTypeRegistry {
 		REGISTRY.map.add(newEntry);
 	}
 	
-	public static void register(@Nonnull EntityType<?> fromType, @Nonnull EntityType<?> convertToType, @Nonnull AbstractBefriendingHandler handler)
+	public static void register(@Nonnull EntityType<? extends Mob> fromType, @Nonnull EntityType<? extends Mob> convertToType, @Nonnull AbstractBefriendingHandler handler)
 	{
 		register(fromType, convertToType, handler, false);
 	}
 
 	/* Search */
 	
-	private static Entry getEntryFromType(EntityType<?> fromType)
+	private static Entry getEntryFromType(EntityType<? extends Mob> fromType)
 	{
 		for (Entry entry: REGISTRY.map)
 		{
@@ -78,7 +79,7 @@ public class BefriendingTypeRegistry {
 		return null;
 	}
 	
-	public static EntityType<?> getConvertTo(EntityType<?> fromType)
+	public static EntityType<? extends Mob> getConvertTo(EntityType<? extends Mob> fromType)
 	{
 		Entry entry = getEntryFromType(fromType);
 		if (entry != null)
@@ -86,7 +87,7 @@ public class BefriendingTypeRegistry {
 		else return null;
 	}
 	
-	public static AbstractBefriendingHandler getHandler(EntityType<?> fromType)
+	public static AbstractBefriendingHandler getHandler(EntityType<? extends Mob> fromType)
 	{
 		Entry entry = getEntryFromType(fromType);
 		if (entry != null)
@@ -94,7 +95,7 @@ public class BefriendingTypeRegistry {
 		else return null;
 	}
 	
-	public static boolean contains(EntityType<?> fromType)
+	public static boolean contains(EntityType<? extends Mob> fromType)
 	{
 		for (Entry entry: REGISTRY.map)
 		{

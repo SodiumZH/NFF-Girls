@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
@@ -24,13 +25,16 @@ import net.sodiumstudio.befriendmobs.network.ClientboundBefriendedGuiOpenPacket;
 public class BefriendedHelper {
 
 	/* Init */
-	public static void initDefault(IBefriendedMob mob, @Nonnull UUID playerUUID, @Nullable LivingEntity befriendedFrom)
+	public static void initDefault(IBefriendedMob mob, @Nonnull UUID playerUUID, @Nullable Mob befriendedFrom)
 	{
 		mob.setOwnerUUID(playerUUID);
 		if (mob instanceof LivingEntity living)
 		{
 			if (befriendedFrom != null)
+			{
 				living.setHealth(befriendedFrom.getHealth());
+				mob.setInventoryFromMob();
+			}
 		}
 		else throw new UnsupportedOperationException("IBefriendedMob interface is supported only on LivingEntity class. Attempting to implement on: \""+mob.getClass()+"\"");
 	}
@@ -90,7 +94,8 @@ public class BefriendedHelper {
 			if (player.containerMenu != player.inventoryMenu) {
 				player.closeContainer();
 			}
-
+			
+			target.setInventoryFromMob();
 			sp.nextContainerCounter();
 			ClientboundBefriendedGuiOpenPacket packet = new ClientboundBefriendedGuiOpenPacket(sp.containerCounter,
 					target.getInventory().getContainerSize(), living.getId());

@@ -153,6 +153,19 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 		}
 	}
 
+	@Override
+	public void setInventoryFromMob() {
+		if (!this.level.isClientSide) {
+			getInventory().setItem(0, this.getItemBySlot(EquipmentSlot.HEAD));
+			getInventory().setItem(1, this.getItemBySlot(EquipmentSlot.CHEST));
+			getInventory().setItem(2, this.getItemBySlot(EquipmentSlot.LEGS));
+			getInventory().setItem(3, this.getItemBySlot(EquipmentSlot.FEET));
+			getInventory().setItem(4, this.getMainHandItem());
+			getInventory().setItem(5, this.getOffhandItem());
+		}
+	}
+	
+	
 	/** Get bauble from the given bauble slot.
 	 * "Bauble" refers to extra item slots that are easy to access and provide some extra features.
 	 * the input of getBauble() is the "Bauble index". For example, if there are 2 bauble slots, the indexes should be 0 or 1.
