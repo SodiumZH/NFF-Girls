@@ -5,8 +5,8 @@ import com.github.mechalopa.hmag.registry.ModEntityTypes;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.sodiumstudio.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.entities.befriending.HandlerZombieGirl;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

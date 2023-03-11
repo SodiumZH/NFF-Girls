@@ -8,10 +8,10 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
-import net.sodiumstudio.dwmg.befriendmobs.client.gui.screens.templates.GuiVanillaUndead;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
+import net.sodiumstudio.befriendmobs.client.gui.screens.templates.GuiVanillaUndead;
+import net.sodiumstudio.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.befriendmobs.util.math.IntVec2;
 
 public class GuiVanillaUndeadOneBauble extends GuiVanillaUndead {
 

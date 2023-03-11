@@ -1,8 +1,8 @@
 package net.sodiumstudio.dwmg.entities.ai.goals;
 
 import net.minecraft.world.entity.EquipmentSlot;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedFollowOwnerGoal;
+import net.sodiumstudio.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entitiy.ai.goal.vanilla.BefriendedFollowOwnerGoal;
 
 public class BefriendedSunAvoidingFollowOwnerGoal extends BefriendedFollowOwnerGoal {
 

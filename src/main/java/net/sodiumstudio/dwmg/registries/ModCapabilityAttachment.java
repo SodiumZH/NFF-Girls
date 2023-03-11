@@ -7,11 +7,11 @@ import net.minecraft.world.entity.MobType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.sodiumstudio.befriendmobs.BefriendMobs;
+import net.sodiumstudio.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entitiy.capability.CBefriendableMobProvider;
+import net.sodiumstudio.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.capability.CBefriendableMobProvider;
-import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobProvider;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)

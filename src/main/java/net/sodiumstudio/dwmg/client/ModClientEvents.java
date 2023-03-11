@@ -3,8 +3,8 @@ package net.sodiumstudio.dwmg.client;
 import com.github.mechalopa.hmag.client.renderer.ZombieGirlRenderer;
 
 import net.minecraftforge.fml.common.Mod;
+import net.sodiumstudio.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.entities.EntityBefriendedZombieGirl;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.minecraftforge.api.distmarker.Dist;

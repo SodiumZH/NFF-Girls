@@ -2,9 +2,9 @@ package net.sodiumstudio.dwmg.inventory;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
-import net.sodiumstudio.dwmg.befriendmobs.client.gui.screens.AbstractGuiBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.templates.InventoryMenuVanillaUndead;
+import net.sodiumstudio.befriendmobs.client.gui.screens.AbstractGuiBefriended;
+import net.sodiumstudio.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.inventory.templates.InventoryMenuVanillaUndead;
 
 public class InventoryMenuVanillaUndeadOneBauble extends InventoryMenuVanillaUndead{
 

@@ -6,12 +6,12 @@ import net.minecraft.nbt.IntTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.AbstractBefriendingHandler;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
-import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
-import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
-import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.befriendmobs.entitiy.befriending.AbstractBefriendingHandler;
+import net.sodiumstudio.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
+import net.sodiumstudio.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
+import net.sodiumstudio.befriendmobs.util.Debug;
+import net.sodiumstudio.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.registries.ModEffects;
 import net.sodiumstudio.dwmg.registries.ModItems;
 

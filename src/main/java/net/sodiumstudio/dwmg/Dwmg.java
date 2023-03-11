@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
+import net.sodiumstudio.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.ModBlocks;
 import net.sodiumstudio.dwmg.registries.ModEffects;
