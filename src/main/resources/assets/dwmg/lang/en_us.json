@@ -4,6 +4,8 @@
 	"item.dwmg.soul_flour": "Soul Flour",
 	"item.dwmg.soul_cake": "Soul Cake",
 	"item.dwmg.soul_cake_slice": "Soul Cake Slice",
+	"item.dwmg.debug_befriender": "(Debug) Befriending Wand",
+	"item.dwmg.example_zombie_befriending_item": "(Debug) Example Zombie Befriending Item",
 	"block.dwmg.soul_cake": "Soul Cake",
 	"itemGroup.dwmg_tab" : "Days with Monster Girls",
 	"entity.dwmg.bef_zombie_girl" : "Zombie Girl",
