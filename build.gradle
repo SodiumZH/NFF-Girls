@@ -184,12 +184,12 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-	implementation fg.deobf("curse.maven:befmobs-836093:4431161")
+
     implementation fg.deobf("curse.maven:hmag-537613:4392755")
 	implementation fg.deobf("curse.maven:gog4-228948:4249761")
 	//implementation fg.deobf("curse.maven:citadel-331936:3683007")
 	//implementation fg.deobf("curse.maven:am-426558:3853078")
-
+	implementation fg.deobf("libs/befriendmobs-1.0.0-alpha.1.jar")
 	
 }
 
