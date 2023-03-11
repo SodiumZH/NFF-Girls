@@ -161,7 +161,9 @@ repositories {
    		url = "https://modmaven.dev"
   	}
   	
-
+  	flatDir {
+        dirs 'libs'
+    }
 
 	//maven { url = 'https://maven.parchmentmc.org' }
 }
@@ -189,7 +191,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:gog4-228948:4249761")
 	//implementation fg.deobf("curse.maven:citadel-331936:3683007")
 	//implementation fg.deobf("curse.maven:am-426558:3853078")
-	implementation fg.deobf("libs/befriendmobs-1.0.0-alpha.1.jar")
+	compile(name: 'example-local-dependency', ext: 'jar')
 	
 }
 
