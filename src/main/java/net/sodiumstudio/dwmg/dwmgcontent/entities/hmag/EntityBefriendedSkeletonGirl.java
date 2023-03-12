@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.github.mechalopa.hmag.world.entity.SkeletonGirlEntity;
-import com.github.mechalopa.hmag.world.entity.ZombieGirlEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -15,9 +14,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -29,20 +26,18 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedFleeSunGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedRangedBowAttackGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedRestrictSunGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedZombieAttackGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
-import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTag;
 import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTagWithEquipment;
-import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
-import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuVanillaUndeadOneBauble;
-import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuVanillaUndeadTwoBaubles;
+import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuSkeletonGirl;
 
 public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements IBefriendedMob
 {
@@ -66,11 +61,12 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	protected void registerGoals() {
 		goalSelector.addGoal(1, new BefriendedRestrictSunGoal(this));
 		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
-		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0d, true));
-		goalSelector.addGoal(4, new BefriendedSunAvoidingFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
-		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
-		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+		goalSelector.addGoal(3, new BefriendedRangedBowAttackGoal(this, 1.0D, 20, 15.0F));
+		goalSelector.addGoal(4, new BefriendedSkeletonMeleeAttackGoal(this, 1.2d, true));
+		goalSelector.addGoal(5, new BefriendedSunAvoidingFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
+		goalSelector.addGoal(6, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
+		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
@@ -124,11 +120,11 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		inventoryTag.setFromContainer(container);
 	}
 	
-	// 6->bauble, 7->arrow
+	// 6->bauble, 7->backup weapon 8->arrow
 	@Override
 	public int getInventorySize()
 	{
-		return 8;
+		return 9;
 	}
 
 	@Override
@@ -166,7 +162,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	
 	@Override
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuVanillaUndeadOneBauble(containerId, playerInventory, container, this);
+		return new InventoryMenuSkeletonGirl(containerId, playerInventory, container, this);
 	}
 	
 	/* Save and Load */
@@ -268,8 +264,13 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		return false;
 	}
 
-
-
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
+	
+	@Override
+	public void aiStep()
+	{
+		super.aiStep();
+	}
+	
 }

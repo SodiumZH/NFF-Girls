@@ -130,4 +130,14 @@ public class IntVec2
 		return this;
 	}
 
+	// Get slot coordinate from a base point.
+	// e.g. for base point v, v.coord(1,2) means v.slotRight(1).slotBelow(2)
+	// This method returns a new IntVec2 object and doesn't change the input vector.
+	// Designed for locating slot in 2D asset array of item slots.
+	public IntVec2 coord(int x, int y)
+	{
+		return new IntVec2(this.x + 18 * x, this.y + 18 * y);
+	}
+	
+	
 }

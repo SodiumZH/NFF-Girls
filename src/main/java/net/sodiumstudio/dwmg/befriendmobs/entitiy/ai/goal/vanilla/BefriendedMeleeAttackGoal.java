@@ -11,7 +11,8 @@ import net.minecraft.world.level.pathfinder.Path;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.BefriendedGoal;
 
-public class BefriendedMeleeAttackGoal extends BefriendedGoal {
+public class BefriendedMeleeAttackGoal extends BefriendedGoal
+{
 
 	protected final double speedModifier;
 	protected final boolean followingTargetEvenIfNotSeen;
@@ -27,8 +28,8 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal {
 	protected int failedPathFindingPenalty = 0;
 	protected boolean canPenalize = false;
 
-	public BefriendedMeleeAttackGoal(IBefriendedMob pMob, double pSpeedModifier,
-			boolean pFollowingTargetEvenIfNotSeen) {
+	public BefriendedMeleeAttackGoal(IBefriendedMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen)
+	{
 		mob = pMob;
 		this.speedModifier = pSpeedModifier;
 		this.followingTargetEvenIfNotSeen = pFollowingTargetEvenIfNotSeen;
@@ -45,36 +46,44 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal {
 		if (isDisabled())
 			return false;
 		long i = getPathfinder().level.getGameTime();
-		if (i - this.lastCanUseCheck < 20L) {
+		if (i - this.lastCanUseCheck < 20L)
+		{
 			return false;
-		} else {
+		} else
+		{
 			this.lastCanUseCheck = i;
 			LivingEntity livingentity = getPathfinder().getTarget();
-			if (livingentity == null) {
+			if (livingentity == null)
+			{
 				return false;
-			} else if (!livingentity.isAlive()) {
+			} else if (!livingentity.isAlive())
+			{
 				return false;
-			} else {
-				if (canPenalize) {
-					if (--this.ticksUntilNextPathRecalculation <= 0) {
+			} else
+			{
+				if (canPenalize)
+				{
+					if (--this.ticksUntilNextPathRecalculation <= 0)
+					{
 						this.path = getPathfinder().getNavigation().createPath(livingentity, 0);
 						this.ticksUntilNextPathRecalculation = 4 + getPathfinder().getRandom().nextInt(7);
 						if (this.path != null)
 							return true;
-						else return false;
-					} 
-					else
+						else
+							return false;
+					} else
 						return true;
 				}
 				this.path = getPathfinder().getNavigation().createPath(livingentity, 0);
 				if (this.path != null)
 					return true;
-				else 
+				else
 				{
 					if (this.getAttackReachSqr(livingentity) >= getPathfinder().distanceToSqr(livingentity.getX(),
 							livingentity.getY(), livingentity.getZ()))
 						return true;
-					else return false;
+					else
+						return false;
 				}
 			}
 		}
@@ -85,15 +94,20 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal {
 	 */
 	public boolean canContinueToUse() {
 		LivingEntity livingentity = getPathfinder().getTarget();
-		if (livingentity == null) {
+		if (livingentity == null)
+		{
 			return false;
-		} else if (!livingentity.isAlive()) {
+		} else if (!livingentity.isAlive())
+		{
 			return false;
-		} else if (!this.followingTargetEvenIfNotSeen) {
+		} else if (!this.followingTargetEvenIfNotSeen)
+		{
 			return !getPathfinder().getNavigation().isDone();
-		} else if (!getPathfinder().isWithinRestriction(livingentity.blockPosition())) {
+		} else if (!getPathfinder().isWithinRestriction(livingentity.blockPosition()))
+		{
 			return false;
-		} else {
+		} else
+		{
 			return !(livingentity instanceof Player)
 					|| !livingentity.isSpectator() && !((Player) livingentity).isCreative();
 		}
@@ -115,7 +129,8 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal {
 	 */
 	public void stop() {
 		LivingEntity livingentity = getPathfinder().getTarget();
-		if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingentity)) {
+		if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingentity))
+		{
 			getPathfinder().setTarget((LivingEntity) null);
 		}
 
@@ -132,7 +147,8 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal {
 	 */
 	public void tick() {
 		LivingEntity livingentity = getPathfinder().getTarget();
-		if (livingentity != null) {
+		if (livingentity != null)
+		{
 			getPathfinder().getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
 			double d0 = getPathfinder().distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
 			this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
@@ -141,14 +157,17 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal {
 					&& (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D
 							|| livingentity.distanceToSqr(this.pathedTargetX, this.pathedTargetY,
 									this.pathedTargetZ) >= 1.0D
-							|| getPathfinder().getRandom().nextFloat() < 0.05F)) {
+							|| getPathfinder().getRandom().nextFloat() < 0.05F))
+			{
 				this.pathedTargetX = livingentity.getX();
 				this.pathedTargetY = livingentity.getY();
 				this.pathedTargetZ = livingentity.getZ();
 				this.ticksUntilNextPathRecalculation = 4 + getPathfinder().getRandom().nextInt(7);
-				if (this.canPenalize) {
+				if (this.canPenalize)
+				{
 					this.ticksUntilNextPathRecalculation += failedPathFindingPenalty;
-					if (getPathfinder().getNavigation().getPath() != null) {
+					if (getPathfinder().getNavigation().getPath() != null)
+					{
 						net.minecraft.world.level.pathfinder.Node finalPathPoint = getPathfinder().getNavigation()
 								.getPath().getEndNode();
 						if (finalPathPoint != null
@@ -156,17 +175,21 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal {
 							failedPathFindingPenalty = 0;
 						else
 							failedPathFindingPenalty += 10;
-					} else {
+					} else
+					{
 						failedPathFindingPenalty += 10;
 					}
 				}
-				if (d0 > 1024.0D) {
+				if (d0 > 1024.0D)
+				{
 					this.ticksUntilNextPathRecalculation += 10;
-				} else if (d0 > 256.0D) {
+				} else if (d0 > 256.0D)
+				{
 					this.ticksUntilNextPathRecalculation += 5;
 				}
 
-				if (!getPathfinder().getNavigation().moveTo(livingentity, this.speedModifier)) {
+				if (!getPathfinder().getNavigation().moveTo(livingentity, this.speedModifier))
+				{
 					this.ticksUntilNextPathRecalculation += 15;
 				}
 
@@ -180,7 +203,8 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal {
 
 	protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
 		double d0 = this.getAttackReachSqr(pEnemy);
-		if (pDistToEnemySqr <= d0 && this.ticksUntilNextAttack <= 0) {
+		if (pDistToEnemySqr <= d0 && this.ticksUntilNextAttack <= 0)
+		{
 			this.resetAttackCooldown();
 			getPathfinder().swing(InteractionHand.MAIN_HAND);
 			getPathfinder().doHurtTarget(pEnemy);

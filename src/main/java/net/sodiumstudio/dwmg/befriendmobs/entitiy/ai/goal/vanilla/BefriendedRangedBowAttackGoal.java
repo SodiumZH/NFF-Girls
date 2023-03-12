@@ -47,6 +47,8 @@ public class BefriendedRangedBowAttackGoal extends BefriendedGoal
 	 * necessary for execution in this method as well.
 	 */
 	public boolean canUse() {
+		if (isDisabled())
+			return false;
 		return this.mob.asMob().getTarget() == null ? false : this.isHoldingBow();
 	}
 

@@ -70,23 +70,6 @@ public abstract class AbstractInventoryMenuBefriended extends AbstractContainerM
 		mob.saveInventory((SimpleContainer)container);
 		this.container.stopOpen(pPlayer);
 	}
-	
-	/* Utils */
 
-	public int getBaubleSlotAmount()
-	{
-		return 0;
-	}
-	
-	public int getBaubleSlotPositionX(int index)
-	{
-		return 0;
-	}
-	
-	public int getBaubleSlotPositionY(int index)
-	{
-		return 0;
-	}
-	
 	public abstract AbstractGuiBefriended makeGui();
 }

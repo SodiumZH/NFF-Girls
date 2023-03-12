@@ -65,7 +65,7 @@ public class InventoryTag
 	}
 	
 	// Make a new InventoryTag from container.
-	public static InventoryTag fromContainer(SimpleContainer container)
+	public static InventoryTag makeFromContainer(SimpleContainer container)
 	{
 		InventoryTag tag = new InventoryTag(container.getContainerSize());
 		for (int i = 0; i < tag.getSize(); ++i)
@@ -85,6 +85,13 @@ public class InventoryTag
 		{
 			put(container.getItem(i), i);
 		}
+	}
+	
+	public void swapItem(int position_1, int position_2)
+	{
+		ItemStack stack1 = this.get(position_1);
+		this.put(this.get(position_2), position_1);
+		this.put(stack1, position_2);
 	}
 	
 }

@@ -43,9 +43,9 @@ import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefrien
 import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
 import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTagWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
-import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiVanillaUndeadTwoBaubles;
+import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiZombieGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.*;
-import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuVanillaUndeadTwoBaubles;
+import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuZombie;
 
 public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBefriendedMob {
 
@@ -176,7 +176,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 
 	@Override
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuVanillaUndeadTwoBaubles(containerId, playerInventory, container, this);
+		return new InventoryMenuZombie(containerId, playerInventory, container, this);
 	}
 
 	/* Save and Load */
