@@ -4,6 +4,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedFollowOwnerGoal;
 
+// For skeletons, strays and wither skeletons only
+// They consume arrows
 public class BefriendedSunAvoidingFollowOwnerGoal extends BefriendedFollowOwnerGoal {
 
 	// If true, the mob will avoid sun even if having a helmet
@@ -13,9 +15,10 @@ public class BefriendedSunAvoidingFollowOwnerGoal extends BefriendedFollowOwnerG
 			float pStopDistance, boolean pCanFly) 
 	{
 		super(inMob, pSpeedModifier, pStartDistance, pStopDistance, pCanFly);
-		// TODO Auto-generated constructor stub
 	}
 
+
+	
 	@Override
 	public void tick() 
 	{

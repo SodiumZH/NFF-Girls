@@ -34,8 +34,7 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 		this.speedModifier = pSpeedModifier;
 		this.followingTargetEvenIfNotSeen = pFollowingTargetEvenIfNotSeen;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-		allowedStates.add(FOLLOW);
-		allowedStates.add(WANDER);
+		allowAllStatesExceptWait();
 	}
 
 	/**

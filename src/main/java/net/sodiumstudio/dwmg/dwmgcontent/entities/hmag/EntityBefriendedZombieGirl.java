@@ -41,6 +41,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
+import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTag;
 import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTagWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiZombieGirl;
@@ -119,17 +120,11 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	InventoryTagWithEquipment inventoryTag = new InventoryTagWithEquipment(getInventorySize());
 
 	@Override
-	public SimpleContainer getInventory() {
-		return inventoryTag.toContainer();
-		
+	public InventoryTag getInventoryTag()
+	{
+		return inventoryTag;
 	}
 
-	@Override
-	public void saveInventory(SimpleContainer container)
-	{
-		inventoryTag.setFromContainer(container);
-	}
-	
 	@Override
 	public int getInventorySize()
 	{

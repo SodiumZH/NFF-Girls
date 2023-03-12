@@ -19,12 +19,24 @@ public abstract class BefriendedGoal extends Goal {
 	protected static final BefriendedAIState WANDER = BefriendedAIState.WANDER;
 	
 	protected IBefriendedMob mob = null;
-	protected HashSet<BefriendedAIState> allowedStates = new HashSet<BefriendedAIState>();
+	private HashSet<BefriendedAIState> allowedStates = new HashSet<BefriendedAIState>();
 	protected boolean isBlocked = false;
 	
 	public boolean isStateAllowed()
 	{
 		return allowedStates.contains(mob.getAIState());
+	}
+	
+	public void allowState(BefriendedAIState state)
+	{
+		if (!allowedStates.contains(state))
+			allowedStates.add(state);
+	}
+	
+	public void disallowState(BefriendedAIState state)
+	{
+		if (allowedStates.contains(state))
+			allowedStates.remove(state);
 	}
 	
 	public void allowAllStates()
@@ -33,12 +45,18 @@ public abstract class BefriendedGoal extends Goal {
 			allowedStates.add(state);
 	}
 	
-	public void blockGoal()
+	public void allowAllStatesExceptWait()
+	{
+		allowAllStates();
+		disallowState(WAIT);
+	}
+	
+	public void block()
 	{
 		isBlocked = true;
 	}
 	
-	public void resumeGoal()
+	public void unblock()
 	{
 		isBlocked = false;
 	}

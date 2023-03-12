@@ -31,6 +31,7 @@ import net.sodiumstudio.dwmg.befriendmobs.registry.RegItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Util;
+import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.ModCapabilities;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.ModEffects;
@@ -44,16 +45,17 @@ public class EntityEvents
 	public static void onEntityInteract(EntityInteract event) {
 		Entity target = event.getTarget();
 		Player player = event.getPlayer();
-		// Wrap result as an array to set in lambda
-		InteractionResult[] result = { InteractionResult.PASS };
+		Wrapped<InteractionResult> result = new Wrapped<InteractionResult>(InteractionResult.PASS);
 		boolean isClientSide = event.getSide() == LogicalSide.CLIENT;
 		boolean isMainHand = event.getHand() == InteractionHand.MAIN_HAND;
-		Util.GlobalBoolean shouldPostInteractEvent = Util.createGB(false);
+		// TODO: post interact event condition?
+		Wrapped<Boolean> shouldPostInteractEvent = new Wrapped<Boolean>(Boolean.FALSE);
 
 		// Mob interaction start //
 		if (target != null && target instanceof Mob) 
 		{
 			Mob mob = (Mob) target;
+			@SuppressWarnings("unchecked")
 			EntityType<Mob> type = (EntityType<Mob>) mob.getType();
 			// Handle befriendable mob start //
 			if (mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).isPresent()
@@ -80,7 +82,7 @@ public class EntityEvents
 						}
 						MinecraftForge.EVENT_BUS.post(
 								new BefriendableMobInteractEvent(event.getSide(), player, mob, event.getHand()));
-						result[0] = InteractionResult.sidedSuccess(isClientSide);
+						result.set(InteractionResult.sidedSuccess(isClientSide));
 					}
 					else if (player.getMainHandItem().getItem() == RegItems.DEBUG_ARMOR_GIVER.get())
 					{
@@ -94,7 +96,7 @@ public class EntityEvents
 								mob.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS.asItem()));
 							else if (mob.getItemBySlot(EquipmentSlot.FEET).isEmpty())
 								mob.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS.asItem()));
-							result[0] = InteractionResult.sidedSuccess(isClientSide);
+							result.set(InteractionResult.sidedSuccess(isClientSide));
 						}
 					}
 					/* Main actions */
@@ -112,7 +114,7 @@ public class EntityEvents
 						else if (res.handled) 
 						{
 							event.setCanceled(true);
-							result[0] = InteractionResult.sidedSuccess(isClientSide);
+							result.set(InteractionResult.sidedSuccess(isClientSide));
 							shouldPostInteractEvent.set(true);
 							MinecraftForge.EVENT_BUS.post(
 									new BefriendableMobInteractEvent(event.getSide(), player, mob, event.getHand()));
@@ -129,13 +131,13 @@ public class EntityEvents
 				if (player.isShiftKeyDown() && player.getMainHandItem().getItem() == RegItems.DEBUG_BEFRIENDER.get()) {
 					bef.init(player.getUUID(), null);
 					// Debug.printToScreen("Befriended mob initialized", player, living);
-					result[0] = InteractionResult.sidedSuccess(isClientSide);
+					result.set(InteractionResult.sidedSuccess(isClientSide));
 				}
 				else 
 				{
-					result[0] = (player.isShiftKeyDown() ? bef.onInteractionShift(player, event.getHand())
+					result.set((player.isShiftKeyDown() ? bef.onInteractionShift(player, event.getHand())
 							: bef.onInteraction(player, event.getHand())) ? InteractionResult.sidedSuccess(isClientSide)
-									: result[0];
+									: result.get());
 				}
 			}
 			// Handle befriended mob end //
@@ -147,8 +149,8 @@ public class EntityEvents
 		else {
 		}
 		// Client events end //
-		event.setCanceled(result[0] == InteractionResult.sidedSuccess(isClientSide));
-		event.setCancellationResult(result[0]);
+		event.setCanceled(result.get().equals(InteractionResult.sidedSuccess(isClientSide)));
+		event.setCancellationResult(result.get());
 	}
 	
 	@SubscribeEvent
@@ -156,7 +158,7 @@ public class EntityEvents
 	{
 		LivingEntity lastHurtBy = event.getEntityLiving().getLastHurtByMob();
 		LivingEntity target = event.getTarget();		
-		Util.GlobalBoolean isCancelledByEffect = Util.createGB(false);
+		Wrapped<Boolean> isCancelledByEffect = new Wrapped<Boolean>(Boolean.FALSE);
 		
 		// Handle mobs //
 		if (target != null && event.getEntity() instanceof Mob mob)
@@ -214,7 +216,7 @@ public class EntityEvents
 			if (!event.getEntity().level.isClientSide)
 			{
 				// Drop all items in inventory
-				SimpleContainer container = bef.getInventory();
+				SimpleContainer container = bef.makeContainerFromInventory();
 				for (int i = 0; i < container.getContainerSize(); ++i)
 				{
 					if (container.getItem(i) != ItemStack.EMPTY)

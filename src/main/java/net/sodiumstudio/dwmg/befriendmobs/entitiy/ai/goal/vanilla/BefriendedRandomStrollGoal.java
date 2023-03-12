@@ -35,7 +35,7 @@ public class BefriendedRandomStrollGoal extends BefriendedGoal {
 	      this.interval = pInterval;
 	      this.checkNoActionTime = pCheckNoActionTime;
 	      this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-	      allowedStates.add(WANDER);
+	      allowState(WANDER);
 	   }
 
 	/**

@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTag;
 
 public interface IBefriendedMob extends ContainerListener  {
 
@@ -94,11 +95,19 @@ public interface IBefriendedMob extends ContainerListener  {
 	
 	/* Inventory */
 	
+	public InventoryTag getInventoryTag();
+	
 	// Get a container instance
-	public SimpleContainer getInventory();
+	public default SimpleContainer makeContainerFromInventory()
+	{
+		return getInventoryTag().toContainer();
+	}
 
 	// Save container content to this mob
-	public void saveInventory(SimpleContainer container);
+	public default void saveInventory(SimpleContainer container)
+	{
+		getInventoryTag().setFromContainer(container);
+	}
 	
 	public int getInventorySize();
 	

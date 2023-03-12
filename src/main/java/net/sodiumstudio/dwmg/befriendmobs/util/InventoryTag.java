@@ -94,4 +94,23 @@ public class InventoryTag
 		this.put(stack1, position_2);
 	}
 	
+	public boolean consumeItem(int position)
+	{
+		ItemStack stack = this.get(position);
+		if (stack.isEmpty())
+			return false;
+		else
+		{
+			if (stack.getCount() == 1)
+				this.put(ItemStack.EMPTY, position);
+			else
+			{
+				stack.setCount(stack.getCount() - 1);
+				this.put(stack, position);
+			}
+			return true;			
+		}
+			
+	}
+	
 }

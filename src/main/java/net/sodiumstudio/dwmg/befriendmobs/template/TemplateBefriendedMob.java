@@ -24,6 +24,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.example.EXAMPLE_BefriendedZombie;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTag;
 import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTagWithEquipment;
 
 // This is a template for befriended mob class.
@@ -89,15 +90,9 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 	InventoryTagWithEquipment inventoryTag = new InventoryTagWithEquipment(getInventorySize());
 
 	@Override
-	public SimpleContainer getInventory()
+	public InventoryTag getInventoryTag()
 	{
-		return inventoryTag.toContainer();
-	}
-	
-	@Override
-	public void saveInventory(SimpleContainer container)
-	{
-		inventoryTag.setFromContainer(container);
+		return inventoryTag;
 	}
 
 	@Override
@@ -129,9 +124,9 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 	public ItemStack getBauble(int index) {
 		/* Customize here */
 		if (index == 0)
-			return getInventory().getItem(6);
+			return makeContainerFromInventory().getItem(6);
 		else if (index == 1)
-			return getInventory().getItem(7);
+			return makeContainerFromInventory().getItem(7);
 		else
 			return null;
 	}

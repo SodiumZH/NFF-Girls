@@ -38,7 +38,6 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 	public BefriendedFollowOwnerGoal(@Nonnull IBefriendedMob inMob, double pSpeedModifier, float pStartDistance,
 			float pStopDistance, boolean pCanFly) {
 		mob = inMob;
-		allowedStates.add(BefriendedAIState.FOLLOW);
 		this.level = getLiving().level;
 		this.speedModifier = pSpeedModifier;
 		this.navigation = getPathfinder().getNavigation();
@@ -50,6 +49,7 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 				&& !(getPathfinder().getNavigation() instanceof FlyingPathNavigation)) {
 			throw new IllegalArgumentException("Unsupported mob type for FollowOwnerGoal");
 		}
+		allowState(FOLLOW);
 	}
 
 	/**

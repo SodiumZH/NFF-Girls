@@ -21,12 +21,13 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.Level;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedFleeSunGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedRangedBowAttackGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedRestrictSunGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
@@ -34,8 +35,10 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
+import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTag;
 import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTagWithEquipment;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuSkeletonGirl;
 
@@ -61,7 +64,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	protected void registerGoals() {
 		goalSelector.addGoal(1, new BefriendedRestrictSunGoal(this));
 		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
-		goalSelector.addGoal(3, new BefriendedRangedBowAttackGoal(this, 1.0D, 20, 15.0F));
+		goalSelector.addGoal(3, new BefriendedSkeletonRangedBowAttackGoal(this, 1.0D, 20, 15.0F));
 		goalSelector.addGoal(4, new BefriendedSkeletonMeleeAttackGoal(this, 1.2d, true));
 		goalSelector.addGoal(5, new BefriendedSunAvoidingFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 		goalSelector.addGoal(6, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
@@ -73,6 +76,40 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 
 	}
 
+	/* Bow shooting related */
+
+	@Override
+	public void aiStep() {
+		super.aiStep();
+		
+		if (this.getTarget() != null) {
+			// When too close, switch to melee mode if possible
+			if (this.distanceTo(this.getTarget()) < 2.5) {
+				if (inventoryTag.get(4).is(Items.BOW) && inventoryTag.get(7).getItem() instanceof TieredItem) {
+					inventoryTag.swapItem(4, 7);
+					updateFromInventory();
+				}
+			}
+			// When run out arrows, try taking weapon from backup-weapon slot
+			if (inventoryTag.get(4).is(Items.BOW) && inventoryTag.get(7).getItem() instanceof TieredItem
+					&& inventoryTag.get(8).isEmpty()) {
+				inventoryTag.swapItem(4, 7);
+				updateFromInventory();
+			}
+			// When too far and having a bow on backup-weapon, switch to bow mode
+			// Don't switch if don't have arrows
+			else if (this.distanceTo(this.getTarget()) > 4) {
+				if (!inventoryTag.get(4).is(Items.BOW) && inventoryTag.get(7).is(Items.BOW)
+						&& !inventoryTag.get(8).isEmpty()) {
+					inventoryTag.swapItem(4, 7);
+					updateFromInventory();
+				}
+			}
+		}
+	}
+	
+	/* Bow shooting end */
+	
 	/* Interaction */
 
 	@Override
@@ -107,10 +144,17 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 
 	/* Inventory */
 
+
 	protected InventoryTagWithEquipment inventoryTag = new InventoryTagWithEquipment(getInventorySize());
 
 	@Override
-	public SimpleContainer getInventory() {
+	public InventoryTag getInventoryTag()
+	{
+		return inventoryTag;
+	}
+	
+	@Override
+	public SimpleContainer makeContainerFromInventory() {
 		return inventoryTag.toContainer();
 	}
 
@@ -267,10 +311,6 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 	
-	@Override
-	public void aiStep()
-	{
-		super.aiStep();
-	}
+	
 	
 }

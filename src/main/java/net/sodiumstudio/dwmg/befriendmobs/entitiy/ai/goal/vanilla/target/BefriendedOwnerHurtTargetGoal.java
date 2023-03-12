@@ -18,8 +18,7 @@ public class BefriendedOwnerHurtTargetGoal extends BefriendedTargetGoal {
 	      super(pMob, false);
 	      mob = pMob;
 	      this.setFlags(EnumSet.of(Goal.Flag.TARGET));
-			allowedStates.add(WANDER);
-			allowedStates.add(FOLLOW);
+	      allowAllStatesExceptWait();
 	   }
 
 	/**

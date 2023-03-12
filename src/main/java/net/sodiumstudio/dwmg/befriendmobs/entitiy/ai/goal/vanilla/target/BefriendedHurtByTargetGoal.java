@@ -37,8 +37,7 @@ public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 		super(pMob, true);
 		this.toIgnoreDamage = pToIgnoreDamage;
 		this.setFlags(EnumSet.of(Goal.Flag.TARGET));
-		allowedStates.add(WANDER);
-		allowedStates.add(FOLLOW);
+		allowAllStatesExceptWait();
 	}
 
 	/**

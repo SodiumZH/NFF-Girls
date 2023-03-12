@@ -34,8 +34,7 @@ public class BefriendedRangedBowAttackGoal extends BefriendedGoal
 		this.attackIntervalMin = pAttackIntervalMin;
 		this.attackRadiusSqr = pAttackRadius * pAttackRadius;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-		allowedStates.add(FOLLOW);
-		allowedStates.add(WANDER);
+		allowAllStatesExceptWait();
 	}
 
 	public void setMinAttackInterval(int pAttackCooldown) {
@@ -165,6 +164,7 @@ public class BefriendedRangedBowAttackGoal extends BefriendedGoal
 					{
 						this.mob.asMob().stopUsingItem();
 						((RangedAttackMob) this.mob).performRangedAttack(livingentity, BowItem.getPowerForTime(i));
+						this.onArrowShot();
 						this.attackTime = this.attackIntervalMin;
 					}
 				}
@@ -176,4 +176,7 @@ public class BefriendedRangedBowAttackGoal extends BefriendedGoal
 
 		}
 	}
+	
+	public void onArrowShot()
+	{}
 }

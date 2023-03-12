@@ -137,21 +137,12 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	 */
 	InventoryTagWithEquipment inventoryTag = new InventoryTagWithEquipment(getInventorySize());
 	
-	/**
-	 * Generate a simple container from tag temporarily for generating menu.
-	 */
 	@Override
-	public SimpleContainer getInventory()
+	public InventoryTag getInventoryTag()
 	{
-		return inventoryTag.toContainer();
+		return inventoryTag;
 	}
-	
-	@Override
-	public void saveInventory(SimpleContainer container)
-	{
-		inventoryTag.setFromContainer(container);
-	}
-	
+
 	/**
 	 * Override to set inventory size (including equipment).
 	 * In this example the armor and hands slots are included in the inventoryTag,
@@ -195,9 +186,9 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	@Override
 	public ItemStack getBauble(int index) {
 		if (index == 0)
-			return getInventory().getItem(6);
+			return makeContainerFromInventory().getItem(6);
 		else if (index == 1)
-			return getInventory().getItem(7);
+			return makeContainerFromInventory().getItem(7);
 		else
 			return null;
 	}

@@ -16,8 +16,7 @@ public class BefriendedOwnerHurtByTargetGoal extends BefriendedTargetGoal {
 	public BefriendedOwnerHurtByTargetGoal(IBefriendedMob inMob) {
 		super(inMob, false);
 		this.setFlags(EnumSet.of(Goal.Flag.TARGET));
-		allowedStates.add(WANDER);
-		allowedStates.add(FOLLOW);
+		allowAllStatesExceptWait();
 	}
 
 	/**

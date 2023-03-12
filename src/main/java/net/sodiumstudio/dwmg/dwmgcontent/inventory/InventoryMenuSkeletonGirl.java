@@ -82,7 +82,7 @@ public class InventoryMenuSkeletonGirl extends AbstractInventoryMenuBefriended
 		addSlot(new Slot(container, 5, v.x, v.y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
-				return !this.hasItem();
+				return !this.hasItem() && !stack.is(Items.BOW);	// Don't allow to hold bow on offhand
 			}
 		});
 
