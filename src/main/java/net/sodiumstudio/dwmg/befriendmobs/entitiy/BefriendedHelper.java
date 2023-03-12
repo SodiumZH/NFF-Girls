@@ -22,24 +22,21 @@ import net.sodiumstudio.dwmg.befriendmobs.network.ClientboundBefriendedGuiOpenPa
  * A function library for setting up befriended mobs
  */
 
-public class BefriendedHelper {
+public class BefriendedHelper
+{
 
 	/* Init */
-	public static void initDefault(IBefriendedMob mob, @Nonnull UUID playerUUID, @Nullable Mob befriendedFrom)
-	{
+	public static void initDefault(IBefriendedMob mob, @Nonnull UUID playerUUID, @Nullable Mob befriendedFrom) {
 		mob.setOwnerUUID(playerUUID);
-		if (mob instanceof LivingEntity living)
+
+		if (befriendedFrom != null)
 		{
-			if (befriendedFrom != null)
-			{
-				living.setHealth(befriendedFrom.getHealth());
-				mob.setInventoryFromMob();
-			}
+			mob.asMob().setHealth(befriendedFrom.getHealth());
+			mob.setInventoryFromMob();
 		}
-		else throw new UnsupportedOperationException("IBefriendedMob interface is supported only on LivingEntity class. Attempting to implement on: \""+mob.getClass()+"\"");
+
 	}
-	
-	
+
 	/* AI */
 
 	public static boolean wantsToAttackDefault(IBefriendedMob mob, LivingEntity target) {
@@ -90,12 +87,13 @@ public class BefriendedHelper {
 	public static void openBefriendedInventory(Player player, IBefriendedMob target) {
 		LivingEntity living = (LivingEntity) target;
 		if (!player.level.isClientSide && player instanceof ServerPlayer sp
-				&& (!living.isVehicle() || living.hasPassenger(player))) {
-			if (player.containerMenu != player.inventoryMenu) {
+				&& (!living.isVehicle() || living.hasPassenger(player)))
+		{
+			if (player.containerMenu != player.inventoryMenu)
+			{
 				player.closeContainer();
 			}
-			
-			target.setInventoryFromMob();
+
 			sp.nextContainerCounter();
 			ClientboundBefriendedGuiOpenPacket packet = new ClientboundBefriendedGuiOpenPacket(sp.containerCounter,
 					target.getInventory().getContainerSize(), living.getId());

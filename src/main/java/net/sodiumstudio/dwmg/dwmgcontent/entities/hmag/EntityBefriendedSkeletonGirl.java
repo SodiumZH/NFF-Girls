@@ -37,6 +37,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
+import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTag;
+import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTagWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuVanillaUndeadOneBauble;
@@ -49,9 +51,8 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	public EntityBefriendedSkeletonGirl(EntityType<? extends EntityBefriendedSkeletonGirl> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
-		Arrays.fill(this.armorDropChances, 2.0f);
-		Arrays.fill(this.handDropChances, 2.0f);
-		createInventory();
+		Arrays.fill(this.armorDropChances, 0);
+		Arrays.fill(this.handDropChances, 0);
 	}
 
 	public static Builder createAttributes() 
@@ -110,16 +111,17 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 
 	/* Inventory */
 
-	SimpleContainer inventory = null;
+	protected InventoryTagWithEquipment inventoryTag = new InventoryTagWithEquipment(getInventorySize());
 
 	@Override
 	public SimpleContainer getInventory() {
-		return inventory;
+		return inventoryTag.toContainer();
 	}
 
 	@Override
-	public void setInventory(SimpleContainer container) {
-		inventory = container;
+	public void saveInventory(SimpleContainer container)
+	{
+		inventoryTag.setFromContainer(container);
 	}
 	
 	// 6->bauble, 7->arrow
@@ -132,32 +134,21 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
-			setItemSlot(EquipmentSlot.HEAD, getInventory().getItem(0));
-			setItemSlot(EquipmentSlot.CHEST, getInventory().getItem(1));
-			setItemSlot(EquipmentSlot.LEGS, getInventory().getItem(2));
-			setItemSlot(EquipmentSlot.FEET, getInventory().getItem(3));
-			setItemInHand(InteractionHand.MAIN_HAND, getInventory().getItem(4));
-			setItemInHand(InteractionHand.OFF_HAND, getInventory().getItem(5));
+			inventoryTag.setMobEquipment(this);
 		}
 	}
 
 	@Override
 	public void setInventoryFromMob() {
 		if (!this.level.isClientSide) {
-			getInventory().setItem(0, this.getItemBySlot(EquipmentSlot.HEAD));
-			getInventory().setItem(1, this.getItemBySlot(EquipmentSlot.CHEST));
-			getInventory().setItem(2, this.getItemBySlot(EquipmentSlot.LEGS));
-			getInventory().setItem(3, this.getItemBySlot(EquipmentSlot.FEET));
-			getInventory().setItem(4, this.getMainHandItem());
-			getInventory().setItem(5, this.getOffhandItem());
-			getInventory().setItem(6, this.getBauble(0));
+			inventoryTag.getFromMob(this);
 		}
 	}
 	
 	@Override
 	public ItemStack getBauble(int index) {
 		if (index == 0)
-			return getInventory().getItem(6);
+			return inventoryTag.get(6);
 		else
 			return null;
 	}
@@ -167,31 +158,31 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		if (item == null || item.isEmpty())
 			return;
 		if (index == 0)
-			inventory.setItem(6, item);
+			inventoryTag.put(item, 6);
 		else
 			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();
-	}
-
+	}	
+	
 	@Override
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuVanillaUndeadOneBauble(containerId, playerInventory, container, this);
 	}
-
+	
 	/* Save and Load */
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		NbtHelper.saveItemStack(inventory.getItem(6), nbt, "bauble_0");
+		inventoryTag.saveTo(nbt, "inventory_tag");
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		setBauble(NbtHelper.readItemStack(nbt, "bauble_0"), 0);
+		inventoryTag.readFrom(nbt.getCompound("inventory_tag"));
 	}
 	
 	// ==================================================================== //

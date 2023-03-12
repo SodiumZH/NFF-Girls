@@ -11,6 +11,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -90,4 +92,23 @@ public class NbtHelper {
 		else return ItemStack.EMPTY;
 	}
 	
+	public static void saveEquipment(CompoundTag toTag, Mob inMob)
+	{
+		saveItemStack(inMob.getItemBySlot(EquipmentSlot.HEAD), toTag, "nbt_helper_equipment_item_head");
+		saveItemStack(inMob.getItemBySlot(EquipmentSlot.CHEST), toTag, "nbt_helper_equipment_item_chest");
+		saveItemStack(inMob.getItemBySlot(EquipmentSlot.LEGS), toTag, "nbt_helper_equipment_item_legs");
+		saveItemStack(inMob.getItemBySlot(EquipmentSlot.FEET), toTag, "nbt_helper_equipment_item_feet");
+		saveItemStack(inMob.getItemBySlot(EquipmentSlot.MAINHAND), toTag, "nbt_helper_equipment_item_main_hand");
+		saveItemStack(inMob.getItemBySlot(EquipmentSlot.OFFHAND), toTag, "nbt_helper_equipment_item_off_hand");
+	}
+	
+	public static void readEquipment(Mob toMob, CompoundTag inTag)
+	{
+		toMob.setItemSlot(EquipmentSlot.HEAD, readItemStack(inTag, "nbt_helper_equipment_item_head"));
+		toMob.setItemSlot(EquipmentSlot.CHEST, readItemStack(inTag, "nbt_helper_equipment_item_chest"));
+		toMob.setItemSlot(EquipmentSlot.LEGS, readItemStack(inTag, "nbt_helper_equipment_item_legs"));
+		toMob.setItemSlot(EquipmentSlot.FEET, readItemStack(inTag, "nbt_helper_equipment_item_feet"));
+		toMob.setItemSlot(EquipmentSlot.MAINHAND, readItemStack(inTag, "nbt_helper_equipment_item_main_hand"));
+		toMob.setItemSlot(EquipmentSlot.OFFHAND, readItemStack(inTag, "nbt_helper_equipment_item_off_hand"));
+	}
 }

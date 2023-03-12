@@ -36,6 +36,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
+import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTag;
+import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTagWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 
 /**
@@ -51,12 +53,11 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	// Construction
 	public EXAMPLE_BefriendedZombie(EntityType<? extends Zombie> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
-		// Mandatory: initialize inventory
-		createInventory();
-		// Recommended
+		
 		this.xpReward = 0;
-		Arrays.fill(this.armorDropChances, 2.0f);
-		Arrays.fill(this.handDropChances, 2.0f);
+		// DO NOT allow armor/hand drops, as the whole inventory will automatically drop on mob death (defined in EntityEvents.java)
+		Arrays.fill(this.armorDropChances, 0f);
+		Arrays.fill(this.handDropChances, 0f);
 
 	}
 
@@ -119,7 +120,7 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	public boolean onInteractionShift(Player player, InteractionHand hand) {
 		if (player.getUUID().equals(getOwnerUUID())) {
 			if (hand.equals(InteractionHand.MAIN_HAND))
-				// This method opens inventory GUI on server. It won't do anything on client.
+				// This method opens inventoryTag GUI on server. It won't do anything on client.
 				BefriendedHelper.openBefriendedInventory(player, this);
 			return true;
 		} 
@@ -129,7 +130,31 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	/* Inventory */
 	
 	/**
-	 * In this example the armor and hands slots are included in the inventory,
+	 * It's recommended to use an InventoryTagWithEquipment to define the mob's inventory as shown below.
+	 * It's actually a CompoundTag which cannot access directly, but can be directly saved/loaded to data.
+	 * If the equipment is not needed, use InventoryTag instead.
+	 * See {@code InventoryTag} and {@code InventoryTagWithEquipment} for details.
+	 */
+	InventoryTagWithEquipment inventoryTag = new InventoryTagWithEquipment(getInventorySize());
+	
+	/**
+	 * Generate a simple container from tag temporarily for generating menu.
+	 */
+	@Override
+	public SimpleContainer getInventory()
+	{
+		return inventoryTag.toContainer();
+	}
+	
+	@Override
+	public void saveInventory(SimpleContainer container)
+	{
+		inventoryTag.setFromContainer(container);
+	}
+	
+	/**
+	 * Override to set inventory size (including equipment).
+	 * In this example the armor and hands slots are included in the inventoryTag,
 	 * together with 2 extra "bauble" slots (see getBauble function for detail).
 	 */
 	@Override
@@ -138,30 +163,25 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 		return 8;
 	}
 
-	/** Executed only on server to update mob state from inventory.
-	 *  In this example, armor and hand items are synced. If the inventory doesn't include these 6 vanilla slots it's not needed.
+	/** 
+	 * Set mob state from inventory.
+	 * Usually called on inventory changed.
 	 */
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
-			setItemSlot(EquipmentSlot.HEAD, getInventory().getItem(0));
-			setItemSlot(EquipmentSlot.CHEST, getInventory().getItem(1));
-			setItemSlot(EquipmentSlot.LEGS, getInventory().getItem(2));
-			setItemSlot(EquipmentSlot.FEET, getInventory().getItem(3));
-			setItemInHand(InteractionHand.MAIN_HAND, getInventory().getItem(4));
-			setItemInHand(InteractionHand.OFF_HAND, getInventory().getItem(5));
+			inventoryTag.setMobEquipment(this);
 		}
 	}
 
+	/**
+	 * Set inventory from mob state.
+	 * Usually called only on initialization.
+	 */
 	@Override
 	public void setInventoryFromMob() {
 		if (!this.level.isClientSide) {
-			getInventory().setItem(0, this.getItemBySlot(EquipmentSlot.HEAD));
-			getInventory().setItem(1, this.getItemBySlot(EquipmentSlot.CHEST));
-			getInventory().setItem(2, this.getItemBySlot(EquipmentSlot.LEGS));
-			getInventory().setItem(3, this.getItemBySlot(EquipmentSlot.FEET));
-			getInventory().setItem(4, this.getMainHandItem());
-			getInventory().setItem(5, this.getOffhandItem());
+			inventoryTag.getFromMob(this);
 		}
 	}
 	
@@ -190,15 +210,15 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 		if (item == null || item.isEmpty())
 			return;
 		if (index == 0)
-			inventory.setItem(6, item);
+			inventoryTag.put(item, 6);
 		else if (index == 1)
-			inventory.setItem(7, item);
+			inventoryTag.put(item, 7);
 		else
 			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();
 	}
 
-	/** Make inventory menu.
+	/** Make inventoryTag menu.
 	 * This method should return a new menu instance.
 	 */
 	@Override
@@ -214,9 +234,7 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 		super.addAdditionalSaveData(nbt);
 		// Recommended. This function automatically saves the owner and AI state information.
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		// Save extra Bauble items. Baubles need to be manually saved.
-		NbtHelper.saveItemStack(inventory.getItem(6), nbt, "bauble_0");
-		NbtHelper.saveItemStack(inventory.getItem(7), nbt, "bauble_1");
+		inventoryTag.saveTo(nbt, "inventory_tag");
 	}
 
 	// Read extra data. Similar to those above.
@@ -224,8 +242,7 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		setBauble(NbtHelper.readItemStack(nbt, "bauble_0"), 0);
-		setBauble(NbtHelper.readItemStack(nbt, "bauble_1"), 1);
+		inventoryTag.readFrom(nbt.getCompound("inventory_tag"));
 	}
 
 	// ==================================================================== //
@@ -297,18 +314,6 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	}
 	
 	/* Inventory */
-
-	SimpleContainer inventory = null;
-
-	@Override
-	public SimpleContainer getInventory() {
-		return inventory;
-	}
-
-	@Override
-	public void setInventory(SimpleContainer container) {
-		inventory = container;
-	}
 
 	// ------------------ IBefriendedMob interface end ------------------ //
 

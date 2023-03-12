@@ -94,42 +94,22 @@ public interface IBefriendedMob extends ContainerListener  {
 	
 	/* Inventory */
 	
+	// Get a container instance
 	public SimpleContainer getInventory();
-	
-	public void setInventory(SimpleContainer container);
+
+	// Save container content to this mob
+	public void saveInventory(SimpleContainer container);
 	
 	public int getInventorySize();
 	
-	// Initialize inventory.
-	// Should be called only in the constructor.
-	public default void createInventory()
-	{
-		SimpleContainer simplecontainer = this.getInventory();
-		this.setInventory(new SimpleContainer(getInventorySize()));
-		if (simplecontainer != null) {
-			simplecontainer.removeListener(this);
-			int i = Math.min(simplecontainer.getContainerSize(), this.getInventory().getContainerSize());
-
-			for (int j = 0; j < i; ++j) {
-				ItemStack itemstack = simplecontainer.getItem(j);
-				if (!itemstack.isEmpty()) {
-					this.getInventory().setItem(j, itemstack.copy());
-				}
-			}
-		}
-		this.getInventory().addListener(this);
-		this.setInventoryFromMob();
-		this.updateFromInventory();
-	}
-	
-	// Set mob data from inventory.
+	// Set mob data from inventoryTag.
 	public void updateFromInventory();
 	
-	// Set inventory from mob data
+	// Set inventoryTag from mob data
 	public void setInventoryFromMob();
 	
-	// Get bauble item stack from inventory.
-	// Baubles are extra items in inventory to define some extra functions.
+	// Get bauble item stack from inventoryTag.
+	// Baubles are extra items in inventoryTag to define some extra functions.
 	// If empty, return empty; if out of index, return null.
 	// If bauble feature is not needed, just don't override.
 	public default ItemStack getBauble(int index)
@@ -137,7 +117,7 @@ public interface IBefriendedMob extends ContainerListener  {
 		return ItemStack.EMPTY;
 	}
 	
-	// Set bauble item stack to inventory.
+	// Set bauble item stack to inventoryTag.
 	// If bauble feature is not needed, just don't override.
 	public default void setBauble(ItemStack item, int index)
 	{
@@ -149,6 +129,9 @@ public interface IBefriendedMob extends ContainerListener  {
 	@Override
 	public default void containerChanged(Container pContainer) 
 	{
+		if (!(pContainer instanceof SimpleContainer))
+			throw new UnsupportedOperationException("IBefriendedMob container only receives SimpleContainer.");
+		saveInventory((SimpleContainer)pContainer);
 		updateFromInventory();
 	}
 	

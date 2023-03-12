@@ -1,6 +1,7 @@
 package net.sodiumstudio.dwmg.befriendmobs.inventory.templates;
 
 import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -100,6 +101,7 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 		        }	
 				
 			});
+			
 			v.slotBelow();
 		}
 	}
@@ -121,7 +123,7 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 
 		ItemStack stack = slot.getItem();
 
-		// From mob equipment to player inventory
+		// From mob equipment to player inventoryTag
 		if (index < 6+getBaubleSlotAmount()) {
 			if (!this.moveItemStackTo(stack, 6+getBaubleSlotAmount(), 6+getBaubleSlotAmount()+32, true)) {
 				return ItemStack.EMPTY;
@@ -129,7 +131,7 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 				done = true;
 			}
 		}
-		// From inventory to mob
+		// From inventoryTag to mob
 		else {
 			// Try each mob slot
 			for (int i = 0; i < 6 + getBaubleSlotAmount(); ++i) {
@@ -143,6 +145,7 @@ public abstract class InventoryMenuVanillaUndead extends AbstractInventoryMenuBe
 				}
 			}
 		}
+		mob.saveInventory((SimpleContainer) container);
 		return done ? stack.copy() : ItemStack.EMPTY;
 	}
 

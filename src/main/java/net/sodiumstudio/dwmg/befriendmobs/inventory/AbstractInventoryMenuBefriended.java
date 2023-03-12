@@ -1,7 +1,7 @@
 package net.sodiumstudio.dwmg.befriendmobs.inventory;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -23,6 +23,9 @@ public abstract class AbstractInventoryMenuBefriended extends AbstractContainerM
 		super(null, containerId);
 		this.mob = mob;
 		this.container = container;
+		if (!(this.container instanceof SimpleContainer))
+			throw new UnsupportedOperationException("InventoryMenuBefriended only receives SimpleContainer.");
+		((SimpleContainer)(this.container)).addListener(mob);
 		this.playerInventory = playerInventory;
 		addMenuSlots();
 		if (doAddPlayerInventory())
@@ -64,6 +67,7 @@ public abstract class AbstractInventoryMenuBefriended extends AbstractContainerM
 	@Override
 	public void removed(Player pPlayer) {
 		super.removed(pPlayer);
+		mob.saveInventory((SimpleContainer)container);
 		this.container.stopOpen(pPlayer);
 	}
 	

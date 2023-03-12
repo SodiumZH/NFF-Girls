@@ -84,7 +84,7 @@ public class IntVec2
 		return this;
 	}
 	
-	/* Utility for inventory menu XY handling */
+	/* Utility for inventoryTag menu XY handling */
 	
 	public IntVec2 slotBelow(int n)
 	{
