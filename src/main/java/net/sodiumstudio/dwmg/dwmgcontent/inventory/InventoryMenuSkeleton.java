@@ -173,7 +173,6 @@ public class InventoryMenuSkeleton extends AbstractInventoryMenuBefriended
 				}
 			}
 		}
-		mob.saveInventory((SimpleContainer) container);
 		return done ? stack.copy() : ItemStack.EMPTY;
 	}
 	

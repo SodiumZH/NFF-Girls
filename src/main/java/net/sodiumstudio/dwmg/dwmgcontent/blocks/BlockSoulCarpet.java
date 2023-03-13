@@ -20,6 +20,7 @@ public class BlockSoulCarpet extends CarpetBlock
 		super(prop);
 	}
 
+	@SuppressWarnings("deprecation")
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn) 
 	{
 		if (!level.isClientSide && entityIn != null && entityIn instanceof LivingEntity)
@@ -27,7 +28,7 @@ public class BlockSoulCarpet extends CarpetBlock
 			LivingEntity livingentity = (LivingEntity) entityIn;
 			if (!livingentity.hasEffect(ModEffects.DEATH_AFFINITY.get()))
 			{
-				livingentity.addEffect(new MobEffectInstance(ModEffects.DEATH_AFFINITY.get(), 600, 0));
+				livingentity.addEffect(new MobEffectInstance(ModEffects.DEATH_AFFINITY.get(), 20, 0));
 			}
 		}
 	}

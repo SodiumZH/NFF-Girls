@@ -62,6 +62,7 @@ public class EntityEvents
 		{
 	
 			Mob mob = (Mob)target;
+			@SuppressWarnings("unchecked")
 			EntityType<Mob> type = (EntityType<Mob>) mob.getType();
 
 			
@@ -129,10 +130,12 @@ public class EntityEvents
 		event.setCancellationResult(result.get());
 	}
 	
+	@SuppressWarnings("removal")
 	@SubscribeEvent
 	public static void onLivingSetAttackTargetEvent(LivingSetAttackTargetEvent event)
 	{
 		LivingEntity lastHurtBy = event.getEntityLiving().getLastHurtByMob();
+		@SuppressWarnings("deprecation")
 		LivingEntity target = event.getTarget();		
 		Wrapped<Boolean> isCancelledByEffect = new Wrapped<Boolean>(Boolean.FALSE);
 		

@@ -96,9 +96,9 @@ public class BefriendedHelper
 
 			sp.nextContainerCounter();
 			ClientboundBefriendedGuiOpenPacket packet = new ClientboundBefriendedGuiOpenPacket(sp.containerCounter,
-					target.makeContainerFromInventory().getContainerSize(), living.getId());
+					target.getAdditionalInventory().getContainerSize(), living.getId());
 			sp.connection.send(packet);
-			sp.containerMenu = target.makeMenu(sp.containerCounter, sp.getInventory(), target.makeContainerFromInventory());
+			sp.containerMenu = target.makeMenu(sp.containerCounter, sp.getInventory(), target.getAdditionalInventory());
 			sp.initMenu(sp.containerMenu);
 			MinecraftForge.EVENT_BUS.post(
 					new net.minecraftforge.event.entity.player.PlayerContainerEvent.Open(player, player.containerMenu));

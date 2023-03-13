@@ -124,9 +124,9 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 	public ItemStack getBauble(int index) {
 		/* Customize here */
 		if (index == 0)
-			return makeContainerFromInventory().getItem(6);
+			return getAdditionalInventory().getItem(6);
 		else if (index == 1)
-			return makeContainerFromInventory().getItem(7);
+			return getAdditionalInventory().getItem(7);
 		else
 			return null;
 	}
@@ -140,9 +140,9 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 		if (item == null || item.isEmpty())
 			return;
 		if (index == 0)
-			inventoryTag.set(item, 6);
+			inventoryTag.setItem(6, item);
 		else if (index == 1)
-			inventoryTag.set(item, 7);
+			inventoryTag.setItem(7, item);
 		else
 			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();

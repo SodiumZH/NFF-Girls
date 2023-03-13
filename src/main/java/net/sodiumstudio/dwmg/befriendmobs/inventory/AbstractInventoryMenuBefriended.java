@@ -9,6 +9,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.sodiumstudio.dwmg.befriendmobs.client.gui.screens.AbstractGuiBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
 
 public abstract class AbstractInventoryMenuBefriended extends AbstractContainerMenu {
@@ -23,9 +24,9 @@ public abstract class AbstractInventoryMenuBefriended extends AbstractContainerM
 		super(null, containerId);
 		this.mob = mob;
 		this.container = container;
-		if (!(this.container instanceof SimpleContainer))
-			throw new UnsupportedOperationException("InventoryMenuBefriended only receives SimpleContainer.");
-		((SimpleContainer)(this.container)).addListener(mob);
+		if (!(this.container instanceof AdditionalInventory))
+			throw new UnsupportedOperationException("InventoryMenuBefriended only receives AdditionalInventory.");
+		((AdditionalInventory)(this.container)).addListener(mob);
 		this.playerInventory = playerInventory;
 		addMenuSlots();
 		if (doAddPlayerInventory())
@@ -67,7 +68,6 @@ public abstract class AbstractInventoryMenuBefriended extends AbstractContainerM
 	@Override
 	public void removed(Player pPlayer) {
 		super.removed(pPlayer);
-		mob.saveInventory((SimpleContainer)container);
 		this.container.stopOpen(pPlayer);
 	}
 

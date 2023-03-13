@@ -33,6 +33,7 @@ public class EXAMPLE_BefriendingHandlerZombie extends AbstractBefriendingHandler
 			// Check player has an EXAMPLE Zombie Befriending Item on main hand
 			if (args.isMainHand() && args.getPlayer().getMainHandItem().getItem() == RegItems.EXAMPLE_ZOMBIE_BEFRIENDING_ITEM.get())
 			{
+				@SuppressWarnings("unchecked")
 				IBefriendedMob bef = BefriendingTypeRegistry.getHandler((EntityType<? extends Mob>) args.getTarget().getType())
 					.befriend(args.getPlayer(), args.getTarget());
 				// WARNING: now args.getTarget() has been invalidated, so we must send particles to the new mob

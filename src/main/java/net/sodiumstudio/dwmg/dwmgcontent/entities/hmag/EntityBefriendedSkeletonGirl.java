@@ -146,10 +146,8 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 
 	@Override
 	public boolean onInteractionShift(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID())) {
-
+		if (player.getUUID().equals(getOwnerUUID())) {		
 			BefriendedHelper.openBefriendedInventory(player, this);
-
 			return true;
 		}
 		return false;
@@ -164,17 +162,6 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	public AdditionalInventory getAdditionalInventory()
 	{
 		return additionalInventory;
-	}
-	
-	@Override
-	public SimpleContainer makeContainerFromInventory() {
-		return additionalInventory.toContainer();
-	}
-
-	@Override
-	public void saveInventory(SimpleContainer container)
-	{
-		additionalInventory.setFromContainer(container);
 	}
 	
 	// 6->bauble, 7->backup weapon 8->arrow
@@ -201,7 +188,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	@Override
 	public ItemStack getBauble(int index) {
 		if (index == 0)
-			return additionalInventory.get(6);
+			return additionalInventory.getItem(6);
 		else
 			return null;
 	}
@@ -211,7 +198,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		if (item == null || item.isEmpty())
 			return;
 		if (index == 0)
-			additionalInventory.set(item, 6);
+			additionalInventory.setItem(6, item);
 		else
 			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();

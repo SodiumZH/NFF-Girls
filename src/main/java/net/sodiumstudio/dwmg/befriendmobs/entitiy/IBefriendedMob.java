@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Inventory;
@@ -100,14 +99,15 @@ public interface IBefriendedMob extends ContainerListener  {
 	
 	public AdditionalInventory getAdditionalInventory();
 	
-	// Get a container instance
-	public default SimpleContainer makeContainerFromInventory()
+	@Deprecated // Use getAdditionalInventory instead
+	public default AdditionalInventory makeContainerFromInventory()
 	{
-		return getAdditionalInventory().toContainer();
+		return getAdditionalInventory();
 	}
 
 	// Save container content to this mob
-	public default void saveInventory(SimpleContainer container)
+	@Deprecated // Simply delete it
+	public default void saveInventory(AdditionalInventory container)
 	{
 		getAdditionalInventory().setFromContainer(container);
 	}
@@ -125,7 +125,7 @@ public interface IBefriendedMob extends ContainerListener  {
 	{
 		if (pos < 0 || pos >= getInventorySize())
 			throw new IndexOutOfBoundsException();
-		return this.getAdditionalInventory().get(pos);
+		return this.getAdditionalInventory().getItem(pos);
 	}
 	
 	// Get item (type) from position in inventory tag
@@ -155,9 +155,8 @@ public interface IBefriendedMob extends ContainerListener  {
 	@Override
 	public default void containerChanged(Container pContainer) 
 	{
-		if (!(pContainer instanceof SimpleContainer))
-			throw new UnsupportedOperationException("IBefriendedMob container only receives SimpleContainer.");
-		saveInventory((SimpleContainer)pContainer);
+		if (!(pContainer instanceof AdditionalInventory))
+			throw new UnsupportedOperationException("IBefriendedMob container only receives AdditionalInventory.");
 		updateFromInventory();
 	}
 	

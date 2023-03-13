@@ -10,12 +10,10 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Zombie;
@@ -37,7 +35,6 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventoryWithEquipment;
-import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 
 /**
@@ -186,9 +183,9 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	@Override
 	public ItemStack getBauble(int index) {
 		if (index == 0)
-			return makeContainerFromInventory().getItem(6);
+			return getAdditionalInventory().getItem(6);
 		else if (index == 1)
-			return makeContainerFromInventory().getItem(7);
+			return getAdditionalInventory().getItem(7);
 		else
 			return null;
 	}
@@ -201,9 +198,9 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 		if (item == null || item.isEmpty())
 			return;
 		if (index == 0)
-			inventoryTag.set(item, 6);
+			inventoryTag.setItem(6, item);
 		else if (index == 1)
-			inventoryTag.set(item, 7);
+			inventoryTag.setItem(7, item);
 		else
 			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();

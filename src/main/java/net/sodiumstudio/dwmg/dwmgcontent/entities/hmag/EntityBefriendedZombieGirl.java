@@ -117,7 +117,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 
 	/* Inventory */
 
-	AdditionalInventoryWithEquipment additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize());
+	protected AdditionalInventoryWithEquipment additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize(), this);
 
 	@Override
 	public AdditionalInventory getAdditionalInventory()
@@ -148,9 +148,9 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	@Override
 	public ItemStack getBauble(int index) {
 		if (index == 0)
-			return additionalInventory.get(6);
+			return additionalInventory.getItem(6);
 		else if (index == 1)
-			return additionalInventory.get(7);
+			return additionalInventory.getItem(7);
 		else
 			return null;
 	}
@@ -161,9 +161,9 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		if (item == null || item.isEmpty())
 			itemCpy = ItemStack.EMPTY;
 		if (index == 0)
-			additionalInventory.set(itemCpy, 6);
+			additionalInventory.setItem(6, itemCpy);
 		else if (index == 1)
-			additionalInventory.set(itemCpy, 7);
+			additionalInventory.setItem(7, itemCpy);
 		else
 			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();

@@ -27,6 +27,7 @@ import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException
 public class BMDebugItemHandler
 {
 
+	@SuppressWarnings("unchecked")
 	public static void onDebugItemUsed(Player player, Mob target, Item item) {
 		
 		if (!BefriendMobs.IS_DEBUG_MODE)
@@ -46,22 +47,26 @@ public class BMDebugItemHandler
 			}
 		}
 
-		else if (item.equals(RegItems.DEBUG_BEFRIENDER.get())
-				&& target.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
+		else if (item.equals(RegItems.DEBUG_BEFRIENDER.get()))
 		{
-			target.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+			if (target instanceof IBefriendedMob bef)
+				bef.init(player.getUUID(), null);
+			else 
 			{
-				IBefriendedMob bef = BefriendingTypeRegistry.getHandler((EntityType<Mob>)target.getType()).befriend(player, target);
-				if (bef != null)
+				target.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 				{
-					MinecraftForge.EVENT_BUS.post(new MobBefriendEvent(player, target, bef));
-					EntityHelper.sendHeartParticlesToMob(bef.asMob()); // TODO: move this to a MobBefriendEvent listener
-				} else
-					throw new UnimplementedException(
-							"Entity type befriend method unimplemented: " + target.getType().toShortString()
-							+ ", handler class: " + BefriendingTypeRegistry.getHandler((EntityType<Mob>)target.getType()).toString());
-
-			});
+					IBefriendedMob bef = BefriendingTypeRegistry.getHandler((EntityType<Mob>)target.getType()).befriend(player, target);
+					if (bef != null)
+					{
+						MinecraftForge.EVENT_BUS.post(new MobBefriendEvent(player, target, bef));
+						EntityHelper.sendHeartParticlesToMob(bef.asMob()); // TODO: move this to a MobBefriendEvent listener
+					} else
+						throw new UnimplementedException(
+								"Entity type befriend method unimplemented: " + target.getType().toShortString()
+								+ ", handler class: " + BefriendingTypeRegistry.getHandler((EntityType<Mob>)target.getType()).toString());
+	
+				});
+			}
 		}
 
 		else if (item.equals(RegItems.DEBUG_ARMOR_GIVER.get()) && target.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
