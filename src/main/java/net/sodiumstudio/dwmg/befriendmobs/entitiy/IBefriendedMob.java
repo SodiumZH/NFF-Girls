@@ -13,10 +13,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTag;
+import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
+import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
 
 public interface IBefriendedMob extends ContainerListener  {
 
@@ -64,6 +66,7 @@ public interface IBefriendedMob extends ContainerListener  {
 	{
 		BefriendedAIState nextState = getAIState().defaultSwitch();
 		setAIState(nextState);
+		Debug.printToScreen(this.asMob().getName().getString() + " " + this.getAIState().toString(), getOwner());
 		return nextState;
 	}
 	
@@ -95,18 +98,18 @@ public interface IBefriendedMob extends ContainerListener  {
 	
 	/* Inventory */
 	
-	public InventoryTag getInventoryTag();
+	public AdditionalInventory getAdditionalInventory();
 	
 	// Get a container instance
 	public default SimpleContainer makeContainerFromInventory()
 	{
-		return getInventoryTag().toContainer();
+		return getAdditionalInventory().toContainer();
 	}
 
 	// Save container content to this mob
 	public default void saveInventory(SimpleContainer container)
 	{
-		getInventoryTag().setFromContainer(container);
+		getAdditionalInventory().setFromContainer(container);
 	}
 	
 	public int getInventorySize();
@@ -116,6 +119,20 @@ public interface IBefriendedMob extends ContainerListener  {
 	
 	// Set inventoryTag from mob data
 	public void setInventoryFromMob();
+	
+	// Get item stack from position in inventory tag
+	public default ItemStack getInventoryItemStack(int pos)
+	{
+		if (pos < 0 || pos >= getInventorySize())
+			throw new IndexOutOfBoundsException();
+		return this.getAdditionalInventory().get(pos);
+	}
+	
+	// Get item (type) from position in inventory tag
+	public default Item getInventoryItem(int pos)
+	{
+		return this.getInventoryItemStack(pos).getItem();
+	}
 	
 	// Get bauble item stack from inventoryTag.
 	// Baubles are extra items in inventoryTag to define some extra functions.

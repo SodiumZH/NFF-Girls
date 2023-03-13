@@ -41,8 +41,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
-import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTag;
-import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTagWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiZombieGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.*;
@@ -117,10 +117,10 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 
 	/* Inventory */
 
-	InventoryTagWithEquipment inventoryTag = new InventoryTagWithEquipment(getInventorySize());
+	AdditionalInventoryWithEquipment inventoryTag = new AdditionalInventoryWithEquipment(getInventorySize());
 
 	@Override
-	public InventoryTag getInventoryTag()
+	public AdditionalInventory getAdditionalInventory()
 	{
 		return inventoryTag;
 	}
@@ -161,9 +161,9 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		if (item == null || item.isEmpty())
 			itemCpy = ItemStack.EMPTY;
 		if (index == 0)
-			inventoryTag.put(itemCpy, 6);
+			inventoryTag.set(itemCpy, 6);
 		else if (index == 1)
-			inventoryTag.put(itemCpy, 7);
+			inventoryTag.set(itemCpy, 7);
 		else
 			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();
@@ -180,14 +180,14 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		inventoryTag.saveTo(nbt, "inventory_tag");
+		inventoryTag.saveToTag(nbt, "inventory_tag");
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		inventoryTag.readFrom(nbt.getCompound("inventory_tag"));
+		inventoryTag.readFromTag(nbt.getCompound("inventory_tag"));
 	}
 
 	// ==================================================================== //

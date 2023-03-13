@@ -24,8 +24,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.example.EXAMPLE_BefriendedZombie;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTag;
-import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTagWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventoryWithEquipment;
 
 // This is a template for befriended mob class.
 // You may copy-paste the code below to your class and modify at places labeled by /*...*/.
@@ -87,10 +87,10 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 	// Inventory related
 	// Generally no need to modify unless noted
 	
-	InventoryTagWithEquipment inventoryTag = new InventoryTagWithEquipment(getInventorySize());
+	AdditionalInventoryWithEquipment inventoryTag = new AdditionalInventoryWithEquipment(getInventorySize());
 
 	@Override
-	public InventoryTag getInventoryTag()
+	public AdditionalInventory getAdditionalInventory()
 	{
 		return inventoryTag;
 	}
@@ -140,9 +140,9 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 		if (item == null || item.isEmpty())
 			return;
 		if (index == 0)
-			inventoryTag.put(item, 6);
+			inventoryTag.set(item, 6);
 		else if (index == 1)
-			inventoryTag.put(item, 7);
+			inventoryTag.set(item, 7);
 		else
 			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();
@@ -162,7 +162,7 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 		super.addAdditionalSaveData(nbt);
 		// Recommended. This function automatically saves the owner and AI state information.
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		inventoryTag.saveTo(nbt, "inventory_tag");
+		inventoryTag.saveToTag(nbt, "inventory_tag");
 		/* Add more save data... */
 	}
 
@@ -170,7 +170,7 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		inventoryTag.readFrom(nbt.getCompound("inventory_tag"));
+		inventoryTag.readFromTag(nbt.getCompound("inventory_tag"));
 		/* Add more save data... */
 	}
 

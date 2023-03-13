@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.client.gui.screens.AbstractGuiBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
@@ -37,7 +38,9 @@ public class InventoryMenuZombie extends AbstractInventoryMenuBefriended{
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
-						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.HEAD && !this.hasItem();
+						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.HEAD 
+						&& !EnchantmentHelper.hasBindingCurse(stack)
+						&& !this.hasItem();
 			}
 		});
 		
@@ -47,7 +50,9 @@ public class InventoryMenuZombie extends AbstractInventoryMenuBefriended{
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
-						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.CHEST && !this.hasItem();
+						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.CHEST 
+						&& !EnchantmentHelper.hasBindingCurse(stack)
+						&& !this.hasItem();
 			}
 		});
 		
@@ -57,7 +62,9 @@ public class InventoryMenuZombie extends AbstractInventoryMenuBefriended{
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
-						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.LEGS && !this.hasItem();
+						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.LEGS 
+						&& !EnchantmentHelper.hasBindingCurse(stack)
+						&& !this.hasItem();
 			}
 		});
 		
@@ -67,7 +74,9 @@ public class InventoryMenuZombie extends AbstractInventoryMenuBefriended{
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
-						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.FEET && !this.hasItem();
+						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.FEET 
+						&& !EnchantmentHelper.hasBindingCurse(stack)
+						&& !this.hasItem();
 			}
 		});
 		

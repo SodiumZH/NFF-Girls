@@ -36,8 +36,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
-import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTag;
-import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTagWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 
 /**
@@ -130,15 +130,15 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	/* Inventory */
 	
 	/**
-	 * It's recommended to use an InventoryTagWithEquipment to define the mob's inventory as shown below.
-	 * It's actually a CompoundTag which cannot access directly, but can be directly saved/loaded to data.
+	 * It's recommended to use an AdditionalInventory to define the mob's inventory as shown below.
+	 * It's actually an fixed-length item stack list which cannot access directly, but can be directly saved/loaded to nbt tags.
 	 * If the equipment is not needed, use InventoryTag instead.
-	 * See {@code InventoryTag} and {@code InventoryTagWithEquipment} for details.
+	 * See {@code AdditionalInventory} and {@code AdditionalInventoryWithEquipment} for details.
 	 */
-	InventoryTagWithEquipment inventoryTag = new InventoryTagWithEquipment(getInventorySize());
+	AdditionalInventoryWithEquipment inventoryTag = new AdditionalInventoryWithEquipment(getInventorySize());
 	
 	@Override
-	public InventoryTag getInventoryTag()
+	public AdditionalInventory getAdditionalInventory()
 	{
 		return inventoryTag;
 	}
@@ -201,9 +201,9 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 		if (item == null || item.isEmpty())
 			return;
 		if (index == 0)
-			inventoryTag.put(item, 6);
+			inventoryTag.set(item, 6);
 		else if (index == 1)
-			inventoryTag.put(item, 7);
+			inventoryTag.set(item, 7);
 		else
 			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();
@@ -225,7 +225,7 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 		super.addAdditionalSaveData(nbt);
 		// Recommended. This function automatically saves the owner and AI state information.
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		inventoryTag.saveTo(nbt, "inventory_tag");
+		inventoryTag.saveToTag(nbt, "inventory_tag");
 	}
 
 	// Read extra data. Similar to those above.
@@ -233,7 +233,7 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		inventoryTag.readFrom(nbt.getCompound("inventory_tag"));
+		inventoryTag.readFromTag(nbt.getCompound("inventory_tag"));
 	}
 
 	// ==================================================================== //

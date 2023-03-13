@@ -12,6 +12,7 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -215,11 +216,12 @@ public class EntityEvents
 		{
 			if (!event.getEntity().level.isClientSide)
 			{
-				// Drop all items in inventory
+				// Drop all items in inventory if no vanishing curse
 				SimpleContainer container = bef.makeContainerFromInventory();
 				for (int i = 0; i < container.getContainerSize(); ++i)
 				{
-					if (container.getItem(i) != ItemStack.EMPTY)
+					if (container.getItem(i) != ItemStack.EMPTY 
+							&& !EnchantmentHelper.hasVanishingCurse(container.getItem(i)))
 					{
 						event.getEntity().spawnAtLocation(container.getItem(i));
 					}

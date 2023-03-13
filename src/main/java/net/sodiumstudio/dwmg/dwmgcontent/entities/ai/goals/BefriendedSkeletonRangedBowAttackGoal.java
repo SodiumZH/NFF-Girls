@@ -1,6 +1,9 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals;
 
 import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedRangedBowAttackGoal;
 
@@ -16,9 +19,9 @@ public class BefriendedSkeletonRangedBowAttackGoal extends BefriendedRangedBowAt
 
 	@Override
 	public boolean canUse() {
-		if (!mob.asMob().isHolding(is -> is.getItem() instanceof BowItem))
+		if (!mob.getAdditionalInventory().get(4).is(Items.BOW))
 			return false;
-		else if (mob.getInventoryTag().get(8).isEmpty())
+		else if (mob.getAdditionalInventory().get(8).isEmpty())
 			return false;
 		else
 			return super.canUse();
@@ -27,6 +30,9 @@ public class BefriendedSkeletonRangedBowAttackGoal extends BefriendedRangedBowAt
 	@Override
 	public void onArrowShot()
 	{
-		mob.getInventoryTag().consumeItem(8);
+		// consume arrow when the bow don't have infinity enchantment
+		if (!(EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, mob.getAdditionalInventory().get(4)) > 0))
+			mob.getAdditionalInventory().consumeItem(8);
+		mob.updateFromInventory();
 	}
 }

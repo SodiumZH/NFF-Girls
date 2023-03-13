@@ -35,12 +35,12 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
-import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTag;
-import net.sodiumstudio.dwmg.befriendmobs.util.InventoryTagWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
-import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuSkeletonGirl;
+import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuSkeleton;
 
 public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements IBefriendedMob
 {
@@ -105,6 +105,18 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 					updateFromInventory();
 				}
 			}
+			// When in melee mode without a weapon but having one on backup slot, change to it
+			else if (!this.getInventoryItemStack(4).is(Items.BOW)
+					&& !this.getInventoryItemStack(7).is(Items.BOW)
+					&& (this.getInventoryItemStack(4).isEmpty() || !(this.getInventoryItem(4) instanceof TieredItem))
+					&& !this.getInventoryItemStack(7).isEmpty()
+					&& (this.getInventoryItem(7) instanceof TieredItem)
+					)
+			{
+				inventoryTag.swapItem(4, 7);
+				updateFromInventory();
+			}
+			
 		}
 	}
 	
@@ -145,10 +157,10 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	/* Inventory */
 
 
-	protected InventoryTagWithEquipment inventoryTag = new InventoryTagWithEquipment(getInventorySize());
+	protected AdditionalInventoryWithEquipment inventoryTag = new AdditionalInventoryWithEquipment(getInventorySize());
 
 	@Override
-	public InventoryTag getInventoryTag()
+	public AdditionalInventory getAdditionalInventory()
 	{
 		return inventoryTag;
 	}
@@ -198,7 +210,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		if (item == null || item.isEmpty())
 			return;
 		if (index == 0)
-			inventoryTag.put(item, 6);
+			inventoryTag.set(item, 6);
 		else
 			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();
@@ -206,7 +218,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	
 	@Override
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuSkeletonGirl(containerId, playerInventory, container, this);
+		return new InventoryMenuSkeleton(containerId, playerInventory, container, this);
 	}
 	
 	/* Save and Load */
@@ -215,14 +227,14 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		inventoryTag.saveTo(nbt, "inventory_tag");
+		inventoryTag.saveToTag(nbt, "inventory_tag");
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		inventoryTag.readFrom(nbt.getCompound("inventory_tag"));
+		inventoryTag.readFromTag(nbt.getCompound("inventory_tag"));
 	}
 	
 	// ==================================================================== //

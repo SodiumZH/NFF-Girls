@@ -13,5 +13,4 @@ public class BefriendedSkeletonMeleeAttackGoal extends BefriendedMeleeAttackGoal
 		super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
 	}
 
-
 }
