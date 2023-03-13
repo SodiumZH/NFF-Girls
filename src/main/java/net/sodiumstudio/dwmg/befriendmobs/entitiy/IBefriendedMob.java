@@ -17,8 +17,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
 import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 
 public interface IBefriendedMob extends ContainerListener  {
 
@@ -114,10 +114,10 @@ public interface IBefriendedMob extends ContainerListener  {
 	
 	public int getInventorySize();
 	
-	// Set mob data from inventoryTag.
+	// Set mob data from additionalInventory.
 	public void updateFromInventory();
 	
-	// Set inventoryTag from mob data
+	// Set additionalInventory from mob data
 	public void setInventoryFromMob();
 	
 	// Get item stack from position in inventory tag
@@ -134,8 +134,8 @@ public interface IBefriendedMob extends ContainerListener  {
 		return this.getInventoryItemStack(pos).getItem();
 	}
 	
-	// Get bauble item stack from inventoryTag.
-	// Baubles are extra items in inventoryTag to define some extra functions.
+	// Get bauble item stack from additionalInventory.
+	// Baubles are extra items in additionalInventory to define some extra functions.
 	// If empty, return empty; if out of index, return null.
 	// If bauble feature is not needed, just don't override.
 	public default ItemStack getBauble(int index)
@@ -143,7 +143,7 @@ public interface IBefriendedMob extends ContainerListener  {
 		return ItemStack.EMPTY;
 	}
 	
-	// Set bauble item stack to inventoryTag.
+	// Set bauble item stack to additionalInventory.
 	// If bauble feature is not needed, just don't override.
 	public default void setBauble(ItemStack item, int index)
 	{

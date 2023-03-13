@@ -10,8 +10,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.event.events.MobBefriendEvent;
 import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
-import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
 
 public abstract class AbstractBefriendingHandler 

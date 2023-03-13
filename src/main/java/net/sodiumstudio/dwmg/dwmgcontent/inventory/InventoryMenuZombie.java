@@ -131,7 +131,7 @@ public class InventoryMenuZombie extends AbstractInventoryMenuBefriended{
 
 		ItemStack stack = slot.getItem();
 
-		// From mob equipment to player inventoryTag
+		// From mob equipment to player additionalInventory
 		if (index < 8) {
 			if (!this.moveItemStackTo(stack, 8, 44, true)) {
 				return ItemStack.EMPTY;
@@ -139,7 +139,7 @@ public class InventoryMenuZombie extends AbstractInventoryMenuBefriended{
 				done = true;
 			}
 		}
-		// From inventoryTag to mob
+		// From additionalInventory to mob
 		else {
 			// Try each mob slot
 			for (int i = 0; i < 8; ++i) {

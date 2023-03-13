@@ -1,8 +1,11 @@
 package net.sodiumstudio.dwmg.befriendmobs.event;
 
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -29,10 +32,12 @@ import net.sodiumstudio.dwmg.befriendmobs.event.events.BefriendableMobInteractEv
 import net.sodiumstudio.dwmg.befriendmobs.event.events.MobBefriendEvent;
 import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.registry.RegItems;
-import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Util;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
+import net.sodiumstudio.dwmg.befriendmobs.util.debug.BMDebugItemHandler;
+import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.ModCapabilities;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.ModEffects;
@@ -55,72 +60,42 @@ public class EntityEvents
 		// Mob interaction start //
 		if (target != null && target instanceof Mob) 
 		{
-			Mob mob = (Mob) target;
-			@SuppressWarnings("unchecked")
+	
+			Mob mob = (Mob)target;
 			EntityType<Mob> type = (EntityType<Mob>) mob.getType();
+
+			
+			// Do debug actions and skip when holding debug items
+			if (TagHelper.hasTag(player.getMainHandItem().getItem(), "befriendmobs", "debug_tools"))
+			{
+				if (!isClientSide && isMainHand)
+					BMDebugItemHandler.onDebugItemUsed(player, (Mob)target, player.getMainHandItem().getItem());
+				event.setCancellationResult(InteractionResult.sidedSuccess(isClientSide));			
+				return;		
+			}
+			
 			// Handle befriendable mob start //
-			if (mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).isPresent()
+			else if (mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).isPresent()
 					&& !(mob instanceof IBefriendedMob)) {
 				mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> 
 				{
-					/* For debug items only */
-					if (player.getMainHandItem().getItem() == RegItems.DEBUG_BEFRIENDER.get()) 
+
+					BefriendableMobInteractionResult res = BefriendingTypeRegistry.getHandler(type).handleInteract(
+							BefriendableMobInteractArguments.of(event.getSide(), player, mob, event.getHand()));
+					if (res.befriendedMob != null) // Directly exit if befriended, as this mob is no longer valid
 					{
-						if (!isClientSide && isMainHand) 
-						{
-							IBefriendedMob bef = BefriendingTypeRegistry.getHandler(type).befriend(player,
-									mob);
-							if (bef != null) 
-							{
-								MinecraftForge.EVENT_BUS.post(new MobBefriendEvent(player, mob, bef));
-								EntityHelper.sendHeartParticlesToMob(bef.asMob()); // TODO: move this to a MobBefriendEvent listener
-								event.setCancellationResult(InteractionResult.sidedSuccess(isClientSide));
-								return;
-							} 
-							else throw new UnimplementedException("Entity type befriend method unimplemented: "
-										+ mob.getType().toShortString() + ", handler class: "
-										+ BefriendingTypeRegistry.getHandler(type).toString());
-						}
-						MinecraftForge.EVENT_BUS.post(
-								new BefriendableMobInteractEvent(event.getSide(), player, mob, event.getHand()));
+						event.setCanceled(true);
+						event.setCancellationResult(InteractionResult.sidedSuccess(isClientSide));
+						return;
+					} else if (res.handled)
+					{
+						event.setCanceled(true);
 						result.set(InteractionResult.sidedSuccess(isClientSide));
+						shouldPostInteractEvent.set(true);
+						MinecraftForge.EVENT_BUS
+								.post(new BefriendableMobInteractEvent(event.getSide(), player, mob, event.getHand()));
 					}
-					else if (player.getMainHandItem().getItem() == RegItems.DEBUG_ARMOR_GIVER.get())
-					{
-						if (!isClientSide && isMainHand) 
-						{
-							if (mob.getItemBySlot(EquipmentSlot.HEAD).isEmpty())
-								mob.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET.asItem()));
-							else if (mob.getItemBySlot(EquipmentSlot.CHEST).isEmpty())
-								mob.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE.asItem()));
-							else if (mob.getItemBySlot(EquipmentSlot.LEGS).isEmpty())
-								mob.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS.asItem()));
-							else if (mob.getItemBySlot(EquipmentSlot.FEET).isEmpty())
-								mob.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS.asItem()));
-							result.set(InteractionResult.sidedSuccess(isClientSide));
-						}
-					}
-					/* Main actions */
-					else 
-					{
-						BefriendableMobInteractionResult res = BefriendingTypeRegistry.getHandler(type)
-								.handleInteract(BefriendableMobInteractArguments.of(event.getSide(), player, mob,
-										event.getHand()));
-						if (res.befriendedMob != null) // Directly exit if befriended, as this mob is no longer valid
-						{
-							event.setCanceled(true);
-							event.setCancellationResult(InteractionResult.sidedSuccess(isClientSide));
-							return;
-						} 
-						else if (res.handled) 
-						{
-							event.setCanceled(true);
-							result.set(InteractionResult.sidedSuccess(isClientSide));
-							shouldPostInteractEvent.set(true);
-							MinecraftForge.EVENT_BUS.post(
-									new BefriendableMobInteractEvent(event.getSide(), player, mob, event.getHand()));
-						}
-					}
+					
 				});
 			}
 			// Handle befriendable mob end //

@@ -40,10 +40,10 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
 import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiZombieGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.*;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuZombie;
@@ -117,12 +117,12 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 
 	/* Inventory */
 
-	AdditionalInventoryWithEquipment inventoryTag = new AdditionalInventoryWithEquipment(getInventorySize());
+	AdditionalInventoryWithEquipment additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize());
 
 	@Override
 	public AdditionalInventory getAdditionalInventory()
 	{
-		return inventoryTag;
+		return additionalInventory;
 	}
 
 	@Override
@@ -134,23 +134,23 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
-			inventoryTag.setMobEquipment(this);
+			additionalInventory.setMobEquipment(this);
 		}
 	}
 
 	public void setInventoryFromMob()
 	{
 		if (!this.level.isClientSide) {
-			inventoryTag.getFromMob(this);
+			additionalInventory.getFromMob(this);
 		}
 	}
 	
 	@Override
 	public ItemStack getBauble(int index) {
 		if (index == 0)
-			return inventoryTag.get(6);
+			return additionalInventory.get(6);
 		else if (index == 1)
-			return inventoryTag.get(7);
+			return additionalInventory.get(7);
 		else
 			return null;
 	}
@@ -161,9 +161,9 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		if (item == null || item.isEmpty())
 			itemCpy = ItemStack.EMPTY;
 		if (index == 0)
-			inventoryTag.set(itemCpy, 6);
+			additionalInventory.set(itemCpy, 6);
 		else if (index == 1)
-			inventoryTag.set(itemCpy, 7);
+			additionalInventory.set(itemCpy, 7);
 		else
 			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();
@@ -180,14 +180,14 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		inventoryTag.saveToTag(nbt, "inventory_tag");
+		additionalInventory.saveToTag(nbt, "inventory_tag");
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		inventoryTag.readFromTag(nbt.getCompound("inventory_tag"));
+		additionalInventory.readFromTag(nbt.getCompound("inventory_tag"));
 	}
 
 	// ==================================================================== //

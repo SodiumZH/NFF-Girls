@@ -28,15 +28,16 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedFleeSunGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedRangedBowAttackGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedRestrictSunGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
 import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
@@ -81,27 +82,27 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	@Override
 	public void aiStep() {
 		super.aiStep();
-		
+		/*
 		if (this.getTarget() != null) {
 			// When too close, switch to melee mode if possible
 			if (this.distanceTo(this.getTarget()) < 2.5) {
-				if (inventoryTag.get(4).is(Items.BOW) && inventoryTag.get(7).getItem() instanceof TieredItem) {
-					inventoryTag.swapItem(4, 7);
+				if (additionalInventory.get(4).is(Items.BOW) && additionalInventory.get(7).getItem() instanceof TieredItem) {
+					additionalInventory.swapItem(4, 7);
 					updateFromInventory();
 				}
 			}
 			// When run out arrows, try taking weapon from backup-weapon slot
-			if (inventoryTag.get(4).is(Items.BOW) && inventoryTag.get(7).getItem() instanceof TieredItem
-					&& inventoryTag.get(8).isEmpty()) {
-				inventoryTag.swapItem(4, 7);
+			if (additionalInventory.get(4).is(Items.BOW) && additionalInventory.get(7).getItem() instanceof TieredItem
+					&& additionalInventory.get(8).isEmpty()) {
+				additionalInventory.swapItem(4, 7);
 				updateFromInventory();
 			}
 			// When too far and having a bow on backup-weapon, switch to bow mode
 			// Don't switch if don't have arrows
 			else if (this.distanceTo(this.getTarget()) > 4) {
-				if (!inventoryTag.get(4).is(Items.BOW) && inventoryTag.get(7).is(Items.BOW)
-						&& !inventoryTag.get(8).isEmpty()) {
-					inventoryTag.swapItem(4, 7);
+				if (!additionalInventory.get(4).is(Items.BOW) && additionalInventory.get(7).is(Items.BOW)
+						&& !additionalInventory.get(8).isEmpty()) {
+					additionalInventory.swapItem(4, 7);
 					updateFromInventory();
 				}
 			}
@@ -113,11 +114,11 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 					&& (this.getInventoryItem(7) instanceof TieredItem)
 					)
 			{
-				inventoryTag.swapItem(4, 7);
+				additionalInventory.swapItem(4, 7);
 				updateFromInventory();
 			}
 			
-		}
+		}*/
 	}
 	
 	/* Bow shooting end */
@@ -157,23 +158,23 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	/* Inventory */
 
 
-	protected AdditionalInventoryWithEquipment inventoryTag = new AdditionalInventoryWithEquipment(getInventorySize());
+	protected AdditionalInventoryWithEquipment additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize());
 
 	@Override
 	public AdditionalInventory getAdditionalInventory()
 	{
-		return inventoryTag;
+		return additionalInventory;
 	}
 	
 	@Override
 	public SimpleContainer makeContainerFromInventory() {
-		return inventoryTag.toContainer();
+		return additionalInventory.toContainer();
 	}
 
 	@Override
 	public void saveInventory(SimpleContainer container)
 	{
-		inventoryTag.setFromContainer(container);
+		additionalInventory.setFromContainer(container);
 	}
 	
 	// 6->bauble, 7->backup weapon 8->arrow
@@ -186,21 +187,21 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
-			inventoryTag.setMobEquipment(this);
+			additionalInventory.setMobEquipment(this);
 		}
 	}
 
 	@Override
 	public void setInventoryFromMob() {
 		if (!this.level.isClientSide) {
-			inventoryTag.getFromMob(this);
+			additionalInventory.getFromMob(this);
 		}
 	}
 	
 	@Override
 	public ItemStack getBauble(int index) {
 		if (index == 0)
-			return inventoryTag.get(6);
+			return additionalInventory.get(6);
 		else
 			return null;
 	}
@@ -210,7 +211,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		if (item == null || item.isEmpty())
 			return;
 		if (index == 0)
-			inventoryTag.set(item, 6);
+			additionalInventory.set(item, 6);
 		else
 			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
 		updateFromInventory();
@@ -227,14 +228,14 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		inventoryTag.saveToTag(nbt, "inventory_tag");
+		additionalInventory.saveToTag(nbt, "inventory_tag");
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		inventoryTag.readFromTag(nbt.getCompound("inventory_tag"));
+		additionalInventory.readFromTag(nbt.getCompound("inventory_tag"));
 	}
 	
 	// ==================================================================== //

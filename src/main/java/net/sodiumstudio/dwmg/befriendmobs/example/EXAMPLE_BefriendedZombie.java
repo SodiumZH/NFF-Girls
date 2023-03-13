@@ -35,10 +35,10 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.Debug;
 import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 
 /**
  * @author SodiumZH
@@ -120,7 +120,7 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	public boolean onInteractionShift(Player player, InteractionHand hand) {
 		if (player.getUUID().equals(getOwnerUUID())) {
 			if (hand.equals(InteractionHand.MAIN_HAND))
-				// This method opens inventoryTag GUI on server. It won't do anything on client.
+				// This method opens additionalInventory GUI on server. It won't do anything on client.
 				BefriendedHelper.openBefriendedInventory(player, this);
 			return true;
 		} 
@@ -145,7 +145,7 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 
 	/**
 	 * Override to set inventory size (including equipment).
-	 * In this example the armor and hands slots are included in the inventoryTag,
+	 * In this example the armor and hands slots are included in the additionalInventory,
 	 * together with 2 extra "bauble" slots (see getBauble function for detail).
 	 */
 	@Override
@@ -209,7 +209,7 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 		updateFromInventory();
 	}
 
-	/** Make inventoryTag menu.
+	/** Make additionalInventory menu.
 	 * This method should return a new menu instance.
 	 */
 	@Override

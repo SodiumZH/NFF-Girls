@@ -139,7 +139,7 @@ public class InventoryMenuSkeleton extends AbstractInventoryMenuBefriended
 
 		ItemStack stack = slot.getItem();
 
-		// From mob equipment to player inventoryTag
+		// From mob equipment to player additionalInventory
 		if (index < 9) {
 			if (!this.moveItemStackTo(stack, 9, 45, true)) {
 				return ItemStack.EMPTY;
@@ -147,7 +147,7 @@ public class InventoryMenuSkeleton extends AbstractInventoryMenuBefriended
 				done = true;
 			}
 		}
-		// From inventoryTag to mob
+		// From additionalInventory to mob
 		else {
 			// Try put arrow
 			if (stack.is(Items.ARROW))

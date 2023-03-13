@@ -46,13 +46,14 @@ public class AdditionalInventory
 		tag.put("size", IntTag.valueOf(this.size));
 		for (int i = 0; i < size; ++i) 
 		{
-			NbtHelper.saveItemStack(this.get(i), tag, key);
+			NbtHelper.saveItemStack(this.get(i), tag, Integer.toString(i));
 		}
+		parent.put(key, tag);
 	}
 	
 	public void readFromTag(CompoundTag tag)
 	{
-		if (!tag.contains("size", 3))
+		if (!tag.contains("size"))
 			throw new IllegalArgumentException("AdditionalInventory: reading from illegal tag.");
 		if (tag.getInt("size") != this.getSize())
 			throw new IllegalStateException("AdditionalInventory reading from NBT: size not matching.");
@@ -67,9 +68,7 @@ public class AdditionalInventory
 	
 	public static AdditionalInventory makeFromTag(CompoundTag tag) 
 	{
-		if (!tag.contains("size", 3))
-			throw new IllegalArgumentException("AdditionalInventory: making from illegal tag.");
-		
+
 		AdditionalInventory inv = new AdditionalInventory(tag.getInt("size"));
 		inv.readFromTag(tag);
 		return inv;

@@ -89,7 +89,7 @@ public class IntVec2
 		return this;
 	}
 	
-	/* Utility for inventoryTag menu XY handling */
+	/* Utility for additionalInventory menu XY handling */
 	
 	// Move an IntVec2 to the nth slot below
 	// Set value!!

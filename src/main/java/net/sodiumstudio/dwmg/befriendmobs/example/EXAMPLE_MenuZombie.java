@@ -121,7 +121,7 @@ public class EXAMPLE_MenuZombie extends AbstractInventoryMenuBefriended {
 
 		ItemStack stack = slot.getItem();
 
-		// From mob equipment to player inventoryTag
+		// From mob equipment to player additionalInventory
 		if (index < 6+getBaubleSlotAmount()) {
 			if (!this.moveItemStackTo(stack, 6+getBaubleSlotAmount(), 6+getBaubleSlotAmount()+32, true)) {
 				return ItemStack.EMPTY;
@@ -129,7 +129,7 @@ public class EXAMPLE_MenuZombie extends AbstractInventoryMenuBefriended {
 				done = true;
 			}
 		}
-		// From inventoryTag to mob
+		// From additionalInventory to mob
 		else {
 			// Try each mob slot
 			for (int i = 0; i < 6 + getBaubleSlotAmount(); ++i) {
