@@ -164,7 +164,6 @@ public class BefriendedRangedBowAttackGoal extends BefriendedGoal
 					{
 						this.mob.asMob().stopUsingItem();
 						((RangedAttackMob) this.mob).performRangedAttack(livingentity, BowItem.getPowerForTime(i));
-						this.onArrowShot();
 						this.attackTime = this.attackIntervalMin;
 					}
 				}
@@ -176,7 +175,5 @@ public class BefriendedRangedBowAttackGoal extends BefriendedGoal
 
 		}
 	}
-	
-	public void onArrowShot()
-	{}
+
 }

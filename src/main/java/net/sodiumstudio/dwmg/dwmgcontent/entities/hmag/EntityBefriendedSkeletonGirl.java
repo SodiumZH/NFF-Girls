@@ -78,10 +78,28 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	}
 
 	/* Bow shooting related */
+	
+	private boolean justShot = false;
+
+	@Override
+	public void performRangedAttack(LivingEntity pTarget, float pVelocity)
+	{
+		// Filter again to avoid it shoot without arrow
+		if (this.getAdditionalInventory().getItem(8).isEmpty())
+			return;
+		super.performRangedAttack(pTarget, pVelocity);
+		// Instantly consume arrow causes ticking crash, with unknown reason
+		justShot = true;
+	}
 
 	@Override
 	public void aiStep() {
 		super.aiStep();
+		if (justShot)
+		{
+			this.getAdditionalInventory().consumeItem(8);
+			justShot = false;
+		}
 		/*
 		if (this.getTarget() != null) {
 			// When too close, switch to melee mode if possible
