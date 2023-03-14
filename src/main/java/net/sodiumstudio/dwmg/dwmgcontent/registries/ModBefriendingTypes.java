@@ -7,8 +7,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.befriending.hmag.HandlerSkeletonGirl;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.befriending.hmag.HandlerZombieGirl;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerHuskGirl;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerSkeletonGirl;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerZombieGirl;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBefriendingTypes {
@@ -24,6 +25,10 @@ public class ModBefriendingTypes {
 				ModEntityTypes.SKELETON_GIRL.get(),
 				DwmgEntityTypes.BEF_SKELETON_GIRL.get(),
 				new HandlerSkeletonGirl());		
+		BefriendingTypeRegistry.register(
+				ModEntityTypes.HUSK_GIRL.get(),
+				DwmgEntityTypes.BEF_HUSK_GIRL.get(),
+				new HandlerHuskGirl());	
 	}
 	
 	

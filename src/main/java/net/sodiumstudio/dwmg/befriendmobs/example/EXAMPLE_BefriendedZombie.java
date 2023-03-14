@@ -33,8 +33,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
-import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 
 /**
@@ -222,7 +222,6 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 		super.addAdditionalSaveData(nbt);
 		// Recommended. This function automatically saves the owner and AI state information.
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		inventoryTag.saveToTag(nbt, "inventory_tag");
 	}
 
 	// Read extra data. Similar to those above.
@@ -230,7 +229,6 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		inventoryTag.readFromTag(nbt.getCompound("inventory_tag"));
 	}
 
 	// ==================================================================== //
@@ -256,7 +254,20 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 
 	// ------------------ IBefriendedMob interface ------------------ //
 
-	// Owner related
+	protected boolean initialized = false;
+	
+	@Override
+	public boolean hasInit()
+	{
+		return initialized;
+	}
+	
+	@Override
+	public void setInit()
+	{
+		initialized = true;
+	}
+		
 	@Override
 	public Player getOwner() {
 		return level.getPlayerByUUID(getOwnerUUID());
@@ -301,8 +312,6 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 		PreviousTarget = target;
 	}
 	
-	/* Inventory */
-
 	// ------------------ IBefriendedMob interface end ------------------ //
 
 	// ------------------ Misc ------------------ //

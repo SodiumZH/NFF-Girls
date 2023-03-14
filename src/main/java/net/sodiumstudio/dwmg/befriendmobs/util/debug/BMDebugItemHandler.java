@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.befriendmobs.util.debug;
 
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -17,8 +18,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
-import net.sodiumstudio.dwmg.befriendmobs.event.events.BefriendableMobInteractEvent;
-import net.sodiumstudio.dwmg.befriendmobs.event.events.MobBefriendEvent;
 import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.registry.RegItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
@@ -33,17 +32,31 @@ public class BMDebugItemHandler
 		if (!BefriendMobs.IS_DEBUG_MODE)
 			throw new RuntimeException("Debug item cannot use in publish versions!!!");
 		
-		if (item.equals(RegItems.DEBUG_TARGET_SETTER.get()) && !(target instanceof IBefriendedMob))
+		if (item.equals(RegItems.DEBUG_TARGET_SETTER.get()))
 		{
-			if (target.hasEffect(target.getMobType().equals(MobType.UNDEAD) ? MobEffects.HARM : MobEffects.HEAL))
+			MobEffect effect = target.getMobType().equals(MobType.UNDEAD) ? MobEffects.HARM : MobEffects.HEAL;
+			if (target instanceof IBefriendedMob)
 			{
-				target.kill();
-			} 
+				if (target.hasEffect(effect))
+				{
+					target.removeEffect(effect);
+				} 
+				else
+				{
+					target.addEffect(new MobEffectInstance(effect, 9999999));
+				}
+			}
 			else
 			{
-				target.addEffect(new MobEffectInstance(
-						target.getMobType().equals(MobType.UNDEAD) ? MobEffects.HARM : MobEffects.HEAL, 9999999));
-				target.setCustomName(new TextComponent("Debug Target"));
+				if (target.hasEffect(target.getMobType().equals(MobType.UNDEAD) ? MobEffects.HARM : MobEffects.HEAL))
+				{
+					target.kill();
+				} 
+				else
+				{
+					target.addEffect(new MobEffectInstance(effect, 9999999));
+					target.setCustomName(new TextComponent("Debug Target"));
+				}
 			}
 		}
 
@@ -58,7 +71,6 @@ public class BMDebugItemHandler
 					IBefriendedMob bef = BefriendingTypeRegistry.getHandler((EntityType<Mob>)target.getType()).befriend(player, target);
 					if (bef != null)
 					{
-						MinecraftForge.EVENT_BUS.post(new MobBefriendEvent(player, target, bef));
 						EntityHelper.sendHeartParticlesToMob(bef.asMob()); // TODO: move this to a MobBefriendEvent listener
 					} else
 						throw new UnimplementedException(

@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.befriendmobs.event;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
@@ -36,9 +37,9 @@ public class ServerEvents
 			// Update all befriendable mobs near players
 			for (Player player : event.world.players())
 				for (Entity entity : event.world.getEntities(player, new AABB(player.position().subtract(64.0, 64.0, 64.0), player.position().add(64.0, 64.0, 64.0))))
-					if (entity instanceof LivingEntity living)
+					if (entity instanceof Mob mob)
 					{	// TODO: make this an event
-						living.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> { l.updateTimers(); });
+						mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> { l.updateTimers(); });
 						if (entity instanceof IBefriendedMob bef)
 						{
 							bef.onTick();

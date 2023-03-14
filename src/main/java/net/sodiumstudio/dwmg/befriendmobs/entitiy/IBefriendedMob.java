@@ -16,7 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 
 public interface IBefriendedMob extends ContainerListener  {
@@ -26,12 +26,24 @@ public interface IBefriendedMob extends ContainerListener  {
 	/** Initialize a mob.
 	 * On reading from NBT, the befriendedFrom mob is null, so implementation must handle null cases.
 	 * @param player Player who owns this mob.
-	 * @param befriendedFrom The source mob from which this mob was befriended. E.g. a ZombieGirlFriendly was befriended from a ZombieGirlEntity. WARNING: Only on creating mob this value is valid. On reading from data it's null !!!
+	 * @param from The source mob from which this mob was befriended or converted. 
+	 * E.g. a BefriendedZombie was befriended from a Zombie, or spawned from a Husk by water conversion.
+	 * WARNING: Only on creating mob this value is valid. On reading from data it's null !!!
 	 */
-	public default void init(@Nonnull UUID playerUUID, @Nullable Mob befriendedFrom)
+	public default void init(@Nonnull UUID playerUUID, @Nullable Mob from)
 	{
-		BefriendedHelper.initDefault(this, playerUUID, befriendedFrom);
+		this.setOwnerUUID(playerUUID);
+		if (from != null)
+		{
+			this.asMob().setHealth(from.getHealth());
+		}
+		this.setInventoryFromMob();
 	}
+
+	public boolean hasInit();
+	
+	// Call this to label a mob initialized after reading nbt, copying from other, etc.
+	public void setInit();
 	
 	/* Ownership */
 	
@@ -164,4 +176,6 @@ public interface IBefriendedMob extends ContainerListener  {
 	{
 		return (Mob)this;
 	}
+
+
 }

@@ -10,7 +10,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 
 public class ClientboundBefriendedGuiOpenPacket implements Packet<ClientGamePacketListener> {
 

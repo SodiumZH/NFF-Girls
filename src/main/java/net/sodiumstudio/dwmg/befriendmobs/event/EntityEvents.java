@@ -1,22 +1,16 @@
 package net.sodiumstudio.dwmg.befriendmobs.event;
 
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
@@ -28,17 +22,13 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
-import net.sodiumstudio.dwmg.befriendmobs.event.events.BefriendableMobInteractEvent;
-import net.sodiumstudio.dwmg.befriendmobs.event.events.MobBefriendEvent;
 import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.registry.RegItems;
-import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Util;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.BMDebugItemHandler;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
-import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.ModCapabilities;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.ModEffects;
 
@@ -93,8 +83,6 @@ public class EntityEvents
 						event.setCanceled(true);
 						result.set(InteractionResult.sidedSuccess(isClientSide));
 						shouldPostInteractEvent.set(true);
-						MinecraftForge.EVENT_BUS
-								.post(new BefriendableMobInteractEvent(event.getSide(), player, mob, event.getHand()));
 					}
 					
 				});

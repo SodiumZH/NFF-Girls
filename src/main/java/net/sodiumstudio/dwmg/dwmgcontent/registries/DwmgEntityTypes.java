@@ -8,6 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedHuskGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedSkeletonGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedZombieGirl;
 
@@ -23,12 +24,20 @@ public class DwmgEntityTypes {
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
 			.build(new ResourceLocation(Dwmg.MOD_ID, "bef_zombie_girl").toString()));
-	public static final RegistryObject<EntityType<EntityBefriendedSkeletonGirl>> BEF_SKELETON_GIRL = ENTITY_TYPES.register("skeleton_girl", () -> EntityType.Builder.of(
-			EntityBefriendedSkeletonGirl::new, MobCategory.MONSTER)
+	public static final RegistryObject<EntityType<EntityBefriendedSkeletonGirl>> BEF_SKELETON_GIRL = ENTITY_TYPES.register("bef_skeleton_girl", () -> EntityType.Builder.of(
+			EntityBefriendedSkeletonGirl::new, MobCategory.CREATURE)
 			.sized(0.6F, 1.99F)
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
 			.build(new ResourceLocation(Dwmg.MOD_ID, "bef_skeleton_girl").toString()));
+
+	public static final RegistryObject<EntityType<EntityBefriendedHuskGirl>> BEF_HUSK_GIRL = ENTITY_TYPES.register("bef_husk_girl", () -> EntityType.Builder.of(
+			EntityBefriendedHuskGirl::new, MobCategory.CREATURE)
+			.sized(0.6F, 1.95F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.build(new ResourceLocation(Dwmg.MOD_ID, "husk_girl").toString()));
 	
 }

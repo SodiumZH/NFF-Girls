@@ -24,8 +24,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.example.EXAMPLE_BefriendedZombie;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
-import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
 
 // This is a template for befriended mob class.
 // You may copy-paste the code below to your class and modify at places labeled by /*...*/.
@@ -87,12 +87,12 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 	// Inventory related
 	// Generally no need to modify unless noted
 	
-	AdditionalInventoryWithEquipment inventoryTag = new AdditionalInventoryWithEquipment(getInventorySize());
+	AdditionalInventory additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize());
 
 	@Override
 	public AdditionalInventory getAdditionalInventory()
 	{
-		return inventoryTag;
+		return additionalInventory;
 	}
 
 	@Override
@@ -105,30 +105,29 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
-			inventoryTag.setMobEquipment(this);
+			/* If mob's properties (e.g. equipment, HP, etc.) needs to sync with inventory, set here */
 		}
 	}
 
-	/**
-	 * Set inventory from mob state.
-	 * Usually called only on initialization.
-	 */
 	@Override
 	public void setInventoryFromMob() {
 		if (!this.level.isClientSide) {
-			inventoryTag.getFromMob(this);
+			/* If inventory needs to be set from mob's properties on initialization, set here */
 		}
 	}
 	
 	@Override
 	public ItemStack getBauble(int index) {
 		/* Customize here */
+		/* Example:
 		if (index == 0)
 			return getAdditionalInventory().getItem(6);
 		else if (index == 1)
 			return getAdditionalInventory().getItem(7);
 		else
 			return null;
+		*/
+		return null;
 	}
 
 	/**	Set Bauble item stack.
@@ -137,14 +136,16 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 	@Override
 	public void setBauble(ItemStack item, int index) {
 		/* Customize here */
+		/* Example:
 		if (item == null || item.isEmpty())
 			return;
 		if (index == 0)
-			inventoryTag.setItem(6, item);
+			additionalInventory.setItem(6, item);
 		else if (index == 1)
-			inventoryTag.setItem(7, item);
+			additionalInventory.setItem(7, item);
 		else
 			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
+		*/
 		updateFromInventory();
 	}
 	 
@@ -160,9 +161,7 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		// Recommended. This function automatically saves the owner and AI state information.
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		inventoryTag.saveToTag(nbt, "inventory_tag");
 		/* Add more save data... */
 	}
 
@@ -170,8 +169,8 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		inventoryTag.readFromTag(nbt.getCompound("inventory_tag"));
 		/* Add more save data... */
+		this.setInit();
 	}
 
 	// ==================================================================== //
@@ -197,7 +196,20 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 
 	// ------------------ IBefriendedMob interface ------------------ //
 
-	// Owner related
+	protected boolean initialized = false;
+	
+	@Override
+	public boolean hasInit()
+	{
+		return initialized;
+	}
+	
+	@Override
+	public void setInit()
+	{
+		initialized = true;
+	}
+		
 	@Override
 	public Player getOwner() {
 		return level.getPlayerByUUID(getOwnerUUID());
@@ -253,7 +265,7 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 		return true;
 	}
 
-	/* add this if inheriting Monster class */
+	/* add @Override annotation if inheriting Monster class */
 	/* @Override */
 	public boolean isPreventingPlayerRest(Player pPlayer) {
 		return false;

@@ -35,8 +35,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventory;
-import net.sodiumstudio.dwmg.befriendmobs.util.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
@@ -100,26 +100,26 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 			this.getAdditionalInventory().consumeItem(8);
 			justShot = false;
 		}
-		/*
+		
 		if (this.getTarget() != null) {
 			// When too close, switch to melee mode if possible
 			if (this.distanceTo(this.getTarget()) < 2.5) {
-				if (additionalInventory.get(4).is(Items.BOW) && additionalInventory.get(7).getItem() instanceof TieredItem) {
+				if (additionalInventory.getItem(4).is(Items.BOW) && additionalInventory.getItem(7).getItem() instanceof TieredItem) {
 					additionalInventory.swapItem(4, 7);
 					updateFromInventory();
 				}
 			}
 			// When run out arrows, try taking weapon from backup-weapon slot
-			if (additionalInventory.get(4).is(Items.BOW) && additionalInventory.get(7).getItem() instanceof TieredItem
-					&& additionalInventory.get(8).isEmpty()) {
+			if (additionalInventory.getItem(4).is(Items.BOW) && additionalInventory.getItem(7).getItem() instanceof TieredItem
+					&& additionalInventory.getItem(8).isEmpty()) {
 				additionalInventory.swapItem(4, 7);
 				updateFromInventory();
 			}
 			// When too far and having a bow on backup-weapon, switch to bow mode
 			// Don't switch if don't have arrows
 			else if (this.distanceTo(this.getTarget()) > 4) {
-				if (!additionalInventory.get(4).is(Items.BOW) && additionalInventory.get(7).is(Items.BOW)
-						&& !additionalInventory.get(8).isEmpty()) {
+				if (!additionalInventory.getItem(4).is(Items.BOW) && getAdditionalInventory().getItem(7).is(Items.BOW)
+						&& !additionalInventory.getItem(8).isEmpty()) {
 					additionalInventory.swapItem(4, 7);
 					updateFromInventory();
 				}
@@ -136,7 +136,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 				updateFromInventory();
 			}
 			
-		}*/
+		}
 	}
 	
 	/* Bow shooting end */
@@ -233,14 +233,13 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		additionalInventory.saveToTag(nbt, "inventory_tag");
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		additionalInventory.readFromTag(nbt.getCompound("inventory_tag"));
+		setInit();
 	}
 	
 	// ==================================================================== //
@@ -264,7 +263,20 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 
 	// ------------------ IBefriendedMob interface ------------------ //
 
-	// Owner related
+	protected boolean initialized = false;
+	
+	@Override
+	public boolean hasInit()
+	{
+		return initialized;
+	}
+	
+	@Override
+	public void setInit()
+	{
+		initialized = true;
+	}
+	
 	@Override
 	public Player getOwner() {
 		return level.getPlayerByUUID(getOwnerUUID());

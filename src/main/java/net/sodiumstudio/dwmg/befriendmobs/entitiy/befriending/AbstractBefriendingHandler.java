@@ -1,18 +1,13 @@
 package net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.MinecraftForge;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
-import net.sodiumstudio.dwmg.befriendmobs.event.events.MobBefriendEvent;
 import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
-import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
 
 public abstract class AbstractBefriendingHandler 
 {
@@ -49,8 +44,7 @@ public abstract class AbstractBefriendingHandler
 		newBefMob.init(player.getUUID(), target);
 		newBefMob.setInventoryFromMob();
 		Debug.printToScreen("Mob \""+target.getDisplayName().getString()+"\" befriended", player, target);
-		if (newBefMob != null)
-			MinecraftForge.EVENT_BUS.post(new MobBefriendEvent(player, target, newBefMob));
+		newBefMob.setInit();
 		return newBefMob;
 	}
 	

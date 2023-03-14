@@ -467,6 +467,12 @@
     },
     "done": true
   },
+  "minecraft:recipes/brewing/cauldron": {
+    "criteria": {
+      "has_water_bucket": "2023-03-14 22:15:46 +0800"
+    },
+    "done": true
+  },
   "minecraft:adventure/adventuring_time": {
     "criteria": {
       "minecraft:river": "2023-02-06 23:04:35 +0800",

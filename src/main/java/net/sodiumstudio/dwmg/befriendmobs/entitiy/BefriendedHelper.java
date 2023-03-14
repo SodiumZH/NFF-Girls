@@ -25,18 +25,6 @@ import net.sodiumstudio.dwmg.befriendmobs.network.ClientboundBefriendedGuiOpenPa
 public class BefriendedHelper
 {
 
-	/* Init */
-	public static void initDefault(IBefriendedMob mob, @Nonnull UUID playerUUID, @Nullable Mob befriendedFrom) {
-		mob.setOwnerUUID(playerUUID);
-
-		if (befriendedFrom != null)
-		{
-			mob.asMob().setHealth(befriendedFrom.getHealth());
-			mob.setInventoryFromMob();
-		}
-
-	}
-
 	/* AI */
 
 	public static boolean wantsToAttackDefault(IBefriendedMob mob, LivingEntity target) {
@@ -63,6 +51,7 @@ public class BefriendedHelper
 
 	/* Save & Load */
 
+	// This will read owner, AI state and additional inventory
 	public static void addBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt) {
 		if (mob.getOwnerUUID() != null)
 			nbt.putUUID("owner", mob.getOwnerUUID());
@@ -70,6 +59,7 @@ public class BefriendedHelper
 			throw new IllegalStateException(
 					"Writing befriended mob data error: invalid owner. Was IBefriendedMob.init() not called?");
 		nbt.putByte("ai_state", mob.getAIState().id());
+		mob.getAdditionalInventory().saveToTag(nbt, "inventory_tag");
 	}
 
 	public static void readBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt) {
@@ -80,8 +70,16 @@ public class BefriendedHelper
 		mob.setOwnerUUID(uuid);
 		mob.init(mob.getOwnerUUID(), null);
 		mob.setAIState(BefriendedAIState.fromID(nbt.getByte("ai_state")));
+		mob.getAdditionalInventory().readFromTag(nbt.getCompound("inventory_tag"));
 	}
 
+	public static void copyBefriendedCommonData(IBefriendedMob newMob, IBefriendedMob oldMob)
+	{
+		newMob.setOwnerUUID(oldMob.getOwnerUUID());
+		newMob.setAIState(oldMob.getAIState());
+		newMob.getAdditionalInventory().copyFrom(oldMob.getAdditionalInventory());
+	}
+	
 	/* Inventory */
 
 	public static void openBefriendedInventory(Player player, IBefriendedMob target) {
