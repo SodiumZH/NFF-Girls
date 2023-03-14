@@ -84,7 +84,7 @@ public class BefriendedHelper
 		IBefriendedMob newMob = (IBefriendedMob) newMobRaw;
 		// Write the inventory back
 		if(inventoryTag.getInt("size") != newMob.getAdditionalInventory().getContainerSize())
-			throw new UnsupportedOperationException("BefriendedHelper::convertToOtherBefriendedType additional inventory must have same size before and after conversion.")
+			throw new UnsupportedOperationException("BefriendedHelper::convertToOtherBefriendedType additional inventory must have same size before and after conversion.");
 		newMob.getAdditionalInventory().readFromTag(inventoryTag);
 		// Do other settings
 		newMob.setOwnerUUID(target.getOwnerUUID());
