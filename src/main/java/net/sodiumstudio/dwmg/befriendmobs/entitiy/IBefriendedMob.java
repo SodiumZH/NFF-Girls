@@ -169,7 +169,8 @@ public interface IBefriendedMob extends ContainerListener  {
 	{
 		if (!(pContainer instanceof AdditionalInventory))
 			throw new UnsupportedOperationException("IBefriendedMob container only receives AdditionalInventory.");
-		updateFromInventory();
+		if (hasInit())
+			updateFromInventory();
 	}
 	
 	public default Mob asMob()

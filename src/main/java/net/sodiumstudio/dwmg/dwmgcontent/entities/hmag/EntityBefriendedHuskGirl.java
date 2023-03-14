@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.swing.text.html.parser.Entity;
 
 import com.github.mechalopa.hmag.world.entity.HuskGirlEntity;
 import com.github.mechalopa.hmag.world.entity.ZombieGirlEntity;
@@ -206,9 +207,12 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 	// Called when convert to zombie
 	protected EntityBefriendedZombieGirl convertToZombie()
 	{
+		AdditionalInventory inv = this.getAdditionalInventory().getCopy();
 		EntityBefriendedZombieGirl newMob = (EntityBefriendedZombieGirl)EntityHelper.replaceMob(DwmgEntityTypes.BEF_ZOMBIE_GIRL.get(), this);
 		newMob.isFromHusk = true;
-		BefriendedHelper.copyBefriendedCommonData(newMob, this);
+		newMob.setOwnerUUID(this.getOwnerUUID());
+		newMob.setAIState(this.getAIState());
+		newMob.getAdditionalInventory().copyFrom(inv);;
 		newMob.updateFromInventory();
 		newMob.setInit();
 		return newMob;

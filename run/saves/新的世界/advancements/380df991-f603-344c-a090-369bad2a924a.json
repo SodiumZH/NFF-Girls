@@ -371,6 +371,12 @@
     },
     "done": true
   },
+  "minecraft:recipes/building_blocks/sponge": {
+    "criteria": {
+      "has_wet_sponge": "2023-03-15 01:53:53 +0800"
+    },
+    "done": true
+  },
   "minecraft:recipes/building_blocks/red_concrete_powder": {
     "criteria": {
       "has_sand": "2023-02-25 14:38:08 +0800"
@@ -464,12 +470,6 @@
   "minecraft:recipes/redstone/target": {
     "criteria": {
       "has_redstone": "2023-02-08 02:52:57 +0800"
-    },
-    "done": true
-  },
-  "minecraft:recipes/brewing/cauldron": {
-    "criteria": {
-      "has_water_bucket": "2023-03-14 22:15:46 +0800"
     },
     "done": true
   },

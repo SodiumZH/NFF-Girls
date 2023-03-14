@@ -199,6 +199,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	{
 		EntityBefriendedHuskGirl newMob = (EntityBefriendedHuskGirl)EntityHelper.replaceMob(DwmgEntityTypes.BEF_HUSK_GIRL.get(), this);
 		BefriendedHelper.copyBefriendedCommonData(newMob, this);
+		newMob.updateFromInventory();
 		newMob.setInit();
 		return newMob;
 	}

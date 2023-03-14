@@ -63,7 +63,6 @@ public class AdditionalInventory extends SimpleContainer
 		if (index < 0 || index >= getContainerSize())
 			throw new IndexOutOfBoundsException();
 		super.setItem(index, stack);
-		updateOwner();
 	}
 	
 	@Deprecated // Use getItem()
@@ -86,7 +85,8 @@ public class AdditionalInventory extends SimpleContainer
 		return super.getContainerSize();
 	}
 	
-	public void saveToTag(CompoundTag parent, String key)
+	// Save this inventory into a tag.
+	public CompoundTag toTag() 
 	{
 		CompoundTag tag = new CompoundTag();
 		tag.put("size", IntTag.valueOf(this.getContainerSize()));
@@ -94,7 +94,13 @@ public class AdditionalInventory extends SimpleContainer
 		{
 			NbtHelper.saveItemStack(this.getItem(i), tag, Integer.toString(i));
 		}
-		parent.put(key, tag);
+		return tag;
+	}
+
+	
+	public void saveToTag(CompoundTag parent, String key)
+	{
+		parent.put(key, this.toTag());
 	}
 	
 	public void readFromTag(CompoundTag tag)
