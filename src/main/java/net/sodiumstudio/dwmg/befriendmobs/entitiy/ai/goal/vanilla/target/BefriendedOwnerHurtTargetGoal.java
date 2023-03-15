@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.target.BefriendedTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.BefriendedTargetGoal;
 
 public class BefriendedOwnerHurtTargetGoal extends BefriendedTargetGoal {
 	

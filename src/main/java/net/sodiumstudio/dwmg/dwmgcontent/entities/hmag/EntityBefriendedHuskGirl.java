@@ -204,16 +204,16 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 		}
 	}	
 	
+	public void forceUnderWaterConversion()
+	{
+		this.doUnderWaterConversion();
+	}
+	
 	// Called when convert to zombie
 	protected EntityBefriendedZombieGirl convertToZombie()
 	{
-		AdditionalInventory inv = this.getAdditionalInventory().getCopy();
-		EntityBefriendedZombieGirl newMob = (EntityBefriendedZombieGirl)EntityHelper.replaceMob(DwmgEntityTypes.BEF_ZOMBIE_GIRL.get(), this);
+		EntityBefriendedZombieGirl newMob = (EntityBefriendedZombieGirl)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.BEF_ZOMBIE_GIRL.get());
 		newMob.isFromHusk = true;
-		newMob.setOwnerUUID(this.getOwnerUUID());
-		newMob.setAIState(this.getAIState());
-		newMob.getAdditionalInventory().copyFrom(inv);;
-		newMob.updateFromInventory();
 		newMob.setInit();
 		return newMob;
 	}

@@ -4,7 +4,7 @@
 
 Befriend Mobs API is intended to help modders easily create features of befriending (or taming) mobs and friendly mobs despite their type hierarchy.
 
-For example, vanilla tamable mobs (e.g. wolf) inherit TamableMob class (except horse and variants). If you want to make hostile mobs (e.g. Zombie) friendly or tamed, only using vanilla API it may become complex. 
+For example, vanilla tamable mobs (e.g. wolf) inherit `TamableMob` class (except horse and variants). If you want to make hostile mobs (e.g. Zombie) friendly or tamed, only using vanilla API it may become complex. 
 
 You can easily create a subclass of Zombie (or anything else extends LivingEntity) with Befriended Mobs API without using any vanilla TamableMob interfaces, and without considering about the type hierarchy of the existing mobs.
 
@@ -36,13 +36,15 @@ A procedure to befriend a mob, i.e. convert a befriendable mob into the correspo
 
 ## How to create a befriended mob class
 
-1. Create a mob class (anything extends LivingEntity; PathfinderMob recommended) and **implement `IBefriendedMob` interface**. Register its entity type.
+1. Create a mob class (anything extends Mob; PathfinderMob recommended) **implementing `IBefriendedMob` interface**. 
 
-2. Copy-paste code in "General Settings" box from the example mob class. (Of course you can adjust them if you know what you're doing.)
+2. Do general setup: register entity type; register entity renderer; register entity attributes
 
-3. Implement other functions. See comments in the example mob class for details.
+3. Copy-paste code from the template mob class. 
 
-4. (Optional, if you need GUI) Create the inventory menu. Inventory menu is for add the mob's inventory into the GUI. Inventory menu for befriended mob **inherits `AbstractInventoryMenuBefriended` class**. In this class you need to override `addMenuSlots` method for the inventory of your mob. 
+4. Implement other functions. Positions labeled with `/* ... */` should be changed. Code under "General Settings" box from the template mob class usually doesn't need to modify. (Of course you can adjust them if you know what you're doing.)  See comments in the example mob class for details. 
+
+5. (Optional, if you need GUI) Create the inventory menu. Inventory menu is for add the mob's inventory into the GUI. Inventory menu for befriended mob **inherits `AbstractInventoryMenuBefriended` class**. In this class you need to override `addMenuSlots` method for the inventory of your mob. 
 
    By default, after running `addMenuSlots`, the player inventory will be automatically added just like in the vanilla inventory screen, at the position specified by `getPlayerInventoryPosition` method which you need to override. If player inventory is not needed, override `doAddPlayerInventory` to false.
 
@@ -50,7 +52,7 @@ A procedure to befriend a mob, i.e. convert a befriendable mob into the correspo
 
    Finally, override `makeGui` method to generate GUI screen from this menu. It must return a new GUI screen instance. For how to make, see below.
 
-5. Configure GUI. The GUI screen class for Befriended Mobs **inherit `AbstractGuiBefriended` class**. You must override `getTextureLocation` method to specify the texture resource location, and override `renderBg` to make the GUI background. Generally `render`method doesn't need to be overridden, but if you need some features other than the inventory and mob rendering (e.g. buttons), you need to manually implement them (including pack sending).
+6. Configure GUI. The GUI screen class for Befriended Mobs **inherit `AbstractGuiBefriended` class**. You must override `getTextureLocation` method to specify the texture resource location, and override `renderBg` to make the GUI background. Generally `render`method doesn't need to be overridden, but if you need some features other than the inventory and mob rendering (e.g. buttons), you need to manually implement them (including pack sending).
 
    Go back to the inventory menu class and construct a new GUI instance in `makeGui` method.
 
@@ -58,15 +60,17 @@ A procedure to befriend a mob, i.e. convert a befriendable mob into the correspo
 
    On configuring inventory menu and GUI, the `IntVec2` (Integer Vector 2) is utilized to simplify the setting of multiple item slots. (See API for details.)
 
-6. Add opening GUI action. Go back to the mob class and use `BefriendedHelper.openBefriendedInventory` to open the GUI. Please note that this method is only executed on SERVER and send pack to client to execute GUI opening.
+7. Add opening GUI action. Go back to the mob class and use `BefriendedHelper.openBefriendedInventory` to open the GUI. Please note that this method is only executed on SERVER and send pack to client to execute GUI opening.
 
 ## How to configure a befriendable mob
 
-1) Register a mapping between befriendable mob type, corresponding befriended mob and a befriending handler which defines the befriending process.
+1. Register a mapping between befriendable mob type, corresponding befriended mob and a befriending handler which defines the befriending process.
 
-   To register the mapping, use:
+   To register the mapping, use this in the`FMLCommonSetup` listener function:
 
-   `BefriendingTypeRegistry.register(YourBefriendableMob.getType(), YourBefriendedMob.getType(), new YourBefriendingHandler());`
+   ```java
+   BefriendingTypeRegistry.register(YourBefriendableMob.getType(), YourBefriendedMob.getType(), new YourBefriendingHandler());
+   ```
 
    This action maps the type of the befriendable mob, the befriended mob and the befriending process handler types. 
 
@@ -78,4 +82,39 @@ A procedure to befriend a mob, i.e. convert a befriendable mob into the correspo
 
 1. Ownership-related get/set functions: already defined in the "general setting" in the example and usually you just need to copy-paste it into your code.
 2. AI State: there are 3 preset states: wait, follow and wander. You must manually specify which states are allowed in each AI goals (described below).
-3.  
+3.  (To be completed)
+
+## How to port an existing AI Goal to Befriended Goal
+
+1. Create a class inheriting BefriendedGoal or BefriendedTargetGoal.
+
+2. Copy-paste code in the whole existing AI goal.
+
+3. The goal usually has a "mob" reference. Delete it because BefriendedGoal or BefriendedTargetGoal already keeps a "mob" reference as IBefriendedMob. If the owning mob needs some subclasses or interfaces, check and cast them in the constructor.
+
+4. Change the class of input mob reference in the constructors to IBefriendedMob.
+
+5. Now you'll get tons of errors in the IDE. As it will not automatically cast IBefriendedMob to Mob, replace the mob reference to mob.asMob() at each position. 
+
+6. Add AIState filter at the end of the constructors using:
+
+   ```java
+   allowAllStates(); // Can use under any AI states
+   allowAllStatesExceptWait(); // Can use under any AI states except wait
+   allowState(BefriendedAIState state); // Add a state to the allowed list
+   disallowState(BefrinededAIState state); // Remove a state from the allowed list
+   disallowAllowStates();	// Remove all AI states. Call this before reset AIState filter if the class is inheriting other Befriended (Target) Goal class instead of the raw BefriendedGoal or BefriendedTargetGoal.
+   ```
+
+   
+
+7. Add AIState filter at the beginning of `CanUse()` override:
+
+   ```
+   if (isDisabled())
+   	return false;
+   ```
+
+   the `isDisabled()`function will check if the AIState is allowed and if this goal is manually disabled. To manually disable/enable, use `block()` and `unblock()`.
+
+8. Other changes depending on the specific goals.

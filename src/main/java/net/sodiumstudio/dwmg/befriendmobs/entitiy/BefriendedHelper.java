@@ -87,8 +87,9 @@ public class BefriendedHelper
 			throw new UnsupportedOperationException("BefriendedHelper::convertToOtherBefriendedType additional inventory must have same size before and after conversion.");
 		newMob.getAdditionalInventory().readFromTag(inventoryTag);
 		// Do other settings
-		newMob.setOwnerUUID(target.getOwnerUUID());
 		newMob.setAIState(target.getAIState());
+		newMob.init(target.getOwnerUUID(), target.asMob());
+		newMob.updateFromInventory();
 		// setInit() needs to call manually
 		return newMob;
 	}

@@ -18,7 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.phys.AABB;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.target.BefriendedTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.BefriendedTargetGoal;
 
 @SuppressWarnings("unused")
 public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {

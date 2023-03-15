@@ -38,7 +38,7 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 	public BefriendedFollowOwnerGoal(@Nonnull IBefriendedMob inMob, double pSpeedModifier, float pStartDistance,
 			float pStopDistance, boolean pCanFly) {
 		mob = inMob;
-		this.level = getLiving().level;
+		this.level = mob.asMob().level;
 		this.speedModifier = pSpeedModifier;
 		this.navigation = getPathfinder().getNavigation();
 		this.startDistance = pStartDistance;
@@ -66,7 +66,7 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 			return false;
 		} else if (!isStateAllowed()) {
 			return false;
-		} else if (getLiving().distanceToSqr(livingentity) < (double) (this.startDistance * this.startDistance)) {
+		} else if (mob.asMob().distanceToSqr(livingentity) < (double) (this.startDistance * this.startDistance)) {
 			return false;
 		} else {
 			return true;
@@ -82,7 +82,7 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 		} else if (mob.getAIState() != BefriendedAIState.FOLLOW) {
 			return false;
 		} else {
-			return !(getLiving().distanceToSqr(mob.getOwner()) <= (double) (this.stopDistance * this.stopDistance));
+			return !(mob.asMob().distanceToSqr(mob.getOwner()) <= (double) (this.stopDistance * this.stopDistance));
 		}
 	}
 

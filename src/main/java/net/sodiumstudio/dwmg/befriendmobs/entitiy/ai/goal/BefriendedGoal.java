@@ -1,7 +1,6 @@
 package net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal;
 
 import java.util.HashSet;
-import java.util.Set;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -10,7 +9,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 
-@SuppressWarnings("unused")
 public abstract class BefriendedGoal extends Goal {
 
 	// for simplification
@@ -20,7 +18,7 @@ public abstract class BefriendedGoal extends Goal {
 	
 	protected IBefriendedMob mob = null;
 	private HashSet<BefriendedAIState> allowedStates = new HashSet<BefriendedAIState>();
-	protected boolean isBlocked = false;
+	private boolean isBlocked = false;
 	
 	public boolean isStateAllowed()
 	{
@@ -51,6 +49,11 @@ public abstract class BefriendedGoal extends Goal {
 		disallowState(WAIT);
 	}
 	
+	public void disallowAllStates()
+	{
+		allowedStates.clear();
+	}
+	
 	public void block()
 	{
 		isBlocked = true;
@@ -66,14 +69,10 @@ public abstract class BefriendedGoal extends Goal {
 		return isBlocked || !allowedStates.contains(mob.getAIState());
 	}
 	
-	public LivingEntity getLiving()
-	{
-		return (LivingEntity)mob;
-	}
-	
+	@Deprecated // use mob.asMob() instead
 	public Mob getMob()
 	{
-		return (Mob)mob;
+		return mob.asMob();
 	}
 	
 	public PathfinderMob getPathfinder()
@@ -84,7 +83,7 @@ public abstract class BefriendedGoal extends Goal {
 	@Override
 	public boolean canUse() 
 	{
-		return false;
+		throw new UnsupportedOperationException("BefriendedGoal must override canUse() function.");
 	}
 
 }

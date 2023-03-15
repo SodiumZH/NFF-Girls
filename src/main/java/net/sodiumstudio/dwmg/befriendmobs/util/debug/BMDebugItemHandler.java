@@ -9,6 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +23,8 @@ import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.registry.RegItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedHuskGirl;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedZombieGirl;
 
 public class BMDebugItemHandler
 {
@@ -91,6 +94,18 @@ public class BMDebugItemHandler
 				target.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS.asItem()));
 			else if (target.getItemBySlot(EquipmentSlot.FEET).isEmpty())
 				target.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS.asItem()));
+		}
+		
+		else if (item.equals(RegItems.DEBUG_MOB_CONVERTER.get()))
+		{
+			if (target instanceof EntityBefriendedHuskGirl e)
+			{
+				e.forceUnderWaterConversion();
+			}
+			else if (target instanceof EntityBefriendedZombieGirl e)
+			{
+				e.forceUnderWaterConversion();
+			}
 		}
 	}
 }

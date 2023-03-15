@@ -195,16 +195,35 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	
 	public boolean isFromHusk = false;	
 	
+	@Override
+	protected void doUnderWaterConversion() {
+		this.convertToDrowned();
+		if (!this.isSilent())
+		{
+			this.level.levelEvent((Player) null, 1041, this.blockPosition(), 0);
+		}
+	}	
+	
+	public void forceUnderWaterConversion()
+	{
+		this.doUnderWaterConversion();
+	}
+	
 	public EntityBefriendedHuskGirl convertToHusk()
 	{
-		EntityBefriendedHuskGirl newMob = (EntityBefriendedHuskGirl)EntityHelper.replaceMob(DwmgEntityTypes.BEF_HUSK_GIRL.get(), this);
-		BefriendedHelper.copyBefriendedCommonData(newMob, this);
-		newMob.updateFromInventory();
+		EntityBefriendedHuskGirl newMob = (EntityBefriendedHuskGirl)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.BEF_HUSK_GIRL.get());
 		newMob.setInit();
 		return newMob;
 	}
 	
-	
+	public EntityBefriendedDrownedGirl convertToDrowned()
+	{
+		EntityBefriendedDrownedGirl newMob = (EntityBefriendedDrownedGirl)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.BEF_DROWNED_GIRL.get());
+		newMob.isFromHusk = this.isFromHusk;
+		newMob.isFromZombie = true;
+		newMob.setInit();
+		return newMob;
+	}
 	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
