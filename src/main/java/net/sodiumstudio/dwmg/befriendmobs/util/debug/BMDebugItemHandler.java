@@ -9,6 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -33,7 +34,7 @@ public class BMDebugItemHandler
 	public static void onDebugItemUsed(Player player, Mob target, Item item) {
 		
 		if (!BefriendMobs.IS_DEBUG_MODE)
-			throw new RuntimeException("Debug item cannot use in publish versions!!!");
+			return;
 		
 		if (item.equals(RegItems.DEBUG_TARGET_SETTER.get()))
 		{
@@ -106,6 +107,12 @@ public class BMDebugItemHandler
 			{
 				e.forceUnderWaterConversion();
 			}
+		}
+		
+		else if (item.equals(RegItems.DEBUG_ATTRIBUTE_CHECKER.get()))
+		{
+			Debug.printToScreen("Base: " + Double.toString(target.getAttributeBaseValue(Attributes.ATTACK_DAMAGE)), player);
+			Debug.printToScreen("Applied: " + Double.toString(target.getAttributeValue(Attributes.ATTACK_DAMAGE)), player);
 		}
 	}
 }

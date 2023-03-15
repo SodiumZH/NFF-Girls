@@ -3,6 +3,8 @@ package net.sodiumstudio.dwmg.dwmgcontent.registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -52,5 +54,13 @@ public class DwmgEntityTypes {
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
 			.build(new ResourceLocation(Dwmg.MOD_ID, "drowned_girl").toString()));
+	
+	@SubscribeEvent
+    public static void onAttributeCreate(EntityAttributeCreationEvent event) {
+        event.put(DwmgEntityTypes.BEF_ZOMBIE_GIRL.get(), EntityBefriendedZombieGirl.createAttributes().build());
+        event.put(DwmgEntityTypes.BEF_SKELETON_GIRL.get(), EntityBefriendedSkeletonGirl.createAttributes().build());
+        event.put(DwmgEntityTypes.BEF_HUSK_GIRL.get(), EntityBefriendedHuskGirl.createAttributes().build());
+        event.put(DwmgEntityTypes.BEF_DROWNED_GIRL.get(), EntityBefriendedDrownedGirl.createAttributes().build());
+	}
 	
 }

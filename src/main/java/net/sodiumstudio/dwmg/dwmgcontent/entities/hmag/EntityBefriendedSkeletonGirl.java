@@ -77,6 +77,13 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 
 	}
 
+	@Override
+	public void updateAttributes()
+	{
+		//TODO: actions
+	}
+	
+	
 	/* Bow shooting related */
 	
 	private boolean justShot = false;

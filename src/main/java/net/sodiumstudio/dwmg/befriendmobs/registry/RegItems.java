@@ -15,4 +15,8 @@ public class RegItems {
 	public static final RegistryObject<Item> DEBUG_ARMOR_GIVER = ITEMS.register("debug_armor_giver", () -> new Item(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> DEBUG_TARGET_SETTER = ITEMS.register("debug_target_setter", () -> new Item(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> DEBUG_MOB_CONVERTER = ITEMS.register("debug_mob_converter", () -> new Item(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> DEBUG_ATTRIBUTE_CHECKER = ITEMS.register("debug_attribute_checker", () -> new Item(new Item.Properties().stacksTo(1)));
+
+	// A fake item for occupying a stack to enable/block something
+	public static final RegistryObject<Item> DUMMY_ITEM = ITEMS.register("dummy_item", () -> new Item(new Item.Properties()));
 }

@@ -38,6 +38,7 @@ public interface IBefriendedMob extends ContainerListener  {
 			this.asMob().setHealth(from.getHealth());
 		}
 		this.setInventoryFromMob();
+		this.updateAttributes();
 	}
 
 	public boolean hasInit();
@@ -146,17 +147,15 @@ public interface IBefriendedMob extends ContainerListener  {
 		return this.getInventoryItemStack(pos).getItem();
 	}
 	
-	// Get bauble item stack from additionalInventory.
-	// Baubles are extra items in additionalInventory to define some extra functions.
-	// If empty, return empty; if out of index, return null.
-	// If bauble feature is not needed, just don't override.
+
+	@Deprecated
 	public default ItemStack getBauble(int index)
 	{
 		return ItemStack.EMPTY;
 	}
 	
-	// Set bauble item stack to additionalInventory.
-	// If bauble feature is not needed, just don't override.
+
+	@Deprecated
 	public default void setBauble(ItemStack item, int index)
 	{
 		return;
@@ -164,6 +163,15 @@ public interface IBefriendedMob extends ContainerListener  {
 
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container);
 
+	
+	public default Mob asMob()
+	{
+		return (Mob)this;
+	}
+
+
+	/* ContainerListener interface */
+	// DO NOT override this. Override onInventoryChanged instead.
 	@Override
 	public default void containerChanged(Container pContainer) 
 	{
@@ -171,12 +179,15 @@ public interface IBefriendedMob extends ContainerListener  {
 			throw new UnsupportedOperationException("IBefriendedMob container only receives AdditionalInventory.");
 		if (hasInit())
 			updateFromInventory();
-	}
-	
-	public default Mob asMob()
-	{
-		return (Mob)this;
+		updateAttributes();
+		onInventoryChanged();
 	}
 
+	public default void onInventoryChanged() 
+	{
+	}
+
+	/* Misc */
+	public void updateAttributes();
 
 }

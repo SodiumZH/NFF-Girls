@@ -2,7 +2,7 @@ package net.sodiumstudio.dwmg.dwmgcontent;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.ModItems;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 
 public class DwmgTab extends CreativeModeTab{
     
@@ -12,7 +12,7 @@ public class DwmgTab extends CreativeModeTab{
 
     @Override
     public ItemStack makeIcon() {
-        return new ItemStack(ModItems.DEATH_CRYSTAL.get());
+        return new ItemStack(DwmgItems.DEATH_CRYSTAL.get());
     }
     
 	public static final CreativeModeTab TAB = new DwmgTab(CreativeModeTab.TABS.length, "dwmg_tab");

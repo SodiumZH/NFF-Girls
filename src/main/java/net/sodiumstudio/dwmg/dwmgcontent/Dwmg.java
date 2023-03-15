@@ -15,9 +15,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.ModBlocks;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.ModEffects;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.ModItems;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgBlocks;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Dwmg.MOD_ID)
 public class Dwmg
@@ -44,9 +44,9 @@ public class Dwmg
         modEventBus.addListener(this::commonSetup);
 
         // Set up registries
-        ModEffects.EFFECTS.register(modEventBus);
-        ModBlocks.BLOCKS.register(modEventBus);
-        ModItems.ITEMS.register(modEventBus);
+        DwmgEffects.EFFECTS.register(modEventBus);
+        DwmgBlocks.BLOCKS.register(modEventBus);
+        DwmgItems.ITEMS.register(modEventBus);
         DwmgEntityTypes.ENTITY_TYPES.register(modEventBus);
         
         // Register ourselves for server and other game events we are interested in

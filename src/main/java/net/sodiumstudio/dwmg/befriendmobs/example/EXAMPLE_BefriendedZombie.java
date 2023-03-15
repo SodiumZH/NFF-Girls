@@ -331,7 +331,14 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 		return false;
 	}
 
+
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 
+
+	@Override
+	public void updateAttributes() {
+		// TODO Auto-generated method stub
+		
+	}
 }

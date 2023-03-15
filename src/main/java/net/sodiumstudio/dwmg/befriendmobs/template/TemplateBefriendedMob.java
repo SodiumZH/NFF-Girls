@@ -53,6 +53,16 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 
 	// Initialization end
 	
+	// Attributes
+	
+
+	@Override
+	public void updateAttributes() {
+		/* Update attributes here */
+		/* It will auto-called on initialization and container update. */
+		
+	}
+	
 	// Interaction
 	
 	@Override
@@ -275,6 +285,7 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
+
 
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //

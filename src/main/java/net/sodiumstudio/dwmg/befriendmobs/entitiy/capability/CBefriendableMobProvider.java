@@ -10,7 +10,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.ModCapabilities;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
 
 public class CBefriendableMobProvider implements ICapabilitySerializable<CompoundTag> {
 

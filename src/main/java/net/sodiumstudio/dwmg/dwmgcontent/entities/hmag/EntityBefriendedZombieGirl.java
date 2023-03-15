@@ -13,8 +13,10 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -37,6 +39,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.registry.RegItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
@@ -77,6 +80,33 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 
 	}
 
+	
+	/* Combat */
+	
+	@Override
+	public boolean doHurtTarget(Entity target)
+	{
+		// Occupy the main hand to block the ignition action in super.doHurtTarget
+		// See Zombie class
+		if (this.getMainHandItem().isEmpty())
+			this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(RegItems.DUMMY_ITEM.get(), 1));
+		boolean res = super.doHurtTarget(target);
+		// Remove dummy item
+		if (!this.getMainHandItem().isEmpty() && this.getMainHandItem().is(RegItems.DUMMY_ITEM.get()))
+			this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);		
+		// Overwrite ignition here
+		if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < 0.8f)
+			target.setSecondsOnFire(10);
+
+		return res;
+	}
+	
+	@Override
+	public void updateAttributes()
+	{
+		
+	}
+	
 	/* Interaction */
 
 	@Override
@@ -224,6 +254,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		newMob.setInit();
 		return newMob;
 	}
+
 	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //

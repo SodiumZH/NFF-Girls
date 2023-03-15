@@ -10,7 +10,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.ModCapabilities;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
 
 public class CUndeadMobProvider implements ICapabilitySerializable<CompoundTag>
 {
@@ -23,7 +23,7 @@ public class CUndeadMobProvider implements ICapabilitySerializable<CompoundTag>
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) 
 	{
-		if(cap == ModCapabilities.CAP_UNDEAD_MOB)
+		if(cap == DwmgCapabilities.CAP_UNDEAD_MOB)
 			return LazyOptional.of(() -> {return capability;}).cast();
 		else
 			return LazyOptional.empty();

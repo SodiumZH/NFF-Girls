@@ -75,6 +75,13 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 
 	}
 
+	@Override
+	public void updateAttributes()
+	{
+		//TODO: actions
+	}
+	
+	
 	/* Interaction */
 
 	@Override

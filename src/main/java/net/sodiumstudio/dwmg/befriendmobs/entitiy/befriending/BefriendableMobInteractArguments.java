@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.NonNullConsumer;
 import net.minecraftforge.fml.LogicalSide;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.capability.CBefriendableMob;
 import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.ModCapabilities;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
 
 public class BefriendableMobInteractArguments {
 

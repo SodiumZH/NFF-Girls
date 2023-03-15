@@ -86,6 +86,13 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 
 	}
 
+	
+	@Override
+	public void updateAttributes()
+	{
+		//TODO: actions
+	}
+	
 	/* Interaction */
 
 	@Override

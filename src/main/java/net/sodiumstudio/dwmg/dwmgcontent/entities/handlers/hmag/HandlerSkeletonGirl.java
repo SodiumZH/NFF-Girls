@@ -12,8 +12,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInt
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.ModEffects;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.ModItems;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 
 public class HandlerSkeletonGirl extends AbstractBefriendingHandler
 {
@@ -27,8 +27,8 @@ public class HandlerSkeletonGirl extends AbstractBefriendingHandler
 		args.execServer((l) ->
 		{
 
-			if (!player.isShiftKeyDown() && player.getMainHandItem().getItem() == ModItems.SOUL_CAKE_SLICE.get()
-					&& player.hasEffect(ModEffects.DEATH_AFFINITY.get()))
+			if (!player.isShiftKeyDown() && player.getMainHandItem().getItem() == DwmgItems.SOUL_CAKE_SLICE.get()
+					&& player.hasEffect(DwmgEffects.DEATH_AFFINITY.get()))
 			{
 				// Block if in hatred
 				if (l.isInHatred(player))
@@ -102,8 +102,8 @@ public class HandlerSkeletonGirl extends AbstractBefriendingHandler
 			{
 				if (!l.isInHatred(player))
 				{
-					if (!player.isShiftKeyDown() && player.getMainHandItem().getItem() == ModItems.SOUL_CAKE_SLICE.get()
-							&& player.hasEffect(ModEffects.DEATH_AFFINITY.get()))
+					if (!player.isShiftKeyDown() && player.getMainHandItem().getItem() == DwmgItems.SOUL_CAKE_SLICE.get()
+							&& player.hasEffect(DwmgEffects.DEATH_AFFINITY.get()))
 						result.handled = true;
 				} else
 				{
