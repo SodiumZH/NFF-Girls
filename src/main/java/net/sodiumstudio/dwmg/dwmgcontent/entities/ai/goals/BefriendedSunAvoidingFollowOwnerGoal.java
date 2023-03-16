@@ -1,6 +1,11 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedFollowOwnerGoal;
 
@@ -37,5 +42,11 @@ public class BefriendedSunAvoidingFollowOwnerGoal extends BefriendedFollowOwnerG
 		}
 	}
 	
+	@Override
+	protected boolean canTeleportTo(BlockPos pPos) {
+		if (!level.canSeeSky(pPos) && !level.isWaterAt(pPos))
+			return false;
+		return super.canTeleportTo(pPos);
+	}
 	
 }

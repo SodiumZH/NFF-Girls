@@ -55,7 +55,6 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 	
 	// Attributes
 	
-
 	@Override
 	public void updateAttributes() {
 		/* Update attributes here */

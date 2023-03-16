@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
@@ -20,6 +21,8 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TieredItem;
@@ -89,13 +92,27 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	private boolean justShot = false;
 
 	@Override
-	public void performRangedAttack(LivingEntity pTarget, float pVelocity)
-	{
+	public void performRangedAttack(LivingEntity pTarget, float pVelocity) {
+		
 		// Filter again to avoid it shoot without arrow
 		if (this.getAdditionalInventory().getItem(8).isEmpty())
 			return;
-		super.performRangedAttack(pTarget, pVelocity);
-		// Instantly consume arrow causes ticking crash, with unknown reason
+		
+		// Copied from vanilla skeleton, removed difficulty factor
+		ItemStack itemstack = this.getProjectile(this.getItemInHand(
+				ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof net.minecraft.world.item.BowItem)));
+		AbstractArrow abstractarrow = this.getArrow(itemstack, pVelocity);
+		if (this.getMainHandItem().getItem() instanceof net.minecraft.world.item.BowItem)
+			abstractarrow = ((net.minecraft.world.item.BowItem) this.getMainHandItem().getItem())
+					.customArrow(abstractarrow);
+		double d0 = pTarget.getX() - this.getX();
+		double d1 = pTarget.getY(0.3333333333333333D) - abstractarrow.getY();
+		double d2 = pTarget.getZ() - this.getZ();
+		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+		abstractarrow.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);
+		this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+		this.level.addFreshEntity(abstractarrow);
+		
 		justShot = true;
 	}
 
@@ -209,25 +226,6 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 			additionalInventory.getFromMob(this);
 		}
 	}
-	
-	@Override
-	public ItemStack getBauble(int index) {
-		if (index == 0)
-			return additionalInventory.getItem(6);
-		else
-			return null;
-	}
-
-	@Override
-	public void setBauble(ItemStack item, int index) {
-		if (item == null || item.isEmpty())
-			return;
-		if (index == 0)
-			additionalInventory.setItem(6, item);
-		else
-			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
-		updateFromInventory();
-	}	
 	
 	@Override
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {

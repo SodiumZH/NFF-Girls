@@ -20,6 +20,8 @@ public abstract class BefriendedGoal extends Goal {
 	private HashSet<BefriendedAIState> allowedStates = new HashSet<BefriendedAIState>();
 	private boolean isBlocked = false;
 	
+	
+	
 	public boolean isStateAllowed()
 	{
 		return allowedStates.contains(mob.getAIState());

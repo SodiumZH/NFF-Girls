@@ -10,7 +10,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
@@ -175,7 +174,7 @@ public abstract class BefriendedDrownedGoals {
 		 * necessary for execution in this method as well.
 		 */
 		public boolean canUse() {
-			return super.canUse() && !this.drowned.level.isDay() && this.drowned.isInWater()
+			return super.canUse() && !this.drowned.level.isDay() && this.drowned.isInWaterOrBubble()
 					&& this.drowned.getY() >= (double) (this.drowned.level.getSeaLevel() - 3);
 		}
 
@@ -200,7 +199,6 @@ public abstract class BefriendedDrownedGoals {
 		 * Execute a one shot task or start executing a continuous task
 		 */
 		public void start() {
-			this.drowned.setSearchingForLand(false);
 
 			// Force set drowned navigation to ground navigation
 			try {
@@ -228,14 +226,16 @@ public abstract class BefriendedDrownedGoals {
 		}
 	}
 
-	static class DrownedSwimUpGoal extends Goal {
+	public static class SwimUpGoal extends BefriendedGoal {
 		private final Drowned drowned;
 		private final double speedModifier;
 		private final int seaLevel;
 		private boolean stuck;
 
-		public DrownedSwimUpGoal(Drowned pDrowned, double pSpeedModifier, int pSeaLevel) {
-			this.drowned = pDrowned;
+		public SwimUpGoal(IBefriendedMob mob, double pSpeedModifier, int pSeaLevel) {
+			if (!(mob instanceof Drowned))
+				throw new UnsupportedOperationException();
+			this.drowned = (Drowned)mob;
 			this.speedModifier = pSpeedModifier;
 			this.seaLevel = pSeaLevel;
 		}
@@ -245,7 +245,7 @@ public abstract class BefriendedDrownedGoals {
 		 * necessary for execution in this method as well.
 		 */
 		public boolean canUse() {
-			return !this.drowned.level.isDay() && this.drowned.isInWater()
+			return this.drowned.isInWater()
 					&& this.drowned.getY() < (double) (this.seaLevel - 2);
 		}
 
@@ -291,7 +291,6 @@ public abstract class BefriendedDrownedGoals {
 		 * Execute a one shot task or start executing a continuous task
 		 */
 		public void start() {
-			this.drowned.setSearchingForLand(true);
 			this.stuck = false;
 		}
 
@@ -299,8 +298,7 @@ public abstract class BefriendedDrownedGoals {
 		 * Reset the task's internal state. Called when this task is interrupted by
 		 * another one
 		 */
-		public void stop() {
-			this.drowned.setSearchingForLand(false);
+		public void stop() {			
 		}
 	}
 

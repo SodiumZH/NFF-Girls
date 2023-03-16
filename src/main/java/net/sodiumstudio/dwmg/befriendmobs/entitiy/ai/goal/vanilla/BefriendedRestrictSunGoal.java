@@ -37,7 +37,8 @@ public class BefriendedRestrictSunGoal extends BefriendedGoal {
 	 * Execute a one shot task or start executing a continuous task
 	 */
 	public void start() {
-		((GroundPathNavigation) getPathfinder().getNavigation()).setAvoidSun(true);
+		if (GoalUtils.hasGroundPathNavigation(getPathfinder()))
+			((GroundPathNavigation) getPathfinder().getNavigation()).setAvoidSun(true);
 	}
 
 	/**
@@ -48,7 +49,5 @@ public class BefriendedRestrictSunGoal extends BefriendedGoal {
 		if (GoalUtils.hasGroundPathNavigation(getPathfinder())) {
 			((GroundPathNavigation) getPathfinder().getNavigation()).setAvoidSun(false);
 		}
-
 	}
-
 }

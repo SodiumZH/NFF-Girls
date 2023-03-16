@@ -174,30 +174,6 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		}
 		return;
 	}
-	
-	@Override
-	public ItemStack getBauble(int index) {
-		if (index == 0)
-			return additionalInventory.getItem(6);
-		else if (index == 1)
-			return additionalInventory.getItem(7);
-		else
-			return null;
-	}
-
-	@Override
-	public void setBauble(ItemStack item, int index) {
-		ItemStack itemCpy = item;
-		if (item == null || item.isEmpty())
-			itemCpy = ItemStack.EMPTY;
-		if (index == 0)
-			additionalInventory.setItem(6, itemCpy);
-		else if (index == 1)
-			additionalInventory.setItem(7, itemCpy);
-		else
-			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
-		updateFromInventory();
-	}
 
 	@Override
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {

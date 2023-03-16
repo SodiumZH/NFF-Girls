@@ -45,10 +45,7 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 		this.stopDistance = pStopDistance;
 		this.canFly = pCanFly;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-		if (!(getPathfinder().getNavigation() instanceof GroundPathNavigation)
-				&& !(getPathfinder().getNavigation() instanceof FlyingPathNavigation)) {
-			throw new IllegalArgumentException("Unsupported mob type for FollowOwnerGoal");
-		}
+
 		allowState(FOLLOW);
 	}
 
@@ -59,14 +56,15 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 	public boolean canUse() {
 		if (isDisabled())
 			return false;
+		if (!(getPathfinder().getNavigation() instanceof GroundPathNavigation)
+				&& !(getPathfinder().getNavigation() instanceof FlyingPathNavigation))
+			return false;
 		LivingEntity livingentity = mob.getOwner();
 		if (livingentity == null)
 			return false;
 		if (livingentity.isSpectator()) {
 			return false;
-		} else if (!isStateAllowed()) {
-			return false;
-		} else if (mob.asMob().distanceToSqr(livingentity) < (double) (this.startDistance * this.startDistance)) {
+		}  else if (mob.asMob().distanceToSqr(livingentity) < (double) (this.startDistance * this.startDistance)) {
 			return false;
 		} else {
 			return true;
@@ -78,8 +76,6 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 	 */
 	public boolean canContinueToUse() {
 		if (this.navigation.isDone()) {
-			return false;
-		} else if (mob.getAIState() != BefriendedAIState.FOLLOW) {
 			return false;
 		} else {
 			return !(mob.asMob().distanceToSqr(mob.getOwner()) <= (double) (this.stopDistance * this.stopDistance));

@@ -47,6 +47,12 @@
     },
     "done": true
   },
+  "minecraft:recipes/misc/green_dye": {
+    "criteria": {
+      "has_cactus": "2023-03-17 01:10:05 +0800"
+    },
+    "done": true
+  },
   "minecraft:recipes/brewing/glass_bottle": {
     "criteria": {
       "has_glass": "2023-03-11 21:30:51 +0800"
@@ -146,6 +152,12 @@
   "minecraft:recipes/building_blocks/blue_stained_glass": {
     "criteria": {
       "has_glass": "2023-03-11 21:30:51 +0800"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/nether_brick": {
+    "criteria": {
+      "has_netherrack": "2023-03-17 00:18:08 +0800"
     },
     "done": true
   },
@@ -470,6 +482,12 @@
   "minecraft:recipes/redstone/target": {
     "criteria": {
       "has_redstone": "2023-02-08 02:52:57 +0800"
+    },
+    "done": true
+  },
+  "minecraft:recipes/brewing/cauldron": {
+    "criteria": {
+      "has_water_bucket": "2023-03-17 01:18:17 +0800"
     },
     "done": true
   },

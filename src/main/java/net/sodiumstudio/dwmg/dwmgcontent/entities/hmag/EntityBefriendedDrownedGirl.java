@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
@@ -20,13 +21,16 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.event.sound.SoundEvent;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedFleeSunGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedRandomStrollGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedRestrictSunGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedZombieAttackGoal;
@@ -38,15 +42,19 @@ import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedDrownedGoals;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedInWaterFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuZombie;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
 
-public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IBefriendedMob {
+public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IBefriendedMob
+{
 
 	/* Initialization */
 
-	public EntityBefriendedDrownedGirl(EntityType<? extends EntityBefriendedDrownedGirl> pEntityType, Level pLevel) {
+	public EntityBefriendedDrownedGirl(EntityType<? extends EntityBefriendedDrownedGirl> pEntityType, Level pLevel)
+	{
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
@@ -62,36 +70,65 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 
 	@Override
 	protected void registerGoals() {
+
+		goalSelector.addGoal(1, new BefriendedDrownedGoals.GoToWaterGoal(this, 1.0D));
 		goalSelector.addGoal(1, new BefriendedRestrictSunGoal(this));
 		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
-		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0d, true));
+		goalSelector.addGoal(3, new BefriendedDrownedGoals.TridentAttackGoal(this, 1.0D, 40, 10.0F));
+		goalSelector.addGoal(3, new BefriendedDrownedGoals.AttackGoal(this, 1.0D, false));
 		goalSelector.addGoal(4, new BefriendedSunAvoidingFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
-		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
-		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+		goalSelector.addGoal(4, new BefriendedInWaterFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
+		goalSelector.addGoal(5, new BefriendedDrownedGoals.GoToBeachGoal(this, 1.0D));
+		goalSelector.addGoal(6, new BefriendedDrownedGoals.SwimUpGoal(this, 1.0D, this.level.getSeaLevel()));
+		goalSelector.addGoal(7, new BefriendedRandomStrollGoal(this, 1.0d));
+		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
 
 	}
-
+	
 	@Override
-	public void updateAttributes()
+	public void tick()
 	{
-		//TODO: actions
+		setSearchingForLand(true);
+		super.tick();
 	}
 	
+	/* Combat */
+
+	@Override
+	public void updateAttributes() {
+		// TODO: actions
+	}
+
+	@Override
+	public void performRangedAttack(LivingEntity pTarget, float pDistanceFactor) {
+		ThrownTrident throwntrident = new ThrownTrident(this.level, this, new ItemStack(Items.TRIDENT));
+		double d0 = pTarget.getX() - this.getX();
+		double d1 = pTarget.getY(0.3333333333333333D) - throwntrident.getY();
+		double d2 = pTarget.getZ() - this.getZ();
+		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+		throwntrident.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);	// Inaccuracy is fixed at hard mode (2)
+		this.playSound(SoundEvents.DROWNED_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+		this.level.addFreshEntity(throwntrident);
+	}
 	
 	/* Interaction */
 
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
-		if (player.getUUID().equals(getOwnerUUID())) {
-			if (player.level.isClientSide()) {}
-				//Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
-			else {	
-				// If this drowned is converted from a zombie, 
+		if (player.getUUID().equals(getOwnerUUID()))
+		{
+			if (player.level.isClientSide())
+			{
+			}
+			// Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
+			else
+			{
+				// If this drowned is converted from a zombie,
 				// it can be converted back by using a sponge to it
 				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromZombie)
 				{
@@ -101,77 +138,49 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 						this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
 					}
 					this.convertToZombie();
-				}
-				else
+				} else
 					switchAIState();
-				//Debug.printToScreen(getAIState().toString(), player, this);
+				// Debug.printToScreen(getAIState().toString(), player, this);
 			}
 			return true;
-		} else if (!player.level.isClientSide()) {
-			Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
-			Debug.printToScreen("Player UUID: " + player.getUUID(), player, this);
-		}
+		} 
 		return false;
 
 	}
 
 	@Override
 	public boolean onInteractionShift(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID())) {
+		if (player.getUUID().equals(getOwnerUUID()))
+		{
 
 			BefriendedHelper.openBefriendedInventory(player, this);
 
 			return true;
-		} //else
-			//Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
+		} 
 		return false;
 	}
 
 	/* Inventory */
 
 	@Override
-	public int getInventorySize()
-	{
+	public int getInventorySize() {
 		return 8;
 	}
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level.isClientSide)
+		{
 			additionalInventory.setMobEquipment(this);
 		}
 	}
 
-	public void setInventoryFromMob()
-	{
-		if (!this.level.isClientSide) {
+	public void setInventoryFromMob() {
+		if (!this.level.isClientSide)
+		{
 			additionalInventory.getFromMob(this);
 		}
 		return;
-	}
-	
-	@Override
-	public ItemStack getBauble(int index) {
-		if (index == 0)
-			return additionalInventory.getItem(6);
-		else if (index == 1)
-			return additionalInventory.getItem(7);
-		else
-			return null;
-	}
-
-	@Override
-	public void setBauble(ItemStack item, int index) {
-		ItemStack itemCpy = item;
-		if (item == null || item.isEmpty())
-			itemCpy = ItemStack.EMPTY;
-		if (index == 0)
-			additionalInventory.setItem(6, itemCpy);
-		else if (index == 1)
-			additionalInventory.setItem(7, itemCpy);
-		else
-			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
-		updateFromInventory();
 	}
 
 	@Override
@@ -180,7 +189,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	}
 
 	/* Save and Load */
-	
+
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
@@ -199,18 +208,18 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	}
 
 	/* Convertions */
-	
+
 	public boolean isFromHusk = false;
 	public boolean isFromZombie = false;
-	
-	public EntityBefriendedZombieGirl convertToZombie()
-	{
-		EntityBefriendedZombieGirl newMob = (EntityBefriendedZombieGirl)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.BEF_ZOMBIE_GIRL.get());
+
+	public EntityBefriendedZombieGirl convertToZombie() {
+		EntityBefriendedZombieGirl newMob = (EntityBefriendedZombieGirl) BefriendedHelper
+				.convertToOtherBefriendedType(this, DwmgEntityTypes.BEF_ZOMBIE_GIRL.get());
 		newMob.isFromHusk = isFromHusk;
 		newMob.setInit();
 		return newMob;
 	}
-	
+
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
@@ -234,23 +243,21 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	// ------------------ IBefriendedMob interface ------------------ //
 
 	/* Init */
-	
+
 	protected boolean initialized = false;
-	
+
 	@Override
-	public boolean hasInit()
-	{
+	public boolean hasInit() {
 		return initialized;
 	}
-	
+
 	@Override
-	public void setInit()
-	{
+	public void setInit() {
 		initialized = true;
 	}
-	
+
 	/* Ownership */
-	
+
 	@Override
 	public Player getOwner() {
 		return level.getPlayerByUUID(getOwnerUUID());
@@ -272,7 +279,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	}
 
 	/* AI */
-	
+
 	@Override
 	public BefriendedAIState getAIState() {
 		return BefriendedAIState.fromID(entityData.get(DATA_AISTATE));
@@ -297,14 +304,14 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 
 	/* Inventory */
 
-	protected AdditionalInventoryWithEquipment additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize(), this);
+	protected AdditionalInventoryWithEquipment additionalInventory = new AdditionalInventoryWithEquipment(
+			getInventorySize(), this);
 
 	@Override
-	public AdditionalInventory getAdditionalInventory()
-	{
+	public AdditionalInventory getAdditionalInventory() {
 		return additionalInventory;
 	}
-	
+
 	// ------------------ IBefriendedMob interface end ------------------ //
 
 	// ------------------ Misc ------------------ //
