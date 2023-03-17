@@ -18,6 +18,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -45,11 +46,17 @@ import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.*;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.BaubleEffectTable;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuZombie;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
 
 public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBefriendedMob {
-
+/*
+	public static final BaubleEffectTable BAUBLE_EFFECTS = new BaubleEffectTable()
+			.add(Items.DIAMOND, Attributes.MAX_HEALTH, 5.0d, AttributeModifier.Operation.ADDITION);
+	public static final UUID BAUBLE_EFFECT_UUID_1 = UUID.fromString("16648397-2011-F7E0-D1F4-72E8231FDA89");
+	public static final UUID BAUBLE_EFFECT_UUID_2 = UUID.fromString("2C0A7910-E72B-3BC8-B330-7F759D8648A1");
+	*/
 	/* Initialization */
 
 	public EntityBefriendedZombieGirl(EntityType<? extends EntityBefriendedZombieGirl> pEntityType, Level pLevel) {

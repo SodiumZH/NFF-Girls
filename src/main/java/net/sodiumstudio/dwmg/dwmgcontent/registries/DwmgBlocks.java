@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.*;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
-import net.sodiumstudio.dwmg.dwmgcontent.DwmgTab;
+//import net.sodiumstudio.dwmg.dwmgcontent.DwmgTab;
 import net.sodiumstudio.dwmg.dwmgcontent.blocks.BlockSoulCarpet;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 
@@ -30,7 +30,7 @@ public class DwmgBlocks {
 	// Register block items. Must be called after the corresponding block is registered!!
 	public static RegistryObject<Item> regBlockItem(String name, RegistryObject<Block> block, Item.Properties properties)
 	{
-		return DwmgItems.ITEMS.register(name, () -> new BlockItem(block.get(), properties.tab(DwmgItems.TAB)));
+		return DwmgItems.ITEMS.register(name, () -> new BlockItem(block.get(), properties/*.tab(DwmgItems.TAB)*/));
 	}
 	
 	
@@ -45,7 +45,7 @@ public class DwmgBlocks {
 	
 	/* Block Items */
 	//public static final RegistryObject<Item> ITEM_EXAMPLE_BLOCK = regBlockItem("example_block", EXAMPLE_BLOCK, new Item.Properties());
-	public static final RegistryObject<Item> ITEM_SOUL_CARPET = regBlockItem("soul_carpet", SOUL_CARPET, new Item.Properties());
+	//public static final RegistryObject<Item> ITEM_SOUL_CARPET = regBlockItem("soul_carpet", SOUL_CARPET, new Item.Properties());
 	
 	// Register to event bus
 	public static void register(IEventBus eventBus) {
