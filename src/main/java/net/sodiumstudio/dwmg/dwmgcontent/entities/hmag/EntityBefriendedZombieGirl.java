@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.ZombieGirlEntity;
 
 import net.minecraft.nbt.ByteTag;
@@ -83,6 +84,14 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	
 	/* Combat */
 	
+	// In Demo-1 only because Drowned is not finished
+	@Override
+	protected boolean convertsInWater()
+	{
+		return false;
+	}
+	
+	
 	@Override
 	public boolean doHurtTarget(Entity target)
 	{
@@ -104,7 +113,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	@Override
 	public void updateAttributes()
 	{
-		
+		//this.getattri
 	}
 	
 	/* Interaction */
@@ -113,23 +122,27 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (player.level.isClientSide()) {}
-				//Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
-			else {	
-				// If this zombie is convered from a husk, 
+			if (player.level.isClientSide()) {
+			}
+			// Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
+			else {
+				// If this zombie is converted from a husk,
 				// it can be converted back by using a sponge to it
-				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromHusk)
-				{
+				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromHusk) {
 					ItemHelper.consumeOne(player.getItemInHand(hand));
-					if (!player.addItem(new ItemStack(Items.WET_SPONGE, 1)))
-					{
+					if (!player.addItem(new ItemStack(Items.WET_SPONGE, 1))) {
 						this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
 					}
 					this.convertToHusk();
-				}
-				else
+				} else if (player.getItemInHand(hand).is(ModItems.SOUL_POWDER.get())) {
+					ItemHelper.consumeOne(player.getItemInHand(hand));
+					this.heal(5);
+				} else if (player.getItemInHand(hand).is(ModItems.SOUL_APPLE.get())) {
+					ItemHelper.consumeOne(player.getItemInHand(hand));
+					this.heal(15);
+				} else
 					switchAIState();
-				//Debug.printToScreen(getAIState().toString(), player, this);
+				// Debug.printToScreen(getAIState().toString(), player, this);
 			}
 			return true;
 		} else if (!player.level.isClientSide()) {

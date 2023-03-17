@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.DrownedGirlEntity;
 
 import net.minecraft.nbt.ByteTag;
@@ -120,30 +121,31 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
-		if (player.getUUID().equals(getOwnerUUID()))
-		{
-			if (player.level.isClientSide())
-			{
+		if (player.getUUID().equals(getOwnerUUID())) {
+			if (player.level.isClientSide()) {
 			}
 			// Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
-			else
-			{
+			else {
 				// If this drowned is converted from a zombie,
 				// it can be converted back by using a sponge to it
-				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromZombie)
-				{
+				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromZombie) {
 					ItemHelper.consumeOne(player.getItemInHand(hand));
-					if (!player.addItem(new ItemStack(Items.WET_SPONGE, 1)))
-					{
+					if (!player.addItem(new ItemStack(Items.WET_SPONGE, 1))) {
 						this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
 					}
 					this.convertToZombie();
+				} else if (player.getItemInHand(hand).is(ModItems.SOUL_POWDER.get())) {
+					ItemHelper.consumeOne(player.getItemInHand(hand));
+					this.heal(5);
+				} else if (player.getItemInHand(hand).is(ModItems.SOUL_APPLE.get())) {
+					ItemHelper.consumeOne(player.getItemInHand(hand));
+					this.heal(15);
 				} else
 					switchAIState();
 				// Debug.printToScreen(getAIState().toString(), player, this);
 			}
 			return true;
-		} 
+		}
 		return false;
 
 	}

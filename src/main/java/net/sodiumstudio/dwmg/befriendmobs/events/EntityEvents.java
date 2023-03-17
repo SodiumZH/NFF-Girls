@@ -205,7 +205,6 @@ public class EntityEvents
 	{
 		if (event.getEntity() instanceof IBefriendedMob)
 		{
-			event.setCanceled(true);
 			event.setResult(Result.DENY);
 		}
 	}

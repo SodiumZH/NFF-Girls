@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.SkeletonGirlEntity;
 
 import net.minecraft.nbt.CompoundTag;
@@ -40,6 +41,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
@@ -174,7 +176,18 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 			if (player.level.isClientSide()) {}
 				//Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
 			else {
-				switchAIState();
+				if (player.getItemInHand(hand).is(ModItems.SOUL_POWDER.get()))
+				{
+					ItemHelper.consumeOne(player.getItemInHand(hand));
+					this.heal(5);
+				}
+				else if (player.getItemInHand(hand).is(ModItems.SOUL_APPLE.get()))
+				{
+					ItemHelper.consumeOne(player.getItemInHand(hand));
+					this.heal(15);
+				}
+				else
+					switchAIState();
 				//Debug.printToScreen(getAIState().toString(), player, this);
 			}
 			return true;

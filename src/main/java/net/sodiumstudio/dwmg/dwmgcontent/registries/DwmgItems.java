@@ -18,7 +18,7 @@ public class DwmgItems {
 	// Register basic item with properties, not supporting item subclasses
 	public static RegistryObject<Item> regItem(String name, Item.Properties properties)
 	{
-		return ITEMS.register(name, ()->new Item(properties.tab(TAB)));
+		return ITEMS.register(name, ()->new Item(properties/*.tab(TAB)*/)); //Demos only
 	}
 	
 	// Register basic item using default properties

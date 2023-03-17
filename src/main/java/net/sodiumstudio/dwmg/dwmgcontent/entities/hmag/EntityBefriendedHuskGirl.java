@@ -4,33 +4,23 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.annotation.Nonnull;
-import javax.swing.text.html.parser.Entity;
-
+import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.HuskGirlEntity;
-import com.github.mechalopa.hmag.world.entity.ZombieGirlEntity;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Container;
-import net.minecraft.world.ContainerListener;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.sodiumstudio.dwmg.befriendmobs.client.gui.screens.AbstractGuiBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
@@ -44,12 +34,9 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.Befrien
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
-import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
-import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
-import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
-import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiZombieGirl;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.*;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuZombie;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
 
@@ -101,7 +88,18 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 		if (player.getUUID().equals(getOwnerUUID())) {
 			if (player.level.isClientSide()) {}
 				//Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
-			else {
+			else if (player.getItemInHand(hand).is(ModItems.SOUL_POWDER.get()))
+			{
+				ItemHelper.consumeOne(player.getItemInHand(hand));
+				this.heal(5);
+			}
+			else if (player.getItemInHand(hand).is(ModItems.SOUL_APPLE.get()))
+			{
+				ItemHelper.consumeOne(player.getItemInHand(hand));
+				this.heal(15);
+			}
+			else
+			{
 				switchAIState();
 				//Debug.printToScreen(getAIState().toString(), player, this);
 			}
