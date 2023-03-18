@@ -17,10 +17,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Inventory;
@@ -42,11 +39,9 @@ import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefrien
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.registry.RegItems;
-import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.*;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.BaubleEffectTable;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuZombie;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
 

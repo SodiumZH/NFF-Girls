@@ -32,10 +32,7 @@ public class BMDebugItemHandler
 
 	@SuppressWarnings("unchecked")
 	public static void onDebugItemUsed(Player player, Mob target, Item item) {
-		
-		if (!BefriendMobs.IS_DEBUG_MODE)
-			return;
-		
+
 		if (item.equals(RegItems.DEBUG_TARGET_SETTER.get()))
 		{
 			MobEffect effect = target.getMobType().equals(MobType.UNDEAD) ? MobEffects.HARM : MobEffects.HEAL;

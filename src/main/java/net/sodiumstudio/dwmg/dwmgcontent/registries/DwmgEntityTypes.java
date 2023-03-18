@@ -71,7 +71,7 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.BEF_SKELETON_GIRL.get(), EntityBefriendedSkeletonGirl.createAttributes().build());
         event.put(DwmgEntityTypes.BEF_HUSK_GIRL.get(), EntityBefriendedHuskGirl.createAttributes().build());
         event.put(DwmgEntityTypes.BEF_DROWNED_GIRL.get(), EntityBefriendedDrownedGirl.createAttributes().build());
-       // event.put(Dwmg, null);
+        event.put(DwmgEntityTypes.BEF_CREEPER_GIRL.get(), EntityBefriendedCreeperGirl.createAttributes().build());
 	}
 	
 }

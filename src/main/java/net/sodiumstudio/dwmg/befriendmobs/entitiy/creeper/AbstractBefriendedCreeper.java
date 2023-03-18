@@ -40,6 +40,7 @@ import net.minecraft.world.entity.animal.goat.Goat;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
@@ -58,6 +59,29 @@ import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquip
 public abstract class AbstractBefriendedCreeper extends Monster implements IBefriendedMob, PowerableMob
 {
 
+	/* Adjusted from vanilla creeper */
+
+	protected static final EntityDataAccessor<Boolean> DATA_IS_SWELLING = SynchedEntityData
+			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> DATA_IS_POWERED = SynchedEntityData
+			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> DATA_IS_IGNITED = SynchedEntityData
+			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
+			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.OPTIONAL_UUID);
+	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
+			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.BYTE);
+
+	protected int oldSwell;
+	protected int swell;
+	protected int maxSwell = 30;
+	protected int explosionRadius = 3;
+	protected int droppedSkulls;
+	public boolean canExplode = true;
+	public boolean canIgnite = true;
+	public boolean shouldDiscardAfterExplosion = false;
+	public boolean shouldDestroyBlocks = false;
+
 	public AbstractBefriendedCreeper(EntityType<? extends AbstractBefriendedCreeper> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
@@ -67,22 +91,6 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		/* Initialization */
 	}
 
-	/* Adjusted from vanilla creeper */
-
-	private static final EntityDataAccessor<Integer> DATA_SWELL_DIR = SynchedEntityData
-			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Boolean> DATA_IS_POWERED = SynchedEntityData
-			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> DATA_IS_IGNITED = SynchedEntityData
-			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.BOOLEAN);
-	private int oldSwell;
-	private int swell;
-	private int maxSwell = 30;
-	private int explosionRadius = 3;
-	private int droppedSkulls;
-	public boolean canIgniteWithFlintSteel = true;
-	public boolean discardAfterExplosion = false;
-	
 	protected void registerGoals() {
 
 		this.goalSelector.addGoal(1, new FloatGoal(this));
@@ -100,10 +108,6 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.25D);
 	}
 
-	/**
-	 * The maximum height from where the entity is alowed to jump (used in
-	 * pathfinder)
-	 */
 	public int getMaxFallDistance() {
 		return this.getTarget() == null ? 3 : 3 + (int) (this.getHealth() - 1.0F);
 	}
@@ -121,7 +125,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(DATA_SWELL_DIR, -1);
+		this.entityData.define(DATA_IS_SWELLING, false);
 		this.entityData.define(DATA_IS_POWERED, false);
 		this.entityData.define(DATA_IS_IGNITED, false);
 		this.entityData.define(DATA_OWNERUUID, Optional.empty());
@@ -159,7 +163,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 
 		if (pCompound.getBoolean("ignited"))
 		{
-			this.ignite();
+			this.setIgnited(true);
 		}
 		BefriendedHelper.readBefriendedCommonSaveData(this, pCompound);
 		/* Add more save data... */
@@ -172,29 +176,40 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	public void tick() {
 		if (this.isAlive())
 		{
-			this.oldSwell = this.swell;
-			if (this.isIgnited())
+			if (this.canExplode)
 			{
-				this.setSwellDir(1);
+				this.oldSwell = this.swell;
+				if (this.isIgnited())
+				{
+					this.setSwelling(true);
+				}
+	
+				int i = this.getSwellDir();
+				if (i > 0 && this.swell == 0)
+				{
+					this.playSound(SoundEvents.CREEPER_PRIMED, 1.0F, 0.5F);
+					this.gameEvent(GameEvent.PRIME_FUSE);
+				}
+	
+				if (this.swell < this.maxSwell)
+					this.swell += i;
+	
+				if (this.swell < 0)
+				{
+					this.swell = 0;
+				}
+	
+				if (this.swell >= this.maxSwell)
+				{
+					this.swell = this.maxSwell;
+					this.explodeCreeper();
+				}
 			}
-
-			int i = this.getSwellDir();
-			if (i > 0 && this.swell == 0)
+			else 
 			{
-				this.playSound(SoundEvents.CREEPER_PRIMED, 1.0F, 0.5F);
-				this.gameEvent(GameEvent.PRIME_FUSE);
-			}
-
-			this.swell += i;
-			if (this.swell < 0)
-			{
+				this.setIgnited(false);
+				this.setSwelling(false);
 				this.swell = 0;
-			}
-
-			if (this.swell >= this.maxSwell)
-			{
-				this.swell = this.maxSwell;
-				this.explodeCreeper();
 			}
 		}
 
@@ -227,6 +242,11 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		return this.entityData.get(DATA_IS_POWERED);
 	}
 
+	public void setPowered(boolean powered)
+	{
+		this.entityData.set(DATA_IS_POWERED, powered);
+	}
+	
 	/**
 	 * Params: (Float)Render tick. Returns the intensity of the creeper's flash when
 	 * it is ignited.
@@ -239,68 +259,77 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	 * Returns the current state of creeper, -1 is idle, 1 is 'in fuse'
 	 */
 	public int getSwellDir() {
-		return this.entityData.get(DATA_SWELL_DIR);
+		return this.entityData.get(DATA_IS_SWELLING) ? 1 : -1;
 	}
 
 	/**
 	 * Sets the state of creeper, -1 to idle and 1 to be 'in fuse'
 	 */
+	@Deprecated // Use setSwelling() instead
 	public void setSwellDir(int pState) {
-		this.entityData.set(DATA_SWELL_DIR, pState);
+		boolean val = false;
+		if (pState == 1)
+			val = true;
+		else if (pState == -1)
+			val = false;
+		else
+			throw new IllegalArgumentException(
+					"Befriended Creeper set swell dir: 1 or -1 only. setSwellDir() is deprecated and use setSwelling() instead.");
+		this.entityData.set(DATA_IS_SWELLING, val);
 	}
 
-	public void thunderHit(ServerLevel pLevel, LightningBolt pLightning) {
-		super.thunderHit(pLevel, pLightning);
+	public boolean isSwelling() {
+		return this.entityData.get(DATA_IS_SWELLING);
+	}
+
+	public void setSwelling(boolean swelling) {
+		this.entityData.set(DATA_IS_SWELLING, swelling);
+	}
+
+	public void thunderHit(ServerLevel level, LightningBolt lightning) {
+		super.thunderHit(level, lightning);
 		this.entityData.set(DATA_IS_POWERED, true);
 	}
 
-	protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-		
-		
-		ItemStack itemstack = pPlayer.getItemInHand(pHand);
-		if (itemstack.is(Items.FLINT_AND_STEEL) && this.canIgniteWithFlintSteel)
-		{
-			this.level.playSound(pPlayer, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE,
-					this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
-			if (!this.level.isClientSide)
-			{
-				this.ignite();
-				itemstack.hurtAndBreak(1, pPlayer, (p_32290_) ->
-				{
-					p_32290_.broadcastBreakEvent(pHand);
-				});
-			}
-
-			return InteractionResult.sidedSuccess(this.level.isClientSide);
-		} else
-		{
-			return super.mobInteract(pPlayer, pHand);
-		}
+	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+		return super.mobInteract(player, hand);
 	}
 
 	/**
 	 * Creates an explosion as determined by this creeper's power and explosion
 	 * radius.
 	 */
-	private void explodeCreeper() {
+	protected void explodeCreeper() {
 		if (!this.level.isClientSide)
 		{
-			Explosion.BlockInteraction explosion$blockinteraction = net.minecraftforge.event.ForgeEventFactory
-					.getMobGriefingEvent(this.level, this) ? Explosion.BlockInteraction.DESTROY
+			Explosion.BlockInteraction explosion$blockinteraction = shouldDestroyBlocks ? Explosion.BlockInteraction.DESTROY
 							: Explosion.BlockInteraction.NONE;
 			float f = this.isPowered() ? 2.0F : 1.0F;
-			this.dead = true;
+
+			if (!shouldDiscardAfterExplosion)
+			{
+				// Set 2 tick invulnerable to avoid being damaged by the explosion
+				this.invulnerableTime += 2;
+				this.setIgnited(false);
+				this.setSwelling(false);
+				this.swell = 0;
+			} else
+			{
+				this.dead = true;
+			}
+
 			this.level.explode(this, this.getX(), this.getY(), this.getZ(), (float) this.explosionRadius * f,
 					explosion$blockinteraction);
-			
-			// By default befriended creeper will not disappear after explosion
-			// this.discard();
+
+			if (shouldDiscardAfterExplosion)
+				this.discard();
+
 			this.spawnLingeringCloud();
 		}
 
 	}
 
-	private void spawnLingeringCloud() {
+	protected void spawnLingeringCloud() {
 		Collection<MobEffectInstance> collection = this.getActiveEffects();
 		if (!collection.isEmpty())
 		{
@@ -325,8 +354,13 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		return this.entityData.get(DATA_IS_IGNITED);
 	}
 
+	@Deprecated // Use setIgnited instead
 	public void ignite() {
-		this.entityData.set(DATA_IS_IGNITED, true);
+		setIgnited(true);
+	}
+
+	public void setIgnited(boolean ignited) {
+		this.entityData.set(DATA_IS_IGNITED, ignited);
 	}
 
 	/**
@@ -344,35 +378,82 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		++this.droppedSkulls;
 	}
 
-	
-	
-	
-	
-	
 	/* BefriendedMob setup */
 
 	// Attributes
-	
+
 	@Override
 	public void updateAttributes() {
 		/* Update attributes here */
 		/* It will auto-called on initialization and container update. */
-		
+
+	}
+
+	// Interaction
+
+	public boolean playerIgniteDefault(Player player, InteractionHand hand)
+	{
+		ItemStack itemstack = player.getItemInHand(hand);
+		if (itemstack.is(Items.FLINT_AND_STEEL) && this.canIgnite)
+		{
+			this.level.playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE,
+					this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
+			if (!this.level.isClientSide)
+			{
+				this.setIgnited(true);
+				itemstack.hurtAndBreak(1, player, (p) ->
+				{
+					p.broadcastBreakEvent(hand);
+				});
+			}
+			return true;
+		}
+		return false;
 	}
 	
-	// Interaction
+	public boolean playerIgniteDefault(Player player, InteractionHand hand, Item ignitingItem)
+	{
+		ItemStack itemstack = player.getItemInHand(hand);
+		if (itemstack.is(ignitingItem) && this.canIgnite)
+		{
+			this.level.playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE,
+					this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
+			if (!this.level.isClientSide)
+			{
+				this.setIgnited(true);
+				itemstack.hurtAndBreak(1, player, (p) ->
+				{
+					p.broadcastBreakEvent(hand);
+				});
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean playerIgnite(Player player, InteractionHand hand, Item ignitingItem)
+	{
+		ItemStack itemstack = player.getItemInHand(hand);
+		if (itemstack.is(ignitingItem) && this.canIgnite)
+		{
+			if (!this.level.isClientSide)
+			{
+				this.setIgnited(true);
+			}
+			return true;
+		}
+		return false;
+	}
+	
 	
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide()) 
-			{
+			if (!playerIgniteDefault(player, hand))
 				switchAIState();
-			}
 			return true;
 		}
-			/* Other actions */
 		return false;
 	}
 
@@ -380,21 +461,17 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	public boolean onInteractionShift(Player player, InteractionHand hand) 
 	{
 		if (player.getUUID().equals(getOwnerUUID())) {
-	
-			if (hand.equals(InteractionHand.MAIN_HAND))
-				BefriendedHelper.openBefriendedInventory(player, this);
 			return true;
 		}
-		/* Other actions... */
 		return false;
 	}
 
 	// Interaction end
-	
+
 	// Inventory related
 	// Generally no need to modify unless noted
-	
-	AdditionalInventory additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize());
+
+	protected AdditionalInventory additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize());
 
 	@Override
 	public AdditionalInventory getAdditionalInventory()
@@ -422,80 +499,36 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 			/* If inventory needs to be set from mob's properties on initialization, set here */
 		}
 	}
-	
-	@Override
-	public ItemStack getBauble(int index) {
-		/* Customize here */
-		/* Example:
-		if (index == 0)
-			return getAdditionalInventory().getItem(6);
-		else if (index == 1)
-			return getAdditionalInventory().getItem(7);
-		else
-			return null;
-		*/
-		return null;
-	}
 
-	/**	Set Bauble item stack.
-	 * Similarly, the input index is "Bauble index", not the Inventory index.
-	 */
-	@Override
-	public void setBauble(ItemStack item, int index) {
-		/* Customize here */
-		/* Example:
-		if (item == null || item.isEmpty())
-			return;
-		if (index == 0)
-			additionalInventory.setItem(6, item);
-		else if (index == 1)
-			additionalInventory.setItem(7, item);
-		else
-			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
-		*/
-		updateFromInventory();
-	}
-	 
 	@Override
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return null; /* return new YourMenuClass(containerId, playerInventory, container, this) */
 	}
-	
+
 	// Inventory end
 
 	// save&load
-
 
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
 
-	// ------------------ Data sync ------------------ //
-
-	// By default owner uuid and ai state need to sync
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EXAMPLE_BefriendedZombie.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
-			.defineId(EXAMPLE_BefriendedZombie.class, EntityDataSerializers.BYTE);
-
-	// ------------------ Data sync end ------------------ //
-
 	// ------------------ IBefriendedMob interface ------------------ //
 
 	protected boolean initialized = false;
-	
+
 	@Override
 	public boolean hasInit()
 	{
 		return initialized;
 	}
-	
+
 	@Override
 	public void setInit()
 	{
 		initialized = true;
 	}
-		
+
 	@Override
 	public Player getOwner() {
 		return level.getPlayerByUUID(getOwnerUUID());
@@ -517,7 +550,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	}
 
 	// AI related
-	
+
 	@Override
 	public BefriendedAIState getAIState() {
 		return BefriendedAIState.fromID(entityData.get(DATA_AISTATE));
@@ -539,7 +572,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	public void setPreviousTarget(LivingEntity target) {
 		PreviousTarget = target;
 	}
-	
+
 	/* Inventory */
 
 	// ------------------ IBefriendedMob interface end ------------------ //
@@ -562,9 +595,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		return false;
 	}
 
-
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
-
 
 }

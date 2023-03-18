@@ -8,7 +8,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
 
-public class GuiZombieGirl extends GuiVanillaUndead {
+public class GuiZombieGirl extends GuiPreset_0 {
 
 	public GuiZombieGirl(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory,
 			IBefriendedMob mob) {

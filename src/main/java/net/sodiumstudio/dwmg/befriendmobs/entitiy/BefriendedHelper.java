@@ -53,20 +53,33 @@ public class BefriendedHelper
 
 	// This will read owner, AI state and additional inventory
 	public static void addBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt) {
-		if (mob.getOwnerUUID() != null)
-			nbt.putUUID("owner", mob.getOwnerUUID());
-		else
-			throw new IllegalStateException(
-					"Writing befriended mob data error: invalid owner. Was IBefriendedMob.init() not called?");
+		try {
+			if (mob.getOwnerUUID() != null)
+				nbt.putUUID("owner", mob.getOwnerUUID());
+			else
+				throw new IllegalStateException(
+						"Writing befriended mob data error: invalid owner. Was IBefriendedMob.init() not called?");
+		}
+		catch(IllegalStateException e)
+		{
+			e.printStackTrace();
+		}
 		nbt.putByte("ai_state", mob.getAIState().id());
 		mob.getAdditionalInventory().saveToTag(nbt, "inventory_tag");
 	}
 
 	public static void readBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt) {
-		UUID uuid = nbt.getUUID("owner");
+		UUID uuid = nbt.contains("owner") ? nbt.getUUID("owner") : null;
+		try {
 		if (uuid == null)
 			throw new IllegalStateException(
 					"Reading befriended mob data error: invalid owner. Was IBefriendedMob.init() not called?");
+		}
+		catch(IllegalStateException e)
+		{
+			e.printStackTrace();
+			return;
+		}
 		mob.setOwnerUUID(uuid);
 		mob.init(mob.getOwnerUUID(), null);
 		mob.setAIState(BefriendedAIState.fromID(nbt.getByte("ai_state")));

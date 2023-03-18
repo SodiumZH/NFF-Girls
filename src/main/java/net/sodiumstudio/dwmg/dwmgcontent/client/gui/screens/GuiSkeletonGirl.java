@@ -9,7 +9,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
 
-public class GuiSkeletonGirl extends GuiVanillaUndead {
+public class GuiSkeletonGirl extends GuiPreset_0 {
 
 	public GuiSkeletonGirl(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory,
 			IBefriendedMob mob) {
