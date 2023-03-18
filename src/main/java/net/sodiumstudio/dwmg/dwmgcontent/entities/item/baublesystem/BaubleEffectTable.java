@@ -11,7 +11,7 @@ public class BaubleEffectTable
 {
 	protected HashMap<Item, Properties> map = new HashMap<Item, Properties>();
 	
-	public BaubleEffectTable() {}
+	
 	
 	public BaubleEffectTable add(Item item, Attribute attribute, double value, AttributeModifier.Operation operation)
 	{

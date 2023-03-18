@@ -45,7 +45,7 @@ public class DwmgBlocks {
 	
 	/* Block Items */
 	//public static final RegistryObject<Item> ITEM_EXAMPLE_BLOCK = regBlockItem("example_block", EXAMPLE_BLOCK, new Item.Properties());
-	//public static final RegistryObject<Item> ITEM_SOUL_CARPET = regBlockItem("soul_carpet", SOUL_CARPET, new Item.Properties());
+	public static final RegistryObject<Item> ITEM_SOUL_CARPET = regBlockItem("soul_carpet", SOUL_CARPET, new Item.Properties());
 	
 	// Register to event bus
 	public static void register(IEventBus eventBus) {
