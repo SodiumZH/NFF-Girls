@@ -27,7 +27,7 @@ public class HandlerSkeletonGirl extends AbstractBefriendingHandler
 		args.execServer((l) ->
 		{
 
-			if (!player.isShiftKeyDown() && player.getMainHandItem().getItem() == DwmgItems.SOUL_CAKE_SLICE.get()
+			if (!player.isShiftKeyDown() && player.getMainHandItem().is(DwmgItems.SOUL_CAKE_SLICE.get()) && args.isMainHand()
 					&& player.hasEffect(DwmgEffects.DEATH_AFFINITY.get()))
 			{
 				// Block if in hatred
@@ -102,7 +102,7 @@ public class HandlerSkeletonGirl extends AbstractBefriendingHandler
 			{
 				if (!l.isInHatred(player))
 				{
-					if (!player.isShiftKeyDown() && player.getMainHandItem().getItem() == DwmgItems.SOUL_CAKE_SLICE.get()
+					if (!player.isShiftKeyDown() && player.getMainHandItem().is(DwmgItems.SOUL_CAKE_SLICE.get()) && args.isMainHand()
 							&& player.hasEffect(DwmgEffects.DEATH_AFFINITY.get()))
 						result.handled = true;
 				} else

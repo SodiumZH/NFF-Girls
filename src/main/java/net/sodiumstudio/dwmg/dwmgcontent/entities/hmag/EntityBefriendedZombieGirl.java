@@ -132,9 +132,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 				// it can be converted back by using a sponge to it
 				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromHusk) {
 					ItemHelper.consumeOne(player.getItemInHand(hand));
-					if (!player.addItem(new ItemStack(Items.WET_SPONGE, 1))) {
-						this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
-					}
+					this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
 					this.convertToHusk();
 				} else if (player.getItemInHand(hand).is(ModItems.SOUL_POWDER.get())) {
 					ItemHelper.consumeOne(player.getItemInHand(hand));
@@ -289,7 +287,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	
 	@Override
 	public Player getOwner() {
-		return level.getPlayerByUUID(getOwnerUUID());
+		return getOwnerUUID() != null ? level.getPlayerByUUID(getOwnerUUID()) : null;
 	}
 
 	@Override

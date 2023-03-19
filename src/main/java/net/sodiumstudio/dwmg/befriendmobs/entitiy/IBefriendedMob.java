@@ -62,13 +62,6 @@ public interface IBefriendedMob extends ContainerListener  {
 	// Set owner from player UUID.
 	public void setOwnerUUID(@Nonnull UUID ownerUUID);
 	
-	/* Tick */ 
-	// This will be automatically called on world tick. DO NOT CALL ANYWHERE ELSE!!!!
-	// DO NOT call this in aiStep() or any other functions executed on tick!!!
-	public default void onTick() {
-		updateFromInventory();
-	};
-	
 	/* AI configs */
 	
 	public BefriendedAIState getAIState();

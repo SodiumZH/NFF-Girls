@@ -70,6 +70,14 @@ public class NbtHelper {
 		putTo.getCompound(player.getStringUUID()).put(key, inTag);
 	}
 	
+	public static void removePlayerData(CompoundTag removeFrom, Player player, String key)
+	{
+		if (containsPlayerData(removeFrom, player, key))
+		{
+			removeFrom.getCompound(player.getStringUUID()).remove(key);
+		}
+	}
+	
 	public static CompoundTag saveItemStack(@Nullable ItemStack stack, @Nonnull CompoundTag saveTo, String key) {
 		CompoundTag newTag = new CompoundTag();
 		if (stack == null || stack.isEmpty())

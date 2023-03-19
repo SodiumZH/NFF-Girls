@@ -297,7 +297,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	
 	@Override
 	public Player getOwner() {
-		return level.getPlayerByUUID(getOwnerUUID());
+		return getOwnerUUID() != null ? level.getPlayerByUUID(getOwnerUUID()) : null;
 	}
 
 	@Override

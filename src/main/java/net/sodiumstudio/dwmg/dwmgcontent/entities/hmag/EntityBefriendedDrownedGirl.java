@@ -23,6 +23,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrownTrident;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -122,10 +123,8 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (player.level.isClientSide()) {
-			}
-			// Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
-			else {
+			Item[] interactables = {Items.SPONGE, ModItems.SOUL_APPLE.get(), ModItems.SOUL_POWDER.get()};
+			if (!player.level.isClientSide()) {
 				// If this drowned is converted from a zombie,
 				// it can be converted back by using a sponge to it
 				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromZombie) {
@@ -137,10 +136,10 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 				} else if (player.getItemInHand(hand).is(ModItems.SOUL_POWDER.get())) {
 					ItemHelper.consumeOne(player.getItemInHand(hand));
 					this.heal(5);
-				} else if (player.getItemInHand(hand).is(ModItems.SOUL_APPLE.get())) {
+				} else if (player.getItemInHand(hand).is(ModItems.SOUL_APPLE.get()) && this.getHealth() != this.getMaxHealth()) {
 					ItemHelper.consumeOne(player.getItemInHand(hand));
 					this.heal(15);
-				} else
+				} else if (hand.equals(InteractionHand.MAIN_HAND))
 					switchAIState();
 				// Debug.printToScreen(getAIState().toString(), player, this);
 			}
@@ -262,7 +261,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 
 	@Override
 	public Player getOwner() {
-		return level.getPlayerByUUID(getOwnerUUID());
+		return getOwnerUUID() != null ? level.getPlayerByUUID(getOwnerUUID()) : null;
 	}
 
 	@Override

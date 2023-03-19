@@ -1,6 +1,7 @@
 package net.sodiumstudio.dwmg.befriendmobs.events;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -12,6 +13,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
@@ -29,6 +31,7 @@ public class ServerEvents
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	@SubscribeEvent
 	public static void onWorldTick(TickEvent.WorldTickEvent event)
 	{
@@ -36,16 +39,22 @@ public class ServerEvents
 		{
 			// Update all befriendable mobs near players
 			for (Player player : event.world.players())
+			{
 				for (Entity entity : event.world.getEntities(player, new AABB(player.position().subtract(64.0, 64.0, 64.0), player.position().add(64.0, 64.0, 64.0))))
+				{
 					if (entity instanceof Mob mob)
 					{	// TODO: make this an event
-						mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> { l.updateTimers(); });
-						if (entity instanceof IBefriendedMob bef)
+						if (!(mob instanceof IBefriendedMob))
 						{
-							bef.onTick();
+							mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+							{
+								l.updateTimers(); 
+								BefriendingTypeRegistry.getHandler((EntityType<Mob>)(mob.getType())).serverTick(mob);
+							});
 						}
 					}
-			//
+				}
+			}
 		}
 	}
 

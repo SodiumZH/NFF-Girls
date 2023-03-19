@@ -238,7 +238,7 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 	
 	@Override
 	public Player getOwner() {
-		return level.getPlayerByUUID(getOwnerUUID());
+		return getOwnerUUID() != null ? level.getPlayerByUUID(getOwnerUUID()) : null;
 	}
 
 	@Override

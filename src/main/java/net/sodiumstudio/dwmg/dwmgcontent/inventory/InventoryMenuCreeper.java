@@ -116,30 +116,33 @@ public class InventoryMenuCreeper extends AbstractInventoryMenuBefriended
 
 		ItemStack stack = slot.getItem();
 
-		// From mob equipment to player additionalInventory
-		if (stack.is(Items.GUNPOWDER) || stack.is(Items.TNT))
-		{
-			if (this.moveItemStackTo(stack, 6, 7, true))
-				done = true;
-		}
 		
-		if (!done && index < 7) {
+		if (index < 7) {
 			if (!this.moveItemStackTo(stack, mob.getInventorySize(), mob.getInventorySize() + 36, true)) {
 				return ItemStack.EMPTY;
 			} else {
 				done = true;
 			}
 		}
-		// From additionalInventory to mob
+		// From player Inventory to mob
 		else {
+			if (this.getSlot(6).mayPlace(stack) && !this.getSlot(6).hasItem())
+			{
+				if (this.moveItemStackTo(stack, 6, 7, false)) {
+					done = true;
+				}
+			}
 			// Try each mob slot
-			for (int i = 0; i < mob.getInventorySize(); ++i) {
-				// If the item is suitable and slot isn't occupied
-				if (this.getSlot(i).mayPlace(stack) && !this.getSlot(i).hasItem()) {
-					// Try moving
-					if (this.moveItemStackTo(stack, i, i + 1, false)) {
-						done = true;
-						break;
+			if (!done)
+			{
+				for (int i = 0; i < 6; ++i) {
+					// If the item is suitable and slot isn't occupied
+					if (this.getSlot(i).mayPlace(stack) && !this.getSlot(i).hasItem()) {
+						// Try moving
+						if (this.moveItemStackTo(stack, i, i + 1, false)) {
+							done = true;
+							break;
+						}
 					}
 				}
 			}

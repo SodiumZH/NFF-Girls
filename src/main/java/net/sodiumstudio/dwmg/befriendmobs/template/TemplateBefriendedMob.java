@@ -124,40 +124,7 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 			/* If inventory needs to be set from mob's properties on initialization, set here */
 		}
 	}
-	
-	@Override
-	public ItemStack getBauble(int index) {
-		/* Customize here */
-		/* Example:
-		if (index == 0)
-			return getAdditionalInventory().getItem(6);
-		else if (index == 1)
-			return getAdditionalInventory().getItem(7);
-		else
-			return null;
-		*/
-		return null;
-	}
 
-	/**	Set Bauble item stack.
-	 * Similarly, the input index is "Bauble index", not the Inventory index.
-	 */
-	@Override
-	public void setBauble(ItemStack item, int index) {
-		/* Customize here */
-		/* Example:
-		if (item == null || item.isEmpty())
-			return;
-		if (index == 0)
-			additionalInventory.setItem(6, item);
-		else if (index == 1)
-			additionalInventory.setItem(7, item);
-		else
-			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
-		*/
-		updateFromInventory();
-	}
-	 
 	@Override
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return null; /* return new YourMenuClass(containerId, playerInventory, container, this) */
@@ -221,7 +188,7 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 		
 	@Override
 	public Player getOwner() {
-		return level.getPlayerByUUID(getOwnerUUID());
+		return getOwnerUUID() != null ? level.getPlayerByUUID(getOwnerUUID()) : null;
 	}
 
 	@Override

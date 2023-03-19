@@ -1,6 +1,5 @@
 package net.sodiumstudio.dwmg.befriendmobs.inventory;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundTag;

@@ -52,16 +52,15 @@ public class BefriendedCreeperSwellGoal extends BefriendedGoal
 	public boolean canUse() {
 		if (isDisabled())
 			return false;
-		LivingEntity livingentity = this.creeper.getTarget();
-		return this.creeper.getSwellDir() > 0
-				|| this.targetedSwelling && this.target != null && this.creeper.distanceToSqr(livingentity) < startDistance * startDistance;
+		return this.creeper.isSwelling()
+				|| this.targetedSwelling && this.creeper.getTarget() != null && this.creeper.distanceToSqr(this.creeper.getTarget()) < startDistance * startDistance;
 	}
 
 	/**
 	 * Execute a one shot task or start executing a continuous task
 	 */
 	public void start() {
-		this.creeper.getNavigation().stop();
+		//this.creeper.getNavigation().stop();
 		this.target = this.creeper.getTarget();
 	}
 
@@ -70,7 +69,7 @@ public class BefriendedCreeperSwellGoal extends BefriendedGoal
 	 * another one
 	 */
 	public void stop() {
-		this.target = null;
+	//	this.target = null;
 	}
 
 	public boolean requiresUpdateEveryTick() {

@@ -64,7 +64,10 @@ public class BMDebugItemHandler
 		else if (item.equals(RegItems.DEBUG_BEFRIENDER.get()))
 		{
 			if (target instanceof IBefriendedMob bef)
+			{
 				bef.init(player.getUUID(), null);
+				Debug.printToScreen("Mob " + target.getDisplayName() + " initialized", player);
+			}
 			else 
 			{
 				target.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
