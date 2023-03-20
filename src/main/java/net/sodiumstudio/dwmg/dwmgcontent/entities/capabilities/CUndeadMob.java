@@ -1,11 +1,10 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.capabilities;
 
-import java.util.UUID;
 import java.util.HashSet;
+import java.util.UUID;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public interface CUndeadMob extends INBTSerializable<CompoundTag>{
