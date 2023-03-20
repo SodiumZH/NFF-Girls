@@ -1,5 +1,6 @@
 package net.sodiumstudio.dwmg.befriendmobs.util;
 
+import java.util.HashSet;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -18,12 +19,23 @@ import net.minecraft.world.item.ItemStack;
 
 public class NbtHelper {
 
+	// Generate a unique key from the base key in a compound tag
+	public static String getUniqueKey(String baseKey, CompoundTag cpd)
+	{
+		int i = 0;
+		while (cpd.contains(baseKey + "_" + Integer.toString(i)))
+		{
+			i += 1;
+		}
+		return baseKey + "_" + Integer.toString(i);
+	}
+	
 	// Serialize a UUID array from vector into the given compound tag with given key.
 	// Return the ListTag containing the UUIDs.
-	public static ListTag serializeUUIDArray(CompoundTag tag, Vector<UUID> array, String key)
+	public static ListTag serializeUUIDSet(CompoundTag tag, HashSet<UUID> set, String key)
 	{
 		ListTag list = new ListTag();
-		for (UUID id : array)
+		for (UUID id : set)
 		{
 			list.add(NbtUtils.createUUID(id));
 		}
@@ -33,11 +45,11 @@ public class NbtHelper {
 	
 	// Deserialize a UUID array into vector from a compound tag with given key.
 	// Return a new vector containing the UUIDs.
-	public static Vector<UUID> deserializeUUIDArray(CompoundTag inTag, String key)
+	public static HashSet<UUID> deserializeUUIDSet(CompoundTag inTag, String key)
 	{
-		ListTag uuidArrayTag = inTag.getList(key, Tag.TAG_INT_ARRAY);
-		Vector<UUID> out = new Vector<UUID>();
-		for(Tag tag : uuidArrayTag)
+		ListTag uuidSetTag = inTag.getList(key, Tag.TAG_INT_ARRAY);
+		HashSet<UUID> out = new HashSet<UUID>();
+		for(Tag tag : uuidSetTag)
 		{
 			out.add(NbtUtils.loadUUID(tag));
 		}

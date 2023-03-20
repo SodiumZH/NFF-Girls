@@ -1,7 +1,8 @@
 package net.sodiumstudio.dwmg.befriendmobs.entitiy.capability;
 
+import java.util.HashSet;
 import java.util.UUID;
-import java.util.Vector;
+import java.util.HashSet;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
@@ -20,7 +21,7 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 	
 	// Get this mob's hatred list
 	// Sometimes hatred list prevents player to befriend the mob
-	public Vector<UUID> getHatred();
+	public HashSet<UUID> getHatred();
 	
 	// Add a player to the hatred list
 	// If a player is in hatred list, it will take some time to remove from it. 15min by default.
@@ -57,11 +58,15 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 	// Get the value of player-specified timer (tick). (PS = player specified)
 	public int getTimerPS(Player player, String key);
 	
+	public boolean hasTimer(String key);
+	
+	public boolean hasPlayerTimer(Player player, String key);
+	
 	// Setup a non-player-specified timer
 	public IntTag setTimer(String key, int ticks);
 	
 	// Setup a player-specified timer. (PS = player specified)
-	public CompoundTag setTimerPS(Player player, String key, int ticks);
+	public IntTag setTimerPS(Player player, String key, int ticks);
 	
 	// Update all timers that should be executed every tick
 	public void updateTimers();

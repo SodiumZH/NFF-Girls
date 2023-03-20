@@ -1,7 +1,8 @@
 package net.sodiumstudio.dwmg.befriendmobs.entitiy.capability;
 
+import java.util.HashSet;
 import java.util.UUID;
-import java.util.Vector;
+import java.util.HashSet;
 
 import javax.annotation.Nonnull;
 
@@ -9,6 +10,8 @@ import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,7 +22,7 @@ import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 public class CBefriendableMobImpl implements CBefriendableMob
 {
 	
-	protected Vector<UUID> hatred = new Vector<UUID>();
+	protected HashSet<UUID> hatred = new HashSet<UUID>();
 	
 	protected CompoundTag nbt = new CompoundTag();
 	
@@ -29,6 +32,7 @@ public class CBefriendableMobImpl implements CBefriendableMob
 	{
 		nbt.put("player_data", new CompoundTag());
 		nbt.put("timers", new CompoundTag());
+		nbt.getCompound("timers").put("player_timers", new CompoundTag());
 	}
 	
 	
@@ -46,7 +50,7 @@ public class CBefriendableMobImpl implements CBefriendableMob
 	}
 	
 	@Override
-	public Vector<UUID> getHatred() 
+	public HashSet<UUID> getHatred() 
 	{
 		return hatred;
 	}
@@ -59,8 +63,7 @@ public class CBefriendableMobImpl implements CBefriendableMob
 		if (!isInHatred(player))
 		{
 			hatred.add(player.getUUID());
-			if (ticks > 0)
-				setTimerPS(player, "in_hatred", ticks);
+			setTimerPS(player, "in_hatred", ticks);		
 		}
 	}
 
@@ -86,7 +89,7 @@ public class CBefriendableMobImpl implements CBefriendableMob
 	public CompoundTag serializeNBT() 
 	{
 		CompoundTag tag = new CompoundTag();
-		NbtHelper.serializeUUIDArray(tag, hatred, "hatred");
+		NbtHelper.serializeUUIDSet(tag, hatred, "hatred");
 		tag.put("nbt", nbt);
 		return tag;
 	}
@@ -94,7 +97,7 @@ public class CBefriendableMobImpl implements CBefriendableMob
 	@Override
 	public void deserializeNBT(CompoundTag nbt) 
 	{
-		hatred = NbtHelper.deserializeUUIDArray(nbt, "hatred");
+		hatred = NbtHelper.deserializeUUIDSet(nbt, "hatred");
 		this.nbt = nbt.getCompound("nbt");
 	}
 
@@ -102,44 +105,56 @@ public class CBefriendableMobImpl implements CBefriendableMob
 	public int getTimer(String key)
 	{
 		int val = 0;
-		if (nbt.getCompound("timers").contains(key))
+		if (nbt.getCompound("timers").contains(key, 3))
 			val = nbt.getCompound("timers").getInt(key);
 		if (val < 0)
 			throw new IllegalStateException("CapBefriendableMob: timer \"" + key + "\" contains negative value.");
 		return val;
 	}
 	
+	// Player timers are in nbt/timers/player_timers
 	@Override
 	public int getTimerPS(@Nonnull Player player, String key)
 	{
-		UUID uuid;
-		if (nbt.getCompound("timers").contains(key, 10))
-			uuid = nbt.getCompound("timers").getCompound(key).getUUID("player_uuid");
+		String actualKey = player.getStringUUID() + "_" + key;
+		if (nbt.getCompound("timers").getCompound("player_timers").contains(actualKey, 3))
+		{
+			return nbt.getCompound("timers").getCompound("player_timers").getInt(actualKey);
+		}
 		else return 0;
-		if (player.getUUID().equals(uuid))
-			return nbt.getCompound("timers").getCompound(key).getInt("timer");
-		else return 0;
+	}
+	
+	// This doesn't check if the timer is 0 or -1
+	public boolean hasTimer(String key)
+	{
+		return nbt.getCompound("timers").contains(key, 3);
+	}
+	
+	public boolean hasPlayerTimer(Player player, String key)
+	{
+		return nbt.getCompound("timers").getCompound("player_timers")
+				.contains(player.getStringUUID() + "_" + key, 0);
 	}
 	
 	@Override
 	public IntTag setTimer(String key, int ticks)
 	{
-		IntTag newTag = IntTag.valueOf(ticks);
-		nbt.getCompound("timers").put(key, newTag);
-		return newTag;
+		CompoundTag timers = nbt.getCompound("timers");
+		if (ticks < -1 || ticks == 0)
+			throw new IllegalArgumentException("setTimer: ticks should be positive, or -1 for permanent");
+		timers.putInt(key, ticks);
+		return (IntTag)(timers.get(key));
 	}
 	
 	
 	@Override
-	public CompoundTag setTimerPS(Player player, String key, int ticks)
+	public IntTag setTimerPS(Player player, String key, int ticks)
 	{
-		if (ticks <= 0)
-			throw new IllegalArgumentException("CapBefriendableMob: player-specified timer \"" + key + "\" for \"" + player.getName().getString() + " setting non-positive value.");
-		CompoundTag newTag = new CompoundTag();
-		nbt.getCompound("timers").put(key, newTag);
-		nbt.getCompound("timers").getCompound(key).put("player_uuid", NbtUtils.createUUID(player.getUUID()));
-		nbt.getCompound("timers").getCompound(key).put("timer", IntTag.valueOf(ticks));
-		return newTag;
+		if (ticks < -1 || ticks == 0)
+			throw new IllegalArgumentException("setPlayerTimer: ticks should be positive, or -1 for permanent");
+		String actualKey = player.getStringUUID() + "_" + key;
+		nbt.getCompound("timers").getCompound("player_timers").putInt(actualKey, ticks);
+		return (IntTag)(nbt.getCompound("timers").getCompound("player_timers").get(actualKey));
 	}
 	
 	@Override
@@ -148,21 +163,53 @@ public class CBefriendableMobImpl implements CBefriendableMob
 		for (String key : nbt.getCompound("timers").getAllKeys())
 		{
 			Tag tag = nbt.getCompound("timers").get(key);
-			if (val > 0)
+			if (tag instanceof IntTag intTag)	// player_timers tag is excluded
 			{
-				val --;
-				nbt.getCompound("timers").put(key, IntTag.valueOf(val));
-				if (val == 0)
+				int val = intTag.getAsInt();
+				if (val > 0)
 				{
-					MinecraftForge.EVENT_BUS.post(new BefriendableTimerUpEvent(this, key));
+					val --;
+					nbt.getCompound("timers").putInt(key, val);
+					if (val == 0)
+					{
+						MinecraftForge.EVENT_BUS.post(new BefriendableTimerUpEvent(this, key, null));
+					}
 				}
 			}
+		}
+		for (String key : nbt.getCompound("timers").getCompound("player_timers").getAllKeys())
+		{
+			UUID uuid = UUID.fromString(key.substring(0, 36));
+			Player player = owner.level.getPlayerByUUID(uuid);
+			if (player != null)
+			{
+				int val = nbt.getCompound("timers").getCompound("player_timers").getInt(key);
+				if (val > 0)
+				{
+					val --;
+					nbt.getCompound("timers").getCompound("player_timers").putInt(key, val);
+					if (val == 0)
+					{
+						// position 36 is "_"
+						MinecraftForge.EVENT_BUS.post(new BefriendableTimerUpEvent(this, key.substring(37), player));
+					}
+				}
+			}	
 		}
 	}
 	
 	@SubscribeEvent
 	public static void onTimerUp(BefriendableTimerUpEvent event)
 	{
-		if ()
+		if (event.getPlayer() != null)
+		{
+			if (event.getKey().equals("in_hatred"))
+			{
+				if (event.getCapability().getHatred().contains(event.getPlayer().getUUID()))
+				{
+					event.getCapability().getHatred().remove(event.getPlayer().getUUID());
+				}
+			}
+		}
 	}
 }

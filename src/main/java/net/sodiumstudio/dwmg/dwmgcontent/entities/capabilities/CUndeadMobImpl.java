@@ -1,7 +1,7 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.capabilities;
 
 import java.util.UUID;
-import java.util.Vector;
+import java.util.HashSet;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
@@ -17,7 +17,7 @@ public class CUndeadMobImpl implements CUndeadMob {
 
 	// Once this mob has ever been hostile to a certain mob, the latter's UUID will be present in this list
 	// Some actions about befriending will check this, including taming, Death Affinity undead neutral, ...
-	protected Vector<UUID> hatred = new Vector<UUID>();
+	protected HashSet<UUID> hatred = new HashSet<UUID>();
 	
 	public CUndeadMobImpl() 
 	{		
@@ -27,7 +27,7 @@ public class CUndeadMobImpl implements CUndeadMob {
 	
 
 	@Override
-	public Vector<UUID> getHatred() 
+	public HashSet<UUID> getHatred() 
 	{
 		return hatred;
 	}
@@ -45,13 +45,13 @@ public class CUndeadMobImpl implements CUndeadMob {
 	public CompoundTag serializeNBT() 
 	{
 		CompoundTag tag = new CompoundTag();
-		NbtHelper.serializeUUIDArray(tag, hatred, "hatred");
+		NbtHelper.serializeUUIDSet(tag, hatred, "hatred");
 		return tag;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
-		hatred = NbtHelper.deserializeUUIDArray(nbt, "hatred");
+		hatred = NbtHelper.deserializeUUIDSet(nbt, "hatred");
 	}
 	
 }
