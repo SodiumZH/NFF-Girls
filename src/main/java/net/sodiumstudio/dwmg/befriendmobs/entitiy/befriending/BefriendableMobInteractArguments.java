@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.NonNullConsumer;
 import net.minecraftforge.fml.LogicalSide;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.capability.CBefriendableMob;
-import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
+import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
 
 public class BefriendableMobInteractArguments {
@@ -34,7 +34,7 @@ public class BefriendableMobInteractArguments {
 		res.player = player;
 		res.target = target;
 		res.hand = hand;
-		if (!target.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
+		if (!target.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
 			throw new IllegalStateException("BefriendableMobInteraction event: target is not befriendable.");
 		return res;
 	}
@@ -71,7 +71,7 @@ public class BefriendableMobInteractArguments {
 	
 	private void execInternal(NonNullConsumer<CBefriendableMob> consumer)
 	{
-		target.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent(consumer);
+		target.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent(consumer);
 	}
 	
 	// Do something with the mob's capability, both on server and client

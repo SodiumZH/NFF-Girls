@@ -79,12 +79,12 @@ public class HandlerSkeletonGirl extends AbstractBefriendingHandler
 					if (alreadyGiven == overallAmount)
 					{
 						// Satisfied
-						EntityHelper.sendHeartParticlesToMob(target);
+						EntityHelper.sendHeartParticlesToLivingDefault(target);
 						result.befriendedMob = befriend(player, target);
 						result.setHandled();
 					} else
 					{
-						EntityHelper.sendStarParticlesToMob(target);
+						EntityHelper.sendGreenStarParticlesToLivingDefault(target);
 						// Not satisfied, put data
 						NbtHelper.putPlayerData(IntTag.valueOf(alreadyGiven), l.getPlayerData(), player,
 								"already_given");

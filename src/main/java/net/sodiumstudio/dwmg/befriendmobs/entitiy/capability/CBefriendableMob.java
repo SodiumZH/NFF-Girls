@@ -6,6 +6,7 @@ import java.util.Vector;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
@@ -13,16 +14,30 @@ import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 
 public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 
+	public Mob getOwner();
+	
 	// ======== Hatred List related
 	
 	// Get this mob's hatred list
-	// Once a player gets onto the hatred list, it will be permanently unable to befriend this mob.
+	// Sometimes hatred list prevents player to befriend the mob
 	public Vector<UUID> getHatred();
 	
 	// Add a player to the hatred list
-	// This action is permanent and there's no handler to remove a player
-	public void addHatred(Player player);
+	// If a player is in hatred list, it will take some time to remove from it. 15min by default.
+	// Or input -1 to add permanent hatred.
+	public void addHatred(Player player, int ticks);
+	
+	public default void addHatred(Player player)
+	{
+		addHatred(player, 18000);
+	}
 
+	public default void addHatredPermanent(Player player)
+	{
+		addHatred(player, -1);
+	}
+	
+	
 	// Check if a player is in the hatred list
 	public boolean isInHatred(Player player);
 	
@@ -46,7 +61,7 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 	public IntTag setTimer(String key, int ticks);
 	
 	// Setup a player-specified timer. (PS = player specified)
-	public IntTag setTimerPS(Player player, String key, int ticks);
+	public CompoundTag setTimerPS(Player player, String key, int ticks);
 	
 	// Update all timers that should be executed every tick
 	public void updateTimers();

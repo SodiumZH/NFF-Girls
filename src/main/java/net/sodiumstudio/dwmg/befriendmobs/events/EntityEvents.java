@@ -11,6 +11,7 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
@@ -25,8 +26,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInt
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
-import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
-import net.sodiumstudio.dwmg.befriendmobs.registry.RegItems;
+import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
+import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Util;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
@@ -69,9 +70,9 @@ public class EntityEvents
 			}
 			
 			// Handle befriendable mob start //
-			else if (mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).isPresent()
+			else if (mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent()
 					&& !(mob instanceof IBefriendedMob)) {
-				mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> 
+				mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> 
 				{
 
 					BefriendableMobInteractionResult res = BefriendingTypeRegistry.getHandler(type).handleInteract(
@@ -96,7 +97,7 @@ public class EntityEvents
 			{
 				// if (!isClientSide && isMainHand)
 
-				if (player.isShiftKeyDown() && player.getMainHandItem().getItem() == RegItems.DEBUG_BEFRIENDER.get()) {
+				if (player.isShiftKeyDown() && player.getMainHandItem().getItem() == BefMobItems.DEBUG_BEFRIENDER.get()) {
 					bef.init(player.getUUID(), null);
 					// Debug.printToScreen("Befriended mob initialized", player, living);
 					result.set(InteractionResult.sidedSuccess(isClientSide));
@@ -153,15 +154,15 @@ public class EntityEvents
 		    } 
 	        // Handle undead mobs end //
 	        // Handle befriendable mobs //
-	        if (target instanceof Player player && mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
+	        if (target instanceof Player player && mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
 	        {
-	        	mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+	        	mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 	        	{
-	        		// Add to hatred list (disable befriending permanently)
+	        		// Add to hatred list
 	        		if(target != null && !l.getHatred().contains(player.getUUID()) && !isCancelledByEffect.get())
 	        		{
 	        			l.addHatred(player);
-	        			Debug.printToScreen("Player " + Util.getNameString(player) + " put into hatred list by " + Util.getNameString(mob), player, player);
+	        			// Debug.printToScreen("Player " + Util.getNameString(player) + " put into hatred list by " + Util.getNameString(mob), player, player);
 	        		}
 	        	});
 	        }
@@ -183,6 +184,11 @@ public class EntityEvents
 	{
 		if (event.getEntity() instanceof IBefriendedMob bef)
 		{
+			if (MinecraftForge.EVENT_BUS.post(new BefriendedDeathEvent(bef, event.getSource())))
+			{
+				event.setCanceled(true);
+				return;
+			}
 			if (!event.getEntity().level.isClientSide)
 			{
 				// Drop all items in inventory if no vanishing curse
@@ -194,8 +200,10 @@ public class EntityEvents
 					{
 						event.getEntity().spawnAtLocation(container.getItem(i));
 					}
+				}
+				
 			}
-			}
+			
 		}
 	}
 	

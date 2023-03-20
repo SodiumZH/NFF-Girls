@@ -7,7 +7,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.AbstractBefriendin
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
-import net.sodiumstudio.dwmg.befriendmobs.registry.RegItems;
+import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 
 // We set that using an item "EXAMPLE Zombie Befriending Item" befriends the zombie
@@ -31,7 +31,7 @@ public class EXAMPLE_BefriendingHandlerZombie extends AbstractBefriendingHandler
 		args.execServer((cap) -> 
 		{
 			// Check player has an EXAMPLE Zombie Befriending Item on main hand
-			if (args.isMainHand() && args.getPlayer().getMainHandItem().getItem() == RegItems.EXAMPLE_ZOMBIE_BEFRIENDING_ITEM.get())
+			if (args.isMainHand() && args.getPlayer().getMainHandItem().getItem() == BefMobItems.EXAMPLE_ZOMBIE_BEFRIENDING_ITEM.get())
 			{
 				@SuppressWarnings("unchecked")
 				IBefriendedMob bef = BefriendingTypeRegistry.getHandler((EntityType<? extends Mob>) args.getTarget().getType())

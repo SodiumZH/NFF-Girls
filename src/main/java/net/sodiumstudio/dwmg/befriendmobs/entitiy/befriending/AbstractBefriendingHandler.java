@@ -5,7 +5,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
-import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
+import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 
@@ -28,7 +28,7 @@ public abstract class AbstractBefriendingHandler
 			return null;		
 
 		// Check if befriendable capability is attached
-		if(!target.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
+		if(!target.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
 			throw new RuntimeException("Befriending: Target living entity not having CBefriendableMob capability attached.");
 		
 		// Get new type, and do check

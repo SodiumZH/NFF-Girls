@@ -22,6 +22,8 @@ Skeleton Girl
 
 Husk Girl
 
+Creeper Girl
+
 
 
 ## Mob details
@@ -79,3 +81,14 @@ Same to Zombie Girl.
 ##### Features
 
 It can convert to Zombie Girl in water. The converted Zombie Girl can be recovered to Husk by using a sponge to it.
+
+
+
+#### Creeper Girl (HMaG)
+
+##### Befriending
+
+Give it 2-3 TNTs. There's 5s cooldown each TNT. (Do this without making it explode!)
+
+If the TNT condition is satisfied, the Creeper Girl will stop moving, start swelling for 4s  and generate tons of green-star and smoke particles. After this, it will make a **HUGE EXPLOSION** (Range 12, block-breaking). While it's swelling, you must stay no further than 8 blocks away from it (or it will be interrupted and you have to start from giving it TNTs). You must survive the explosion, and after that it's done.
+

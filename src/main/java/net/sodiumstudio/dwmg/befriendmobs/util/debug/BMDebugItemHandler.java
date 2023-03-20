@@ -20,8 +20,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
-import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
-import net.sodiumstudio.dwmg.befriendmobs.registry.RegItems;
+import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
+import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedHuskGirl;
@@ -33,7 +33,7 @@ public class BMDebugItemHandler
 	@SuppressWarnings("unchecked")
 	public static void onDebugItemUsed(Player player, Mob target, Item item) {
 
-		if (item.equals(RegItems.DEBUG_TARGET_SETTER.get()))
+		if (item.equals(BefMobItems.DEBUG_TARGET_SETTER.get()))
 		{
 			MobEffect effect = target.getMobType().equals(MobType.UNDEAD) ? MobEffects.HARM : MobEffects.HEAL;
 			if (target instanceof IBefriendedMob)
@@ -61,7 +61,7 @@ public class BMDebugItemHandler
 			}
 		}
 
-		else if (item.equals(RegItems.DEBUG_BEFRIENDER.get()))
+		else if (item.equals(BefMobItems.DEBUG_BEFRIENDER.get()))
 		{
 			if (target instanceof IBefriendedMob bef)
 			{
@@ -70,7 +70,7 @@ public class BMDebugItemHandler
 			}
 			else 
 			{
-				target.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+				target.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 				{
 					IBefriendedMob bef = BefriendingTypeRegistry.getHandler((EntityType<Mob>)target.getType()).befriend(player, target);
 					if (bef != null)
@@ -85,7 +85,7 @@ public class BMDebugItemHandler
 			}
 		}
 
-		else if (item.equals(RegItems.DEBUG_ARMOR_GIVER.get()) && target.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
+		else if (item.equals(BefMobItems.DEBUG_ARMOR_GIVER.get()) && target.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
 		{
 			if (target.getItemBySlot(EquipmentSlot.HEAD).isEmpty())
 				target.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET.asItem()));
@@ -97,7 +97,7 @@ public class BMDebugItemHandler
 				target.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS.asItem()));
 		}
 		
-		else if (item.equals(RegItems.DEBUG_MOB_CONVERTER.get()))
+		else if (item.equals(BefMobItems.DEBUG_MOB_CONVERTER.get()))
 		{
 			if (target instanceof EntityBefriendedHuskGirl e)
 			{
@@ -109,7 +109,7 @@ public class BMDebugItemHandler
 			}
 		}
 		
-		else if (item.equals(RegItems.DEBUG_ATTRIBUTE_CHECKER.get()))
+		else if (item.equals(BefMobItems.DEBUG_ATTRIBUTE_CHECKER.get()))
 		{
 			Debug.printToScreen("Base: " + Double.toString(target.getAttributeBaseValue(Attributes.ATTACK_DAMAGE)), player);
 			Debug.printToScreen("Applied: " + Double.toString(target.getAttributeValue(Attributes.ATTACK_DAMAGE)), player);

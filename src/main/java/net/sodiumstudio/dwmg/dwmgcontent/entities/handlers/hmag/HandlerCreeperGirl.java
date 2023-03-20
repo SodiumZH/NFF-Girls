@@ -20,7 +20,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.AbstractBefriendin
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
-import net.sodiumstudio.dwmg.befriendmobs.registry.RegCapabilities;
+import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
@@ -124,7 +124,7 @@ public class HandlerCreeperGirl extends AbstractBefriendingHandler
 	public void serverTick(Mob mob)
 	{
 		CreeperGirlEntity cg = (CreeperGirlEntity)mob;
-		mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 		{
 			if (l.getNBT().contains("final_explosion_player", 11)) 
 			{
@@ -148,8 +148,9 @@ public class HandlerCreeperGirl extends AbstractBefriendingHandler
 				}
 				else if (tb > 0)
 				{
-					if (tb % 2 == 1)
-						EntityHelper.sendStarParticlesToMob(cg);
+					if (tb % 3 == 1 || tb <= 13)
+						EntityHelper.sendGreenStarParticlesToLivingDefault(cg);
+					EntityHelper.sendSmokeParticlesToLivingDefault(cg);
 					l.getNBT().putInt("final_explosion_ticks_before", tb - 1);
 				}
 				else if (ta > 0)
@@ -163,6 +164,7 @@ public class HandlerCreeperGirl extends AbstractBefriendingHandler
 				else
 				{
 					this.befriend(player, mob);
+					EntityHelper.sendHeartParticlesToLivingDefault(mob);
 				}
 			}
 		});
@@ -170,13 +172,13 @@ public class HandlerCreeperGirl extends AbstractBefriendingHandler
 	
 	protected void finalExplosionStart(CreeperGirlEntity mob, Player player)
 	{
-		mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 		{
 			l.getNBT().putUUID("final_explosion_player", player.getUUID());
 			l.getNBT().putInt("final_explosion_ticks_before", 80);
 			l.getNBT().putInt("final_explosion_ticks_after", 5);
 			mob.setNoAi(true);
-			if (mob.getSwelling(1.0f) * 28.0f < 26.0f)	// getSwelling(1) is ((float)swell/28.0f)
+			if (mob.getSwelling(1.0f) * 28.0f < 24.0f)	// getSwelling(1) is ((float)swell/28.0f)
 				mob.setSwellDir(1);
 			else mob.setSwellDir(-1);
 		});
@@ -184,8 +186,8 @@ public class HandlerCreeperGirl extends AbstractBefriendingHandler
 	
 	protected void finalExplosionFailed(CreeperGirlEntity mob, Player player)
 	{
-		mob.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->{
-		if (l.getNBT().contains("final_explosion_player", 11) && l.getNBT().getUUID("final_explosion_player") == player.getUUID())
+		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->{
+		if (l.getNBT().contains("final_explosion_player", 11) && l.getNBT().getUUID("final_explosion_player").equals(player.getUUID()))
 			{
 				l.getNBT().remove("final_explosion_player");
 				l.getNBT().remove("final_explosion_ticks_before");
@@ -194,8 +196,9 @@ public class HandlerCreeperGirl extends AbstractBefriendingHandler
 						"already_given");
 				mob.setNoAi(false);
 				mob.setSwellDir(-1);
-				
-				Debug.printToScreen("Creeper Girl befriending failed.", player);
+				for (int i = 0; i < 5; ++i)
+					EntityHelper.sendAngryParticlesToLivingDefault(mob);
+				//Debug.printToScreen("Creeper Girl befriending failed.", player);
 			}	
 		});
 	}
@@ -210,19 +213,31 @@ public class HandlerCreeperGirl extends AbstractBefriendingHandler
 	}
 	
 	@SubscribeEvent
-	public static void onPlayerDie(LivingDeathEvent event)
-	{
-		if (event.getEntity() instanceof Player player)
+	public static void onPlayerDie(LivingDeathEvent event) {
+
+		if (event.getSource().getEntity() instanceof CreeperGirlEntity cg)
 		{
-			if (event.getSource().getEntity() instanceof CreeperGirlEntity cg)
+			if (event.getEntity() instanceof Player player)
 			{
-				cg.getCapability(RegCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->{
-					if (l.getNBT().contains("final_explosion_player", 11) &&
-							cg.level.getPlayerByUUID(l.getNBT().getUUID("final_explosion_player")) == player)
+				cg.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+				{
+					if (l.getNBT().contains("final_explosion_player", 11)
+							&& cg.level.getPlayerByUUID(l.getNBT().getUUID("final_explosion_player")) == player)
 					{
-						((HandlerCreeperGirl)(BefriendingTypeRegistry.getHandler(ModEntityTypes.CREEPER_GIRL.get())))
-							.finalExplosionFailed(cg, player);
-					}	
+						((HandlerCreeperGirl) (BefriendingTypeRegistry.getHandler(ModEntityTypes.CREEPER_GIRL.get())))
+								.finalExplosionFailed(cg, player);
+					}
+				});
+			}
+			else if (event.getEntity() instanceof IBefriendedMob bef)
+			{
+				cg.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+				{
+					if (l.getNBT().contains("final_explosion_player", 11) && bef.getOwner() != null
+							&& cg.level.getPlayerByUUID(l.getNBT().getUUID("final_explosion_player")) == bef.getOwner())
+					{
+						
+					}
 				});
 			}
 		}

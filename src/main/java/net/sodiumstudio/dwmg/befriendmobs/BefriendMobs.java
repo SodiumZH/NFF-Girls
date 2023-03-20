@@ -4,7 +4,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.AbstractBefriendingHandler;
 import net.sodiumstudio.dwmg.befriendmobs.example.EXAMPLE_EntityTypeRegister;
-import net.sodiumstudio.dwmg.befriendmobs.registry.RegItems;
+import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 
 // This class will be the mod main class of future Befriending Mob API library.
@@ -24,7 +24,7 @@ public class BefriendMobs {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		//modEventBus.addListener(this::commonSetup);
 		
-		RegItems.ITEMS.register(modEventBus);
+		BefMobItems.ITEMS.register(modEventBus);
 		EXAMPLE_EntityTypeRegister.EXAMPLE_ENTITY_TYPES.register(modEventBus);
 		
         //MinecraftForge.EVENT_BUS.register(this);

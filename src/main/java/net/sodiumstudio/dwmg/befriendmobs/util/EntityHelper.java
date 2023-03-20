@@ -102,6 +102,7 @@ public class EntityHelper
 		return replaceMob(newType, from, false);
 	}
 
+	@Deprecated	// Use sendParticlesToEntity() instead
 	public static void sendParticlesToMob(LivingEntity entity, ParticleOptions options, Vec3 offset, int amount,
 			double speed, double positionRndScale, double speedRndScale) {
 		if (entity.level.isClientSide)
@@ -118,26 +119,74 @@ public class EntityHelper
 		}
 	}
 
+	@Deprecated	// Use sendParticlesToEntity() instead
 	public static void sendParticlesToMob(LivingEntity entity, ParticleOptions options, Vec3 offset, int amount,
 			double speed) {
 		sendParticlesToMob(entity, options, offset, amount, speed, 1, 1);
 	}
 
+	@Deprecated
 	public static void sendHeartParticlesToMob(LivingEntity entity) {
 		sendParticlesToMob(entity, ParticleTypes.HEART, new Vec3(0, -0.5, 0), 5, 5, 4, 1);
 	}
 	
+	@Deprecated
 	public static void sendStarParticlesToMob(LivingEntity entity) {
 		sendParticlesToMob(entity, ParticleTypes.HAPPY_VILLAGER, new Vec3(0, -0.5, 0), 10, 0, 5, 0);
 	}
 
+	@Deprecated
 	public static void sendSmokeParticlesToMob(LivingEntity entity) {
 		sendParticlesToMob(entity, ParticleTypes.LARGE_SMOKE, new Vec3(0, -0.5, 0), 5, 5, 10, -10);
 	}
 
+	@Deprecated
 	public static void sendAngryParticlesToMob(LivingEntity entity) {
 		sendParticlesToMob(entity, ParticleTypes.ANGRY_VILLAGER, new Vec3(0, -0.5, 0), 5, 5, 3, 1);
 	}
 
+	public static void sendParticlesToEntity(Entity entity, ParticleOptions options, Vec3 positionOffset, Vec3 rndScale, int amount,
+			double speed)
+	{
+		if (entity.level.isClientSide)
+			return;
+		Vec3 pos = entity.position();
+		((ServerLevel) (entity.level)).sendParticles(options, pos.x + positionOffset.x, pos.y + positionOffset.y, pos.z + positionOffset.z,
+				amount, rndScale.x, rndScale.y, rndScale.z, speed);
+	}
+	
+	public static void sendParticlesToEntity(Entity entity, ParticleOptions options, double posOffsetX, double posOffsetY, double posOffsetZ, 
+			double rndScaleX, double rndScaleY, double rndScaleZ, int amount, double speed)
+	{
+		sendParticlesToEntity(entity, options, new Vec3(posOffsetX, posOffsetY, posOffsetZ), new Vec3(rndScaleX, rndScaleY, rndScaleZ),
+				amount, speed);
+	}
+	
+	public static void sendParticlesToEntity(Entity entity, ParticleOptions options, Vec3 posOffset, double rndScale, int amount, double speed)
+	{
+		sendParticlesToEntity(entity, options, posOffset, new Vec3(rndScale, rndScale, rndScale), amount, speed);
+	}
+	
+	public static void sendParticlesToEntity(Entity entity, ParticleOptions options, double heightOffset, double rndScale, int amount, double speed)
+	{
+		sendParticlesToEntity(entity, options, new Vec3(0d, heightOffset, 0d), rndScale, amount, speed);
+	}
+	
+	public static void sendHeartParticlesToLivingDefault(LivingEntity entity) {
+		sendParticlesToEntity(entity, ParticleTypes.HEART, entity.getBbHeight() - 0.5, 0.5d, 10, 1d);
+	}
+	
+	public static void sendGreenStarParticlesToLivingDefault(LivingEntity entity) {
+		sendParticlesToEntity(entity, ParticleTypes.HAPPY_VILLAGER, entity.getBbHeight() - 0.5, 0.5d, 20, 1d);
+	}
+
+	public static void sendSmokeParticlesToLivingDefault(LivingEntity entity) {
+		sendParticlesToEntity(entity, ParticleTypes.SMOKE, entity.getBbHeight() - 0.5, 0.2d, 30, 0d);
+	}
+
+	public static void sendAngryParticlesToLivingDefault(LivingEntity entity) {
+		sendParticlesToEntity(entity, ParticleTypes.ANGRY_VILLAGER, entity.getBbHeight() - 0.5, 0.3d, 5, 1d);
+	}
+	
 	
 }
