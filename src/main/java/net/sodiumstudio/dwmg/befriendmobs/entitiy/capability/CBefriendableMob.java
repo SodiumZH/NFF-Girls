@@ -30,7 +30,7 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 	
 	public default void addHatred(Player player)
 	{
-		addHatred(player, 18000);
+		addHatred(player, 180);
 	}
 
 	public default void addHatredPermanent(Player player)

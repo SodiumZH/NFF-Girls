@@ -3,8 +3,10 @@ package net.sodiumstudio.dwmg.dwmgcontent.events;
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.CreeperGirlEntity;
 
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
@@ -13,10 +15,26 @@ import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
 
+@SuppressWarnings("removal")
 @Mod.EventBusSubscriber(modid = BefriendMobs.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgEntityEvents
 {
 
+	@SuppressWarnings("deprecation")
+	@SubscribeEvent
+	public static void onLivingSetAttackTargetEvent(LivingSetAttackTargetEvent event)
+	{
+
+		LivingEntity target = event.getTarget();		
+		
+		// Handle mobs //
+		if (target != null && event.getEntity() instanceof Mob mob)
+		{
+        
+		}
+		// Handle mobs end //
+	}
+	
 	@SubscribeEvent
 	public static void onBefDie(BefriendedDeathEvent event)
 	{

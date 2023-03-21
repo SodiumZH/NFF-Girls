@@ -25,4 +25,33 @@ public class Wrapped<T> {
 		this.value = value;
 	}
 	
+	public Wrapped<T> valueOf(T val)
+	{
+		return new Wrapped<T>(val);
+	}
+	
+	public static class Boolean
+	{
+		private boolean value;
+		public Boolean(boolean value)
+		{
+			this.value = value;
+		}
+		
+		public boolean get()
+		{
+			return value;
+		}
+		
+		public void set(boolean value)
+		{
+			this.value = value;
+		}
+		
+		public Wrapped.Boolean valueOf(boolean val)
+		{
+			return new Wrapped.Boolean(val);
+		}
+		
+	}
 }

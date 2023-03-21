@@ -34,7 +34,7 @@ public class HandlerZombieGirl extends AbstractBefriendingHandler
 				// Block if in hatred
 				if (l.isInHatred(player))
 				{
-					EntityHelper.sendAngryParticlesToMob(target);
+					EntityHelper.sendAngryParticlesToLivingDefault(target);
 					Debug.printToScreen("Unable to befriend: in hatred list.", player, target);
 					result.setHandled();
 

@@ -135,9 +135,9 @@ public class EntityEvents
 		if (target != null && event.getEntity() instanceof Mob mob)
 		{
         	// Handle undead mobs start //
-	        if (mob.getMobType() == MobType.UNDEAD) 
+	        if (mob.getMobType() == MobType.UNDEAD && !(event.getEntity() instanceof IBefriendedMob)) 
 	        {
-	        	// Handle CapUndeadMob //
+	        	// Handle CUndeadMob //
         		mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) ->
         		{
         			if (target != null && target.hasEffect(DwmgEffects.DEATH_AFFINITY.get()) && lastHurtBy != target && !l.getHatred().contains(target.getUUID()))
@@ -150,7 +150,7 @@ public class EntityEvents
         				l.addHatred(target);
         			}
         		});
-        		// Handle CapUndeadMob end //
+        		// Handle CUndeadMob end //
 		    } 
 	        // Handle undead mobs end //
 	        // Handle befriendable mobs //
@@ -214,6 +214,21 @@ public class EntityEvents
 		if (event.getEntity() instanceof IBefriendedMob)
 		{
 			event.setResult(Result.DENY);
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onTimerUp(BefriendableTimerUpEvent event)
+	{
+		if (event.getPlayer() != null)
+		{
+			if (event.getKey().equals("in_hatred"))
+			{
+				if (event.getCapability().getHatred().contains(event.getPlayer().getUUID()))
+				{
+					event.getCapability().getHatred().remove(event.getPlayer().getUUID());
+				}
+			}
 		}
 	}
 }

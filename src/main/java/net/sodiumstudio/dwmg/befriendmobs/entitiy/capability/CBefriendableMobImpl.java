@@ -2,15 +2,11 @@ package net.sodiumstudio.dwmg.befriendmobs.entitiy.capability;
 
 import java.util.HashSet;
 import java.util.UUID;
-import java.util.HashSet;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -18,6 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.sodiumstudio.dwmg.befriendmobs.events.BefriendableTimerUpEvent;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 
 public class CBefriendableMobImpl implements CBefriendableMob
 {
@@ -124,7 +121,6 @@ public class CBefriendableMobImpl implements CBefriendableMob
 		else return 0;
 	}
 	
-	// This doesn't check if the timer is 0 or -1
 	public boolean hasTimer(String key)
 	{
 		return nbt.getCompound("timers").contains(key, 3);
@@ -192,24 +188,11 @@ public class CBefriendableMobImpl implements CBefriendableMob
 					{
 						// position 36 is "_"
 						MinecraftForge.EVENT_BUS.post(new BefriendableTimerUpEvent(this, key.substring(37), player));
+						Debug.printToScreen("Timer up: " + key, player);
 					}
 				}
 			}	
 		}
 	}
-	
-	@SubscribeEvent
-	public static void onTimerUp(BefriendableTimerUpEvent event)
-	{
-		if (event.getPlayer() != null)
-		{
-			if (event.getKey().equals("in_hatred"))
-			{
-				if (event.getCapability().getHatred().contains(event.getPlayer().getUUID()))
-				{
-					event.getCapability().getHatred().remove(event.getPlayer().getUUID());
-				}
-			}
-		}
-	}
+
 }
