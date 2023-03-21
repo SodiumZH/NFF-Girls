@@ -2,12 +2,12 @@ package net.sodiumstudio.dwmg.befriendmobs.events;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -16,8 +16,8 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
@@ -29,14 +29,13 @@ import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
-import net.sodiumstudio.dwmg.befriendmobs.util.Util;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.BMDebugItemHandler;
-import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
 
 // TODO: change modid after isolation
+@SuppressWarnings("removal")
 @Mod.EventBusSubscriber(modid = BefriendMobs.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EntityEvents
 {
@@ -48,7 +47,6 @@ public class EntityEvents
 		Wrapped<InteractionResult> result = new Wrapped<InteractionResult>(InteractionResult.PASS);
 		boolean isClientSide = event.getSide() == LogicalSide.CLIENT;
 		boolean isMainHand = event.getHand() == InteractionHand.MAIN_HAND;
-		// TODO: post interact event condition?
 		Wrapped<Boolean> shouldPostInteractEvent = new Wrapped<Boolean>(Boolean.FALSE);
 
 		// Mob interaction start //
@@ -122,37 +120,16 @@ public class EntityEvents
 		event.setCancellationResult(result.get());
 	}
 	
-	@SuppressWarnings("removal")
 	@SubscribeEvent
 	public static void onLivingSetAttackTargetEvent(LivingSetAttackTargetEvent event)
 	{
-		LivingEntity lastHurtBy = event.getEntityLiving().getLastHurtByMob();
 		@SuppressWarnings("deprecation")
 		LivingEntity target = event.getTarget();		
 		Wrapped<Boolean> isCancelledByEffect = new Wrapped<Boolean>(Boolean.FALSE);
 		
 		// Handle mobs //
 		if (target != null && event.getEntity() instanceof Mob mob)
-		{
-        	// Handle undead mobs start //
-	        if (mob.getMobType() == MobType.UNDEAD && !(event.getEntity() instanceof IBefriendedMob)) 
-	        {
-	        	// Handle CUndeadMob //
-        		mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) ->
-        		{
-        			if (target != null && target.hasEffect(DwmgEffects.DEATH_AFFINITY.get()) && lastHurtBy != target && !l.getHatred().contains(target.getUUID()))
-        			{
-        				mob.setTarget(null);
-        				isCancelledByEffect.set(true);
-        			}
-        			else if(target != null)
-        			{
-        				l.addHatred(target);
-        			}
-        		});
-        		// Handle CUndeadMob end //
-		    } 
-	        // Handle undead mobs end //
+		{ 	
 	        // Handle befriendable mobs //
 	        if (target instanceof Player player && mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
 	        {
@@ -167,21 +144,51 @@ public class EntityEvents
 	        	});
 	        }
 	        // Handle befriendable mobs end //
+	        // Handle befriended mobs //	        
 	        if (mob instanceof IBefriendedMob bef)
 	        {
 	        	// Befriended mob should never attack the owner
 	        	if (target == bef.getOwner())
 	        		mob.setTarget(bef.getPreviousTarget());
+	        	// Befriended mob shouldn't attack owner's other befriended mobs
+	        	else if (target instanceof IBefriendedMob tbef)
+	        	{
+	        		if (bef.getOwner() != null && tbef.getOwner() != null && bef.getOwner() == tbef.getOwner())
+	        		{
+	        			mob.setTarget(bef.getPreviousTarget());
+	        		}
+	        	}
+	        	// Befriended mob shouldn't attack owner's tamable animals
+	        	else if (target instanceof TamableAnimal ta)
+	        	{
+	        		if (bef.getOwner() != null && ta.getOwner() != null && bef.getOwner() == ta.getOwner())
+	        		{
+	        			mob.setTarget(bef.getPreviousTarget());
+	        		}
+	        	}
 	        	else
 	        		bef.setPreviousTarget(target);
+	        }
+	        // Handle befriended mobs end //
+	        // Handle TamableAnimal //	
+	        if (mob instanceof TamableAnimal ta)
+	        {
+	        	// Tamable animals shouldn't attack owner's befriended mobs
+	        	if (target instanceof IBefriendedMob tbef)
+	        	{
+	        		if (ta.getOwner() != null && tbef.getOwner() != null && ta.getOwner() == tbef.getOwner())
+	        		{
+	        			ta.setTarget(null);
+	        		}
+	        	}
+				// Handle TamableAnimal end //
 	        }
 		}
 		// Handle mobs end //
 	}	
 	
 	@SubscribeEvent
-	public static void onLivingDeath(LivingDeathEvent event)
-	{
+	public static void onLivingDeath(LivingDeathEvent event) {
 		if (event.getEntity() instanceof IBefriendedMob bef)
 		{
 			if (MinecraftForge.EVENT_BUS.post(new BefriendedDeathEvent(bef, event.getSource())))
@@ -189,21 +196,55 @@ public class EntityEvents
 				event.setCanceled(true);
 				return;
 			}
+			// Befriended mobs should not kill each other with same owner, or get killed by
+			// owner-tamed animals
+			else if (event.getSource().getEntity() instanceof IBefriendedMob srcBef)
+			{
+				if (srcBef.getOwner() != null && bef.getOwner() != null && srcBef.getOwner() == bef.getOwner())
+				{
+					bef.asMob().setHealth(1.0f);
+					bef.asMob().invulnerableTime += 20;
+					event.setCanceled(true);
+					return;
+				}
+			}
+			else if (event.getSource().getEntity() instanceof TamableAnimal ta)
+			{
+				if (ta.getOwner() != null && bef.getOwner() != null && ta.getOwner() == bef.getOwner())
+				{
+					bef.asMob().setHealth(1.0f);
+					bef.asMob().invulnerableTime += 20;
+					event.setCanceled(true);
+					return;
+				}
+			}
 			if (!event.getEntity().level.isClientSide)
 			{
 				// Drop all items in inventory if no vanishing curse
 				AdditionalInventory container = bef.getAdditionalInventory();
 				for (int i = 0; i < container.getContainerSize(); ++i)
 				{
-					if (container.getItem(i) != ItemStack.EMPTY 
+					if (container.getItem(i) != ItemStack.EMPTY
 							&& !EnchantmentHelper.hasVanishingCurse(container.getItem(i)))
 					{
 						event.getEntity().spawnAtLocation(container.getItem(i));
 					}
 				}
-				
 			}
-			
+		}
+		
+		else if (event.getEntity() instanceof TamableAnimal ta)
+		{
+			if (event.getSource().getEntity() instanceof IBefriendedMob srcBef)
+			{
+				if (srcBef.getOwner() != null && ta.getOwner() != null && srcBef.getOwner() == ta.getOwner())
+				{
+					ta.setHealth(1.0f);
+					ta.invulnerableTime += 20;
+					event.setCanceled(true);
+					return;
+				}
+			}
 		}
 	}
 	

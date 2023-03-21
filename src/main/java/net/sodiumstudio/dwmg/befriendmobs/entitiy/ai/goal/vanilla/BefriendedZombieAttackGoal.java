@@ -25,7 +25,7 @@ public class BefriendedZombieAttackGoal extends BefriendedMeleeAttackGoal {
 	 */
 	public void stop() {
 		super.stop();
-		this.getMob().setAggressive(false);
+		this.mob.asMob().setAggressive(false);
 	}
 
 	/**
@@ -35,9 +35,9 @@ public class BefriendedZombieAttackGoal extends BefriendedMeleeAttackGoal {
 		super.tick();
 		++this.raiseArmTicks;
 		if (this.raiseArmTicks >= 5 && this.getTicksUntilNextAttack() < this.getAttackInterval() / 2) {
-			this.getMob().setAggressive(true);
+			this.mob.asMob().setAggressive(true);
 		} else {
-			this.getMob().setAggressive(false);
+			this.mob.asMob().setAggressive(false);
 		}
 
 	}

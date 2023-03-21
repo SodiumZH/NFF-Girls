@@ -52,7 +52,7 @@ public class BefriendedCreeperSwellGoal extends BefriendedGoal
 	public boolean canUse() {
 		if (isDisabled())
 			return false;
-		return this.creeper.isSwelling()
+		return this.creeper.getSwellDir() > 0
 				|| this.targetedSwelling && this.creeper.getTarget() != null && this.creeper.distanceToSqr(this.creeper.getTarget()) < startDistance * startDistance;
 	}
 
@@ -83,13 +83,13 @@ public class BefriendedCreeperSwellGoal extends BefriendedGoal
 		if (targetedSwelling)
 		{
 			if (this.target == null)
-				this.creeper.setSwelling(false);
+				this.creeper.setSwellDir(-1);
 			else if (this.creeper.distanceToSqr(this.target) > stopDistance * stopDistance)	
-				this.creeper.setSwelling(false);
+				this.creeper.setSwellDir(-1);
 			else if (!this.creeper.getSensing().hasLineOfSight(this.target))
-				this.creeper.setSwelling(false);
+				this.creeper.setSwellDir(-1);
 		}
 		else
-			this.creeper.setSwelling(true);
+			this.creeper.setSwellDir(1);
 	}
 }

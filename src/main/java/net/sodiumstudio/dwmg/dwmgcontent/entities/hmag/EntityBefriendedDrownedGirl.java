@@ -123,7 +123,6 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
 		if (player.getUUID().equals(getOwnerUUID())) {
-			Item[] interactables = {Items.SPONGE, ModItems.SOUL_APPLE.get(), ModItems.SOUL_POWDER.get()};
 			if (!player.level.isClientSide()) {
 				// If this drowned is converted from a zombie,
 				// it can be converted back by using a sponge to it

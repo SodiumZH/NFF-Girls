@@ -37,7 +37,7 @@ public class EXAMPLE_BefriendingHandlerZombie extends AbstractBefriendingHandler
 				IBefriendedMob bef = BefriendingTypeRegistry.getHandler((EntityType<? extends Mob>) args.getTarget().getType())
 					.befriend(args.getPlayer(), args.getTarget());
 				// WARNING: now args.getTarget() has been invalidated, so we must send particles to the new mob
-				EntityHelper.sendHeartParticlesToMob(bef.asMob());
+				EntityHelper.sendHeartParticlesToLivingDefault(bef.asMob());
 				// Don't forget to set the result
 				result.befriendedMob = bef;
 				result.setHandled();

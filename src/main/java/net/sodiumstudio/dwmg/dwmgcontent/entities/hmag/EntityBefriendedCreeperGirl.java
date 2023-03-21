@@ -162,9 +162,9 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 			// Powered explosion requires 2 explosive items
 			if (this.getAdditionalInventory().getItem(6).getCount() == 1 && this.isPowered())
 				this.canExplode = false;
-			this.canIgnite = this.canExplode && this.swell == 0 && this.currentIgnitionCooldown == 0;
+			this.canIgnite = this.canExplode && this.getSwell() == 0 && this.currentIgnitionCooldown == 0;
 			if (this.getOwner() != null && this.distanceToSqr(this.getOwner()) < explodeSafeDistance * explodeSafeDistance && !this.isPlayerIgnited)
-				this.setSwelling(false);
+				this.setSwellDir(-1);
 			if (blowEnemyCooldown > 0)
 				blowEnemyCooldown --;
 		}
@@ -177,7 +177,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 		super.tick();
 		if (!level.isClientSide)
 		{
-			if (this.swell == 0)
+			if (this.getSwell() == 0)
 				isPlayerIgnited = false;
 		}
 	}
@@ -203,7 +203,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 				else if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)
 						&& this.canIgnite
 						&& (!this.isPowered() || this.getAdditionalInventory().getItem(6).getCount() >= 2)
-						&& this.swell == 0)
+						&& this.getSwell() == 0)
 				{
 	
 					this.playerIgniteDefault(player, hand);

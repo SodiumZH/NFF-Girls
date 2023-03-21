@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
@@ -186,6 +187,12 @@ public class EntityHelper
 
 	public static void sendAngryParticlesToLivingDefault(LivingEntity entity) {
 		sendParticlesToEntity(entity, ParticleTypes.ANGRY_VILLAGER, entity.getBbHeight() - 0.5, 0.3d, 5, 1d);
+	}
+	
+	// Get current swell value (private for Creeper class) as int. Max swell is 30.
+	public static int getCreeperSwell(Creeper creeper)
+	{
+		return Math.round(creeper.getSwelling(1.0f) * 28.0f);
 	}
 	
 	

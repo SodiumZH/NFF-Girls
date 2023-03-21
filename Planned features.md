@@ -8,11 +8,9 @@ Also, some additional features will be added as enhancements of the dependent mo
 
 Current dependencies:
 
-Hostile Mobs and Girls (by Mechalopa) (mandatory)
+Hostile Mobs and Girls (by Mechalopa) 
 
 Grimoire of Gaia 4 (by  Silentine & Mrbysco) (mandatory)
-
-
 
 ## Key Concepts
 
@@ -64,7 +62,7 @@ It will make the undead mobs neutral. And some actions are available only with t
 
 A key material for several undead-related features.
 
-Expensive, using multiple products from undead mobs.
+Expensive, using multiple products from various undead mobs.
 
 ##### Cloth of Death
 
@@ -118,7 +116,7 @@ Very expensive. For taming.
 
 The undead version of Carpet. 
 
-Undead mobs or players having *Death Affinity* effect will get *Strength II* and *Regeneration I* effects when standing on it.
+Undead mobs or players having Death Affinity effect will get Strength II and Regeneration I effects when standing on it.
 
 It could have a pure-decorative version, which is cheaper and not providing any effects.
 
@@ -138,6 +136,10 @@ A weapon allowing to attack non-undead mobs with negative effects, and heal unde
 
 Some other actions need this weapon.
 
+##### Sun Hat
+
+A helmet for undead mobs to get immune to sun, without damaged.
+
 
 
 ### Ender Related
@@ -150,7 +152,7 @@ The key material for all Ender foods.
 
 Obtaining Enderberry should be very hard.  It's a treasure, and can also be made in a very complex way.
 
-##### Ender Pie
+###### Ender Pie
 
 The Ender version of Pumpkin Pie.
 
@@ -162,19 +164,19 @@ Very expensive.
 
 #### Minerals
 
-##### Enderite
+##### ~~Enderite (COLLIDES WITH EXISTING MODS)~~
 
-A rare mineral (even more hard to obtain than Netherite).
+~~A rare mineral (even more hard to obtain than Netherite).~~
 
-For making Ender tools/weapons/armor, mostly featured with teleporting.
+~~For making Ender tools/weapons/armor, mostly featured with teleporting.~~
 
-##### Enderite Tools/Weapons
+###### ~~Enderite Tools/Weapons~~
 
-Allowing the player or the attacked target to teleport (switchable).
+~~Allowing the player or the attacked target to teleport (switchable).~~
 
-##### Enderite Armor
+###### ~~Enderite Armor~~
 
-Allowing the player to teleport when getting hurt (switchable).
+~~Allowing the player to teleport when getting hurt (switchable).~~
 
 
 
@@ -302,7 +304,7 @@ It can be healed by feeding with *Soul Apple*.
 
 
 
-## Present Looting-Table
+## Present Loot-Table
 
 For tamed monster girls, you can give specific items as present to increase the favorability, and receive a present back. Each mob has its gifting cooldown.
 

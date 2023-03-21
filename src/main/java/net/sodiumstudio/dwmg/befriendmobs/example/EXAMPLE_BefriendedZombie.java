@@ -172,39 +172,6 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 			inventoryTag.getFromMob(this);
 		}
 	}
-	
-	
-	/** Get bauble from the given bauble slot.
-	 * "Bauble" refers to extra item slots that are easy to access and provide some extra features.
-	 * the input of getBauble() is the "Bauble index". For example, if there are 2 bauble slots, the indexes should be 0 or 1.
-	 * The map from Bauble index and Inventory index are defined in this implementation.
-	 * To add into bauble slots, the item must have befriendmobs:
-	 */
-	@Override
-	public ItemStack getBauble(int index) {
-		if (index == 0)
-			return getAdditionalInventory().getItem(6);
-		else if (index == 1)
-			return getAdditionalInventory().getItem(7);
-		else
-			return null;
-	}
-
-	/**	Set Bauble item stack.
-	 * Similarly, the input index is "Bauble index", not the Inventory index.
-	 */
-	@Override
-	public void setBauble(ItemStack item, int index) {
-		if (item == null || item.isEmpty())
-			return;
-		if (index == 0)
-			inventoryTag.setItem(6, item);
-		else if (index == 1)
-			inventoryTag.setItem(7, item);
-		else
-			throw new IndexOutOfBoundsException("Befriended mob bauble index out of bound.");
-		updateFromInventory();
-	}
 
 	/** Make additionalInventory menu.
 	 * This method should return a new menu instance.

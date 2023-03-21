@@ -96,7 +96,9 @@ If the TNT condition is satisfied, the Creeper Girl will stop moving, start swel
 
 **Interaction**
 
-You can customize its armor and hand items. There's an extra ammo slot (explosive icon), and only with ammo it can explode (no damage to itself). In combat it can do close combat (only when having a weapon/tool on main hand) and exploding attack.
+Right click with Flint & Steel to 
+
+You can customize its armor and hand items. There's an extra ammo slot (explosive icon), and only with ammo it can explode (no damage to itself).
 
 The ammo slot receives either Gunpowder or TNT and consumes one for each explosion. With Gunpowder its explosion has range 3 and doesn't break blocks. With TNT its explosion has range 4 and breaks blocks (if mobGriefing is true). If it's charged, the explosion range will be 6 for Gunpowder and 8 for TNT, consuming 2 ammo items.
 
@@ -104,5 +106,5 @@ You can manually charge it by using a Particle of Lightning to it. If it's charg
 
 ##### Features
 
-On combat, it will try exploding on enemies if having ammo (with), and try close combat if 
+On combat, it will try exploding on enemies if having ammo (with), and try close combat if having a weapon on the main hand.
 

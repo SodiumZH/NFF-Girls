@@ -25,17 +25,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PowerableMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.SwellGoal;
-import net.minecraft.world.entity.animal.Cat;
-import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.entity.animal.goat.Goat;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
@@ -49,11 +41,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedFollowOwnerGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedMeleeAttackGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.example.EXAMPLE_BefriendedZombie;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
@@ -63,8 +50,8 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 
 	/* Adjusted from vanilla creeper */
 
-	protected static final EntityDataAccessor<Boolean> DATA_IS_SWELLING = SynchedEntityData
-			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Integer> DATA_SWELL_DIR = SynchedEntityData
+			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.INT);
 	protected static final EntityDataAccessor<Boolean> DATA_IS_POWERED = SynchedEntityData
 			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.BOOLEAN);
 	protected static final EntityDataAccessor<Boolean> DATA_IS_IGNITED = SynchedEntityData
@@ -73,10 +60,13 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
 			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.BYTE);
+	protected static final EntityDataAccessor<Integer> DATA_SWELL = SynchedEntityData
+			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> DATA_SWELL_LAST_TICK= SynchedEntityData
+			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.INT);
 
-	protected int oldSwell;
-	public int swell;
 	public int maxSwell = 30;
+
 	protected int explosionRadius = 3;
 	protected int droppedSkulls;
 	public boolean canExplode = true;
@@ -96,8 +86,37 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		/* Initialization */
 	}
 
+	// Swell value related
+	public int getSwell()
+	{
+		return entityData.get(DATA_SWELL);
+	}
 
-
+	public void setSwell(int val)
+	{
+		entityData.set(DATA_SWELL, val);
+	}
+	
+	protected int getSwellLastTick()
+	{
+		return entityData.get(DATA_SWELL_LAST_TICK);
+	}
+	
+	protected void setSwellLastTick(int val)
+	{
+		entityData.set(DATA_SWELL_LAST_TICK, val);
+	}
+	
+	// Update swell from SwellDir
+	protected void updateSwell()
+	{
+		entityData.set(DATA_SWELL_LAST_TICK, getSwell());
+		int newSwell = getSwell() + getSwellDir();
+		newSwell = Mth.clamp(newSwell, 0, maxSwell);
+		setSwell(newSwell);
+	}
+	
+	
 	public static AttributeSupplier.Builder createAttributes() {
 		return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.25D);
 	}
@@ -108,10 +127,10 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 
 	public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
 		boolean flag = super.causeFallDamage(pFallDistance, pMultiplier, pSource);
-		this.swell += (int) (pFallDistance * 1.5F);
-		if (this.swell > this.maxSwell - 5)
+		this.setSwell(getSwell() + (int) (pFallDistance * 1.5F));
+		if (this.getSwell() > this.maxSwell - 5)
 		{
-			this.swell = this.maxSwell - 5;
+			this.setSwell(this.maxSwell - 5);
 		}
 
 		return flag;
@@ -119,11 +138,14 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(DATA_IS_SWELLING, false);
+		this.entityData.define(DATA_SWELL_DIR, -1);
 		this.entityData.define(DATA_IS_POWERED, false);
 		this.entityData.define(DATA_IS_IGNITED, false);
 		this.entityData.define(DATA_OWNERUUID, Optional.empty());
 		this.entityData.define(DATA_AISTATE, (byte) 0);
+		this.entityData.define(DATA_SWELL, 0);
+		this.entityData.define(DATA_SWELL_LAST_TICK, 0);
+		//this.entityData.define();
 	}
 
 	public void addAdditionalSaveData(CompoundTag tag) {
@@ -178,31 +200,21 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	public void tick() {
 		if (this.isAlive())
 		{
-			
-			this.oldSwell = this.swell;
 			if (this.isIgnited())
 			{
-				this.setSwelling(true);
+				this.setSwellDir(1);
 			}
 
-			int i = this.getSwellDir();
-			if (i > 0 && this.swell == 0)
+			if (getSwellDir() > 0 && this.getSwell() == 0)
 			{
 				this.playSound(SoundEvents.CREEPER_PRIMED, 1.0F, 0.5F);
 				this.gameEvent(GameEvent.PRIME_FUSE);
 			}
 
-			if (this.swell < this.maxSwell)
-				this.swell += i;
+			updateSwell();
 
-			if (this.swell < 0)
+			if (this.getSwell() == this.maxSwell)
 			{
-				this.swell = 0;
-			}
-
-			if (this.swell >= this.maxSwell)
-			{
-				this.swell = this.maxSwell;
 				this.explodeCreeper();
 			}
 			
@@ -210,13 +222,6 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 				currentIgnitionCooldown--;
 			
 		} 
-		else if (!this.level.isClientSide)
-		{
-			this.setIgnited(false);
-			this.setSwelling(false);
-			this.swell = 0;
-		}
-
 		super.tick();
 	}
 
@@ -260,38 +265,32 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	 * it is ignited.
 	 */
 	public float getSwelling(float pPartialTicks) {
-		return Mth.lerp(pPartialTicks, (float) this.oldSwell, (float) this.swell) / (float) (this.maxSwell - 2);
+		return Mth.lerp(pPartialTicks, (float) this.getSwellLastTick(), (float) this.getSwell()) / (float) (this.maxSwell - 2);
 	}
 
 	/**
 	 * Returns the current state of creeper, -1 is idle, 1 is 'in fuse'
 	 */
 	public int getSwellDir() {
-		return this.entityData.get(DATA_IS_SWELLING) ? 1 : -1;
+		return this.entityData.get(DATA_SWELL_DIR);
 	}
 
 	/**
 	 * Sets the state of creeper, -1 to idle and 1 to be 'in fuse'
 	 */
-	@Deprecated // Use setSwelling() instead
-	public void setSwellDir(int pState) {
-		boolean val = false;
-		if (pState == 1)
-			val = true;
-		else if (pState == -1)
-			val = false;
-		else
-			throw new IllegalArgumentException(
-					"Befriended Creeper set swell dir: 1 or -1 only. setSwellDir() is deprecated and use setSwelling() instead.");
-		this.entityData.set(DATA_IS_SWELLING, val);
+	 // Use setSwelling() instead
+	public void setSwellDir(int val) {
+		this.entityData.set(DATA_SWELL_DIR, val);
 	}
 
+	@Deprecated // Use getSwellDir instead
 	public boolean isSwelling() {
-		return this.entityData.get(DATA_IS_SWELLING);
+		return this.entityData.get(DATA_SWELL_DIR) > 0;
 	}
 
+	@Deprecated // Use setSwellDir instead
 	public void setSwelling(boolean swelling) {
-		this.entityData.set(DATA_IS_SWELLING, swelling);
+		this.entityData.set(DATA_SWELL_DIR, swelling ? 1 : -1);
 	}
 
 	public void thunderHit(ServerLevel level, LightningBolt lightning) {
@@ -332,14 +331,19 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 
 			this.spawnLingeringCloud();
 		}
-
+		else
+		{
+			if (!shouldDiscardAfterExplosion)
+				this.resetExplosionProcess();
+		}
 	}
 
 	protected void resetExplosionProcess()
 	{
 		this.setIgnited(false);
-		this.setSwelling(false);
-		this.swell = 0;
+		this.setSwellDir(-1);
+		this.setSwell(0);
+		this.setSwellLastTick(0);
 		this.currentIgnitionCooldown = 0;
 	}
 	

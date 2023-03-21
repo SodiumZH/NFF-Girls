@@ -19,7 +19,7 @@ public class BefriendedCreeperFollowOwnerGoal extends BefriendedFollowOwnerGoal 
 	@Override
 	public boolean canUse()
 	{
-		if (creeper.isSwelling())
+		if (creeper.getSwellDir() > 0)
 			return false;
 		return super.canUse();
 	}

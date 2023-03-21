@@ -23,7 +23,7 @@ public class BefriendedCreeperGirlExplosionAttackGoal extends BefriendedMeleeAtt
 	{
 		if (!creeper.canAutoBlowEnemy)
 			return false;
-		if (creeper.isSwelling())
+		if (creeper.getSwellDir() > 0)
 			return false;
 		if (creeper.blowEnemyCooldown > 0)
 			return false;
@@ -42,7 +42,7 @@ public class BefriendedCreeperGirlExplosionAttackGoal extends BefriendedMeleeAtt
 		if (distToEnemySqr < 9.0d && creeper.blowEnemyCooldown == 0)
 		{
 			this.resetAttackCooldown();
-			creeper.setSwelling(true);
+			creeper.setSwellDir(1);
 			creeper.blowEnemyCooldown = 300;	// 15s cooldown per explosion
 		}
 	}

@@ -23,6 +23,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.Befriendi
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.Util;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 
 public class HandlerCreeperGirl extends AbstractBefriendingHandler
@@ -57,9 +58,9 @@ public class HandlerCreeperGirl extends AbstractBefriendingHandler
 				if (l.getTimerPS(player, "tnt_cooldown") > 0)
 				{
 					// EntityHelper.sendSmokeParticlesToMob(target);
-					Debug.printToScreen(
+					/*Debug.printToScreen(
 							"Action cooldown " + Integer.toString(l.getTimerPS(player, "tnt_cooldown") / 20) + " s.",
-							player, target);
+							player, target);*/
 					// result.setHandled();
 				} 
 				else
@@ -84,7 +85,7 @@ public class HandlerCreeperGirl extends AbstractBefriendingHandler
 					if (!player.isCreative())
 						player.getMainHandItem().shrink(1);
 					alreadyGiven++;
-					Debug.printToScreen(
+					Util.printToScreen(
 							"TNT given: " + Integer.toString(alreadyGiven) + " / " + Integer.toString(overallAmount),
 							player, target);
 					if (alreadyGiven == overallAmount)
@@ -95,7 +96,7 @@ public class HandlerCreeperGirl extends AbstractBefriendingHandler
 					} 
 					else
 					{
-						EntityHelper.sendStarParticlesToMob(target);
+						EntityHelper.sendGreenStarParticlesToLivingDefault(target);
 						// Not satisfied, put data
 						NbtHelper.putPlayerData(IntTag.valueOf(alreadyGiven), l.getPlayerData(), player,
 								"already_given");

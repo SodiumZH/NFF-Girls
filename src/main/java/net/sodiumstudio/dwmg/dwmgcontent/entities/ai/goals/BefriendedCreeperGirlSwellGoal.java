@@ -18,7 +18,7 @@ public class BefriendedCreeperGirlSwellGoal extends BefriendedCreeperSwellGoal
 	@Override
 	public boolean canUse()
 	{
-		return cg.swell > 0;
+		return cg.getSwell() > 0;
 	}
 	
 	private boolean stoppedFlag = false;
@@ -27,12 +27,12 @@ public class BefriendedCreeperGirlSwellGoal extends BefriendedCreeperSwellGoal
 	{
 		if (cg.getOwner() != null && cg.distanceToSqr(cg.getOwner()) <= cg.explodeSafeDistance * cg.explodeSafeDistance)
 		{
-			cg.setSwelling(false);
+			cg.setSwellDir(-1);
 			stoppedFlag = true;
 		}
 		else if (stoppedFlag)
 		{
-			cg.setSwelling(true);
+			cg.setSwellDir(1);
 			stoppedFlag = false;
 		}
 	}

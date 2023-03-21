@@ -30,7 +30,7 @@ public class BefriendedCreeperGirlMeleeAttackGoal extends BefriendedMeleeAttackG
 	{
 		if (creeper.hasEnoughAmmoToExplode() && creeper.blowEnemyCooldown == 0)
 			return false;
-		if (creeper.isSwelling())
+		if (creeper.getSwellDir() > 0)
 			return false;
 		return super.canUse();
 	}

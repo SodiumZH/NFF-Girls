@@ -1,5 +1,7 @@
 package net.sodiumstudio.dwmg.befriendmobs.entitiy.ai;
 
+import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
+
 public enum BefriendedAIState {
 	WAIT(0),
 	FOLLOW(1),
@@ -35,5 +37,26 @@ public enum BefriendedAIState {
 	{
 		return fromID(id() + 1 ) != null ? fromID(id() + 1) : fromID(0);
 	}
+	
+	public String getDisplayInfo()
+	{
+		switch (this)
+		{
+		case WAIT:
+		{
+			return "is waiting.";
+		}
+		case FOLLOW:
+		{
+			return "is following.";
+		}
+		case WANDER:
+		{
+			return "is wandering.";
+		}
+		}
+		throw new UnimplementedException("Befriended AI State display info not implemented.");
+	}
+	
 	
 }

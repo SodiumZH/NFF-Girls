@@ -12,6 +12,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInt
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.Util;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
@@ -34,7 +35,7 @@ public class HandlerHuskGirl extends AbstractBefriendingHandler
 				// Block if in hatred
 				if (l.isInHatred(player))
 				{
-					EntityHelper.sendAngryParticlesToMob(target);
+					EntityHelper.sendAngryParticlesToLivingDefault(target);;
 					Debug.printToScreen("Unable to befriend: in hatred list.", player, target);
 					result.setHandled();
 
@@ -74,7 +75,7 @@ public class HandlerHuskGirl extends AbstractBefriendingHandler
 					if (!player.isCreative())
 						player.getMainHandItem().shrink(1);
 					alreadyGiven++;
-					Debug.printToScreen(
+					Util.printToScreen(
 							"Cakes given: " + Integer.toString(alreadyGiven) + " / " + Integer.toString(overallAmount),
 							player, target);
 					if (alreadyGiven == overallAmount)

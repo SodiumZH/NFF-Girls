@@ -75,7 +75,7 @@ public class BMDebugItemHandler
 					IBefriendedMob bef = BefriendingTypeRegistry.getHandler((EntityType<Mob>)target.getType()).befriend(player, target);
 					if (bef != null)
 					{
-						EntityHelper.sendHeartParticlesToMob(bef.asMob()); // TODO: move this to a MobBefriendEvent listener
+						EntityHelper.sendHeartParticlesToLivingDefault(bef.asMob()); // TODO: move this to a MobBefriendEvent listener
 					} else
 						throw new UnimplementedException(
 								"Entity type befriend method unimplemented: " + target.getType().toShortString()

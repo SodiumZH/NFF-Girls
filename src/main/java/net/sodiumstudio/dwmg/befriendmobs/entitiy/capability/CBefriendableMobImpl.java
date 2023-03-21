@@ -188,7 +188,7 @@ public class CBefriendableMobImpl implements CBefriendableMob
 					{
 						// position 36 is "_"
 						MinecraftForge.EVENT_BUS.post(new BefriendableTimerUpEvent(this, key.substring(37), player));
-						Debug.printToScreen("Timer up: " + key, player);
+						//Debug.printToScreen("Timer up: " + key, player);
 					}
 				}
 			}	

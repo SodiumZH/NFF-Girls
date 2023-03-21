@@ -13,6 +13,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInt
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.Util;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
@@ -28,9 +29,10 @@ public class HandlerDemo extends AbstractBefriendingHandler
 
 		args.execServer((l) ->
 		{
-
-			if (!player.isShiftKeyDown() && player.getMainHandItem().is( /*DwmgItems.SOUL_CAKE_SLICE.get()*/ Items.DIAMOND)
-					/*&& player.hasEffect(DwmgEffects.DEATH_AFFINITY.get())*/)
+			if (!player.isShiftKeyDown() 
+				&& player.getMainHandItem().is( /*DwmgItems.SOUL_CAKE_SLICE.get()*/ Items.DIAMOND)
+				&& args.isMainHand()
+				/*&& player.hasEffect(DwmgEffects.DEATH_AFFINITY.get())*/)
 			{
 				// Block if in hatred
 				/*
@@ -45,7 +47,7 @@ public class HandlerDemo extends AbstractBefriendingHandler
 				else */if (l.getTimerPS(player, "cake_cooldown") > 0)
 				{
 					// EntityHelper.sendSmokeParticlesToMob(target);
-					Debug.printToScreen(
+					Util.printToScreen(
 							"Action cooldown " + Integer.toString(l.getTimerPS(player, "cake_cooldown") / 20) + " s.",
 							player, target);
 					// result.setHandled();
@@ -81,12 +83,12 @@ public class HandlerDemo extends AbstractBefriendingHandler
 					if (alreadyGiven == overallAmount)
 					{
 						// Satisfied
-						EntityHelper.sendHeartParticlesToMob(target);
+						EntityHelper.sendHeartParticlesToLivingDefault(player);
 						result.befriendedMob = befriend(player, target);
 						result.setHandled();
 					} else
 					{
-						EntityHelper.sendStarParticlesToMob(target);
+						EntityHelper.sendGreenStarParticlesToLivingDefault(target);
 						// Not satisfied, put data
 						NbtHelper.putPlayerData(IntTag.valueOf(alreadyGiven), l.getPlayerData(), player,
 								"already_given");
