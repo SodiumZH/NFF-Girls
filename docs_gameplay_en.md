@@ -96,7 +96,7 @@ If the TNT condition is satisfied, the Creeper Girl will stop moving, start swel
 
 **Interaction**
 
-Right click with Flint & Steel to 
+Right click with Flint & Steel to ignite it.
 
 You can customize its armor and hand items. There's an extra ammo slot (explosive icon), and only with ammo it can explode (no damage to itself).
 
