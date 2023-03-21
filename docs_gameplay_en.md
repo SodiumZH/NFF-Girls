@@ -106,5 +106,5 @@ You can manually charge it by using a Particle of Lightning to it. If it's charg
 
 ##### Features
 
-On combat, it will try exploding on enemies if having ammo (with), and try close combat if having a weapon on the main hand.
+On combat, it will try exploding on enemies if having ammo, and try close combat if having a weapon on the main hand.
 
