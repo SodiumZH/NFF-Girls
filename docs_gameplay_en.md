@@ -38,9 +38,11 @@ Give 1-3 diamonds. After giving each one, there's 10s cooldown time. Green-star 
 
 ##### Interaction
 
-Right click to switch the AI state among Wait, Follow and Wander.
+Right click to switch the AI state among Wait, Follow and Wander. 
 
 Shift + Right click to open inventory. You can customize their armor and hand items. 
+
+(The 2 interaction ways are available for all mobs unless other noted.)
 
 There are 2 extra slots (gem icon), and you can put diamond inside, but any related features are not added so far.
 
@@ -91,4 +93,16 @@ It can convert to Zombie Girl in water. The converted Zombie Girl can be recover
 Give it 2-3 TNTs. There's 5s cooldown each TNT. (Do this without making it explode!)
 
 If the TNT condition is satisfied, the Creeper Girl will stop moving, start swelling for 4s  and generate tons of green-star and smoke particles. After this, it will make a **HUGE EXPLOSION** (Range 12, block-breaking). When it's swelling, you must stay no further than 8 blocks away from it (or it will be interrupted and you have to start from giving it TNTs). You must survive the explosion, and after that it's done.
+
+**Interaction**
+
+You can customize its armor and hand items. There's an extra ammo slot (explosive icon), and only with ammo it can explode (no damage to itself). In combat it can do close combat (only when having a weapon/tool on main hand) and exploding attack.
+
+The ammo slot receives either Gunpowder or TNT and consumes one for each explosion. With Gunpowder its explosion has range 3 and doesn't break blocks. With TNT its explosion has range 4 and breaks blocks (if mobGriefing is true). If it's charged, the explosion range will be 6 for Gunpowder and 8 for TNT, consuming 2 ammo items.
+
+You can manually charge it by using a Particle of Lightning to it. If it's charged, you can right click with bare hand to uncharge it, dropping a Particle of Lightning.
+
+##### Features
+
+On combat, it will try exploding on enemies if having ammo (with), and try close combat if 
 
