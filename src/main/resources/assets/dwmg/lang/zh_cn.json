@@ -4,12 +4,14 @@
   "item.dwmg.soul_flour" : "灵魂麦粉",
   "item.dwmg.soul_cake" : "灵魂蛋糕",
   "item.dwmg.soul_cake_slice" : "灵魂蛋糕切片",
-  "item.dwmg.debug_befriender" : "(调试用) 亲和魔棒",
-  "item.dwmg.example_zombie_befriending_item" : "(调试用) 示例僵尸友好化道具",
+  "item.dwmg.soul_cloth": "灵魂布料",
   "block.dwmg.soul_cake" : "灵魂蛋糕",
+  "block.dwmg.soul_carpet" : "灵魂地毯",
+  "effect.dwmg.undead_affinity": "亡灵亲和",
   "itemGroup.dwmg_tab" : "与怪物娘的日常",
   "entity.dwmg.bef_zombie_girl" : "僵尸娘",
   "entity.dwmg.bef_skeleton_girl" : "骷髅娘",
   "entity.dwmg.bef_husk_girl" : "尸壳娘",
-  "entity.dwmg.bef_creeper_girl" : "苦力怕娘"
+  "entity.dwmg.bef_creeper_girl" : "苦力怕娘",
+  "entity.dwmg.bef_ender_executor": "末影处刑者"
 }

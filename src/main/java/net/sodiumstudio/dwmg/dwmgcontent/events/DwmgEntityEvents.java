@@ -44,7 +44,7 @@ public class DwmgEntityEvents
 	        	// Handle CUndeadMob //
         		mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) ->
         		{
-        			if (target != null && target.hasEffect(DwmgEffects.DEATH_AFFINITY.get()) && lastHurtBy != target && !l.getHatred().contains(target.getUUID()))
+        			if (target != null && target.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get()) && lastHurtBy != target && !l.getHatred().contains(target.getUUID()))
         			{
         				mob.setTarget(null);
         				isCancelledByEffect.set(true);

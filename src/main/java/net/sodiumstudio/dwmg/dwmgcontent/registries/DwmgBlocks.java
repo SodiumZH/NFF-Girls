@@ -12,6 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.*;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
+import net.sodiumstudio.dwmg.dwmgcontent.blocks.BlockSoulCake;
 //import net.sodiumstudio.dwmg.dwmgcontent.DwmgTab;
 import net.sodiumstudio.dwmg.dwmgcontent.blocks.BlockSoulCarpet;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
@@ -30,22 +31,29 @@ public class DwmgBlocks {
 	// Register block items. Must be called after the corresponding block is registered!!
 	public static RegistryObject<Item> regBlockItem(String name, RegistryObject<Block> block, Item.Properties properties)
 	{
-		return DwmgItems.ITEMS.register(name, () -> new BlockItem(block.get(), properties/*.tab(DwmgItems.TAB)*/));
+		return DwmgItems.ITEMS.register(name, () -> new BlockItem(block.get(), properties.tab(DwmgItems.TAB)));
 	}
 	
 	
 	/* Blocks */
 	
-	//public static final RegistryObject<Block> EXAMPLE_BLOCK = regBlock("example_block", BlockBehaviour.Properties.of
-	//	(Material.METAL, MaterialColor.COLOR_PURPLE).strength(3.0f).sound(SoundType.METAL).requiresCorrectToolForDrops());		
-	public static final RegistryObject<Block> SOUL_CARPET = DwmgBlocks.BLOCKS.register("soul_carpet", () -> new BlockSoulCarpet(BlockBehaviour.Properties.of
-		(Material.WOOL, MaterialColor.COLOR_PURPLE).strength(0.1f).sound(SoundType.WOOL)));
+	public static final RegistryObject<Block> SOUL_CARPET = DwmgBlocks.BLOCKS.register("soul_carpet", () -> 
+		new BlockSoulCarpet(BlockBehaviour.Properties.of
+				(Material.WOOL, MaterialColor.COLOR_PURPLE)
+				.strength(0.1f)
+				.sound(SoundType.WOOL)));
+	public static final RegistryObject<Block> SOUL_CAKE = DwmgBlocks.BLOCKS.register("soul_cake", () -> 
+		new BlockSoulCake(BlockBehaviour.Properties.of
+				(Material.CAKE)
+				.strength(0.5F)
+				.sound(SoundType.WOOL)));
 
 	
 	
 	/* Block Items */
 	//public static final RegistryObject<Item> ITEM_EXAMPLE_BLOCK = regBlockItem("example_block", EXAMPLE_BLOCK, new Item.Properties());
 	public static final RegistryObject<Item> ITEM_SOUL_CARPET = regBlockItem("soul_carpet", SOUL_CARPET, new Item.Properties());
+	public static final RegistryObject<Item> ITEM_SOUL_CAKE = regBlockItem("soul_cake", SOUL_CAKE, new Item.Properties().stacksTo(1));
 	
 	// Register to event bus
 	public static void register(IEventBus eventBus) {

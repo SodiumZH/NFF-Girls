@@ -27,7 +27,7 @@ public class HandlerDrownedGirl extends AbstractBefriendingHandler {
 		{
 
 			if (!player.isShiftKeyDown() && player.getMainHandItem().is(DwmgItems.SOUL_CAKE_SLICE.get()) && args.isMainHand()
-					&& player.hasEffect(DwmgEffects.DEATH_AFFINITY.get()))
+					&& player.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get()))
 			{
 				// Block if in hatred
 				if (l.isInHatred(player))
@@ -101,7 +101,7 @@ public class HandlerDrownedGirl extends AbstractBefriendingHandler {
 				if (!l.isInHatred(player))
 				{
 					if (!player.isShiftKeyDown() && player.getMainHandItem().is(DwmgItems.SOUL_CAKE_SLICE.get()) && args.isMainHand()
-							&& player.hasEffect(DwmgEffects.DEATH_AFFINITY.get()))
+							&& player.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get()))
 						result.handled = true;
 				} else
 				{

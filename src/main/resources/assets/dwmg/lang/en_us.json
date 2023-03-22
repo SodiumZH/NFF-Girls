@@ -4,12 +4,14 @@
   "item.dwmg.soul_flour" : "Soul Flour",
   "item.dwmg.soul_cake" : "Soul Cake",
   "item.dwmg.soul_cake_slice" : "Soul Cake Slice",
-  "item.dwmg.debug_befriender" : "(Debug) Befriending Wand",
-  "item.dwmg.example_zombie_befriending_item" : "(Debug) Example Zombie Befriending Item",
+  "item.dwmg.soul_cloth": "Soul Cloth",
   "block.dwmg.soul_cake" : "Soul Cake",
+  "block.dwmg.soul_carpet" : "Soul Carpet",
+  "effect.dwmg.undead_affinity": "Undead Affinity",
   "itemGroup.dwmg_tab" : "Days with Monster Girls",
   "entity.dwmg.bef_zombie_girl" : "Zombie Girl",
   "entity.dwmg.bef_skeleton_girl" : "Skeleton Girl",
   "entity.dwmg.bef_husk_girl" : "Husk Girl",
-  "entity.dwmg.bef_creeper_girl" : "Creeper Girl"
+  "entity.dwmg.bef_creeper_girl" : "Creeper Girl",
+  "entity.dwmg.bef_ender_executor": "Ender Executor"
 }

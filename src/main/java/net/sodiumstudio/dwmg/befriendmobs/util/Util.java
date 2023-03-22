@@ -38,4 +38,10 @@ public class Util {
 	{
 		Util.printToScreen(new TextComponent(text), receiver, receiver);
 	}
+	
+	public static <T> boolean sameObject(T a, T b)
+	{
+		return a != null && a == b;
+	}
+	
 }

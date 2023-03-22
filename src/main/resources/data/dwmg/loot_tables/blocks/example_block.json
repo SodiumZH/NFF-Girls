@@ -6,7 +6,7 @@
 			"entries": [
 				{
 					"type": "minecraft:item",
-					"name": "dwmg:example_block" //�������ʽ:ģ������:��Ʒ����������ƣ�ԭ��Ĭ����minecraft:xxx
+					"name": "dwmg:example_block" 
 				}
 			]
 		}

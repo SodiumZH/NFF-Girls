@@ -32,7 +32,7 @@ public class HandlerDemo extends AbstractBefriendingHandler
 			if (!player.isShiftKeyDown() 
 				&& player.getMainHandItem().is( /*DwmgItems.SOUL_CAKE_SLICE.get()*/ Items.DIAMOND)
 				&& args.isMainHand()
-				/*&& player.hasEffect(DwmgEffects.DEATH_AFFINITY.get())*/)
+				/*&& player.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get())*/)
 			{
 				// Block if in hatred
 				/*
@@ -107,7 +107,7 @@ public class HandlerDemo extends AbstractBefriendingHandler
 				if (!l.isInHatred(player))
 				{
 					if (!player.isShiftKeyDown() && player.getMainHandItem().getItem() == DwmgItems.SOUL_CAKE_SLICE.get()
-							&& player.hasEffect(DwmgEffects.DEATH_AFFINITY.get()))
+							&& player.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get()))
 						result.handled = true;
 				} else
 				{

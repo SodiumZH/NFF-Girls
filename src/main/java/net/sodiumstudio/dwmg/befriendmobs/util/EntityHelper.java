@@ -8,6 +8,8 @@ import java.util.Random;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -194,6 +196,22 @@ public class EntityHelper
 	{
 		return Math.round(creeper.getSwelling(1.0f) * 28.0f);
 	}
+	
+	// Add effect, preventing to override the existing one if has longer time than this
+	public static void addEffectSafe(LivingEntity entity, MobEffect effect, int ticks, int lvl)
+	{
+		if (!entity.hasEffect(effect) || entity.getEffect(effect).getDuration() < ticks)
+		{
+			entity.addEffect(new MobEffectInstance(effect, ticks, lvl));
+		}
+	}
+	
+	public static void addEffectSafe(LivingEntity entity, MobEffect effect, int ticks)
+	{
+		addEffectSafe(entity, effect, ticks, 0);
+	}
+
+	
 	
 	
 }
