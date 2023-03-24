@@ -24,6 +24,12 @@ Husk Girl
 
 Creeper Girl
 
+## General befriending methods
+
+### Item-giving process
+
+Right click the mob with certain types of item on the main hand to give. When given, the mob's "favorability" will increase depending on the item type. When it reaches 1, the process done. (This doesn't always mean to successfully befriend. Sometimes other processes start after this.)
+
 
 
 ## Mob details
@@ -32,9 +38,7 @@ Creeper Girl
 
 ##### Befriending
 
-Give 1-3 diamonds. After giving each one, there's 10s cooldown time. Green-star particles will appear when you successfully gave an item, and heart particles will appear when you befriended them. 
-
-*This befriending process is temporary because related items are not added. On update the condition will change and this instruction will also be updated.*
+Using item-giving mechanism.
 
 ##### Interaction
 
