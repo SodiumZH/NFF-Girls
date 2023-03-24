@@ -55,7 +55,7 @@ public class HandlerCreeperGirl extends AbstractBefriendingHandler
 			
 			if (!player.isShiftKeyDown() && player.getMainHandItem().is(Items.TNT) && args.isMainHand())
 
-				if (l.getTimerPS(player, tnt_cooldown") > 0)
+				if (l.getTimerPS(player, "tnt_cooldown") > 0)
 				{
 					// EntityHelper.sendSmokeParticlesToMob(target);
 					/*Debug.printToScreen(
