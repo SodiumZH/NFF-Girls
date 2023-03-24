@@ -1,10 +1,9 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Random;
 
 import com.github.mechalopa.hmag.registry.ModEntityTypes;
-import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.CreeperGirlEntity;
 
 import net.minecraft.nbt.IntTag;
@@ -12,21 +11,22 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.AbstractBefriendingHandler;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
-import net.sodiumstudio.dwmg.befriendmobs.util.math.RndUtil;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
+import net.sodiumstudio.dwmg.befriendmobs.util.Util;
+import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 
-public class HandlerCreeperGirl extends HandlerItemGivingProcess
+public class HandlerCreeperGirl extends AbstractBefriendingHandler
 {
 	
 	@Override
@@ -37,12 +37,89 @@ public class HandlerCreeperGirl extends HandlerItemGivingProcess
 	}
 
 	@Override
-	public IBefriendedMob finalAction(Player player, Mob mob)
-	{
-		finalExplosionStart((CreeperGirlEntity)mob, player);
-		return null;
+	public BefriendableMobInteractionResult handleInteract(BefriendableMobInteractArguments args) {
+		Mob target = args.getTarget();
+		if (!(target instanceof CreeperGirlEntity))
+			throw new RuntimeException();
+		Player player = args.getPlayer();
+		BefriendableMobInteractionResult result = new BefriendableMobInteractionResult();
+
+		args.execServer((l) ->
+		{
+			// Don't do anything if in final explosion
+			if (l.getNBT().contains("final_explosion_player", 11))
+			{
+				result.setHandled();
+				return;
+			}
+			
+			if (!player.isShiftKeyDown() && player.getMainHandItem().is(Items.TNT) && args.isMainHand())
+
+				if (l.getTimerPS(player, "tnt_cooldown") > 0)
+				{
+					// EntityHelper.sendSmokeParticlesToMob(target);
+					/*Debug.printToScreen(
+							"Action cooldown " + Integer.toString(l.getTimerPS(player, "tnt_cooldown") / 20) + " s.",
+							player, target);*/
+					// result.setHandled();
+				} 
+				else
+				{
+					// Get overall tnt amount needed, or create if not existing
+					IntTag overallAmountTag = (IntTag) NbtHelper.getPlayerData(l.getPlayerData(), player,
+							"overall_amount");
+					int overallAmount;
+					if (overallAmountTag == null)
+					{
+						float rnd = new Random().nextFloat();
+						overallAmount = rnd < 0.1 ? 2 : 3;
+						NbtHelper.putPlayerData(IntTag.valueOf(overallAmount), l.getPlayerData(), player,
+								"overall_amount");
+					} else
+						overallAmount = overallAmountTag.getAsInt();
+					// Get amount already given
+					IntTag alreadyGivenTag = (IntTag) NbtHelper.getPlayerData(l.getPlayerData(), player,
+							"already_given");
+					int alreadyGiven = alreadyGivenTag == null ? 0 : alreadyGivenTag.getAsInt();
+					// Give tnt
+					if (!player.isCreative())
+						player.getMainHandItem().shrink(1);
+					alreadyGiven++;
+					Util.printToScreen(
+							"TNT given: " + Integer.toString(alreadyGiven) + " / " + Integer.toString(overallAmount),
+							player, target);
+					if (alreadyGiven == overallAmount)
+					{
+						// Satisfied, start final explosion
+						finalExplosionStart((CreeperGirlEntity)target, player);
+						result.setHandled();
+					} 
+					else
+					{
+						EntityHelper.sendGreenStarParticlesToLivingDefault(target);
+						// Not satisfied, put data
+						NbtHelper.putPlayerData(IntTag.valueOf(alreadyGiven), l.getPlayerData(), player,
+								"already_given");
+						l.setTimerPS(player, "tnt_cooldown", 100); // Set 5s cooldown
+						result.setHandled();
+					}
+				}
+
+		});
+
+		// ...................................
+		args.execClient((l) ->
+		{
+
+			if (!player.isShiftKeyDown() && player.getMainHandItem().is(Items.TNT) && args.isMainHand())
+			{
+				result.handled = true;
+			}
+
+		});
+		// ==============================
+		return result;
 	}
-	
 	
 	@Override
 	public void serverTick(Mob mob)
@@ -187,38 +264,4 @@ public class HandlerCreeperGirl extends HandlerItemGivingProcess
 		}
 
 	}
-
-	@Override
-	protected HashSet<Item> givableItems() {
-		HashSet<Item> set = new HashSet<Item>();
-		set.add(Items.GUNPOWDER);
-		set.add(Items.TNT);
-		set.add(ModItems.LIGHTNING_PARTICLE.get());
-		return set;
-	}
-
-	@Override
-	protected double getProcValue(ItemStack item) {
-		float rnd = this.rnd.nextFloat();
-		if (item.is(ModItems.LIGHTNING_PARTICLE.get()))
-			return rnd < 0.1 ? 0.501 : (rnd < 0.4 ? 0.251 : 0.126);
-		if (item.is(Items.GUNPOWDER))
-			return RndUtil.rndRangedDouble(0.01, 0.03);
-		else if (item.is(Items.TNT))
-			return RndUtil.rndRangedDouble(0.02, 0.06);
-		else return 0;
-	}
-
-	@Override
-	protected int cooldownTicks() {
-		// TODO Auto-generated method stub
-		return 100;
-	}
-	
-	@Override
-	protected boolean additionalConditions(Player player, Mob mob)
-	{
-		return player.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get());
-	}
-	
 }
