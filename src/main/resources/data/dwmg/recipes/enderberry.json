@@ -1,0 +1,43 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"SLS",
+	"EBE",
+	"PCP"	
+	],
+	
+	"key":{ 
+	
+		"S":{
+		"tag": "dwmg:enderberry_crafting_ingredients"
+		},
+		
+		"L":{ 
+		"item": "hmag:lightning_particle"
+		},
+		
+		"E":{ 
+		"item": "minecraft:ender_eye"
+		},
+		
+		"B":{ 
+		"tag": "hmag:berries"
+		},
+		
+		"P":{ 
+		"item": "hmag:ender_plasm"
+		},
+
+		"C":{ 
+		"item": "hmag:evil_crystal"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "dwmg:enderberry",
+		"count": 1
+	}
+}

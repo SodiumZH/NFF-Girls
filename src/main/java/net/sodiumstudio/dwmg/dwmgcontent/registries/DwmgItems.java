@@ -1,5 +1,7 @@
 package net.sodiumstudio.dwmg.dwmgcontent.registries;
 
+import net.minecraft.world.food.Foods;
+import net.minecraft.world.item.ChorusFruitItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -38,9 +40,10 @@ public class DwmgItems {
 	public static final RegistryObject<Item> DEATH_CRYSTAL_POWDER = regItemDefault("death_crystal_powder");
 	public static final RegistryObject<Item> SOUL_FLOUR = regItemDefault("soul_flour");
 	public static final RegistryObject<Item> SOUL_CLOTH = regItemDefault("soul_cloth");
+	public static final RegistryObject<Item> ENDERBERRY_JAM = regItemDefault("enderberry_jam");
 	// Foods
 	public static final RegistryObject<Item> SOUL_CAKE_SLICE = regItem("soul_cake_slice", new Item.Properties().food(DwmgFoodProperties.SOUL_CAKE_SLICE));
-
+	public static final RegistryObject<Item> ENDERBERRY = ITEMS.register("enderberry", () -> new ChorusFruitItem(new Item.Properties().tab(TAB).food(DwmgFoodProperties.ENDERBERRY)));
 	// Debug items
 
 	
