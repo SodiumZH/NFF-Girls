@@ -40,8 +40,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedZomb
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.creeper.AbstractBefriendedCreeper;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.creeper.BefriendedCreeperSwellGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.vanillapreset.creeper.AbstractBefriendedCreeper;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.vanillapreset.creeper.BefriendedCreeperSwellGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;

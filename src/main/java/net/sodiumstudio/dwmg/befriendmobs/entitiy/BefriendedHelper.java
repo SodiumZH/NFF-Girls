@@ -19,7 +19,7 @@ import net.sodiumstudio.dwmg.befriendmobs.network.ClientboundBefriendedGuiOpenPa
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 
 /**
- * A function library for setting up befriended mobs
+ * A function library for befriended mobs
  */
 
 public class BefriendedHelper
@@ -114,6 +114,10 @@ public class BefriendedHelper
 		if (!player.level.isClientSide && player instanceof ServerPlayer sp
 				&& (!living.isVehicle() || living.hasPassenger(player)))
 		{
+			sp.containerMenu = target.makeMenu(sp.containerCounter, sp.getInventory(), target.getAdditionalInventory());
+			if (sp.containerMenu == null)
+				return;
+			
 			if (player.containerMenu != player.inventoryMenu)
 			{
 				player.closeContainer();
@@ -123,7 +127,6 @@ public class BefriendedHelper
 			ClientboundBefriendedGuiOpenPacket packet = new ClientboundBefriendedGuiOpenPacket(sp.containerCounter,
 					target.getAdditionalInventory().getContainerSize(), living.getId());
 			sp.connection.send(packet);
-			sp.containerMenu = target.makeMenu(sp.containerCounter, sp.getInventory(), target.getAdditionalInventory());
 			sp.initMenu(sp.containerMenu);
 			MinecraftForge.EVENT_BUS.post(
 					new net.minecraftforge.event.entity.player.PlayerContainerEvent.Open(player, player.containerMenu));

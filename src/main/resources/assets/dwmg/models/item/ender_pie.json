@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "befriendmobs:item/debug_befriender"
+		"layer0": "dwmg:item/ender_pie"
 	}
 }

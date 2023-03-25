@@ -12,6 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedDrownedGirl;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedEnderExcutor;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedHuskGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedSkeletonGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedZombieGirl;
@@ -45,7 +46,7 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
-			.build(new ResourceLocation(Dwmg.MOD_ID, "husk_girl").toString()));
+			.build(new ResourceLocation(Dwmg.MOD_ID, "bef_husk_girl").toString()));
 	
 	public static final RegistryObject<EntityType<EntityBefriendedDrownedGirl>> BEF_DROWNED_GIRL = 
 			ENTITY_TYPES.register("bef_drowned_girl", () -> EntityType.Builder.of(
@@ -54,7 +55,7 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
-			.build(new ResourceLocation(Dwmg.MOD_ID, "drowned_girl").toString()));
+			.build(new ResourceLocation(Dwmg.MOD_ID, "bef_drowned_girl").toString()));
 	
 	public static final RegistryObject<EntityType<EntityBefriendedCreeperGirl>> BEF_CREEPER_GIRL = 
 			ENTITY_TYPES.register("bef_creeper_girl", () -> EntityType.Builder.of(
@@ -63,7 +64,17 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
-			.build(new ResourceLocation(Dwmg.MOD_ID, "creeper_girl").toString()));
+			.build(new ResourceLocation(Dwmg.MOD_ID, "bef_creeper_girl").toString()));
+	
+	public static final RegistryObject<EntityType<EntityBefriendedEnderExcutor>> BEF_ENDER_EXECUTOR =
+			ENTITY_TYPES.register("bef_ender_executor", () -> EntityType.Builder.of(
+			EntityBefriendedEnderExcutor::new, MobCategory.CREATURE)
+			.sized(0.6F, 2.9F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.build(new ResourceLocation(Dwmg.MOD_ID, "bef_ender_executor").toString()));
+	
 	
 	@SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
@@ -72,6 +83,8 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.BEF_HUSK_GIRL.get(), EntityBefriendedHuskGirl.createAttributes().build());
         event.put(DwmgEntityTypes.BEF_DROWNED_GIRL.get(), EntityBefriendedDrownedGirl.createAttributes().build());
         event.put(DwmgEntityTypes.BEF_CREEPER_GIRL.get(), EntityBefriendedCreeperGirl.createAttributes().build());
+        event.put(DwmgEntityTypes.BEF_ENDER_EXECUTOR.get(), EntityBefriendedEnderExcutor.createAttributes().build());
+
 	}
 	
 }

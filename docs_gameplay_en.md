@@ -28,7 +28,7 @@ Creeper Girl
 
 ### Item-giving process
 
-Right click the mob with certain types of item on the main hand to give. When given, the mob's "favorability" will increase depending on the item type. When it reaches 1, the process done. (This doesn't always mean to successfully befriend. Sometimes other processes start after this.)
+Right click the mob with certain types of item on the main hand to give. When given, the mob's "favorability" will increase depending on the item type. The initial value is 0, and when it reaches 1, the process is done. (This doesn't always mean to successfully befriend. Sometimes other processes start after this.)
 
 
 
@@ -38,7 +38,19 @@ Right click the mob with certain types of item on the main hand to give. When gi
 
 ##### Befriending
 
-Using item-giving mechanism.
+Using item-giving process. Each item given, there's 10s cooldown.
+
+Accepted items and corresponding favorability increase:
+
+*Soul Cake Slice*:  5% for 1.0,  15% for 2/3, 80% for 1/3
+
+*Soul Apple*: 0.04 ~ 0.08
+
+*Soul Powder*: 0.02 ~ 0.04
+
+During the process, you must keep an "Undead Affinity" effect, which makes undead mobs be neutral to you. Also, you must haven't provoked them, either because of attacking them or getting close to them without Undead Affinity effect. Once you provoked them, it will spend 15 minutes for them to forgive you.
+
+Each time an item is successfully given, green star particles will appear. Each time the favorability increases by 0.2, a heart particle will appear on the mob.
 
 ##### Interaction
 
@@ -50,9 +62,11 @@ Shift + Right click to open inventory. You can customize their armor and hand it
 
 There are 2 extra slots (gem icon), and you can put diamond inside, but any related features are not added so far.
 
+They can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same for all vanilla undead mob girls.)
+
 ##### Features
 
-Currently converting to Drowned is not added because Drowned Girl is not finished. If the Zombie Girl is converted from a Husk Girl, it can be converted back to Husk Girl by using a sponge to it.
+Currently converting to Drowned is not added because Drowned Girl is not finished. If the Zombie Girl is converted from a Husk Girl, it can be converted back by using a sponge to it.
 
 
 
@@ -60,7 +74,13 @@ Currently converting to Drowned is not added because Drowned Girl is not finishe
 
 ##### Befriending
 
-Same to Zombie Girl.
+Same to Zombie Girls except the probabilities.
+
+*Soul Cake Slice*: 1% for 1.00, 4% for 3/4, 15% for 1/2, 80% for 1/4.
+
+*Soul Powder*: 0.015 ~ 0.03.
+
+*Soul Apple*: 0.03 ~ 0.06.
 
 ##### Interaction
 
@@ -78,11 +98,11 @@ The secondary weapon slot (sword icon) enables the skeleton to automatically swa
 
 ##### Befriending
 
-Same to Zombie Girl.
+Identical to Skeleton Girl.
 
 ##### Interaction
 
-Same to Zombie Girl. 
+Identical to Zombie Girl. 
 
 ##### Features
 
@@ -94,9 +114,17 @@ It can convert to Zombie Girl in water. The converted Zombie Girl can be recover
 
 ##### Befriending
 
-Give it 2-3 TNTs. There's 5s cooldown each TNT. (Do this without making it explode!)
+Firstly, do the item-giving process.
 
-If the TNT condition is satisfied, the Creeper Girl will stop moving, start swelling for 4s  and generate tons of green-star and smoke particles. After this, it will make a **HUGE EXPLOSION** (Range 12, block-breaking). When it's swelling, you must stay no further than 8 blocks away from it (or it will be interrupted and you have to start from giving it TNTs). You must survive the explosion, and after that it's done.
+Accepted items:
+
+*Particle of Lightning*: 10% for 1/2, 30% for 1/4, 60% for 1/8.
+
+*Gunpowder*: 0.015 ~ 0.03.
+
+*TNT*: 0.03 ~ 0.06.
+
+After the favorability reaches 1, the Creeper Girl will stop moving, start swelling for 4s  and generate tons of green-star and smoke particles. After the 4s, it will make a **HUGE EXPLOSION** (Range 12, block-breaking). When it's swelling, you must stay no further than 8 blocks away from it (or it will be interrupted and you have to start from giving it items). You must survive from the explosion, and after that it's done.
 
 **Interaction**
 
@@ -112,3 +140,20 @@ You can manually charge it by using a Particle of Lightning to it. If it's charg
 
 On combat, it will try exploding on enemies if having ammo, and try close combat if having a weapon on the main hand.
 
+
+
+## Foods
+
+### Soul Cake
+
+Put on the ground to eat. Similar to vanilla cakes, providing nutrition 3 and 30s Undead Affinity effect each slice.
+
+### Soul Cake Slice
+
+The non-block variation of Soul Cake. Each item provides nutrition 9 and 90s Undead Affinity.
+
+### Enderberry
+
+A food providing nutrition 6 and teleport (like Chorus Fruit).
+
+Tip: it's probably unadvisable to directly eat Enderberries. It's much more useful as ingredients of other items, or seeds for growing more berries.

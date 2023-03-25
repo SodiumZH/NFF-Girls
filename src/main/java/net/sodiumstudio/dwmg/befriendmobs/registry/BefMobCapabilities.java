@@ -10,7 +10,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.capability.CBefriendableMob;
 public class BefMobCapabilities {
 
 	public static Capability<CBefriendableMob> CAP_BEFRIENDABLE_MOB = CapabilityManager.get(new CapabilityToken<>(){});
-	
+
 	@SubscribeEvent
 	public static void register(RegisterCapabilitiesEvent event)
 	{

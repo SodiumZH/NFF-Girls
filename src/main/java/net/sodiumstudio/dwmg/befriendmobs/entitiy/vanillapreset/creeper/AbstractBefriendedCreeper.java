@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.entitiy.creeper;
+package net.sodiumstudio.dwmg.befriendmobs.entitiy.vanillapreset.creeper;
 
 import java.util.Arrays;
 import java.util.Collection;

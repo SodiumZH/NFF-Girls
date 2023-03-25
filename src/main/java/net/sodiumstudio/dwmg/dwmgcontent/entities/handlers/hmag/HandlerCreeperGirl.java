@@ -19,6 +19,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.handlerpreset.HandlerItemGivingProcess;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
@@ -203,9 +204,9 @@ public class HandlerCreeperGirl extends HandlerItemGivingProcess
 		if (item.is(ModItems.LIGHTNING_PARTICLE.get()))
 			return rnd < 0.1 ? 0.501 : (rnd < 0.4 ? 0.251 : 0.126);
 		if (item.is(Items.GUNPOWDER))
-			return RndUtil.rndRangedDouble(0.01, 0.03);
+			return RndUtil.rndRangedDouble(0.015, 0.03);
 		else if (item.is(Items.TNT))
-			return RndUtil.rndRangedDouble(0.02, 0.06);
+			return RndUtil.rndRangedDouble(0.03, 0.06);
 		else return 0;
 	}
 

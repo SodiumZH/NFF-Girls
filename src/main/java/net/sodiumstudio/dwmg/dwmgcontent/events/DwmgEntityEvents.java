@@ -3,11 +3,21 @@ package net.sodiumstudio.dwmg.dwmgcontent.events;
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.CreeperGirlEntity;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -16,6 +26,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.Util;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
@@ -96,6 +107,56 @@ public class DwmgEntityEvents
 		{
 			if (cg.isPowered())
 				cg.spawnAtLocation(new ItemStack(ModItems.LIGHTNING_PARTICLE.get(), 1));
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onLivingHurt(LivingHurtEvent event) {
+		LivingEntity living = event.getEntityLiving();
+		if (!living.level.isClientSide)
+		{
+			if (living.hasEffect(DwmgEffects.ENDER_PROTECTION.get()))
+			{
+				// If the player drops into the void, try pull to the
+				if (event.getSource().equals(DamageSource.OUT_OF_WORLD))
+				{
+					if (living.getY() < -64.0d)
+					{
+						living.setPosRaw(living.getX(), 64.0d, living.getZ());
+						EntityHelper.chorusLikeTeleport(living);
+						living.level.addParticle(ParticleTypes.PORTAL, living.getRandomX(0.5D),
+								living.getRandomY() - 0.25D, living.getRandomZ(0.5D),
+								(living.getRandom().nextDouble() - 0.5D) * 2.0D, -living.getRandom().nextDouble(),
+								(living.getRandom().nextDouble() - 0.5D) * 2.0D);
+						living.removeEffect(DwmgEffects.ENDER_PROTECTION.get());
+
+						if (living instanceof Player p)
+						{
+							BlockPos standingOn = new BlockPos(living.blockPosition().getX(),
+									living.blockPosition().getY() - 1, living.blockPosition().getZ());
+							if (living.level.getBlockState(standingOn).is(Blocks.AIR))
+							{
+								Util.printToScreen(
+								"You're lifted from the void because of the Ender Protection, but...", p);
+								p.setDeltaMovement(new Vec3(0, 0, 0));
+								p.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200));
+
+							} else
+							{
+								Util.printToScreen("You're saved from the void because of the Ender Protection!", p);
+							}
+						}
+					}
+
+				} else if (!event.getSource().equals(DamageSource.IN_FIRE)
+						&& !event.getSource().equals(DamageSource.STARVE))
+				{
+					living.level.addParticle(ParticleTypes.PORTAL, living.getRandomX(0.5D), living.getRandomY() - 0.25D,
+							living.getRandomZ(0.5D), (living.getRandom().nextDouble() - 0.5D) * 2.0D,
+							-living.getRandom().nextDouble(), (living.getRandom().nextDouble() - 0.5D) * 2.0D);
+					EntityHelper.chorusLikeTeleport(living);
+				}
+			}
 		}
 	}
 	

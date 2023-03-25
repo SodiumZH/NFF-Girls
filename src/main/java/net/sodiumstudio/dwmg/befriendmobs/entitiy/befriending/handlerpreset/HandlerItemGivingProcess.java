@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag;
+package net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.handlerpreset;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -22,7 +22,7 @@ import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
 
 public abstract class HandlerItemGivingProcess extends AbstractBefriendingHandler {
 
-	Random rnd = new Random();
+	protected Random rnd = new Random();
 
 	@Override
 	public BefriendableMobInteractionResult handleInteract(BefriendableMobInteractArguments args) {

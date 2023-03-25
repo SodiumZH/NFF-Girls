@@ -17,6 +17,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
@@ -24,15 +25,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.sound.SoundEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
+import net.sodiumstudio.dwmg.dwmgcontent.effects.EnderProtectionTeleportEvent;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 
@@ -105,7 +110,7 @@ public class EntityHelper
 		return replaceMob(newType, from, false);
 	}
 
-	@Deprecated	// Use sendParticlesToEntity() instead
+	@Deprecated // Use sendParticlesToEntity() instead
 	public static void sendParticlesToMob(LivingEntity entity, ParticleOptions options, Vec3 offset, int amount,
 			double speed, double positionRndScale, double speedRndScale) {
 		if (entity.level.isClientSide)
@@ -122,7 +127,7 @@ public class EntityHelper
 		}
 	}
 
-	@Deprecated	// Use sendParticlesToEntity() instead
+	@Deprecated // Use sendParticlesToEntity() instead
 	public static void sendParticlesToMob(LivingEntity entity, ParticleOptions options, Vec3 offset, int amount,
 			double speed) {
 		sendParticlesToMob(entity, options, offset, amount, speed, 1, 1);
@@ -132,7 +137,7 @@ public class EntityHelper
 	public static void sendHeartParticlesToMob(LivingEntity entity) {
 		sendParticlesToMob(entity, ParticleTypes.HEART, new Vec3(0, -0.5, 0), 5, 5, 4, 1);
 	}
-	
+
 	@Deprecated
 	public static void sendStarParticlesToMob(LivingEntity entity) {
 		sendParticlesToMob(entity, ParticleTypes.HAPPY_VILLAGER, new Vec3(0, -0.5, 0), 10, 0, 5, 0);
@@ -148,37 +153,36 @@ public class EntityHelper
 		sendParticlesToMob(entity, ParticleTypes.ANGRY_VILLAGER, new Vec3(0, -0.5, 0), 5, 5, 3, 1);
 	}
 
-	public static void sendParticlesToEntity(Entity entity, ParticleOptions options, Vec3 positionOffset, Vec3 rndScale, int amount,
-			double speed)
-	{
+	public static void sendParticlesToEntity(Entity entity, ParticleOptions options, Vec3 positionOffset, Vec3 rndScale,
+			int amount, double speed) {
 		if (entity.level.isClientSide)
 			return;
 		Vec3 pos = entity.position();
-		((ServerLevel) (entity.level)).sendParticles(options, pos.x + positionOffset.x, pos.y + positionOffset.y, pos.z + positionOffset.z,
-				amount, rndScale.x, rndScale.y, rndScale.z, speed);
+		((ServerLevel) (entity.level)).sendParticles(options, pos.x + positionOffset.x, pos.y + positionOffset.y,
+				pos.z + positionOffset.z, amount, rndScale.x, rndScale.y, rndScale.z, speed);
 	}
-	
-	public static void sendParticlesToEntity(Entity entity, ParticleOptions options, double posOffsetX, double posOffsetY, double posOffsetZ, 
-			double rndScaleX, double rndScaleY, double rndScaleZ, int amount, double speed)
-	{
-		sendParticlesToEntity(entity, options, new Vec3(posOffsetX, posOffsetY, posOffsetZ), new Vec3(rndScaleX, rndScaleY, rndScaleZ),
-				amount, speed);
+
+	public static void sendParticlesToEntity(Entity entity, ParticleOptions options, double posOffsetX,
+			double posOffsetY, double posOffsetZ, double rndScaleX, double rndScaleY, double rndScaleZ, int amount,
+			double speed) {
+		sendParticlesToEntity(entity, options, new Vec3(posOffsetX, posOffsetY, posOffsetZ),
+				new Vec3(rndScaleX, rndScaleY, rndScaleZ), amount, speed);
 	}
-	
-	public static void sendParticlesToEntity(Entity entity, ParticleOptions options, Vec3 posOffset, double rndScale, int amount, double speed)
-	{
+
+	public static void sendParticlesToEntity(Entity entity, ParticleOptions options, Vec3 posOffset, double rndScale,
+			int amount, double speed) {
 		sendParticlesToEntity(entity, options, posOffset, new Vec3(rndScale, rndScale, rndScale), amount, speed);
 	}
-	
-	public static void sendParticlesToEntity(Entity entity, ParticleOptions options, double heightOffset, double rndScale, int amount, double speed)
-	{
+
+	public static void sendParticlesToEntity(Entity entity, ParticleOptions options, double heightOffset,
+			double rndScale, int amount, double speed) {
 		sendParticlesToEntity(entity, options, new Vec3(0d, heightOffset, 0d), rndScale, amount, speed);
 	}
-	
+
 	public static void sendHeartParticlesToLivingDefault(LivingEntity entity) {
 		sendParticlesToEntity(entity, ParticleTypes.HEART, entity.getBbHeight() - 0.5, 0.5d, 10, 1d);
 	}
-	
+
 	public static void sendGreenStarParticlesToLivingDefault(LivingEntity entity) {
 		sendParticlesToEntity(entity, ParticleTypes.HAPPY_VILLAGER, entity.getBbHeight() - 0.5, 0.5d, 20, 1d);
 	}
@@ -190,28 +194,62 @@ public class EntityHelper
 	public static void sendAngryParticlesToLivingDefault(LivingEntity entity) {
 		sendParticlesToEntity(entity, ParticleTypes.ANGRY_VILLAGER, entity.getBbHeight() - 0.5, 0.3d, 5, 1d);
 	}
-	
+
 	// Get current swell value (private for Creeper class) as int. Max swell is 30.
-	public static int getCreeperSwell(Creeper creeper)
-	{
+	public static int getCreeperSwell(Creeper creeper) {
 		return Math.round(creeper.getSwelling(1.0f) * 28.0f);
 	}
-	
-	// Add effect, preventing to override the existing one if has longer time than this
-	public static void addEffectSafe(LivingEntity entity, MobEffect effect, int ticks, int lvl)
-	{
+
+	// Add effect, preventing to override the existing one if has longer time than
+	// this
+	public static void addEffectSafe(LivingEntity entity, MobEffect effect, int ticks, int lvl) {
 		if (!entity.hasEffect(effect) || entity.getEffect(effect).getDuration() < ticks)
 		{
 			entity.addEffect(new MobEffectInstance(effect, ticks, lvl));
 		}
 	}
-	
-	public static void addEffectSafe(LivingEntity entity, MobEffect effect, int ticks)
-	{
+
+	public static void addEffectSafe(LivingEntity entity, MobEffect effect, int ticks) {
 		addEffectSafe(entity, effect, ticks, 0);
 	}
 
-	
+	public static boolean chorusLikeTeleport(LivingEntity living) {
+		if (!living.level.isClientSide)
+		{
+
+			double d0 = living.getX();
+			double d1 = living.getY();
+			double d2 = living.getZ();
+
+			for (int i = 0; i < 16; ++i)
+			{
+				double d3 = living.getX() + (living.getRandom().nextDouble() - 0.5D) * 16.0D;
+				double d4 = Mth.clamp(living.getY() + (double) (living.getRandom().nextInt(16) - 8),
+						(double) living.level.getMinBuildHeight(), (double) (living.level.getMinBuildHeight()
+								+ ((ServerLevel) (living.level)).getLogicalHeight() - 1));
+				double d5 = living.getZ() + (living.getRandom().nextDouble() - 0.5D) * 16.0D;
+				if (living.isPassenger())
+				{
+					living.stopRiding();
+				}
+
+				EnderProtectionTeleportEvent event = new EnderProtectionTeleportEvent(living, d3, d4, d5);
+				MinecraftForge.EVENT_BUS.post(event);
+				if (event.isCanceled())
+					return false;
+				if (living.randomTeleport(event.getTargetX(), event.getTargetY(), event.getTargetZ(), true))
+				{
+					SoundEvent soundevent = living instanceof Fox ? SoundEvents.FOX_TELEPORT
+							: SoundEvents.CHORUS_FRUIT_TELEPORT;
+					living.level.playSound((Player) null, d0, d1, d2, soundevent, SoundSource.PLAYERS, 1.0F, 1.0F);
+					living.playSound(soundevent, 1.0F, 1.0F);
+					return true;
+				}
+			}
+			return false;
+		}
+		else return false;
+	}
 	
 	
 }

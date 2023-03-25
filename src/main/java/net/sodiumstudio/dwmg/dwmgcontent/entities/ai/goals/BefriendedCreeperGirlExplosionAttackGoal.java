@@ -11,7 +11,7 @@ import net.minecraft.world.level.pathfinder.Path;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.BefriendedGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedMeleeAttackGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.creeper.AbstractBefriendedCreeper;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.vanillapreset.creeper.AbstractBefriendedCreeper;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
 
 public class BefriendedCreeperGirlExplosionAttackGoal extends BefriendedMeleeAttackGoal

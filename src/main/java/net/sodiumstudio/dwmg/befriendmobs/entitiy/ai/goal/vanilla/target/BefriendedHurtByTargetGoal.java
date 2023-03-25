@@ -33,8 +33,8 @@ public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 	@Nullable
 	private Class<?>[] toIgnoreAlert;
 
-	public BefriendedHurtByTargetGoal(PathfinderMob pMob, Class<?>... pToIgnoreDamage) {
-		super(pMob, true);
+	public BefriendedHurtByTargetGoal(IBefriendedMob mob, Class<?>... pToIgnoreDamage) {
+		super(mob, true);
 		this.toIgnoreDamage = pToIgnoreDamage;
 		this.setFlags(EnumSet.of(Goal.Flag.TARGET));
 		allowAllStatesExceptWait();

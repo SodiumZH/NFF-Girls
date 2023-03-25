@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.AbstractBefriendingHandler;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.handlerpreset.HandlerItemGivingProcess;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Util;
@@ -39,11 +40,11 @@ public class HandlerHuskGirl extends HandlerItemGivingProcess
 	protected double getProcValue(ItemStack item) {
 		float rnd = this.rnd.nextFloat();
 		if (item.is(DwmgItems.SOUL_CAKE_SLICE.get()))
-			return rnd < 0.01 ? 1.001 : (rnd < 0.05 ? 0.667 : (rnd < 0.2 ? 0.334 : 0.251));
+			return rnd < 0.01 ? 1.001 : (rnd < 0.05 ? 0.751 : (rnd < 0.2 ? 0.501 : 0.251));
 		else if (item.is(ModItems.SOUL_POWDER.get()))
 			return RndUtil.rndRangedDouble(0.015, 0.03);
 		else if (item.is(ModItems.SOUL_APPLE.get()))
-			return RndUtil.rndRangedDouble(0.02, 0.06);
+			return RndUtil.rndRangedDouble(0.03, 0.06);
 		else return 0;
 	}
 

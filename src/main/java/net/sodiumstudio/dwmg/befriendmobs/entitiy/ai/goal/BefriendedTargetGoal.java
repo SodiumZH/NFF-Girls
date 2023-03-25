@@ -9,87 +9,87 @@ import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 
-public abstract class BefriendedTargetGoal extends TargetGoal {
-	
+public abstract class BefriendedTargetGoal extends TargetGoal
+{
+
 	// for simplification
 	protected static final BefriendedAIState WAIT = BefriendedAIState.WAIT;
 	protected static final BefriendedAIState FOLLOW = BefriendedAIState.FOLLOW;
 	protected static final BefriendedAIState WANDER = BefriendedAIState.WANDER;
-	
+
 	protected IBefriendedMob mob = null;
-	private HashSet<BefriendedAIState> allowedStates = new HashSet<BefriendedAIState>();
+	protected HashSet<BefriendedAIState> allowedStates = new HashSet<BefriendedAIState>();
 	protected boolean isBlocked = false;
-	
-	public BefriendedTargetGoal(Mob pMob, boolean pMustSee) {
-		super(pMob, pMustSee);
-		mob = (IBefriendedMob)pMob;
+
+	public BefriendedTargetGoal(IBefriendedMob mob, boolean mustSee)
+	{
+		this(mob, mustSee, false);
 	}
 
-	public BefriendedTargetGoal(IBefriendedMob pMob, boolean pMustSee) {
-		super((Mob)pMob, pMustSee);
-		mob = pMob;
+	public BefriendedTargetGoal(IBefriendedMob mob, boolean mustSee, boolean mustReach)
+	{
+		super(mob.asMob(), mustSee, mustReach);
+		this.mob = mob;
+	}
+
+	public HashSet<BefriendedAIState> getAllowedStates()
+	{
+		return allowedStates;
 	}
 	
-	public boolean isStateAllowed()
-	{
+	public boolean isStateAllowed() {
 		return allowedStates.contains(mob.getAIState());
 	}
-	
-	public void allowState(BefriendedAIState state)
-	{
+
+	public BefriendedTargetGoal allowState(BefriendedAIState state) {
 		if (!allowedStates.contains(state))
 			allowedStates.add(state);
+		return this;
 	}
-	
-	public void disallowState(BefriendedAIState state)
-	{
+
+	public BefriendedTargetGoal excludeState(BefriendedAIState state) {
 		if (allowedStates.contains(state))
 			allowedStates.remove(state);
+		return this;
 	}
-	
-	public void allowAllStates()
-	{
+
+	public BefriendedTargetGoal allowAllStates() {
 		for (BefriendedAIState state : BefriendedAIState.values())
 			allowedStates.add(state);
+		return this;
 	}
-	
-	public void allowAllStatesExceptWait()
-	{
+
+	public BefriendedTargetGoal allowAllStatesExceptWait() {
 		allowAllStates();
-		disallowState(WAIT);
+		excludeState(WAIT);
+		return this;
 	}
-	
+
 	// Disable this goal
-	public void blockGoal()
-	{
+	public void blockGoal() {
 		isBlocked = true;
 	}
-	
-	public void resumeGoal()
-	{
+
+	public void resumeGoal() {
 		isBlocked = false;
 	}
-	
-	public boolean isDisabled()
-	{
+
+	public boolean isDisabled() {
 		return isBlocked || !isStateAllowed();
 	}
-	
-	public LivingEntity getLiving()
-	{
-		return (LivingEntity)mob;
+
+	public LivingEntity getLiving() {
+		return (LivingEntity) mob;
 	}
-	
-	public Mob getMob()
-	{
-		return (Mob)mob;
+
+	public Mob getMob() {
+		return (Mob) mob;
 	}
-	
-	public PathfinderMob getPathfinder()
-	{
-		return (PathfinderMob)mob;
+
+	public PathfinderMob getPathfinder() {
+		return (PathfinderMob) mob;
 	}
-		
+
 	@Override
 	public boolean canUse() {
 		return false;

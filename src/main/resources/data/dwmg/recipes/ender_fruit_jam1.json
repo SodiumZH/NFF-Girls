@@ -1,0 +1,44 @@
+{
+  "type" : "minecraft:crafting_shapeless",
+  "ingredients" : [ 
+	  {
+	    "item" : "dwmg:enderberry"
+	  }, 
+	  
+	  {
+	    "item" : "dwmg:enderberry"
+	  }, 
+	  
+	  {
+	    "tag" : "forge:foods/lemons"
+	  }, 
+	  
+	  {
+	    "item" : "minecraft:chorus_fruit"
+	  }, 
+	  
+	  {
+	    "tag" : "dwmg:hmag_berries"
+	  }, 
+	  
+	  {
+	    "item" : "hmag:cubic_nucleus"
+	  },
+	  
+	  { 
+	  	"item": "hmag:evil_crystal"
+	  },
+	    
+	  {
+	    "item" : "minecraft:honey_bottle"
+	  }, 
+	  
+	  {
+	    "item" : "minecraft:honey_bottle"
+	  }
+  ],
+  "result" : {
+    "item" : "dwmg:ender_fruit_jam",
+    "count" : 2
+  }
+}

@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.AbstractBefriendingHandler;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.handlerpreset.HandlerItemGivingProcess;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Util;
@@ -39,11 +40,11 @@ public class HandlerZombieGirl extends HandlerItemGivingProcess
 	protected double getProcValue(ItemStack item) {
 		float rnd = this.rnd.nextFloat();
 		if (item.is(DwmgItems.SOUL_CAKE_SLICE.get()))
-			return rnd < 0.05 ? 1.01 : (rnd < 0.2 ? 0.67 : 0.34);
+			return rnd < 0.05 ? 1.01 : (rnd < 0.2 ? 0.667 : 0.334);
 		else if (item.is(ModItems.SOUL_POWDER.get()))
 			return RndUtil.rndRangedDouble(0.02, 0.04);
 		else if (item.is(ModItems.SOUL_APPLE.get()))
-			return RndUtil.rndRangedDouble(0.03, 0.08);
+			return RndUtil.rndRangedDouble(0.04, 0.08);
 		else return 0;
 	}
 

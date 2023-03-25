@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedFollowOwnerGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.creeper.AbstractBefriendedCreeper;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.vanillapreset.creeper.AbstractBefriendedCreeper;
 
 /* Adjusted from vanilla FollowOwnerGoal for TameableAnimal */
 public class BefriendedCreeperFollowOwnerGoal extends BefriendedFollowOwnerGoal {

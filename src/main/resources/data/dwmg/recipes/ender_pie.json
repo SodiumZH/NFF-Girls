@@ -1,0 +1,39 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	" E ",
+	"GJS",
+	"FFF"	
+	],
+	
+	"key":{ 
+	
+		"E":{
+		"item": "minecraft:ender_eye"
+		},
+		
+		"G":{ 
+		"item": "minecraft:egg"
+		},
+		
+		"J":{ 
+		"item": "dwmg:ender_fruit_jam"
+		},
+		
+		"S":{ 
+		"item": "minecraft:sugar"
+		},
+		
+		"F":{ 
+		"item": "dwmg:soul_flour"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "dwmg:ender_pie",
+		"count": 1
+	}
+}

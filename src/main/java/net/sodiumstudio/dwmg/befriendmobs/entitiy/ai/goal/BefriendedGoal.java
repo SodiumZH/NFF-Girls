@@ -27,28 +27,32 @@ public abstract class BefriendedGoal extends Goal {
 		return allowedStates.contains(mob.getAIState());
 	}
 	
-	public void allowState(BefriendedAIState state)
+	public BefriendedGoal allowState(BefriendedAIState state)
 	{
 		if (!allowedStates.contains(state))
 			allowedStates.add(state);
+		return this;
 	}
 	
-	public void disallowState(BefriendedAIState state)
+	public BefriendedGoal excludeState(BefriendedAIState state)
 	{
 		if (allowedStates.contains(state))
 			allowedStates.remove(state);
+		return this;
 	}
 	
-	public void allowAllStates()
+	public BefriendedGoal allowAllStates()
 	{
 		for (BefriendedAIState state : BefriendedAIState.values())
 			allowedStates.add(state);
+		return this;
 	}
 	
-	public void allowAllStatesExceptWait()
+	public BefriendedGoal allowAllStatesExceptWait()
 	{
 		allowAllStates();
-		disallowState(WAIT);
+		excludeState(WAIT);
+		return this;
 	}
 	
 	public void disallowAllStates()

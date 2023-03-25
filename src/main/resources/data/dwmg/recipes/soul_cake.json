@@ -24,7 +24,7 @@
 		},
 		
 		"E":{ 
-		"item": "minecraft:egg"
+		"tag": "forge:eggs"
 		},
 		
 		"W":{ 

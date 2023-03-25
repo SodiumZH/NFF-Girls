@@ -115,7 +115,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	@Override
 	public void updateAttributes()
 	{
-		//this.getattri
+
 	}
 	
 	/* Interaction */

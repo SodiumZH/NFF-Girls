@@ -20,7 +20,7 @@ public class DwmgBefriendingTypes {
 	@SubscribeEvent
 	public static void registerBefriendingType(FMLCommonSetupEvent event)
 	{
-		/*
+		
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.ZOMBIE_GIRL.get(),
 				DwmgEntityTypes.BEF_ZOMBIE_GIRL.get(),
@@ -33,27 +33,16 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.HUSK_GIRL.get(),
 				DwmgEntityTypes.BEF_HUSK_GIRL.get(),
 				new HandlerHuskGirl());	
-		BefriendingTypeRegistry.register(
+	/*	BefriendingTypeRegistry.register(
 				ModEntityTypes.DROWNED_GIRL.get(),
 				DwmgEntityTypes.BEF_DROWNED_GIRL.get(),
-				new HandlerDrownedGirl());
-		*/
+				new HandlerDrownedGirl());*/
+		
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.CREEPER_GIRL.get(),
 				DwmgEntityTypes.BEF_CREEPER_GIRL.get(),
 				new HandlerCreeperGirl());
-		BefriendingTypeRegistry.register(
-				ModEntityTypes.ZOMBIE_GIRL.get(),
-				DwmgEntityTypes.BEF_ZOMBIE_GIRL.get(),
-				new HandlerDemo());
-		BefriendingTypeRegistry.register(
-				ModEntityTypes.SKELETON_GIRL.get(),
-				DwmgEntityTypes.BEF_SKELETON_GIRL.get(),
-				new HandlerDemo());		
-		BefriendingTypeRegistry.register(
-				ModEntityTypes.HUSK_GIRL.get(),
-				DwmgEntityTypes.BEF_HUSK_GIRL.get(),
-				new HandlerDemo());	
+
 	}
 	
 }

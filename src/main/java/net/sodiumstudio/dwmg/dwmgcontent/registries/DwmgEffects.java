@@ -6,6 +6,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
+import net.sodiumstudio.dwmg.dwmgcontent.effects.EffectEnderProtection;
 import net.sodiumstudio.dwmg.dwmgcontent.effects.EffectUndeadAffinity;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -16,5 +17,6 @@ public class DwmgEffects {
 	// Registry body
 	
 	public static final RegistryObject<MobEffect> UNDEAD_AFFINITY = EFFECTS.register("undead_affinity", () -> new EffectUndeadAffinity());
+	public static final RegistryObject<MobEffect> ENDER_PROTECTION = EFFECTS.register("ender_protection", () -> new EffectEnderProtection());
 
 }
