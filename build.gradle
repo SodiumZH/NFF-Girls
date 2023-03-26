@@ -18,7 +18,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-version = '0.0.0-snapshot.2'
+version = '0.0.0-snapshot.3'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'dwmg'
 
@@ -168,7 +168,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.57'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -177,7 +177,7 @@ dependencies {
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
 
     // Examples using mod jars from ./libs
-    // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
+    //implementation fg.deobf("blank:optifine-${mc_version}:1.0.0")
 
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
@@ -196,7 +196,7 @@ jar {
         attributes([
                 "Specification-Title"     : "dwmg",
                 "Specification-Vendor"    : "sodiumstudio",
-                "Specification-Version"   : "1.0.0-alpha.1", // We are version 1 of ourselves
+                "Specification-Version"   : "1.0.0-snapshot.3",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "sodiumstudio",

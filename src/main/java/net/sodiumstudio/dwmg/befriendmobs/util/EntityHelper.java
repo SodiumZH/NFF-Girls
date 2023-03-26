@@ -19,6 +19,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
@@ -200,8 +201,7 @@ public class EntityHelper
 		return Math.round(creeper.getSwelling(1.0f) * 28.0f);
 	}
 
-	// Add effect, preventing to override the existing one if has longer time than
-	// this
+	// Add effect, preventing to override the existing one if has longer time than this
 	public static void addEffectSafe(LivingEntity entity, MobEffect effect, int ticks, int lvl) {
 		if (!entity.hasEffect(effect) || entity.getEffect(effect).getDuration() < ticks)
 		{
@@ -251,5 +251,36 @@ public class EntityHelper
 		else return false;
 	}
 	
+	// Static method to access EnderMan::isLookingAtMe
+	// Ported from vanilla EnderMan
+	public static boolean isEnderManLookedAt(EnderMan enderman, Player player) {
+		ItemStack itemstack = player.getInventory().armor.get(3);
+		if (net.minecraftforge.common.ForgeHooks.shouldSuppressEnderManAnger(enderman, player, itemstack))
+		{
+			return false;
+		} else
+		{
+			Vec3 vec3 = player.getViewVector(1.0F).normalize();
+			Vec3 vec31 = new Vec3(enderman.getX() - player.getX(), enderman.getEyeY() - player.getEyeY(),
+					enderman.getZ() - player.getZ());
+			double d0 = vec31.length();
+			vec31 = vec31.normalize();
+			double d1 = vec3.dot(vec31);
+			return d1 > 1.0D - 0.025D / d0 ? player.hasLineOfSight(enderman) : false;
+		}
+	}
+	
+	// Check if an enderman will freeze (be angry) on looked at
+	// Ported from vanilla EnderMan.EndermanFreezeWhenLookedAt::canUse
+	public static boolean shouldEnderManFreezeOnLookedAt(EnderMan enderman, Player player)
+	{
+        LivingEntity target = enderman.getTarget();
+        if (!(target instanceof Player)) {
+           return false;
+        } else {
+           double d0 = target.distanceToSqr(enderman);
+           return d0 > 256.0D ? false : isEnderManLookedAt(enderman, ((Player)target));
+        }
+	}
 	
 }

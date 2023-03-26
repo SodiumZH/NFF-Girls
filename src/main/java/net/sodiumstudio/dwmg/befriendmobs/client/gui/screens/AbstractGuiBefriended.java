@@ -1,5 +1,10 @@
 package net.sodiumstudio.dwmg.befriendmobs.client.gui.screens;
 
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
+
 import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -13,10 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractGuiBefriended extends AbstractContainerScreen<AbstractInventoryMenuBefriended> {

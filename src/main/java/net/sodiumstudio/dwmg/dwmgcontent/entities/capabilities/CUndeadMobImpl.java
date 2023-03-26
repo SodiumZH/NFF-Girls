@@ -11,7 +11,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
-import net.sodiumstudio.dwmg.befriendmobs.util.Util;
+import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 
 public class CUndeadMobImpl implements CUndeadMob {
 

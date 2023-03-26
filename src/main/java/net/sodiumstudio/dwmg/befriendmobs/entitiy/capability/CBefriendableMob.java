@@ -5,7 +5,10 @@ import java.util.UUID;
 import java.util.HashSet;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
+import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.IntTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +33,7 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 	
 	public default void addHatred(Player player)
 	{
-		addHatred(player, 180);
+		addHatred(player, 18000);
 	}
 
 	public default void addHatredPermanent(Player player)
@@ -38,17 +41,58 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 		addHatred(player, -1);
 	}
 	
-	
 	// Check if a player is in the hatred list
 	public boolean isInHatred(Player player);
 	
 	// ======== Serialization
 	
 	// Get NBT tag
-	public CompoundTag getNBT();
+	public CompoundTag getNbt();
 
-	// Get the player data tag under NBT
-	public CompoundTag getPlayerData();
+	// Get the whole player data subtag under NBT
+	public CompoundTag getPlayerDataNbt();
+
+	public default Tag getPlayerData(Player player, String key)
+	{
+		return NbtHelper.getPlayerData(getPlayerDataNbt(), player, key);
+	}
+
+	public default int getPlayerDataInt(Player player, String key)
+	{
+		return ((IntTag)getPlayerData(player, key)).getAsInt();
+	}
+	
+	public default float getPlayerDataFloat(Player player, String key)
+	{
+		return ((FloatTag)getPlayerData(player, key)).getAsFloat();
+	}
+	
+	public default double getPlayerDataDouble(Player player, String key)
+	{
+		Tag tag = getPlayerData(player, key);
+		if (tag instanceof FloatTag f)
+			return f.getAsDouble();
+		else if (tag instanceof DoubleTag d)
+			return d.getAsDouble();
+		else throw new ClassCastException();
+	}
+	
+	
+	
+	public default void putPlayerData(Tag data, Player player, String key)
+	{
+		NbtHelper.putPlayerData(data, getPlayerDataNbt(), player, key);
+	}
+	
+	public default boolean hasPlayerData(Player player, String key)
+	{
+		return NbtHelper.containsPlayerData(getPlayerDataNbt(), player, key);
+	}
+	
+	public default void removePlayerData(Player player, String key)
+	{
+		NbtHelper.removePlayerData(getPlayerDataNbt(), player, key);
+	}
 	
 	// =========== Timer
 	
@@ -56,7 +100,7 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 	public int getTimer(String key);
 	
 	// Get the value of player-specified timer (tick). (PS = player specified)
-	public int getTimerPS(Player player, String key);
+	public int getPlayerTimer(Player player, String key);
 	
 	public boolean hasTimer(String key);
 	
@@ -66,7 +110,7 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 	public IntTag setTimer(String key, int ticks);
 	
 	// Setup a player-specified timer. (PS = player specified)
-	public IntTag setTimerPS(Player player, String key, int ticks);
+	public IntTag setPlayerTimer(Player player, String key, int ticks);
 	
 	// Update all timers that should be executed every tick
 	public void updateTimers();

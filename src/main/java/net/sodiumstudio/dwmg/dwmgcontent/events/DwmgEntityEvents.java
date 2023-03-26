@@ -26,7 +26,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
-import net.sodiumstudio.dwmg.befriendmobs.util.Util;
+import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
@@ -85,9 +85,9 @@ public class DwmgEntityEvents
 					{
 						// Befriended mobs won't be killed by CreeperGirl's "final explosion". They leave 1 health and get invulnerable for 3s, 
 						// preventing them to be killed by falling down after blowed up by the explosion.
-						if (l.getNBT().contains("final_explosion_player", 11)
+						if (l.getNbt().contains("final_explosion_player", 11)
 						&& event.getMob().getOwner() != null
-						&& l.getNBT().getUUID("final_explosion_player").equals(event.getMob().getOwnerUUID()))
+						&& l.getNbt().getUUID("final_explosion_player").equals(event.getMob().getOwnerUUID()))
 						{
 							event.getMob().asMob().setHealth(1.0f);
 							event.getMob().asMob().invulnerableTime += 60;
@@ -117,12 +117,14 @@ public class DwmgEntityEvents
 		{
 			if (living.hasEffect(DwmgEffects.ENDER_PROTECTION.get()))
 			{
-				// If the player drops into the void, try pull to the
+				// If the player drops into the void, try pull up
 				if (event.getSource().equals(DamageSource.OUT_OF_WORLD))
 				{
 					if (living.getY() < -64.0d)
 					{
+						// Lift up
 						living.setPosRaw(living.getX(), 64.0d, living.getZ());
+						// and find a standable block
 						EntityHelper.chorusLikeTeleport(living);
 						living.level.addParticle(ParticleTypes.PORTAL, living.getRandomX(0.5D),
 								living.getRandomY() - 0.25D, living.getRandomZ(0.5D),
@@ -132,18 +134,21 @@ public class DwmgEntityEvents
 
 						if (living instanceof Player p)
 						{
+							// whether player is standing on a solid block
 							BlockPos standingOn = new BlockPos(living.blockPosition().getX(),
 									living.blockPosition().getY() - 1, living.blockPosition().getZ());
 							if (living.level.getBlockState(standingOn).is(Blocks.AIR))
 							{
-								Util.printToScreen(
+								// failed, add slow falling
+								MiscUtil.printToScreen(
 								"You're lifted from the void because of the Ender Protection, but...", p);
-								p.setDeltaMovement(new Vec3(0, 0, 0));
-								p.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200));
+								p.setDeltaMovement(new Vec3(0, 0, 0));	// Velocity
+								p.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200));	
 
 							} else
 							{
-								Util.printToScreen("You're saved from the void because of the Ender Protection!", p);
+								// succeeded
+								MiscUtil.printToScreen("You're saved from the void because of the Ender Protection!", p);
 							}
 						}
 					}
@@ -158,6 +163,5 @@ public class DwmgEntityEvents
 				}
 			}
 		}
-	}
-	
+	}	
 }

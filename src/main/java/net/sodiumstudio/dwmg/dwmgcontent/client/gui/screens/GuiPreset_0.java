@@ -24,8 +24,8 @@ public class GuiPreset_0 extends AbstractGuiBefriended {
 			"textures/gui/container/gui_preset_0.png");
 	}
 	
-	public GuiPreset_0(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory, IBefriendedMob mob) {
-		super(pMenu, pPlayerInventory, mob, true);
+	public GuiPreset_0(AbstractInventoryMenuBefriended menu, Inventory playerInventory, IBefriendedMob mob) {
+		super(menu, playerInventory, mob, true);
 		imageWidth = 200;
 		imageHeight = 183;
 		inventoryLabelY = imageHeight - 93;
@@ -48,8 +48,8 @@ public class GuiPreset_0 extends AbstractGuiBefriended {
 	}
 	
 	@Override
-	public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-	   super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+	   super.render(poseStack, mouseX, mouseY, partialTick);
 	}
 
 }

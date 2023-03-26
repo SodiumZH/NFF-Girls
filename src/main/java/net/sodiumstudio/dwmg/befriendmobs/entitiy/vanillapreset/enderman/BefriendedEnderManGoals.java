@@ -20,6 +20,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.BefriendedGoal;
 
 public class BefriendedEnderManGoals
@@ -31,6 +32,7 @@ public class BefriendedEnderManGoals
 
 		public LeaveBlockGoal(AbstractBefriendedEnderMan enderman)
 		{
+			this.mob = enderman.self();
 			this.enderman = enderman;
 			this.allowState(WANDER);
 		}
@@ -207,6 +209,7 @@ public class BefriendedEnderManGoals
 
 		public TakeBlockGoal(AbstractBefriendedEnderMan enderman)
 		{
+			this.mob = (IBefriendedMob)enderman;
 			this.enderman = enderman;
 			this.allowState(WANDER);
 		}
@@ -261,6 +264,7 @@ public class BefriendedEnderManGoals
 
 		public FreezeWhenLookedAt(AbstractBefriendedEnderMan enderman)
 		{
+			this.mob = (IBefriendedMob)enderman;
 			this.enderman = enderman;
 			this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
 			this.allowState(WANDER);

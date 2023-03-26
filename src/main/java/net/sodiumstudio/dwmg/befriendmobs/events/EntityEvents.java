@@ -139,7 +139,7 @@ public class EntityEvents
 	        		if(target != null && !l.getHatred().contains(player.getUUID()) && !isCancelledByEffect.get())
 	        		{
 	        			l.addHatred(player);
-	        			// Debug.printToScreen("Player " + Util.getNameString(player) + " put into hatred list by " + Util.getNameString(mob), player, player);
+	        			// Debug.printToScreen("Player " + MiscUtil.getNameString(player) + " put into hatred list by " + MiscUtil.getNameString(mob), player, player);
 	        		}
 	        	});
 	        }

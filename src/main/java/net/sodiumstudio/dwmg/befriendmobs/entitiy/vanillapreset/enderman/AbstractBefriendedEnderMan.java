@@ -113,6 +113,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0f);
 		Arrays.fill(this.handDropChances, 0f);
+		additionalInventory = new AdditionalInventory(getInventorySize());
 	}
 
 	protected void registerGoals() {
@@ -536,7 +537,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	// Inventory related
 	// Generally no need to modify unless noted
 
-	AdditionalInventory additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize());
+	AdditionalInventory additionalInventory = new AdditionalInventory(getInventorySize());
 
 	@Override
 	public AdditionalInventory getAdditionalInventory() {

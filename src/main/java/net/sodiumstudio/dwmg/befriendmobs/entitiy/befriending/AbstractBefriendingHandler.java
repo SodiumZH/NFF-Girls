@@ -51,4 +51,6 @@ public abstract class AbstractBefriendingHandler
 	public abstract BefriendableMobInteractionResult handleInteract(BefriendableMobInteractArguments args);
 	
 	public void serverTick(Mob mob){}
+	
+	public abstract void interrupt(Player player, Mob mob);
 }

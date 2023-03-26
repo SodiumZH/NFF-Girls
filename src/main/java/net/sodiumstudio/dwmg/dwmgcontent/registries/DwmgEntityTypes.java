@@ -12,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedDrownedGirl;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedEnderExcutor;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedEnderExecutor;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedHuskGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedSkeletonGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedZombieGirl;
@@ -66,9 +66,9 @@ public class DwmgEntityTypes {
 			.setShouldReceiveVelocityUpdates(false)
 			.build(new ResourceLocation(Dwmg.MOD_ID, "bef_creeper_girl").toString()));
 	
-	public static final RegistryObject<EntityType<EntityBefriendedEnderExcutor>> BEF_ENDER_EXECUTOR =
+	public static final RegistryObject<EntityType<EntityBefriendedEnderExecutor>> BEF_ENDER_EXECUTOR =
 			ENTITY_TYPES.register("bef_ender_executor", () -> EntityType.Builder.of(
-			EntityBefriendedEnderExcutor::new, MobCategory.CREATURE)
+			EntityBefriendedEnderExecutor::new, MobCategory.CREATURE)
 			.sized(0.6F, 2.9F)
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
@@ -83,7 +83,7 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.BEF_HUSK_GIRL.get(), EntityBefriendedHuskGirl.createAttributes().build());
         event.put(DwmgEntityTypes.BEF_DROWNED_GIRL.get(), EntityBefriendedDrownedGirl.createAttributes().build());
         event.put(DwmgEntityTypes.BEF_CREEPER_GIRL.get(), EntityBefriendedCreeperGirl.createAttributes().build());
-        event.put(DwmgEntityTypes.BEF_ENDER_EXECUTOR.get(), EntityBefriendedEnderExcutor.createAttributes().build());
+        event.put(DwmgEntityTypes.BEF_ENDER_EXECUTOR.get(), EntityBefriendedEnderExecutor.createAttributes().build());
 
 	}
 	

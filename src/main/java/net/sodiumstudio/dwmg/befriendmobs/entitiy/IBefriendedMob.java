@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
-import net.sodiumstudio.dwmg.befriendmobs.util.Util;
+import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 
 public interface IBefriendedMob extends ContainerListener  {
@@ -74,7 +74,7 @@ public interface IBefriendedMob extends ContainerListener  {
 	{
 		BefriendedAIState nextState = getAIState().defaultSwitch();
 		setAIState(nextState);
-		Util.printToScreen(this.asMob().getName().getString() + " " + this.getAIState().getDisplayInfo(), getOwner(), this.asMob());
+		MiscUtil.printToScreen(this.asMob().getName().getString() + " " + this.getAIState().getDisplayInfo(), getOwner(), this.asMob());
 		return nextState;
 	}
 	
@@ -159,13 +159,6 @@ public interface IBefriendedMob extends ContainerListener  {
 
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container);
 
-	
-	public default Mob asMob()
-	{
-		return (Mob)this;
-	}
-
-
 	/* ContainerListener interface */
 	// DO NOT override this. Override onInventoryChanged instead.
 	@Override
@@ -185,5 +178,15 @@ public interface IBefriendedMob extends ContainerListener  {
 
 	/* Misc */
 	public void updateAttributes();
+
+	public default Mob asMob()
+	{
+		return (Mob)this;
+	}
+	
+	public default IBefriendedMob self()
+	{
+		return this;
+	}
 
 }

@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.befriendmobs.example;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.AbstractBefriendingHandler;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
@@ -44,6 +45,12 @@ public class EXAMPLE_BefriendingHandlerZombie extends AbstractBefriendingHandler
 			}
 		});
 		return result;
+	}
+
+	@Override
+	public void interrupt(Player player, Mob mob) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

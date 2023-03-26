@@ -1,33 +1,23 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag;
 
-import java.util.HashSet;
-
 import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.handlerpreset.HandlerItemGivingProcess;
+import net.minecraft.world.item.Items;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.handlerpreset.HandlerItemGivingProgress;
+import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.RndUtil;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 
-public class HandlerSkeletonGirl extends HandlerItemGivingProcess
+public class HandlerSkeletonGirl extends HandlerItemGivingProgress
 {
-
 	@Override
-	protected HashSet<Item> givableItems() {
-		HashSet<Item> set = new HashSet<Item>();
-		set.add(DwmgItems.SOUL_CAKE_SLICE.get());
-		set.add(ModItems.SOUL_POWDER.get());
-		set.add(ModItems.SOUL_APPLE.get());
-		return set;
-	}
-
-	@Override
-	protected double getProcValue(ItemStack item) {
-		float rnd = this.rnd.nextFloat();
+	protected double getProcValueToAdd(ItemStack item) {
+		double rnd = this.rnd.nextDouble();
 		if (item.is(DwmgItems.SOUL_CAKE_SLICE.get()))
 			return rnd < 0.01 ? 1.001 : (rnd < 0.05 ? 0.751 : (rnd < 0.2 ? 0.501 : 0.251));
 		else if (item.is(ModItems.SOUL_POWDER.get()))
@@ -38,14 +28,24 @@ public class HandlerSkeletonGirl extends HandlerItemGivingProcess
 	}
 
 	@Override
-	protected int cooldownTicks() {
-		return 200;
-	}
-	
-	@Override
-	protected boolean additionalConditions(Player player, Mob mob)
+	public boolean additionalConditions(Player player, Mob mob)
 	{
 		return player.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get());
 	}
 
+	@Override
+	public boolean isItemAcceptable(Item item) {
+		Item[] items = {
+				DwmgItems.SOUL_CAKE_SLICE.get(),
+				ModItems.SOUL_POWDER.get(),
+				ModItems.SOUL_APPLE.get()
+				};
+		return MiscUtil.isIn(item, items, Items.AIR);
+	}
+
+	@Override
+	public int getItemGivingCooldownTicks() {
+		// TODO Auto-generated method stub
+		return 200;
+	}
 }

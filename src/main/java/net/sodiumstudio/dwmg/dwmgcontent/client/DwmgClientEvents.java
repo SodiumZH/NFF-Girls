@@ -11,6 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.client.renderer.BefriendedCreeperGirlRenderer;
+import net.sodiumstudio.dwmg.dwmgcontent.client.renderer.BefriendedEnderExecutorRenderer;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -27,7 +28,8 @@ public class DwmgClientEvents
         event.registerEntityRenderer(DwmgEntityTypes.BEF_SKELETON_GIRL.get(), SkeletonGirlRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.BEF_HUSK_GIRL.get(), HuskGirlRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.BEF_DROWNED_GIRL.get(), DrownedGirlRenderer::new);
-        event.registerEntityRenderer(DwmgEntityTypes.BEF_CREEPER_GIRL.get(), BefriendedCreeperGirlRenderer::new);     
+        event.registerEntityRenderer(DwmgEntityTypes.BEF_CREEPER_GIRL.get(), BefriendedCreeperGirlRenderer::new);  
+        event.registerEntityRenderer(DwmgEntityTypes.BEF_ENDER_EXECUTOR.get(), BefriendedEnderExecutorRenderer::new);  
     }
 
 
