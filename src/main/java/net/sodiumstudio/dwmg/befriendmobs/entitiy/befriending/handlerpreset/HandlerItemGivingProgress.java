@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.capability.CBefriendableMob;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
@@ -35,7 +36,7 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 					&& args.isMainHand() 
 					&& additionalConditions(player, target))) {
 				// Block if in hatred
-				if (l.isInHatred(player) && !ignoreHatred()) {
+				if (l.isInHatred(player) && !shouldIgnoreHatred()) {
 					EntityHelper.sendAngryParticlesToLivingDefault(target);
 					Debug.printToScreen("Unable to befriend: in hatred list.", player, target);
 					result.setHandled();
@@ -66,7 +67,7 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 						finalActions(player, target);
 						result.setHandled();
 					} else {
-						EntityHelper.sendGreenStarParticlesToLivingDefault(target);
+						EntityHelper.sendGlintParticlesToLivingDefault(target);
 						// Not satisfied, put data
 						NbtHelper.putPlayerData(DoubleTag.valueOf(procValue), l.getPlayerDataNbt(), player,
 								"proc_value");
@@ -112,7 +113,7 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 	public void serverTick(Mob mob)
 	{
 		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> {
-			if (!ignoreHatred())
+			if (!shouldIgnoreHatred())
 			{
 				for (UUID uuid: l.getHatred())
 				{
@@ -128,8 +129,19 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 	public void interrupt(Player player, Mob mob) {
 		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 		{
-			l.putPlayerData(DoubleTag.valueOf(0), player, "proc_value");
-			EntityHelper.sendAngryParticlesToLivingDefault(mob);
+			if (isInProcess(player, mob))
+			{
+				EntityHelper.sendAngryParticlesToLivingDefault(mob);
+			}
+			l.removePlayerData(player, "proc_value");			
 		});
 	}
+	
+	@Override
+	public boolean isInProcess(Player player, Mob mob)
+	{
+		CBefriendableMob l = CBefriendableMob.getCap(mob);
+		return l.hasPlayerData(player, "proc_value") && l.getPlayerDataDouble(player, "proc_value") > 0d;
+	}
+	
 }

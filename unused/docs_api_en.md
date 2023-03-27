@@ -4,9 +4,7 @@
 
 Befriend Mobs system is intended to help modders easily create features of befriending (or taming) mobs and friendly mobs despite their type hierarchy.
 
-For example, vanilla tamable mobs (e.g. wolf) inherit `TamableMob` class (except horse and variants). If you want to make hostile mobs (e.g. Zombie) friendly or tamed, only using vanilla API it may become complex, and Befriended Mobs system is designed to simplify this. 
-
-You can easily create a subclass of Zombie (or anything else extends Mob) with Befriended Mobs  without using any vanilla TamableMob interfaces, and without considering about the type hierarchy of the existing mobs.
+For example, vanilla tamable mobs (e.g. wolf) inherit `TamableAnimal` class (except horse and variants). If you want to make hostile mobs (e.g. Zombie) friendly or tamed, only using vanilla API it may become complex, and Befriend Mobs system is designed to help on this. You can easily create a subclass of Zombie (or anything else extends Mob) with Befriended Mobs without using any vanilla `TamableMob` interfaces.
 
 
 
@@ -36,7 +34,7 @@ A procedure to befriend a mob, *i.e*. convert a befriendable mob into the corres
 
 ## How to create a befriended mob class
 
-1. Create a mob class (anything extends Mob; PathfinderMob recommended) **implementing `IBefriendedMob` interface**. 
+1. Create a mob class (anything extends `Mob`; `PathfinderMob` or `Monster` recommended) **implementing `IBefriendedMob` interface**. 
 
 2. Do general setup: register entity type; register entity renderer; register entity attributes
 
@@ -46,7 +44,7 @@ A procedure to befriend a mob, *i.e*. convert a befriendable mob into the corres
 
 5. (Optional, if you need GUI) Create the inventory menu. Inventory menu is for adding the mob's inventory into the GUI. Inventory menu for befriended mob **inherits `AbstractInventoryMenuBefriended` class**. In this class you need to override `addMenuSlots` method for the inventory of your mob. 
 
-   By default, after running `addMenuSlots`, the player inventory will be automatically added just like in the vanilla inventory screen, at the position specified by `getPlayerInventoryPosition` method which you need to override. If player inventory is not needed, override `doAddPlayerInventory` to false.
+   By default, after invoking `addMenuSlots`, the player inventory will be automatically added just like in the vanilla inventory screen, at the position specified by `getPlayerInventoryPosition` method which you need to override. If player inventory is not needed, override `doAddPlayerInventory` to false.
 
    Finally, override `makeGui` method to generate GUI screen from this menu. It must return a new GUI screen instance. For how to make, see below.
 
@@ -82,7 +80,7 @@ A procedure to befriend a mob, *i.e*. convert a befriendable mob into the corres
 2. AI State: there are 3 preset states: wait, follow and wander. You must manually specify which states are allowed in each AI goals (described below).
 3.  (To be completed)
 
-## How to port an existing AI Goal to Befriended Goal
+## How to port an existing AI Goal to a Befriended Goal
 
 1. Create a class inheriting `BefriendedGoal` or `BefriendedTargetGoal`.
 
@@ -92,7 +90,7 @@ A procedure to befriend a mob, *i.e*. convert a befriendable mob into the corres
 
 4. Change the class of input mob reference in the constructors to `IBefriendedMob`.
 
-5. Now you'll get tons of errors in the IDE. As it will not automatically cast `IBefriendedMob` to `Mob`, replace the `mob` reference to `mob.asMob()` at each position. The `asMob()` methods returns a `Mob` reference of the mob, same as `(Mob)mob`.
+5. Now you get tons of errors in the IDE. As it will not automatically cast `IBefriendedMob` to `Mob`, replace the `mob` reference to `mob.asMob()` at each position. The `asMob()` method returns a `Mob` reference of the mob, same as `(Mob)mob`.
 
 6. Add AI State filter at the end of the constructors using:
 
@@ -101,7 +99,7 @@ A procedure to befriend a mob, *i.e*. convert a befriendable mob into the corres
    allowAllStatesExceptWait(); // Can use under any AI states except wait
    allowState(BefriendedAIState state); // Add a state to the allowed list
    disallowState(BefrinededAIState state); // Remove a state from the allowed list
-   disallowAllowStates();	// Remove all AI states. Call this before reset AIState filter if the class is inheriting other Befriended (Target) Goal class instead of the raw BefriendedGoal or BefriendedTargetGoal.
+   disallowAllStates();	// Remove all AI states. Call this before resetting AIState filter if the class is inheriting other Befriended (Target) Goal class instead of the raw BefriendedGoal or BefriendedTargetGoal.
    ```
 
    
@@ -149,5 +147,5 @@ v1.add(5, 6);	// Now v is still (x+6, y+8), and v1 is (x+11, y+14).
 v.slotAbove().slotRight(2).add(2, 1);	// You can also combine slot operations and math operations in a chain
 ```
 
-Note: please ***NEVER*** do this: `IntVec2 v1 = v;` This will make `v` and `v1` refer to the same object and when you call `v.add(x, y)` the `v1` will also change. If you need an identical copy, always use something like `v1 = v.copy()`.
+Note: please ***NEVER*** do this: ~~`IntVec2 v1 = v;`~~ This will make `v` and `v1` refer to the same object and when you call `v.add(x, y)` the `v1` will also change. If you need an identical copy, always use `v1 = v.copy()`.
 

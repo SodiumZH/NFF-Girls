@@ -21,10 +21,19 @@ public class BefMobCapabilityAttachment {
 	public static void attachLivingEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
 		if (event.getObject() instanceof Mob mob) {
 			if (BefriendingTypeRegistry.contains((EntityType<? extends Mob>) mob.getType())
-					&& !(mob instanceof IBefriendedMob)) {
+					&& !(mob instanceof IBefriendedMob)) 
+			{
 				event.addCapability(new ResourceLocation(BefriendMobs.MOD_ID, "cap_befriendable"),
 						new CBefriendableMobProvider(mob));
-				// TODO: add an event here
+				if (BefriendingTypeRegistry.contains((EntityType<? extends Mob>) mob.getType()) 
+						&& BefriendingTypeRegistry.getHandler((EntityType<? extends Mob>) mob.getType()) != null)
+				{
+					// Initialize capability (defined in handlers)
+					mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> 
+					{
+						BefriendingTypeRegistry.getHandler((EntityType<? extends Mob>) mob.getType()).initCap(l);
+					});
+				}
 			}
 		}
 	}

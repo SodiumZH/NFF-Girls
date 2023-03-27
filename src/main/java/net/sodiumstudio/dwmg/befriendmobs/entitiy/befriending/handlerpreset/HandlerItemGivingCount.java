@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.capability.CBefriendableMob;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
@@ -42,7 +43,7 @@ public abstract class HandlerItemGivingCount extends HandlerItemGiving
 					&& additionalConditions(player, target))
 			{
 				// Block if in hatred
-				if (l.isInHatred(player) && !ignoreHatred())
+				if (l.isInHatred(player) && !shouldIgnoreHatred())
 				{
 					EntityHelper.sendAngryParticlesToLivingDefault(target);
 					Debug.printToScreen("Unable to befriend: in hatred list.", player, target);
@@ -88,7 +89,7 @@ public abstract class HandlerItemGivingCount extends HandlerItemGiving
 						result.setHandled();
 					} else
 					{
-						EntityHelper.sendGreenStarParticlesToLivingDefault(target);
+						EntityHelper.sendGlintParticlesToLivingDefault(target);
 						// Not satisfied, put data
 						NbtHelper.putPlayerData(IntTag.valueOf(alreadyGiven), l.getPlayerDataNbt(), player,
 								"already_given");
@@ -103,7 +104,7 @@ public abstract class HandlerItemGivingCount extends HandlerItemGiving
 		args.execClient((l) ->
 		{
 			{
-				if (l.isInHatred(player) && !ignoreHatred())
+				if (l.isInHatred(player) && !shouldIgnoreHatred())
 				{
 					if (!player.isShiftKeyDown() 
 							&& isItemAcceptable(player.getMainHandItem()) 
@@ -125,12 +126,11 @@ public abstract class HandlerItemGivingCount extends HandlerItemGiving
 	public void serverTick(Mob mob)
 	{
 		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> {
-			if (!ignoreHatred())
+			if (!shouldIgnoreHatred())
 			{
 				for (UUID uuid: l.getHatred())
 				{
-					if (l.hasPlayerData(mob.level.getPlayerByUUID(uuid), "already_given")
-							&& l.getPlayerDataInt(mob.level.getPlayerByUUID(uuid), "already_given") > 0)
+					if (isInProcess(mob.level.getPlayerByUUID(uuid), mob))
 						this.interrupt(mob.level.getPlayerByUUID(uuid), mob);					
 				}
 			}
@@ -141,9 +141,20 @@ public abstract class HandlerItemGivingCount extends HandlerItemGiving
 	public void interrupt(Player player, Mob mob) {
 		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 		{
-			l.putPlayerData(IntTag.valueOf(0), player, "already_given");
-			EntityHelper.sendAngryParticlesToLivingDefault(mob);
+			if (l.hasPlayerData(player, "already_given") 
+					&& l.getPlayerDataInt(player, "already_given") > 0)
+			{
+				EntityHelper.sendAngryParticlesToLivingDefault(mob);
+			}
+			l.removePlayerData(player, "already_given");
 		});
+	}
+	
+	@Override
+	public boolean isInProcess(Player player, Mob mob)
+	{
+		CBefriendableMob l = CBefriendableMob.getCap(mob);
+		return l.hasPlayerData(player, "already_given") && l.getPlayerDataInt(player, "already_given") > 0;
 	}
 }
 

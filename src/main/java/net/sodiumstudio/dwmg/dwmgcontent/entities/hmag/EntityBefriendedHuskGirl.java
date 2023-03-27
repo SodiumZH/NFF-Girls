@@ -193,7 +193,7 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 	// Called when convert to zombie
 	protected EntityBefriendedZombieGirl convertToZombie()
 	{
-		EntityBefriendedZombieGirl newMob = (EntityBefriendedZombieGirl)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.BEF_ZOMBIE_GIRL.get());
+		EntityBefriendedZombieGirl newMob = (EntityBefriendedZombieGirl)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get());
 		newMob.isFromHusk = true;
 		newMob.setInit();
 		return newMob;

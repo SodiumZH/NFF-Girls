@@ -28,7 +28,7 @@ public abstract class HandlerItemGiving extends AbstractBefriendingHandler
 	public abstract boolean additionalConditions(Player player, Mob mob);
 	
 	// If true, the action can proceed even if the player is in the hatred list
-	public boolean ignoreHatred() {return false;}
+	public boolean shouldIgnoreHatred() {return false;}
 	
 	// Actions when the item condition is satisfied
 	// If the mob is befriended immediately, return it. Otherwise return null.
@@ -39,4 +39,7 @@ public abstract class HandlerItemGiving extends AbstractBefriendingHandler
 	}
 	
 	public abstract int getItemGivingCooldownTicks();
+	
+
+
 }

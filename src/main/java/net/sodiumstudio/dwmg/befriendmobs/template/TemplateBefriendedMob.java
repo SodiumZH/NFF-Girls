@@ -10,31 +10,29 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
-import net.sodiumstudio.dwmg.befriendmobs.example.EXAMPLE_BefriendedZombie;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
 
 // This is a template for befriended mob class.
 // You may copy-paste the code below to your class and modify at places labeled by /*...*/.
-public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob superclass */ implements IBefriendedMob
+public class TemplateBefriendedMob /* Your mob class */ extends PathfinderMob /* Your mob superclass */ implements IBefriendedMob
 {
 	
 	// Initialization
 	
-	public TemplateBefriendedMob/* Your mob class */ (EntityType<? extends Mob /* Your mob class */ > pEntityType, Level pLevel) {
+	public TemplateBefriendedMob/* Your mob class */ (EntityType<? extends PathfinderMob /* Your mob class */ > pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);	
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0f);
@@ -149,26 +147,30 @@ public class TemplateBefriendedMob /* Your mob class */ extends Mob /* Your mob 
 		this.setInit();
 	}
 
-	// ==================================================================== //
-	// ========================= General Settings ========================= //
-	// Generally these can be copy-pasted to other IBefriendedMob classes //
 
-	// ------------------ Data sync ------------------ //
+	// Data sync 
 
 	// By default owner uuid and ai state need to sync
+	// It's recommended to always keep these two values as synched data
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EXAMPLE_BefriendedZombie.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(TemplateBefriendedMob.class/* This class */, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
-			.defineId(EXAMPLE_BefriendedZombie.class, EntityDataSerializers.BYTE);
+			.defineId(TemplateBefriendedMob.class/* This class */, EntityDataSerializers.BYTE);
+	/* More data to sync */
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
 		entityData.define(DATA_AISTATE, (byte) 0);
+		/* More data to sync */
 	}
 
-	// ------------------ Data sync end ------------------ //
+	// Data sync end 
+	
+	// ==================================================================== //
+	// ========================= General Settings ========================= //
+	// Generally these can be copy-pasted to other IBefriendedMob classes //
 
 	// ------------------ IBefriendedMob interface ------------------ //
 

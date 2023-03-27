@@ -13,9 +13,9 @@
   "effect.dwmg.undead_affinity": "亡灵亲和",
   "effect.dwmg.ender_protection": "末影之护",
   "itemGroup.dwmg_tab" : "与怪物娘的日常",
-  "entity.dwmg.bef_zombie_girl" : "僵尸娘",
-  "entity.dwmg.bef_skeleton_girl" : "骷髅娘",
-  "entity.dwmg.bef_husk_girl" : "尸壳娘",
-  "entity.dwmg.bef_creeper_girl" : "苦力怕娘",
-  "entity.dwmg.bef_ender_executor": "末影处刑者"
+  "entity.dwmg.hmag_zombie_girl" : "僵尸娘",
+  "entity.dwmg.hmag_skeleton_girl" : "骷髅娘",
+  "entity.dwmg.hmag_husk_girl" : "尸壳娘",
+  "entity.dwmg.hmag_creeper_girl" : "苦力怕娘",
+  "entity.dwmg.hmag_ender_executor": "末影处刑者"
 }

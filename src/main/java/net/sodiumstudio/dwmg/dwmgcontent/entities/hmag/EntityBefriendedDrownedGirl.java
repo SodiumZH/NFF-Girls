@@ -214,7 +214,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 
 	public EntityBefriendedZombieGirl convertToZombie() {
 		EntityBefriendedZombieGirl newMob = (EntityBefriendedZombieGirl) BefriendedHelper
-				.convertToOtherBefriendedType(this, DwmgEntityTypes.BEF_ZOMBIE_GIRL.get());
+				.convertToOtherBefriendedType(this, DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get());
 		newMob.isFromHusk = isFromHusk;
 		newMob.setInit();
 		return newMob;

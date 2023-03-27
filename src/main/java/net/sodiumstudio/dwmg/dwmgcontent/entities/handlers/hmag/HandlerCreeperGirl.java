@@ -67,7 +67,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 				else if (tb > 0)
 				{
 					if (tb % 3 == 1 || tb <= 13)
-						EntityHelper.sendGreenStarParticlesToLivingDefault(cg);
+						EntityHelper.sendGlintParticlesToLivingDefault(cg);
 					EntityHelper.sendSmokeParticlesToLivingDefault(cg);
 					l.getNbt().putInt("final_explosion_ticks_before", tb - 1);
 				}
@@ -204,10 +204,14 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 	@Override
 	public boolean additionalConditions(Player player, Mob mob)
 	{
-		return player.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get());
+		return true;
 	}
 
-	
+	@Override
+	public boolean shouldIgnoreHatred()
+	{
+		return true;
+	}
 	
 	@Override
 	public boolean isItemAcceptable(Item item) {

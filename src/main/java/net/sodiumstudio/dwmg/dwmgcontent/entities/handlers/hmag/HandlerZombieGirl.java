@@ -20,7 +20,7 @@ public class HandlerZombieGirl extends HandlerItemGivingProgress
 	protected double getProcValueToAdd(ItemStack item) {
 		double rnd = this.rnd.nextDouble();
 		if (item.is(DwmgItems.SOUL_CAKE_SLICE.get()))
-			return rnd < 0.05 ? 1.01 : (rnd < 0.2 ? 0.667 : 0.334);
+			return rnd < 0.05 ? 1.0001 : (rnd < 0.2 ? 0.6667 : 0.3334);
 		else if (item.is(ModItems.SOUL_POWDER.get()))
 			return RndUtil.rndRangedDouble(0.02, 0.04);
 		else if (item.is(ModItems.SOUL_APPLE.get()))

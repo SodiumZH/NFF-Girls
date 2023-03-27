@@ -14,7 +14,9 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 
 public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 
@@ -48,7 +50,7 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 	
 	// Get NBT tag
 	public CompoundTag getNbt();
-
+	
 	// Get the whole player data subtag under NBT
 	public CompoundTag getPlayerDataNbt();
 
@@ -114,4 +116,27 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 	
 	// Update all timers that should be executed every tick
 	public void updateTimers();
+	
+	
+	// ============ Related utils
+	
+	public static CBefriendableMob getCap(Mob mob)
+	{
+		Wrapped<CBefriendableMob> cap = new Wrapped<CBefriendableMob>(null);
+		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> {
+			cap.set(l);
+		});
+		return cap.get();
+	}
+	
+	public static CompoundTag getCapNbt(Mob mob)
+	{
+		Wrapped<CompoundTag> tag = new Wrapped<CompoundTag>(null);
+		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> {
+			tag.set(l.getNbt());
+		});
+		return tag.get();
+	}
+	
+	
 }

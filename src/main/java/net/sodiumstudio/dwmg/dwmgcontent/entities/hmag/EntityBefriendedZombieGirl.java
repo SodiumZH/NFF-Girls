@@ -230,14 +230,14 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	
 	public EntityBefriendedHuskGirl convertToHusk()
 	{
-		EntityBefriendedHuskGirl newMob = (EntityBefriendedHuskGirl)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.BEF_HUSK_GIRL.get());
+		EntityBefriendedHuskGirl newMob = (EntityBefriendedHuskGirl)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.HMAG_HUSK_GIRL.get());
 		newMob.setInit();
 		return newMob;
 	}
 	
 	public EntityBefriendedDrownedGirl convertToDrowned()
 	{
-		EntityBefriendedDrownedGirl newMob = (EntityBefriendedDrownedGirl)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.BEF_DROWNED_GIRL.get());
+		EntityBefriendedDrownedGirl newMob = (EntityBefriendedDrownedGirl)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.HMAG_DROWNED_GIRL.get());
 		newMob.isFromHusk = this.isFromHusk;
 		newMob.isFromZombie = true;
 		newMob.setInit();

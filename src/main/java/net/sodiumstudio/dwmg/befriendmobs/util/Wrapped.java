@@ -48,7 +48,7 @@ public class Wrapped<T> {
 			this.value = value;
 		}
 		
-		public Wrapped.Boolean valueOf(boolean val)
+		public static Wrapped.Boolean valueOf(boolean val)
 		{
 			return new Wrapped.Boolean(val);
 		}

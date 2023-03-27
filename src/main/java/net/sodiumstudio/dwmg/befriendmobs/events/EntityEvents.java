@@ -6,13 +6,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
@@ -22,6 +22,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.AbstractBefriendingHandler;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
@@ -31,8 +32,6 @@ import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.BMDebugItemHandler;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
 
 // TODO: change modid after isolation
 @SuppressWarnings("removal")
@@ -272,4 +271,24 @@ public class EntityEvents
 			}
 		}
 	}
+	
+	@SubscribeEvent
+	public static void onLivingHurt(LivingHurtEvent event)
+	{
+		LivingEntity living = event.getEntityLiving();
+		// Handle befriending interruption on mob attacked
+		if (living instanceof Mob && BefriendingTypeRegistry.contains((Mob)living))
+		{
+			Mob mob = (Mob)living;
+			if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof Player player)
+			{
+				AbstractBefriendingHandler handler = BefriendingTypeRegistry.getHandler(mob);
+				if (!handler.shouldIgnoreAttackInterruption() && handler.isInProcess(player, mob))
+				{
+					handler.interrupt(player, mob);
+				}
+			}
+		}
+	}
+	
 }

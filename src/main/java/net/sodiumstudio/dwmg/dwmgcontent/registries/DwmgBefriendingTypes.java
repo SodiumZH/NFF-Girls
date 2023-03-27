@@ -8,6 +8,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerCreeperGirl;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerEnderExecutor;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerHuskGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerSkeletonGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerZombieGirl;
@@ -21,26 +22,31 @@ public class DwmgBefriendingTypes {
 		
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.ZOMBIE_GIRL.get(),
-				DwmgEntityTypes.BEF_ZOMBIE_GIRL.get(),
+				DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get(),
 				new HandlerZombieGirl());
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.SKELETON_GIRL.get(),
-				DwmgEntityTypes.BEF_SKELETON_GIRL.get(),
+				DwmgEntityTypes.HMAG_SKELETON_GIRL.get(),
 				new HandlerSkeletonGirl());		
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.HUSK_GIRL.get(),
-				DwmgEntityTypes.BEF_HUSK_GIRL.get(),
+				DwmgEntityTypes.HMAG_HUSK_GIRL.get(),
 				new HandlerHuskGirl());	
 	/*	BefriendingTypeRegistry.register(
 				ModEntityTypes.DROWNED_GIRL.get(),
-				DwmgEntityTypes.BEF_DROWNED_GIRL.get(),
+				DwmgEntityTypes.DROWNED_GIRL.get(),
 				new HandlerDrownedGirl());*/
 		
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.CREEPER_GIRL.get(),
-				DwmgEntityTypes.BEF_CREEPER_GIRL.get(),
+				DwmgEntityTypes.HMAG_CREEPER_GIRL.get(),
 				new HandlerCreeperGirl());
 
+		BefriendingTypeRegistry.register(
+				ModEntityTypes.ENDER_EXECUTOR.get(),
+				DwmgEntityTypes.HMAG_ENDER_EXECUTOR.get(),
+				new HandlerEnderExecutor());
+		
 	}
 	
 }

@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.capability.CBefriendableMob;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
@@ -15,8 +16,11 @@ public abstract class AbstractBefriendingHandler
 	{	
 	}
 
+	public void initCap(CBefriendableMob cap)
+	{
+	}	
+	
 	/** If this method is overridden, it should invalidate the input target living entity.
-	 * And don't forget to post MobBefriendEvent in the end.
 	 */
 	public IBefriendedMob befriend(Player player, Mob target)
 	{
@@ -53,4 +57,13 @@ public abstract class AbstractBefriendingHandler
 	public void serverTick(Mob mob){}
 	
 	public abstract void interrupt(Player player, Mob mob);
+	
+	// Indicates if the player is in befriending process of the mob.
+	public abstract boolean isInProcess(Player player, Mob mob);
+	
+	// If true, the process will not be interrupted when the mob is attacked by the player.
+	public boolean shouldIgnoreAttackInterruption()
+	{
+		return false;
+	}
 }

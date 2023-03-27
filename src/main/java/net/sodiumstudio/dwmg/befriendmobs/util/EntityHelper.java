@@ -184,7 +184,7 @@ public class EntityHelper
 		sendParticlesToEntity(entity, ParticleTypes.HEART, entity.getBbHeight() - 0.5, 0.5d, 10, 1d);
 	}
 
-	public static void sendGreenStarParticlesToLivingDefault(LivingEntity entity) {
+	public static void sendGlintParticlesToLivingDefault(LivingEntity entity) {
 		sendParticlesToEntity(entity, ParticleTypes.HAPPY_VILLAGER, entity.getBbHeight() - 0.5, 0.5d, 20, 1d);
 	}
 

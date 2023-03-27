@@ -172,9 +172,11 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	public void setInventoryFromMob() {
 		super.setInventoryFromMob();
 		if (!this.level.isClientSide) {
-			getAdditionalInventory().setItem(1, getItemBySlot(EquipmentSlot.MAINHAND));
-			getAdditionalInventory().setItem(2, getItemBySlot(EquipmentSlot.OFFHAND));
-			getAdditionalInventory().setItem(3, new ItemStack(getCarriedBlock().getBlock().asItem()));
+			getAdditionalInventory().setItem(0, getItemBySlot(EquipmentSlot.MAINHAND));
+			getAdditionalInventory().setItem(1, getItemBySlot(EquipmentSlot.OFFHAND));
+			if (getCarriedBlock() != null && !getCarriedBlock().getBlock().equals(Blocks.AIR))
+				getAdditionalInventory().setItem(2, new ItemStack(getCarriedBlock().getBlock().asItem()));
+			else getAdditionalInventory().setItem(2, ItemStack.EMPTY);
 		}
 	}
 

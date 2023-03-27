@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.dwmgcontent.events;
 
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.CreeperGirlEntity;
+import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -9,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
@@ -17,12 +19,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.AbstractBefriendingHandler;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
@@ -91,7 +96,7 @@ public class DwmgEntityEvents
 						{
 							event.getMob().asMob().setHealth(1.0f);
 							event.getMob().asMob().invulnerableTime += 60;
-							EntityHelper.sendGreenStarParticlesToLivingDefault(event.getMob().asMob());
+							EntityHelper.sendGlintParticlesToLivingDefault(event.getMob().asMob());
 							event.setCanceled(true);
 							return;
 						}
@@ -115,11 +120,13 @@ public class DwmgEntityEvents
 		LivingEntity living = event.getEntityLiving();
 		if (!living.level.isClientSide)
 		{
+			// Handle Ender Protection
 			if (living.hasEffect(DwmgEffects.ENDER_PROTECTION.get()))
 			{
 				// If the player drops into the void, try pull up
 				if (event.getSource().equals(DamageSource.OUT_OF_WORLD))
 				{
+					// Ignore damage by /kill
 					if (living.getY() < -64.0d)
 					{
 						// Lift up
@@ -132,28 +139,31 @@ public class DwmgEntityEvents
 								(living.getRandom().nextDouble() - 0.5D) * 2.0D);
 						living.removeEffect(DwmgEffects.ENDER_PROTECTION.get());
 
-						if (living instanceof Player p)
+						// whether player is standing on a solid block
+						BlockPos standingOn = new BlockPos(living.blockPosition().getX(),
+								living.blockPosition().getY() - 1, living.blockPosition().getZ());
+						if (living.level.getBlockState(standingOn).is(Blocks.AIR))
 						{
-							// whether player is standing on a solid block
-							BlockPos standingOn = new BlockPos(living.blockPosition().getX(),
-									living.blockPosition().getY() - 1, living.blockPosition().getZ());
-							if (living.level.getBlockState(standingOn).is(Blocks.AIR))
+							// failed, add slow falling
+							if (living instanceof Player p)
 							{
-								// failed, add slow falling
 								MiscUtil.printToScreen(
-								"You're lifted from the void because of the Ender Protection, but...", p);
-								p.setDeltaMovement(new Vec3(0, 0, 0));	// Velocity
-								p.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200));	
-
-							} else
+										"You're lifted from the void because of the Ender Protection, but...", p);
+							}
+							living.setDeltaMovement(new Vec3(0, 0, 0)); // Velocity
+							living.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200));
+						} 
+						else
+						{
+							// succeeded
+							if (living instanceof Player p)
 							{
-								// succeeded
 								MiscUtil.printToScreen("You're saved from the void because of the Ender Protection!", p);
 							}
 						}
 					}
-
-				} else if (!event.getSource().equals(DamageSource.IN_FIRE)
+				}
+				else if (!event.getSource().equals(DamageSource.IN_FIRE)
 						&& !event.getSource().equals(DamageSource.STARVE))
 				{
 					living.level.addParticle(ParticleTypes.PORTAL, living.getRandomX(0.5D), living.getRandomY() - 0.25D,
@@ -161,7 +171,20 @@ public class DwmgEntityEvents
 							-living.getRandom().nextDouble(), (living.getRandom().nextDouble() - 0.5D) * 2.0D);
 					EntityHelper.chorusLikeTeleport(living);
 				}
-			}
+			} 
 		}
-	}	
+	}
+	
+	
+	public static void onEnderTeleport(EntityTeleportEvent.EnderEntity event)
+	{
+		if (event.getEntityLiving() instanceof EnderExecutorEntity ee)
+		{
+			ee.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> 
+			{
+				if (l.getNbt().getBoolean("cannot_teleport"))
+					event.setCanceled(true);
+			});
+		}
+	}
 }

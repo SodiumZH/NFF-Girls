@@ -87,12 +87,24 @@ public class BefriendingTypeRegistry {
 		else return null;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static EntityType<? extends Mob> getConvertTo(Mob fromMob)
+	{
+		return getConvertTo((EntityType<? extends Mob>) fromMob.getType());
+	}
+	
 	public static AbstractBefriendingHandler getHandler(EntityType<? extends Mob> fromType)
 	{
 		Entry entry = getEntryFromType(fromType);
 		if (entry != null)
 			return entry.handler;
 		else return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static AbstractBefriendingHandler getHandler(Mob fromMob)
+	{
+		return getHandler((EntityType<? extends Mob>) fromMob.getType());
 	}
 	
 	public static boolean contains(EntityType<? extends Mob> fromType)
@@ -105,6 +117,12 @@ public class BefriendingTypeRegistry {
 			}
 		}
 		return false;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static boolean contains(Mob fromMob)
+	{
+		return contains((EntityType<? extends Mob>) fromMob.getType());
 	}
 	
 }

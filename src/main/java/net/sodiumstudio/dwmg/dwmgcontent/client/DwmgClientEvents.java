@@ -24,12 +24,12 @@ public class DwmgClientEvents
     
     @SubscribeEvent
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(DwmgEntityTypes.BEF_ZOMBIE_GIRL.get(), ZombieGirlRenderer::new);
-        event.registerEntityRenderer(DwmgEntityTypes.BEF_SKELETON_GIRL.get(), SkeletonGirlRenderer::new);
-        event.registerEntityRenderer(DwmgEntityTypes.BEF_HUSK_GIRL.get(), HuskGirlRenderer::new);
-        event.registerEntityRenderer(DwmgEntityTypes.BEF_DROWNED_GIRL.get(), DrownedGirlRenderer::new);
-        event.registerEntityRenderer(DwmgEntityTypes.BEF_CREEPER_GIRL.get(), BefriendedCreeperGirlRenderer::new);  
-        event.registerEntityRenderer(DwmgEntityTypes.BEF_ENDER_EXECUTOR.get(), BefriendedEnderExecutorRenderer::new);  
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get(), ZombieGirlRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_SKELETON_GIRL.get(), SkeletonGirlRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_HUSK_GIRL.get(), HuskGirlRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_DROWNED_GIRL.get(), DrownedGirlRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_CREEPER_GIRL.get(), BefriendedCreeperGirlRenderer::new);  
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_ENDER_EXECUTOR.get(), BefriendedEnderExecutorRenderer::new);  
     }
 
 
