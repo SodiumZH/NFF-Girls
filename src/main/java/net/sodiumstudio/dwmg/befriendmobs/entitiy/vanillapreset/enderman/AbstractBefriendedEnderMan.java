@@ -92,7 +92,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	public boolean canAutoTakeBlocks = false;
 	public boolean canAutoPlaceBlocks = false;
 	public boolean angryOnLookedAt = false;
-	
+	public boolean teleportOnHurtByWater = true;
 	
 	protected static final EntityDataAccessor<Optional<BlockState>> DATA_CARRY_STATE = SynchedEntityData
 			.defineId(AbstractBefriendedEnderMan.class, EntityDataSerializers.BLOCK_STATE);
@@ -118,7 +118,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(1, new BefriendedEnderManGoals.FreezeWhenLookedAt(this));
+		//this.goalSelector.addGoal(1, new BefriendedEnderManGoals.FreezeWhenLookedAt(this));
 		this.goalSelector.addGoal(2, new BefriendedMeleeAttackGoal(this, 1.0D, false));
 		this.goalSelector.addGoal(7, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0D, 0.0F));
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -166,19 +166,19 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	}
 
 	public void startPersistentAngerTimer() {
-		this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+		/*this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));*/
 	}
 
 	public void setRemainingPersistentAngerTime(int pTime) {
-		this.remainingPersistentAngerTime = pTime;
+		/*this.remainingPersistentAngerTime = pTime;*/
 	}
 
 	public int getRemainingPersistentAngerTime() {
-		return this.remainingPersistentAngerTime;
+		return 0;/*return this.remainingPersistentAngerTime;*/
 	}
 
 	public void setPersistentAngerTarget(@Nullable UUID pTarget) {
-		this.persistentAngerTarget = pTarget;
+		/*this.persistentAngerTarget = pTarget;*/
 	}
 
 	@Nullable
@@ -257,7 +257,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	/**
 	 * Checks to see if this AbstractBefriendedEnderMan should be attacking this
 	 * player
-	 */
+	 *//*
 	public boolean isLookingAtMe(Player player) {
 		ItemStack helmet = player.getInventory().armor.get(3);
 		if (!this.angryOnLookedAt
@@ -277,7 +277,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 			return d1 > 1.0D - 0.025D / d0 ? player.hasLineOfSight(this) : false;
 		}
 	}
-
+*/
 	protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
 		return 2.55F;
 	}
@@ -312,6 +312,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	}
 
 	protected void customServerAiStep() {
+/*
 		if (this.level.isDay() && this.tickCount >= this.targetChangeTime + 600)
 		{
 			float f = this.getBrightness();
@@ -322,7 +323,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 				this.teleport();
 			}
 		}
-
+*/
 		super.customServerAiStep();
 	}
 
@@ -441,13 +442,14 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 				flag1 = false;
 			}
 
-			for (int i = 0; i < 64; ++i)
-			{
-				if (this.teleport())
+			if (teleportOnHurtByWater)
+				for (int i = 0; i < 64; ++i)
 				{
-					return true;
+					if (this.teleport())
+					{
+						return true;
+					}
 				}
-			}
 
 			return flag1;
 		} else
@@ -537,7 +539,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	// Inventory related
 	// Generally no need to modify unless noted
 
-	AdditionalInventory additionalInventory = new AdditionalInventory(getInventorySize());
+	protected AdditionalInventory additionalInventory;
 
 	@Override
 	public AdditionalInventory getAdditionalInventory() {
@@ -566,10 +568,6 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		}
 	}
 
-	@Override
-	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return null; /* return new YourMenuClass(containerId, playerInventory, container, this) */
-	}
 
 	// Inventory end
 

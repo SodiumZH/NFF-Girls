@@ -42,7 +42,7 @@ public class GuiPreset_0 extends AbstractGuiBefriended {
 		return new IntVec2(52, 80);
 	}
 	
-	public int getScale()
+	public int getMobRenderScale()
 	{
 		return 25;
 	}

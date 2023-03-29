@@ -53,7 +53,7 @@ public class GuiZombieGirl extends GuiPreset_0 {
 		this.blit(pPoseStack, i + 99, j + 17, 0, imageHeight, 96, 72);
 		addHealthInfo(pPoseStack, IntVec2.of(i + 102, j + 20));
 		InventoryScreen.renderEntityInInventory(i + getEntityRenderPosition().x, j + getEntityRenderPosition().y,
-				getScale(), (float) (i + 52) - this.xMouse, (float) (j + 75 - 50) - this.yMouse, mob.asMob());
+				getMobRenderScale(), (float) (i + 52) - this.xMouse, (float) (j + 75 - 50) - this.yMouse, mob.asMob());
 	}
 	
 

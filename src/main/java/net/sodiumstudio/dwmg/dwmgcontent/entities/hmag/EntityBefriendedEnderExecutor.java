@@ -38,13 +38,19 @@ import net.minecraft.world.level.block.Blocks;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.BefriendedGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.BefriendedNearestAttackableTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.vanillapreset.enderman.AbstractBefriendedEnderMan;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.vanillapreset.enderman.BefriendedEnderManGoals;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
+import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuEnderExecutor;
 
 // Adjusted from EnderExcutor in HMaG
 public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan implements IBefriendedMob, IBeamAttackMob
@@ -66,27 +72,29 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	{
 		super(type, worldIn);
 		this.xpReward = 0;
+		this.additionalInventory = new AdditionalInventory(getInventorySize());
 	}
 
 	
 	public static Builder createAttributes() {
 		return EnderExecutorEntity.createAttributes();
 	}
-
+	
 	@Override
 	protected void registerGoals() {
-	      this.goalSelector.addGoal(0, new FloatGoal(this));
-	      this.goalSelector.addGoal(1, new BefriendedEnderManGoals.FreezeWhenLookedAt(this));
-	      this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
+	      this.goalSelector.addGoal(1, new FloatGoal(this));
+	      //this.goalSelector.addGoal(1, new BefriendedEnderManGoals.FreezeWhenLookedAt(this));     
+	      this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
+	      this.goalSelector.addGoal(4, new BefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 	      this.goalSelector.addGoal(7, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0D, 0.0F));
 	      this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
 	      this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 	      this.goalSelector.addGoal(10, new BefriendedEnderManGoals.LeaveBlockGoal(this));
 	      this.goalSelector.addGoal(11, new BefriendedEnderManGoals.TakeBlockGoal(this));
-	    //  this.targetSelector.addGoal(1, new EnderMan.EndermanLookForPlayerGoal(this, this::isAngryAt));
-	      this.targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
-	      this.targetSelector.addGoal(3, new BefriendedNearestAttackableTargetGoal<Endermite>(this, Endermite.class, true, false).allowAllStates());
-	      this.targetSelector.addGoal(4, new ResetUniversalAngerTargetGoal<>(this, false));
+	      this.targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
+	      this.targetSelector.addGoal(2, new BefriendedNearestAttackableTargetGoal<Endermite>(this, Endermite.class, true, false).allowAllStates());
+	      this.targetSelector.addGoal(3, new BefriendedHurtByTargetGoal(this));
+	      this.targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
 	}
 
 	// Initialization end
@@ -130,17 +138,6 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	}
 
 	// Interaction end
-	
-	// Inventory related
-	// Generally no need to modify unless noted
-	
-	AdditionalInventory additionalInventory = new AdditionalInventory(getInventorySize());
-
-	@Override
-	public AdditionalInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
 
 	// No armor, hand items(0, 1), holding block(2) and 2 baubles(3, 4)
 	@Override
@@ -165,11 +162,17 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 				this.setCarriedBlock(bi.getBlock().defaultBlockState());
 			}
 			else throw new IllegalStateException("Ender Executor can only carry block items. Attempt to carry: " + getAdditionalInventory().getItem(2).getItem().getRegistryName());
+			setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+			setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+			setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
+			setItemSlot(EquipmentSlot.FEET, ItemStack.EMPTY);
 		}
+		
 	}
 
 	@Override
 	public void setInventoryFromMob() {
+
 		super.setInventoryFromMob();
 		if (!this.level.isClientSide) {
 			getAdditionalInventory().setItem(0, getItemBySlot(EquipmentSlot.MAINHAND));
@@ -181,8 +184,9 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	}
 
 	@Override
-	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return null; /* return new YourMenuClass(containerId, playerInventory, container, this) */
+	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container)
+	{
+		return new InventoryMenuEnderExecutor(containerId, playerInventory, container, this);
 	}
 	
 	// Inventory end
@@ -531,6 +535,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	
 	/* Inventory */
 
+	
 	// ------------------ IBefriendedMob interface end ------------------ //
 
 	// ------------------ Misc ------------------ //

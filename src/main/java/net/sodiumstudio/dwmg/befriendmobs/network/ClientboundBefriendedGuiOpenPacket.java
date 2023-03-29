@@ -36,9 +36,9 @@ public class ClientboundBefriendedGuiOpenPacket implements Packet<ClientGamePack
 		pBuffer.writeInt(this.entityId);
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public void handle(ClientGamePacketListener handler) {
-		@SuppressWarnings("resource")
 		Minecraft mc = Minecraft.getInstance();
 		PacketUtils.ensureRunningOnSameThread(this, handler, mc);
 		Entity entity = mc.level.getEntity(getEntityId());
@@ -47,6 +47,8 @@ public class ClientboundBefriendedGuiOpenPacket implements Packet<ClientGamePack
 			AdditionalInventory inv = new AdditionalInventory(getSize());
 			AbstractInventoryMenuBefriended menu =
 					bef.makeMenu(getContainerId(), localplayer.getInventory(), inv);
+			if (menu == null)
+				return;
 			localplayer.containerMenu = menu;
 			mc.setScreen(menu.makeGui());
 		}

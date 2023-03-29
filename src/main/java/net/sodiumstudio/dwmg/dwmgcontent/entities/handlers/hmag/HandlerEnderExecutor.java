@@ -121,7 +121,7 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 						l.getNbt().putBoolean("cannot_teleport", true);
 					}
 					// If player is further than 4 blocks, interrupt
-					else if (ee.distanceToSqr(player) > 16.0d)
+					else if (ee.distanceToSqr(player) > 25.0d)
 					{
 						this.interrupt(player, mob, false);
 					}

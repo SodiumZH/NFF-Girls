@@ -255,7 +255,7 @@ public class BefriendedEnderManGoals
 
 		}
 	}
-	
+	/*
 	public static class FreezeWhenLookedAt extends BefriendedGoal
 	{
 		private final AbstractBefriendedEnderMan enderman;
@@ -292,5 +292,5 @@ public class BefriendedEnderManGoals
 		public void tick() {
 			this.enderman.getLookControl().setLookAt(this.target.getX(), this.target.getEyeY(), this.target.getZ());
 		}
-	}
+	}*/
 }

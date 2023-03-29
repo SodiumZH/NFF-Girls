@@ -60,14 +60,16 @@ public abstract class BefriendedGoal extends Goal {
 		allowedStates.clear();
 	}
 	
-	public void block()
+	public BefriendedGoal block()
 	{
 		isBlocked = true;
+		return this;
 	}
 	
-	public void unblock()
+	public BefriendedGoal unblock()
 	{
 		isBlocked = false;
+		return this;
 	}
 	
 	public boolean isDisabled()
