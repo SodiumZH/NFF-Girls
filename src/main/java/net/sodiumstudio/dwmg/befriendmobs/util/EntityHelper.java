@@ -1,46 +1,31 @@
 package net.sodiumstudio.dwmg.befriendmobs.util;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Random;
 
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
+import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.sodiumstudio.dwmg.dwmgcontent.effects.EnderProtectionTeleportEvent;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
-import net.minecraft.util.Mth;
 
 // Static function library for befriending-related actions.
 public class EntityHelper
@@ -213,6 +198,7 @@ public class EntityHelper
 		addEffectSafe(entity, effect, ticks, 0);
 	}
 
+	// Teleport a living entity as if it ate a chorus fruit
 	public static boolean chorusLikeTeleport(LivingEntity living) {
 		if (!living.level.isClientSide)
 		{
@@ -233,7 +219,7 @@ public class EntityHelper
 					living.stopRiding();
 				}
 
-				EnderProtectionTeleportEvent event = new EnderProtectionTeleportEvent(living, d3, d4, d5);
+				chorusLikeTeleportEvent event = new chorusLikeTeleportEvent(living, d3, d4, d5);
 				MinecraftForge.EVENT_BUS.post(event);
 				if (event.isCanceled())
 					return false;
@@ -249,6 +235,17 @@ public class EntityHelper
 			return false;
 		}
 		else return false;
+	}
+	
+	// Fired on an entity teleported by EntityHelper::chorusLikeTeleport function.
+	public static class chorusLikeTeleportEvent extends EntityTeleportEvent
+	{
+
+		public chorusLikeTeleportEvent(Entity entity, double targetX, double targetY, double targetZ)
+		{
+			super(entity, targetX, targetY, targetZ);
+		}
+		
 	}
 	
 	// Static method to access EnderMan::isLookingAtMe

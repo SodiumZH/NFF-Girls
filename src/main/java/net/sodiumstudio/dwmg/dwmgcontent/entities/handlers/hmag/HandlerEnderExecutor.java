@@ -123,7 +123,7 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 					// If player is further than 4 blocks, interrupt
 					else if (ee.distanceToSqr(player) > 16.0d)
 					{
-						this.interrupt(player, mob);
+						this.interrupt(player, mob, false);
 					}
 					// Otherwise the process continues, set always hostile
 					else
@@ -136,9 +136,9 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 	}
 
 	@Override
-	public void interrupt(Player player, Mob mob)
+	public void interrupt(Player player, Mob mob, boolean isQuiet)
 	{
-		super.interrupt(player, mob);
+		super.interrupt(player, mob, isQuiet);
 		CompoundTag nbt = CBefriendableMob.getCapNbt(mob);
 		nbt.remove("player_uuid_on_befriending");
 		nbt.putBoolean("cannot_teleport", false);	

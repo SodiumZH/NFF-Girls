@@ -61,7 +61,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 				int ta = l.getNbt().getInt("final_explosion_ticks_after");
 				if (mob.distanceToSqr(player) >= 64.0f)
 				{
-					this.finalExplosionFailed(cg, player);
+					this.finalExplosionFailed(cg, player, false);
 					// TODO: add smoke particle effect here
 				}
 				else if (tb > 0)
@@ -102,21 +102,23 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 		});
 	}
 	
-	protected void finalExplosionFailed(CreeperGirlEntity mob, Player player)
+	protected void finalExplosionFailed(CreeperGirlEntity mob, Player player, boolean isQuiet)
 	{
-		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->{
-		if (l.getNbt().contains("final_explosion_player", 11) && l.getNbt().getUUID("final_explosion_player").equals(player.getUUID()))
+		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+		{
+			if (l.getNbt().contains("final_explosion_player", 11) && l.getNbt().getUUID("final_explosion_player").equals(player.getUUID()))
 			{
-				l.getNbt().remove("final_explosion_player");
-				l.getNbt().remove("final_explosion_ticks_before");
-				l.getNbt().remove("final_explosion_ticks_after");
-				NbtHelper.putPlayerData(IntTag.valueOf(0), l.getPlayerDataNbt(), player,
-						"already_given");
-				mob.setNoAi(false);
-				mob.setSwellDir(-1);
-				for (int i = 0; i < 5; ++i)
-					EntityHelper.sendAngryParticlesToLivingDefault(mob);
-				//Debug.printToScreen("Creeper Girl befriending failed.", player);
+					l.getNbt().remove("final_explosion_player");
+					l.getNbt().remove("final_explosion_ticks_before");
+					l.getNbt().remove("final_explosion_ticks_after");
+					NbtHelper.putPlayerData(IntTag.valueOf(0), l.getPlayerDataNbt(), player,
+							"already_given");
+					mob.setNoAi(false);
+					mob.setSwellDir(-1);
+					if (!isQuiet)
+						for (int i = 0; i < 5; ++i)
+							EntityHelper.sendAngryParticlesToLivingDefault(mob);
+					//Debug.printToScreen("Creeper Girl befriending failed.", player);
 			}	
 		});
 	}
@@ -143,7 +145,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 							&& cg.level.getPlayerByUUID(l.getNbt().getUUID("final_explosion_player")) == player)
 					{
 						((HandlerCreeperGirl) (BefriendingTypeRegistry.getHandler(ModEntityTypes.CREEPER_GIRL.get())))
-								.finalExplosionFailed(cg, player);
+								.finalExplosionFailed(cg, player, true);
 					}
 				});
 			}
@@ -225,6 +227,13 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 	{
 		finalExplosionStart((CreeperGirlEntity)mob, player);
 		return null;
+	}
+	
+	@Override
+	public void interrupt(Player player, Mob mob, boolean isQuiet)
+	{
+		super.interrupt(player, mob, isQuiet);
+		this.finalExplosionFailed((CreeperGirlEntity) mob, player, isQuiet);
 	}
 	
 }

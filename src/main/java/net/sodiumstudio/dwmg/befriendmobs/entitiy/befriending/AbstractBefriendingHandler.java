@@ -56,7 +56,12 @@ public abstract class AbstractBefriendingHandler
 	
 	public void serverTick(Mob mob){}
 	
-	public abstract void interrupt(Player player, Mob mob);
+	public abstract void interrupt(Player player, Mob mob, boolean isQuiet);
+	
+	public boolean dontInterruptOnPlayerDie()
+	{
+		return false;
+	}
 	
 	// Indicates if the player is in befriending process of the mob.
 	public abstract boolean isInProcess(Player player, Mob mob);

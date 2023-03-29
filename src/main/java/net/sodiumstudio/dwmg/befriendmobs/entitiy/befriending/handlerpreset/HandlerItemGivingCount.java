@@ -131,18 +131,19 @@ public abstract class HandlerItemGivingCount extends HandlerItemGiving
 				for (UUID uuid: l.getHatred())
 				{
 					if (isInProcess(mob.level.getPlayerByUUID(uuid), mob))
-						this.interrupt(mob.level.getPlayerByUUID(uuid), mob);					
+						this.interrupt(mob.level.getPlayerByUUID(uuid), mob, false);					
 				}
 			}
 		});
 	}
 	
 	@Override
-	public void interrupt(Player player, Mob mob) {
+	public void interrupt(Player player, Mob mob, boolean isQuiet) {
 		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 		{
 			if (l.hasPlayerData(player, "already_given") 
-					&& l.getPlayerDataInt(player, "already_given") > 0)
+					&& l.getPlayerDataInt(player, "already_given") > 0
+					&& !isQuiet)
 			{
 				EntityHelper.sendAngryParticlesToLivingDefault(mob);
 			}

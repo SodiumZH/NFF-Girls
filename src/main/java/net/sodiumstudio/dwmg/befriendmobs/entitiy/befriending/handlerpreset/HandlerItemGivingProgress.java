@@ -119,17 +119,17 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 				{
 					if (l.hasPlayerData(mob.level.getPlayerByUUID(uuid), "proc_value")
 							&& l.getPlayerDataDouble(mob.level.getPlayerByUUID(uuid), "proc_value") > 0d)
-						this.interrupt(mob.level.getPlayerByUUID(uuid), mob);					
+						this.interrupt(mob.level.getPlayerByUUID(uuid), mob, false);					
 				}
 			}
 		});
 	}
 	
 	@Override
-	public void interrupt(Player player, Mob mob) {
+	public void interrupt(Player player, Mob mob, boolean isQuiet) {
 		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 		{
-			if (isInProcess(player, mob))
+			if (isInProcess(player, mob) && !isQuiet)
 			{
 				EntityHelper.sendAngryParticlesToLivingDefault(mob);
 			}

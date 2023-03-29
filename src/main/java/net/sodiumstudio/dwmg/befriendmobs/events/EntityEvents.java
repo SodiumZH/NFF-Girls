@@ -25,6 +25,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.AbstractBefriendingHandler;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
+import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendableMobRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
@@ -245,6 +246,18 @@ public class EntityEvents
 				}
 			}
 		}
+		
+		else if (event.getEntity() instanceof Player player)
+		{
+			for (Mob mob: BefriendableMobRegistry.allMobs())
+			{
+				if (!BefriendingTypeRegistry.getHandler(mob).dontInterruptOnPlayerDie() 
+						&& BefriendingTypeRegistry.getHandler(mob).isInProcess(player, mob))
+				{
+					BefriendingTypeRegistry.getHandler(mob).interrupt(player, mob, true);
+				}
+			}
+		}
 	}
 	
 	// Don't allow befriended zombies to summon
@@ -285,7 +298,7 @@ public class EntityEvents
 				AbstractBefriendingHandler handler = BefriendingTypeRegistry.getHandler(mob);
 				if (!handler.shouldIgnoreAttackInterruption() && handler.isInProcess(player, mob))
 				{
-					handler.interrupt(player, mob);
+					handler.interrupt(player, mob, false);
 				}
 			}
 		}
