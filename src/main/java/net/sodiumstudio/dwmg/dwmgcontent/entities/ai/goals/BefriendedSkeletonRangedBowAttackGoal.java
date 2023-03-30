@@ -1,8 +1,8 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals;
 
 import net.minecraft.world.item.Items;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedRangedBowAttackGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedRangedBowAttackGoal;
 
 // Only for skeleton, stray and wither skeleton
 // They consume arrows which locate at inventory 8 position

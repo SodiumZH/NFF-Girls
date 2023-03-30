@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.sodiumstudio.dwmg.befriendmobs.client.gui.screens.AbstractGuiBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
 
 public abstract class AbstractInventoryMenuBefriended extends AbstractContainerMenu {

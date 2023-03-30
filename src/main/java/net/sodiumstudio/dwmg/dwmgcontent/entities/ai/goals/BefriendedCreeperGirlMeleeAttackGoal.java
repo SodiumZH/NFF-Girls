@@ -9,10 +9,10 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.pathfinder.Path;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.BefriendedGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedMeleeAttackGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.vanillapreset.creeper.AbstractBefriendedCreeper;
+import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedMeleeAttackGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.creeper.AbstractBefriendedCreeper;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
 
 public class BefriendedCreeperGirlMeleeAttackGoal extends BefriendedMeleeAttackGoal

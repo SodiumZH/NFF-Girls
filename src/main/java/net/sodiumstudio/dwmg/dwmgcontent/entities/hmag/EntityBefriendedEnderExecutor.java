@@ -35,18 +35,19 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.BefriendedHelper;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.BefriendedAIState;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.BefriendedGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.BefriendedNearestAttackableTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedFollowOwnerGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.vanillapreset.enderman.AbstractBefriendedEnderMan;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.vanillapreset.enderman.BefriendedEnderManGoals;
+import net.minecraft.world.level.block.state.BlockState;
+import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
+import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedNearestAttackableTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedFollowOwnerGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.AbstractBefriendedEnderMan;
+import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.BefriendedEnderManGoals;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
@@ -155,7 +156,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 			
 			if (getAdditionalInventory().getItem(2).isEmpty())
 			{
-				this.setCarriedBlock(Blocks.AIR.defaultBlockState());
+				this.setCarriedBlock((BlockState) null);
 			}			
 			else if (getAdditionalInventory().getItem(2).getItem() instanceof BlockItem bi)
 			{

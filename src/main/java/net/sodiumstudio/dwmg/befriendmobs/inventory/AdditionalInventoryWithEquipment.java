@@ -3,7 +3,7 @@ package net.sodiumstudio.dwmg.befriendmobs.inventory;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 
 /** Inventory tag in which a mob's equipment is saved at fixed positions
  * 0: helmet; 1: chest; 2: legs; 3: feet; 4: main hand; 5: off hand

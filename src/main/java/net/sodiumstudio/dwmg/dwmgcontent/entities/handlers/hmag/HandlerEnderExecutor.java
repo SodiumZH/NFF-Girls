@@ -9,10 +9,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractArguments;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.BefriendableMobInteractionResult;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.handlerpreset.HandlerItemGivingProgress;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.capability.CBefriendableMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractArguments;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
+import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CBefriendableMob;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
@@ -29,6 +30,13 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 		cap.getNbt().putBoolean("cannot_teleport", false);
 	}
 
+	@Override
+	public IBefriendedMob befriend(Player player, Mob target)
+	{
+		((EnderExecutorEntity)target).setCarriedBlock(null);
+		return super.befriend(player, target);
+	}
+	
 	@Override
 	public BefriendableMobInteractionResult handleInteract(BefriendableMobInteractArguments args)
 	{

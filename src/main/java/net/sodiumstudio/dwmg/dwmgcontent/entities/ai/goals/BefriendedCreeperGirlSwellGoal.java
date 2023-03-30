@@ -1,6 +1,6 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals;
 
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.vanillapreset.creeper.BefriendedCreeperSwellGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.creeper.BefriendedCreeperSwellGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
 
 public class BefriendedCreeperGirlSwellGoal extends BefriendedCreeperSwellGoal

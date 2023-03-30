@@ -24,6 +24,8 @@ Husk Girl
 
 Creeper Girl
 
+Ender Executor
+
 ## General befriending methods
 
 ### Item-giving process
@@ -126,7 +128,7 @@ Firstly, do the item-giving process.
 
 Accepted items:
 
-*Particle of Lightning*: 10% for 1/2, 30% for 1/4, 60% for 1/8.
+*Particle of Lightning* : 10% for 1/2, 30% for 1/4, 60% for 1/8.
 
 *Gunpowder*: 0.015 ~ 0.03.
 
@@ -140,7 +142,7 @@ Right click with Flint & Steel to ignite it (not consuming the mob).
 
 You can customize its armor and hand items. There's an extra ammo slot (explosive icon), and only with ammo it can explode (no damage to itself, but will damage any other entities including the player and other befriended mobs).
 
-The ammo slot receives either Gunpowder or TNT and consumes one for each explosion. With Gunpowder its explosion has range 3 and doesn't break blocks. With TNT its explosion has range 4 and breaks blocks (if mobGriefing is true). If it's charged, the explosion range will be doubled, 6 for Gunpowder and 8 for TNT, consuming 2 ammo items.
+The ammo slot receives either Gunpowder or TNT and consumes one for each explosion. With Gunpowder its explosion has range 3 and doesn't break blocks. With TNT its explosion has range 4 and breaks blocks (if mobGriefing is true). If it's charged, the explosion range will be doubled, 6 for Gunpowder and 8 for TNT, consuming 2 ammo items and uncharging it.
 
 You can manually charge it by using a Particle of Lightning to it. If it's charged, you can right click with bare hand to uncharge it, dropping a Particle of Lightning.
 
@@ -168,7 +170,11 @@ Accepted items:
 
 *Eye of Ender*: 0.005 ~ 0.01
 
-Once you get >4 blocks away, the process will be interrupted and it will become neutral, but the progress will be initialized to 0.
+Once you get >4 blocks away, the process will be interrupted and it will become neutral.
+
+##### Interaction
+
+You can customize its hand items. There's a block slot (cube icon) and 2 additional item slots (gem icon) which are unimplemented.
 
 
 
@@ -194,7 +200,7 @@ A food providing nutrition 16 and 30s Ender Protection effect.
 
 ## Effects
 
-#### Undead Affinity
+### Undead Affinity
 
 Making undead mobs be neutral to you.
 
@@ -202,10 +208,17 @@ Befriending of most undead mobs requires this effect.
 
 It can be obtained by eating Soul Cake or Soul Cake Slice, or standing on a Soul Carpet.
 
-#### Ender Protection
+### Ender Protection
 
 Making you teleport on being hurt.
 
 If you drop into the void with this effect, you'll be pulled up to Y=64. If there are solid blocks around, you'll be teleported onto it. If teleporting fails, you will obtain 10s Slow Falling effect. This will immediately remove the Ender Protection effect.
 
 It can be obtained by eating Ender Pie.
+
+## Blocks
+
+### Soul Carpet
+
+A variation of Carpet. Player standing on it will get Undead Affinity effect (which immediately expires once player steps out).
+

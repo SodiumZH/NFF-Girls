@@ -5,7 +5,7 @@ import com.github.mechalopa.hmag.registry.ModEntityTypes;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.befriending.registry.BefriendingTypeRegistry;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerCreeperGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerEnderExecutor;

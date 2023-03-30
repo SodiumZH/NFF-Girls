@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.eventbus.api.Event;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.capability.CBefriendableMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CBefriendableMob;
 
 public class BefriendableTimerUpEvent extends Event
 {

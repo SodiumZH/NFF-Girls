@@ -20,10 +20,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.BefriendedGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedRangedAttackGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.ai.goal.vanilla.BefriendedZombieAttackGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedRangedAttackGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedZombieAttackGoal;
 
 public abstract class BefriendedDrownedGoals {
 

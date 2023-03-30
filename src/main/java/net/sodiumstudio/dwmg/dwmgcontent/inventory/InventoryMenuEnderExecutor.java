@@ -9,10 +9,11 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.client.gui.screens.AbstractGuiBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
@@ -60,10 +61,15 @@ public class InventoryMenuEnderExecutor extends AbstractInventoryMenuBefriended{
 		addSlot(new Slot(container, 2, v.x, v.y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
-				return (stack.getItem() instanceof BlockItem)
+				return false;
+				/*return (stack.getItem() instanceof BlockItem)
 						&& !EnchantmentHelper.hasBindingCurse(stack)
-						&& !this.hasItem();
+						&& !this.hasItem();*/
 			}
+			@Override
+			public int getMaxStackSize() {
+	            return 1;
+	        }	
 		});
 
 		// baubles
@@ -72,20 +78,27 @@ public class InventoryMenuEnderExecutor extends AbstractInventoryMenuBefriended{
 		addSlot(new Slot(container, 3, v.x, v.y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
-				return /*(stack.getItem() instanceof ArmorItem)
-						&&*/ !EnchantmentHelper.hasBindingCurse(stack)
-						&& !this.hasItem();
+				return false;
+				/*return EnchantmentHelper.hasBindingCurse(stack)
+						&& !this.hasItem();*/
 			}
+			@Override
+			public int getMaxStackSize() {
+	            return 1;
+	        }	
 		});
 		
 		v.slotBelow().addY(10);
 		addSlot(new Slot(container, 4, v.x, v.y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
-				return /*(stack.getItem() instanceof ArmorItem)
-						&& */!EnchantmentHelper.hasBindingCurse(stack)
-						&& !this.hasItem();
+				return  false;/*!EnchantmentHelper.hasBindingCurse(stack)
+						&& !this.hasItem();*/
 			}
+			@Override
+			public int getMaxStackSize() {
+	            return 1;
+	        }	
 		});
 	}
 	
@@ -100,7 +113,7 @@ public class InventoryMenuEnderExecutor extends AbstractInventoryMenuBefriended{
 
 		ItemStack stack = slot.getItem();
 
-		// From mob equipment to player additionalInventory
+		// From mob equipment to player inventory
 		if (index < 5) {
 			if (!this.moveItemStackTo(stack, 5, 41, true)) {
 				return ItemStack.EMPTY;
@@ -108,9 +121,9 @@ public class InventoryMenuEnderExecutor extends AbstractInventoryMenuBefriended{
 				done = true;
 			}
 		}
-		// From additionalInventory to mob
+		// From inventory to mob
 		else {
-			int[] order = {3, 1, 2, 4, 5};			
+			int[] order = {2, 0, 1, 3, 4};			
 			// Try each mob slot
 			for (int i: order) {
 				// If the item is suitable and slot isn't occupied
@@ -123,6 +136,7 @@ public class InventoryMenuEnderExecutor extends AbstractInventoryMenuBefriended{
 				}
 			}
 		}
+		mob.updateFromInventory();
 		return done ? stack.copy() : ItemStack.EMPTY;
 	}
 	

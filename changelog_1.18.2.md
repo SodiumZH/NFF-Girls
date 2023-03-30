@@ -8,4 +8,12 @@ Added Creeper Girl.
 
 ### 0.0.0-snapshot.3
 
-Changed the mechanism of befriending all supported mobs.
+Changed the mechanism for befriending of all supported mobs. Now the mobs don't require a certain amount of items, but have a progress value with maximum 1. Each support item adds a random value to the mob, and when the value reaches 1 it's done. 
+
+Added Ender Executor.
+
+Added effects: Undead Affinity, Ender Protection
+
+Added foods: Soul Cake, Soul Cake Slice, Enderberry, Ender Pie
+
+Added blocks: Soul Carpet

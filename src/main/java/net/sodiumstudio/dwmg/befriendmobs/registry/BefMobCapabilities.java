@@ -5,7 +5,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.sodiumstudio.dwmg.befriendmobs.entitiy.capability.CBefriendableMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CBefriendableMob;
 
 public class BefMobCapabilities {
 
