@@ -45,7 +45,7 @@ public abstract class HandlerItemGivingCount extends HandlerItemGiving
 				// Block if in hatred
 				if (l.isInHatred(player) && !shouldIgnoreHatred())
 				{
-					EntityHelper.sendAngryParticlesToLivingDefault(target);
+					sendParticlesOnHatred(target);
 					Debug.printToScreen("Unable to befriend: in hatred list.", player, target);
 					result.setHandled();
 
@@ -53,11 +53,10 @@ public abstract class HandlerItemGivingCount extends HandlerItemGiving
 				// Block if in cooldown
 				else if (l.getPlayerTimer(player, "item_cooldown") > 0)
 				{
-					// EntityHelper.sendSmokeParticlesToMob(target);
 					Debug.printToScreen(
 							"Action cooldown " + Integer.toString(l.getPlayerTimer(player, "item_cooldown") / 20) + " s.",
 							player, target);
-					// result.setHandled();
+					sendParticlesOnActionCooldown(target);
 				} else
 				{
 					// Get overall cake amount needed, or create if not existing
@@ -89,7 +88,7 @@ public abstract class HandlerItemGivingCount extends HandlerItemGiving
 						result.setHandled();
 					} else
 					{
-						EntityHelper.sendGlintParticlesToLivingDefault(target);
+						sendParticlesOnItemReceived(target);
 						// Not satisfied, put data
 						NbtHelper.putPlayerData(IntTag.valueOf(alreadyGiven), l.getPlayerDataNbt(), player,
 								"already_given");
@@ -145,7 +144,7 @@ public abstract class HandlerItemGivingCount extends HandlerItemGiving
 					&& l.getPlayerDataInt(player, "already_given") > 0
 					&& !isQuiet)
 			{
-				EntityHelper.sendAngryParticlesToLivingDefault(mob);
+				sendParticlesOnInterrupted(mob);
 			}
 			l.removePlayerData(player, "already_given");
 		});
@@ -157,5 +156,26 @@ public abstract class HandlerItemGivingCount extends HandlerItemGiving
 		CBefriendableMob l = CBefriendableMob.getCap(mob);
 		return l.hasPlayerData(player, "already_given") && l.getPlayerDataInt(player, "already_given") > 0;
 	}
+	
+	public void sendParticlesOnHatred(Mob target)
+	{
+		EntityHelper.sendAngryParticlesToLivingDefault(target);
+	}
+	
+	public void sendParticlesOnActionCooldown(Mob target)
+	{
+		EntityHelper.sendSmokeParticlesToLivingDefault(target);
+	}
+	
+	public void sendParticlesOnItemReceived(Mob target)
+	{
+		EntityHelper.sendGlintParticlesToLivingDefault(target);
+	}
+
+	public void sendParticlesOnInterrupted(Mob target)
+	{
+		EntityHelper.sendAngryParticlesToLivingDefault(target);
+	}
+	
 }
 

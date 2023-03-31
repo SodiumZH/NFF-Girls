@@ -24,19 +24,12 @@ description='''Enjoy your Minecraft days with monster girls!'''
     modId="minecraft"
     mandatory=true
     versionRange="[1.18.2,1.19)"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
     
 [[dependencies.dwmg]]
     modId="hmag"
     mandatory=true
-    versionRange="[5.1.0, 6.0)"
-    ordering="NONE"
-    side="BOTH"
-    
-[[dependencies.dwmg]]
-    modId="grimoireofgaia"
-    mandatory=false
-    versionRange="[2.0.0-alpha.23,)"
-    ordering="NONE"
+    versionRange="[5.1.9, 6.0)"
+    ordering="AFTER"
     side="BOTH"

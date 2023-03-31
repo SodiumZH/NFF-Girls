@@ -34,12 +34,15 @@ public abstract class HandlerItemGiving extends AbstractBefriendingHandler
 	// If the mob is befriended immediately, return it. Otherwise return null.
 	public IBefriendedMob finalActions(Player player, Mob mob)
 	{
-		EntityHelper.sendHeartParticlesToLivingDefault(mob);
+		sendParticlesOnBefriended(mob);
 		return befriend(player, mob);
 	}
 	
 	public abstract int getItemGivingCooldownTicks();
+
+	public void sendParticlesOnBefriended(Mob target)
+	{
+		EntityHelper.sendHeartParticlesToLivingDefault(target);
+	}
 	
-
-
 }

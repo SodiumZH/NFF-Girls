@@ -165,18 +165,26 @@ public class EntityHelper
 		sendParticlesToEntity(entity, options, new Vec3(0d, heightOffset, 0d), rndScale, amount, speed);
 	}
 
-	public static void sendHeartParticlesToLivingDefault(LivingEntity entity) {
-		sendParticlesToEntity(entity, ParticleTypes.HEART, entity.getBbHeight() - 0.5, 0.5d, 10, 1d);
+	public static void sendHeartParticlesToLivingDefault(LivingEntity entity, float heightOffset) {
+		sendParticlesToEntity(entity, ParticleTypes.HEART, entity.getBbHeight() - 0.5 + heightOffset, 0.5d, 10, 1d);
 	}
 
+	public static void sendHeartParticlesToLivingDefault(LivingEntity entity) {
+		sendHeartParticlesToLivingDefault(entity, 0f);
+	}
+	
 	public static void sendGlintParticlesToLivingDefault(LivingEntity entity) {
 		sendParticlesToEntity(entity, ParticleTypes.HAPPY_VILLAGER, entity.getBbHeight() - 0.5, 0.5d, 20, 1d);
 	}
 
-	public static void sendSmokeParticlesToLivingDefault(LivingEntity entity) {
-		sendParticlesToEntity(entity, ParticleTypes.SMOKE, entity.getBbHeight() - 0.5, 0.2d, 30, 0d);
+	public static void sendSmokeParticlesToLivingDefault(LivingEntity entity, float heightOffset) {
+		sendParticlesToEntity(entity, ParticleTypes.SMOKE, entity.getBbHeight() - 0.5 + heightOffset, 0.2d, 30, 0d);
 	}
 
+	public static void sendSmokeParticlesToLivingDefault(LivingEntity entity) {
+		sendSmokeParticlesToLivingDefault(entity, 0f);
+	}
+	
 	public static void sendAngryParticlesToLivingDefault(LivingEntity entity) {
 		sendParticlesToEntity(entity, ParticleTypes.ANGRY_VILLAGER, entity.getBbHeight() - 0.5, 0.3d, 5, 1d);
 	}

@@ -14,6 +14,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInte
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CBefriendableMob;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
@@ -37,17 +38,17 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 					&& additionalConditions(player, target))) {
 				// Block if in hatred
 				if (l.isInHatred(player) && !shouldIgnoreHatred()) {
-					EntityHelper.sendAngryParticlesToLivingDefault(target);
+					sendParticlesOnHatred(target);
 					Debug.printToScreen("Unable to befriend: in hatred list.", player, target);
 					result.setHandled();
 
 				}
 				// Block if in cooldown
 				else if (l.getPlayerTimer(player, "item_cooldown") > 0) {
-					// EntityHelper.sendSmokeParticlesToMob(target);
 					Debug.printToScreen(
 							"Action cooldown " + Integer.toString(l.getPlayerTimer(player, "item_cooldown") / 20) + " s.",
 							player, target);
+					sendParticlesOnActionCooldown(target);
 					// result.setHandled();
 				} 
 				else
@@ -62,16 +63,19 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 						player.getMainHandItem().shrink(1);
 					procValue += getProcValueToAdd(mainhand);
 					Debug.printToScreen("Progress Value: " + Double.toString(procValue), player, target);
-					if (procValue >= 0.99999d) {	// 1.0 actually, avoiding potential float errors
+					if (procValue >= 0.99999d)
+					{	// 1.0 actually, avoiding potential float errors
 						// Satisfied
 						finalActions(player, target);
 						result.setHandled();
-					} else {
-						EntityHelper.sendGlintParticlesToLivingDefault(target);
+					} 
+					else
+					{
 						// Not satisfied, put data
+						sendParticlesOnItemReceived(target);
 						NbtHelper.putPlayerData(DoubleTag.valueOf(procValue), l.getPlayerDataNbt(), player,
 								"proc_value");
-						sendSingleHeart(target, lastProcValue, procValue, deltaProcPerHeart());
+						sendProgressHeart(target, lastProcValue, procValue, deltaProcPerHeart());
 						l.setPlayerTimer(player, "item_cooldown", this.getItemGivingCooldownTicks()); // Set cooldown
 						result.setHandled();
 					}
@@ -95,12 +99,12 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 
 	protected abstract double getProcValueToAdd(ItemStack item);
 	
-	protected void sendSingleHeart(Mob target, double procBefore, double procAfter, double deltaProcPerHeart)
+	protected void sendProgressHeart(Mob target, double procBefore, double procAfter, double deltaProcPerHeart)
 	{
 		int times = (int)(procAfter / deltaProcPerHeart) - (int)(procBefore / deltaProcPerHeart);
 		for (int i = 0; i < times; ++i)
 		{
-			EntityHelper.sendParticlesToEntity(target, ParticleTypes.HEART, target.getBbHeight() - 0.5, 0.2d, 1, 1d);
+			sendParticlesForProgressHeart(target);
 		}
 	}
 
@@ -131,7 +135,7 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 		{
 			if (isInProcess(player, mob) && !isQuiet)
 			{
-				EntityHelper.sendAngryParticlesToLivingDefault(mob);
+				sendParticlesOnInterrupted(mob);
 			}
 			l.removePlayerData(player, "proc_value");			
 		});
@@ -144,4 +148,28 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 		return l.hasPlayerData(player, "proc_value") && l.getPlayerDataDouble(player, "proc_value") > 0d;
 	}
 	
+	public void sendParticlesOnHatred(Mob target)
+	{
+		EntityHelper.sendAngryParticlesToLivingDefault(target);
+	}
+	
+	public void sendParticlesOnActionCooldown(Mob target)
+	{
+		EntityHelper.sendSmokeParticlesToLivingDefault(target);
+	}
+	
+	public void sendParticlesOnItemReceived(Mob target)
+	{
+		EntityHelper.sendGlintParticlesToLivingDefault(target);
+	}
+
+	public void sendParticlesOnInterrupted(Mob target)
+	{
+		EntityHelper.sendAngryParticlesToLivingDefault(target);
+	}
+	
+	public void sendParticlesForProgressHeart(Mob target)
+	{
+		EntityHelper.sendParticlesToEntity(target, ParticleTypes.HEART, target.getBbHeight() - 0.5, 0.2d, 1, 1d);
+	}
 }

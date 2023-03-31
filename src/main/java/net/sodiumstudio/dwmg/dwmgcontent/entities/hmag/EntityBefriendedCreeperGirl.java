@@ -26,6 +26,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Ocelot;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -106,7 +107,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	}
 	
 	public static Builder createAttributes() {
-		return CreeperGirlEntity.createAttributes().add(Attributes.ATTACK_DAMAGE, 0);
+		return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.3D).add(Attributes.KNOCKBACK_RESISTANCE, 0.25D).add(Attributes.ATTACK_DAMAGE, 0);
 	}
 	
 	public int getVariant()

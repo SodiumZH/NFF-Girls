@@ -17,3 +17,10 @@ Added effects: Undead Affinity, Ender Protection
 Added foods: Soul Cake, Soul Cake Slice, Enderberry, Ender Pie
 
 Added blocks: Soul Carpet
+
+Updated HMaG dependency to 5.1.9
+
+Removed GoG4 dependency
+
+Fixed wrong mob attributes
+

@@ -28,6 +28,6 @@ public class BefriendMobs {
         //MinecraftForge.EVENT_BUS.register(this);
 	}	
 	
-    public static final boolean IS_DEBUG_MODE = true;
+    public static final boolean IS_DEBUG_MODE = false;
 	
 }

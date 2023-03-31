@@ -18,8 +18,10 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -61,7 +63,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 
 	public static Builder createAttributes() 
 	{
-		return SkeletonGirlEntity.createAttributes();
+		return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ATTACK_DAMAGE, 3.25D).add(Attributes.ARMOR, 1.0D);
 	}
 
 	/* AI */
@@ -79,7 +81,6 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
-
 	}
 
 	@Override

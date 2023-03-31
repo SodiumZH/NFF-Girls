@@ -158,7 +158,7 @@ Its explosion can kill the player, but cannot kill other befriended mobs (includ
 
 ##### Befriending
 
-First, look at it to make it be angry with you. When it's less than 4 blocks away, the process starts.
+First, look at it to make it be angry with you. When it's less than 8 blocks away, the process starts.
 
 During the process the mob will always be hostile to you. You must do the item-giving process while getting attacked.
 
@@ -170,7 +170,7 @@ Accepted items:
 
 *Eye of Ender*: 0.005 ~ 0.01
 
-Once you get >4 blocks away, the process will be interrupted and it will become neutral.
+Once you get >8 blocks away, the process will be interrupted and it will become neutral.
 
 ##### Interaction
 
@@ -192,7 +192,7 @@ The non-block variation of Soul Cake. Each item provides nutrition 9 and 90s Und
 
 A food providing nutrition 6 and teleport (like Chorus Fruit).
 
-Tip: it's probably unadvisable to eat Enderberries. It's much more useful as ingredients for other items~~, or seeds for growing more berries (not added)~~.
+Tip: it's probably unadvisable to eat raw Enderberries. It's much more useful as ingredients for other items.
 
 ### Ender Pie
 
