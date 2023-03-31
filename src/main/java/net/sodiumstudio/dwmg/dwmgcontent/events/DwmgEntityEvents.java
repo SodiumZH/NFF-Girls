@@ -175,7 +175,7 @@ public class DwmgEntityEvents
 		}
 	}
 	
-	
+	@SubscribeEvent
 	public static void onEnderTeleport(EntityTeleportEvent.EnderEntity event)
 	{
 		if (event.getEntityLiving() instanceof EnderExecutorEntity ee)
