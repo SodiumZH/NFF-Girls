@@ -26,9 +26,8 @@ Removed GoG4 dependency.
 
 Fixed wrong mob attributes.
 
-### 0.0.0-snapshot.4
-
 # 1.19.2
 
-### 0.1.0-snapshot-4
+### 0.1.0-snapshot.3
 
+Ported from 1.18.2-0.0.0-snapshot.3.
