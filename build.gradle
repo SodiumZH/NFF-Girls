@@ -17,6 +17,7 @@ plugins {
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply from: 'https://raw.githubusercontent.com/SizableShrimp/ForgeUpdatesRemapper/main/remapper.gradle'
 
 version = '0.0.0-snapshot.3'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
