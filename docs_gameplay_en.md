@@ -4,7 +4,11 @@
 
 ## Version info
 
-### Latest version: 0.0.0-snapshot.2
+### Latest version: 
+
+#### 0.0.0-snapshot.3 (1.18.2)
+
+#### 0.1.0-snapshot.3 (1.19.2)
 
 
 
