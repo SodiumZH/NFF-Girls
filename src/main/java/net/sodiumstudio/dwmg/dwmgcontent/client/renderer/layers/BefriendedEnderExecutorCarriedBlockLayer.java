@@ -1,12 +1,11 @@
 package net.sodiumstudio.dwmg.dwmgcontent.client.renderer.layers;
 
-import com.github.mechalopa.hmag.client.model.EnderExecutorModel;
-import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -15,7 +14,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.client.model.data.ModelData;
 import net.sodiumstudio.dwmg.dwmgcontent.client.model.BefriendedEnderExecutorModel;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedEnderExecutor;
 
@@ -44,7 +43,7 @@ public class BefriendedEnderExecutorCarriedBlockLayer extends RenderLayer<Entity
 			float f1 = 0.375F;
 			poseStack.scale(-f1, -f1, f1);
 			poseStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
-			Minecraft.getInstance().getBlockRenderer().renderSingleBlock(blockstate, poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
+			Minecraft.getInstance().getBlockRenderer().renderSingleBlock(blockstate, poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, (RenderType)null);
 			poseStack.popPose();
 		}
 	}

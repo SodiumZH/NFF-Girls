@@ -5,8 +5,6 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.InteractionHand;
@@ -20,7 +18,6 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
-import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 
 public interface IBefriendedMob extends ContainerListener  {
 
@@ -184,7 +181,7 @@ public interface IBefriendedMob extends ContainerListener  {
 		return (Mob)this;
 	}
 	
-	public default IBefriendedMob self()
+	public default IBefriendedMob get()
 	{
 		return this;
 	}

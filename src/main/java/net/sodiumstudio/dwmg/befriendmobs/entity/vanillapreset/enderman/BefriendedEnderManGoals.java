@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +33,7 @@ public class BefriendedEnderManGoals
 
 		public LeaveBlockGoal(AbstractBefriendedEnderMan enderman)
 		{
-			this.mob = enderman.self();
+			this.mob = enderman.get();
 			this.enderman = enderman;
 			this.allowState(WANDER);
 		}
@@ -63,7 +64,7 @@ public class BefriendedEnderManGoals
 		 * Keep ticking a continuous task that has already been started
 		 */
 		public void tick() {
-			Random random = this.enderman.getRandom();
+			RandomSource random = this.enderman.getRandom();
 			Level level = this.enderman.level;
 			int i = Mth.floor(this.enderman.getX() - 1.0D + random.nextDouble() * 2.0D);
 			int j = Mth.floor(this.enderman.getY() + random.nextDouble() * 2.0D);
@@ -233,7 +234,7 @@ public class BefriendedEnderManGoals
 		}
 
 		public void tick() {
-			Random random = this.enderman.getRandom();
+			RandomSource random = this.enderman.getRandom();
 			Level level = this.enderman.level;
 			int i = Mth.floor(this.enderman.getX() - 2.0D + random.nextDouble() * 4.0D);
 			int j = Mth.floor(this.enderman.getY() + random.nextDouble() * 3.0D);
