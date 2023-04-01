@@ -12,15 +12,15 @@ Changed the mechanism for befriending of all supported mobs. Now the mobs don't 
 
 Added Ender Executor.
 
-Added effects: Undead Affinity, Ender Protection
+Added effects: Undead Affinity, Ender Protection.
 
-Added foods: Soul Cake, Soul Cake Slice, Enderberry, Ender Pie
+Added foods: Soul Cake, Soul Cake Slice, Enderberry, Ender Pie.
 
-Added blocks: Soul Carpet
+Added blocks: Soul Carpet.
 
-Updated HMaG dependency to 5.1.9
+Updated HMaG dependency to 5.1.9.
 
-Removed GoG4 dependency
+Removed GoG4 dependency.
 
-Fixed wrong mob attributes
+Fixed wrong mob attributes.
 
