@@ -1,12 +1,10 @@
-package net.sodiumstudio.dwmg.dwmgcontent.entities.hmag;
+package net.sodiumstudio.dwmg.befriendmobs.template;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
-
-import com.github.mechalopa.hmag.registry.ModItems;
-import com.github.mechalopa.hmag.world.entity.HuskGirlEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -18,14 +16,12 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
@@ -40,97 +36,96 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.Befriend
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
-import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
-import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
-import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuZombie;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
 
-public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefriendedMob {
+public class TemplateBefriendedMobPreset extends Monster implements IBefriendedMob {
 
 	/* Initialization */
 
-	public EntityBefriendedHuskGirl(EntityType<? extends EntityBefriendedHuskGirl> pEntityType, Level pLevel) {
+	public TemplateBefriendedMobPreset(EntityType<? extends TemplateBefriendedMobPreset> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
 		Arrays.fill(this.handDropChances, 0);
-
 	}
 
 	public static Builder createAttributes() {
-		return Zombie.createAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.28D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.ARMOR, 5.0D);
+		return Monster.createMonsterAttributes()/*.add(...)*/;
 	}
 
 	/* AI */
 
 	@Override
 	protected void registerGoals() {
-		goalSelector.addGoal(1, new BefriendedRestrictSunGoal(this));
-		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
-		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0d, true));
-		goalSelector.addGoal(4, new BefriendedSunAvoidingFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
-		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
-		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+		// Add goals here
+		// Generally target goals can be preset below. Change it if needs to modify.
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
-
-	}
-
-	
-	@Override
-	public void updateAttributes()
-	{
-		//TODO: actions
 	}
 	
 	/* Interaction */
 
+	// Map items that can heal the mob and healing values here.
+	// Leave it empty if you don't need healing features.
 	@Override
 	public HashMap<Item, Float> getHealingItems()
 	{
 		HashMap<Item, Float> map = new HashMap<Item, Float>();
-		map.put(ModItems.SOUL_POWDER.get(), 5.0f);
-		map.put(ModItems.SOUL_APPLE.get(), 15.0f);
+		// map.put(YOUR_ITEM_TYPE, HEALING_HEALTH_VALUE);
 		return map;
+	}
+	
+	// Set of items that can heal the mob WITHOUT CONSUMING.
+	// Leave it empty if not needed.
+	@Override
+	public HashSet<Item> getNonconsumingHealingItems()
+	{
+		HashSet<Item> set = new HashSet<Item>();
+		// set.put(YOUR_ITEM_TYPE);
+		return set;
 	}
 	
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
-		if (player.getUUID().equals(getOwnerUUID())) 
-		{
+		if (player.getUUID().equals(getOwnerUUID())) {
 			if (!player.level.isClientSide()) 
 			{
-				if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) {}
+				/* Put checks before healing item check */
+				/* if (....)
+				 {
+				 	....
+				 }
+				else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) {}
+				// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 				else if (hand == InteractionHand.OFF_HAND)
 				{
 					switchAIState();
-				}		
+				}
+				// Here it's main hand but no interaction. Return false to enable off hand interaction.
 				else return false;
 			}
+			// Interacted
 			return true;
-		}
+		} 
 		return false;
-
 	}
 
 	@Override
 	public boolean onInteractionShift(Player player, InteractionHand hand) {
 		if (player.getUUID().equals(getOwnerUUID())) {
-
+			// Open inventory and GUI
 			BefriendedHelper.openBefriendedInventory(player, this);
-
 			return true;
-		} //else
-			//Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
+		}
 		return false;
 	}
 
 	/* Inventory */
 
+	// This enables mob armor and hand items by default.
+	// If not needed, use AdditionalInventory class instead.
 	protected AdditionalInventoryWithEquipment additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize(), this);
 
 	@Override
@@ -138,7 +133,7 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 	{
 		return additionalInventory;
 	}
-
+	
 	@Override
 	public int getInventorySize()
 	{
@@ -148,6 +143,7 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
+			// Sync inventory with mob equipments. If it's not AdditionalInventoryWithEquipment, remove it
 			additionalInventory.setMobEquipment(this);
 		}
 	}
@@ -155,13 +151,15 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 	public void setInventoryFromMob()
 	{
 		if (!this.level.isClientSide) {
+			// Sync inventory with mob equipments. If it's not AdditionalInventoryWithEquipment, remove it
 			additionalInventory.getFromMob(this);
 		}
+		return;
 	}
 
 	@Override
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuZombie(containerId, playerInventory, container, this);
+		return null; // new YourInventoryMenuClass(containerId, playerInventory, container, this);
 	}
 
 	/* Save and Load */
@@ -170,51 +168,23 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
+		// Add other data to save here
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		this.setInit();
+		// Add other data reading here
+		setInit();
 	}
 
-	/* Conversion */
-	
-	@Override
-	protected void doUnderWaterConversion() {
-		this.convertToZombie();
-		if (!this.isSilent())
-		{
-			this.level.levelEvent((Player) null, 1041, this.blockPosition(), 0);
-		}
-	}	
-	
-	public void forceUnderWaterConversion()
-	{
-		this.doUnderWaterConversion();
-	}
-	
-	// Called when convert to zombie
-	protected EntityBefriendedZombieGirl convertToZombie()
-	{
-		EntityBefriendedZombieGirl newMob = (EntityBefriendedZombieGirl)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get());
-		newMob.isFromHusk = true;
-		newMob.setInit();
-		return newMob;
-	}
-	
-	
-	// ==================================================================== //
-	// ========================= General Settings ========================= //
-	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
-	// ------------------ Data sync ------------------ //
+	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EntityBefriendedHuskGirl.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(TemplateBefriendedMobPreset.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedHuskGirl.class, EntityDataSerializers.BYTE);
+			.defineId(TemplateBefriendedMobPreset.class, EntityDataSerializers.BYTE);
 
 	@Override
 	protected void defineSynchedData() {
@@ -222,11 +192,15 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 		entityData.define(DATA_OWNERUUID, Optional.empty());
 		entityData.define(DATA_AISTATE, (byte) 0);
 	}
-
-	// ------------------ Data sync end ------------------ //
+	
+	// ==================================================================== //
+	// ========================= General Settings ========================= //
+	// Generally these can be copy-pasted to other IBefriendedMob classes //
 
 	// ------------------ IBefriendedMob interface ------------------ //
 
+	/* Init */
+	
 	protected boolean initialized = false;
 	
 	@Override
@@ -240,6 +214,8 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 	{
 		initialized = true;
 	}
+	
+	/* Ownership */
 	
 	@Override
 	public Player getOwner() {
@@ -261,6 +237,8 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 		entityData.set(DATA_OWNERUUID, Optional.of(ownerUUID));
 	}
 
+	/* AI */
+	
 	@Override
 	public BefriendedAIState getAIState() {
 		return BefriendedAIState.fromID(entityData.get(DATA_AISTATE));
@@ -283,6 +261,8 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 		PreviousTarget = target;
 	}
 
+	/* Inventory */
+	
 	// ------------------ IBefriendedMob interface end ------------------ //
 
 	// ------------------ Misc ------------------ //

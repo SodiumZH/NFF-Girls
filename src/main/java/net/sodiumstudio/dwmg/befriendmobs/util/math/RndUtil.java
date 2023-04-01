@@ -16,6 +16,6 @@ public class RndUtil {
 		return rnd.nextFloat() * (max - min) + min ;
 	}
 	
-	
+
 	
 }

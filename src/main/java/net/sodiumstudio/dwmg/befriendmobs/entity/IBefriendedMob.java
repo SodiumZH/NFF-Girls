@@ -1,26 +1,31 @@
 package net.sodiumstudio.dwmg.befriendmobs.entity;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.eventbus.api.Event.Result;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CHealingHandlerImpl;
+import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CHealingHandlerImplDefault;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
-import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
+import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 
 public interface IBefriendedMob extends ContainerListener  {
 
@@ -53,14 +58,21 @@ public interface IBefriendedMob extends ContainerListener  {
 	
 	// Get owner as player entity.
 	// Warning: be careful calling this on initialization! If the owner hasn't been initialized it will return null.
-	public Player getOwner();
-	
-	// Get owner as entity.
+	public default Player getOwner() 
+	{
+		if (getOwnerUUID() != null)
+			return asMob().level.getPlayerByUUID(getOwnerUUID());
+		else return null;
+	}
+	// Get owner as UUID.
 	// Warning: be careful calling this on initialization! If the owner hasn't been initialized it will return null.
 	public UUID getOwnerUUID();
 	
 	// Set owner from player entity.
-	public void setOwner(@Nonnull Player owner);
+	public default void setOwner(@Nonnull Player owner)
+	{
+		setOwnerUUID(owner.getUUID());
+	}
 	
 	// Set owner from player UUID.
 	public void setOwnerUUID(@Nonnull UUID ownerUUID);
@@ -107,20 +119,7 @@ public interface IBefriendedMob extends ContainerListener  {
 	/* Inventory */
 	
 	public AdditionalInventory getAdditionalInventory();
-	
-	@Deprecated // Use getAdditionalInventory instead
-	public default AdditionalInventory makeContainerFromInventory()
-	{
-		return getAdditionalInventory();
-	}
 
-	// Save container content to this mob
-	@Deprecated // Simply delete it
-	public default void saveInventory(AdditionalInventory container)
-	{
-		getAdditionalInventory().setFromContainer(container);
-	}
-	
 	public int getInventorySize();
 	
 	// Set mob data from additionalInventory.
@@ -176,8 +175,51 @@ public interface IBefriendedMob extends ContainerListener  {
 	{
 	}
 
+	/* Healing related */	
+
+	public default Class<? extends CHealingHandlerImpl> healingHandlerClass()
+	{
+		return CHealingHandlerImplDefault.class;
+	}
+
+	public default boolean applyHealingItem(ItemStack stack, float value, boolean consume)
+	{
+		Wrapped.Boolean succeeded = new Wrapped.Boolean(false);		
+		this.asMob().getCapability(BefMobCapabilities.CAP_HEALING_HANDLER).ifPresent((l) ->
+		{
+			succeeded.set(l.applyHealingItem(stack, value, consume));
+		});		
+		return succeeded.get();
+	}
+	
+	public default HashMap<Item, Float> getHealingItems()
+	{
+		return new HashMap<Item, Float>();
+	}
+	
+	public default HashSet<Item> getNonconsumingHealingItems()
+	{	
+		return new HashSet<Item>();
+	}
+	
+	public default InteractionResult tryApplyHealingItems(ItemStack stack)
+	{
+		if (stack.isEmpty())
+			return InteractionResult.PASS;
+		if (getHealingItems().containsKey(stack.getItem()))
+		{
+			return applyHealingItem(stack, getHealingItems().get(stack.getItem()), true) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+		}
+		else if (getNonconsumingHealingItems().contains(stack.getItem()))
+		{
+			return applyHealingItem(stack, getHealingItems().get(stack.getItem()), false) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+		}
+		return InteractionResult.PASS;
+	}
+	
 	/* Misc */
-	public void updateAttributes();
+	
+	public default void updateAttributes() {};
 
 	public default Mob asMob()
 	{

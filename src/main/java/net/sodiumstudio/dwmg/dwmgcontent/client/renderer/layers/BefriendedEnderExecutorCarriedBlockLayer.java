@@ -1,7 +1,5 @@
 package net.sodiumstudio.dwmg.dwmgcontent.client.renderer.layers;
 
-import com.github.mechalopa.hmag.client.model.EnderExecutorModel;
-import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 
@@ -27,6 +25,7 @@ public class BefriendedEnderExecutorCarriedBlockLayer extends RenderLayer<Entity
 		super(renderLayerParent);
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, EntityBefriendedEnderExecutor entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch)
 	{

@@ -105,6 +105,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
 			.defineId(AbstractBefriendedEnderMan.class, EntityDataSerializers.BYTE);	
 	
+	@SuppressWarnings("deprecation")
 	public AbstractBefriendedEnderMan(EntityType<? extends AbstractBefriendedEnderMan> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);

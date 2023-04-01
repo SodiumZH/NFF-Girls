@@ -1,11 +1,13 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.hmag;
 
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
 
 import com.github.mechalopa.hmag.ModConfigs;
+import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import com.github.mechalopa.hmag.world.entity.IBeamAttackMob;
 
@@ -16,6 +18,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -34,7 +37,9 @@ import net.minecraft.world.entity.monster.Endermite;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,6 +57,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.Abstract
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.BefriendedEnderManGoals;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuEnderExecutor;
 
@@ -113,12 +119,25 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	// Interaction
 	
 	@Override
+	public HashMap<Item, Float> getHealingItems()
+	{
+		HashMap<Item, Float> map = new HashMap<Item, Float>();
+		map.put(Items.ENDER_EYE, 5.0f);
+		return map;
+	}
+	
+	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
 		if (player.getUUID().equals(getOwnerUUID())) {
 			if (!player.level.isClientSide()) 
 			{
-				switchAIState();
+				if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS){}
+				else if (hand == InteractionHand.OFF_HAND)
+				{
+					switchAIState();
+				}
+				else return false;
 			}
 			return true;
 		}

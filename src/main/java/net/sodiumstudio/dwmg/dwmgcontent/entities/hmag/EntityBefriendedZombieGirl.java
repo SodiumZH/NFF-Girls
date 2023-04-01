@@ -1,6 +1,7 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.hmag;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,9 +23,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -42,7 +44,6 @@ import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
-import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuZombie;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
@@ -123,36 +124,38 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	/* Interaction */
 
 	@Override
+	public HashMap<Item, Float> getHealingItems()
+	{
+		HashMap<Item, Float> map = new HashMap<Item, Float>();
+		map.put(ModItems.SOUL_POWDER.get(), 5.0f);
+		map.put(ModItems.SOUL_APPLE.get(), 15.0f);
+		return map;
+	}
+	
+	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (player.level.isClientSide()) {
-			}
+			if (!player.level.isClientSide()) 
 			// Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
-			else {
+			{
 				// If this zombie is converted from a husk,
 				// it can be converted back by using a sponge to it
 				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromHusk) {
 					ItemHelper.consumeOne(player.getItemInHand(hand));
 					this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
 					this.convertToHusk();
-				} else if (player.getItemInHand(hand).is(ModItems.SOUL_POWDER.get())) {
-					ItemHelper.consumeOne(player.getItemInHand(hand));
-					this.heal(5);
-				} else if (player.getItemInHand(hand).is(ModItems.SOUL_APPLE.get())) {
-					ItemHelper.consumeOne(player.getItemInHand(hand));
-					this.heal(15);
-				} else
+				} 
+				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) {}
+				else if (hand == InteractionHand.OFF_HAND)
+				{
 					switchAIState();
-				// Debug.printToScreen(getAIState().toString(), player, this);
+				}
+				else return false;
 			}
 			return true;
-		} else if (!player.level.isClientSide()) {
-			Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
-			Debug.printToScreen("Player UUID: " + player.getUUID(), player, this);
-		}
+		} 
 		return false;
-
 	}
 
 	@Override
@@ -246,12 +249,8 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		return newMob;
 	}
 
-	
-	// ==================================================================== //
-	// ========================= General Settings ========================= //
-	// Generally these can be copy-pasted to other IBefriendedMob classes //
 
-	// ------------------ Data sync ------------------ //
+	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
 			.defineId(EntityBefriendedZombieGirl.class, EntityDataSerializers.OPTIONAL_UUID);
@@ -264,8 +263,10 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		entityData.define(DATA_OWNERUUID, Optional.empty());
 		entityData.define(DATA_AISTATE, (byte) 0);
 	}
-
-	// ------------------ Data sync end ------------------ //
+	
+	// ==================================================================== //
+	// ========================= General Settings ========================= //
+	// Generally these can be copy-pasted to other IBefriendedMob classes //
 
 	// ------------------ IBefriendedMob interface ------------------ //
 

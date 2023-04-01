@@ -53,6 +53,13 @@ public class ServerEvents
 							});
 						}
 					}
+					if (entity instanceof LivingEntity living)
+					{
+						living.getCapability(BefMobCapabilities.CAP_HEALING_HANDLER).ifPresent((l) -> 
+						{
+							l.updateCooldown();
+						});
+					}
 				}
 			}
 		}
