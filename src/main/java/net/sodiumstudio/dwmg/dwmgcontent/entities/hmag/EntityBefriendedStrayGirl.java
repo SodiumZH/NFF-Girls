@@ -186,7 +186,7 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IBefri
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide()) 
+			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
 			{
 				if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL) && isFromSkeleton)
 				{
@@ -202,18 +202,14 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IBefri
 					}
 					// and convert
 					this.convertToSkeleton();
+					return true;
 				} 
-				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS){} 
-				else if (hand == InteractionHand.OFF_HAND)
-				{
+				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+				{}
+				else
 					switchAIState();
-				}			
-				else return false;
 			}
 			return true;
-		} else if (!player.level.isClientSide()) {
-			Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
-			Debug.printToScreen("Player UUID: " + player.getUUID(), player, this);
 		}
 		return false;
 

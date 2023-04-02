@@ -135,7 +135,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide()) 
+			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
 			{
 				// If this zombie is converted from a husk,
 				// it can be converted back by using a sponge to it
@@ -144,12 +144,12 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 					this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
 					this.convertToZombie();
 				} 
-				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) {}
-				else if (hand == InteractionHand.OFF_HAND)
+				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+				{}
+				else if (hand == InteractionHand.MAIN_HAND)
 				{
 					switchAIState();
-				}
-				else return false;
+				}	
 			}
 			return true;
 		} 

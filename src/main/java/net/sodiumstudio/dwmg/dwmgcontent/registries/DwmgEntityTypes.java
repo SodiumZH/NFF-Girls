@@ -79,7 +79,7 @@ public class DwmgEntityTypes {
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_ender_executor").toString()));
 	
 	public static final RegistryObject<EntityType<EntityBefriendedStrayGirl>> HMAG_STRAY_GIRL = 
-			ENTITY_TYPES.register("stray_girl", () -> EntityType.Builder
+			ENTITY_TYPES.register("hmag_stray_girl", () -> EntityType.Builder
 			.of(EntityBefriendedStrayGirl::new, MobCategory.CREATURE)
 			.immuneTo(Blocks.POWDER_SNOW)
 			.sized(0.6F, 1.99F)			

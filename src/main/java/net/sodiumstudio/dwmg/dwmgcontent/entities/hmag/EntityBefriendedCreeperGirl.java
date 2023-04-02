@@ -202,19 +202,21 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	public boolean onInteraction(Player player, InteractionHand hand) {
 		if (player.getUUID().equals(getOwnerUUID()))
 		{
-			if (!this.level.isClientSide)
+			if (!this.level.isClientSide && hand == InteractionHand.MAIN_HAND)
 			{
 				// Power with a lightning particle
 				if (player.getItemInHand(hand).is(ModItems.LIGHTNING_PARTICLE.get()) && !this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
 				{
 					this.setPowered(true);
 					ItemHelper.consumeOne(player.getItemInHand(hand));
+					return true;
 				}
 				// Unpower with empty hand and get a lightning particle
 				else if (player.getItemInHand(hand).isEmpty() && this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
 				{
 					this.setPowered(false);
 					this.spawnAtLocation(new ItemStack(ModItems.LIGHTNING_PARTICLE.get(), 1));
+					return true;
 				} 
 				else if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)
 						&& this.canIgnite
@@ -224,15 +226,14 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	
 					this.playerIgniteDefault(player, hand);
 					isPlayerIgnited = true;
+					return true;
 				} 
 				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-				{
-				}
-				else if (hand == InteractionHand.OFF_HAND)
+					return true;
+				else if (hand == InteractionHand.MAIN_HAND)
 				{
 					switchAIState();
-				}
-				else return false;
+				}	
 			}
 			return true;
 		}
