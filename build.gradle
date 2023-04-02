@@ -168,7 +168,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.1.28'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
@@ -184,7 +184,8 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    implementation fg.deobf("curse.maven:hmag-537613:4445103")
+	//implementation fg.deobf("curse.maven:hmag-537613:4445103")
+    implementation fg.deobf("curse.maven:hmag-537613:4056253")
 	//implementation fg.deobf("curse.maven:gog4-228948:4249761")
 	//implementation fg.deobf("curse.maven:citadel-331936:3683007")
 	//implementation fg.deobf("curse.maven:am-426558:3853078")

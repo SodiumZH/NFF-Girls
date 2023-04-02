@@ -62,7 +62,7 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 					if (!player.isCreative())
 						player.getMainHandItem().shrink(1);
 					procValue += getProcValueToAdd(mainhand);
-					Debug.printToScreen("Progress Value: " + Double.toString(procValue), player, target);
+					Debug.printToScreen("Progress Value: " + Double.toString(procValue), player);
 					if (procValue >= 0.99999d)
 					{	// 1.0 actually, avoiding potential float errors
 						// Satisfied
