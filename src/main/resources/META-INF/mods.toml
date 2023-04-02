@@ -24,12 +24,12 @@ description='''Enjoy your Minecraft days with monster girls!'''
     modId="minecraft"
     mandatory=true
     versionRange="[1.18.2,1.19)"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
     
 [[dependencies.dwmg]]
     modId="hmag"
     mandatory=true
     versionRange="[5.1.9, 6.0)"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
