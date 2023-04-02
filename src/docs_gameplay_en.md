@@ -30,7 +30,9 @@ Creeper Girl
 
 Ender Executor
 
+Stray Girl
 
+Wither Skeleton Girl
 
 ## General befriending methods
 
@@ -108,6 +110,8 @@ You can customize their armors, hand items (bow and shield icons) and secondary 
 
 The secondary weapon slot (sword icon) enables the skeleton to automatically swap the weapons on close combat and shooting. When the enemy is too close or the arrows run out, it will try swapping to the sword/tool in the secondary weapon slot for close combat. If the enemy is far away and it has arrows, it will also try swapping to the bow.
 
+It can convert to Stray Girl in Powder Snow.
+
 
 
 #### Husk Girl (HMaG)
@@ -123,6 +127,22 @@ Identical to Zombie Girl.
 ##### Features
 
 It can convert to Zombie Girl in water. The converted Zombie Girl can be recovered to Husk by using a sponge to it.
+
+
+
+### Stray Girl
+
+##### Befriending
+
+Identical to Skeleton Girl.
+
+##### Interaction
+
+Identical to Skeleton Girl.
+
+##### Features
+
+If it's converted from a Skeleton, it can be converted back by using Flint and Steel.
 
 
 
@@ -151,6 +171,8 @@ You can customize its armor and hand items. There's an extra ammo slot (explosiv
 The ammo slot receives either Gunpowder or TNT and consumes one for each explosion. With Gunpowder its explosion has range 3 and doesn't break blocks. With TNT its explosion has range 4 and breaks blocks (if mobGriefing is true). If it's charged, the explosion range will be doubled, 6 for Gunpowder and 8 for TNT, consuming 2 ammo items and uncharging it.
 
 You can manually charge it by using a Particle of Lightning to it. If it's charged, you can right click with bare hand to uncharge it, dropping a Particle of Lightning.
+
+It can be healed with Redstone (5), Gunpowder(5) and Redstone Block(15).
 
 ##### Features
 
@@ -182,7 +204,9 @@ Once you get >8 blocks away, the process will be interrupted and it will become 
 
 You can customize its hand items. There's a block slot (cube icon) and 2 additional item slots (gem icon) which are unimplemented.
 
+It can be healed with Eye of Ender(5).
 
+### 
 
 ## Foods
 

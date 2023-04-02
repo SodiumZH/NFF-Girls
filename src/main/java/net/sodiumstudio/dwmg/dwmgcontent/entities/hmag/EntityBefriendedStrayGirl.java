@@ -8,6 +8,7 @@ import java.util.UUID;
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.StrayGirlEntity;
 
+import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -270,12 +271,14 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IBefri
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
+		nbt.put("is_from_skeleton", ByteTag.valueOf(isFromSkeleton));
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
+		isFromSkeleton = nbt.getBoolean("is_from_skeleton");
 		setInit();
 	}
 	
