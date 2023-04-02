@@ -2,12 +2,10 @@ package net.sodiumstudio.dwmg.befriendmobs.util;
 
 import java.util.HashSet;
 import java.util.UUID;
-import java.util.Vector;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;

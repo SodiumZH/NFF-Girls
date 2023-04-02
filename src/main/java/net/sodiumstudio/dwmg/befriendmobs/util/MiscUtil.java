@@ -4,10 +4,11 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 
 public class MiscUtil {
 	
@@ -21,26 +22,24 @@ public class MiscUtil {
 		return target != null ? target.getName().getString() : "null";
 	}
 
-	@Deprecated
 	public static void printToScreen(Component text, Player receiver, Entity sender)
 	{
-		printToScreen(text, receiver);
+		receiver.sendMessage(text, sender.getUUID());
 	}
 	
-	@Deprecated
 	public static void printToScreen(String text, Player receiver, Entity sender)
 	{
-		printToScreen(text, receiver);
+		receiver.sendMessage(new TextComponent(text), sender.getUUID());
 	}
 	
 	public static void printToScreen(Component text, Player receiver)
 	{
-		receiver.sendSystemMessage(text);
+		MiscUtil.printToScreen(text, receiver, receiver);
 	}
 	
 	public static void printToScreen(String text, Player receiver)
 	{
-		receiver.sendSystemMessage(MutableComponent.create(new LiteralContents(text)));
+		MiscUtil.printToScreen(new TextComponent(text), receiver, receiver);
 	}
 	
 	public static <T> boolean sameObject(T a, T b)

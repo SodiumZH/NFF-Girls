@@ -43,7 +43,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void onEntityInteract(EntityInteract event) {
 		Entity target = event.getTarget();
-		Player player = event.getEntity();
+		Player player = event.getPlayer();
 		Wrapped<InteractionResult> result = new Wrapped<InteractionResult>(InteractionResult.PASS);
 		boolean isClientSide = event.getSide() == LogicalSide.CLIENT;
 		boolean isMainHand = event.getHand() == InteractionHand.MAIN_HAND;
@@ -288,7 +288,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void onLivingHurt(LivingHurtEvent event)
 	{
-		LivingEntity living = event.getEntity();
+		LivingEntity living = event.getEntityLiving();
 		// Handle befriending interruption on mob attacked
 		if (living instanceof Mob && BefriendingTypeRegistry.contains((Mob)living))
 		{

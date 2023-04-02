@@ -1,6 +1,7 @@
 package net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
@@ -36,11 +38,17 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.monster.Endermite;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.item.Item;
@@ -53,14 +61,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.MinecraftForge;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedNearestAttackableTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedMeleeAttackGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
 
 public abstract class AbstractBefriendedEnderMan extends Monster implements IBefriendedMob, NeutralMob
 {
@@ -93,6 +105,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
 			.defineId(AbstractBefriendedEnderMan.class, EntityDataSerializers.BYTE);	
 	
+	@SuppressWarnings("deprecation")
 	public AbstractBefriendedEnderMan(EntityType<? extends AbstractBefriendedEnderMan> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
@@ -558,106 +571,5 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 
 
 	// Inventory end
-
-	// save&load
-
-	// ==================================================================== //
-	// ========================= General Settings ========================= //
-	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
-	// ------------------ Data sync ------------------ //
-
-	// By default owner uuid and ai state need to sync
-
-
-	// ------------------ Data sync end ------------------ //
-
-	// ------------------ IBefriendedMob interface ------------------ //
-
-	protected boolean initialized = false;
-
-	@Override
-	public boolean hasInit() {
-		return initialized;
-	}
-
-	@Override
-	public void setInit() {
-		initialized = true;
-	}
-
-	@Override
-	public Player getOwner() {
-		return getOwnerUUID() != null ? level.getPlayerByUUID(getOwnerUUID()) : null;
-	}
-
-	@Override
-	public void setOwner(Player owner) {
-		entityData.set(DATA_OWNERUUID, Optional.of(owner.getUUID()));
-	}
-
-	@Override
-	public UUID getOwnerUUID() {
-		return entityData.get(DATA_OWNERUUID).orElse(null);
-	}
-
-	@Override
-	public void setOwnerUUID(UUID ownerUUID) {
-		entityData.set(DATA_OWNERUUID, Optional.of(ownerUUID));
-	}
-
-	// AI related
-
-	@Override
-	public BefriendedAIState getAIState() {
-		return BefriendedAIState.fromID(entityData.get(DATA_AISTATE));
-	}
-
-	@Override
-	public void setAIState(BefriendedAIState state) {
-		entityData.set(DATA_AISTATE, state.id());
-	}
-
-	protected LivingEntity PreviousTarget = null;
-
-	@Override
-	public LivingEntity getPreviousTarget() {
-		return PreviousTarget;
-	}
-
-	@Override
-	public void setPreviousTarget(LivingEntity target) {
-		PreviousTarget = target;
-	}
-
-	/* Inventory */
-
-	public int getInventorySize()
-	{
-		return 3;
-	}
 	
-	// ------------------ IBefriendedMob interface end ------------------ //
-
-	// ------------------ Misc ------------------ //
-
-	@Override
-	public boolean isPersistenceRequired() {
-		return true;
-	}
-
-	/* add @Override annotation if inheriting Monster class */
-	/* @Override */
-	public boolean isPreventingPlayerRest(Player pPlayer) {
-		return false;
-	}
-
-	@Override
-	protected boolean shouldDespawnInPeaceful() {
-		return false;
-	}
-
-	// ========================= General Settings end ========================= //
-	// ======================================================================== //
-
 }

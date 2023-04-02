@@ -9,7 +9,6 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -83,7 +82,7 @@ public abstract class BefriendedDrownedGoals {
 
 		@Nullable
 		private Vec3 getWaterPos() {
-			RandomSource random = this.mob.asMob().getRandom();
+			Random random = this.mob.asMob().getRandom();
 			BlockPos blockpos = this.mob.asMob().blockPosition();
 
 			for (int i = 0; i < 10; ++i) {
