@@ -66,7 +66,7 @@ public class BMDebugItemHandler
 			if (target instanceof IBefriendedMob bef)
 			{
 				bef.init(player.getUUID(), null);
-				Debug.printToScreen("Mob " + target.getDisplayName() + " initialized", player);
+				Debug.printToScreen("Mob " + target.getName().getString() + " initialized", player);
 			}
 			else 
 			{
@@ -75,7 +75,7 @@ public class BMDebugItemHandler
 					IBefriendedMob bef = BefriendingTypeRegistry.getHandler((EntityType<Mob>)target.getType()).befriend(player, target);
 					if (bef != null)
 					{
-						EntityHelper.sendHeartParticlesToLivingDefault(bef.asMob()); // TODO: move this to a MobBefriendEvent listener
+						EntityHelper.sendHeartParticlesToLivingDefault(bef.asMob());
 					} else
 						throw new UnimplementedException(
 								"Entity type befriend method unimplemented: " + target.getType().toShortString()

@@ -17,5 +17,7 @@
   "entity.dwmg.hmag_skeleton_girl" : "骷髅娘",
   "entity.dwmg.hmag_husk_girl" : "尸壳娘",
   "entity.dwmg.hmag_creeper_girl" : "苦力怕娘",
-  "entity.dwmg.hmag_ender_executor": "末影处刑者"
+  "entity.dwmg.hmag_ender_executor": "末影处刑者",
+  "entity.dwmg.hmag_stray_girl" : "流浪者娘",
+  "entity.dwmg.hmag_wither_skeleton_girl" : "凋灵骷髅娘"
 }
