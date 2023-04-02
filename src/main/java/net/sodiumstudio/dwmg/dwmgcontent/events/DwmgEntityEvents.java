@@ -48,7 +48,7 @@ public class DwmgEntityEvents
 	{
 
 		LivingEntity target = event.getTarget();		
-		LivingEntity lastHurtBy = event.getEntity().getLastHurtByMob();
+		LivingEntity lastHurtBy = event.getEntityLiving().getLastHurtByMob();
 		Wrapped<Boolean> isCancelledByEffect = new Wrapped<Boolean>(Boolean.FALSE);
 		
 		// Handle mobs //
@@ -117,7 +117,7 @@ public class DwmgEntityEvents
 	
 	@SubscribeEvent
 	public static void onLivingHurt(LivingHurtEvent event) {
-		LivingEntity living = event.getEntity();
+		LivingEntity living = event.getEntityLiving();
 		if (!living.level.isClientSide)
 		{
 			// Handle Ender Protection

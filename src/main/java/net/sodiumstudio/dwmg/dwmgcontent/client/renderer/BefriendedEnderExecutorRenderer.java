@@ -42,7 +42,7 @@ public class BefriendedEnderExecutorRenderer extends MobRenderer<EntityBefriende
 	{
 		super(context, new BefriendedEnderExecutorModel<>(context.bakeLayer(ModModelLayers.ENDER_EXECUTOR)), 0.5F);
 		this.addLayer(new BefriendedEnderExecutorEyesLayer<>(this));
-		this.addLayer(new ItemInHandLayer2<>(this, context.getItemInHandRenderer(), -1));
+		this.addLayer(new ItemInHandLayer2<>(this, -1));
 		this.addLayer(new BefriendedEnderExecutorCarriedBlockLayer(this));
 	}
 

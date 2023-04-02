@@ -23,7 +23,7 @@ import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedZombieGir
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgEntityTypes {
 
-	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Dwmg.MOD_ID);
+	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Dwmg.MOD_ID);
 	
 	public static final RegistryObject<EntityType<EntityBefriendedZombieGirl>> HMAG_ZOMBIE_GIRL = 
 			ENTITY_TYPES.register("hmag_zombie_girl", () -> EntityType.Builder.of(

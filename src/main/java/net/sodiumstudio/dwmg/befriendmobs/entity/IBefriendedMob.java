@@ -27,7 +27,6 @@ import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 
-
 public interface IBefriendedMob extends ContainerListener  {
 
 	/* Initialization */
@@ -227,7 +226,7 @@ public interface IBefriendedMob extends ContainerListener  {
 		return (Mob)this;
 	}
 	
-	public default IBefriendedMob get()
+	public default IBefriendedMob self()
 	{
 		return this;
 	}

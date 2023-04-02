@@ -181,7 +181,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 			{
 				this.setCarriedBlock(bi.getBlock().defaultBlockState());
 			}
-			else throw new IllegalStateException("Ender Executor can only carry block items. Attempt to carry: " + getAdditionalInventory().getItem(2).getDisplayName());
+			else throw new IllegalStateException("Ender Executor can only carry block items. Attempt to carry: " + getAdditionalInventory().getItem(2).getItem().getRegistryName());
 			setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
 			setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
 			setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
