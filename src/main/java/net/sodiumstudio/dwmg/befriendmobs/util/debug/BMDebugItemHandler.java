@@ -1,7 +1,7 @@
 package net.sodiumstudio.dwmg.befriendmobs.util.debug;
 
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.LiteralContents;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -10,14 +10,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
@@ -56,7 +52,7 @@ public class BMDebugItemHandler
 				else
 				{
 					target.addEffect(new MobEffectInstance(effect, 9999999));
-					target.setCustomName(new TextComponent("Debug Target"));
+					target.setCustomName(MutableComponent.create(new LiteralContents("Debug Target")));
 				}
 			}
 		}

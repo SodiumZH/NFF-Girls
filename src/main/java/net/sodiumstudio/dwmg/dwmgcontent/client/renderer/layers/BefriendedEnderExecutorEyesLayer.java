@@ -1,7 +1,6 @@
 package net.sodiumstudio.dwmg.dwmgcontent.client.renderer.layers;
 
 import com.github.mechalopa.hmag.HMaG;
-import com.github.mechalopa.hmag.client.model.EnderExecutorModel;
 import com.github.mechalopa.hmag.client.renderer.layers.EyesLayer2;
 
 import net.minecraft.client.renderer.RenderType;
@@ -9,8 +8,8 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedEnderExecutor;
 import net.sodiumstudio.dwmg.dwmgcontent.client.model.BefriendedEnderExecutorModel;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedEnderExecutor;
 
 @OnlyIn(Dist.CLIENT)
 public class BefriendedEnderExecutorEyesLayer<T extends EntityBefriendedEnderExecutor, M extends BefriendedEnderExecutorModel<T>> extends EyesLayer2<T, M>

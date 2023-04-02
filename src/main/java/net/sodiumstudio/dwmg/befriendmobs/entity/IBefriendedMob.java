@@ -86,7 +86,7 @@ public interface IBefriendedMob extends ContainerListener  {
 	{
 		BefriendedAIState nextState = getAIState().defaultSwitch();
 		setAIState(nextState);
-		MiscUtil.printToScreen(this.asMob().getName().getString() + " " + this.getAIState().getDisplayInfo(), getOwner(), this.asMob());
+		MiscUtil.printToScreen(this.asMob().getName().getString() + " " + this.getAIState().getDisplayInfo(), getOwner());
 		return nextState;
 	}
 	
@@ -226,7 +226,7 @@ public interface IBefriendedMob extends ContainerListener  {
 		return (Mob)this;
 	}
 	
-	public default IBefriendedMob self()
+	public default IBefriendedMob get()
 	{
 		return this;
 	}
