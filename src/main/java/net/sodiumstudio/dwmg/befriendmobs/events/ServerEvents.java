@@ -33,14 +33,14 @@ public class ServerEvents
 
 	@SuppressWarnings("unchecked")
 	@SubscribeEvent
-	public static void onWorldTick(TickEvent.WorldTickEvent event)
+	public static void onWorldTick(TickEvent.LevelTickEvent event)
 	{
 		if (event.side == LogicalSide.SERVER)
 		{
 			// Update all befriendable mobs near players
-			for (Player player : event.world.players())
+			for (Player player : event.level.players())
 			{
-				for (Entity entity : event.world.getEntities(player, new AABB(player.position().subtract(64.0, 64.0, 64.0), player.position().add(64.0, 64.0, 64.0))))
+				for (Entity entity : event.level.getEntities(player, new AABB(player.position().subtract(64.0, 64.0, 64.0), player.position().add(64.0, 64.0, 64.0))))
 				{
 					if (entity instanceof Mob mob)
 					{	// TODO: make this an event
@@ -52,13 +52,6 @@ public class ServerEvents
 								BefriendingTypeRegistry.getHandler((EntityType<Mob>)(mob.getType())).serverTick(mob);
 							});
 						}
-					}
-					if (entity instanceof LivingEntity living)
-					{
-						living.getCapability(BefMobCapabilities.CAP_HEALING_HANDLER).ifPresent((l) -> 
-						{
-							l.updateCooldown();
-						});
 					}
 				}
 			}

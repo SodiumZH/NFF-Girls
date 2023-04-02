@@ -1,6 +1,5 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.hmag;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 import com.github.mechalopa.hmag.registry.ModItems;
@@ -14,7 +13,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -31,7 +29,6 @@ import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -186,18 +183,6 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 		}
 	}
 	
-	/* Interaction */
-	
-	@Override
-	public HashMap<Item, Float> getHealingItems()
-	{
-		HashMap<Item, Float> map = new HashMap<Item, Float>();
-		map.put(Items.GUNPOWDER, 5.0f);
-		map.put(Items.REDSTONE, 5.0f);
-		map.put(Items.REDSTONE_BLOCK, 15.0f);
-		return map;
-	}
-	
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
 		if (player.getUUID().equals(getOwnerUUID()))
@@ -225,16 +210,12 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 					this.playerIgniteDefault(player, hand);
 					isPlayerIgnited = true;
 				} 
-				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-				{
-				}
-				else if (hand == InteractionHand.OFF_HAND)
+				else if (hand == InteractionHand.MAIN_HAND)
 				{
 					switchAIState();
 				}
-				else return false;
 			}
-			return true;
+		return true;
 		}
 		return false;
 	}
