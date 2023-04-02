@@ -17,7 +17,5 @@
   "entity.dwmg.hmag_skeleton_girl" : "Skeleton Girl",
   "entity.dwmg.hmag_husk_girl" : "Husk Girl",
   "entity.dwmg.hmag_creeper_girl" : "Creeper Girl",
-  "entity.dwmg.hmag_ender_executor": "Ender Executor",
-  "entity.dwmg.hmag_stray_girl" : "Stray Girl",
-  "entity.dwmg.hmag_wither_skeleton_girl" : "Wither Skeleton Girl"
+  "entity.dwmg.hmag_ender_executor": "Ender Executor"
 }

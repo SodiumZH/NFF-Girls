@@ -136,20 +136,22 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
+			if (!player.level.isClientSide()) 
+			// Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
 			{
+				// If this zombie is converted from a husk,
+				// it can be converted back by using a sponge to it
 				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromHusk) {
 					ItemHelper.consumeOne(player.getItemInHand(hand));
 					this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
 					this.convertToHusk();
-					return true;
 				} 
-				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) 
-				{}
-				else if (hand == InteractionHand.MAIN_HAND)
+				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) {}
+				else if (hand == InteractionHand.OFF_HAND)
 				{
 					switchAIState();
 				}
+				else return false;
 			}
 			return true;
 		} 

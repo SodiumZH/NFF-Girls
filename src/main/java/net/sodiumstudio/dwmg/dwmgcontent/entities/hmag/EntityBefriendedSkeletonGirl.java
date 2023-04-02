@@ -187,16 +187,15 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
+			if (!player.level.isClientSide()) 
 			{
-				if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-				{}
-				else if (hand == InteractionHand.MAIN_HAND)
+				if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) {}
+				else if (hand == InteractionHand.OFF_HAND)
 				{
 					switchAIState();
-				}		
+				}	
+				else return false;
 			}
-			return true;
 		}
 		return false;
 

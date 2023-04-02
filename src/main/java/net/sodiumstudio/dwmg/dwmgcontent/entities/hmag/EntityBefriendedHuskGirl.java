@@ -102,14 +102,14 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 
 		if (player.getUUID().equals(getOwnerUUID())) 
 		{
-			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
+			if (!player.level.isClientSide()) 
 			{
-				if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-				{}
-				else if (hand == InteractionHand.MAIN_HAND)
+				if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) {}
+				else if (hand == InteractionHand.OFF_HAND)
 				{
 					switchAIState();
-				}			
+				}		
+				else return false;
 			}
 			return true;
 		}
