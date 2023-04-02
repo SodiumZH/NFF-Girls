@@ -13,7 +13,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.LiteralContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -37,7 +38,7 @@ public abstract class AbstractGuiBefriended extends AbstractContainerScreen<Abst
 	public AbstractGuiBefriended(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory,
 			IBefriendedMob mob, boolean renderName)
 	{
-		super(pMenu, pPlayerInventory, renderName ? ((LivingEntity)mob).getDisplayName() : new TextComponent(""));
+		super(pMenu, pPlayerInventory, renderName ? ((LivingEntity)mob).getDisplayName() : MutableComponent.create(new LiteralContents("")));
 		this.mob = mob;
 		this.passEvents = false;
 	}
@@ -75,7 +76,7 @@ public abstract class AbstractGuiBefriended extends AbstractContainerScreen<Abst
 	{
 		int hp = (int) ((LivingEntity)mob).getHealth();
 		int maxHp = (int) ((LivingEntity)mob).getMaxHealth();
-		Component info = new TextComponent("HP: " + hp + " / " + maxHp);
+		Component info = MutableComponent.create(new LiteralContents("HP: " + hp + " / " + maxHp));
 		font.draw(poseStack, info, position.x, position.y, color);
 	}
 	

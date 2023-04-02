@@ -1,3 +1,5 @@
+# 1.18.2
+
 ### 0.0.0-snapshot.1
 
 Added befriending Zombie Girl, Husk Girl and Skeleton Girl.
@@ -23,4 +25,11 @@ Updated HMaG dependency to 5.1.9.
 Removed GoG4 dependency.
 
 Fixed wrong mob attributes.
+
+
+# 1.19.2
+
+### 0.1.0-snapshot.3
+
+Ported from 1.18.2-0.0.0-snapshot.3.
 
