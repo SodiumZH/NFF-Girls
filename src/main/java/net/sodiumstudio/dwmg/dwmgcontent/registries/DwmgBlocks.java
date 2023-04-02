@@ -15,6 +15,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.blocks.BlockSoulCake;
+//import net.sodiumstudio.dwmg.dwmgcontent.DwmgTab;
 import net.sodiumstudio.dwmg.dwmgcontent.blocks.BlockSoulCarpet;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)

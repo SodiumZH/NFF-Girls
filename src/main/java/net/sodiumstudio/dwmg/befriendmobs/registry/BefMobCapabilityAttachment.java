@@ -1,8 +1,11 @@
 package net.sodiumstudio.dwmg.befriendmobs.registry;
 
+import java.lang.reflect.InvocationTargetException;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,6 +15,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendableMobRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CBefriendableMobProvider;
+import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CHealingHandlerProvider;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BefMobCapabilityAttachment {
@@ -20,6 +24,7 @@ public class BefMobCapabilityAttachment {
 	@SuppressWarnings("unchecked")
 	@SubscribeEvent
 	public static void attachLivingEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
+		// CBefriendableMob
 		if (event.getObject() instanceof Mob mob) {
 			if (BefriendingTypeRegistry.contains((EntityType<? extends Mob>) mob.getType())
 					&& !(mob instanceof IBefriendedMob)) 
@@ -35,6 +40,25 @@ public class BefMobCapabilityAttachment {
 						BefriendingTypeRegistry.getHandler((EntityType<? extends Mob>) mob.getType()).initCap(l);
 						BefriendableMobRegistry.put(mob);
 					});
+				}
+			}
+		}
+		// CHealingHandler
+		if (event.getObject() instanceof IBefriendedMob bef)
+		{
+			if (bef.healingHandlerClass() != null)
+			{
+				try
+				{
+					event.addCapability(new ResourceLocation(BefriendMobs.MOD_ID, "cap_healing_handler"), 
+						new CHealingHandlerProvider(
+							// Implementation class defined in IBefriendedMob implementation
+							bef.healingHandlerClass().getDeclaredConstructor(LivingEntity.class).newInstance(bef.asMob()), 
+							bef.asMob()));
+				} 
+				catch (Exception e)
+				{
+					e.printStackTrace();
 				}
 			}
 		}

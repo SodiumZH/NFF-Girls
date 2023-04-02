@@ -1,6 +1,7 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.hmag;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
@@ -22,6 +24,8 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
@@ -85,30 +89,29 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 	/* Interaction */
 
 	@Override
+	public HashMap<Item, Float> getHealingItems()
+	{
+		HashMap<Item, Float> map = new HashMap<Item, Float>();
+		map.put(ModItems.SOUL_POWDER.get(), 5.0f);
+		map.put(ModItems.SOUL_APPLE.get(), 15.0f);
+		return map;
+	}
+	
+	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
-		if (player.getUUID().equals(getOwnerUUID())) {
-			if (player.level.isClientSide()) {}
-				//Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
-			else if (player.getItemInHand(hand).is(ModItems.SOUL_POWDER.get()))
+		if (player.getUUID().equals(getOwnerUUID())) 
+		{
+			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
 			{
-				ItemHelper.consumeOne(player.getItemInHand(hand));
-				this.heal(5);
-			}
-			else if (player.getItemInHand(hand).is(ModItems.SOUL_APPLE.get()))
-			{
-				ItemHelper.consumeOne(player.getItemInHand(hand));
-				this.heal(15);
-			}
-			else
-			{
-				switchAIState();
-				//Debug.printToScreen(getAIState().toString(), player, this);
+				if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+				{}
+				else if (hand == InteractionHand.MAIN_HAND)
+				{
+					switchAIState();
+				}			
 			}
 			return true;
-		} else if (!player.level.isClientSide()) {
-			Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
-			Debug.printToScreen("Player UUID: " + player.getUUID(), player, this);
 		}
 		return false;
 
@@ -236,16 +239,6 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 	public void setInit()
 	{
 		initialized = true;
-	}
-	
-	@Override
-	public Player getOwner() {
-		return getOwnerUUID() != null ? level.getPlayerByUUID(getOwnerUUID()) : null;
-	}
-
-	@Override
-	public void setOwner(Player owner) {
-		entityData.set(DATA_OWNERUUID, Optional.of(owner.getUUID()));
 	}
 
 	@Override

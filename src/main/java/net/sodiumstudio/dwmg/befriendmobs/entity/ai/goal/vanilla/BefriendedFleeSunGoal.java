@@ -6,7 +6,6 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
@@ -77,7 +76,7 @@ public class BefriendedFleeSunGoal extends BefriendedGoal {
 
 	@Nullable
 	protected Vec3 getHidePos() {
-		RandomSource random = getPathfinder().getRandom();
+		Random random = getPathfinder().getRandom();
 		BlockPos blockpos = getPathfinder().blockPosition();
 
 		for (int i = 0; i < 10; ++i) {

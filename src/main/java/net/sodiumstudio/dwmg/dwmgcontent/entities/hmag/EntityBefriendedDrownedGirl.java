@@ -1,6 +1,7 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.hmag;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
@@ -122,32 +124,36 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	/* Interaction */
 
 	@Override
+	public HashMap<Item, Float> getHealingItems()
+	{
+		HashMap<Item, Float> map = new HashMap<Item, Float>();
+		map.put(ModItems.SOUL_POWDER.get(), 5.0f);
+		map.put(ModItems.SOUL_APPLE.get(), 15.0f);
+		return map;
+	}
+	
+	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
-
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide()) {
-				// If this drowned is converted from a zombie,
+			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
+			{
+				// If this zombie is converted from a husk,
 				// it can be converted back by using a sponge to it
-				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromZombie) {
+				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromHusk) {
 					ItemHelper.consumeOne(player.getItemInHand(hand));
-					if (!player.addItem(new ItemStack(Items.WET_SPONGE, 1))) {
-						this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
-					}
+					this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
 					this.convertToZombie();
-				} else if (player.getItemInHand(hand).is(ModItems.SOUL_POWDER.get())) {
-					ItemHelper.consumeOne(player.getItemInHand(hand));
-					this.heal(5);
-				} else if (player.getItemInHand(hand).is(ModItems.SOUL_APPLE.get()) && this.getHealth() != this.getMaxHealth()) {
-					ItemHelper.consumeOne(player.getItemInHand(hand));
-					this.heal(15);
-				} else if (hand.equals(InteractionHand.MAIN_HAND))
+				} 
+				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+				{}
+				else if (hand == InteractionHand.MAIN_HAND)
+				{
 					switchAIState();
-				// Debug.printToScreen(getAIState().toString(), player, this);
+				}	
 			}
 			return true;
-		}
+		} 
 		return false;
-
 	}
 
 	@Override
@@ -259,16 +265,6 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	}
 
 	/* Ownership */
-
-	@Override
-	public Player getOwner() {
-		return getOwnerUUID() != null ? level.getPlayerByUUID(getOwnerUUID()) : null;
-	}
-
-	@Override
-	public void setOwner(Player owner) {
-		entityData.set(DATA_OWNERUUID, Optional.of(owner.getUUID()));
-	}
 
 	@Override
 	public UUID getOwnerUUID() {

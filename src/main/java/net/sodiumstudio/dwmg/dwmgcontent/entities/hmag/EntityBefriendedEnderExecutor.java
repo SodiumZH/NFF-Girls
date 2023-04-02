@@ -1,11 +1,13 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.hmag;
 
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
 
 import com.github.mechalopa.hmag.ModConfigs;
+import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import com.github.mechalopa.hmag.world.entity.IBeamAttackMob;
 
@@ -16,6 +18,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -34,7 +37,9 @@ import net.minecraft.world.entity.monster.Endermite;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,6 +57,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.Abstract
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.BefriendedEnderManGoals;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuEnderExecutor;
 
@@ -85,7 +91,6 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	@Override
 	protected void registerGoals() {
 	      this.goalSelector.addGoal(1, new FloatGoal(this));
-	      //this.goalSelector.addGoal(1, new BefriendedEnderManGoals.FreezeWhenLookedAt(this));     
 	      this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
 	      this.goalSelector.addGoal(4, new BefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 	      this.goalSelector.addGoal(7, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0D, 0.0F));
@@ -113,16 +118,28 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	// Interaction
 	
 	@Override
+	public HashMap<Item, Float> getHealingItems()
+	{
+		HashMap<Item, Float> map = new HashMap<Item, Float>();
+		map.put(Items.ENDER_EYE, 5.0f);
+		return map;
+	}
+	
+	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide()) 
+			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
 			{
-				switchAIState();
+				if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+				{}
+				else if (hand == InteractionHand.MAIN_HAND)
+				{
+					switchAIState();
+				}	
 			}
 			return true;
 		}
-			/* Other actions */
 		return false;
 	}
 
@@ -163,7 +180,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 			{
 				this.setCarriedBlock(bi.getBlock().defaultBlockState());
 			}
-			else throw new IllegalStateException("Ender Executor can only carry block items. Attempt to carry: " + getAdditionalInventory().getItem(2).getDisplayName());
+			else throw new IllegalStateException("Ender Executor can only carry block items. Attempt to carry: " + getAdditionalInventory().getItem(2).getItem().getRegistryName());
 			setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
 			setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
 			setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
@@ -489,16 +506,6 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	public void setInit()
 	{
 		initialized = true;
-	}
-		
-	@Override
-	public Player getOwner() {
-		return getOwnerUUID() != null ? level.getPlayerByUUID(getOwnerUUID()) : null;
-	}
-
-	@Override
-	public void setOwner(Player owner) {
-		entityData.set(DATA_OWNERUUID, Optional.of(owner.getUUID()));
 	}
 
 	@Override
