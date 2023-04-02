@@ -18,7 +18,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-version = '0.0.0-snapshot.3'
+version = '0.0.0-snapshot.4'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'dwmg'
 
@@ -196,7 +196,7 @@ jar {
         attributes([
                 "Specification-Title"     : "dwmg",
                 "Specification-Vendor"    : "sodiumstudio",
-                "Specification-Version"   : "0.0.0-snapshot.3",
+                "Specification-Version"   : "0.0.0-snapshot.4",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "sodiumstudio",
