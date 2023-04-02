@@ -3,7 +3,6 @@ package net.sodiumstudio.dwmg.dwmgcontent.registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -16,14 +15,12 @@ import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedDrownedGi
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedEnderExecutor;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedHuskGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedSkeletonGirl;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedStrayGirl;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedWitherSkeletonGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedZombieGirl;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgEntityTypes {
 
-	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Dwmg.MOD_ID);
+	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Dwmg.MOD_ID);
 	
 	public static final RegistryObject<EntityType<EntityBefriendedZombieGirl>> HMAG_ZOMBIE_GIRL = 
 			ENTITY_TYPES.register("hmag_zombie_girl", () -> EntityType.Builder.of(
@@ -78,26 +75,6 @@ public class DwmgEntityTypes {
 			.setShouldReceiveVelocityUpdates(false)
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_ender_executor").toString()));
 	
-	public static final RegistryObject<EntityType<EntityBefriendedStrayGirl>> HMAG_STRAY_GIRL = 
-			ENTITY_TYPES.register("hmag_stray_girl", () -> EntityType.Builder
-			.of(EntityBefriendedStrayGirl::new, MobCategory.CREATURE)
-			.immuneTo(Blocks.POWDER_SNOW)
-			.sized(0.6F, 1.99F)			
-			.setTrackingRange(8)
-			.setUpdateInterval(3)
-			.setShouldReceiveVelocityUpdates(false)
-			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_stray_girl").toString()));
-	
-	public static final RegistryObject<EntityType<EntityBefriendedWitherSkeletonGirl>> HMAG_WITHER_SKELETON_GIRL = 
-			ENTITY_TYPES.register("hmag_wither_skeleton_girl", () -> EntityType.Builder
-			.of(EntityBefriendedWitherSkeletonGirl::new, MobCategory.CREATURE)
-			.fireImmune()
-			.immuneTo(Blocks.WITHER_ROSE)
-			.sized(0.7F, 2.4F)
-			.setTrackingRange(8)
-			.setUpdateInterval(3)
-			.setShouldReceiveVelocityUpdates(false)
-			.build(new ResourceLocation(Dwmg.MOD_ID, "wither_skeleton_girl").toString()));
 	
 	@SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
@@ -107,8 +84,7 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.HMAG_DROWNED_GIRL.get(), EntityBefriendedDrownedGirl.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_CREEPER_GIRL.get(), EntityBefriendedCreeperGirl.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_ENDER_EXECUTOR.get(), EntityBefriendedEnderExecutor.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_STRAY_GIRL.get(), EntityBefriendedStrayGirl.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_WITHER_SKELETON_GIRL.get(), EntityBefriendedWitherSkeletonGirl.createAttributes().build());
+
 	}
 	
 }

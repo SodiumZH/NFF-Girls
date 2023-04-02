@@ -9,6 +9,8 @@ import net.minecraft.world.level.block.CarpetBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 /**
  * Soul Carpet is a carpet which provides mobs 30s Death Affinity effect on it
  */

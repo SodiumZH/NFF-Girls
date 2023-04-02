@@ -1,7 +1,6 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.hmag;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,7 +14,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +26,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TieredItem;
@@ -52,7 +49,6 @@ import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonMel
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuSkeleton;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
 
 public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements IBefriendedMob
 {
@@ -175,28 +171,30 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	/* Interaction */
 
 	@Override
-	public HashMap<Item, Float> getHealingItems()
-	{
-		HashMap<Item, Float> map = new HashMap<Item, Float>();
-		map.put(ModItems.SOUL_POWDER.get(), 5.0f);
-		map.put(ModItems.SOUL_APPLE.get(), 15.0f);
-		return map;
-	}
-	
-	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
-			{
-				if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-				{}
-				else if (hand == InteractionHand.MAIN_HAND)
+			if (player.level.isClientSide()) {}
+				//Debug.printToScreen("Friendly Zombie Girl right clicked", player, this);
+			else {
+				if (player.getItemInHand(hand).is(ModItems.SOUL_POWDER.get()))
 				{
+					ItemHelper.consumeOne(player.getItemInHand(hand));
+					this.heal(5);
+				}
+				else if (player.getItemInHand(hand).is(ModItems.SOUL_APPLE.get()))
+				{
+					ItemHelper.consumeOne(player.getItemInHand(hand));
+					this.heal(15);
+				}
+				else
 					switchAIState();
-				}		
+				//Debug.printToScreen(getAIState().toString(), player, this);
 			}
 			return true;
+		} else if (!player.level.isClientSide()) {
+			Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
+			Debug.printToScreen("Player UUID: " + player.getUUID(), player, this);
 		}
 		return false;
 
@@ -263,32 +261,6 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		setInit();
 	}
 	
-	/* Conversion */
-	
-	
-	@Override
-	protected void doFreezeConversion() {
-		this.convertToStray();
-		if (!this.isSilent())
-		{
-			this.level.levelEvent((Player) null, 1041, this.blockPosition(), 0);
-		}
-	}	
-	
-	public void forceFreezeConversion()
-	{
-		this.doFreezeConversion();
-	}
-	
-	// Called when convert to zombie
-	protected EntityBefriendedStrayGirl convertToStray()
-	{
-		EntityBefriendedStrayGirl newMob = (EntityBefriendedStrayGirl)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.HMAG_STRAY_GIRL.get());
-		newMob.isFromSkeleton = true;
-		newMob.setInit();
-		return newMob;
-	}
-
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
@@ -296,9 +268,9 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	// ------------------ Data sync ------------------ //
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EntityBefriendedSkeletonGirl.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(EntityBefriendedZombieGirl.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedSkeletonGirl.class, EntityDataSerializers.BYTE);
+			.defineId(EntityBefriendedZombieGirl.class, EntityDataSerializers.BYTE);
 
 	@Override
 	protected void defineSynchedData() {
@@ -322,6 +294,16 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	public void setInit()
 	{
 		initialized = true;
+	}
+	
+	@Override
+	public Player getOwner() {
+		return getOwnerUUID() != null ? level.getPlayerByUUID(getOwnerUUID()) : null;
+	}
+
+	@Override
+	public void setOwner(Player owner) {
+		entityData.set(DATA_OWNERUUID, Optional.of(owner.getUUID()));
 	}
 
 	@Override
