@@ -54,7 +54,7 @@ Something may interrupt the process. Once interrupted, the progress will drop ba
 
 ##### Befriending
 
-Using item-giving process. Each item given, there's 10s cooldown.
+Using simple item-giving process. Each item given, there's 10s cooldown.
 
 Accepted items and corresponding progress increase:
 
@@ -92,7 +92,7 @@ Currently converting to Drowned is not added because Drowned Girl is not finishe
 
 ##### Befriending
 
-Same to Zombie Girls except the probabilities.
+Simple item-giving process.
 
 *Soul Cake Slice*: 1% for 1.00, 4% for 3/4, 15% for 1/2, 80% for 1/4.
 
@@ -143,6 +143,26 @@ Identical to Skeleton Girl.
 ##### Features
 
 If it's converted from a Skeleton, it can be converted back by using Flint and Steel.
+
+
+
+### Wither Skeleton Girl
+
+##### Befriending
+
+Simple Item-giving process. Items accepted:
+
+*Soul Cake Slice*: 1% for 0.60, 4% for 0.45, 15% for 0.30, 80% for 0.15.
+
+*Nether Star*: 20% for 1.00%, 80% for 0.50.
+
+*Soul Powder*: 0.005 ~ 0.01.
+
+*Soul Apple*: 0.01 ~ 0.02.
+
+##### Interaction
+
+Identical to Skeleton Girl.
 
 
 
