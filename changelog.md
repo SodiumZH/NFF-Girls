@@ -53,3 +53,5 @@ Added Wither Skeleton Girl support.
 Added 2s cooldown for giving healing items.
 
 Added healing items to Creeper Girl and Ender Executor.
+
+Rollbacked HMaG dependency to 6.1.0.
