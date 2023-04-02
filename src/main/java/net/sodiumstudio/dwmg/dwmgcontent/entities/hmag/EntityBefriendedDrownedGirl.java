@@ -267,16 +267,6 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	/* Ownership */
 
 	@Override
-	public Player getOwner() {
-		return getOwnerUUID() != null ? level.getPlayerByUUID(getOwnerUUID()) : null;
-	}
-
-	@Override
-	public void setOwner(Player owner) {
-		entityData.set(DATA_OWNERUUID, Optional.of(owner.getUUID()));
-	}
-
-	@Override
 	public UUID getOwnerUUID() {
 		return entityData.get(DATA_OWNERUUID).orElse(null);
 	}

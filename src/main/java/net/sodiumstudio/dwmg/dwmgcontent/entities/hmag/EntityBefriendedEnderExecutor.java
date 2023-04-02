@@ -91,7 +91,6 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	@Override
 	protected void registerGoals() {
 	      this.goalSelector.addGoal(1, new FloatGoal(this));
-	      //this.goalSelector.addGoal(1, new BefriendedEnderManGoals.FreezeWhenLookedAt(this));     
 	      this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
 	      this.goalSelector.addGoal(4, new BefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 	      this.goalSelector.addGoal(7, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0D, 0.0F));
@@ -508,16 +507,6 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	public void setInit()
 	{
 		initialized = true;
-	}
-		
-	@Override
-	public Player getOwner() {
-		return getOwnerUUID() != null ? level.getPlayerByUUID(getOwnerUUID()) : null;
-	}
-
-	@Override
-	public void setOwner(Player owner) {
-		entityData.set(DATA_OWNERUUID, Optional.of(owner.getUUID()));
 	}
 
 	@Override
