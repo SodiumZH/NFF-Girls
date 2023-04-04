@@ -1,28 +1,21 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import java.util.HashSet;
 
-public interface IBaubleHolder
-{
-	public default LivingEntity getLiving()
-	{
-		return (LivingEntity)this;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+
+public interface IBaubleHolder {
+
+	public HashSet<ItemStack> getBaubleStacks();
+	
+	public default boolean isBauble(Item item){
+		return BaubleHandlerRegistry.get(asMob().getType())
 	}
 	
-//	public default 
-	
-	public int[] getBaubleInventoryIndexes();
-	
-	public BaubleEffectTable getEffectTable();
-	
-	/*public AttributeModifier makeModifier(Item baubleType)
+	public default Mob asMob()
 	{
-		
-	}*/
-	
-	
-	
-	
-	
+		return (Mob)this;
+	}
 }
