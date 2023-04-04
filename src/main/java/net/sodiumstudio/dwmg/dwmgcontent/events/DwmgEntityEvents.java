@@ -6,15 +6,13 @@ import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -26,14 +24,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.AbstractBefriendingHandler;
-import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.events.BefriendedDeathEvent;
+import net.sodiumstudio.dwmg.befriendmobs.events.EntityAroundPlayerTickEvent;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
 
@@ -187,4 +185,15 @@ public class DwmgEntityEvents
 			});
 		}
 	}
+	
+	@SubscribeEvent
+	public static void onEntityTick(EntityAroundPlayerTickEvent event)
+	{
+		Entity entity = event.getEntity();
+		if (entity instanceof IBaubleHolder holder)
+		{
+			
+		}
+	}
+	
 }

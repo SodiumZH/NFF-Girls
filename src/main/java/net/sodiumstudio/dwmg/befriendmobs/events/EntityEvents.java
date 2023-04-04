@@ -304,4 +304,29 @@ public class EntityEvents
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	@SubscribeEvent
+	public static void onEntityTick(EntityAroundPlayerTickEvent event)
+	{
+		Entity entity = event.getEntity();
+		if (entity instanceof Mob mob)
+		{	
+			if (!(mob instanceof IBefriendedMob))
+			{
+				mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+				{
+					l.updateTimers(); 
+					BefriendingTypeRegistry.getHandler((EntityType<Mob>)(mob.getType())).serverTick(mob);
+				});
+			}
+		}
+		if (entity instanceof LivingEntity living)
+		{
+			living.getCapability(BefMobCapabilities.CAP_HEALING_HANDLER).ifPresent((l) -> 
+			{
+				l.updateCooldown();
+			});
+		}
+	}
+	
 }

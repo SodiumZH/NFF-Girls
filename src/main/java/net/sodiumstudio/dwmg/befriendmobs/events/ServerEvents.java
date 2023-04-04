@@ -1,22 +1,18 @@
 package net.sodiumstudio.dwmg.befriendmobs.events;
 
+import java.util.HashSet;
+
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
-import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
-import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
-import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
+import net.sodiumstudio.dwmg.befriendmobs.BefriendMobsConfigs;
 
 @Mod.EventBusSubscriber(modid = BefriendMobs.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEvents 
@@ -31,35 +27,30 @@ public class ServerEvents
 	}
 	
 
-	@SuppressWarnings("unchecked")
 	@SubscribeEvent
 	public static void onWorldTick(TickEvent.WorldTickEvent event)
 	{
 		if (event.side == LogicalSide.SERVER)
 		{
-			// Update all befriendable mobs near players
+			HashSet<Entity> tickedEntity = new HashSet<Entity>();
+
 			for (Player player : event.world.players())
 			{
-				for (Entity entity : event.world.getEntities(player, new AABB(player.position().subtract(64.0, 64.0, 64.0), player.position().add(64.0, 64.0, 64.0))))
+				if (tickedEntity.contains(player))
+					continue;
+				else 
 				{
-					if (entity instanceof Mob mob)
-					{	// TODO: make this an event
-						if (!(mob instanceof IBefriendedMob))
-						{
-							mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
-							{
-								l.updateTimers(); 
-								BefriendingTypeRegistry.getHandler((EntityType<Mob>)(mob.getType())).serverTick(mob);
-							});
-						}
-					}
-					if (entity instanceof LivingEntity living)
-					{
-						living.getCapability(BefMobCapabilities.CAP_HEALING_HANDLER).ifPresent((l) -> 
-						{
-							l.updateCooldown();
-						});
-					}
+					tickedEntity.add(player);
+					MinecraftForge.EVENT_BUS.post(new EntityAroundPlayerTickEvent(player));
+				}
+				double radius = BefriendMobsConfigs.ENTITY_TICK_RADIUS;
+				for (Entity entity : event.world.getEntities(player, new AABB(player.position().subtract(radius, radius, radius), player.position().add(radius, radius, radius))))
+				{
+					// Avoid entities to tick twice when around >=2 players
+					if (tickedEntity.contains(entity))
+						continue;
+					tickedEntity.add(entity);
+					MinecraftForge.EVENT_BUS.post(new EntityAroundPlayerTickEvent(entity));
 				}
 			}
 		}
