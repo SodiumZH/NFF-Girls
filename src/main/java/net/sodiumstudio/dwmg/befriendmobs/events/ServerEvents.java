@@ -36,21 +36,17 @@ public class ServerEvents
 
 			for (Player player : event.world.players())
 			{
-				if (tickedEntity.contains(player))
-					continue;
-				else 
-				{
-					tickedEntity.add(player);
-					MinecraftForge.EVENT_BUS.post(new EntityAroundPlayerTickEvent(player));
-				}
 				double radius = BefriendMobsConfigs.ENTITY_TICK_RADIUS;
 				for (Entity entity : event.world.getEntities(player, new AABB(player.position().subtract(radius, radius, radius), player.position().add(radius, radius, radius))))
 				{
 					// Avoid entities to tick twice when around >=2 players
 					if (tickedEntity.contains(entity))
 						continue;
-					tickedEntity.add(entity);
-					MinecraftForge.EVENT_BUS.post(new EntityAroundPlayerTickEvent(entity));
+					if (!(entity instanceof Player)) 
+					{
+						tickedEntity.add(entity);
+						MinecraftForge.EVENT_BUS.post(new EntityAroundPlayerTickEvent(entity));
+					}
 				}
 			}
 		}

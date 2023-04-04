@@ -44,11 +44,12 @@ import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuZombie;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
 
-public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBefriendedMob {
+public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBefriendedMob, IBefriendedUndeadMob {
 /*
 	public static final BaubleEffectTable BAUBLE_EFFECTS = new BaubleEffectTable()
 			.add(Items.DIAMOND, Attributes.MAX_HEALTH, 5.0d, AttributeModifier.Operation.ADDITION);
@@ -262,6 +263,18 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		entityData.define(DATA_AISTATE, (byte) 0);
 	}
 	
+	/* Misc */
+	
+	protected boolean sunSensitive = true;
+	@Override
+	protected boolean isSunSensitive() {
+		return sunSensitive;
+	}
+	@Override
+	public void setSunSensitive(boolean value) {
+		sunSensitive = value;		
+	}
+
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
