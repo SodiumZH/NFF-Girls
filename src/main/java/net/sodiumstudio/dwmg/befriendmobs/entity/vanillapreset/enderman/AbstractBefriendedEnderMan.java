@@ -222,7 +222,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	}
 
 	/**
-	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 * (abstract) Protected helper method to read subclass mob data from NBT.
 	 */
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
@@ -284,7 +284,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	}
 
 	/**
-	 * Called every tick so the entity can update its state as required. For
+	 * Called every tick so the mob can update its state as required. For
 	 * example, zombies and skeletons use this to react to sunlight and start to
 	 * burn.
 	 */
@@ -345,7 +345,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	}
 
 	/**
-	 * Teleport the AbstractBefriendedEnderMan to another entity
+	 * Teleport the AbstractBefriendedEnderMan to another mob
 	 */
 	public boolean teleportTowards(Entity pTarget) {
 		Vec3 vec3 = new Vec3(this.getX() - pTarget.getX(), this.getY(0.5D) - pTarget.getEyeY(),
@@ -425,7 +425,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	}
 
 	/**
-	 * Called when the entity is attacked.
+	 * Called when the mob is attacked.
 	 */
 	public boolean hurt(DamageSource pSource, float pAmount) {
 		if (this.isInvulnerableTo(pSource))

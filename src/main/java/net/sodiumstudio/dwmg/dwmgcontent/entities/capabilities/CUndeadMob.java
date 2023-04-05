@@ -12,8 +12,15 @@ public interface CUndeadMob extends INBTSerializable<CompoundTag>{
 	// Get this mob's hatred list
 	public HashSet<UUID> getHatred();
 	
-	// Add a player to the hatred list
-	// This action is permanent and there's no handler to remove a player=
-	public void addHatred(LivingEntity entity);
+	// Add a living entity to the hatred list
+	// Forgive after 15 min by default
+	public default void addHatred(LivingEntity entity)
+	{
+		addHatred(entity, 18000);
+	}
+	
+	// Add a living entity to the hatred list
+	// Param forgiveTime in tick, -1 means never forgive
+	public void addHatred(LivingEntity entity, int forgiveTime);
 	
 }

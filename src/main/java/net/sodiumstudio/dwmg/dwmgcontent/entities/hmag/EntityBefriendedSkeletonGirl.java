@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.dwmgcontent.entities.hmag;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,8 +19,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -46,15 +50,20 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.Befriend
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
+import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
+import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuSkeleton;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
 
-public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements IBefriendedMob
+public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements IBefriendedMob, IBefriendedUndeadMob, IBaubleHolder
 {
 
 	
@@ -125,7 +134,21 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 
 	@Override
 	public void aiStep() {
-		super.aiStep();
+
+		// Handle sun sensitivity
+		if (!this.sunSensitive)
+		{
+			ItemStack headItem = this.getItemBySlot(EquipmentSlot.HEAD);
+			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
+			super.aiStep();
+			this.setItemSlot(EquipmentSlot.HEAD, headItem);
+		}
+		else 
+		{
+			super.aiStep();
+		}
+		
+		/* Handle combat AI */
 		if (justShot)
 		{
 			this.getAdditionalInventory().consumeItem(8);
@@ -287,6 +310,36 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		newMob.isFromSkeleton = true;
 		newMob.setInit();
 		return newMob;
+	}
+
+	/* IBefriendedUndeadMob interface */
+
+	public boolean sunSensitive = true;
+
+	// Implementation is in aiStep()
+	@Override
+	public void setSunSensitive(boolean value) {
+		sunSensitive = value;		
+	}
+	
+	/* IBaubleHolder interface */
+
+	@Override
+	public HashSet<ItemStack> getBaubleStacks() {
+		HashSet<ItemStack> set = new HashSet<ItemStack>();
+		set.add(this.getAdditionalInventory().getItem(6));
+		return set;
+	}
+
+	@Override
+	public BaubleHandler getBaubleHandler() {
+		return DwmgBaubleHandlers.VANILLA_UNDEAD;
+	}
+	
+	protected HashMap<AttributeModifier, Attribute> baubleModifierMap = new HashMap<AttributeModifier, Attribute>();	
+	@Override
+	public HashMap<AttributeModifier, Attribute> getExistingBaubleModifiers() {
+		return baubleModifierMap;
 	}
 
 	// ==================================================================== //

@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.dwmgcontent.entities.hmag;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,6 +20,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -42,20 +46,18 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.Befriend
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
+import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuZombie;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
 
-public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBefriendedMob, IBefriendedUndeadMob {
-/*
-	public static final BaubleEffectTable BAUBLE_EFFECTS = new BaubleEffectTable()
-			.add(Items.DIAMOND, Attributes.MAX_HEALTH, 5.0d, AttributeModifier.Operation.ADDITION);
-	public static final UUID BAUBLE_EFFECT_UUID_1 = UUID.fromString("16648397-2011-F7E0-D1F4-72E8231FDA89");
-	public static final UUID BAUBLE_EFFECT_UUID_2 = UUID.fromString("2C0A7910-E72B-3BC8-B330-7F759D8648A1");
-	*/
+public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBefriendedMob, IBefriendedUndeadMob, IBaubleHolder {
+
 	/* Initialization */
 
 	public EntityBefriendedZombieGirl(EntityType<? extends EntityBefriendedZombieGirl> pEntityType, Level pLevel) {
@@ -263,9 +265,9 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		entityData.define(DATA_AISTATE, (byte) 0);
 	}
 	
-	/* Misc */
-	
-	protected boolean sunSensitive = true;
+	/* IBefriendedUndeadMob interface */
+
+	public boolean sunSensitive = true;
 	@Override
 	protected boolean isSunSensitive() {
 		return sunSensitive;
@@ -274,6 +276,28 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	public void setSunSensitive(boolean value) {
 		sunSensitive = value;		
 	}
+
+	/* IBaubleHolder interface */
+
+	@Override
+	public HashSet<ItemStack> getBaubleStacks() {
+		HashSet<ItemStack> set = new HashSet<ItemStack>();
+		set.add(this.getAdditionalInventory().getItem(6));
+		set.add(this.getAdditionalInventory().getItem(7));
+		return set;
+	}
+
+	@Override
+	public BaubleHandler getBaubleHandler() {
+		return DwmgBaubleHandlers.VANILLA_UNDEAD;
+	}
+	
+	protected HashMap<AttributeModifier, Attribute> baubleModifierMap = new HashMap<AttributeModifier, Attribute>();	
+	@Override
+	public HashMap<AttributeModifier, Attribute> getExistingBaubleModifiers() {
+		return baubleModifierMap;
+	}
+
 
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
@@ -344,7 +368,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	}
 	
 	// ------------------ IBefriendedMob interface end ------------------ //
-
+	
 	// ------------------ Misc ------------------ //
 
 	@Override

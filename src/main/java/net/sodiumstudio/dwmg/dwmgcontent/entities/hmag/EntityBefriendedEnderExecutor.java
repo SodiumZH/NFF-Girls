@@ -1,6 +1,7 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.hmag;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,6 +27,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -57,12 +60,16 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.Abstract
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.BefriendedEnderManGoals;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
+import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuEnderExecutor;
 
 // Adjusted from EnderExcutor in HMaG
-public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan implements IBefriendedMob, IBeamAttackMob
+public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan implements IBeamAttackMob, IBaubleHolder
 {
 
 	protected static final EntityDataAccessor<Integer> ATTACKING_TIME = SynchedEntityData.defineId(EntityBefriendedEnderExecutor.class, EntityDataSerializers.INT);
@@ -487,7 +494,27 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 		/* Add more save data... */
 		this.setInit();
 	}
+	
+	/* IBaubleHolder interface */
+	@Override
+	public HashSet<ItemStack> getBaubleStacks() {
+		HashSet<ItemStack> set = new HashSet<ItemStack>();
+		set.add(this.getAdditionalInventory().getItem(3));
+		set.add(this.getAdditionalInventory().getItem(4));
+		return set;
+	}
 
+	@Override
+	public BaubleHandler getBaubleHandler() {
+		return DwmgBaubleHandlers.ENDER_EXECUTOR;
+	}
+	
+	protected HashMap<AttributeModifier, Attribute> baubleModifierMap = new HashMap<AttributeModifier, Attribute>();	
+	@Override
+	public HashMap<AttributeModifier, Attribute> getExistingBaubleModifiers() {
+		return baubleModifierMap;
+	}
+	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
@@ -555,7 +582,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	}
 
 	/* add @Override annotation if inheriting Monster class */
-	/* @Override */
+	@Override
 	public boolean isPreventingPlayerRest(Player pPlayer) {
 		return false;
 	}
@@ -564,7 +591,6 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
 
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //

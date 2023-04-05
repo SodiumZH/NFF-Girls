@@ -2,7 +2,10 @@ package net.sodiumstudio.dwmg.befriendmobs.events;
 
 import java.util.HashSet;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,31 +25,31 @@ public class ServerEvents
 	public static void onServerStart(ServerStartedEvent event)
 	{
 		@SuppressWarnings("unused")
-		int test = 1;
-		
+		int test = 1;		
 	}
 	
 
 	@SubscribeEvent
-	public static void onWorldTick(TickEvent.WorldTickEvent event)
-	{
+	public static void onWorldTick(TickEvent.WorldTickEvent event) {
+		
 		if (event.side == LogicalSide.SERVER)
 		{
-			HashSet<Entity> tickedEntity = new HashSet<Entity>();
-
-			for (Player player : event.world.players())
+			/**/
+			ServerLevel serverlevel = (ServerLevel)(event.world);
+			if (event.phase.equals(TickEvent.Phase.START))
 			{
-				double radius = BefriendMobsConfigs.ENTITY_TICK_RADIUS;
-				for (Entity entity : event.world.getEntities(player, new AABB(player.position().subtract(radius, radius, radius), player.position().add(radius, radius, radius))))
+				for (Entity entity: serverlevel.getAllEntities())
 				{
-					// Avoid entities to tick twice when around >=2 players
-					if (tickedEntity.contains(entity))
-						continue;
-					if (!(entity instanceof Player)) 
-					{
-						tickedEntity.add(entity);
-						MinecraftForge.EVENT_BUS.post(new EntityAroundPlayerTickEvent(entity));
-					}
+					if (entity instanceof Mob mob)
+						MinecraftForge.EVENT_BUS.post(new ServerMobTickEvent.PreWorldTick(mob));		
+				}
+			}
+			else if (event.phase.equals(TickEvent.Phase.END))
+			{
+				for (Entity entity: serverlevel.getAllEntities())
+				{
+					if (entity instanceof Mob mob)
+						MinecraftForge.EVENT_BUS.post(new ServerMobTickEvent.PostWorldTick(mob));		
 				}
 			}
 		}

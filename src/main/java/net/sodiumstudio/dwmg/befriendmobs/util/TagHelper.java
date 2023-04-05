@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class TagHelper 
 {
 	
-	// Check if an entity has a tag
+	// Check if an mob has a tag
 	public static boolean hasTag(Entity obj, ResourceLocation tag)
 	{
 		TagKey<EntityType<?>> tagKey = ForgeRegistries.ENTITIES.tags().createTagKey(tag);

@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
+import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
@@ -33,11 +34,12 @@ public class CUndeadMobImpl implements CUndeadMob {
 	}
 
 	@Override
-	public void addHatred(LivingEntity entity) 
+	public void addHatred(LivingEntity entity, int forgiveTime) 
 	{
 		if(!hatred.contains(entity.getUUID()))
 		{
 			hatred.add(entity.getUUID());
+			forgivingTimers.put(entity.getStringUUID(), IntTag.valueOf(forgiveTime));
 		}
 	}
 	
@@ -46,13 +48,52 @@ public class CUndeadMobImpl implements CUndeadMob {
 	{
 		CompoundTag tag = new CompoundTag();
 		NbtHelper.serializeUUIDSet(tag, hatred, "hatred");
+		tag.put("forgiving_timers", forgivingTimers);
 		return tag;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
 		hatred = NbtHelper.deserializeUUIDSet(nbt, "hatred");
+		forgivingTimers = nbt.getCompound("forgiving_timers");
 	}
+	
+	// Key is entity UUID string and value is time in ticks
+	protected CompoundTag forgivingTimers = new CompoundTag();
+	
+	public void updateForgivingTimers()
+	{
+		HashSet<String> toRemove = new HashSet<String>();
+		for (String key: forgivingTimers.getAllKeys())
+		{
+			if (forgivingTimers.contains(key, 3))
+			{
+				int val = forgivingTimers.getInt(key);
+				if (val > 0)
+				{
+					val--;
+					if (val == 0)
+					{
+						// Timer up, label to remove
+						toRemove.add(key);
+					}
+					else
+					{
+						// count down
+						forgivingTimers.put(key, IntTag.valueOf(val));
+					}
+				}
+			}
+		}
+		for (String str: toRemove)
+		{
+			hatred.remove(UUID.fromString(str));
+			forgivingTimers.remove(str);
+		}
+		
+	}
+	
+	
 	
 }
 

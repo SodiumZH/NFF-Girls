@@ -121,22 +121,25 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 				if (l.getNbt().contains("player_uuid_on_befriending", 11))
 				{
 					Player player = ee.level.getPlayerByUUID(l.getNbt().getUUID("player_uuid_on_befriending"));
-					// Once entered 4 blocks away, disable teleporting
-					// So that the mob will not get over 4 blocks away by itself
-					// This tag blocks teleporting in DwmgEntityEvents class
-					if (ee.distanceToSqr(player) <= 49.0d && (!l.getNbt().getBoolean("cannot_teleport")))
+					if (player != null)
 					{
-						l.getNbt().putBoolean("cannot_teleport", true);
-					}
-					// If player is further than 4 blocks, interrupt
-					else if (l.getNbt().getBoolean("cannot_teleport") && ee.distanceToSqr(player) > 64.0d)
-					{
-						this.interrupt(player, mob, false);
-					}
-					// Otherwise the process continues, set always hostile
-					else
-					{
-						mob.setTarget(player);
+						// Once entered 4 blocks away, disable teleporting
+						// So that the mob will not get over 4 blocks away by itself
+						// This tag blocks teleporting in DwmgEntityEvents class
+						if (ee.distanceToSqr(player) <= 49.0d && (!l.getNbt().getBoolean("cannot_teleport")))
+						{
+							l.getNbt().putBoolean("cannot_teleport", true);
+						}
+						// If player is further than 4 blocks, interrupt
+						else if (l.getNbt().getBoolean("cannot_teleport") && ee.distanceToSqr(player) > 64.0d)
+						{
+							this.interrupt(player, mob, false);
+						}
+						// Otherwise the process continues, set always hostile
+						else
+						{
+							mob.setTarget(player);
+						}
 					}
 				}
 			});

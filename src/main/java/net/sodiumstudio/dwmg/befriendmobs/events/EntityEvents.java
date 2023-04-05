@@ -28,6 +28,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInte
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendableMobRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
@@ -306,27 +307,30 @@ public class EntityEvents
 	
 	@SuppressWarnings("unchecked")
 	@SubscribeEvent
-	public static void onEntityTick(EntityAroundPlayerTickEvent event)
+	public static void onServerMobPostWorldTick(ServerMobTickEvent.PostWorldTick event)
 	{
-		Entity entity = event.getEntity();
-		if (entity instanceof Mob mob)
-		{	
-			if (!(mob instanceof IBefriendedMob))
-			{
-				mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
-				{
-					l.updateTimers(); 
-					BefriendingTypeRegistry.getHandler((EntityType<Mob>)(mob.getType())).serverTick(mob);
-				});
-			}
-		}
-		if (entity instanceof LivingEntity living)
+		Mob mob = event.getMob();
+		// update befriendable mob timers
+		if (!(mob instanceof IBefriendedMob))
 		{
-			living.getCapability(BefMobCapabilities.CAP_HEALING_HANDLER).ifPresent((l) -> 
+			mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 			{
-				l.updateCooldown();
+				l.updateTimers();
+				BefriendingTypeRegistry.getHandler((EntityType<Mob>) (mob.getType())).serverTick(mob);
 			});
 		}
+		// update healing handler cooldown
+		mob.getCapability(BefMobCapabilities.CAP_HEALING_HANDLER).ifPresent((l) ->
+		{
+			l.updateCooldown();
+		});
+		// IBaubleHolder tick
+		if (mob instanceof IBaubleHolder holder)
+		{
+			holder.updateBaubleEffects();
+		}
 	}
+	
+	
 	
 }

@@ -25,13 +25,14 @@ import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.events.BefriendedDeathEvent;
-import net.sodiumstudio.dwmg.befriendmobs.events.EntityAroundPlayerTickEvent;
+import net.sodiumstudio.dwmg.befriendmobs.events.ServerMobTickEvent;
+import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
 
@@ -187,13 +188,17 @@ public class DwmgEntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void onEntityTick(EntityAroundPlayerTickEvent event)
+	public static void onServerMobTick(ServerMobTickEvent.PostWorldTick event)
 	{
-		Entity entity = event.getEntity();
-		if (entity instanceof IBaubleHolder holder)
+		Mob mob = event.getMob();
+		if (mob instanceof IBaubleHolder holder)
 		{
-			
+			holder.updateBaubleEffects();
 		}
+		mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) -> 
+		{
+			((CUndeadMobImpl)l).updateForgivingTimers();
+		});
 	}
 	
 }

@@ -37,10 +37,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedFollowOwnerGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedMeleeAttackGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedZombieAttackGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
@@ -49,7 +46,6 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.creeper.Befriende
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
-import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedCreeperFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedCreeperGirlExplosionAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedCreeperGirlMeleeAttackGoal;

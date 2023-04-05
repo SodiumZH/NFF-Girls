@@ -15,6 +15,7 @@ import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.client.gui.screens.AbstractGuiBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
 import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiEnderExecutor;
@@ -78,9 +79,7 @@ public class InventoryMenuEnderExecutor extends AbstractInventoryMenuBefriended{
 		addSlot(new Slot(container, 3, v.x, v.y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
-				return false;
-				/*return EnchantmentHelper.hasBindingCurse(stack)
-						&& !this.hasItem();*/
+				return BaubleHandler.shouldBaubleSlotAccept(stack, this, mob);
 			}
 			@Override
 			public int getMaxStackSize() {
@@ -92,8 +91,7 @@ public class InventoryMenuEnderExecutor extends AbstractInventoryMenuBefriended{
 		addSlot(new Slot(container, 4, v.x, v.y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
-				return  false;/*!EnchantmentHelper.hasBindingCurse(stack)
-						&& !this.hasItem();*/
+				return BaubleHandler.shouldBaubleSlotAccept(stack, this, mob);
 			}
 			@Override
 			public int getMaxStackSize() {
@@ -123,11 +121,11 @@ public class InventoryMenuEnderExecutor extends AbstractInventoryMenuBefriended{
 		}
 		// From inventory to mob
 		else {
-			int[] order = {2, 0, 1, 3, 4};			
+			int[] order = {3, 4, 2, 0, 1};			
 			// Try each mob slot
 			for (int i: order) {
 				// If the item is suitable and slot isn't occupied
-				if (this.getSlot(i).mayPlace(stack) && !this.getSlot(i).hasItem()) {
+				if (!done && this.getSlot(i).mayPlace(stack) && !this.getSlot(i).hasItem()) {
 					// Try moving
 					if (this.moveItemStackTo(stack, i, i + 1, false)) {
 						done = true;

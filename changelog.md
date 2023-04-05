@@ -38,6 +38,16 @@ Added 2s cooldown for giving healing items.
 
 Added healing items to Creeper Girl and Ender Executor.
 
+### 0.0.0-snapshot.5
+
+Added Bauble system (see wiki for details).
+
+Fixed timers ticking twice each frame (i.e. timers run 2x faster).
+
+Disabled /summon command for raw befriended mobs.
+
+Added 15 min forgiving cooldown to undead mobs.  
+
 ## 1.19.2
 
 ### 0.1.0-snapshot.3

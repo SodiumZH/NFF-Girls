@@ -32,7 +32,9 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_zombie_girl").toString()));
+	
 	public static final RegistryObject<EntityType<EntityBefriendedSkeletonGirl>> HMAG_SKELETON_GIRL = 
 			ENTITY_TYPES.register("hmag_skeleton_girl", () -> EntityType.Builder.of(
 			EntityBefriendedSkeletonGirl::new, MobCategory.CREATURE)
@@ -40,6 +42,7 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_skeleton_girl").toString()));
 
 	public static final RegistryObject<EntityType<EntityBefriendedHuskGirl>> HMAG_HUSK_GIRL = 
@@ -49,6 +52,7 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_husk_girl").toString()));
 	
 	public static final RegistryObject<EntityType<EntityBefriendedDrownedGirl>> HMAG_DROWNED_GIRL = 
@@ -58,6 +62,7 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_drowned_girl").toString()));
 	
 	public static final RegistryObject<EntityType<EntityBefriendedCreeperGirl>> HMAG_CREEPER_GIRL = 
@@ -67,6 +72,7 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_creeper_girl").toString()));
 	
 	public static final RegistryObject<EntityType<EntityBefriendedEnderExecutor>> HMAG_ENDER_EXECUTOR =
@@ -76,6 +82,7 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_ender_executor").toString()));
 	
 	public static final RegistryObject<EntityType<EntityBefriendedStrayGirl>> HMAG_STRAY_GIRL = 
@@ -86,6 +93,7 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_stray_girl").toString()));
 	
 	public static final RegistryObject<EntityType<EntityBefriendedWitherSkeletonGirl>> HMAG_WITHER_SKELETON_GIRL = 
@@ -97,6 +105,7 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "wither_skeleton_girl").toString()));
 	
 	@SubscribeEvent
