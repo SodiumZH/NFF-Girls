@@ -21,7 +21,7 @@ public abstract class AbstractBefriendingHandler
 	{
 	}	
 	
-	/** If this method is overridden, it should invalidate the input target living entity.
+	/** If this method is overridden, it should invalidate the input target living mob.
 	 */
 	public IBefriendedMob befriend(Player player, Mob target)
 	{
@@ -34,7 +34,7 @@ public abstract class AbstractBefriendingHandler
 
 		// Check if befriendable capability is attached
 		if(!target.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
-			throw new RuntimeException("Befriending: Target living entity not having CBefriendableMob capability attached.");
+			throw new RuntimeException("Befriending: Target living mob not having CBefriendableMob capability attached.");
 		
 		// Get new type, and do check
 		@SuppressWarnings("unchecked")

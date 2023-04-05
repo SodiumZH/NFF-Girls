@@ -17,6 +17,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.EnderMan;
@@ -32,12 +35,12 @@ public class EntityHelper
 {
 
 	/**
-	 * Replace a living entity with another one. Only works in server. Calling in
+	 * Replace a living mob with another one. Only works in server. Calling in
 	 * client always returns null.
 	 * 
-	 * @param newType EntityType of the new entity.
-	 * @param from    The entity to be replaced.
-	 * @return New entity
+	 * @param newType EntityType of the new mob.
+	 * @param from    The mob to be replaced.
+	 * @return New mob
 	 */
 	@Deprecated
 	public static Entity replaceLivingEntity(EntityType<?> newType, LivingEntity from, boolean allowNewEntityDespawn) {
@@ -206,7 +209,7 @@ public class EntityHelper
 		addEffectSafe(entity, effect, ticks, 0);
 	}
 
-	// Teleport a living entity as if it ate a chorus fruit
+	// Teleport a living mob as if it ate a chorus fruit
 	public static boolean chorusLikeTeleport(LivingEntity living) {
 		if (!living.level.isClientSide)
 		{
@@ -245,7 +248,7 @@ public class EntityHelper
 		else return false;
 	}
 	
-	// Fired on an entity teleported by EntityHelper::chorusLikeTeleport function.
+	// Fired on an mob teleported by EntityHelper::chorusLikeTeleport function.
 	public static class chorusLikeTeleportEvent extends EntityTeleportEvent
 	{
 
@@ -288,4 +291,15 @@ public class EntityHelper
         }
 	}
 	
+	public static void resetAttributeModifier(LivingEntity target, Attribute inAttibute, 
+	AttributeModifier inModifier, boolean value)
+	{
+		AttributeInstance instance = target.getAttribute(inAttibute);
+		instance.removeModifier(inModifier);
+		if (value)
+		{
+			instance.addTransientModifier(inModifier);
+		}
+		return;
+	}
 }

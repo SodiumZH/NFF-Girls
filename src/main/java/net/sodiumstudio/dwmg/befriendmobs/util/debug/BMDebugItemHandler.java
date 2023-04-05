@@ -28,7 +28,7 @@ public class BMDebugItemHandler
 
 	@SuppressWarnings("unchecked")
 	public static void onDebugItemUsed(Player player, Mob target, Item item) {
-
+/*
 		if (item.equals(BefMobItems.DEBUG_TARGET_SETTER.get()))
 		{
 			MobEffect effect = target.getMobType().equals(MobType.UNDEAD) ? MobEffects.HARM : MobEffects.HEAL;
@@ -57,7 +57,7 @@ public class BMDebugItemHandler
 			}
 		}
 
-		else if (item.equals(BefMobItems.DEBUG_BEFRIENDER.get()))
+		else */if (item.equals(BefMobItems.DEBUG_BEFRIENDER.get()) && player.isCreative())
 		{
 			if (target instanceof IBefriendedMob bef)
 			{
@@ -80,7 +80,7 @@ public class BMDebugItemHandler
 				});
 			}
 		}
-
+/*
 		else if (item.equals(BefMobItems.DEBUG_ARMOR_GIVER.get()) && target.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
 		{
 			if (target.getItemBySlot(EquipmentSlot.HEAD).isEmpty())
@@ -109,6 +109,6 @@ public class BMDebugItemHandler
 		{
 			Debug.printToScreen("Base: " + Double.toString(target.getAttributeBaseValue(Attributes.ATTACK_DAMAGE)), player);
 			Debug.printToScreen("Applied: " + Double.toString(target.getAttributeValue(Attributes.ATTACK_DAMAGE)), player);
-		}
+		}*/
 	}
 }

@@ -63,13 +63,7 @@ public class AdditionalInventory extends SimpleContainer
 			throw new IndexOutOfBoundsException();
 		super.setItem(index, stack);
 	}
-	
-	@Deprecated // Use getItem()
-	public ItemStack get(int index)
-	{
-		return this.getItem(index);
-	}
-	
+
 	@Override
 	public ItemStack getItem(int index)
 	{

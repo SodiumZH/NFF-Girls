@@ -56,7 +56,7 @@ public interface IBefriendedMob extends ContainerListener  {
 	
 	/* Ownership */
 	
-	// Get owner as player entity.
+	// Get owner as player mob.
 	// Warning: be careful calling this on initialization! If the owner hasn't been initialized it will return null.
 	public default Player getOwner() 
 	{
@@ -68,7 +68,7 @@ public interface IBefriendedMob extends ContainerListener  {
 	// Warning: be careful calling this on initialization! If the owner hasn't been initialized it will return null.
 	public UUID getOwnerUUID();
 	
-	// Set owner from player entity.
+	// Set owner from player mob.
 	public default void setOwner(@Nonnull Player owner)
 	{
 		setOwnerUUID(owner.getUUID());
@@ -92,7 +92,7 @@ public interface IBefriendedMob extends ContainerListener  {
 	
 	public void setAIState(BefriendedAIState state);
 	
-	// Get if a target entity can be attacked by this mob.
+	// Get if a target mob can be attacked by this mob.
 	public default boolean wantsToAttack(LivingEntity pTarget)
 	{
 		return BefriendedHelper.wantsToAttackDefault(this, pTarget);
@@ -109,11 +109,11 @@ public interface IBefriendedMob extends ContainerListener  {
 	/* Interaction */
 	
 	// Actions on player right click the mob
-	// Automatically called on entity interaction. DO NOT call this in mobInteract()!!
+	// Automatically called on mob interaction. DO NOT call this in mobInteract()!!
 	public boolean onInteraction(Player player, InteractionHand hand);
 	
 	// Actions on player shift + rightmouse click
-	// Automatically called on entity interaction. DO NOT call this in mobInteract()!!
+	// Automatically called on mob interaction. DO NOT call this in mobInteract()!!
 	public boolean onInteractionShift(Player player, InteractionHand hand);
 	
 	/* Inventory */

@@ -165,7 +165,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	}
 
 	/**
-	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 * (abstract) Protected helper method to read subclass mob data from NBT.
 	 */
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
@@ -195,7 +195,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	}
 
 	/**
-	 * Called to update the entity's position/logic.
+	 * Called to update the mob's position/logic.
 	 */
 	public void tick() {
 		if (this.isAlive())
@@ -382,7 +382,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	}
 
 	/**
-	 * Returns true if an entity is able to drop its skull due to being blown up by
+	 * Returns true if an mob is able to drop its skull due to being blown up by
 	 * this creeper.
 	 * 
 	 * Does not test if this creeper is charged" the caller must do that. However,

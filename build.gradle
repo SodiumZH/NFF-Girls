@@ -18,7 +18,9 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-version = '0.1.0-snapshot.5'
+
+version = '0.1.0-snapshot.'
+
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'dwmg'
 
@@ -187,6 +189,7 @@ dependencies {
 	//implementation fg.deobf("curse.maven:hmag-537613:4445103")
     implementation fg.deobf("curse.maven:hmag-537613:4056253")
 	//implementation fg.deobf("curse.maven:gog4-228948:4249761")
+
 	//implementation fg.deobf("curse.maven:citadel-331936:3683007")
 	//implementation fg.deobf("curse.maven:am-426558:3853078")
 	
@@ -198,7 +201,7 @@ jar {
         attributes([
                 "Specification-Title"     : "dwmg",
                 "Specification-Vendor"    : "sodiumstudio",
-                "Specification-Version"   : "0.1.0-snapshot.5",
+                "Specification-Version"   : "0.1.0-snapshot.6",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "sodiumstudio",
