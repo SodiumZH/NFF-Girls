@@ -55,3 +55,7 @@ Added 2s cooldown for giving healing items.
 Added healing items to Creeper Girl and Ender Executor.
 
 Rollbacked HMaG dependency to 6.1.0.
+
+### 0.1.0-snapshot.5
+
+Fixed Soul Carpet recipe missing tag.
