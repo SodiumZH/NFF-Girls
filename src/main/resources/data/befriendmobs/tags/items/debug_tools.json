@@ -1,10 +1,6 @@
 {
   "replace" : false,
   "values" : [ 
-  	"befriendmobs:debug_armor_giver",
-  	"befriendmobs:debug_befriender",
-  	"befriendmobs:debug_target_setter",
-  	"befriendmobs:debug_mob_converter",
-  	"befriendmobs:debug_attribute_checker"
+  	"befriendmobs:debug_befriender"
   ]
 }
