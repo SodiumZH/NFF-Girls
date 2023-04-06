@@ -7,6 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -182,8 +183,21 @@ public class EntityEvents
 	        			ta.setTarget(null);
 	        		}
 	        	}
-				// Handle TamableAnimal end //
 	        }
+	        // Handle TamableAnimal end //
+	        // Handle Golems //
+	        if (mob instanceof AbstractGolem g)
+	        {
+	        	if (target instanceof IBefriendedMob)
+	        	{
+	        		// Golems keep neutral to befriended mobs, but if it's attacked it will still attack back
+	        		if (g.getLastHurtByMob() == null || !g.getLastHurtByMob().equals(target))
+	        		{
+	        			g.setTarget(null);
+	        		}
+	        	}
+	        }
+	        // Handle Golems End
 		}
 		// Handle mobs end //
 	}	
