@@ -3,7 +3,10 @@ package net.sodiumstudio.dwmg.befriendmobs.client.gui.screens;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
+
+import java.text.DecimalFormat;
 
 import javax.annotation.Nullable;
 
@@ -16,6 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 
@@ -82,6 +86,15 @@ public abstract class AbstractGuiBefriended extends AbstractContainerScreen<Abst
 	public void addHealthInfo(PoseStack poseStack, IntVec2 position)
 	{
 		addHealthInfo(poseStack, position, 4210752);
+	}
+	
+	public void addAttributeInfo(PoseStack poseStack, IntVec2 position, int color)
+	{
+		DecimalFormat df = new DecimalFormat("##.##");
+		float hp = mob.asMob().getHealth();
+		double atk = mob.asMob().getAttributeValue(Attributes.ATTACK_DAMAGE);
+		double def = mob.asMob().getAttributeValue(Attributes.ARMOR);
+		throw new UnimplementedException();
 	}
 	
 }
