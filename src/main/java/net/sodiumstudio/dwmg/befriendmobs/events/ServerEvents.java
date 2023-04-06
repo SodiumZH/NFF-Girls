@@ -30,12 +30,12 @@ public class ServerEvents
 	
 
 	@SubscribeEvent
-	public static void onWorldTick(TickEvent.WorldTickEvent event) {
+	public static void onWorldTick(TickEvent.LevelTickEvent event) {
 		
 		if (event.side == LogicalSide.SERVER)
 		{
 			/**/
-			ServerLevel serverlevel = (ServerLevel)(event.world);
+			ServerLevel serverlevel = (ServerLevel)(event.level);
 			if (event.phase.equals(TickEvent.Phase.START))
 			{
 				for (Entity entity: serverlevel.getAllEntities())
