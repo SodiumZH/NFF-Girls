@@ -28,6 +28,7 @@ public class BefriendMobs {
         //MinecraftForge.EVENT_BUS.register(this);
 	}	
 	
+	// On debug set it true. On publication set it false to block verbose debug output.
     public static final boolean IS_DEBUG_MODE = false;
 	
 }
