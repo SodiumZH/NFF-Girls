@@ -2,6 +2,10 @@
 
 ## 1.18.2
 
+### 0.0.0-snapshot.6
+
+Fixed Golems being hostile to befriended mobs.
+
 ### 0.0.0-snapshot.5
 
 Added Bauble system (see wiki for details).
@@ -49,6 +53,10 @@ Added Creeper Girl support.
 Added befriending Zombie Girl, Husk Girl and Skeleton Girl support.
 
 ## 1.19.2
+
+### 0.1.0-snapshot.7
+
+Fixed Golems being hostile to befriended mobs.
 
 ### 0.1.0-snapshot.6
 
