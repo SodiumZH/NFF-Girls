@@ -23,6 +23,8 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedChangeAiStateEvent;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.AbstractBefriendingHandler;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
@@ -345,6 +347,18 @@ public class EntityEvents
 		}
 	}
 	
-	
+	@SubscribeEvent
+	public static void onBefriendedChangeAiState(BefriendedChangeAiStateEvent event)
+	{
+		// When switching from wait, clear mob target and owner last hurt target
+		// or it may unexpectedly start to attack right on switching
+		// But if the owner was just hurt by a mob, this befriended mob will still
+		// start to attack it.
+		if (event.getStateBefore().equals(BefriendedAIState.WAIT))
+		{
+			event.getMob().asMob().setTarget(null);
+			event.getMob().getOwner().setLastHurtMob(null);
+		}
+	}
 	
 }
