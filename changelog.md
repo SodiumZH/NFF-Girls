@@ -4,7 +4,7 @@
 
 ### 0.0.0-snapshot.6
 
-Fixed Golems being hostile to befriended mobs.
+Fixed Golems being hostile to befriended mobs. Now they're neutral.
 
 ### 0.0.0-snapshot.5
 
@@ -56,7 +56,9 @@ Added befriending Zombie Girl, Husk Girl and Skeleton Girl support.
 
 ### 0.1.0-snapshot.7
 
-Fixed Golems being hostile to befriended mobs.
+Fixed Golems being hostile to befriended mobs. Now they're neutral.
+
+Fixed befriended mobs starting to attack immediately after switching AI state.
 
 ### 0.1.0-snapshot.6
 
