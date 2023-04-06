@@ -4,7 +4,7 @@ license="LGPL-3.0"
 issueTrackerURL="https://github.com/SodiumZH/Days-with-Monster-Girls"
 [[mods]] #mandatory
 modId="dwmg" #mandatory
-version="0.1.0-snapshot.6" #mandatory
+version="0.1.0-snapshot.7" #mandatory
 displayName="Days with Monster Girls" #mandatory
 #updateJSONURL="https://change.me.example.invalid/updates.json"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/befriendmobs-days-with-monster-girls" 
