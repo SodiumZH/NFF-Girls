@@ -2,13 +2,29 @@
 
 ## 1.18.2
 
-### 0.0.0-snapshot.1
+### 0.0.0-snapshot.6
 
-Added befriending Zombie Girl, Husk Girl and Skeleton Girl support.
+Fixed Golems being hostile to befriended mobs.
 
-### 0.0.0-snapshot.2
+### 0.0.0-snapshot.5
 
-Added Creeper Girl support.
+Added Bauble system (see wiki for details).
+
+Fixed world timers ticking twice each frame (i.e. timers running 2x faster).
+
+Disabled /summon command for raw befriended mobs which may cause unknown errors.
+
+Added 15 min forgiving cooldown to undead mobs.
+
+### 0.0.0-snapshot.4
+
+Added Stray Girl support.
+
+Added Wither Skeleton Girl support.
+
+Added 2s cooldown for giving healing items.
+
+Added healing items to Creeper Girl and Ender Executor.
 
 ### 0.0.0-snapshot.3
 
@@ -28,17 +44,21 @@ Removed GoG4 dependency.
 
 Fixed wrong mob attributes.
 
-### 0.0.0-snapshot.4
+### 0.0.0-snapshot.2
 
-Added Stray Girl support.
+Added Creeper Girl support.
 
-Added Wither Skeleton Girl support.
+### 0.0.0-snapshot.1
 
-Added 2s cooldown for giving healing items.
+Added befriending Zombie Girl, Husk Girl and Skeleton Girl support.
 
-Added healing items to Creeper Girl and Ender Executor.
+## 1.19.2
 
-### 0.0.0-snapshot.5
+### 0.1.0-snapshot.7
+
+Fixed Golems being hostile to befriended mobs.
+
+### 0.1.0-snapshot.6
 
 Added Bauble system (see wiki for details).
 
@@ -48,11 +68,9 @@ Disabled /summon command for raw befriended mobs which may cause unknown errors.
 
 Added 15 min forgiving cooldown to undead mobs.
 
-## 1.19.2
+### 0.1.0-snapshot.5
 
-### 0.1.0-snapshot.3
-
-Ported from 1.18.2 - 0.0.0-snapshot.3.
+Fixed Soul Carpet recipe missing tag.
 
 ### 0.1.0-snapshot.4
 
@@ -65,3 +83,12 @@ Added 2s cooldown for giving healing items.
 Added healing items to Creeper Girl and Ender Executor.
 
 Rollbacked HMaG dependency to 6.1.0.
+
+### 0.1.0-snapshot.3
+
+Ported from 1.18.2 - 0.0.0-snapshot.3.
+
+
+
+
+
