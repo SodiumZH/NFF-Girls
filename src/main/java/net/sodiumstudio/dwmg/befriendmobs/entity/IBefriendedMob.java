@@ -17,8 +17,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedChangeAiStateEvent;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CHealingHandlerImpl;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CHealingHandlerImplDefault;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
@@ -83,8 +85,10 @@ public interface IBefriendedMob extends ContainerListener  {
 	
 	// Action when switching AI e.g. on right click/
 	public default BefriendedAIState switchAIState()
-	{
+	{		
 		BefriendedAIState nextState = getAIState().defaultSwitch();
+		if (MinecraftForge.EVENT_BUS.post(new BefriendedChangeAiStateEvent(this, getAIState(), nextState)))
+			return getAIState();
 		setAIState(nextState);
 		MiscUtil.printToScreen(this.asMob().getName().getString() + " " + this.getAIState().getDisplayInfo(), getOwner(), this.asMob());
 		return nextState;
