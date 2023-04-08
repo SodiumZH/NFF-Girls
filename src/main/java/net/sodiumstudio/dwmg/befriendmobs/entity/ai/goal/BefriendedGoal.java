@@ -8,6 +8,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
 
 public abstract class BefriendedGoal extends Goal {
 
@@ -20,7 +21,15 @@ public abstract class BefriendedGoal extends Goal {
 	private HashSet<BefriendedAIState> allowedStates = new HashSet<BefriendedAIState>();
 	private boolean isBlocked = false;
 	
+	@Deprecated
+	public BefriendedGoal()
+	{
+	}
 	
+	public BefriendedGoal(IBefriendedMob mob)
+	{
+		this.mob = mob;
+	}
 	
 	public boolean isStateAllowed()
 	{
@@ -91,7 +100,7 @@ public abstract class BefriendedGoal extends Goal {
 	@Override
 	public boolean canUse() 
 	{
-		throw new UnsupportedOperationException("BefriendedGoal must override canUse() function.");
+		throw new UnimplementedException("BefriendedGoal must override canUse() function.");
 	}
 
 }

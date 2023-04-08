@@ -51,11 +51,11 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedNearestAttackableTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedFollowOwnerGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.AbstractBefriendedEnderMan;
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.BefriendedEnderManGoals;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
@@ -76,6 +76,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	protected static final EntityDataAccessor<Integer> ATTACK_TARGET = SynchedEntityData.defineId(EntityBefriendedEnderExecutor.class, EntityDataSerializers.INT);
 	protected LivingEntity targetedEntity;
 	protected int clientAttackTime;
+	public boolean reduceDamage = true;
 	
 	@Override
 	protected void defineSynchedData() {
@@ -108,7 +109,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	      this.targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 	      this.targetSelector.addGoal(2, new BefriendedNearestAttackableTargetGoal<Endermite>(this, Endermite.class, true, false).allowAllStates());
 	      this.targetSelector.addGoal(3, new BefriendedHurtByTargetGoal(this));
-	      this.targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
+	      this.targetSelector.addGoal(4, new BefriendedOwnerHurtTargetGoal(this));
 	}
 
 	// Initialization end
@@ -247,9 +248,12 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 						{
 							if (this.getActiveAttackTarget() != null)
 							{
-								if (this.attackEntityWithBeamAttack(this.getActiveAttackTarget(), 6.0F) && this.random.nextInt(10) == 0)
+								if (doBeamAttack 
+										&& this.attackEntityWithBeamAttack(this.getActiveAttackTarget(), 6.0F) 
+										&& this.teleportNotOnHurtByWater 
+										&& this.random.nextInt(10) == 0)
 								{
-									this.teleport();
+									this.tryTeleportInOtherCases(64);
 								}
 							}
 
@@ -298,6 +302,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	}
 
 	// Adjusted
+	@Override
 	public boolean hurt(DamageSource source, float amount)
 	{
 		{
@@ -309,7 +314,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 			{
 				float f = amount;
 
-				if (ModConfigs.cachedServer.ENDER_EXECUTOR_REDUCE_DAMAGE)
+				if (reduceDamage)
 				{
 					if (!(source.getEntity() != null && source.isCreativePlayer()) && source != DamageSource.OUT_OF_WORLD && f > 10.0F)
 					{
@@ -318,12 +323,12 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 						
 					}
 				}
-
+/*
 				if (source instanceof IndirectEntityDamageSource)
 				{
 					for (int i = 0; i < 64; ++i)
 					{
-						if (this.teleport())
+						if (!this.teleportToAvoidProjectile && this.teleport())
 						{
 							return true;
 						}
@@ -331,14 +336,15 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 
 					return false;
 				}
-				else
-				{
+				else*/
+				
 					return super.hurt(source, f);
-				}
+				
 			}
 		}
 	}
 	
+	@Override
 	public void aiStep()
 	{
 		enderExecutorAiStep();
@@ -468,14 +474,27 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	{
 		return (this.clientAttackTime + f) / this.getAttackDuration();
 	}
-
-	@Override
-	public boolean teleport(double pX, double pY, double pZ)
+	
+	public boolean teleportToOwnerInRain(int tryTimes)
 	{
-		// Don't teleport over 100 blocks away from owner
-		if (getOwner() != null && getOwner().distanceToSqr(pX, pY, pZ) > 10000.d)
-			return false;
-		else return super.teleport(pX, pY, pZ);
+		if (this.isInWaterOrRain() && !this.isInWater())
+		{
+			for (int i = 0; i < tryTimes; ++i)
+			{
+				if (this.teleportTowards(this.getOwner())
+					&& !this.level.canSeeSky(this.blockPosition()))
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean tryTeleportOnWaterHurt(int tryTimes)
+	{
+		if (this.teleportToOwnerInRain(tryTimes))
+			return true;
+		else return super.tryTeleportOnWaterHurt(tryTimes);
 	}
 	
 	// save&load

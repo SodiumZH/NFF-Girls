@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.pathfinder.Path;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedMeleeAttackGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.creeper.AbstractBefriendedCreeper;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
 

@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target;
+package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target;
 
 import java.util.EnumSet;
 

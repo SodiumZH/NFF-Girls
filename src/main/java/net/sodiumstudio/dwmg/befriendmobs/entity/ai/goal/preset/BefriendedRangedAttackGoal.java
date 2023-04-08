@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla;
+package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset;
 
 import java.util.EnumSet;
 
@@ -30,6 +30,7 @@ public class BefriendedRangedAttackGoal extends BefriendedGoal {
 
 	public BefriendedRangedAttackGoal(IBefriendedMob mob, double pSpeedModifier, int pAttackIntervalMin,
 			int pAttackIntervalMax, float pAttackRadius) {
+		super(mob);
 		if (!(mob instanceof RangedAttackMob)) {
 			throw new IllegalArgumentException("BefriendedRangeAttackGoal requires Mob implements RangedAttackMob");
 		} else {
@@ -49,6 +50,7 @@ public class BefriendedRangedAttackGoal extends BefriendedGoal {
 	 * Returns whether execution should begin. You can also read and cache any state
 	 * necessary for execution in this method as well.
 	 */
+	@Override
 	public boolean canUse() {
 		if (isDisabled())
 			return false;
@@ -64,6 +66,7 @@ public class BefriendedRangedAttackGoal extends BefriendedGoal {
 	/**
 	 * Returns whether an in-progress EntityAIBase should continue executing
 	 */
+	@Override
 	public boolean canContinueToUse() {
 		return this.canUse() || !this.mob.asMob().getNavigation().isDone();
 	}
@@ -72,12 +75,14 @@ public class BefriendedRangedAttackGoal extends BefriendedGoal {
 	 * Reset the task's internal state. Called when this task is interrupted by
 	 * another one
 	 */
+	@Override
 	public void stop() {
 		this.target = null;
 		this.seeTime = 0;
 		this.attackTime = -1;
 	}
 
+	@Override
 	public boolean requiresUpdateEveryTick() {
 		return true;
 	}
@@ -85,6 +90,7 @@ public class BefriendedRangedAttackGoal extends BefriendedGoal {
 	/**
 	 * Keep ticking a continuous task that has already been started
 	 */
+	@Override
 	public void tick() {
 		double d0 = this.mob.asMob().distanceToSqr(this.target.getX(), this.target.getY(), this.target.getZ());
 		boolean flag = this.mob.asMob().getSensing().hasLineOfSight(this.target);
