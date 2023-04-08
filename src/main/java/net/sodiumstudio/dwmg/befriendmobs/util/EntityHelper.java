@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.befriendmobs.util;
 
 import java.util.Random;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -302,4 +303,6 @@ public class EntityHelper
 		}
 		return;
 	}
+
+	
 }

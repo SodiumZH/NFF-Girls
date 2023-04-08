@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla;
+package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move;
 
 import java.util.EnumSet;
 
@@ -18,46 +18,35 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedMoveGoal;
+import net.sodiumstudio.dwmg.befriendmobs.util.LevelHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.MissingInterfaceException;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedAmphibious;
 
 /* Adjusted from vanilla FollowOwnerGoal for TameableAnimal */
-public class BefriendedFollowOwnerGoal extends BefriendedGoal {
+public class BefriendedFollowOwnerGoal extends BefriendedMoveGoal {
 
-	public static final int TELEPORT_WHEN_DISTANCE_IS = 12;
-	protected static final int MIN_HORIZONTAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING = 2;
-	protected static final int MAX_HORIZONTAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING = 3;
-	protected static final int MAX_VERTICAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING = 1;
 	protected final LevelReader level;
-	protected final double speedModifier;
-	protected final PathNavigation navigation;
 	protected int timeToRecalcPath;
-	protected final float stopDistance;
-	protected final float startDistance;
+	public final float stopDistance;
+	public final float startDistance;
 	protected float oldWaterCost;
-	protected final boolean canFly;
+	public float teleportDistance = 12f;
+
 
 	public BefriendedFollowOwnerGoal(@Nonnull IBefriendedMob inMob, double pSpeedModifier, float pStartDistance,
 			float pStopDistance, boolean pCanFly) {
-		mob = inMob;
+		super(inMob, pSpeedModifier);
 		this.level = mob.asMob().level;
-		this.speedModifier = pSpeedModifier;
-		this.navigation = getPathfinder().getNavigation();
 		this.startDistance = pStartDistance;
 		this.stopDistance = pStopDistance;
-		this.canFly = pCanFly;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-
 		allowState(FOLLOW);
 	}
 
-	/**
-	 * Returns whether execution should begin. You can also read and cache any state
-	 * necessary for execution in this handler as well.
-	 */
+	@Override
 	public boolean canUse() {
-		if (isDisabled())
-			return false;
-		if (!(getPathfinder().getNavigation() instanceof GroundPathNavigation)
-				&& !(getPathfinder().getNavigation() instanceof FlyingPathNavigation))
+ 		if (isDisabled())
 			return false;
 		LivingEntity livingentity = mob.getOwner();
 		if (livingentity == null)
@@ -71,47 +60,46 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 		}
 	}
 
-	/**
-	 * Returns whether an in-progress EntityAIBase should continue executing
-	 */
+	@Override
 	public boolean canContinueToUse() {
-		if (this.navigation.isDone()) {
+		if (this.getPathfinder().getNavigation().isDone()) {
 			return false;
 		} else {
-			return !(mob.asMob().distanceToSqr(mob.getOwner()) <= (double) (this.stopDistance * this.stopDistance));
+ 			return mob.asMob().distanceToSqr(mob.getOwner()) > (double) (this.stopDistance * this.stopDistance);
 		}
 	}
 
-	/**
-	 * Execute a one shot task or start executing a continuous task
-	 */
+	@Override
 	public void start() {
+		super.start();
 		this.timeToRecalcPath = 0;
 		this.oldWaterCost = getPathfinder().getPathfindingMalus(BlockPathTypes.WATER);
 		getPathfinder().setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
 	}
 
-	/**
-	 * Reset the task's internal state. Called when this task is interrupted by
-	 * another one
-	 */
+	@Override
 	public void stop() {
-		this.navigation.stop();
+		this.getPathfinder().getNavigation().stop();
 		getPathfinder().setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
 	}
 
 	/**
 	 * Keep ticking a continuous task that has already been started
 	 */
+	@Override
 	public void tick() {
 		getPathfinder().getLookControl().setLookAt(mob.getOwner(), 10.0F, (float) getPathfinder().getMaxHeadXRot());
 		if (--this.timeToRecalcPath <= 0) {
 			this.timeToRecalcPath = this.adjustedTickDelay(10);
 			if (!getPathfinder().isLeashed() && !getPathfinder().isPassenger()) {
-				if (getPathfinder().distanceToSqr(mob.getOwner()) >= 144.0D) {
+				if (getPathfinder().distanceToSqr(mob.getOwner()) >= teleportDistance * teleportDistance && allowTeleport()) 
+				{
 					this.teleportToOwner();
-				} else {
-					this.navigation.moveTo(mob.getOwner(), this.speedModifier);
+				} 
+				else 
+				{
+					if (!LevelHelper.isEntityUnderSun(mob.getOwner()) || LevelHelper.isEntityAboveWater(mob.getOwner()))
+						this.getPathfinder().getNavigation().moveTo(mob.getOwner(), this.speedModifier);
 				}
 
 			}
@@ -121,11 +109,15 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 	protected void teleportToOwner() {
 		BlockPos blockpos = mob.getOwner().blockPosition();
 
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < 20; ++i) {
 			int j = this.randomIntInclusive(-3, 3);
 			int k = this.randomIntInclusive(-1, 1);
 			int l = this.randomIntInclusive(-3, 3);
-			boolean flag = this.maybeTeleportTo(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
+			BlockPos wanted = new BlockPos(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
+			// Don't teleport to positions under sun if avoiding
+			if (shouldAvoidSun && LevelHelper.isUnderSun(wanted, mob.asMob()) && !LevelHelper.isAboveWater(wanted, mob.asMob()))
+				continue;
+			boolean flag = this.tryTeleportTo(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
 			if (flag) {
 				return;
 			}
@@ -133,7 +125,7 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 
 	}
 
-	protected boolean maybeTeleportTo(int pX, int pY, int pZ) {
+	protected boolean tryTeleportTo(int pX, int pY, int pZ) {
 		if (Math.abs((double) pX - mob.getOwner().getX()) < 2.0D
 				&& Math.abs((double) pZ - mob.getOwner().getZ()) < 2.0D) {
 			return false;
@@ -142,12 +134,14 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 		} else {
 			getPathfinder().moveTo((double) pX + 0.5D, (double) pY, (double) pZ + 0.5D, getPathfinder().getYRot(),
 					getPathfinder().getXRot());
-			this.navigation.stop();
+			this.getPathfinder().getNavigation().stop();
 			return true;
 		}
 	}
 
 	protected boolean canTeleportTo(BlockPos pPos) {
+		if (!allowTeleport())
+			return false;
 		BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, pPos.mutable());
 		if (blockpathtypes != BlockPathTypes.WALKABLE) {
 			return false;
@@ -162,6 +156,11 @@ public class BefriendedFollowOwnerGoal extends BefriendedGoal {
 		}
 	}
 
+	protected boolean allowTeleport()
+	{
+		return true;
+	}
+	
 	protected int randomIntInclusive(int pMin, int pMax) {
 		return getPathfinder().getRandom().nextInt(pMax - pMin + 1) + pMin;
 	}

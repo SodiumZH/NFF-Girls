@@ -1,7 +1,7 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals;
 
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedMeleeAttackGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
 
 
 public class BefriendedSkeletonMeleeAttackGoal extends BefriendedMeleeAttackGoal

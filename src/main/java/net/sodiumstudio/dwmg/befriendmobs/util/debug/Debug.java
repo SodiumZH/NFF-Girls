@@ -4,6 +4,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
+import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.AssertionFailedException;
 
 // All debug output should work only in development.
 public class Debug {
@@ -19,4 +20,5 @@ public class Debug {
 	{		
 		printToScreen(text, receiver, receiver);
 	}
+	
 }

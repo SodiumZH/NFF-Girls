@@ -32,28 +32,23 @@ public class DwmgBefriendingTypes {
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.HUSK_GIRL.get(),
 				DwmgEntityTypes.HMAG_HUSK_GIRL.get(),
-				new HandlerHuskGirl());	
-		
-	/*	BefriendingTypeRegistry.register(
+				new HandlerHuskGirl());			
+		BefriendingTypeRegistry.register(
 				ModEntityTypes.DROWNED_GIRL.get(),
-				DwmgEntityTypes.DROWNED_GIRL.get(),
-				new HandlerDrownedGirl());*/
-		
+				DwmgEntityTypes.HMAG_DROWNED_GIRL.get(),
+				new HandlerZombieGirl());	
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.CREEPER_GIRL.get(),
 				DwmgEntityTypes.HMAG_CREEPER_GIRL.get(),
 				new HandlerCreeperGirl());
-
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.ENDER_EXECUTOR.get(),
 				DwmgEntityTypes.HMAG_ENDER_EXECUTOR.get(),
-				new HandlerEnderExecutor());
-		
+				new HandlerEnderExecutor());	
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.STRAY_GIRL.get(),
 				DwmgEntityTypes.HMAG_STRAY_GIRL.get(),
-				new HandlerSkeletonGirl());
-		
+				new HandlerSkeletonGirl());	
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.WITHER_SKELETON_GIRL.get(),
 				DwmgEntityTypes.HMAG_WITHER_SKELETON_GIRL.get(),

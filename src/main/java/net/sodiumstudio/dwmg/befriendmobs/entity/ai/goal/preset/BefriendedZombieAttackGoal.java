@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla;
+package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset;
 
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 
@@ -14,6 +14,7 @@ public class BefriendedZombieAttackGoal extends BefriendedMeleeAttackGoal {
 	/**
 	 * Execute a one shot task or start executing a continuous task
 	 */
+	@Override
 	public void start() {
 		super.start();
 		this.raiseArmTicks = 0;
@@ -23,6 +24,7 @@ public class BefriendedZombieAttackGoal extends BefriendedMeleeAttackGoal {
 	 * Reset the task's internal state. Called when this task is interrupted by
 	 * another one
 	 */
+	@Override
 	public void stop() {
 		super.stop();
 		this.mob.asMob().setAggressive(false);
@@ -31,6 +33,7 @@ public class BefriendedZombieAttackGoal extends BefriendedMeleeAttackGoal {
 	/**
 	 * Keep ticking a continuous task that has already been started
 	 */
+	@Override
 	public void tick() {
 		super.tick();
 		++this.raiseArmTicks;

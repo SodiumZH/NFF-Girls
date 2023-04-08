@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla;
+package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset;
 
 import java.util.EnumSet;
 
@@ -30,7 +30,7 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 
 	public BefriendedMeleeAttackGoal(IBefriendedMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen)
 	{
-		mob = pMob;
+		super(pMob);
 		this.speedModifier = pSpeedModifier;
 		this.followingTargetEvenIfNotSeen = pFollowingTargetEvenIfNotSeen;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -41,6 +41,7 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 	 * Returns whether execution should begin. You can also read and cache any state
 	 * necessary for execution in this handler as well.
 	 */
+	@Override
 	public boolean canUse() {
 		if (isDisabled())
 			return false;
@@ -91,6 +92,7 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 	/**
 	 * Returns whether an in-progress EntityAIBase should continue executing
 	 */
+	@Override
 	public boolean canContinueToUse() {
 		LivingEntity livingentity = getPathfinder().getTarget();
 		if (livingentity == null)
@@ -115,6 +117,7 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 	/**
 	 * Execute a one shot task or start executing a continuous task
 	 */
+	@Override
 	public void start() {
 		getPathfinder().getNavigation().moveTo(this.path, this.speedModifier);
 		getPathfinder().setAggressive(true);
@@ -126,6 +129,7 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 	 * Reset the task's internal state. Called when this task is interrupted by
 	 * another one
 	 */
+	@Override
 	public void stop() {
 		LivingEntity livingentity = getPathfinder().getTarget();
 		if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingentity))
@@ -137,6 +141,7 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 		getPathfinder().getNavigation().stop();
 	}
 
+	@Override
 	public boolean requiresUpdateEveryTick() {
 		return true;
 	}
@@ -144,6 +149,7 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 	/**
 	 * Keep ticking a continuous task that has already been started
 	 */
+	@Override
 	public void tick() {
 		LivingEntity livingentity = getPathfinder().getTarget();
 		if (livingentity != null)

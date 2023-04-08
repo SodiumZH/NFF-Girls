@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla;
+package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move;
 
 import javax.annotation.Nullable;
 

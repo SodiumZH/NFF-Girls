@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla;
+package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset;
 
 import java.util.EnumSet;
 
@@ -26,10 +26,10 @@ public class BefriendedRangedBowAttackGoal extends BefriendedGoal
 	public BefriendedRangedBowAttackGoal(IBefriendedMob pMob, double pSpeedModifier, int pAttackIntervalMin,
 			float pAttackRadius)
 	{
+		super(pMob);
 		if (!(pMob instanceof RangedAttackMob))
 			throw new UnsupportedOperationException(
-					"BefriendedRangedBowAttackGoal can applied only on mobs implementing RangedAttackMob.");
-		this.mob = pMob;
+					"BefriendedRangedBowAttackGoal can appliy only on mobs implementing RangedAttackMob.");
 		this.speedModifier = pSpeedModifier;
 		this.attackIntervalMin = pAttackIntervalMin;
 		this.attackRadiusSqr = pAttackRadius * pAttackRadius;

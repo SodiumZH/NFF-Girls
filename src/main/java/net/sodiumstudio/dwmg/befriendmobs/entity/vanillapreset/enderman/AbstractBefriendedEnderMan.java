@@ -67,9 +67,9 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedNearestAttackableTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedMeleeAttackGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
@@ -93,6 +93,8 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	public boolean canAutoPlaceBlocks = false;
 	public boolean angryOnLookedAt = false;
 	public boolean teleportOnHurtByWater = true;
+	public boolean teleportNotOnHurtByWater = false;
+	public boolean teleportToAvoidProjectile = true;
 	
 	protected static final EntityDataAccessor<Optional<BlockState>> DATA_CARRY_STATE = SynchedEntityData
 			.defineId(AbstractBefriendedEnderMan.class, EntityDataSerializers.BLOCK_STATE);
@@ -117,6 +119,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		additionalInventory = new AdditionalInventory(getInventorySize());
 	}
 
+	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		//this.goalSelector.addGoal(1, new BefriendedEnderManGoals.FreezeWhenLookedAt(this));
@@ -136,6 +139,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	/**
 	 * Sets the active target the Goal system uses for tracking
 	 */
+	@Override
 	public void setTarget(@Nullable LivingEntity pLivingEntity) {
 		AttributeInstance attributeinstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
 		if (pLivingEntity == null)
@@ -157,6 +161,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		super.setTarget(pLivingEntity); // Forge: Moved down to allow event handlers to write data manager values.
 	}
 
+	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(DATA_CARRY_STATE, Optional.empty());
@@ -166,22 +171,27 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		this.entityData.define(DATA_AISTATE, (byte) 0);
 	}
 
+	@Override
 	public void startPersistentAngerTimer() {
 		/*this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));*/
 	}
 
+	@Override
 	public void setRemainingPersistentAngerTime(int pTime) {
 		/*this.remainingPersistentAngerTime = pTime;*/
 	}
 
+	@Override
 	public int getRemainingPersistentAngerTime() {
 		return 0;/*return this.remainingPersistentAngerTime;*/
 	}
 
+	@Override
 	public void setPersistentAngerTarget(@Nullable UUID pTarget) {
 		/*this.persistentAngerTarget = pTarget;*/
 	}
 
+	@Override
 	@Nullable
 	public UUID getPersistentAngerTarget() {
 		return this.persistentAngerTarget;
@@ -200,6 +210,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 
 	}
 
+	@Override
 	public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
 		if (DATA_CREEPY.equals(pKey) && this.hasBeenStaredAt() && this.level.isClientSide)
 		{
@@ -209,6 +220,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		super.onSyncedDataUpdated(pKey);
 	}
 
+	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		BlockState blockstate = this.getCarriedBlock();
@@ -224,6 +236,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	/**
 	 * (abstract) Protected helper method to read subclass mob data from NBT.
 	 */
+	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		BlockState blockstate = null;
@@ -279,6 +292,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		}
 	}
 */
+	@Override
 	protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
 		return 2.55F;
 	}
@@ -288,6 +302,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	 * example, zombies and skeletons use this to react to sunlight and start to
 	 * burn.
 	 */
+	@Override
 	public void aiStep() {
 		if (this.level.isClientSide)
 		{
@@ -308,10 +323,12 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		super.aiStep();
 	}
 
+	@Override
 	public boolean isSensitiveToWater() {
 		return true;
 	}
 
+	@Override
 	protected void customServerAiStep() {
 /*
 		if (this.level.isDay() && this.tickCount >= this.targetChangeTime + 600)
@@ -328,9 +345,48 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		super.customServerAiStep();
 	}
 
-	/**
-	 * Teleport the AbstractBefriendedEnderMan to a random nearby position
-	 */
+	public boolean tryTeleportOnWaterHurt(int tryTimes)
+	{
+		if (!this.teleportOnHurtByWater)
+			return false;
+		for (int i = 0; i < tryTimes; ++i)
+		{
+			if (this.teleport())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean tryTeleportToAvoidProjectile(int tryTimes)
+	{
+		if (!teleportToAvoidProjectile)
+			return false;
+		for (int i = 0; i < tryTimes; ++i)
+		{
+			if (this.teleport())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean tryTeleportInOtherCases(int tryTimes)
+	{
+		if (!this.teleportNotOnHurtByWater)
+			return false;
+		for (int i = 0; i < tryTimes; ++i)
+		{
+			if (this.teleport())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public boolean teleport() {
 		if (!this.level.isClientSide() && this.isAlive())
 		{
@@ -344,9 +400,6 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		}
 	}
 
-	/**
-	 * Teleport the AbstractBefriendedEnderMan to another mob
-	 */
 	public boolean teleportTowards(Entity pTarget) {
 		Vec3 vec3 = new Vec3(this.getX() - pTarget.getX(), this.getY(0.5D) - pTarget.getEyeY(),
 				this.getZ() - pTarget.getZ());
@@ -357,9 +410,6 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		return this.teleport(d1, d2, d3);
 	}
 
-	/**
-	 * Teleport the AbstractBefriendedEnderMan
-	 */
 	public boolean teleport(double pX, double pY, double pZ) {
 		BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(pX, pY, pZ);
 
@@ -393,18 +443,22 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		}
 	}
 
+	@Override
 	protected SoundEvent getAmbientSound() {
 		return this.isCreepy() ? SoundEvents.ENDERMAN_SCREAM : SoundEvents.ENDERMAN_AMBIENT;
 	}
 
+	@Override
 	protected SoundEvent getHurtSound(DamageSource pDamageSource) {
 		return SoundEvents.ENDERMAN_HURT;
 	}
 
+	@Override
 	protected SoundEvent getDeathSound() {
 		return SoundEvents.ENDERMAN_DEATH;
 	}
 
+	@Override
 	protected void dropCustomDeathLoot(DamageSource pSource, int pLooting, boolean pRecentlyHit) {
 		super.dropCustomDeathLoot(pSource, pLooting, pRecentlyHit);
 		BlockState blockstate = this.getCarriedBlock();
@@ -427,46 +481,54 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	/**
 	 * Called when the mob is attacked.
 	 */
+	@Override
 	public boolean hurt(DamageSource pSource, float pAmount) {
 		if (this.isInvulnerableTo(pSource))
 		{
 			return false;
-		} else if (pSource instanceof IndirectEntityDamageSource)
+		} 
+		else if (pSource.equals(DamageSource.DROWN))
+		{
+			return this.tryTeleportOnWaterHurt(64);
+		}
+		
+		else if (pSource instanceof IndirectEntityDamageSource)
 		{
 			Entity entity = pSource.getDirectEntity();
-			boolean flag1;
+			boolean isByWater;
 			if (entity instanceof ThrownPotion)
 			{
-				flag1 = this.hurtWithCleanWater(pSource, (ThrownPotion) entity, pAmount);
+				isByWater = this.hurtWithCleanWater(pSource, (ThrownPotion) entity, pAmount);
 			} else
 			{
-				flag1 = false;
+				isByWater = false;
 			}
-
-			if (teleportOnHurtByWater)
-				for (int i = 0; i < 64; ++i)
-				{
-					if (this.teleport())
-					{
-						return true;
-					}
-				}
-
-			return flag1;
-		} else
+			
+			if (isByWater)	// Hurt by water bottle
+			{
+				this.tryTeleportOnWaterHurt(64);
+				return true;
+			}
+			else	// Hurt by projectile
+			{
+				return this.tryTeleportToAvoidProjectile(64);
+			}
+		}
+		else
 		{
 			boolean flag = super.hurt(pSource, pAmount);
 			if (!this.level.isClientSide() && !(pSource.getEntity() instanceof LivingEntity)
 					&& this.random.nextInt(10) != 0)
 			{
-				this.teleport();
+				this.tryTeleportInOtherCases(1);
 			}
-
 			return flag;
 		}
 	}
 
 	protected boolean hurtWithCleanWater(DamageSource pSource, ThrownPotion pPotion, float pAmount) {
+		if (!this.isSensitiveToWater())
+			return false;
 		ItemStack itemstack = pPotion.getItem();
 		Potion potion = PotionUtils.getPotion(itemstack);
 		List<MobEffectInstance> list = PotionUtils.getMobEffects(itemstack);
@@ -486,6 +548,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		this.entityData.set(DATA_STARED_AT, true);
 	}
 
+	@Override
 	public boolean requiresCustomPersistence() {
 		return super.requiresCustomPersistence() || this.getCarriedBlock() != null;
 	}

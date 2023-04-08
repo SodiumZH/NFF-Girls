@@ -26,6 +26,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -38,14 +42,17 @@ import net.minecraftforge.client.event.sound.SoundEvent;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedFleeSunGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedRandomStrollGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedRestrictSunGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedWaterAvoidingRandomStrollGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.BefriendedZombieAttackGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedHurtByTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedOwnerHurtByTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla.target.BefriendedOwnerHurtTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.BefriendedAmphibiousGoals;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedRandomStrollGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedRandomSwimGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
@@ -53,15 +60,16 @@ import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedAmphibious;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedUndeadMob;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedDrownedGoals;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedDrownedTridentAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedInWaterFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuZombie;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
 
-public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IBefriendedMob, IBefriendedUndeadMob, IBaubleHolder
+public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IBefriendedMob, IBefriendedUndeadMob, IBaubleHolder, IBefriendedAmphibious
 {
 
 	/* Initialization */
@@ -84,18 +92,19 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	@Override
 	protected void registerGoals() {
 
-		goalSelector.addGoal(1, new BefriendedDrownedGoals.GoToWaterGoal(this, 1.0D));
+		goalSelector.addGoal(1, new BefriendedAmphibiousGoals.GoToWaterGoal(this, 1.0D));
 		goalSelector.addGoal(1, new BefriendedRestrictSunGoal(this));
 		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
-		goalSelector.addGoal(3, new BefriendedDrownedGoals.TridentAttackGoal(this, 1.0D, 40, 10.0F));
-		goalSelector.addGoal(3, new BefriendedDrownedGoals.AttackGoal(this, 1.0D, false));
-		goalSelector.addGoal(4, new BefriendedSunAvoidingFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
-		goalSelector.addGoal(4, new BefriendedInWaterFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
-		goalSelector.addGoal(5, new BefriendedDrownedGoals.GoToBeachGoal(this, 1.0D));
-		goalSelector.addGoal(6, new BefriendedDrownedGoals.SwimUpGoal(this, 1.0D, this.level.getSeaLevel()));
+		goalSelector.addGoal(3, new BefriendedDrownedTridentAttackGoal(this, 1.0D, 40, 10.0F));
+		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0D, false));
+		goalSelector.addGoal(4, new BefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false).avoidSun().amphibious());
+		//goalSelector.addGoal(4, new BefriendedInWaterFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f));
+		goalSelector.addGoal(5, new BefriendedAmphibiousGoals.GoToBeachGoal(this, 1.0D));
+		goalSelector.addGoal(6, new BefriendedAmphibiousGoals.SwimUpGoal(this, 1.0D, this.level.getSeaLevel()));
 		goalSelector.addGoal(7, new BefriendedRandomStrollGoal(this, 1.0d));
-		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+		goalSelector.addGoal(7, new BefriendedRandomSwimGoal(this, 1.0d, 120));
+		goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		goalSelector.addGoal(9, new RandomLookAroundGoal(this));
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
@@ -190,6 +199,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 		}
 	}
 
+	@Override
 	public void setInventoryFromMob() {
 		if (!this.level.isClientSide)
 		{
@@ -267,6 +277,29 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 		return baubleModifierMap;
 	}
 
+	/* IBefriendedAmphibious interface */
+
+	@Override
+	public WaterBoundPathNavigation getWaterNav() {
+		return this.waterNavigation;
+	}
+
+	@Override
+	public GroundPathNavigation getGroundNav() {
+		return this.groundNavigation;
+	}
+
+	@Override
+	public PathNavigation getAppliedNav()
+	{
+		return this.navigation;
+	}
+	
+	@Override
+	public void switchNav(boolean isWaterNav) {
+		this.navigation = isWaterNav ? this.waterNavigation : this.groundNavigation;
+	}
+	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //

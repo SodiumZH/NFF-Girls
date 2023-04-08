@@ -1,16 +1,10 @@
 package net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman;
 
-import java.util.EnumSet;
 import java.util.Random;
-
-import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -32,6 +26,7 @@ public class BefriendedEnderManGoals
 
 		public LeaveBlockGoal(AbstractBefriendedEnderMan enderman)
 		{
+			super(enderman);
 			this.mob = enderman.self();
 			this.enderman = enderman;
 			this.allowState(WANDER);
@@ -41,6 +36,7 @@ public class BefriendedEnderManGoals
 		 * Returns whether execution should begin. You can also read and cache any state
 		 * necessary for execution in this method as well.
 		 */
+		@Override
 		public boolean canUse() {
 			if (isDisabled())
 				return false;
@@ -62,6 +58,7 @@ public class BefriendedEnderManGoals
 		/**
 		 * Keep ticking a continuous task that has already been started
 		 */
+		@Override
 		public void tick() {
 			Random random = this.enderman.getRandom();
 			Level level = this.enderman.level;
@@ -209,11 +206,13 @@ public class BefriendedEnderManGoals
 
 		public TakeBlockGoal(AbstractBefriendedEnderMan enderman)
 		{
+			super(enderman);
 			this.mob = (IBefriendedMob)enderman;
 			this.enderman = enderman;
 			this.allowState(WANDER);
 		}
 
+		@Override
 		public boolean canUse() {
 			if (isDisabled())
 				return false;
@@ -232,6 +231,7 @@ public class BefriendedEnderManGoals
 			}
 		}
 
+		@Override
 		public void tick() {
 			Random random = this.enderman.getRandom();
 			Level level = this.enderman.level;

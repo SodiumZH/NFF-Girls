@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.vanilla;
+package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move;
 
 import java.util.EnumSet;
 import java.util.Random;
@@ -12,20 +12,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedMoveGoal;
 
 // Adjusted from vanilla FleeSunGoal
-public class BefriendedFleeSunGoal extends BefriendedGoal {
+public class BefriendedFleeSunGoal extends BefriendedMoveGoal {
 
 	protected double wantedX;
 	protected double wantedY;
 	protected double wantedZ;
-	protected final double speedModifier;
 	protected final Level level;
 	public boolean ignoreHelmet = false;
 	
 	public BefriendedFleeSunGoal(IBefriendedMob pMob, double pSpeedModifier) {
-	      mob = pMob;
-	      this.speedModifier = pSpeedModifier;
+	      super(pMob, pSpeedModifier);
 	      this.level = getPathfinder().level;
 	      this.setFlags(EnumSet.of(Goal.Flag.MOVE));
 	      allowAllStates();
@@ -35,6 +34,7 @@ public class BefriendedFleeSunGoal extends BefriendedGoal {
 	 * Returns whether execution should begin. You can also read and cache any state
 	 * necessary for execution in this handler as well.
 	 */
+	@Override
 	public boolean canUse() 
 	{
 		if (!this.level.isDay())
@@ -44,6 +44,8 @@ public class BefriendedFleeSunGoal extends BefriendedGoal {
 		else if (!ignoreHelmet && !getPathfinder().getItemBySlot(EquipmentSlot.HEAD).isEmpty())
 			return false;
 		else if	(!this.setWantedPos())
+			return false;
+		else if (mob.asMob().isInWater())
 			return false;
 		else return true;
 	}
@@ -63,6 +65,7 @@ public class BefriendedFleeSunGoal extends BefriendedGoal {
 	/**
 	 * Returns whether an in-progress EntityAIBase should continue executing
 	 */
+	@Override
 	public boolean canContinueToUse() {
 		return !getPathfinder().getNavigation().isDone();
 	}
@@ -70,7 +73,9 @@ public class BefriendedFleeSunGoal extends BefriendedGoal {
 	/**
 	 * Execute a one shot task or start executing a continuous task
 	 */
+	@Override
 	public void start() {
+		super.start();
 		getPathfinder().getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
 	}
 
