@@ -76,7 +76,7 @@ public class BefriendedFollowOwnerGoal extends BefriendedMoveGoal {
 		this.oldWaterCost = getPathfinder().getPathfindingMalus(BlockPathTypes.WATER);
 		getPathfinder().setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
 	}
-
+ 
 	@Override
 	public void stop() {
 		this.getPathfinder().getNavigation().stop();

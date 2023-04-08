@@ -31,7 +31,7 @@ public class BefriendedEnderManGoals
 		public LeaveBlockGoal(AbstractBefriendedEnderMan enderman)
 		{
 			super(enderman);
-			this.mob = enderman.self();
+			this.mob = (IBefriendedMob) enderman;
 			this.enderman = enderman;
 			this.allowState(WANDER);
 		}
