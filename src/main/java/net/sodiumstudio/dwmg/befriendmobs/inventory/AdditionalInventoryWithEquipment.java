@@ -30,8 +30,7 @@ public class AdditionalInventoryWithEquipment extends AdditionalInventory
 		this.setItem(3, mob.getItemBySlot(EquipmentSlot.FEET));
 		this.setItem(4, mob.getItemBySlot(EquipmentSlot.MAINHAND));
 		this.setItem(5, mob.getItemBySlot(EquipmentSlot.OFFHAND));
-		updateOwner();
-		
+		updateOwner();		
 	}
 	
 	public void setMobEquipment(Mob mob)

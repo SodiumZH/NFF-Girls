@@ -205,4 +205,14 @@ public class AdditionalInventory extends SimpleContainer
 			return true;			
 		}		
 	}
+	
+	@Override
+	public void clearContent()
+	{
+		for (int i = 0; i < this.getContainerSize(); ++i)
+		{
+			this.setItem(i, ItemStack.EMPTY);
+		}
+		this.setChanged();
+	}
 }

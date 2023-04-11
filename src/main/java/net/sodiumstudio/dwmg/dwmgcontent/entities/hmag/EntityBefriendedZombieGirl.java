@@ -187,6 +187,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		}
 	}
 
+	@Override
 	public void setInventoryFromMob()
 	{
 		if (!this.level.isClientSide) {

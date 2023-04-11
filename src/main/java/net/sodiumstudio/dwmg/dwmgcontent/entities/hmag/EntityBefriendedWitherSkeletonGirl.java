@@ -35,6 +35,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
@@ -148,7 +150,8 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 		/* Handle combat AI */		
 		if (justShot)
 		{
-			this.getAdditionalInventory().consumeItem(8);
+			if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, this.getAdditionalInventory().getItem(4)) > 0)
+				this.getAdditionalInventory().consumeItem(8);
 			justShot = false;
 		}
 		

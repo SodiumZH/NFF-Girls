@@ -26,6 +26,8 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
@@ -210,28 +212,28 @@ public class EntityHelper
 		addEffectSafe(entity, effect, ticks, 0);
 	}
 
-	// Teleport a living mob as if it ate a chorus fruit
+	// Teleport a living entity as if it ate a chorus fruit
 	public static boolean chorusLikeTeleport(LivingEntity living) {
 		if (!living.level.isClientSide)
 		{
 
-			double d0 = living.getX();
-			double d1 = living.getY();
-			double d2 = living.getZ();
+			double atX = living.getX();
+			double atY = living.getY();
+			double atZ = living.getZ();
 
 			for (int i = 0; i < 16; ++i)
 			{
-				double d3 = living.getX() + (living.getRandom().nextDouble() - 0.5D) * 16.0D;
-				double d4 = Mth.clamp(living.getY() + (double) (living.getRandom().nextInt(16) - 8),
+				double tryX = living.getX() + (living.getRandom().nextDouble() - 0.5D) * 16.0D;
+				double tryY = Mth.clamp(living.getY() + (double) (living.getRandom().nextInt(16) - 8),
 						(double) living.level.getMinBuildHeight(), (double) (living.level.getMinBuildHeight()
 								+ ((ServerLevel) (living.level)).getLogicalHeight() - 1));
-				double d5 = living.getZ() + (living.getRandom().nextDouble() - 0.5D) * 16.0D;
+				double tryZ = living.getZ() + (living.getRandom().nextDouble() - 0.5D) * 16.0D;
 				if (living.isPassenger())
 				{
 					living.stopRiding();
 				}
 
-				chorusLikeTeleportEvent event = new chorusLikeTeleportEvent(living, d3, d4, d5);
+				tryTeleportOntoGroundEvent event = new tryTeleportOntoGroundEvent(living, tryX, tryY, tryZ);
 				MinecraftForge.EVENT_BUS.post(event);
 				if (event.isCanceled())
 					return false;
@@ -239,7 +241,7 @@ public class EntityHelper
 				{
 					SoundEvent soundevent = living instanceof Fox ? SoundEvents.FOX_TELEPORT
 							: SoundEvents.CHORUS_FRUIT_TELEPORT;
-					living.level.playSound((Player) null, d0, d1, d2, soundevent, SoundSource.PLAYERS, 1.0F, 1.0F);
+					living.level.playSound((Player) null, atX, atY, atZ, soundevent, SoundSource.PLAYERS, 1.0F, 1.0F);
 					living.playSound(soundevent, 1.0F, 1.0F);
 					return true;
 				}
@@ -249,11 +251,51 @@ public class EntityHelper
 		else return false;
 	}
 	
-	// Fired on an mob teleported by EntityHelper::chorusLikeTeleport function.
-	public static class chorusLikeTeleportEvent extends EntityTeleportEvent
+	// Random teleport an entity with given radius
+	public static boolean tryTeleportOntoGround(Entity entity, Vec3 radius, int tryTimes) {
+		if (!entity.level.isClientSide)
+		{
+			for (int i = 0; i < tryTimes; ++i)
+			{
+				Random rnd = new Random();
+				double tryX = entity.getX() + (rnd.nextDouble() - 0.5D) * radius.x * 2d;
+				double tryY = Mth.clamp(entity.getY() + (rnd.nextDouble() - 0.5D) * radius.y * 2d,
+						(double) entity.level.getMinBuildHeight(), (double) (entity.level.getMinBuildHeight()
+								+ ((ServerLevel) (entity.level)).getLogicalHeight() - 1));
+				double tryZ = entity.getZ() + (rnd.nextDouble() - 0.5D) * radius.z * 2d;
+				if (entity.isPassenger())
+				{
+					entity.stopRiding();
+				}
+
+				tryTeleportOntoGroundEvent event = new tryTeleportOntoGroundEvent(entity, tryX, tryY, tryZ);
+				MinecraftForge.EVENT_BUS.post(event);
+				if (event.isCanceled())
+					return false;
+				boolean succeeded = false;
+				if (entity instanceof LivingEntity living)
+				{
+					succeeded = living.randomTeleport(event.getTargetX(), event.getTargetY(), event.getTargetZ(), true);
+				}
+				else
+				{
+					succeeded = randomTeleportNonLivingEntity(entity, event.getTargetX(), event.getTargetY(), event.getTargetZ());
+				}
+				if (succeeded)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		else return false;
+	}
+	
+	// Fired on an entity teleported by EntityHelper::chorusLikeTeleport or EntityHelper::tryTeleportOntoGround function.
+	public static class tryTeleportOntoGroundEvent extends EntityTeleportEvent
 	{
 
-		public chorusLikeTeleportEvent(Entity entity, double targetX, double targetY, double targetZ)
+		public tryTeleportOntoGroundEvent(Entity entity, double targetX, double targetY, double targetZ)
 		{
 			super(entity, targetX, targetY, targetZ);
 		}
@@ -304,5 +346,65 @@ public class EntityHelper
 		return;
 	}
 
+	@SuppressWarnings("deprecation")
+	public static boolean randomTeleportNonLivingEntity(Entity entity, double inX, double inY, double inZ) {
+		if (entity instanceof LivingEntity)
+		{
+			throw new UnsupportedOperationException(
+					"randomTeleportNonLivingEntity() supports only Non-living entities. For LivingEntity use LivingEntity#randomTeleport instead.");
+		}
+		double atX = entity.getX();
+		double atY = entity.getY();
+		double atZ = entity.getZ();
+		double actualY = inY;
+		boolean noCollision = false;
+		BlockPos currentPos = new BlockPos(inX, inY, inZ);
+		Level level = entity.level;
+		if (level.hasChunkAt(currentPos))
+		{
+			boolean solidBlockFound = false;
+			while (!solidBlockFound && currentPos.getY() > level.getMinBuildHeight())
+			{
+				BlockPos nextPos = currentPos.below();
+				BlockState blockstate = level.getBlockState(nextPos);
+				if (blockstate.getMaterial().blocksMotion())
+				{
+					solidBlockFound = true;
+				} else
+				{
+					--actualY;
+					currentPos = nextPos;
+				}
+			}
+
+			if (solidBlockFound)
+			{
+				entity.teleportTo(inX, actualY, inZ);
+				if (level.noCollision(entity) && !level.containsAnyLiquid(entity.getBoundingBox()))
+				{
+					noCollision = true;
+				}
+			}
+		}
+
+		if (!noCollision)
+		{
+			entity.teleportTo(atX, atY, atZ);
+			return false;
+		} 
+		else
+		{
+			return true;
+		}
+	}
 	
+	public static void removeAllEquipment(Mob target)
+	{
+		target.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+		target.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+		target.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+		target.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+		target.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
+		target.setItemSlot(EquipmentSlot.FEET, ItemStack.EMPTY);
+	}
 }

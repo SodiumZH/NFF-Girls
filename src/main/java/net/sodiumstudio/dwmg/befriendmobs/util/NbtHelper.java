@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class NbtHelper {
 
@@ -175,5 +177,22 @@ public class NbtHelper {
 		if (player == null)
 			return;
 		toTag.putUUID(key, player.getUUID());
+	}
+	
+	public static void putVec3(CompoundTag toTag, String key, Vec3 val)
+	{
+		ListTag listtag = new ListTag();
+
+		listtag.add(DoubleTag.valueOf(val.x));
+		listtag.add(DoubleTag.valueOf(val.y));
+		listtag.add(DoubleTag.valueOf(val.z));
+
+		toTag.put(key, listtag);
+	}
+	
+	public static Vec3 getVec3(CompoundTag fromTag, String key)
+	{
+		ListTag listtag = fromTag.getList(key, 6);
+		return new Vec3(listtag.getDouble(0), listtag.getDouble(1), listtag.getDouble(2));
 	}
 }
