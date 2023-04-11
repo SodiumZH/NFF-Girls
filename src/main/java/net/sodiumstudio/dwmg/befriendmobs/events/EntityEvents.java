@@ -1,5 +1,6 @@
 package net.sodiumstudio.dwmg.befriendmobs.events;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -8,10 +9,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -31,9 +36,11 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInte
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendableMobRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.item.ItemMobRespawner;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
+import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.BMDebugItemHandler;
@@ -247,6 +254,22 @@ public class EntityEvents
 						event.getEntity().spawnAtLocation(container.getItem(i));
 					}
 				}
+				
+				// If drop respawner, drop and initialize
+				if (bef.shouldDropRespawner())
+				{
+					ItemEntity resp = event.getEntity().spawnAtLocation(ItemMobRespawner.fromMob(bef.asMob()));
+					resp.getItem().getCapability(BefMobCapabilities.CAP_MOB_RESPAWNER).ifPresent((c) ->
+					{	
+						if (bef.isRespawnerInvulnerable())
+						{					
+							resp.setInvulnerable(true);
+							c.setInvulnerable(true);
+						}
+						c.setRecoverInVoid(bef.shouldRespawnerRecoverOnDropInVoid());
+						c.setNoExpire(bef.respawnerNoExpire());
+					});
+				}
 			}
 		}
 		
@@ -320,30 +343,35 @@ public class EntityEvents
 			}
 		}
 	}
+
+	
+	
 	
 	@SuppressWarnings("unchecked")
 	@SubscribeEvent
-	public static void onServerMobPostWorldTick(ServerMobTickEvent.PostWorldTick event)
+	public static void onServerEntityPostWorldTick(ServerEntityTickEvent.PostWorldTick event)
 	{
-		Mob mob = event.getMob();
-		// update befriendable mob timers
-		if (!(mob instanceof IBefriendedMob))
+		if (event.getEntity() instanceof Mob mob)
 		{
-			mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+			// update befriendable mob timers
+			if (!(mob instanceof IBefriendedMob))
 			{
-				l.updateTimers();
-				BefriendingTypeRegistry.getHandler((EntityType<Mob>) (mob.getType())).serverTick(mob);
+				mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+				{
+					l.updateTimers();
+					BefriendingTypeRegistry.getHandler((EntityType<Mob>) (mob.getType())).serverTick(mob);
+				});
+			}
+			// update healing handler cooldown
+			mob.getCapability(BefMobCapabilities.CAP_HEALING_HANDLER).ifPresent((l) ->
+			{
+				l.updateCooldown();
 			});
-		}
-		// update healing handler cooldown
-		mob.getCapability(BefMobCapabilities.CAP_HEALING_HANDLER).ifPresent((l) ->
-		{
-			l.updateCooldown();
-		});
-		// IBaubleHolder tick
-		if (mob instanceof IBaubleHolder holder)
-		{
-			holder.updateBaubleEffects();
+			// IBaubleHolder tick
+			if (mob instanceof IBaubleHolder holder)
+			{
+				holder.updateBaubleEffects();
+			}
 		}
 	}
 	
@@ -361,4 +389,14 @@ public class EntityEvents
 		}
 	}
 	
+	@SubscribeEvent
+	public static void onItemExpire(ItemExpireEvent event)
+	{
+		event.getEntityItem().getItem().getCapability(BefMobCapabilities.CAP_MOB_RESPAWNER).ifPresent((c) -> {
+			if (c.isNoExpire())
+			{
+				event.setCanceled(true);
+			}
+		});
+	}
 }

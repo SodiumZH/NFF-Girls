@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 public class ReflectHelper
 {
-	public Object forceGet(Object obj, Class<?> objClass, String fieldName)
+	public static Object forceGet(Object obj, Class<?> objClass, String fieldName)
 	{
 		Object result = null;
 		try
@@ -21,7 +21,7 @@ public class ReflectHelper
 		return result;
 	}
 	
-	public void forceSet(Object obj, Class<?> objClass, String fieldName, Object value)
+	public static void forceSet(Object obj, Class<?> objClass, String fieldName, Object value)
 	{
 		try
 		{

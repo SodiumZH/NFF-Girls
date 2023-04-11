@@ -221,6 +221,27 @@ public interface IBefriendedMob extends ContainerListener  {
 		return InteractionResult.PASS;
 	}
 	
+	/* Respawn */
+	public default boolean shouldDropRespawner()
+	{
+		return true;
+	}
+	
+	public default boolean isRespawnerInvulnerable()
+	{
+		return true;
+	}
+	
+	public default boolean shouldRespawnerRecoverOnDropInVoid()
+	{
+		return true;
+	}
+	
+	public default boolean respawnerNoExpire()
+	{
+		return true;
+	}
+	
 	/* Misc */
 	
 	public default void updateAttributes() {};

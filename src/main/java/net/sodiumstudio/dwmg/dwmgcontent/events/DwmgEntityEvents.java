@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.events.BefriendedDeathEvent;
-import net.sodiumstudio.dwmg.befriendmobs.events.ServerMobTickEvent;
+import net.sodiumstudio.dwmg.befriendmobs.events.ServerEntityTickEvent;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
@@ -188,17 +188,19 @@ public class DwmgEntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void onServerMobTick(ServerMobTickEvent.PostWorldTick event)
+	public static void onServerEntityTick(ServerEntityTickEvent.PostWorldTick event)
 	{
-		Mob mob = event.getMob();
-		if (mob instanceof IBaubleHolder holder)
+		if (event.getEntity() instanceof Mob mob)
 		{
-			holder.updateBaubleEffects();
+			if (mob instanceof IBaubleHolder holder)
+			{
+				holder.updateBaubleEffects();
+			}
+			mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) -> 
+			{
+				((CUndeadMobImpl)l).updateForgivingTimers();
+			});
 		}
-		mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) -> 
-		{
-			((CUndeadMobImpl)l).updateForgivingTimers();
-		});
 	}
 	
 }

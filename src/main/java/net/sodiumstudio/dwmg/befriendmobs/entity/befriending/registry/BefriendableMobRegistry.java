@@ -67,11 +67,13 @@ public class BefriendableMobRegistry
 	
 	public static Set<UUID> allUUIDs()
 	{
+		clean();
 		return REGISTRY.mobMap.keySet();
 	}
 	
 	public static Collection<Mob> allMobs()
 	{
+		clean();
 		return REGISTRY.mobMap.values();
 	}
 	

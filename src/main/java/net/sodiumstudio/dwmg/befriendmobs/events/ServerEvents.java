@@ -40,16 +40,14 @@ public class ServerEvents
 			{
 				for (Entity entity: serverlevel.getAllEntities())
 				{
-					if (entity instanceof Mob mob)
-						MinecraftForge.EVENT_BUS.post(new ServerMobTickEvent.PreWorldTick(mob));		
+					MinecraftForge.EVENT_BUS.post(new ServerEntityTickEvent.PreWorldTick(entity));		
 				}
 			}
 			else if (event.phase.equals(TickEvent.Phase.END))
 			{
 				for (Entity entity: serverlevel.getAllEntities())
 				{
-					if (entity instanceof Mob mob)
-						MinecraftForge.EVENT_BUS.post(new ServerMobTickEvent.PostWorldTick(mob));		
+					MinecraftForge.EVENT_BUS.post(new ServerEntityTickEvent.PostWorldTick(entity));		
 				}
 			}
 		}

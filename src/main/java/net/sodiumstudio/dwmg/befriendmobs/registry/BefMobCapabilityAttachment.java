@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -16,6 +17,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.Befriendab
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CBefriendableMobProvider;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CHealingHandlerProvider;
+import net.sodiumstudio.dwmg.befriendmobs.item.ItemMobRespawner;
+import net.sodiumstudio.dwmg.befriendmobs.item.capability.CMobRespawnerProvider;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BefMobCapabilityAttachment {
@@ -61,6 +64,18 @@ public class BefMobCapabilityAttachment {
 					e.printStackTrace();
 				}
 			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@SubscribeEvent
+	public static void attachItemStackCapabilities(AttachCapabilitiesEvent<ItemStack> event)
+	{
+		ItemStack stack = event.getObject();
+		if (stack.getItem() != null && stack.getItem() instanceof ItemMobRespawner)
+		{
+			event.addCapability(new ResourceLocation(BefriendMobs.MOD_ID, "cap_befriended_respwner"),
+					new CMobRespawnerProvider(stack));
 		}
 	}
 }
