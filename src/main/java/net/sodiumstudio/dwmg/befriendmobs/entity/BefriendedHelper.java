@@ -17,6 +17,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.network.ClientboundBefriendedGuiOpenPacket;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 
 /**
  * A function library for befriended mobs
@@ -52,17 +53,37 @@ public class BefriendedHelper
 	/* Save & Load */
 
 	// This will read owner, AI state and additional inventory
-	public static void addBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt) {
-			if (mob.getOwnerUUID() != null)
-				nbt.putUUID("owner", mob.getOwnerUUID());
-			else
-				nbt.putUUID("owner", new UUID(0, 0));
-		nbt.putByte("ai_state", mob.getAIState().id());
-		mob.getAdditionalInventory().saveToTag(nbt, "inventory_tag");
+	// TEMPORARY: FIX NBT FOR KEY CHANGES
+	// "owner -> "$modid:befriended_owner"
+	// "ai_state" -> "$modid:befriended_ai_state"
+	// "inventory_tag" -> "$modid:befriended_additional_inventory"
+	public static void addBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt, String modId) {		
+		String ownerKey = modId + ":befriended_owner";
+		String aiStateKey = modId + ":befriended_ai_state";
+		String inventoryKey = modId + "befriended_additional_inventory";
+		// TEMP FIX
+		NbtHelper.shiftNbtTag(nbt, "owner", ownerKey);
+		NbtHelper.shiftNbtTag(nbt, "ai_state", aiStateKey);
+		NbtHelper.shiftNbtTag(nbt, "inventory_tag", inventoryKey);
+		// FIX END
+		if (mob.getOwnerUUID() != null)
+			nbt.putUUID(ownerKey, mob.getOwnerUUID());
+		else
+			nbt.putUUID(ownerKey, new UUID(0, 0));
+		nbt.putByte(aiStateKey, mob.getAIState().id());
+		mob.getAdditionalInventory().saveToTag(nbt, inventoryKey);
 	}
 
-	public static void readBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt) {
-		UUID uuid = nbt.contains("owner") ? nbt.getUUID("owner") : null;
+	public static void readBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt, String modId) {
+		String ownerKey = modId + ":befriended_owner";
+		String aiStateKey = modId + ":befriended_ai_state";
+		String inventoryKey = modId + "befriended_additional_inventory";
+		// TEMP FIX
+		NbtHelper.shiftNbtTag(nbt, "owner", ownerKey);
+		NbtHelper.shiftNbtTag(nbt, "ai_state", aiStateKey);
+		NbtHelper.shiftNbtTag(nbt, "inventory_tag", inventoryKey);
+		// FIX END
+		UUID uuid = nbt.contains(ownerKey) ? nbt.getUUID(ownerKey) : null;	
 		try {
 		if (uuid == null)
 			throw new IllegalStateException(
@@ -75,8 +96,8 @@ public class BefriendedHelper
 		}
 		mob.setOwnerUUID(uuid);
 		mob.init(mob.getOwnerUUID(), null);
-		mob.setAIState(BefriendedAIState.fromID(nbt.getByte("ai_state")));
-		mob.getAdditionalInventory().readFromTag(nbt.getCompound("inventory_tag"));
+		mob.setAIState(BefriendedAIState.fromID(nbt.getByte(aiStateKey)));
+		mob.getAdditionalInventory().readFromTag(nbt.getCompound(inventoryKey));
 	}
 
 	public static IBefriendedMob convertToOtherBefriendedType(IBefriendedMob target, EntityType<? extends Mob> newType)

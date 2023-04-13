@@ -22,8 +22,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -54,12 +54,10 @@ import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquip
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
-import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
-import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
+import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuSkeleton;
 
@@ -276,13 +274,13 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
+		BefriendedHelper.addBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
-		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
+		BefriendedHelper.readBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
 		setInit();
 	}
 		

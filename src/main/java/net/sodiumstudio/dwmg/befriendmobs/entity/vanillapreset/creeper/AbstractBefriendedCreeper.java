@@ -64,6 +64,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.INT);
 	protected static final EntityDataAccessor<Integer> DATA_SWELL_LAST_TICK= SynchedEntityData
 			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.INT);
+	protected String modId;
 
 	public int maxSwell = 30;
 
@@ -121,10 +122,12 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.25D);
 	}
 
+	@Override
 	public int getMaxFallDistance() {
 		return this.getTarget() == null ? 3 : 3 + (int) (this.getHealth() - 1.0F);
 	}
 
+	@Override
 	public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
 		boolean flag = super.causeFallDamage(pFallDistance, pMultiplier, pSource);
 		this.setSwell(getSwell() + (int) (pFallDistance * 1.5F));
@@ -136,6 +139,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		return flag;
 	}
 
+	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(DATA_SWELL_DIR, -1);
@@ -148,6 +152,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		//this.entityData.define();
 	}
 
+	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		if (this.entityData.get(DATA_IS_POWERED))
@@ -161,12 +166,13 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		tag.putInt("current_ignition_cooldown", currentIgnitionCooldown);
 		tag.putInt("ignition_cooldown", ignitionCooldownTicks);
 		
-		BefriendedHelper.addBefriendedCommonSaveData(this, tag);
+		BefriendedHelper.addBefriendedCommonSaveData(this, tag, this.modId);
 	}
 
 	/**
 	 * (abstract) Protected helper method to read subclass mob data from NBT.
 	 */
+	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		this.entityData.set(DATA_IS_POWERED, tag.getBoolean("powered"));
@@ -189,7 +195,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		if (tag.contains("current_ignition_cooldown"))
 			this.currentIgnitionCooldown = tag.getInt("current_ignition_cooldown");
 		
-		BefriendedHelper.readBefriendedCommonSaveData(this, tag);
+		BefriendedHelper.readBefriendedCommonSaveData(this, tag, this.modId);
 		/* Add more save data... */
 		this.setInit();
 	}
@@ -197,6 +203,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	/**
 	 * Called to update the mob's position/logic.
 	 */
+	@Override
 	public void tick() {
 		if (this.isAlive())
 		{
@@ -231,6 +238,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	/**
 	 * Sets the active target the Goal system uses for tracking
 	 */
+	@Override
 	public void setTarget(@Nullable LivingEntity pTarget) {
 		if (!(pTarget instanceof Goat))
 		{
@@ -238,10 +246,12 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		}
 	}
 
+	@Override
 	protected SoundEvent getHurtSound(DamageSource pDamageSource) {
 		return SoundEvents.CREEPER_HURT;
 	}
 
+	@Override
 	protected SoundEvent getDeathSound() {
 		return SoundEvents.CREEPER_DEATH;
 	}
@@ -251,6 +261,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		return super.doHurtTarget(target);
 	}
 
+	@Override
 	public boolean isPowered() {
 		return this.entityData.get(DATA_IS_POWERED);
 	}
@@ -293,11 +304,13 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		this.entityData.set(DATA_SWELL_DIR, swelling ? 1 : -1);
 	}
 
+	@Override
 	public void thunderHit(ServerLevel level, LightningBolt lightning) {
 		super.thunderHit(level, lightning);
 		this.entityData.set(DATA_IS_POWERED, true);
 	}
 
+	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 		return super.mobInteract(player, hand);
 	}
@@ -592,6 +605,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 
 	/* add @Override annotation if inheriting Monster class */
 	/* @Override */
+	@Override
 	public boolean isPreventingPlayerRest(Player pPlayer) {
 		return false;
 	}

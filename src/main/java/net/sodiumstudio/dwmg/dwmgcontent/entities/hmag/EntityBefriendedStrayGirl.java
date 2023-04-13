@@ -57,6 +57,7 @@ import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
+import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
@@ -308,14 +309,14 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IBefri
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
+		BefriendedHelper.addBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
 		nbt.put("is_from_skeleton", ByteTag.valueOf(isFromSkeleton));
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
-		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
+		BefriendedHelper.readBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
 		isFromSkeleton = nbt.getBoolean("is_from_skeleton");
 		setInit();
 	}

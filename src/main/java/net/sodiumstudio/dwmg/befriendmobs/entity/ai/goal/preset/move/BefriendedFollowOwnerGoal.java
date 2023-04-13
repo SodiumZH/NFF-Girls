@@ -98,10 +98,9 @@ public class BefriendedFollowOwnerGoal extends BefriendedMoveGoal {
 				} 
 				else 
 				{
-					if (!LevelHelper.isEntityUnderSun(mob.getOwner()) || LevelHelper.isEntityAboveWater(mob.getOwner()))
+					if (!shouldAvoidSun || !LevelHelper.isEntityUnderSun(mob.getOwner()))
 						this.getPathfinder().getNavigation().moveTo(mob.getOwner(), this.speedModifier);
 				}
-
 			}
 		}
 	}

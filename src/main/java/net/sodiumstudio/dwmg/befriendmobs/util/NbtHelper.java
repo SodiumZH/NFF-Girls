@@ -44,7 +44,7 @@ public class NbtHelper {
 		return list;
 	}
 	
-	// Deserialize a UUID array into vector from a compound tag with given key.
+	// Deserialize a UUID array into set from a compound tag with given key.
 	// Return a new vector containing the UUIDs.
 	public static HashSet<UUID> deserializeUUIDSet(CompoundTag inTag, String key)
 	{
@@ -195,4 +195,18 @@ public class NbtHelper {
 		ListTag listtag = fromTag.getList(key, 6);
 		return new Vec3(listtag.getDouble(0), listtag.getDouble(1), listtag.getDouble(2));
 	}
+	
+	// Shift a tag from old key to new key inside a compound tag.
+	// For save data shifting after tag key change.
+	// This is not to be removed, but just add a warning to every position calling this.
+	@Deprecated
+	public static void shiftNbtTag(CompoundTag nbt, String oldKey, String newKey)
+	{
+		if (nbt.contains(oldKey))
+		{
+			nbt.put(newKey, nbt.get(oldKey));
+			nbt.remove(oldKey);
+		}
+	}
+	
 }

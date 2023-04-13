@@ -23,6 +23,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
@@ -167,14 +168,14 @@ public class TemplateBefriendedMobPreset extends Monster implements IBefriendedM
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
+		BefriendedHelper.addBefriendedCommonSaveData(this, nbt, BefriendMobs.MOD_ID);
 		// Add other data to save here
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
-		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
+		BefriendedHelper.readBefriendedCommonSaveData(this, nbt, BefriendMobs.MOD_ID);
 		// Add other data reading here
 		setInit();
 	}

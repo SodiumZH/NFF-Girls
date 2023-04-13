@@ -12,6 +12,7 @@ import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
@@ -111,7 +112,9 @@ public class EntityEvents
 					// Debug.printToScreen("Befriended mob initialized", player, living);
 					result.set(InteractionResult.sidedSuccess(isClientSide));
 				}
-				else 
+				
+				// Pass if holding a valid name tag
+				else if (!player.getMainHandItem().is(Items.NAME_TAG) || !player.getMainHandItem().hasCustomHoverName())
 				{
 					result.set((player.isShiftKeyDown() ? bef.onInteractionShift(player, event.getHand())
 							: bef.onInteraction(player, event.getHand())) ? InteractionResult.sidedSuccess(isClientSide)

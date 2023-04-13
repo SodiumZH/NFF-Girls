@@ -10,7 +10,7 @@ public class LevelHelper
 	
 	public static boolean isUnderSun(BlockPos pos, Entity levelContext)
 	{
-		return levelContext.level.canSeeSky(pos) && levelContext.level.isDay();
+		return levelContext.level.canSeeSky(pos) && levelContext.level.isDay() && !levelContext.level.isRaining();
 	}
 	
 	public static boolean isEntityUnderSun(Entity test)

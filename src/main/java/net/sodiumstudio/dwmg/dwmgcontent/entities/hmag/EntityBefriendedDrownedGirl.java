@@ -60,6 +60,7 @@ import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
+import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedAmphibious;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedDrownedTridentAttackGoal;
@@ -218,7 +219,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
+		BefriendedHelper.addBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
 		nbt.put("is_from_husk", ByteTag.valueOf(isFromHusk));
 		nbt.put("is_from_zombie", ByteTag.valueOf(isFromZombie));
 	}
@@ -226,7 +227,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
-		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
+		BefriendedHelper.readBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
 		isFromHusk = nbt.getBoolean("is_from_husk");
 		isFromZombie = nbt.getBoolean("is_from_zombie");
 		setInit();

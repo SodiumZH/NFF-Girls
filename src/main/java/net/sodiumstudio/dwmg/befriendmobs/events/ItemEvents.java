@@ -64,11 +64,11 @@ public class ItemEvents
 	@SubscribeEvent
 	public static void onItemEntityPickUp(EntityItemPickupEvent event)
 	{
-		/**  There was an unknown bug that player will still pick up item even if the inventory
-		 *   is full, causing item permanent loss
-		 **/
 		if (event.getItem().getItem().getItem() instanceof ItemMobRespawner)
 		{
+			/**  There was an unknown bug that player will still pick up item even if the inventory
+			 *   is full, causing item permanent loss
+			 **/
 			if (event.getPlayer().getInventory().getFreeSlot() == -1)
 			{
 				event.setCanceled(true);

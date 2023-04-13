@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.registry;
+ package net.sodiumstudio.dwmg.befriendmobs.registry;
 
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;

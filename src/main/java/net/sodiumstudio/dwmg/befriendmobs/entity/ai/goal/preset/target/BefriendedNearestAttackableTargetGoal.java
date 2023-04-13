@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal;
+package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;
@@ -11,6 +11,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.AbstractBefriendedEnderMan;
 
 public class BefriendedNearestAttackableTargetGoal<T extends LivingEntity> extends BefriendedTargetGoal {

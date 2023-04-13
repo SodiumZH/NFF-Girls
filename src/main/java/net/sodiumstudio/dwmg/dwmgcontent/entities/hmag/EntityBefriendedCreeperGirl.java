@@ -37,6 +37,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedBlockActionGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
@@ -46,6 +47,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.creeper.Befriende
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
+import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedCreeperFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedCreeperGirlExplosionAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedCreeperGirlMeleeAttackGoal;
@@ -76,12 +78,18 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	public EntityBefriendedCreeperGirl(EntityType<? extends EntityBefriendedCreeperGirl> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);	
 		additionalInventory = new AdditionalInventoryWithEquipment(7);
+		this.modId = Dwmg.MOD_ID;
 	}
 
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
-		this.goalSelector.addGoal(2, new BefriendedCreeperSwellGoal(this));
+		this.goalSelector.addGoal(2, new BefriendedBlockActionGoal(this)
+				{
+					@Override
+					public boolean blockCondition()
+					{return ((EntityBefriendedCreeperGirl)mob).getSwell() > 0;}
+				});
 		this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Ocelot.class, 6.0F, 1.0D, 1.2D));
 		this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Cat.class, 6.0F, 1.0D, 1.2D));
 		this.goalSelector.addGoal(3, new BefriendedCreeperGirlExplosionAttackGoal(this, 1.0D, false));
@@ -145,6 +153,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	{
 		if (!level.isClientSide)
 		{
+			// Update explosion radius by ammo type
 			if (additionalInventory.getItem(6).is(Items.GUNPOWDER))
 			{
 				this.explosionRadius = 3;
@@ -156,9 +165,9 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 				this.shouldDestroyBlocks = true;
 			}
 			else if (!additionalInventory.getItem(6).isEmpty())
-				throw new IllegalStateException("Befriended Creeper Girl explosive type error");
-			
+				throw new IllegalStateException("Befriended Creeper Girl explosive type error");		
 			this.canExplode = !this.getAdditionalInventory().getItem(6).isEmpty();
+			
 			// Powered explosion requires 2 explosive items
 			if (this.getAdditionalInventory().getItem(6).getCount() == 1 && this.isPowered())
 				this.canExplode = false;
@@ -207,7 +216,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 					ItemHelper.consumeOne(player.getItemInHand(hand));
 					return true;
 				}
-				// Unpower with empty hand and get a lightning particle
+				// Unpower with empty hand )and get a lightning particle
 				else if (player.getItemInHand(hand).isEmpty() && this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
 				{
 					this.setPowered(false);
@@ -256,7 +265,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
-			((AdditionalInventoryWithEquipment)additionalInventory).setMobEquipment(this);
+			((AdditionalInventoryWithEquipment)getAdditionalInventory()).setMobEquipment(this);
 		}
 	}
 
@@ -264,7 +273,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	public void setInventoryFromMob()
 	{
 		if (!this.level.isClientSide) {
-			((AdditionalInventoryWithEquipment)additionalInventory).getFromMob(this);
+			((AdditionalInventoryWithEquipment)getAdditionalInventory()).getFromMob(this);
 		}
 		return;
 	}
@@ -294,8 +303,17 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 				this.setPowered(false);
 			}
 			super.explodeCreeper();
+			if (isPlayerIgnited)
+			{
+				blowEnemyCooldown = 100;
+			}
+			else
+			{
+				blowEnemyCooldown = 300;
+			}
 			resetExplosionProcess();
 			isPlayerIgnited = false;
+			
 		}
 	}
 	
@@ -309,6 +327,9 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	{
 		return !(this.getAdditionalInventory().getItem(6).isEmpty() || this.getAdditionalInventory().getItem(6).getCount() == 1 && this.isPowered());
 	}
+	
+
+	
 	
 	// Misc
 	

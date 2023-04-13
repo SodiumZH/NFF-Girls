@@ -22,6 +22,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.item.ItemMobRespawner;
+import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.ReflectHelper;
 
@@ -100,6 +101,13 @@ public class CMobRespawnerImpl implements CMobRespawner
 	}
 	
 	@Override
+	public CompoundTag getMobNbt()
+	{
+		return tag.getCompound("mob_nbt");
+	}
+	
+	
+	@Override
 	public CompoundTag serializeNBT() {
 		return tag.copy();
 	}
@@ -133,6 +141,7 @@ public class CMobRespawnerImpl implements CMobRespawner
 		MinecraftForge.EVENT_BUS.post(new RespawnerAddedEvent(mob, this, stack));
 	}
 
+	
 	@Override
 	public Mob respawn(Player player, BlockPos pos, Direction direction) {
 		if (player.level.isClientSide)
@@ -148,18 +157,18 @@ public class CMobRespawnerImpl implements CMobRespawner
         {
            pos1 = pos.relative(direction);
         }
-		Mob mob = getType().spawn(
+		Mob mob = EntityHelper.spawnDefaultMob(
+				getType(),
 				(ServerLevel)(player.level),
 				null,
 				tag.contains("mob_custom_name", NbtHelper.TagType.TAG_STRING.getID()) ? new TextComponent(tag.getString("mob_custom_name")) : null,
 				player,
-				pos,
-				MobSpawnType.SPAWN_EGG,
+				pos1,
 				true,
 				!Objects.equals(pos, pos1) && direction == Direction.UP);
 		if (mob != null)
 		{
-			CompoundTag nbt = makeMobData(player, pos, direction);
+			CompoundTag nbt = makeMobData(player, pos1, direction);
 			mob.setYRot(direction.toYRot());
 			mob.load(nbt);
 			mob.setHealth(mob.getMaxHealth());

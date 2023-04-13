@@ -2,9 +2,13 @@ package net.sodiumstudio.dwmg.befriendmobs.util;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -28,10 +32,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
-import net.sodiumstudio.dwmg.dwmgcontent.effects.EnderProtectionTeleportEvent;
+import net.minecraft.network.chat.Component;
+//import net.sodiumstudio.dwmg.dwmgcontent.effects.EnderProtectionTeleportEvent;
 
 // Static function library for befriending-related actions.
 public class EntityHelper
@@ -407,4 +415,54 @@ public class EntityHelper
 		target.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
 		target.setItemSlot(EquipmentSlot.FEET, ItemStack.EMPTY);
 	}
+	
+	// Spawn mob at a given position without any post-natural-spawn initialization, finalizeSpawn() or sth else
+	public static Mob spawnDefaultMob(EntityType<? extends Mob> type, ServerLevel level, @Nullable CompoundTag compound,
+			@Nullable Component customName, @Nullable Player player, BlockPos pos, 
+			boolean shouldOffsetY, boolean shouldOffsetYMore) 
+	{
+		Mob mob = type.create(level);
+		if (mob == null)
+		{
+			return null;
+		} 
+		else
+		{
+			double d0;
+			if (shouldOffsetY)
+			{
+				mob.setPos((double) pos.getX() + 0.5D, (double) (pos.getY() + 1), (double) pos.getZ() + 0.5D);
+				/* EntityType.getYOffset */
+				AABB aabb = new AABB(pos);
+				if (shouldOffsetYMore)
+				{
+					aabb = aabb.expandTowards(0.0D, -1.0D, 0.0D);
+				}
+
+				Iterable<VoxelShape> iterable = level.getCollisions((Entity) null, aabb);
+				d0 = 1.0D + Shapes.collide(Direction.Axis.Y, mob.getBoundingBox(), iterable,
+						shouldOffsetYMore ? -2.0D : -1.0D);
+			} else
+			{
+				d0 = 0.0D;
+			}
+
+			mob.moveTo((double) pos.getX() + 0.5D, (double) pos.getY() + d0, (double) pos.getZ() + 0.5D,
+					Mth.wrapDegrees(level.random.nextFloat() * 360.0F), 0.0F);
+
+			mob.yHeadRot = mob.getYRot();
+			mob.yBodyRot = mob.getYRot();
+			/* No further initialization */
+
+			if (customName != null)
+			{
+				mob.setCustomName(customName);
+			}
+
+			EntityType.updateCustomEntityTag(level, player, mob, compound);
+			level.addFreshEntityWithPassengers(mob);
+			return mob;
+		}
+	}
+
 }
