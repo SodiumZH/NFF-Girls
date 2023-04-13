@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
 
+// Handle swell start/stop when the creeper is swelling
 public class BefriendedCreeperSwellGoal extends BefriendedGoal
 {
 	// Merged from vanilla creeper swell goal
@@ -21,6 +22,7 @@ public class BefriendedCreeperSwellGoal extends BefriendedGoal
 
 	public BefriendedCreeperSwellGoal(AbstractBefriendedCreeper creeper)
 	{
+		super(creeper);
 		this.creeper = creeper;
 		this.mob = (IBefriendedMob) creeper;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE));
@@ -49,9 +51,13 @@ public class BefriendedCreeperSwellGoal extends BefriendedGoal
 	 * Returns whether execution should begin. You can also read and cache any state
 	 * necessary for execution in this method as well.
 	 */
+	@Override
 	public boolean canUse() {
 		if (isDisabled())
 			return false;
+		else if (this.creeper.getSwell() == 0)
+			return false;
+		//else if ()
 		return this.creeper.getSwellDir() > 0
 				|| this.targetedSwelling && this.creeper.getTarget() != null && this.creeper.distanceToSqr(this.creeper.getTarget()) < startDistance * startDistance;
 	}
@@ -59,19 +65,26 @@ public class BefriendedCreeperSwellGoal extends BefriendedGoal
 	/**
 	 * Execute a one shot task or start executing a continuous task
 	 */
+	@Override
 	public void start() {
 		//this.creeper.getNavigation().stop();
 		this.target = this.creeper.getTarget();
+		if (this.creeper.getSwell() == 0)
+		{
+			this.creeper.setSwellDir(1);			
+		}
 	}
 
 	/**
 	 * Reset the task's internal state. Called when this task is interrupted by
 	 * another one
 	 */
+	@Override
 	public void stop() {
 	//	this.target = null;
 	}
 
+	@Override
 	public boolean requiresUpdateEveryTick() {
 		return true;
 	}
@@ -79,6 +92,7 @@ public class BefriendedCreeperSwellGoal extends BefriendedGoal
 	/**
 	 * Keep ticking a continuous task that has already been started
 	 */
+	@Override
 	public void tick() {
 		if (targetedSwelling)
 		{
@@ -88,6 +102,8 @@ public class BefriendedCreeperSwellGoal extends BefriendedGoal
 				this.creeper.setSwellDir(-1);
 			else if (!this.creeper.getSensing().hasLineOfSight(this.target))
 				this.creeper.setSwellDir(-1);
+			
+			//if (this.creeper.)
 		}
 		else
 			this.creeper.setSwellDir(1);

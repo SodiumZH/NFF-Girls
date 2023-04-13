@@ -23,6 +23,9 @@ public interface CMobRespawner extends INBTSerializable<CompoundTag>
 	// This respawner as item stack
 	public ItemStack getItemStack();
 	
+	// The whole mob nbt
+	public CompoundTag getMobNbt();
+	
 	// Entity type to respawn
 	public EntityType<? extends Mob> getType();
 	

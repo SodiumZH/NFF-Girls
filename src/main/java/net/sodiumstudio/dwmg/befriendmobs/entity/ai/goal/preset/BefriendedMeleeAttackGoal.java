@@ -27,6 +27,7 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 	protected static final long COOLDOWN_BETWEEN_CAN_USE_CHECKS = 20L;
 	protected int failedPathFindingPenalty = 0;
 	protected boolean canPenalize = false;
+	protected boolean noResetTargetOnInterrupted = false;
 
 	public BefriendedMeleeAttackGoal(IBefriendedMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen)
 	{
@@ -46,12 +47,14 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 		if (isDisabled())
 			return false;
 		long i = getPathfinder().level.getGameTime();
+		// Check canUse each 20s
 		if (i - this.lastCanUseCheck < 20L)
 		{
 			return false;
 		} else
 		{
 			this.lastCanUseCheck = i;
+			// Check target valid
 			LivingEntity livingentity = getPathfinder().getTarget();
 			if (livingentity == null)
 			{
@@ -61,6 +64,7 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 				return false;
 			} else
 			{
+				// WHAT'S THIS?
 				if (canPenalize)
 				{
 					if (--this.ticksUntilNextPathRecalculation <= 0)
@@ -74,11 +78,14 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 					} else
 						return true;
 				}
+				// Try create path
 				this.path = getPathfinder().getNavigation().createPath(livingentity, 0);
 				if (this.path != null)
+					// If create path succeeded, pass
 					return true;
 				else
 				{
+					// If the attack can reach now, pass
 					if (this.getAttackReachSqr(livingentity) >= getPathfinder().distanceToSqr(livingentity.getX(),
 							livingentity.getY(), livingentity.getZ()))
 						return true;
@@ -95,6 +102,7 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 	@Override
 	public boolean canContinueToUse() {
 		LivingEntity livingentity = getPathfinder().getTarget();
+		// Check target is valid
 		if (livingentity == null)
 		{
 			return false;
@@ -103,12 +111,15 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 			return false;
 		} else if (!this.followingTargetEvenIfNotSeen)
 		{
+			// Force follow target, end only when nav ends
 			return !getPathfinder().getNavigation().isDone();
 		} else if (!getPathfinder().isWithinRestriction(livingentity.blockPosition()))
 		{
+			// Otherwise if cannot see, stop
 			return false;
 		} else
 		{
+			// don't attack creative/spectator player
 			return !(livingentity instanceof Player)
 					|| !livingentity.isSpectator() && !((Player) livingentity).isCreative();
 		}
@@ -119,6 +130,7 @@ public class BefriendedMeleeAttackGoal extends BefriendedGoal
 	 */
 	@Override
 	public void start() {
+		// Try nav
 		getPathfinder().getNavigation().moveTo(this.path, this.speedModifier);
 		getPathfinder().setAggressive(true);
 		this.ticksUntilNextPathRecalculation = 0;

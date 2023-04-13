@@ -62,14 +62,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedNearestAttackableTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedNearestAttackableTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
@@ -95,6 +96,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	public boolean teleportOnHurtByWater = true;
 	public boolean teleportNotOnHurtByWater = false;
 	public boolean teleportToAvoidProjectile = true;
+	protected String modId;
 	
 	protected static final EntityDataAccessor<Optional<BlockState>> DATA_CARRY_STATE = SynchedEntityData
 			.defineId(AbstractBefriendedEnderMan.class, EntityDataSerializers.BLOCK_STATE);
@@ -230,7 +232,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		}
 
 		this.addPersistentAngerSaveData(tag);
-		BefriendedHelper.addBefriendedCommonSaveData(this, tag);
+		BefriendedHelper.addBefriendedCommonSaveData(this, tag, BefriendMobs.MOD_ID);
 	}
 
 	/**
@@ -251,7 +253,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 
 		this.setCarriedBlock(blockstate);
 		this.readPersistentAngerSaveData(this.level, tag);
-		BefriendedHelper.readBefriendedCommonSaveData(this, tag);
+		BefriendedHelper.readBefriendedCommonSaveData(this, tag, BefriendMobs.MOD_ID);
 		/* Add more save data... */
 		this.setInit();
 	}

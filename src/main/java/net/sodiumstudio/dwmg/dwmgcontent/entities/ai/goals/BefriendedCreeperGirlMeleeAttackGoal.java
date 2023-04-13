@@ -1,18 +1,10 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals;
 
-import java.util.EnumSet;
-
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.level.pathfinder.Path;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.creeper.AbstractBefriendedCreeper;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
 
 public class BefriendedCreeperGirlMeleeAttackGoal extends BefriendedMeleeAttackGoal
@@ -26,13 +18,39 @@ public class BefriendedCreeperGirlMeleeAttackGoal extends BefriendedMeleeAttackG
 		creeper = (EntityBefriendedCreeperGirl)pMob;
 	}
 
+	@Override
 	public boolean canUse()
 	{
 		if (creeper.hasEnoughAmmoToExplode() && creeper.blowEnemyCooldown == 0)
 			return false;
 		if (creeper.getSwellDir() > 0)
 			return false;
+		// Creeper girls perform melee attack only when having a weapon on the main hand
+		if (creeper.getAdditionalInventory().getItem(4).isEmpty() 
+				|| !(creeper.getAdditionalInventory().getItem(4).getItem() instanceof TieredItem))
+			return false;
 		return super.canUse();
+	}
+
+	@Override
+	public boolean canContinueToUse()
+	{
+		if (creeper.getAdditionalInventory().getItem(4).isEmpty() 
+				|| !(creeper.getAdditionalInventory().getItem(4).getItem() instanceof TieredItem))
+			return false;
+		else return super.canContinueToUse();
+	}
+	
+	@Override
+	public void stop() {
+		LivingEntity livingentity = getPathfinder().getTarget();
+		if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingentity))
+		{
+			getPathfinder().setTarget((LivingEntity) null);
+		}
+
+		getPathfinder().setAggressive(false);
+		getPathfinder().getNavigation().stop();
 	}
 	
 }

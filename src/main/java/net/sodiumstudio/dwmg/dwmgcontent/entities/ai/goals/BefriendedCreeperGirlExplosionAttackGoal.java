@@ -1,17 +1,8 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals;
 
-import java.util.EnumSet;
-
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.pathfinder.Path;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.creeper.AbstractBefriendedCreeper;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
 
 public class BefriendedCreeperGirlExplosionAttackGoal extends BefriendedMeleeAttackGoal
@@ -19,6 +10,7 @@ public class BefriendedCreeperGirlExplosionAttackGoal extends BefriendedMeleeAtt
 
 	EntityBefriendedCreeperGirl creeper;
 
+	@Override
 	public boolean canUse()
 	{
 		if (!creeper.canAutoBlowEnemy)
@@ -29,6 +21,10 @@ public class BefriendedCreeperGirlExplosionAttackGoal extends BefriendedMeleeAtt
 			return false;
 		if (!creeper.hasEnoughAmmoToExplode())
 			return false;
+		if (creeper.getTarget() == null)
+			return false;
+		if (creeper.explodeSafeDistance * creeper.explodeSafeDistance > creeper.getTarget().distanceToSqr(creeper.getOwner()))
+			return false;
 		return super.canUse();
 	}
 	
@@ -38,12 +34,12 @@ public class BefriendedCreeperGirlExplosionAttackGoal extends BefriendedMeleeAtt
 		this.creeper = (EntityBefriendedCreeperGirl)mob;
 	}
 
+	@Override
 	protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
 		if (distToEnemySqr < 9.0d && creeper.blowEnemyCooldown == 0)
 		{
 			this.resetAttackCooldown();
 			creeper.setSwellDir(1);
-			creeper.blowEnemyCooldown = 300;	// 15s cooldown per explosion
 		}
 	}
 	
