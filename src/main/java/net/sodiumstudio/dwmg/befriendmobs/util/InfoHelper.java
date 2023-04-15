@@ -20,5 +20,4 @@ public class InfoHelper
 	{
 		return new TranslatableComponent(key);
 	}
-
 }

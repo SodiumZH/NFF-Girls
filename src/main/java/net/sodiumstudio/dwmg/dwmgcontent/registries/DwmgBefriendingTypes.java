@@ -53,7 +53,10 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.WITHER_SKELETON_GIRL.get(),
 				DwmgEntityTypes.HMAG_WITHER_SKELETON_GIRL.get(),
 				new HandlerWitherSkeletonGirl());
-		
+		BefriendingTypeRegistry.register(
+				ModEntityTypes.HORNET.get(),
+				DwmgEntityTypes.HMAG_HORNET.get(),
+				new HandlerWitherSkeletonGirl());
 	}
 	
 }
