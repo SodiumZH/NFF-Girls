@@ -38,6 +38,4 @@ public class BaubleHandlerVanillaUndead extends BaubleHandler
 			owner.addBaubleModifier(Attributes.ARMOR, 2.0d, Operation.ADDITION);
 		}
 	}
-	
-
 }

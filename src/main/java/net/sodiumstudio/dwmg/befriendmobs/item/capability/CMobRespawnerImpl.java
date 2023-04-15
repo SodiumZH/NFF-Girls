@@ -173,6 +173,7 @@ public class CMobRespawnerImpl implements CMobRespawner
 			if (mob instanceof IBefriendedMob b)
 			{
 				b.getAdditionalInventory().clearContent();
+				b.setInit();
 			}
 			//stack.shrink(1);
 			MinecraftForge.EVENT_BUS.post(new MobRespawnerFinishRespawnEvent(mob, player, this));
