@@ -8,8 +8,6 @@
   "item.dwmg.enderberry": "Enderberry",
   "item.dwmg.ender_fruit_jam": "Ender Fruit Jam",
   "item.dwmg.ender_pie": "Ender Pie",
-  "item.befriendmobs.debug_befriender": "Debug Befriender",
-  "item.befriendmobs.mob_respawner": "Respawner",
   "block.dwmg.soul_cake" : "Soul Cake",
   "block.dwmg.soul_carpet" : "Soul Carpet",
   "effect.dwmg.undead_affinity": "Undead Affinity",
@@ -21,5 +19,6 @@
   "entity.dwmg.hmag_creeper_girl" : "Creeper Girl",
   "entity.dwmg.hmag_ender_executor": "Ender Executor",
   "entity.dwmg.hmag_stray_girl" : "Stray Girl",
-  "entity.dwmg.hmag_wither_skeleton_girl" : "Wither Skeleton Girl"
+  "entity.dwmg.hmag_wither_skeleton_girl" : "Wither Skeleton Girl",
+  "entity.dwmg.hmag_drowned_girl" : "Drowned Girl"
 }

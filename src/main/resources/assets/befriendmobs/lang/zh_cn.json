@@ -1,0 +1,8 @@
+{
+
+  "item.befriendmobs.debug_befriender": "友好化工具(调试用)",
+  "item.befriendmobs.mob_respawner": "重生刷怪蛋",
+  "info.befriendmobs.gui_health": "生命",
+  "info.befriendmobs.gui_atk": "攻击",
+  "info.befriendmobs.gui_armor": "护甲"  
+}

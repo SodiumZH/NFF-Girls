@@ -1,0 +1,7 @@
+{
+  "item.befriendmobs.debug_befriender": "Debug Befriender",
+  "item.befriendmobs.mob_respawner": "Respawner",
+  "info.befriendmobs.gui_health": "HP",
+  "info.befriendmobs.gui_atk": "ATK",
+  "info.befriendmobs.gui_armor": "Armor"  
+}

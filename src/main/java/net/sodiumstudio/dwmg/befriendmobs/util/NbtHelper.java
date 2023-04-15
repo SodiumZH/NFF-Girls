@@ -60,6 +60,8 @@ public class NbtHelper {
 	// Check if a compound tag contains a compound subtag with player's string uuid as key.
 	public static boolean containsPlayer(CompoundTag inTag, Player player)
 	{
+		// Fix unknown crash on player die
+		if (player == null) return false;
 		return inTag.contains(player.getStringUUID()) && (inTag.get(player.getStringUUID()) instanceof CompoundTag);
 	}
 	

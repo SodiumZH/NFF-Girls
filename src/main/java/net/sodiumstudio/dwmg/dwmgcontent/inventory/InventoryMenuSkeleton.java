@@ -184,7 +184,7 @@ public class InventoryMenuSkeleton extends AbstractInventoryMenuBefriended
 
 	@Override
 	protected IntVec2 getPlayerInventoryPosition() {
-		return IntVec2.of(20, 101);
+		return IntVec2.valueOf(20, 101);
 	}
 
 	@Override

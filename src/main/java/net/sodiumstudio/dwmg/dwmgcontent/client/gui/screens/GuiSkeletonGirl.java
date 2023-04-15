@@ -21,14 +21,14 @@ public class GuiSkeletonGirl extends GuiPreset_0 {
 		super.renderBg(pPoseStack, pPartialTick, pMouseX, pMouseY);
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
-		IntVec2 v = IntVec2.of(i, j);
+		IntVec2 v = IntVec2.valueOf(i, j);
 		// Main window
 		
 		this.blit(pPoseStack, v.x, v.y, 0, 0, imageWidth, imageHeight);	
 		// Armor slots
 		v.add(7, 17);
-		IntVec2 ab = IntVec2.of(imageWidth, 0);	// asset array base
-		IntVec2 vf = IntVec2.of(imageWidth, 0).coord(2, 2);	//for filled
+		IntVec2 ab = IntVec2.valueOf(imageWidth, 0);	// asset array base
+		IntVec2 vf = IntVec2.valueOf(imageWidth, 0).coord(2, 2);	//for filled
 		for (int k = 0; k < 4; ++k)
 		{
 			this.addSlotBg(pPoseStack, k, v, ab.coord(0, k), vf);
@@ -54,7 +54,7 @@ public class GuiSkeletonGirl extends GuiPreset_0 {
 		v.slotBelow(2).slotRight().addX(2);
 		this.addSlotBg(pPoseStack, 8, v, ab.coord(2, 0), vf);
 
-		addHealthInfo(pPoseStack, IntVec2.of(i + 102, j + 20));
+		addAttributeInfo(pPoseStack, IntVec2.valueOf(i + 102, j + 20));
 		InventoryScreen.renderEntityInInventory(i + 52, j + 80, 25, (float) (i + 52) - this.xMouse,
 				(float) (j + 75 - 50) - this.yMouse, (LivingEntity)mob);		
 

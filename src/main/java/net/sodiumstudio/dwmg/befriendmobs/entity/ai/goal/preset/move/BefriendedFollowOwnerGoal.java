@@ -10,7 +10,9 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -138,21 +140,31 @@ public class BefriendedFollowOwnerGoal extends BefriendedMoveGoal {
 		}
 	}
 
-	protected boolean canTeleportTo(BlockPos pPos) {
+	protected boolean canTeleportTo(BlockPos pos) {
 		if (!allowTeleport())
 			return false;
-		BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, pPos.mutable());
-		if (blockpathtypes != BlockPathTypes.WALKABLE) {
-			return false;
-		} else {
-			BlockState blockstate = this.level.getBlockState(pPos.below());
-			if (!this.canFly && blockstate.getBlock() instanceof LeavesBlock) {
+		BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, pos.mutable());
+
+		// Onto a standable block
+		if (blockpathtypes == BlockPathTypes.WALKABLE)
+		{
+			BlockState blockstate = this.level.getBlockState(pos.below());
+			if (!this.canFly && !this.canStepOntoLeaves && blockstate.getBlock() instanceof LeavesBlock)
+			{
 				return false;
-			} else {
-				BlockPos blockpos = pPos.subtract(getPathfinder().blockPosition());
+			} else
+			{
+				BlockPos blockpos = pos.subtract(getPathfinder().blockPosition());
 				return this.level.noCollision(getPathfinder(), getPathfinder().getBoundingBox().move(blockpos));
 			}
 		}
+		// To a water position
+		else if (isAmphibious && mob.asMob().level.getBlockState(pos).is(Blocks.WATER))
+		{
+			BlockPos blockpos = pos.subtract(getPathfinder().blockPosition());
+			return this.level.noCollision(getPathfinder(), getPathfinder().getBoundingBox().move(blockpos));
+		} 
+		else return false;
 	}
 
 	protected boolean allowTeleport()

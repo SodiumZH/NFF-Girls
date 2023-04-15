@@ -37,7 +37,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedBlockActionGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.BefriendedBlockActionGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
