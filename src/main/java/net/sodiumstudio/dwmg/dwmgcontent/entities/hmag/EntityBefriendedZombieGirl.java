@@ -93,14 +93,6 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	
 	/* Combat */
 	
-	// In Demo-1 only because Drowned is not finished
-	@Override
-	protected boolean convertsInWater()
-	{
-		return false;
-	}
-	
-	
 	@Override
 	public boolean doHurtTarget(Entity target)
 	{
@@ -222,6 +214,14 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	}
 
 	/* Convertions */
+	
+	
+	// In 1.18.2-snapshot-7 & 1.19.2-snapshot-8 DrownedGirl is implemented
+	@Override
+	protected boolean convertsInWater()
+	{
+		return true;
+	}
 	
 	public boolean isFromHusk = false;	
 	

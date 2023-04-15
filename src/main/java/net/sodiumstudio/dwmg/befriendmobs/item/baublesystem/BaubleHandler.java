@@ -3,18 +3,15 @@ package net.sodiumstudio.dwmg.befriendmobs.item.baublesystem;
 import java.util.HashSet;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 
 public abstract class BaubleHandler {
 
+	// NOT IMPLEMENTED
+	//public boolean shouldPopOutIfItemNotAccepted = true;
 	
 	/* Item types */
 	public abstract HashSet<Item> getItemsAccepted();
@@ -43,7 +40,13 @@ public abstract class BaubleHandler {
 			preUpdate(owner);
 			for (ItemStack stack: owner.getBaubleStacks())
 			{
-				applyBaubleEffect(stack, owner);
+				if (isAccepted(stack.getItem()))
+					applyBaubleEffect(stack, owner);
+				/*else if (shouldPopOutIfItemNotAccepted)
+				{
+					owner.getLiving().spawnAtLocation(stack.copy());
+					stack = ItemStack.EMPTY;
+				}*/
 			}
 			postUpdate(owner);
 		}
