@@ -20,13 +20,13 @@ public class IntVec2
 	{
 		this(0, 0);
 	}
-	
-	public static IntVec2 of(int x, int y)
+
+	public static IntVec2 valueOf(int x, int y)
 	{
 		return new IntVec2(x, y);
 	}
 	
-	public static IntVec2 of(int val)
+	public static IntVec2 valueOf(int val)
 	{
 		return new IntVec2(val);
 	}

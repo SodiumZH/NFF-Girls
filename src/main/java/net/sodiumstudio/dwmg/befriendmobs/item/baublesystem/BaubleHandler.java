@@ -32,17 +32,20 @@ public abstract class BaubleHandler {
 	}
 	
 	// Executed every tick
+	// This is automatically ticked in events.EntityEvents and 
+	// do not call it anywhere else unless you know what you're doing.
 	public void updateBaubleEffects(IBaubleHolder owner)
 	{
-		LivingEntity living = owner.getliving();
+		LivingEntity living = owner.getLiving();
 		if (living.level != null && !living.level.isClientSide)
 		{	
 			owner.clearBaubleModifiers();
-			preUpdate();
+			preUpdate(owner);
 			for (ItemStack stack: owner.getBaubleStacks())
 			{
 				applyBaubleEffect(stack, owner);
 			}
+			postUpdate(owner);
 		}
 	}
 	
@@ -50,9 +53,12 @@ public abstract class BaubleHandler {
 	// This will be invoked every tick on each bauble slot
 	public abstract void applyBaubleEffect(ItemStack bauble, IBaubleHolder owner);
 	
-	// Invoked before applying bauble effects to do some additional initialization 
+	// Invoked before applying bauble effects, for some additional initialization 
 	// Tip: before invoking this, the old additional modifiers are already cleared.
-	public void preUpdate() {}
+	public void preUpdate(IBaubleHolder owner) {}
+	
+	// Invoked after applying bauble effects
+	public void postUpdate(IBaubleHolder owner) {}
 
 	/* Util */
 	public static boolean isBaubleFor(ItemStack stack, IBaubleHolder holder)

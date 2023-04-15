@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.befriendmobs.item.baublesystem;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -36,17 +37,28 @@ public interface IBaubleHolder {
 	}
 	
 	/* Dynamic modifier management */
-	
+
 	// The modifier map reference for dynamic modifier management.
-	// Simply create an empty hash map and link to this function
+	// The added trancient attribute modifiers are added into this container
+	// and are cleared every tick
+	// Simply create an empty hash map param to class and link to this function
+	/* COPY THIS:
+	 protected HashMap<AttributeModifier, Attribute> existingBaubleModifiers = new HashMap<AttributeModifier, Attribute>();
+	 @Override
+	 public HashMap<AttributeModifier, Attribute> getExistingBaubleModifiers()
+	 {
+	 	return existingBaubleModifiers;
+	 }
+	 */
 	public HashMap<AttributeModifier, Attribute> getExistingBaubleModifiers();
 	
 	// Remove all modifiers
 	public default void clearBaubleModifiers()
 	{
-		for(AttributeModifier mod: getExistingBaubleModifiers().keySet())
+		Set<AttributeModifier> keys = getExistingBaubleModifiers().keySet();
+		for (AttributeModifier mod: keys)
 		{
-			AttributeInstance ins = getliving().getAttribute(getExistingBaubleModifiers().get(mod));
+			AttributeInstance ins = getLiving().getAttribute(getExistingBaubleModifiers().get(mod));
 			ins.removeModifier(mod);
 		}
 		getExistingBaubleModifiers().clear();
@@ -57,7 +69,7 @@ public interface IBaubleHolder {
 	{
 		AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), UUID.randomUUID().toString(), value, operation);
 		this.getExistingBaubleModifiers().put(modifier, attribute);
-		AttributeInstance ins = getliving().getAttribute(attribute);
+		AttributeInstance ins = getLiving().getAttribute(attribute);
 		ins.addTransientModifier(modifier);
 	}
 	
@@ -67,16 +79,24 @@ public interface IBaubleHolder {
 	{
 		addBaubleModifier(attribute, modifier.getAmount(), modifier.getOperation());
 	}	
-	
-	
-	
-	
+		
 	/* Misc */	
-	public default LivingEntity getliving()
+	public default LivingEntity getLiving()
 	{
 		return (LivingEntity)this;
 	}
 	
+	/* Util */
+	// Whether this BaubleHolder has at least one given item in slots
+	public default boolean hasBaubleItem(Item inItem)
+	{
+		for (ItemStack stack: getBaubleStacks())
+		{
+			if (stack.is(inItem))
+				return true;
+		}
+		return false;
+	}
 	
 	
 	

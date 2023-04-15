@@ -23,7 +23,7 @@ public class BefriendedCreeperGirlExplosionAttackGoal extends BefriendedMeleeAtt
 			return false;
 		if (creeper.getTarget() == null)
 			return false;
-		if (creeper.explodeSafeDistance * creeper.explodeSafeDistance > creeper.getTarget().distanceToSqr(creeper.getOwner()))
+		if (creeper.getOwner() != null && creeper.explodeSafeDistance * creeper.explodeSafeDistance > creeper.getTarget().distanceToSqr(creeper.getOwner()))
 			return false;
 		return super.canUse();
 	}

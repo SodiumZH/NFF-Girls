@@ -115,6 +115,9 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	@Override
 	public void tick()
 	{
+		// This affects Drowned::wantsToSwim(),
+		// if searching-for-land is false and it doesn't have a target
+		// the drowned cannot swim
 		setSearchingForLand(true);
 		super.tick();
 	}
@@ -156,10 +159,11 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 			{
 				// If this zombie is converted from a husk,
 				// it can be converted back by using a sponge to it
-				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromHusk) {
+				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromZombie) {
 					ItemHelper.consumeOne(player.getItemInHand(hand));
 					this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
-					this.convertToZombie();
+					EntityBefriendedZombieGirl z = this.convertToZombie();
+					z.isFromHusk = this.isFromHusk;
 				} 
 				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 				{}
@@ -270,7 +274,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.VANILLA_UNDEAD;
+		return DwmgBaubleHandlers.DROWNED;
 	}	
 	protected HashMap<AttributeModifier, Attribute> baubleModifierMap = new HashMap<AttributeModifier, Attribute>();	
 	@Override

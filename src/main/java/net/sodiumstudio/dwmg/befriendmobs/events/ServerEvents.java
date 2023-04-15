@@ -22,15 +22,8 @@ public class ServerEvents
 {
 
 	@SubscribeEvent
-	public static void onServerStart(ServerStartedEvent event)
-	{
-		@SuppressWarnings("unused")
-		int test = 1;		
-	}
-	
-
-	@SubscribeEvent
 	public static void onWorldTick(TickEvent.LevelTickEvent event) {
+
 		
 		if (event.side == LogicalSide.SERVER)
 		{

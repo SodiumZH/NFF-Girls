@@ -30,13 +30,14 @@ public class ClientboundBefriendedGuiOpenPacket implements Packet<ClientGamePack
 		this.entityId = pBuffer.readInt();
 	}
 
+
+	@Override
 	public void write(FriendlyByteBuf pBuffer) {
 		pBuffer.writeByte(this.containerId);
 		pBuffer.writeVarInt(this.size);
 		pBuffer.writeInt(this.entityId);
 	}
 
-	@SuppressWarnings("resource")
 	@Override
 	public void handle(ClientGamePacketListener handler) {
 		Minecraft mc = Minecraft.getInstance();

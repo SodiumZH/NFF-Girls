@@ -1,5 +1,6 @@
 package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal;
 
+import net.minecraft.world.level.block.Blocks;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedAmphibious;
 
@@ -10,6 +11,7 @@ public abstract class BefriendedMoveGoal extends BefriendedGoal
 	public boolean isAmphibious = false;
 	public double speedModifier = 1.0d;
 	public boolean canFly = false;
+	public boolean canStepOntoLeaves = false;
 	
 	
 	public BefriendedMoveGoal(IBefriendedMob mob) {
@@ -44,13 +46,19 @@ public abstract class BefriendedMoveGoal extends BefriendedGoal
 		return this;
 	}
 	
+	public BefriendedMoveGoal canStepOntoLeaves()
+	{
+		canStepOntoLeaves = true;
+		return this;
+	}
+	
 	@Override
 	public void start()
 	{
 		super.start();
 		if (isAmphibious)
 		{
-			if (mob.asMob().isInWater())
+			if (mob.asMob().isInWater() && mob.asMob().level.getBlockState(mob.asMob().eyeBlockPosition()).is(Blocks.WATER))
 				((IBefriendedAmphibious)mob).switchNav(true);
 			else ((IBefriendedAmphibious)mob).switchNav(false);		
 		}

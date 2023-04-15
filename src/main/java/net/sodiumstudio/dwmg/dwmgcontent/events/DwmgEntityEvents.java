@@ -192,10 +192,10 @@ public class DwmgEntityEvents
 	{
 		if (event.getEntity() instanceof Mob mob)
 		{
-			if (mob instanceof IBaubleHolder holder)
+			/*if (mob instanceof IBaubleHolder holder)
 			{
 				holder.updateBaubleEffects();
-			}
+			}*/
 			mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) -> 
 			{
 				((CUndeadMobImpl)l).updateForgivingTimers();
