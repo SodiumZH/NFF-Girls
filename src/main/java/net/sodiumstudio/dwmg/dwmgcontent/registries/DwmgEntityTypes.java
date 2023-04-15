@@ -14,6 +14,7 @@ import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedDrownedGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedEnderExecutor;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedHornet;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedHuskGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedSkeletonGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedStrayGirl;
@@ -108,6 +109,15 @@ public class DwmgEntityTypes {
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "wither_skeleton_girl").toString()));
 	
+	public static final RegistryObject<EntityType<EntityBefriendedHornet>> HMAG_HORNET = 
+			ENTITY_TYPES.register("hmag_hornet", () -> EntityType.Builder
+			.of(EntityBefriendedHornet::new, MobCategory.CREATURE)
+			.sized(0.6F, 1.7F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_hornet").toString()));
+	
 	@SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
         event.put(DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get(), EntityBefriendedZombieGirl.createAttributes().build());
@@ -118,6 +128,7 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.HMAG_ENDER_EXECUTOR.get(), EntityBefriendedEnderExecutor.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_STRAY_GIRL.get(), EntityBefriendedStrayGirl.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_WITHER_SKELETON_GIRL.get(), EntityBefriendedWitherSkeletonGirl.createAttributes().build());
+        event.put(DwmgEntityTypes.HMAG_HORNET.get(), EntityBefriendedHornet.createAttributes().build());
 	}
 	
 }

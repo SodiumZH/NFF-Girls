@@ -16,5 +16,5 @@ public class InfoHelper
 	public static MutableComponent createTrans(String key)
 	{
 		return MutableComponent.create(new TranslatableContents(key));
-	}	
+	}
 }
