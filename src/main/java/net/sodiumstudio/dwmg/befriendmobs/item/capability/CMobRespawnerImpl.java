@@ -1,5 +1,6 @@
 package net.sodiumstudio.dwmg.befriendmobs.item.capability;
 
+import java.awt.TextComponent;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -7,13 +8,12 @@ import javax.annotation.Nonnull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.LiteralContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,10 +21,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.item.ItemMobRespawner;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
-import net.sodiumstudio.dwmg.befriendmobs.util.ReflectHelper;
 
 public class CMobRespawnerImpl implements CMobRespawner
 {
@@ -120,7 +118,7 @@ public class CMobRespawnerImpl implements CMobRespawner
 	@SuppressWarnings("unchecked")
 	@Override
 	public EntityType<? extends Mob> getType() {
-		return (EntityType<? extends Mob>) ForgeRegistries.ENTITIES.getValue(new ResourceLocation(tag.getString("mob_type")));
+		return (EntityType<? extends Mob>) ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(tag.getString("mob_type")));
 	}
 
 	@Override
@@ -134,7 +132,7 @@ public class CMobRespawnerImpl implements CMobRespawner
 	
 	@Override
 	public void initFromMob(Mob mob) {
-		tag.putString("mob_type", ForgeRegistries.ENTITIES.getKey(mob.getType()).toString());	
+		tag.putString("mob_type", ForgeRegistries.ENTITY_TYPES.getKey(mob.getType()).toString());	
 		CompoundTag nbt = new CompoundTag();
 		mob.save(nbt);
 		tag.put("mob_nbt", nbt);
@@ -161,7 +159,7 @@ public class CMobRespawnerImpl implements CMobRespawner
 				getType(),
 				(ServerLevel)(player.level),
 				null,
-				tag.contains("mob_custom_name", NbtHelper.TagType.TAG_STRING.getID()) ? new TextComponent(tag.getString("mob_custom_name")) : null,
+				tag.contains("mob_custom_name", NbtHelper.TagType.TAG_STRING.getID()) ? MutableComponent.create(new LiteralContents(tag.getString("mob_custom_name"))) : null,
 				player,
 				pos1,
 				true,

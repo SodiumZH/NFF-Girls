@@ -2,7 +2,7 @@ package net.sodiumstudio.dwmg.befriendmobs.events;
 
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,7 +19,7 @@ public class ItemEvents
 {
 	
 	@SubscribeEvent
-	public static void onItemEntityJoinWorld(EntityJoinWorldEvent event)
+	public static void onItemEntityJoinWorld(EntityJoinLevelEvent event)
 	{
 		// Initialize mob respawner invulnerable
 		if (event.getEntity() instanceof ItemEntity ie)
@@ -69,7 +69,7 @@ public class ItemEvents
 			/**  There was an unknown bug that player will still pick up item even if the inventory
 			 *   is full, causing item permanent loss
 			 **/
-			if (event.getPlayer().getInventory().getFreeSlot() == -1)
+			if (event.getEntity().getInventory().getFreeSlot() == -1)
 			{
 				event.setCanceled(true);
 			}

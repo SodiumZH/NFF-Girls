@@ -1,6 +1,5 @@
 package net.sodiumstudio.dwmg.befriendmobs.events;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -14,9 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -41,7 +38,6 @@ import net.sodiumstudio.dwmg.befriendmobs.item.ItemMobRespawner;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
-import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.BMDebugItemHandler;
@@ -395,7 +391,7 @@ public class EntityEvents
 	@SubscribeEvent
 	public static void onItemExpire(ItemExpireEvent event)
 	{
-		event.getEntityItem().getItem().getCapability(BefMobCapabilities.CAP_MOB_RESPAWNER).ifPresent((c) -> {
+		event.getEntity().getItem().getCapability(BefMobCapabilities.CAP_MOB_RESPAWNER).ifPresent((c) -> {
 			if (c.isNoExpire())
 			{
 				event.setCanceled(true);

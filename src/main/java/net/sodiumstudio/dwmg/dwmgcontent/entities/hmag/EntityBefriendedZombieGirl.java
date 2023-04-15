@@ -201,9 +201,6 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		return new InventoryMenuZombie(containerId, playerInventory, container, this);
 	}
 
-	// Fix an unknown bug that mob spawned from 
-	@Override
-	protected void populateDefaultEquipmentSlots(DifficultyInstance pDifficulty) {}
 	/* Save and Load */
 	
 	@Override

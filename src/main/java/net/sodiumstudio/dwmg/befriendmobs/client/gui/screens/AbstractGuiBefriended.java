@@ -2,13 +2,7 @@ package net.sodiumstudio.dwmg.befriendmobs.client.gui.screens;
 
 
 
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
-import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
 import java.text.DecimalFormat;
-
 
 import javax.annotation.Nullable;
 
@@ -20,8 +14,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.LiteralContents;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -109,12 +102,12 @@ public abstract class AbstractGuiBefriended extends AbstractContainerScreen<Abst
 		String maxHp = df.format(mob.asMob().getAttributeValue(Attributes.MAX_HEALTH));
 		String atk = df.format(mob.asMob().getAttributeValue(Attributes.ATTACK_DAMAGE));
 		String def = df.format(mob.asMob().getAttributeValue(Attributes.ARMOR));
-		Component hpcomp = new TranslatableComponent("info.befriendmobs.gui_health")
-				.append(new TextComponent(": " + hp + " / " + maxHp));
-		Component atkcomp = new TranslatableComponent("info.befriendmobs.gui_atk")
-				.append(new TextComponent(": " + atk));
-		Component defcomp = new TranslatableComponent("info.befriendmobs.gui_armor")
-				.append(new TextComponent(": " + def));
+		Component hpcomp = MutableComponent.create(new TranslatableContents("info.befriendmobs.gui_health"))
+				.append(MutableComponent.create(new LiteralContents(": " + hp + " / " + maxHp)));
+		Component atkcomp = MutableComponent.create(new TranslatableContents("info.befriendmobs.gui_atk"))
+				.append(MutableComponent.create(new LiteralContents(": " + atk)));
+		Component defcomp = MutableComponent.create(new TranslatableContents("info.befriendmobs.gui_armor"))
+				.append(MutableComponent.create(new LiteralContents(": " + def)));
 		font.draw(poseStack, hpcomp, pos.x, pos.y, color);
 		pos.addY(textRowWidth);
 		font.draw(poseStack, atkcomp, pos.x, pos.y, color);

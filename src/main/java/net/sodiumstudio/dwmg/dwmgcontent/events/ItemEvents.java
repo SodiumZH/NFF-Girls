@@ -3,17 +3,15 @@ package net.sodiumstudio.dwmg.dwmgcontent.events;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.item.ItemMobRespawner;
-import net.sodiumstudio.dwmg.befriendmobs.item.capability.CMobRespawnerImpl;
 import net.sodiumstudio.dwmg.befriendmobs.item.capability.MobRespawnerStartRespawnEvent;
 import net.sodiumstudio.dwmg.befriendmobs.item.capability.RespawnerAddedEvent;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
+import net.sodiumstudio.dwmg.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 
@@ -28,10 +26,10 @@ public class ItemEvents
 				&& mobNbt.contains("dwmg:befriended_owner"))
 		{
 			String name = Component.Serializer.fromJson(mobNbt.getString("CustomName")).getString();
-			MutableComponent nameComp = new TextComponent(name);
+			MutableComponent nameComp = InfoHelper.createText(name);
 			nameComp.setStyle(nameComp.getStyle().withItalic(true));
 			MutableComponent comp = 
-					new TranslatableComponent("item.befriendmobs.mob_respawner")
+					InfoHelper.createTrans("item.befriendmobs.mob_respawner")
 					.append(" - ");
 			comp.setStyle(comp.getStyle().withItalic(false));
 			comp.append(nameComp);
@@ -40,7 +38,7 @@ public class ItemEvents
 		else 
 		{
 			MutableComponent comp = 
-					new TranslatableComponent("item.befriendmobs.mob_respawner")
+					InfoHelper.createTrans("item.befriendmobs.mob_respawner")
 					.append(" - ")
 					.append(event.getRespawner().getType().getDescription());
 			comp.setStyle(comp.getStyle().withItalic(false));
@@ -58,7 +56,7 @@ public class ItemEvents
 			{
 				// If the mob isn't a dwmg befriended mob, it should not have this uuid
 				if (c.getMobNbt().hasUUID("dwmg:befriended_owner"))
-					isOwner.set(c.getMobNbt().getUUID("dwmg:befriended_owner").equals(event.getPlayer().getUUID()));
+					isOwner.set(c.getMobNbt().getUUID("dwmg:befriended_owner").equals(event.getEntity().getUUID()));
 			});
 			if (!isOwner.get())
 				event.setCanceled(true);

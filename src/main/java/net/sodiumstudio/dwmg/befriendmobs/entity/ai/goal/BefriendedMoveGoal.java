@@ -1,5 +1,6 @@
 package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedAmphibious;
@@ -58,7 +59,7 @@ public abstract class BefriendedMoveGoal extends BefriendedGoal
 		super.start();
 		if (isAmphibious)
 		{
-			if (mob.asMob().isInWater() && mob.asMob().level.getBlockState(mob.asMob().eyeBlockPosition()).is(Blocks.WATER))
+			if (mob.asMob().isInWater() && mob.asMob().level.getBlockState(new BlockPos(mob.asMob().getEyePosition())).is(Blocks.WATER))
 				((IBefriendedAmphibious)mob).switchNav(true);
 			else ((IBefriendedAmphibious)mob).switchNav(false);		
 		}
