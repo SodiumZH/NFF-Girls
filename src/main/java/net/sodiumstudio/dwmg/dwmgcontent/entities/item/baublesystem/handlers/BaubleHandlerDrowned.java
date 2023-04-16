@@ -12,33 +12,25 @@ import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 
-public class BaubleHandlerDrowned extends BaubleHandler
+public class BaubleHandlerDrowned extends BaubleHandlerGeneral
 {
 
 	@Override
 	public HashSet<Item> getItemsAccepted() {
-		HashSet<Item> set = new HashSet<Item>();
-		set.add(DwmgItems.DEATH_CRYSTAL.get());
-		set.add(Items.NETHERITE_INGOT);
+		HashSet<Item> set = super.getItemsAccepted();
 		set.add(Items.CONDUIT);
 		return set;
 	}
 
 	@Override
 	public void applyBaubleEffect(ItemStack bauble, IBaubleHolder owner) {
-		if (bauble.is(DwmgItems.DEATH_CRYSTAL.get()))
-		{
-			owner.addBaubleModifier(Attributes.ATTACK_DAMAGE, 2.0d, Operation.ADDITION);
-		}
-		if (bauble.is(Items.NETHERITE_INGOT))
-		{
-			owner.addBaubleModifier(Attributes.ARMOR, 2.0d, Operation.ADDITION);
-		}
+		super.applyBaubleEffect(bauble, owner);
 	}
 	
 	@Override
 	public void postUpdate(IBaubleHolder owner)
 	{
+		super.postUpdate(owner);
 		if (owner.hasBaubleItem(Items.CONDUIT) && owner.getLiving().isInWater())
 		{
 			owner.addBaubleModifier(Attributes.MOVEMENT_SPEED, 3.0d, Operation.MULTIPLY_BASE);

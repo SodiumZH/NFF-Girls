@@ -1,5 +1,7 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag;
 
+import java.util.HashSet;
+
 import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.world.entity.Mob;
@@ -7,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.RndUtil;
@@ -20,7 +23,7 @@ public class HandlerZombieGirl extends HandlerItemGivingProgress
 	protected double getProcValueToAdd(ItemStack item) {
 		double rnd = this.rnd.nextDouble();
 		if (item.is(DwmgItems.SOUL_CAKE_SLICE.get()))
-			return rnd < 0.05 ? 1.0d : (rnd < 0.2d ? 0.6667d : 0.3334d);
+			return rnd < 0.05 ? 1.0d : (rnd < 0.2d ? 0.666667d : 0.333334d);
 		else if (item.is(ModItems.SOUL_POWDER.get()))
 			return RndUtil.rndRangedDouble(0.02, 0.04);
 		else if (item.is(ModItems.SOUL_APPLE.get()))
@@ -48,5 +51,26 @@ public class HandlerZombieGirl extends HandlerItemGivingProgress
 	public int getItemGivingCooldownTicks() {
 		// TODO Auto-generated method stub
 		return 200;
+	}
+	
+	@Override
+	public void onAttackProcessingPlayer(Mob mob, Player player)
+	{
+		interrupt(player, mob, false);
+	}
+	
+	@Override
+	public void onAttackedByProcessingPlayer(Mob mob, Player player)
+	{
+		interrupt(player, mob, false);		
+	}
+
+	@Override
+	public HashSet<BefriendableAddHatredReason> getAddHatredReasons() {
+		HashSet<BefriendableAddHatredReason> set = new HashSet<BefriendableAddHatredReason>();
+		set.add(BefriendableAddHatredReason.ATTACKED);
+		set.add(BefriendableAddHatredReason.ATTACKING);
+		set.add(BefriendableAddHatredReason.SET_TARGET);
+		return set;
 	}
 }

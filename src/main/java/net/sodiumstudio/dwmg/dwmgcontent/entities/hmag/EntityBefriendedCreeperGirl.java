@@ -45,7 +45,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.Befriende
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.creeper.AbstractBefriendedCreeper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.creeper.BefriendedCreeperSwellGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedCreeperFollowOwnerGoal;
@@ -77,7 +77,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	
 	public EntityBefriendedCreeperGirl(EntityType<? extends EntityBefriendedCreeperGirl> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);	
-		additionalInventory = new AdditionalInventoryWithEquipment(7);
+		befriendedInventory = new BefriendedInventoryWithEquipment(7);
 		this.modId = Dwmg.MOD_ID;
 	}
 
@@ -154,17 +154,17 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 		if (!level.isClientSide)
 		{
 			// Update explosion radius by ammo type
-			if (additionalInventory.getItem(6).is(Items.GUNPOWDER))
+			if (befriendedInventory.getItem(6).is(Items.GUNPOWDER))
 			{
 				this.explosionRadius = 3;
 				this.shouldDestroyBlocks = false;
 			}
-			else if (additionalInventory.getItem(6).is(Items.TNT))
+			else if (befriendedInventory.getItem(6).is(Items.TNT))
 			{
 				this.explosionRadius = 4;
 				this.shouldDestroyBlocks = true;
 			}
-			else if (!additionalInventory.getItem(6).isEmpty())
+			else if (!befriendedInventory.getItem(6).isEmpty())
 				throw new IllegalStateException("Befriended Creeper Girl explosive type error");		
 			this.canExplode = !this.getAdditionalInventory().getItem(6).isEmpty();
 			
@@ -265,7 +265,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
-			((AdditionalInventoryWithEquipment)getAdditionalInventory()).setMobEquipment(this);
+			((BefriendedInventoryWithEquipment)getAdditionalInventory()).setMobEquipment(this);
 		}
 	}
 
@@ -273,7 +273,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	public void setInventoryFromMob()
 	{
 		if (!this.level.isClientSide) {
-			((AdditionalInventoryWithEquipment)getAdditionalInventory()).getFromMob(this);
+			((BefriendedInventoryWithEquipment)getAdditionalInventory()).getFromMob(this);
 		}
 		return;
 	}

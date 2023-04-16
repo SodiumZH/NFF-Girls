@@ -12,8 +12,13 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.AbstractBefriendingHandler;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableAddHatredReason;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
+import net.sodiumstudio.dwmg.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
@@ -31,6 +36,7 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 	// Add a player to the hatred list
 	// If a player is in hatred list, it will take some time to remove from it. 15min by default.
 	// Or input -1 to add permanent hatred.
+	// This function doesn't post events.
 	public void addHatred(Player player, int ticks);
 	
 	public default void addHatred(Player player)
@@ -45,6 +51,8 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 	
 	// Check if a player is in the hatred list
 	public boolean isInHatred(Player player);
+	
+	public int getHatredDuration(Player player);
 	
 	// ======== Serialization
 	
@@ -78,9 +86,7 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 			return d.getAsDouble();
 		else throw new ClassCastException();
 	}
-	
-	
-	
+		
 	public default void putPlayerData(Tag data, Player player, String key)
 	{
 		NbtHelper.putPlayerData(data, getPlayerDataNbt(), player, key);
@@ -138,5 +144,28 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 		return tag.get();
 	}
 	
-	
+	// Try adding hatred with given reason. This function will check in befriending handler if this reason is accepted,
+	// post event and check if canceled.
+	// Return if added hatred.
+	public default boolean addHatredWithReason(Player player, BefriendableAddHatredReason reason)
+	{
+		AbstractBefriendingHandler handler = BefriendingTypeRegistry.getHandler(getOwner());
+		int ticks = handler.getHatredDurationTicks(reason);
+		if (handler.getAddHatredReasons() != null
+			&& handler.getAddHatredReasons().contains(reason) 
+			&& !(this.isInHatred(player) && this.getHatredDuration(player) > ticks))
+		{
+			BefriendableAddHatredEvent e = 
+					new BefriendableAddHatredEvent(getOwner(), player, ticks, reason);
+			boolean canceled = MinecraftForge.EVENT_BUS.post(e);
+			if (!canceled)
+			{
+				addHatred(player, ticks);
+				handler.onAddingHatred(getOwner(), player);
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

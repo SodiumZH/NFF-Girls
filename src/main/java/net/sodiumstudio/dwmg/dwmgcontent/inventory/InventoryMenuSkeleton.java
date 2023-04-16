@@ -17,7 +17,7 @@ import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefrien
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
-import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiSkeletonGirl;
+import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiBowSecWeaponOneBauble;
 
 public class InventoryMenuSkeleton extends AbstractInventoryMenuBefriended
 {
@@ -140,7 +140,7 @@ public class InventoryMenuSkeleton extends AbstractInventoryMenuBefriended
 
 		ItemStack stack = slot.getItem();
 
-		// From mob equipment to player additionalInventory
+		// From mob equipment to player befriendedInventory
 		if (index < 9) {
 			if (!this.moveItemStackTo(stack, 9, 45, true)) {
 				return ItemStack.EMPTY;
@@ -148,7 +148,7 @@ public class InventoryMenuSkeleton extends AbstractInventoryMenuBefriended
 				done = true;
 			}
 		}
-		// From additionalInventory to mob
+		// From befriendedInventory to mob
 		else {
 			// Try put arrow
 			if (stack.is(Items.ARROW))
@@ -179,7 +179,7 @@ public class InventoryMenuSkeleton extends AbstractInventoryMenuBefriended
 	
 	@Override
 	public AbstractGuiBefriended makeGui() {
-		return new GuiSkeletonGirl(this, playerInventory, mob);
+		return new GuiBowSecWeaponOneBauble(this, playerInventory, mob);
 	}
 
 	@Override

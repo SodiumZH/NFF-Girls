@@ -42,8 +42,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 
 public abstract class AbstractBefriendedCreeper extends Monster implements IBefriendedMob, PowerableMob
 {
@@ -500,12 +500,12 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	// Inventory related
 	// Generally no need to modify unless noted
 
-	protected AdditionalInventory additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize());
+	protected BefriendedInventory befriendedInventory = new BefriendedInventoryWithEquipment(getInventorySize());
 
 	@Override
-	public AdditionalInventory getAdditionalInventory()
+	public BefriendedInventory getAdditionalInventory()
 	{
-		return additionalInventory;
+		return befriendedInventory;
 	}
 
 	@Override

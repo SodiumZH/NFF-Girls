@@ -8,16 +8,16 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 /** Inventory tag in which a mob's equipment is saved at fixed positions
  * 0: helmet; 1: chest; 2: legs; 3: feet; 4: main hand; 5: off hand
  */
-public class AdditionalInventoryWithEquipment extends AdditionalInventory
+public class BefriendedInventoryWithEquipment extends BefriendedInventory
 {
-	public AdditionalInventoryWithEquipment(int size)
+	public BefriendedInventoryWithEquipment(int size)
 	{
 		super(size);
 		if (size < 6)
-			throw new IllegalArgumentException("AdditionalInventoryWithEquipment must have at least 6 slots for a mob's equipment slots.");
+			throw new IllegalArgumentException("BefriendedInventoryWithEquipment must have at least 6 slots for a mob's equipment slots.");
 	}
 	
-	public AdditionalInventoryWithEquipment(int size, IBefriendedMob owner)
+	public BefriendedInventoryWithEquipment(int size, IBefriendedMob owner)
 	{
 		super(size, owner);
 	}

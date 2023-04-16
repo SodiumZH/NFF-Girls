@@ -24,7 +24,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedChangeAiStateEvent
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CHealingHandlerImpl;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CHealingHandlerImplDefault;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
@@ -113,23 +113,31 @@ public interface IBefriendedMob extends ContainerListener  {
 	/* Interaction */
 	
 	// Actions on player right click the mob
-	// Automatically called on mob interaction. DO NOT call this in mobInteract()!!
-	public boolean onInteraction(Player player, InteractionHand hand);
+	// Deprecated, use mobInteraction() instead
+	@Deprecated
+	public default boolean onInteraction(Player player, InteractionHand hand)
+	{
+		return false;
+	}
 	
 	// Actions on player shift + rightmouse click
-	// Automatically called on mob interaction. DO NOT call this in mobInteract()!!
-	public boolean onInteractionShift(Player player, InteractionHand hand);
+	// Deprecated, use mobInteraction() instead
+	@Deprecated
+	public default boolean onInteractionShift(Player player, InteractionHand hand)
+	{
+		return false;
+	}
 	
 	/* Inventory */
 	
-	public AdditionalInventory getAdditionalInventory();
+	public BefriendedInventory getAdditionalInventory();
 
 	public int getInventorySize();
 	
-	// Set mob data from additionalInventory.
+	// Set mob data from befriendedInventory.
 	public void updateFromInventory();
 	
-	// Set additionalInventory from mob data
+	// Set befriendedInventory from mob data
 	public void setInventoryFromMob();
 	
 	// Get item stack from position in inventory tag
@@ -145,20 +153,7 @@ public interface IBefriendedMob extends ContainerListener  {
 	{
 		return this.getInventoryItemStack(pos).getItem();
 	}
-	
 
-	@Deprecated
-	public default ItemStack getBauble(int index)
-	{
-		return ItemStack.EMPTY;
-	}
-	
-
-	@Deprecated
-	public default void setBauble(ItemStack item, int index)
-	{
-		return;
-	}
 
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container);
 
@@ -167,8 +162,8 @@ public interface IBefriendedMob extends ContainerListener  {
 	@Override
 	public default void containerChanged(Container pContainer) 
 	{
-		if (!(pContainer instanceof AdditionalInventory))
-			throw new UnsupportedOperationException("IBefriendedMob container only receives AdditionalInventory.");
+		if (!(pContainer instanceof BefriendedInventory))
+			throw new UnsupportedOperationException("IBefriendedMob container only receives BefriendedInventory.");
 		if (hasInit())
 			updateFromInventory();
 		updateAttributes();

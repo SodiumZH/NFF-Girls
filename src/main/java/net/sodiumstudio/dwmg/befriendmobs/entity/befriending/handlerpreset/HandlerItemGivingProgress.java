@@ -5,19 +5,17 @@ import java.util.UUID;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.DoubleTag;
-import net.minecraft.nbt.IntTag;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CBefriendableMob;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
-import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
-import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
 
 
 public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
@@ -33,9 +31,9 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 		args.execServer((l) -> {
 
 			if (!player.isShiftKeyDown() 
-					&& (isItemAcceptable(player.getMainHandItem()) 
+					&& (isItemAcceptable(player.getMainHandItem()) || player.getMainHandItem().is(Items.DEBUG_STICK)) 
 					&& args.isMainHand() 
-					&& additionalConditions(player, target))) {
+					&& additionalConditions(player, target)) {
 				// Block if in hatred
 				if (l.isInHatred(player) && !shouldIgnoreHatred()) {
 					sendParticlesOnHatred(target);
@@ -54,16 +52,33 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 				else
 				{
 					ItemStack mainhand = player.getMainHandItem();
+					boolean isDebugStick = mainhand.is(Items.DEBUG_STICK);
+					// Put a zero data first, otherwise if fulfilled after giving only one item, something unexpected
+					// may happen due to missing proc_value tag
+					// Because this tag is also used to indicate whether the player is in process
+					if (!NbtHelper.containsPlayerData(l.getPlayerDataNbt(), player, "proc_value"))
+						NbtHelper.putPlayerData(DoubleTag.valueOf(0), l.getPlayerDataNbt(), player,
+								"proc_value");
 					// Get amount already given
-					DoubleTag currentValueTag = (DoubleTag) NbtHelper.getPlayerData(l.getPlayerDataNbt(), player,
-							"proc_value");
+					DoubleTag currentValueTag = (DoubleTag) NbtHelper.getPlayerData(l.getPlayerDataNbt(), player, "proc_value");
 					double procValue = currentValueTag == null ? 0 : currentValueTag.getAsDouble();
 					double lastProcValue = procValue;	
-					if (!player.isCreative())
-						player.getMainHandItem().shrink(1);
-					procValue += getProcValueToAdd(mainhand);
+					if (isDebugStick)
+					{
+						procValue += 1.01;
+						// Immediately update tag, otherwise unexpected error occurs due to out-of-date tag value
+						// (possibly 0.0)
+						NbtHelper.putPlayerData(DoubleTag.valueOf(procValue), l.getPlayerDataNbt(), player, "proc_value");
+					}
+					else
+					{
+						procValue += getProcValueToAdd(mainhand);
+						if (!player.isCreative())
+							player.getMainHandItem().shrink(1);
+						NbtHelper.putPlayerData(DoubleTag.valueOf(procValue), l.getPlayerDataNbt(), player, "proc_value");
+					}
 					Debug.printToScreen("Progress Value: " + Double.toString(procValue), player, target);
-					if (procValue >= 0.99999d)
+					if (procValue >= 0.9999999999d)
 					{	// 1.0 actually, avoiding potential float errors
 						// Satisfied
 						finalActions(player, target);
@@ -73,8 +88,6 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 					{
 						// Not satisfied, put data
 						sendParticlesOnItemReceived(target);
-						NbtHelper.putPlayerData(DoubleTag.valueOf(procValue), l.getPlayerDataNbt(), player,
-								"proc_value");
 						sendProgressHeart(target, lastProcValue, procValue, deltaProcPerHeart());
 						l.setPlayerTimer(player, "item_cooldown", this.getItemGivingCooldownTicks()); // Set cooldown
 						result.setHandled();
@@ -86,10 +99,10 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 		// ...................................
 		args.execClient((l) -> {
 			{
-				if (!l.isInHatred(player)) {
+				if (shouldIgnoreHatred() || !l.isInHatred(player)) {
 					if (!player.isShiftKeyDown() && isItemAcceptable(player.getMainHandItem().getItem())
-							&& args.isMainHand() && player.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get()))
-						result.handled = true;
+							&& args.isMainHand())
+					result.handled = true;
 				}
 			}
 		});
@@ -142,10 +155,20 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 	}
 	
 	@Override
+	public boolean interruptAll(Mob mob, boolean isQuiet)
+	{
+		boolean res = super.interruptAll(mob, isQuiet);
+		if (res && !isQuiet)
+			sendParticlesOnInterrupted(mob);
+		return res;
+	}
+	
+	@Override
 	public boolean isInProcess(Player player, Mob mob)
 	{
 		CBefriendableMob l = CBefriendableMob.getCap(mob);
-		return l.hasPlayerData(player, "proc_value") && l.getPlayerDataDouble(player, "proc_value") > 0d;
+		return NbtHelper.containsPlayerData(l.getPlayerDataNbt(), player, "proc_value")
+			&& ((DoubleTag) (NbtHelper.getPlayerData(l.getPlayerDataNbt(), player, "proc_value"))).getAsDouble() > 0;
 	}
 	
 	public void sendParticlesOnHatred(Mob target)
@@ -172,4 +195,5 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 	{
 		EntityHelper.sendParticlesToEntity(target, ParticleTypes.HEART, target.getBbHeight() - 0.5, 0.2d, 1, 1d);
 	}
+
 }

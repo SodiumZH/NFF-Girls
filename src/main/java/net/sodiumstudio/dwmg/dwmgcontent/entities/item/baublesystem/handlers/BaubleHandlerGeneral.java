@@ -16,18 +16,31 @@ import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlerAttributeModifiers;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 
-public class BaubleHandlerEnderExecutor extends BaubleHandlerGeneral
+public class BaubleHandlerGeneral extends BaubleHandler
 {
 	
 	@Override
 	public HashSet<Item> getItemsAccepted() {
-		HashSet<Item> set = super.getItemsAccepted();
+		HashSet<Item> set = new HashSet<Item>();
+		set.add(Items.NETHERITE_INGOT);
+		set.add(ModItems.INSOMNIA_FRUIT.get());
 		return set;
 	}
 
 	@Override
 	public void applyBaubleEffect(ItemStack bauble, IBaubleHolder owner) {
-		super.applyBaubleEffect(bauble, owner);
+		if (bauble.is(Items.NETHERITE_INGOT))
+		{
+			owner.addBaubleModifier(Attributes.ARMOR, 2.0d, Operation.ADDITION);
+		}
+		if (bauble.is(ModItems.INSOMNIA_FRUIT.get()))
+		{
+			if (owner.getLiving().level.isNight())
+			{
+				owner.addBaubleModifier(Attributes.MAX_HEALTH, 60d, Operation.ADDITION);
+				owner.addBaubleModifier(Attributes.ATTACK_DAMAGE, 8d, Operation.ADDITION);
+			}
+		}
 	}
 	
 	

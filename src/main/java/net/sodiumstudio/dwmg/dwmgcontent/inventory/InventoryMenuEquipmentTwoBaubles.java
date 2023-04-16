@@ -17,18 +17,18 @@ import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
-import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiZombieGirl;
+import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiEquipmentTwoBaubles;
 
-public class InventoryMenuZombie extends AbstractInventoryMenuBefriended{
+public class InventoryMenuEquipmentTwoBaubles extends AbstractInventoryMenuBefriended{
 
-	public InventoryMenuZombie(int containerId, Inventory playerInventory, Container container,
+	public InventoryMenuEquipmentTwoBaubles(int containerId, Inventory playerInventory, Container container,
 			IBefriendedMob mob) {
 		super(containerId, playerInventory, container, mob);
 	}
 
 	@Override
 	public AbstractGuiBefriended makeGui() {
-		return new GuiZombieGirl(this, playerInventory, mob);
+		return new GuiEquipmentTwoBaubles(this, playerInventory, mob);
 	}
 
 	@Override
@@ -141,7 +141,7 @@ public class InventoryMenuZombie extends AbstractInventoryMenuBefriended{
 				done = true;
 			}
 		}
-		// From additionalInventory to mob
+		// From befriendedInventory to mob
 		else {
 			// Try each mob slot
 			for (int i = 0; i < 8; ++i) {
@@ -167,7 +167,6 @@ public class InventoryMenuZombie extends AbstractInventoryMenuBefriended{
 	@Override
 	public void removed(Player pPlayer) {
 		super.removed(pPlayer);
-		this.container.stopOpen(pPlayer);
 	}
 }
 

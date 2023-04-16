@@ -35,12 +35,26 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.Befriende
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 
 public class TemplateBefriendedMobPreset extends Monster implements IBefriendedMob {
 
+	/* Data sync */
+
+	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
+			.defineId(TemplateBefriendedMobPreset.class/* CHANGE TO YOUR CLASS */, EntityDataSerializers.OPTIONAL_UUID);
+	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
+			.defineId(TemplateBefriendedMobPreset.class/* CHANGE TO YOUR CLASS */, EntityDataSerializers.BYTE);
+
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(DATA_OWNERUUID, Optional.empty());
+		entityData.define(DATA_AISTATE, (byte) 0);
+	}
+	
 	/* Initialization */
 
 	public TemplateBefriendedMobPreset(EntityType<? extends TemplateBefriendedMobPreset> pEntityType, Level pLevel) {
@@ -126,11 +140,11 @@ public class TemplateBefriendedMobPreset extends Monster implements IBefriendedM
 	/* Inventory */
 
 	// This enables mob armor and hand items by default.
-	// If not needed, use AdditionalInventory class instead.
-	protected AdditionalInventoryWithEquipment additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize(), this);
+	// If not needed, use BefriendedInventory class instead.
+	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
 
 	@Override
-	public AdditionalInventory getAdditionalInventory()
+	public BefriendedInventory getAdditionalInventory()
 	{
 		return additionalInventory;
 	}
@@ -144,7 +158,7 @@ public class TemplateBefriendedMobPreset extends Monster implements IBefriendedM
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
-			// Sync inventory with mob equipments. If it's not AdditionalInventoryWithEquipment, remove it
+			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 			additionalInventory.setMobEquipment(this);
 		}
 	}
@@ -152,7 +166,7 @@ public class TemplateBefriendedMobPreset extends Monster implements IBefriendedM
 	public void setInventoryFromMob()
 	{
 		if (!this.level.isClientSide) {
-			// Sync inventory with mob equipments. If it's not AdditionalInventoryWithEquipment, remove it
+			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 			additionalInventory.getFromMob(this);
 		}
 		return;
@@ -180,19 +194,6 @@ public class TemplateBefriendedMobPreset extends Monster implements IBefriendedM
 		setInit();
 	}
 
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(TemplateBefriendedMobPreset.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
-			.defineId(TemplateBefriendedMobPreset.class, EntityDataSerializers.BYTE);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, (byte) 0);
-	}
 	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //

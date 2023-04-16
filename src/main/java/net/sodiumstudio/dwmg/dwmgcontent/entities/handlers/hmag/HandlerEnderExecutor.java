@@ -1,5 +1,7 @@
 package net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag;
 
+import java.util.HashSet;
+
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 
@@ -10,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
@@ -56,10 +59,10 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 		{
 			double rnd = this.rnd.nextDouble();
 			if (rnd < 0.05d)
-				return 0.7501d;
+				return 0.750d;
 			else if (rnd < 0.15d)
-				return 0.5001d;
-			else return 0.2501d;
+				return 0.500d;
+			else return 0.250d;
 		}
 		else return 0.0d;
 	}
@@ -74,12 +77,6 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 		return MiscUtil.isIn(item, items, Items.AIR);
 	}
 
-	@Override
-	public boolean shouldIgnoreHatred()
-	{
-		return true;
-	}
-	
 	@Override
 	public boolean additionalConditions(Player player, Mob mob) {
 		// Only works on player in the mob's tag "player_uuid_on_befriending"
@@ -123,14 +120,14 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 					Player player = ee.level.getPlayerByUUID(l.getNbt().getUUID("player_uuid_on_befriending"));
 					if (player != null)
 					{
-						// Once entered 4 blocks away, disable teleporting
+						// Once entered 7 blocks away, disable teleporting
 						// So that the mob will not get over 4 blocks away by itself
 						// This tag blocks teleporting in DwmgEntityEvents class
 						if (ee.distanceToSqr(player) <= 49.0d && (!l.getNbt().getBoolean("cannot_teleport")))
 						{
 							l.getNbt().putBoolean("cannot_teleport", true);
 						}
-						// If player is further than 4 blocks, interrupt
+						// If player is further than 8 blocks, interrupt
 						else if (l.getNbt().getBoolean("cannot_teleport") && ee.distanceToSqr(player) > 64.0d)
 						{
 							this.interrupt(player, mob, false);
@@ -161,6 +158,13 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 	{
 		CBefriendableMob l = CBefriendableMob.getCap(mob);
 		return l.getNbt().contains("player_uuid_on_befriending", 11) && l.getNbt().getUUID("player_uuid_on_befriending").equals(player.getUUID());
+	}
+
+	@Override
+	public HashSet<BefriendableAddHatredReason> getAddHatredReasons() {
+		HashSet<BefriendableAddHatredReason> set = new HashSet<BefriendableAddHatredReason>();
+		set.add(BefriendableAddHatredReason.ATTACKED);
+		return set;
 	}
 	
 }

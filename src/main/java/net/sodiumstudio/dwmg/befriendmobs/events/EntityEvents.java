@@ -1,6 +1,6 @@
 package net.sodiumstudio.dwmg.befriendmobs.events;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -14,11 +14,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
@@ -32,16 +31,16 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedChangeAiStateEvent;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.AbstractBefriendingHandler;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendableMobRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.item.ItemMobRespawner;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
-import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.BMDebugItemHandler;
@@ -139,7 +138,6 @@ public class EntityEvents
 	{
 		@SuppressWarnings("deprecation")
 		LivingEntity target = event.getTarget();		
-		Wrapped<Boolean> isCancelledByEffect = new Wrapped<Boolean>(Boolean.FALSE);
 		
 		// Handle mobs //
 		if (target != null && event.getEntity() instanceof Mob mob)
@@ -147,14 +145,9 @@ public class EntityEvents
 	        // Handle befriendable mobs //
 	        if (target instanceof Player player && mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
 	        {
-	        	mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+	        	mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) ->
 	        	{
-	        		// Add to hatred list
-	        		if(target != null && !l.getHatred().contains(player.getUUID()) && !isCancelledByEffect.get())
-	        		{
-	        			l.addHatred(player);
-	        			// Debug.printToScreen("Player " + MiscUtil.getNameString(player) + " put into hatred list by " + MiscUtil.getNameString(mob), player, player);
-	        		}
+	    			cap.addHatredWithReason(player, BefriendableAddHatredReason.SET_TARGET);	   
 	        	});
 	        }
 	        // Handle befriendable mobs end //
@@ -216,88 +209,94 @@ public class EntityEvents
 	
 	@SubscribeEvent
 	public static void onLivingDeath(LivingDeathEvent event) {
-		if (event.getEntity() instanceof IBefriendedMob bef)
+		if (!event.getEntity().level.isClientSide)
 		{
-			if (MinecraftForge.EVENT_BUS.post(new BefriendedDeathEvent(bef, event.getSource())))
+			if (event.getEntity() instanceof IBefriendedMob bef)
 			{
-				event.setCanceled(true);
-				return;
-			}
-			// Befriended mobs should not kill each other with same owner, or get killed by
-			// owner-tamed animals
-			else if (event.getSource().getEntity() instanceof IBefriendedMob srcBef)
-			{
-				if (srcBef.getOwner() != null && bef.getOwner() != null && srcBef.getOwner() == bef.getOwner())
+				if (MinecraftForge.EVENT_BUS.post(new BefriendedDeathEvent(bef, event.getSource())))
 				{
-					bef.asMob().setHealth(1.0f);
-					bef.asMob().invulnerableTime += 20;
 					event.setCanceled(true);
 					return;
 				}
-			}
-			else if (event.getSource().getEntity() instanceof TamableAnimal ta)
-			{
-				if (ta.getOwner() != null && bef.getOwner() != null && ta.getOwner() == bef.getOwner())
+				// Befriended mobs should not kill each other with same owner, or get killed by
+				// owner-tamed animals
+				else if (event.getSource().getEntity() instanceof IBefriendedMob srcBef)
 				{
-					bef.asMob().setHealth(1.0f);
-					bef.asMob().invulnerableTime += 20;
-					event.setCanceled(true);
-					return;
-				}
-			}
-			if (!event.getEntity().level.isClientSide)
-			{
-				// Drop all items in inventory if no vanishing curse
-				AdditionalInventory container = bef.getAdditionalInventory();
-				for (int i = 0; i < container.getContainerSize(); ++i)
-				{
-					if (container.getItem(i) != ItemStack.EMPTY
-							&& !EnchantmentHelper.hasVanishingCurse(container.getItem(i)))
+					if (srcBef.getOwner() != null && bef.getOwner() != null && srcBef.getOwner() == bef.getOwner())
 					{
-						event.getEntity().spawnAtLocation(container.getItem(i));
+						bef.asMob().setHealth(1.0f);
+						bef.asMob().invulnerableTime += 20;
+						event.setCanceled(true);
+						return;
 					}
 				}
-				
-				// If drop respawner, drop and initialize
-				if (bef.shouldDropRespawner())
+				else if (event.getSource().getEntity() instanceof TamableAnimal ta)
 				{
-					ItemEntity resp = event.getEntity().spawnAtLocation(ItemMobRespawner.fromMob(bef.asMob()));
-					resp.getItem().getCapability(BefMobCapabilities.CAP_MOB_RESPAWNER).ifPresent((c) ->
-					{	
-						if (bef.isRespawnerInvulnerable())
-						{					
-							resp.setInvulnerable(true);
-							c.setInvulnerable(true);
+					if (ta.getOwner() != null && bef.getOwner() != null && ta.getOwner() == bef.getOwner())
+					{
+						bef.asMob().setHealth(1.0f);
+						bef.asMob().invulnerableTime += 20;
+						event.setCanceled(true);
+						return;
+					}
+				}
+				if (!event.getEntity().level.isClientSide)
+				{
+					// Drop all items in inventory if no vanishing curse
+					BefriendedInventory container = bef.getAdditionalInventory();
+					for (int i = 0; i < container.getContainerSize(); ++i)
+					{
+						if (container.getItem(i) != ItemStack.EMPTY
+								&& !EnchantmentHelper.hasVanishingCurse(container.getItem(i)))
+						{
+							event.getEntity().spawnAtLocation(container.getItem(i));
 						}
-						c.setRecoverInVoid(bef.shouldRespawnerRecoverOnDropInVoid());
-						c.setNoExpire(bef.respawnerNoExpire());
-					});
+					}
+					
+					// If drop respawner, drop and initialize
+					if (bef.shouldDropRespawner())
+					{
+						ItemEntity resp = event.getEntity().spawnAtLocation(ItemMobRespawner.fromMob(bef.asMob()));
+						resp.getItem().getCapability(BefMobCapabilities.CAP_MOB_RESPAWNER).ifPresent((c) ->
+						{	
+							if (bef.isRespawnerInvulnerable())
+							{					
+								resp.setInvulnerable(true);
+								c.setInvulnerable(true);
+							}
+							c.setRecoverInVoid(bef.shouldRespawnerRecoverOnDropInVoid());
+							c.setNoExpire(bef.respawnerNoExpire());
+						});
+					}
 				}
 			}
-		}
-		
-		else if (event.getEntity() instanceof TamableAnimal ta)
-		{
-			if (event.getSource().getEntity() instanceof IBefriendedMob srcBef)
+			
+			else if (event.getEntity() instanceof TamableAnimal ta)
 			{
-				if (srcBef.getOwner() != null && ta.getOwner() != null && srcBef.getOwner() == ta.getOwner())
+				if (event.getSource().getEntity() instanceof IBefriendedMob srcBef)
 				{
-					ta.setHealth(1.0f);
-					ta.invulnerableTime += 20;
-					event.setCanceled(true);
-					return;
+					if (srcBef.getOwner() != null && ta.getOwner() != null && srcBef.getOwner() == ta.getOwner())
+					{
+						ta.setHealth(1.0f);
+						ta.invulnerableTime += 20;
+						event.setCanceled(true);
+						return;
+					}
 				}
 			}
-		}
-		
-		else if (event.getEntity() instanceof Player player)
-		{
-			for (Mob mob: BefriendableMobRegistry.allMobs())
+			
+			else if (event.getEntity() instanceof Player player)
 			{
-				if (!BefriendingTypeRegistry.getHandler(mob).dontInterruptOnPlayerDie() 
-						&& BefriendingTypeRegistry.getHandler(mob).isInProcess(player, mob))
+				for (Entity en: ((ServerLevel)(player.level)).getAllEntities())
 				{
-					BefriendingTypeRegistry.getHandler(mob).interrupt(player, mob, true);
+					if (en instanceof Mob mob && mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent()) 
+					{
+						if (!BefriendingTypeRegistry.getHandler(mob).dontInterruptOnPlayerDie() 
+								&& BefriendingTypeRegistry.getHandler(mob).isInProcess(player, mob))
+						{
+							BefriendingTypeRegistry.getHandler(mob).interrupt(player, mob, true);
+						}
+					}
 				}
 			}
 		}
@@ -332,48 +331,81 @@ public class EntityEvents
 	public static void onLivingHurt(LivingHurtEvent event)
 	{
 		LivingEntity living = event.getEntityLiving();
-		// Handle befriending interruption on mob attacked
-		if (living instanceof Mob && BefriendingTypeRegistry.contains((Mob)living))
+		LivingEntity source = (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof LivingEntity) ?
+				(LivingEntity)(event.getSource().getEntity()) : null;
+		if (!living.level.isClientSide)
 		{
-			Mob mob = (Mob)living;
-			if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof Player player)
+			// Handle befriending process events on mob attacked
+			// The events are handled in handler classes, not a forge event
+			// On befriendable mob attacked by player
+			if (living instanceof Mob 
+				&& living.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent()
+				&& source != null
+				&& source instanceof Player)
 			{
+				Mob mob = (Mob)living;
+				Player player = (Player)source;
 				AbstractBefriendingHandler handler = BefriendingTypeRegistry.getHandler(mob);
-				if (!handler.shouldIgnoreAttackInterruption() && handler.isInProcess(player, mob))
+				if (handler.isInProcess(player, mob))
 				{
-					handler.interrupt(player, mob, false);
+					handler.onAttackedByProcessingPlayer(mob, player);
 				}
+				living.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) ->
+				{
+					cap.addHatredWithReason(player, BefriendableAddHatredReason.ATTACKED);
+				});
+				
+	
+			}
+			// On player attacked by befriendable mob
+			else if (living instanceof Player 
+				&& source != null 
+				&& (source instanceof Mob)
+				&& source.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
+			{
+				Player player = (Player)living;
+				Mob mob = (Mob)source;
+				AbstractBefriendingHandler handler = BefriendingTypeRegistry.getHandler(mob);
+				if (handler.isInProcess(player, mob))
+				{
+					handler.onAttackProcessingPlayer(mob, player);
+				}
+				living.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) ->
+				{
+					cap.addHatredWithReason(player, BefriendableAddHatredReason.ATTACKING);
+				});
 			}
 		}
 	}
 
-	
-	
-	
+
 	@SuppressWarnings("unchecked")
 	@SubscribeEvent
-	public static void onServerEntityPostWorldTick(ServerEntityTickEvent.PostWorldTick event)
+	public static void onLivingUpdate(LivingUpdateEvent event)
 	{
-		if (event.getEntity() instanceof Mob mob)
+		if (!event.getEntity().level.isClientSide)
 		{
-			// update befriendable mob timers
-			if (!(mob instanceof IBefriendedMob))
+			if (event.getEntity() instanceof Mob mob)
 			{
-				mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+				// update befriendable mob timers
+				if (!(mob instanceof IBefriendedMob))
 				{
-					l.updateTimers();
-					BefriendingTypeRegistry.getHandler((EntityType<Mob>) (mob.getType())).serverTick(mob);
+					mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+					{
+						l.updateTimers();
+						BefriendingTypeRegistry.getHandler((EntityType<Mob>) (mob.getType())).serverTick(mob);
+					});
+				}
+				// update healing handler cooldown
+				mob.getCapability(BefMobCapabilities.CAP_HEALING_HANDLER).ifPresent((l) ->
+				{
+					l.updateCooldown();
 				});
-			}
-			// update healing handler cooldown
-			mob.getCapability(BefMobCapabilities.CAP_HEALING_HANDLER).ifPresent((l) ->
-			{
-				l.updateCooldown();
-			});
-			// IBaubleHolder tick
-			if (mob instanceof IBaubleHolder holder)
-			{
-				holder.updateBaubleEffects();
+				// IBaubleHolder tick
+				if (mob instanceof IBaubleHolder holder)
+				{
+					holder.updateBaubleEffects();
+				}
 			}
 		}
 	}

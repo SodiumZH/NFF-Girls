@@ -23,8 +23,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 
 // This is a template for befriended mob class.
 // You may copy-paste the code below to your class and modify at places labeled by /*...*/.
@@ -95,12 +95,12 @@ public class TemplateBefriendedMob /* Your mob class */ extends PathfinderMob /*
 	// Inventory related
 	// Generally no need to modify unless noted
 	
-	AdditionalInventory additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize());
+	BefriendedInventory befriendedInventory = new BefriendedInventoryWithEquipment(getInventorySize());
 
 	@Override
-	public AdditionalInventory getAdditionalInventory()
+	public BefriendedInventory getAdditionalInventory()
 	{
-		return additionalInventory;
+		return befriendedInventory;
 	}
 
 	@Override
