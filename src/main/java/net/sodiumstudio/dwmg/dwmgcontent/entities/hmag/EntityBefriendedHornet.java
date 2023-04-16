@@ -13,17 +13,20 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Container;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -38,12 +41,14 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.Befriende
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.template.TemplateBefriendedMobPreset;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedAmphibious;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuHandItemsTwoBaubles;
 
 public class EntityBefriendedHornet extends HornetEntity implements IBaubleHolder, IBefriendedMob
 {
@@ -73,6 +78,44 @@ public class EntityBefriendedHornet extends HornetEntity implements IBaubleHolde
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
 	}
 	
+	/* Combat */
+	public int addPoisonLevel = 1;
+	public int addPoisonTicks = 200;	// 10s, equal to hornet poisoning time in hard mode
+	
+	@Override
+	public boolean doHurtTarget(Entity entity)
+	{
+		if (!super.doHurtTarget(entity))
+			return false;
+		// Remove old poison effect and add new one
+		if (entity instanceof LivingEntity living)
+		{
+			MobEffectInstance instance = living.getActiveEffectsMap().get(MobEffects.POISON);
+			// The expected duration of poison added in super class
+			int superExpectedDuration =	 
+					level.getDifficulty() == Difficulty.NORMAL ? 100 : (
+					level.getDifficulty() == Difficulty.HARD ? 200 : 0);	
+			// If the poison is no stronger than the super class given effect, remove it
+			if (instance != null && instance.getAmplifier() <= 1 && instance.getDuration() <= superExpectedDuration)
+			{
+				living.getActiveEffectsMap().remove(MobEffects.POISON);
+				instance = null;
+			}
+			// Add when don't have poison effect, or have lower level than this mob's adding level, or have the same level but with a shorter duration time 
+			if (instance == null 
+					|| instance.getAmplifier() == addPoisonLevel && instance.getDuration() < addPoisonTicks
+					|| instance.getAmplifier() < addPoisonLevel)
+			{
+				// Don't add poison to undead mobs as it will heal them
+				if (!(living instanceof Mob) || ((Mob)living).getMobType() != MobType.UNDEAD)
+					// Add poison based on this mob's properties
+					living.removeEffect(MobEffects.POISON);
+					living.addEffect(new MobEffectInstance(MobEffects.POISON, addPoisonTicks, addPoisonLevel));
+			}
+		}
+		return true;
+	}
+	
 	/* Interaction */
 
 	// Map items that can heal the mob and healing values here.
@@ -96,49 +139,69 @@ public class EntityBefriendedHornet extends HornetEntity implements IBaubleHolde
 	}
 	
 	@Override
-	public boolean onInteraction(Player player, InteractionHand hand) {
-
-		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide()) 
-			{
-				/* Put checks before healing item check */
-				/* if (....)
-				 {
-				 	....
-				 }
-				else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) {}
-				// The function above returns PASS when the items are not correct. So when not PASS it should stop here
-				else if (hand == InteractionHand.OFF_HAND)
+	public InteractionResult mobInteract(Player player, InteractionHand hand)
+	{
+		if (!player.isShiftKeyDown())
+		{
+			if (player.getUUID().equals(getOwnerUUID())) {
+				if (!player.level.isClientSide()) 
 				{
-					switchAIState();
+					/* Put checks before healing item check */
+					/* if (....)
+					 {
+					 	....
+					 }
+					else */
+					if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) 
+					{
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					}
+					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
+					else if (hand == InteractionHand.OFF_HAND)
+					{
+						switchAIState();
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					}
+					// Here it's main hand but no interaction. Return pass to enable off hand interaction.
+					else return InteractionResult.PASS;
 				}
-				// Here it's main hand but no interaction. Return false to enable off hand interaction.
-				else return false;
+				// Interacted
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
+			} 
+			else return InteractionResult.PASS;
+		}
+		
+		else
+		{
+			if (player.getUUID().equals(getOwnerUUID())) {
+				// Open inventory and GUI
+				BefriendedHelper.openBefriendedInventory(player, this);
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
-			// Interacted
-			return true;
-		} 
+			return InteractionResult.PASS;
+		}
+	}
+	
+	@Override
+	public boolean onInteraction(Player player, InteractionHand hand) {
 		return false;
 	}
 
+	@Deprecated
 	@Override
 	public boolean onInteractionShift(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID())) {
-			// Open inventory and GUI
-			BefriendedHelper.openBefriendedInventory(player, this);
-			return true;
-		}
 		return false;
 	}
 
 	/* Inventory */
 
 	// This enables mob armor and hand items by default.
-	// If not needed, use AdditionalInventory class instead.
-	protected AdditionalInventoryWithEquipment additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize(), this);
+	// If not needed, use BefriendedInventory class instead.
+	protected BefriendedInventoryWithHandItems additionalInventory 
+		= new BefriendedInventoryWithHandItems(getInventorySize(), this);
 
 	@Override
-	public AdditionalInventory getAdditionalInventory()
+	public BefriendedInventory getAdditionalInventory()
 	{
 		return additionalInventory;
 	}
@@ -146,21 +209,20 @@ public class EntityBefriendedHornet extends HornetEntity implements IBaubleHolde
 	@Override
 	public int getInventorySize()
 	{
-		return 8;
+		return 4;
 	}
 
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
-			// Sync inventory with mob equipments. If it's not AdditionalInventoryWithEquipment, remove it
 			additionalInventory.setMobEquipment(this);
 		}
 	}
 
+	@Override
 	public void setInventoryFromMob()
 	{
 		if (!this.level.isClientSide) {
-			// Sync inventory with mob equipments. If it's not AdditionalInventoryWithEquipment, remove it
 			additionalInventory.getFromMob(this);
 		}
 		return;
@@ -168,7 +230,7 @@ public class EntityBefriendedHornet extends HornetEntity implements IBaubleHolde
 
 	@Override
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return null; // new YourInventoryMenuClass(containerId, playerInventory, container, this);
+		return new InventoryMenuHandItemsTwoBaubles(containerId, playerInventory, container, this);
 	}
 
 	/* Save and Load */
@@ -191,9 +253,9 @@ public class EntityBefriendedHornet extends HornetEntity implements IBaubleHolde
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(TemplateBefriendedMobPreset.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(EntityBefriendedHornet.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
-			.defineId(TemplateBefriendedMobPreset.class, EntityDataSerializers.BYTE);
+			.defineId(EntityBefriendedHornet.class, EntityDataSerializers.BYTE);
 
 	@Override
 	protected void defineSynchedData() {
@@ -206,14 +268,15 @@ public class EntityBefriendedHornet extends HornetEntity implements IBaubleHolde
 	
 	@Override
 	public HashSet<ItemStack> getBaubleStacks() {
-		// TODO Auto-generated method stub
-		return null;
+		HashSet<ItemStack> stacks = new HashSet<ItemStack>();
+		stacks.add(this.getAdditionalInventory().getItem(2));
+		stacks.add(this.getAdditionalInventory().getItem(3));
+		return stacks;
 	}
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		// TODO Auto-generated method stub
-		return null;
+		return DwmgBaubleHandlers.GENERAL;
 	}
 
 	protected HashMap<AttributeModifier, Attribute> existingBaubleModifiers = new HashMap<AttributeModifier, Attribute>();

@@ -45,8 +45,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.Befriende
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
@@ -54,7 +54,7 @@ import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
-import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuZombie;
+import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
 
 public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBefriendedMob, IBefriendedUndeadMob, IBaubleHolder {
@@ -190,7 +190,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 
 	@Override
 	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuZombie(containerId, playerInventory, container, this);
+		return new InventoryMenuEquipmentTwoBaubles(containerId, playerInventory, container, this);
 	}
 
 	/* Save and Load */
@@ -361,10 +361,10 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 
 	/* Inventory */
 
-	protected AdditionalInventoryWithEquipment additionalInventory = new AdditionalInventoryWithEquipment(getInventorySize(), this);
+	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
 
 	@Override
-	public AdditionalInventory getAdditionalInventory()
+	public BefriendedInventory getAdditionalInventory()
 	{
 		return additionalInventory;
 	}

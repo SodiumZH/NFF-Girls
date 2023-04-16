@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 
-public class AdditionalInventory extends SimpleContainer
+public class BefriendedInventory extends SimpleContainer
 {
 
 	// For BefriendedMob only, owner ref
@@ -35,14 +35,14 @@ public class AdditionalInventory extends SimpleContainer
 		updateOwner();
 	}
 	
-	public AdditionalInventory(int size)
+	public BefriendedInventory(int size)
 	{
 		super(size);
 		if (size < 0)
 			throw new NegativeArraySizeException();
 	}
 	
-	public AdditionalInventory(int size, IBefriendedMob owner)
+	public BefriendedInventory(int size, IBefriendedMob owner)
 	{
 		super(size);
 		this.owner = owner;
@@ -99,9 +99,10 @@ public class AdditionalInventory extends SimpleContainer
 	public void readFromTag(CompoundTag tag)
 	{
 		if (!tag.contains("size"))
-			throw new IllegalArgumentException("AdditionalInventory: reading from illegal tag.");
+			throw new IllegalArgumentException("BefriendedInventory: reading from illegal tag.");
 		if (tag.getInt("size") != this.getContainerSize())
-			throw new IllegalStateException("AdditionalInventory reading from NBT: size not matching.");
+			throw new IllegalStateException("BefriendedInventory reading from NBT: size not matching: this size: " 
+					+ this.getContainerSize() + ", nbt size: " + tag.getInt("size"));
 		
 		for (int i = 0; i < getContainerSize(); ++i)
 		{
@@ -113,25 +114,25 @@ public class AdditionalInventory extends SimpleContainer
 	}
 	
 	
-	public static AdditionalInventory makeFromTag(CompoundTag tag, IBefriendedMob owner)
+	public static BefriendedInventory makeFromTag(CompoundTag tag, IBefriendedMob owner)
 	{
-		AdditionalInventory inv = new AdditionalInventory(tag.getInt("size"), owner);
+		BefriendedInventory inv = new BefriendedInventory(tag.getInt("size"), owner);
 		inv.readFromTag(tag);
 		inv.updateOwner();
 		return inv;
 	}
 	
 	// make from tag without owner
-	public static AdditionalInventory makeFromTag(CompoundTag tag) 
+	public static BefriendedInventory makeFromTag(CompoundTag tag) 
 	{
 		return makeFromTag(tag, null);
 	}
 	
 	// Get a copy of this inventory
-	public AdditionalInventory getCopy()
+	public BefriendedInventory getCopy()
 	{
-		AdditionalInventory cpy;
-		cpy = new AdditionalInventory(this.getContainerSize(), owner);
+		BefriendedInventory cpy;
+		cpy = new BefriendedInventory(this.getContainerSize(), owner);
 		for (int i = 0; i < this.getContainerSize(); ++i)
 		{
 			cpy.setItem(i, this.getItem(i));
@@ -140,10 +141,10 @@ public class AdditionalInventory extends SimpleContainer
 	}
 	
 	// Copy the input inventory into this
-	public void copyFrom(AdditionalInventory from)
+	public void copyFrom(BefriendedInventory from)
 	{
 		if (from.getContainerSize() != this.getContainerSize())
-			throw new IllegalStateException("AdditionalInventory reading from other inventory: size not matching.");
+			throw new IllegalStateException("BefriendedInventory reading from other inventory: size not matching.");
 		changeOwner(from.owner);
 		for (int i = 0; i < getContainerSize(); ++i)
 		{
@@ -153,14 +154,14 @@ public class AdditionalInventory extends SimpleContainer
 	}
 	
 	@Deprecated
-	public AdditionalInventory toContainer() {
+	public BefriendedInventory toContainer() {
 		return this;
 	}
 	
 	// Make a new InventoryTag from container.
-	public static AdditionalInventory makeFromContainer(SimpleContainer container)
+	public static BefriendedInventory makeFromContainer(SimpleContainer container)
 	{
-		AdditionalInventory inv = new AdditionalInventory(container.getContainerSize());
+		BefriendedInventory inv = new BefriendedInventory(container.getContainerSize());
 		for (int i = 0; i < inv.getContainerSize(); ++i)
 		{
 			inv.setItem(i, container.getItem(i));

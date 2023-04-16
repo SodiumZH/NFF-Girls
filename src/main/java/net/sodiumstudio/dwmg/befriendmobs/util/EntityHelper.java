@@ -180,7 +180,7 @@ public class EntityHelper
 	}
 
 	public static void sendHeartParticlesToLivingDefault(LivingEntity entity, float heightOffset) {
-		sendParticlesToEntity(entity, ParticleTypes.HEART, entity.getBbHeight() - 0.5 + heightOffset, 0.5d, 10, 1d);
+		sendParticlesToEntity(entity, ParticleTypes.HEART, entity.getBbHeight() - 0.2d + heightOffset, 0.5d, 10, 1d);
 	}
 
 	public static void sendHeartParticlesToLivingDefault(LivingEntity entity) {
@@ -188,11 +188,11 @@ public class EntityHelper
 	}
 	
 	public static void sendGlintParticlesToLivingDefault(LivingEntity entity) {
-		sendParticlesToEntity(entity, ParticleTypes.HAPPY_VILLAGER, entity.getBbHeight() - 0.5, 0.5d, 20, 1d);
+		sendParticlesToEntity(entity, ParticleTypes.HAPPY_VILLAGER, entity.getBbHeight() - 0.2, 0.5d, 20, 1d);
 	}
 
 	public static void sendSmokeParticlesToLivingDefault(LivingEntity entity, float heightOffset) {
-		sendParticlesToEntity(entity, ParticleTypes.SMOKE, entity.getBbHeight() - 0.5 + heightOffset, 0.2d, 30, 0d);
+		sendParticlesToEntity(entity, ParticleTypes.SMOKE, entity.getBbHeight() - 0.2 + heightOffset, 0.2d, 30, 0d);
 	}
 
 	public static void sendSmokeParticlesToLivingDefault(LivingEntity entity) {
@@ -200,7 +200,7 @@ public class EntityHelper
 	}
 	
 	public static void sendAngryParticlesToLivingDefault(LivingEntity entity) {
-		sendParticlesToEntity(entity, ParticleTypes.ANGRY_VILLAGER, entity.getBbHeight() - 0.5, 0.3d, 5, 1d);
+		sendParticlesToEntity(entity, ParticleTypes.ANGRY_VILLAGER, entity.getBbHeight() - 0.2, 0.3d, 5, 1d);
 	}
 
 	// Get current swell value (private for Creeper class) as int. Max swell is 30.

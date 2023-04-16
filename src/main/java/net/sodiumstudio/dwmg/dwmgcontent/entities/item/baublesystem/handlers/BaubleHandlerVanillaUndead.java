@@ -16,26 +16,23 @@ import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlerAttributeModifiers;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 
-public class BaubleHandlerVanillaUndead extends BaubleHandler
+public class BaubleHandlerVanillaUndead extends BaubleHandlerGeneral
 {
 	
 	@Override
 	public HashSet<Item> getItemsAccepted() {
-		HashSet<Item> set = new HashSet<Item>();
+		HashSet<Item> set = super.getItemsAccepted();
 		set.add(DwmgItems.DEATH_CRYSTAL.get());
-		set.add(Items.NETHERITE_INGOT);
+
 		return set;
 	}
 
 	@Override
 	public void applyBaubleEffect(ItemStack bauble, IBaubleHolder owner) {
+		super.applyBaubleEffect(bauble, owner);
 		if (bauble.is(DwmgItems.DEATH_CRYSTAL.get()))
 		{
 			owner.addBaubleModifier(Attributes.ATTACK_DAMAGE, 2.0d, Operation.ADDITION);
-		}
-		if (bauble.is(Items.NETHERITE_INGOT))
-		{
-			owner.addBaubleModifier(Attributes.ARMOR, 2.0d, Operation.ADDITION);
 		}
 	}
 }

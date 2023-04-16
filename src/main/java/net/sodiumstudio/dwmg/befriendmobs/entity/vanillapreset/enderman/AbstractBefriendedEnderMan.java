@@ -72,8 +72,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedW
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedNearestAttackableTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 
 public abstract class AbstractBefriendedEnderMan extends Monster implements IBefriendedMob, NeutralMob
 {
@@ -118,7 +118,7 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0f);
 		Arrays.fill(this.handDropChances, 0f);
-		additionalInventory = new AdditionalInventory(getInventorySize());
+		befriendedInventory = new BefriendedInventory(getInventorySize());
 	}
 
 	@Override
@@ -605,11 +605,11 @@ public abstract class AbstractBefriendedEnderMan extends Monster implements IBef
 	// Inventory related
 	// Generally no need to modify unless noted
 
-	protected AdditionalInventory additionalInventory;
+	protected BefriendedInventory befriendedInventory;
 
 	@Override
-	public AdditionalInventory getAdditionalInventory() {
-		return additionalInventory;
+	public BefriendedInventory getAdditionalInventory() {
+		return befriendedInventory;
 	}
 
 	@Override

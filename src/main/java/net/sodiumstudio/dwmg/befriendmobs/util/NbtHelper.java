@@ -11,6 +11,7 @@ import net.minecraft.nbt.DoubleTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -35,6 +36,7 @@ public class NbtHelper {
 	// Return the ListTag containing the UUIDs.
 	public static ListTag serializeUUIDSet(CompoundTag tag, HashSet<UUID> set, String key)
 	{
+		tag.remove(key);
 		ListTag list = new ListTag();
 		for (UUID id : set)
 		{
@@ -71,6 +73,17 @@ public class NbtHelper {
 		return containsPlayer(inTag, player) && inTag.getCompound(player.getStringUUID()).contains(key);
 	}
 	
+	public static HashSet<Player> getAllPlayersContaining(CompoundTag inTag, Entity levelContext)
+	{
+		HashSet<Player> res = new HashSet<Player>();
+		for (Player player: levelContext.level.players())
+		{
+			if (containsPlayer(inTag, player))
+				res.add(player);
+		}
+		return res;
+	}
+	
 	// Get tag if a compound tag has a player-uuid-named subtag which contains subtag with given key
 	// Return null if not present
 	public static Tag getPlayerData(CompoundTag inTag, Player player, String key)
@@ -90,6 +103,11 @@ public class NbtHelper {
 		if (containsPlayerData(removeFrom, player, key))
 		{
 			removeFrom.getCompound(player.getStringUUID()).remove(key);
+		}
+		// When the data is the last one, remove the whole player data tag
+		if (removeFrom.getCompound(player.getStringUUID()).isEmpty())
+		{
+			removeFrom.remove(player.getStringUUID());
 		}
 	}
 	

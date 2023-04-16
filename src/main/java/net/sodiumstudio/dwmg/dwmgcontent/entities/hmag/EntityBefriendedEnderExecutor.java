@@ -59,7 +59,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.Befriende
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.AbstractBefriendedEnderMan;
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.BefriendedEnderManGoals;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AdditionalInventory;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
@@ -90,7 +90,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	{
 		super(type, worldIn);
 		this.xpReward = 0;
-		this.additionalInventory = new AdditionalInventory(getInventorySize());
+		this.befriendedInventory = new BefriendedInventory(getInventorySize());
 		this.modId = Dwmg.MOD_ID;
 	}
 

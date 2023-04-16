@@ -24,6 +24,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableAddHatredReason;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
+import net.sodiumstudio.dwmg.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.dwmg.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.dwmg.befriendmobs.events.ServerEntityTickEvent;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
@@ -203,4 +206,28 @@ public class DwmgEntityEvents
 		}
 	}
 	
+	@SubscribeEvent
+	public static void onBefriendableAddHatred(BefriendableAddHatredEvent event)
+	{
+		if (BefriendingTypeRegistry.contains(event.mob))
+		{
+			// Cancel add hatred if undead mob trying targeting to a player with undead affinity
+			// Setting target will also be canceled in BefriendMobs-EntityEvents
+			if (event.mob.getMobType() == MobType.UNDEAD
+				&& event.toAdd.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get())
+				&& event.reason == BefriendableAddHatredReason.SET_TARGET
+				)
+				
+			{
+				Wrapped<Boolean> inHatred = new Wrapped<Boolean>(false);
+				event.mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> 
+				{
+					inHatred.set(cap.isInHatred(event.toAdd));
+				});
+				if (!inHatred.get())
+					event.setCanceled(true);
+			}
+		}
+			
+	}
 }

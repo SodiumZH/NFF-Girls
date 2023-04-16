@@ -44,6 +44,7 @@ public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 	 * Returns whether execution should begin. You can also read and cache any state
 	 * necessary for execution in this handler as well.
 	 */
+	@Override
 	public boolean canUse() {
 		if (isDisabled())
 			return false;
@@ -77,6 +78,7 @@ public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 	/**
 	 * Execute a one shot task or start executing a continuous task
 	 */
+	@Override
 	public void start() {
 		getMob().setTarget(getMob().getLastHurtByMob());
 		this.targetMob = getMob().getTarget();

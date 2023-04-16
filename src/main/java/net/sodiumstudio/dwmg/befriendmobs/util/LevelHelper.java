@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.Blocks;
 public class LevelHelper
 {
 	
+	// Check if a block position is right under sun, i.e. can see sky, not raining, and is day
 	public static boolean isUnderSun(BlockPos pos, Entity levelContext)
 	{
 		return levelContext.level.canSeeSky(pos) && levelContext.level.isDay() && !levelContext.level.isRaining();

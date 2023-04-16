@@ -16,7 +16,7 @@ import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefrien
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
 import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiCreeperGirl;
-import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiSkeletonGirl;
+import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiBowSecWeaponOneBauble;
 
 public class InventoryMenuCreeper extends AbstractInventoryMenuBefriended
 {
@@ -102,7 +102,6 @@ public class InventoryMenuCreeper extends AbstractInventoryMenuBefriended
 				return !this.hasItem() && (stack.is(Items.GUNPOWDER) || stack.is(Items.TNT));
 			}
 		});
-
 	}
 
 	@Override

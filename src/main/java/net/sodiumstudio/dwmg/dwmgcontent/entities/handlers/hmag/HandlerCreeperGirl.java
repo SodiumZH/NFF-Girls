@@ -11,6 +11,7 @@ import net.minecraft.nbt.IntTag;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,15 +19,22 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
+import net.sodiumstudio.dwmg.befriendmobs.events.BefriendableTimerUpEvent;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.ReflectHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.RndUtil;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
 
+@Mod.EventBusSubscriber(modid = BefriendMobs.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HandlerCreeperGirl extends HandlerItemGivingProgress
 {
 	
@@ -37,6 +45,16 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 		return super.befriend(player, target);
 	}
 
+	@Override
+	public boolean additionalConditions(Player player, Mob mob)
+	{
+		Wrapped<Boolean> res = new Wrapped<Boolean>(false);
+		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> 
+		{
+			res.set(!cap.hasTimer("final_explosion_fail_cooldown"));
+		});
+		return res.get();
+	}
 	
 	@Override
 	public void serverTick(Mob mob)
@@ -57,12 +75,14 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 				}
 				
 				Player player = mob.level.getPlayerByUUID(l.getNbt().getUUID("final_explosion_player"));
+				// Fix reloading crash after quit after player die 
+				if (player == null)
+					return;
 				int tb = l.getNbt().getInt("final_explosion_ticks_before");
 				int ta = l.getNbt().getInt("final_explosion_ticks_after");
 				if (mob.distanceToSqr(player) >= 64.0f)
 				{
-					this.finalExplosionFailed(cg, player, false);
-					// TODO: add smoke particle effect here
+					this.interrupt(player, cg, false);
 				}
 				else if (tb > 0)
 				{
@@ -111,13 +131,12 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 					l.getNbt().remove("final_explosion_player");
 					l.getNbt().remove("final_explosion_ticks_before");
 					l.getNbt().remove("final_explosion_ticks_after");
-					NbtHelper.putPlayerData(IntTag.valueOf(0), l.getPlayerDataNbt(), player,
-							"already_given");
+					//l.setTimer("final_explosion_fail_cooldown", 60);	/* NOT WORKING NOW */
 					mob.setNoAi(false);
 					mob.setSwellDir(-1);
-					if (!isQuiet)
+					/*if (!isQuiet)
 						for (int i = 0; i < 5; ++i)
-							EntityHelper.sendAngryParticlesToLivingDefault(mob);
+							EntityHelper.sendAngryParticlesToLivingDefault(mob);*/
 					//Debug.printToScreen("Creeper Girl befriending failed.", player);
 			}	
 		});
@@ -131,7 +150,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 		mob.level.explode(mob, mob.getX(), mob.getY(), mob.getZ(), 12.0f, explosion$blockinteraction);
 		spawnLingeringCloud(mob);
 	}
-	
+	/*
 	@SubscribeEvent
 	public static void onPlayerDie(LivingDeathEvent event) {
 
@@ -161,7 +180,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 				});
 			}
 		}
-	}
+	}*/
 	
 	protected void spawnLingeringCloud(CreeperGirlEntity mob) {
 		Collection<MobEffectInstance> collection = mob.getActiveEffects();
@@ -189,7 +208,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 	protected double getProcValueToAdd(ItemStack item) {
 		double rnd = this.rnd.nextDouble();
 		if (item.is(ModItems.LIGHTNING_PARTICLE.get()))
-			return rnd < 0.1 ? 0.501 : (rnd < 0.4 ? 0.251 : 0.126);
+			return rnd < 0.1 ? 0.50 : (rnd < 0.4 ? 0.25 : 0.125);
 		if (item.is(Items.GUNPOWDER))
 			return RndUtil.rndRangedDouble(0.015, 0.03);
 		else if (item.is(Items.TNT))
@@ -199,22 +218,9 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 
 	@Override
 	public int getItemGivingCooldownTicks() {
-		// TODO Auto-generated method stub
 		return 100;
 	}
-	
-	@Override
-	public boolean additionalConditions(Player player, Mob mob)
-	{
-		return true;
-	}
 
-	@Override
-	public boolean shouldIgnoreHatred()
-	{
-		return true;
-	}
-	
 	@Override
 	public boolean isItemAcceptable(Item item) {
 		return item.equals(Items.GUNPOWDER)
@@ -235,5 +241,33 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 		super.interrupt(player, mob, isQuiet);
 		this.finalExplosionFailed((CreeperGirlEntity) mob, player, isQuiet);
 	}
+
+	// Duration of hatred added
+	// -1 means permanent
+	@Override
+	public int getHatredDurationTicks(BefriendableAddHatredReason reason)
+	{
+		return 200;
+	}
 	
+	@Override
+	public HashSet<BefriendableAddHatredReason> getAddHatredReasons() {
+		HashSet<BefriendableAddHatredReason> set = new HashSet<BefriendableAddHatredReason>();
+		set.add(BefriendableAddHatredReason.ATTACKED);
+		return set;
+	}
+	
+	@Override
+	public void onAttackProcessingPlayer(Mob mob, Player player)
+	{}
+	
+	@SubscribeEvent
+	public static void onTimerUp(BefriendableTimerUpEvent event)
+	{
+		if (event.getMob() != null && event.getMob().isAlive() && event.getMob() instanceof CreeperGirlEntity)
+		{
+			if (event.getKey().equals("final_explosion_fail_cooldown"))
+				event.getMob().setNoAi(false);			
+		}
+	}
 }

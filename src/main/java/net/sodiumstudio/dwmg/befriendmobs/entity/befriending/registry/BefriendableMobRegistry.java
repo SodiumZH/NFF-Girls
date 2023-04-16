@@ -20,6 +20,11 @@ public class BefriendableMobRegistry
 	
 	private HashMap<UUID, Mob> mobMap = new HashMap<UUID, Mob>();
 	
+	// If the registry is just cleaned.
+	// When cleaning set true, and when adding mob set false
+	// For reducing iterating all entries in runtime as this registry is read many times on tick 
+	private boolean isFreshlyCleaned = false;
+	
 	public static void put(Mob mob)
 	{
 		if (!mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
@@ -27,8 +32,10 @@ public class BefriendableMobRegistry
 		if (!mob.isAlive())
 			return;
 		REGISTRY.mobMap.put(mob.getUUID(), mob);
+		REGISTRY.isFreshlyCleaned = false;
 	}
-	
+
+	// No need to clean, just check the entry mob's validity
 	@Nullable
 	public static Mob get(UUID uuid)
 	{
@@ -39,6 +46,7 @@ public class BefriendableMobRegistry
 		else return REGISTRY.mobMap.get(uuid);
 	}
 	
+	// No need to clean, just check the entry mob's validity
 	public static boolean contains(UUID uuid)
 	{
 		if (!REGISTRY.mobMap.containsKey(uuid))
@@ -63,22 +71,27 @@ public class BefriendableMobRegistry
 		{
 			REGISTRY.mobMap.remove(uuid);
 		}
+		REGISTRY.isFreshlyCleaned = true;
 	}
 	
 	public static Set<UUID> allUUIDs()
 	{
-		clean();
+		if (!REGISTRY.isFreshlyCleaned)
+			clean();
 		return REGISTRY.mobMap.keySet();
 	}
 	
 	public static Collection<Mob> allMobs()
 	{
-		clean();
+		if (!REGISTRY.isFreshlyCleaned)
+			clean();
 		return REGISTRY.mobMap.values();
 	}
 	
 	public static HashSet<CBefriendableMob> allCaps()
 	{
+		if (!REGISTRY.isFreshlyCleaned)
+			clean();
 		HashSet<CBefriendableMob> set = new HashSet<CBefriendableMob>();
 		for (Mob mob: allMobs())
 		{

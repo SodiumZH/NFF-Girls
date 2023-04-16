@@ -9,6 +9,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.Befriendin
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerCreeperGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerEnderExecutor;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerHornet;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerHuskGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerSkeletonGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.handlers.hmag.HandlerWitherSkeletonGirl;
@@ -56,7 +57,7 @@ public class DwmgBefriendingTypes {
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.HORNET.get(),
 				DwmgEntityTypes.HMAG_HORNET.get(),
-				new HandlerWitherSkeletonGirl());
+				new HandlerHornet());
 	}
 	
 }
