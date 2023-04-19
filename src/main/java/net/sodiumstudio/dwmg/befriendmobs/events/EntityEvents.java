@@ -30,7 +30,7 @@ import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedChangeAiStateEvent;
-import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.AbstractBefriendingHandler;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendingHandler;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
@@ -345,7 +345,7 @@ public class EntityEvents
 			{
 				Mob mob = (Mob)living;
 				Player player = (Player)source;
-				AbstractBefriendingHandler handler = BefriendingTypeRegistry.getHandler(mob);
+				BefriendingHandler handler = BefriendingTypeRegistry.getHandler(mob);
 				if (handler.isInProcess(player, mob))
 				{
 					handler.onAttackedByProcessingPlayer(mob, player);
@@ -365,7 +365,7 @@ public class EntityEvents
 			{
 				Player player = (Player)living;
 				Mob mob = (Mob)source;
-				AbstractBefriendingHandler handler = BefriendingTypeRegistry.getHandler(mob);
+				BefriendingHandler handler = BefriendingTypeRegistry.getHandler(mob);
 				if (handler.isInProcess(player, mob))
 				{
 					handler.onAttackProcessingPlayer(mob, player);
@@ -405,6 +405,17 @@ public class EntityEvents
 				if (mob instanceof IBaubleHolder holder)
 				{
 					holder.updateBaubleEffects();
+				}
+				
+				// update befriended mob anchor position
+				if (mob instanceof IBefriendedMob b)
+				{
+					if (b.getAnchorPos() != null)
+					{
+						// Stop update when wandering
+						if (b.getAIState() != BefriendedAIState.WANDER)
+							b.updateAnchor();
+					}
 				}
 			}
 		}

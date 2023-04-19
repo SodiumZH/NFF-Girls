@@ -20,5 +20,6 @@
   "entity.dwmg.hmag_ender_executor": "Ender Executor",
   "entity.dwmg.hmag_stray_girl" : "Stray Girl",
   "entity.dwmg.hmag_wither_skeleton_girl" : "Wither Skeleton Girl",
-  "entity.dwmg.hmag_drowned_girl" : "Drowned Girl"
+  "entity.dwmg.hmag_drowned_girl" : "Drowned Girl",
+  "entity.dwmg.hmag_hornet" : "Hornet"
 }

@@ -7,12 +7,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.AbstractBefriendingHandler;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendingHandler;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 
-public abstract class HandlerItemGiving extends AbstractBefriendingHandler
+public abstract class HandlerItemGiving extends BefriendingHandler
 {
 	
 	protected Random rnd = new Random();

@@ -16,8 +16,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.IBefriendedAmphibious;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedAmphibious;
 
 public abstract class BefriendedAmphibiousGoals {
 

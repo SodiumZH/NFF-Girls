@@ -46,9 +46,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
@@ -64,7 +66,6 @@ import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuEnderExecutor;
@@ -93,7 +94,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 		this.befriendedInventory = new BefriendedInventory(getInventorySize());
 		this.modId = Dwmg.MOD_ID;
 	}
-
+	
 	public static Builder createAttributes() {
 		return EnderMan.createAttributes().add(Attributes.MAX_HEALTH, 120.0D).add(Attributes.MOVEMENT_SPEED, 0.3D).add(Attributes.ATTACK_DAMAGE, 8.0D).add(Attributes.ARMOR, 4.0D);
 	}
@@ -589,9 +590,16 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	public void setPreviousTarget(LivingEntity target) {
 		PreviousTarget = target;
 	}
-	
-	/* Inventory */
 
+	protected Vec3 anchorPos = new Vec3(0, 0, 0);	// This is not important as we initial it again in init()
+	@Override
+	public Vec3 getAnchorPos() {return anchorPos;}
+	
+	@Override
+	public void setAnchorPos(Vec3 pos) {anchorPos = new Vec3(pos.x, pos.y, pos.z);}
+	
+	@Override
+	public double getAnchoredStrollRadius()  {return 64.0d;}
 	
 	// ------------------ IBefriendedMob interface end ------------------ //
 

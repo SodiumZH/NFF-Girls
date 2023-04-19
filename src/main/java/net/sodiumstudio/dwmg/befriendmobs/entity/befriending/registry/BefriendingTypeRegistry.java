@@ -6,11 +6,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.AbstractBefriendingHandler;
-import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.DuplicatedRegistryEntryException;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendingHandler;
 
 // Define which type it will convert to after befriending for each befriendable mob
 public class BefriendingTypeRegistry {
@@ -19,15 +15,15 @@ public class BefriendingTypeRegistry {
 	{
 	};
 	
-	private static final BefriendingTypeRegistry REGISTRY = new BefriendingTypeRegistry(); 
+	protected static final BefriendingTypeRegistry REGISTRY = new BefriendingTypeRegistry(); 
 	
-	private static class Entry
+	protected static class Entry
 	{
 		public EntityType<? extends Mob> fromType = null;
 		public EntityType<? extends Mob> convertToType = null;
-		public AbstractBefriendingHandler handler = null;
+		public BefriendingHandler handler = null;
 		
-		public Entry(EntityType<? extends Mob> before, EntityType<? extends Mob> after, AbstractBefriendingHandler handler)
+		public Entry(EntityType<? extends Mob> before, EntityType<? extends Mob> after, BefriendingHandler handler)
 		{
 			this.fromType = before;
 			this.convertToType = after;
@@ -39,7 +35,7 @@ public class BefriendingTypeRegistry {
 
 	/* Register */
 	
-	public static void register(@Nonnull EntityType<? extends Mob> from, @Nonnull EntityType<? extends Mob> convertTo, @Nonnull AbstractBefriendingHandler handler, boolean override)
+	public static void register(@Nonnull EntityType<? extends Mob> from, @Nonnull EntityType<? extends Mob> convertTo, @Nonnull BefriendingHandler handler, boolean override)
 	{
 		for (Entry entry: REGISTRY.map)
 		{
@@ -60,7 +56,7 @@ public class BefriendingTypeRegistry {
 		REGISTRY.map.add(newEntry);
 	}
 	
-	public static void register(@Nonnull EntityType<? extends Mob> fromType, @Nonnull EntityType<? extends Mob> convertToType, @Nonnull AbstractBefriendingHandler handler)
+	public static void register(@Nonnull EntityType<? extends Mob> fromType, @Nonnull EntityType<? extends Mob> convertToType, @Nonnull BefriendingHandler handler)
 	{
 		register(fromType, convertToType, handler, false);
 	}
@@ -79,6 +75,7 @@ public class BefriendingTypeRegistry {
 		return null;
 	}
 	
+	// Get which type this mob should convert to (from type)
 	public static EntityType<? extends Mob> getConvertTo(EntityType<? extends Mob> fromType)
 	{
 		Entry entry = getEntryFromType(fromType);
@@ -87,13 +84,15 @@ public class BefriendingTypeRegistry {
 		else return null;
 	}
 	
+	// Get which type this mob should convert to (from mob)
 	@SuppressWarnings("unchecked")
 	public static EntityType<? extends Mob> getConvertTo(Mob fromMob)
 	{
 		return getConvertTo((EntityType<? extends Mob>) fromMob.getType());
 	}
 	
-	public static AbstractBefriendingHandler getHandler(EntityType<? extends Mob> fromType)
+	// Get which befriending handler this mob should use (from type)
+	public static BefriendingHandler getHandler(EntityType<? extends Mob> fromType)
 	{
 		Entry entry = getEntryFromType(fromType);
 		if (entry != null)
@@ -101,12 +100,14 @@ public class BefriendingTypeRegistry {
 		else return null;
 	}
 	
+	// Get which befriending handler this mob should use (from type)
 	@SuppressWarnings("unchecked")
-	public static AbstractBefriendingHandler getHandler(Mob fromMob)
+	public static BefriendingHandler getHandler(Mob fromMob)
 	{
 		return getHandler((EntityType<? extends Mob>) fromMob.getType());
 	}
 	
+	// Get if the type is befriendable (from type)
 	public static boolean contains(EntityType<? extends Mob> fromType)
 	{
 		for (Entry entry: REGISTRY.map)
@@ -119,10 +120,37 @@ public class BefriendingTypeRegistry {
 		return false;
 	}
 	
+	// Get if the type is befriendable (from mob)
 	@SuppressWarnings("unchecked")
 	public static boolean contains(Mob fromMob)
 	{
 		return contains((EntityType<? extends Mob>) fromMob.getType());
 	}
 	
+	public static EntityType<? extends Mob> getTypeBefore(EntityType<? extends Mob> befriendedType)
+	{
+		for (Entry entry: REGISTRY.map)
+		{
+			if (entry.convertToType.equals(befriendedType))
+			{
+				return entry.fromType;
+			}
+		}
+		throw new IllegalArgumentException("Type " + befriendedType.getDescriptionId() + "is not a befriended mob.");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static EntityType<? extends Mob> getTypeBefore(Mob befriendedMob)
+	{
+		EntityType<? extends Mob> befriendedType = (EntityType<? extends Mob>) befriendedMob.getType();
+		
+		for (Entry entry: REGISTRY.map)
+		{
+			if (entry.convertToType.equals(befriendedType))
+			{
+				return entry.fromType;
+			}
+		}
+		throw new IllegalArgumentException("Type " + befriendedType.getDescriptionId() + "is not a befriended mob.");
+	}	
 }

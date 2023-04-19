@@ -38,10 +38,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.sound.SoundEvent;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.IBefriendedAmphibious;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.BefriendedAmphibiousGoals;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
@@ -61,8 +64,6 @@ import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedAmphibious;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedDrownedTridentAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedInWaterFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
@@ -136,7 +137,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 		double d1 = pTarget.getY(0.3333333333333333D) - throwntrident.getY();
 		double d2 = pTarget.getZ() - this.getZ();
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-		throwntrident.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);	// Inaccuracy is fixed at hard mode (2)
+		throwntrident.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);	// Inaccuracy is fixed at hard mode (i.e. 2.0)
 		this.playSound(SoundEvents.DROWNED_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 		this.level.addFreshEntity(throwntrident);
 	}
@@ -150,6 +151,47 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 		map.put(ModItems.SOUL_POWDER.get(), 5.0f);
 		map.put(ModItems.SOUL_APPLE.get(), 15.0f);
 		return map;
+	}
+	
+	@Override
+	public InteractionResult mobInteract(Player player, InteractionHand hand)
+	{
+		if (!player.isShiftKeyDown())
+		{
+			if (player.getUUID().equals(getOwnerUUID())) {
+				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
+				{
+					// If this zombie is converted from a husk,
+					// it can be converted back by using a sponge to it
+					if (player.getItemInHand(hand).is(Items.SPONGE) && isFromZombie) {
+						ItemHelper.consumeOne(player.getItemInHand(hand));
+						this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
+						EntityBefriendedZombieGirl z = this.convertToZombie();
+						z.isFromHusk = this.isFromHusk;
+					} 
+					else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+					{
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					}
+					else if (hand == InteractionHand.MAIN_HAND)
+					{
+						switchAIState();
+					}	
+				}
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
+			} 
+			return InteractionResult.PASS;
+		}
+		else
+		{
+			if (player.getUUID().equals(getOwnerUUID()))
+			{
+				if (!player.level.isClientSide)
+					BefriendedHelper.openBefriendedInventory(player, this);
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
+			} 
+			return InteractionResult.PASS;
+		}
 	}
 	
 	@Override
@@ -387,6 +429,16 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 		return additionalInventory;
 	}
 
+	protected Vec3 anchorPos = new Vec3(0, 0, 0);	// This is not important as we initial it again in init()
+	@Override
+	public Vec3 getAnchorPos() {return anchorPos;}
+	
+	@Override
+	public void setAnchorPos(Vec3 pos) {anchorPos = new Vec3(pos.x, pos.y, pos.z);}
+	
+	@Override
+	public double getAnchoredStrollRadius()  {return 64.0d;}
+	
 	// ------------------ IBefriendedMob interface end ------------------ //
 
 	// ------------------ Misc ------------------ //

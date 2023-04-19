@@ -2,17 +2,22 @@ package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal;
 
 import net.minecraft.world.level.block.Blocks;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedAmphibious;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.IBefriendedAmphibious;
 
 // Superclass of all befriended goals about "pathfinding move to somewhere".
 public abstract class BefriendedMoveGoal extends BefriendedGoal
 {
+	
 	public boolean shouldAvoidSun = false;
 	public boolean isAmphibious = false;
 	public double speedModifier = 1.0d;
 	public boolean canFly = false;
+	public boolean canSwim = false;
+	public boolean canWalk = true;
 	public boolean canStepOntoLeaves = false;
+	protected boolean isFlying = false;
 	
+	/* additional modules */
 	
 	public BefriendedMoveGoal(IBefriendedMob mob) {
 		super(mob);
@@ -36,7 +41,15 @@ public abstract class BefriendedMoveGoal extends BefriendedGoal
 	// If amphibious, the mob must implement IBefriendedAmphibious interface.
 	public BefriendedMoveGoal amphibious()
 	{
+		canSwim = true;
 		isAmphibious = true;
+		return this;
+	}
+	
+	public BefriendedMoveGoal waterOnly()
+	{
+		canWalk = false;
+		canSwim = true;
 		return this;
 	}
 	
@@ -45,6 +58,15 @@ public abstract class BefriendedMoveGoal extends BefriendedGoal
 		canFly = true;
 		return this;
 	}
+	
+	public BefriendedMoveGoal flyOnly()
+	{
+		canWalk = false;
+		canSwim = false;
+		canFly = true;
+		return this;
+	}
+	
 	
 	public BefriendedMoveGoal canStepOntoLeaves()
 	{

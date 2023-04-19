@@ -19,11 +19,11 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.IBefriendedAmphibious;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.BefriendedMoveGoal;
 import net.sodiumstudio.dwmg.befriendmobs.util.LevelHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.MissingInterfaceException;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedAmphibious;
 
 /* Adjusted from vanilla FollowOwnerGoal for TameableAnimal */
 public class BefriendedFollowOwnerGoal extends BefriendedMoveGoal {

@@ -66,6 +66,9 @@ public class BefriendedHelper
 		NbtHelper.shiftNbtTag(nbt, "ai_state", aiStateKey);
 		NbtHelper.shiftNbtTag(nbt, "inventory_tag", inventoryKey);
 		// FIX END
+		// Mod ID
+		nbt.putString("befriended_mod_id", modId);
+		// Owner UUID
 		if (mob.getOwnerUUID() != null)
 			nbt.putUUID(ownerKey, mob.getOwnerUUID());
 		else
@@ -74,10 +77,24 @@ public class BefriendedHelper
 		mob.getAdditionalInventory().saveToTag(nbt, inventoryKey);
 	}
 
-	public static void readBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt, String modId) {
-		String ownerKey = modId + ":befriended_owner";
-		String aiStateKey = modId + ":befriended_ai_state";
-		String inventoryKey = modId + "befriended_additional_inventory";
+	@Deprecated	// Use version without modid input
+	public static void readBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt, String inModId)
+	{
+		readBefriendedCommonSaveData(mob, nbt);
+	}
+	
+	public static void readBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt) {
+		String modid = null;
+		if (nbt.contains("befriended_mod_id", NbtHelper.TagType.TAG_STRING.getID()))
+		{
+			modid = nbt.getString("befriended_mod_id");
+		}
+		// If the modid is not saved, skip this reading because the modid will be added on next save
+		else return;
+		String modId = nbt.getString("befriended_mod_id");
+		String ownerKey = modid + ":befriended_owner";
+		String aiStateKey = modid + ":befriended_ai_state";
+		String inventoryKey = modid + "befriended_additional_inventory";
 		// TEMP FIX
 		NbtHelper.shiftNbtTag(nbt, "owner", ownerKey);
 		NbtHelper.shiftNbtTag(nbt, "ai_state", aiStateKey);

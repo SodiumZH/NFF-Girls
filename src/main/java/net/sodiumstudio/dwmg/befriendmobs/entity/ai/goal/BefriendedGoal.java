@@ -2,8 +2,6 @@ package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal;
 
 import java.util.HashSet;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
@@ -83,13 +81,12 @@ public abstract class BefriendedGoal extends Goal {
 	
 	public boolean isDisabled()
 	{
-		return isBlocked || !allowedStates.contains(mob.getAIState());
+		return mob.getOwner() == null || isBlocked || !allowedStates.contains(mob.getAIState());
 	}
 	
-	@Deprecated // use mob.asMob() instead
-	public Mob getMob()
+	public IBefriendedMob getMob()
 	{
-		return mob.asMob();
+		return mob;
 	}
 	
 	public PathfinderMob getPathfinder()
