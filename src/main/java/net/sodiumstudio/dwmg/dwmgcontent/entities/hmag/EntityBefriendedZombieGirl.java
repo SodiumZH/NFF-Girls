@@ -9,6 +9,7 @@ import java.util.UUID;
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.ZombieGirlEntity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,9 +34,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
@@ -52,7 +55,6 @@ import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
@@ -359,6 +361,16 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		PreviousTarget = target;
 	}
 
+	protected Vec3 anchorPos = new Vec3(0, 0, 0);	// This is not important as we initial it again in init()
+	@Override
+	public Vec3 getAnchorPos() {return anchorPos;}
+	
+	@Override
+	public void setAnchorPos(Vec3 pos) {anchorPos = new Vec3(pos.x, pos.y, pos.z);}
+	
+	@Override
+	public double getAnchoredStrollRadius()  {return 64.0d;}
+	
 	/* Inventory */
 
 	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);

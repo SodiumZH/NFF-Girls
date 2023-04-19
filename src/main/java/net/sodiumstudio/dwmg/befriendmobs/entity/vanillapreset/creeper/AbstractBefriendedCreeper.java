@@ -38,6 +38,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
@@ -64,7 +65,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.INT);
 	protected static final EntityDataAccessor<Integer> DATA_SWELL_LAST_TICK= SynchedEntityData
 			.defineId(AbstractBefriendedCreeper.class, EntityDataSerializers.INT);
-	protected String modId;
+	public String modId;
 
 	public int maxSwell = 30;
 
@@ -477,6 +478,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	}
 	
 	
+	@Deprecated
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
 
@@ -486,6 +488,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		return false;
 	}
 
+	@Deprecated
 	@Override
 	public boolean onInteractionShift(Player player, InteractionHand hand) 
 	{
@@ -592,6 +595,16 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 		PreviousTarget = target;
 	}
 
+	protected Vec3 anchorPos = new Vec3(0, 0, 0);	// This is not important as we initial it again in init()
+	@Override
+	public Vec3 getAnchorPos() {return anchorPos;}
+	
+	@Override
+	public void setAnchorPos(Vec3 pos) {anchorPos = new Vec3(pos.x, pos.y, pos.z);}
+	
+	@Override
+	public double getAnchoredStrollRadius()  {return 64.0d;}
+	
 	/* Inventory */
 
 	// ------------------ IBefriendedMob interface end ------------------ //

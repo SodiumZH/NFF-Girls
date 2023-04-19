@@ -3,16 +3,16 @@ package net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry;
 import javax.annotation.Nonnull;
 
 import net.minecraft.world.entity.EntityType;
-import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.AbstractBefriendingHandler;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendingHandler;
 
 @Deprecated
 public class BefriendingTypeRegistryEntry {
 
 	public EntityType<?> fromType = null;
 	public EntityType<?> convertToType = null;
-	public Class<? extends AbstractBefriendingHandler> handlerClass = null;
+	public Class<? extends BefriendingHandler> handlerClass = null;
 	
-	public BefriendingTypeRegistryEntry(EntityType<?> before, EntityType<?> after, Class<? extends AbstractBefriendingHandler> handlerClass)
+	public BefriendingTypeRegistryEntry(EntityType<?> before, EntityType<?> after, Class<? extends BefriendingHandler> handlerClass)
 	{
 		this.fromType = before;
 		this.convertToType = after;

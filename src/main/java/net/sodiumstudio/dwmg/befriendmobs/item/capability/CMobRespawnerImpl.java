@@ -173,6 +173,7 @@ public class CMobRespawnerImpl implements CMobRespawner
 			if (mob instanceof IBefriendedMob b)
 			{
 				b.getAdditionalInventory().clearContent();
+				b.updateAnchor();
 				b.setInit();
 			}
 			//stack.shrink(1);

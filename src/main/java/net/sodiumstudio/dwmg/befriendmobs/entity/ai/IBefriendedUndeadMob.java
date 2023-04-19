@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.dwmgcontent.entities;
+package net.sodiumstudio.dwmg.befriendmobs.entity.ai;
 
 public interface IBefriendedUndeadMob
 {

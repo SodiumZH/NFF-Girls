@@ -82,8 +82,8 @@ public abstract class BefriendedTargetGoal extends TargetGoal
 		return (LivingEntity) mob;
 	}
 
-	public Mob getMob() {
-		return (Mob) mob;
+	public IBefriendedMob getMob() {
+		return mob;
 	}
 
 	public PathfinderMob getPathfinder() {

@@ -7,6 +7,8 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +19,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
@@ -27,6 +30,7 @@ import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefrien
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
+import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 
 public interface IBefriendedMob extends ContainerListener  {
@@ -49,13 +53,17 @@ public interface IBefriendedMob extends ContainerListener  {
 		}
 		this.setInventoryFromMob();
 		this.updateAttributes();
+		if (this.getAnchorPos() != null)
+		{
+			this.setAnchorPos(this.asMob().position());
+		}
 	}
 
 	public boolean hasInit();
 	
 	// Call this to label a mob initialized after reading nbt, copying from other, etc.
 	public void setInit();
-	
+
 	/* Ownership */
 	
 	// Get owner as player mob.
@@ -109,6 +117,35 @@ public interface IBefriendedMob extends ContainerListener  {
 	// Get the previous target after updating target.
 	// This function is only called on setting target. DO NOT CALL ANYWHERE ELSE!
 	public void setPreviousTarget(LivingEntity target);
+	
+	// Get the anchor pos that the mob won't stroll to far from it
+	// Keep null == disable anchor
+	public default Vec3 getAnchorPos() {return null;}
+	
+	public default void setAnchorPos(Vec3 pos) {}
+	
+	public default double getAnchoredStrollRadius()  {return 64.0d;}
+	
+	public default boolean isTooFarFromAnchor(Vec3 v)
+	{
+		Vec3 a = getAnchorPos();
+		if (a == null)
+			return false;
+		double dx = v.x - a.x;
+		double dz = v.z - a.z;
+		return dx * dx + dz * dz > getAnchoredStrollRadius() * getAnchoredStrollRadius();		
+	}
+	
+	public default boolean isTooFarFromAnchor(BlockPos pos)
+	{
+		return 	isTooFarFromAnchor(new Vec3(pos.getX(), pos.getY(), pos.getZ()));
+	}
+	
+	public default void updateAnchor()
+	{
+		if (getAnchorPos() != null)
+			setAnchorPos(asMob().position());
+	}
 	
 	/* Interaction */
 	
@@ -239,6 +276,7 @@ public interface IBefriendedMob extends ContainerListener  {
 	
 	/* Misc */
 	
+	@Deprecated	// Update in tick() or in bauble handler
 	public default void updateAttributes() {};
 
 	public default Mob asMob()
@@ -251,4 +289,12 @@ public interface IBefriendedMob extends ContainerListener  {
 		return this;
 	}
 
+	public default String getModId()
+	{
+		CompoundTag nbt = new CompoundTag();
+		this.asMob().addAdditionalSaveData(nbt);
+		if (nbt.contains("befriended_mod_id", NbtHelper.TagType.TAG_STRING.getID()))
+			return nbt.getString("befriended_mod_id");
+		else return "";
+	}
 }

@@ -62,7 +62,10 @@ public class BefriendedRandomStrollGoal extends BefriendedMoveGoal {
 			Vec3 vec3 = this.getPosition();
 			if (vec3 == null) {
 				return false;
-			} else {
+			} 
+			else if (vec3.y < mob.asMob().level.getMinBuildHeight() - 1)	// Too far from anchor
+				return false;
+			else {
 				this.wantedX = vec3.x;
 				this.wantedY = vec3.y;
 				this.wantedZ = vec3.z;
@@ -74,7 +77,20 @@ public class BefriendedRandomStrollGoal extends BefriendedMoveGoal {
 
 	@Nullable
 	protected Vec3 getPosition() {
-		return DefaultRandomPos.getPos(getPathfinder(), 10, 7);
+		Vec3 v = DefaultRandomPos.getPos(getPathfinder(), 10, 7);
+		if (v == null)
+			return null;
+		// Don't move too far away
+		int i = 0;
+		for (i = 0; i < 32; ++i)
+		{
+			if (v != null && !mob.isTooFarFromAnchor(v))
+				break;
+			v = DefaultRandomPos.getPos(getPathfinder(), 10, 7);
+		}
+		if (i >= 32)
+			return new Vec3(0, mob.asMob().level.getMinBuildHeight() - 100, 0);	// Label failed
+		else return v;
 	}
 
 	/**

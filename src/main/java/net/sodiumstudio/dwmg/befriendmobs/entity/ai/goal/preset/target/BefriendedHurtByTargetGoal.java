@@ -48,8 +48,8 @@ public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 	public boolean canUse() {
 		if (isDisabled())
 			return false;
-		LivingEntity lastHurt = getMob().getLastHurtByMob();
-		if (getMob().getLastHurtByMobTimestamp() != this.timestamp && lastHurt != null) 
+		LivingEntity lastHurt = mob.asMob().getLastHurtByMob();
+		if (mob.asMob().getLastHurtByMobTimestamp() != this.timestamp && lastHurt != null) 
 		{
 			if (lastHurt instanceof Player && mob.getOwner() != (Player)lastHurt) 
 				return false;
@@ -80,9 +80,9 @@ public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 	 */
 	@Override
 	public void start() {
-		getMob().setTarget(getMob().getLastHurtByMob());
-		this.targetMob = getMob().getTarget();
-		this.timestamp = getMob().getLastHurtByMobTimestamp();
+		mob.asMob().setTarget(mob.asMob().getLastHurtByMob());
+		this.targetMob = mob.asMob().getTarget();
+		this.timestamp = mob.asMob().getLastHurtByMobTimestamp();
 		this.unseenMemoryTicks = 300;
 		if (this.alertSameType) {
 			this.alertOthers();
@@ -93,14 +93,14 @@ public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 
 	protected void alertOthers() {
 		double d0 = this.getFollowDistance();
-		AABB aabb = AABB.unitCubeFromLowerCorner(getMob().position()).inflate(d0, 10.0D, d0);
-		List<? extends Mob> list = getMob().level.getEntitiesOfClass(getMob().getClass(), aabb,
+		AABB aabb = AABB.unitCubeFromLowerCorner(mob.asMob().position()).inflate(d0, 10.0D, d0);
+		List<? extends Mob> list = mob.asMob().level.getEntitiesOfClass(mob.asMob().getClass(), aabb,
 				EntitySelector.NO_SPECTATORS);
 
 		for (Mob other : list) {
 			boolean dontAlert = false;
 			// Other is not this, and doesn't have target
-			if (other == getMob() || other.getTarget() != null)
+			if (other == mob.asMob() || other.getTarget() != null)
 				dontAlert = true;
 			// Other isn't a tamable owned by other player
 			else if (other instanceof TamableAnimal tamable) {
@@ -113,7 +113,7 @@ public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 					dontAlert = true;
 			}
 			// Other isn't allied to the target
-			else if (other.isAlliedTo(getMob().getLastHurtByMob()))
+			else if (other.isAlliedTo(mob.asMob().getLastHurtByMob()))
 				dontAlert = true;
 			// Other's class isn't in ignore alert class list
 			else if (this.toIgnoreAlert != null) {
@@ -125,7 +125,7 @@ public class BefriendedHurtByTargetGoal extends BefriendedTargetGoal {
 				}
 			}
 			if (!dontAlert)
-				this.alertOther(other, getMob().getLastHurtByMob());
+				this.alertOther(other, mob.asMob().getLastHurtByMob());
 		}
 	}
 

@@ -116,6 +116,7 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_hornet").toString()));
 	
 	@SubscribeEvent

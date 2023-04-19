@@ -15,7 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.AbstractBefriendingHandler;
+import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendingHandler;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.events.BefriendableAddHatredEvent;
@@ -149,7 +149,7 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 	// Return if added hatred.
 	public default boolean addHatredWithReason(Player player, BefriendableAddHatredReason reason)
 	{
-		AbstractBefriendingHandler handler = BefriendingTypeRegistry.getHandler(getOwner());
+		BefriendingHandler handler = BefriendingTypeRegistry.getHandler(getOwner());
 		int ticks = handler.getHatredDurationTicks(reason);
 		if (handler.getAddHatredReasons() != null
 			&& handler.getAddHatredReasons().contains(reason) 

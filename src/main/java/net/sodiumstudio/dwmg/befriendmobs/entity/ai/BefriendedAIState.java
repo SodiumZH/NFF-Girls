@@ -5,7 +5,10 @@ import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException
 public enum BefriendedAIState {
 	WAIT(0),
 	FOLLOW(1),
-	WANDER(2);
+	WANDER(2),
+	CUSTOM_0(99),
+	CUSTOM_1(98),
+	CUSTOM_2(97);
 	
 	public static final Byte[] IDSET = {0, 1, 2, 3};
 	public final byte id;
@@ -22,10 +25,12 @@ public enum BefriendedAIState {
 	
 	public static BefriendedAIState fromID(byte id)
 	{
-		return id == 0 ? WAIT : (
-				id == 1 ? FOLLOW : 
-				id == 2 ? WANDER :
-					null);
+		for (BefriendedAIState state: BefriendedAIState.values())
+		{
+			if (state.id() == id)
+				return state;
+		}
+		return null;
 	}
 	
 	public static BefriendedAIState fromID(int id)

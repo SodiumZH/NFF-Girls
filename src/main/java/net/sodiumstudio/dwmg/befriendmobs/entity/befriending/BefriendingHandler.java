@@ -13,9 +13,9 @@ import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 
-public abstract class AbstractBefriendingHandler 
+public abstract class BefriendingHandler 
 {
-	public AbstractBefriendingHandler()
+	public BefriendingHandler()
 	{	
 	}
 
