@@ -122,7 +122,7 @@ public abstract class BefriendingHandler
 	// Execute when the mob added player into hatred list
 	// Fired in CBefriendableMob::addHatredWithReason and no need to manually invoke
 	// Interrupt by default
-	public void onAddingHatred(Mob mob, Player player)
+	public void onAddingHatred(Mob mob, Player player, BefriendableAddHatredReason reason)
 	{
 		if (isInProcess(player, mob))
 			interrupt(player, mob, false);

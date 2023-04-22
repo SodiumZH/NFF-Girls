@@ -161,7 +161,7 @@ public interface CBefriendableMob extends INBTSerializable<CompoundTag> {
 			if (!canceled)
 			{
 				addHatred(player, ticks);
-				handler.onAddingHatred(getOwner(), player);
+				handler.onAddingHatred(getOwner(), player, reason);
 				return true;
 			}
 		}

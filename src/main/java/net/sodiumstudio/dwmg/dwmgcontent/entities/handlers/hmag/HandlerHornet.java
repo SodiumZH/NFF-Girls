@@ -104,4 +104,11 @@ public class HandlerHornet extends HandlerItemGivingProgress
 			return 0;				
 		}
 	}
+	
+	public void onAddingHatred(Mob mob, Player player, BefriendableAddHatredReason reason)
+	{
+		if (reason != BefriendableAddHatredReason.ATTACKING)
+			super.onAddingHatred(mob, player, reason);
+	}
+	
 }
