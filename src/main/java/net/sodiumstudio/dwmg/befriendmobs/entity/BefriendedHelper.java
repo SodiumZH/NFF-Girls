@@ -60,11 +60,12 @@ public class BefriendedHelper
 	public static void addBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt, String modId) {		
 		String ownerKey = modId + ":befriended_owner";
 		String aiStateKey = modId + ":befriended_ai_state";
-		String inventoryKey = modId + "befriended_additional_inventory";
+		String inventoryKey = modId + ":befriended_additional_inventory";
 		// TEMP FIX
 		NbtHelper.shiftNbtTag(nbt, "owner", ownerKey);
 		NbtHelper.shiftNbtTag(nbt, "ai_state", aiStateKey);
 		NbtHelper.shiftNbtTag(nbt, "inventory_tag", inventoryKey);
+		NbtHelper.shiftNbtTag(nbt, "dwmgbefriended_additional_inventory", inventoryKey);	// 1.18.2-snapshot-7 & 1.19.2-snapshot-8 bug: missing colon in key
 		// FIX END
 		// Mod ID
 		nbt.putString("befriended_mod_id", modId);
@@ -88,17 +89,19 @@ public class BefriendedHelper
 		if (nbt.contains("befriended_mod_id", NbtHelper.TagType.TAG_STRING.getID()))
 		{
 			modid = nbt.getString("befriended_mod_id");
-		}
-		// If the modid is not saved, skip this reading because the modid will be added on next save
-		else return;
+		}		
+		
+		else modid = "dwmg";	// Porting from 1.18.2-s6 & 1.18.2-s7
+		
 		String modId = nbt.getString("befriended_mod_id");
 		String ownerKey = modid + ":befriended_owner";
 		String aiStateKey = modid + ":befriended_ai_state";
-		String inventoryKey = modid + "befriended_additional_inventory";
+		String inventoryKey = modid + ":befriended_additional_inventory";
 		// TEMP FIX
 		NbtHelper.shiftNbtTag(nbt, "owner", ownerKey);
 		NbtHelper.shiftNbtTag(nbt, "ai_state", aiStateKey);
 		NbtHelper.shiftNbtTag(nbt, "inventory_tag", inventoryKey);
+		NbtHelper.shiftNbtTag(nbt, "dwmgbefriended_additional_inventory", inventoryKey);
 		// FIX END
 		UUID uuid = nbt.contains(ownerKey) ? nbt.getUUID(ownerKey) : null;	
 		try {
