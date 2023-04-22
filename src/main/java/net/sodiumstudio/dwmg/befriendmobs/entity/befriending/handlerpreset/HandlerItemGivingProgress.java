@@ -33,11 +33,13 @@ public abstract class HandlerItemGivingProgress extends HandlerItemGiving{
 			if (!player.isShiftKeyDown() 
 					&& (isItemAcceptable(player.getMainHandItem()) || player.getMainHandItem().is(Items.DEBUG_STICK)) 
 					&& args.isMainHand() 
+					&& !(target.isPassenger() && this.shouldBlockOnRiding())
 					&& additionalConditions(player, target)) {
 				// Block if in hatred
 				if (l.isInHatred(player) && !shouldIgnoreHatred()) {
 					sendParticlesOnHatred(target);
-					Debug.printToScreen("Unable to befriend: in hatred list.", player, target);
+					Debug.printToScreen("Hatred cooldown: " + Integer.toString(args.asCap().getHatredDuration(player) / 20) + " s."
+							, player, target);
 					result.setHandled();
 
 				}

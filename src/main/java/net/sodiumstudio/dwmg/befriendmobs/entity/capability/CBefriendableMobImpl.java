@@ -70,6 +70,7 @@ public class CBefriendableMobImpl implements CBefriendableMob
 			cachedHatred.add(player.getUUID());
 			NbtHelper.serializeUUIDSet(getNbt(), cachedHatred, "hatred");			
 			setPlayerTimer(player, "in_hatred", ticks);	
+			Debug.printToScreen("Mob added hatred " + Integer.toString(ticks / 20) + " s.", player);
 		}
 	}
 	

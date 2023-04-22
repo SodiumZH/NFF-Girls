@@ -45,4 +45,10 @@ public abstract class HandlerItemGiving extends BefriendingHandler
 		EntityHelper.sendHeartParticlesToLivingDefault(target);
 	}
 	
+	// If true, disable actions if the mob is a passenger
+	public boolean shouldBlockOnRiding()
+	{
+		return true;
+	}
+	
 }
