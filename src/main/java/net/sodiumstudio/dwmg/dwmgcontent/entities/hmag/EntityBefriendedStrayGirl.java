@@ -229,7 +229,10 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IBefri
 	
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
-
+		// Porting from 1.18-s7 & 1.19-s8 bug: missing owner uuid in nbt. Generally this shouldn't be called
+		if (getOwner() == null)
+			this.setOwner(player);
+		// Porting solution end
 		if (player.getUUID().equals(getOwnerUUID())) {
 			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
 			{

@@ -161,6 +161,10 @@ public class EntityBefriendedHornet extends HornetEntity implements IBaubleHolde
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{
+		// Porting from 1.18-s7 & 1.19-s8 bug: missing owner uuid in nbt. Generally this shouldn't be called
+		if (getOwner() == null)
+			this.setOwner(player);
+		// Porting solution end
 		if (!player.isShiftKeyDown())
 		{
 			if (player.getUUID().equals(getOwnerUUID())) {
