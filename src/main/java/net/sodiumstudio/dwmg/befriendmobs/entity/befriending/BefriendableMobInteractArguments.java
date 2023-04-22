@@ -94,6 +94,11 @@ public class BefriendableMobInteractArguments {
 			execInternal(consumer);
 	}
 	
-
+	// Get target mob as CBefriendableMob capability
+	public CBefriendableMob asCap()
+	{
+		return CBefriendableMob.getCap(target);
+		
+	}
 	
 }

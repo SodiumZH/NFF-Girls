@@ -369,9 +369,10 @@ public class EntityEvents
 				{
 					handler.onAttackProcessingPlayer(mob, player);
 				}
-				living.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) ->
+				mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) ->
 				{
-					cap.addHatredWithReason(player, BefriendableAddHatredReason.ATTACKING);
+					if (event.getAmount() > 0)
+						cap.addHatredWithReason(player, BefriendableAddHatredReason.ATTACKING);
 				});
 			}
 		}
