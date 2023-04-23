@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraftforge.common.MinecraftForge;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
+import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 
 public interface CAttributeMonitor {
 
@@ -17,7 +18,9 @@ public interface CAttributeMonitor {
 	
 	public default CAttributeMonitor listen(Attribute attribute)
 	{
-		getListenList().put(Registry.ATTRIBUTE.getKey(attribute).toString(), getOwner().getAttributeValue(attribute));
+		// Use NaN to label an attribute position before entity attributes creation
+		double val = getOwner().getAttributes() == null ? Double.NaN : getOwner().getAttributeValue(attribute);
+		getListenList().put(Registry.ATTRIBUTE.getKey(attribute).toString(), val);
 		return this;
 	}
 	
@@ -26,11 +29,16 @@ public interface CAttributeMonitor {
 		for (String key: getListenList().keySet())
 		{
 			Attribute attr = Registry.ATTRIBUTE.get(new ResourceLocation(key));
-			if (attr == null)
-				continue;
 			double oldVal = getListenList().get(key);
-			double newVal = getOwner().getAttributeValue(attr);			
-			if (oldVal - newVal > 0.0000001 || oldVal - newVal < -0.0000001)
+			double newVal;
+			if (attr == null)
+				newVal = Double.NaN;
+			else newVal	= getOwner().getAttributeValue(attr);	
+			// NaN indicates the value is not available yet, so don't post event but still update value
+			// After attribute is created the value will update to non-NaN
+			if (!Double.isNaN(oldVal)
+				&& !Double.isNaN(newVal)
+				&& (oldVal - newVal > 0.0000001 || oldVal - newVal < -0.0000001))
 			{
 				MinecraftForge.EVENT_BUS.post(new LivingAttributeValueChangeEvent(
 						getOwner(), attr, oldVal, newVal));
@@ -39,13 +47,16 @@ public interface CAttributeMonitor {
 		}
 	}
 	
-	public static void listen(LivingEntity living, Attribute attr)
+	public static CAttributeMonitor listen(LivingEntity living, Attribute attr)
 	{
-		if (!living.getCapability(BefMobCapabilities.CAP_ATTRIBUTE_MONITOR).isPresent())
-			throw new IllegalStateException("Living entity missing attribute monitor capability.");
-		living.getCapability(BefMobCapabilities.CAP_ATTRIBUTE_MONITOR).ifPresent((cap) -> 
+		Wrapped<CAttributeMonitor> cap = new Wrapped<CAttributeMonitor>(null);
+		living.getCapability(BefMobCapabilities.CAP_ATTRIBUTE_MONITOR).ifPresent((c) -> 
 		{
-			cap.listen(attr);
+			cap.set(c);
+			c.listen(attr);
 		});
+		if (cap.get() != null)
+			return cap.get();
+		else throw new IllegalStateException("Living entity missing attribute monitor capability.");
 	}
 }

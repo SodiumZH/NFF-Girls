@@ -391,7 +391,12 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	// ------------------ IBefriendedMob interface end ------------------ //
 	
 	// ------------------ Misc ------------------ //
-
+	
+	@Override
+	public String getModId() {
+		return Dwmg.MOD_ID;
+	}
+	
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;

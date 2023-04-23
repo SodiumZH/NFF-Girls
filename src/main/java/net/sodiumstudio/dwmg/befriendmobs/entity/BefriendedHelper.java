@@ -52,12 +52,19 @@ public class BefriendedHelper
 
 	/* Save & Load */
 
+	@Deprecated
+	public static void addBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt, String modId) {		
+		addBefriendedCommonSaveData(mob, nbt);
+	}
+
 	// This will read owner, AI state and additional inventory
 	// TEMPORARY: FIX NBT FOR KEY CHANGES
 	// "owner -> "$modid:befriended_owner"
 	// "ai_state" -> "$modid:befriended_ai_state"
 	// "inventory_tag" -> "$modid:befriended_additional_inventory"
-	public static void addBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt, String modId) {		
+	public static void addBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt)
+	{
+		String modId = mob.getModId();
 		String ownerKey = modId + ":befriended_owner";
 		String aiStateKey = modId + ":befriended_ai_state";
 		String inventoryKey = modId + ":befriended_additional_inventory";
@@ -77,7 +84,7 @@ public class BefriendedHelper
 		nbt.putByte(aiStateKey, mob.getAIState().id());
 		mob.getAdditionalInventory().saveToTag(nbt, inventoryKey);
 	}
-
+	
 	@Deprecated	// Use version without modid input
 	public static void readBefriendedCommonSaveData(IBefriendedMob mob, CompoundTag nbt, String inModId)
 	{

@@ -446,7 +446,12 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IBefri
 	// ------------------ IBefriendedMob interface end ------------------ //
 
 	// ------------------ Misc ------------------ //
-
+	
+	@Override
+	public String getModId() {
+		return Dwmg.MOD_ID;
+	}
+	
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
