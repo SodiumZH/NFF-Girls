@@ -15,5 +15,6 @@ public class DwmgBaubleHandlers {
 	public static final BaubleHandler VANILLA_UNDEAD = new BaubleHandlerVanillaUndead();
 	public static final BaubleHandler ENDER_EXECUTOR = new BaubleHandlerEnderExecutor();
 	public static final BaubleHandler DROWNED = new BaubleHandlerDrowned();
+	
 
 }
