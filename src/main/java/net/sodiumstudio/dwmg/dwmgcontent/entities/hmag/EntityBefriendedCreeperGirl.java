@@ -338,6 +338,11 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	// Misc
 	
 	@Override
+	public String getModId() {
+		return Dwmg.MOD_ID;
+	}
+	
+	@Override
 	public double getMyRidingOffset()
 	{
 		return -0.45D;

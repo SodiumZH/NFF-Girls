@@ -446,7 +446,11 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	// ------------------ IBefriendedMob interface end ------------------ //
 
 	// ------------------ Misc ------------------ //
-
+	
+	@Override
+	public String getModId() {
+		return Dwmg.MOD_ID;
+	}
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;

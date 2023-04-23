@@ -9,12 +9,16 @@ import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -31,6 +35,7 @@ import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.ReflectHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 
 public interface IBefriendedMob extends ContainerListener  {
@@ -289,12 +294,6 @@ public interface IBefriendedMob extends ContainerListener  {
 		return this;
 	}
 
-	public default String getModId()
-	{
-		CompoundTag nbt = new CompoundTag();
-		this.asMob().addAdditionalSaveData(nbt);
-		if (nbt.contains("befriended_mod_id", NbtHelper.TagType.TAG_STRING.getID()))
-			return nbt.getString("befriended_mod_id");
-		else return "";
-	}
+	public String getModId();
+	
 }

@@ -55,6 +55,7 @@ import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithHandI
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.template.TemplateBefriendedMobPreset;
+import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.HmagFlyingGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuHandItemsTwoBaubles;
@@ -396,7 +397,12 @@ public class EntityBefriendedHornet extends HornetEntity implements IBaubleHolde
 	// ------------------ IBefriendedMob interface end ------------------ //
 
 	// ------------------ Misc ------------------ //
-
+	
+	@Override
+	public String getModId() {
+		return Dwmg.MOD_ID;
+	}
+	
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;

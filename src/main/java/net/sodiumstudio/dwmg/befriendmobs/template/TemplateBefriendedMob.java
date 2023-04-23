@@ -10,9 +10,9 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,6 +25,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
 
 // This is a template for befriended mob class.
 // You may copy-paste the code below to your class and modify at places labeled by /*...*/.
@@ -51,44 +52,16 @@ public class TemplateBefriendedMob /* Your mob class */ extends PathfinderMob /*
 	}
 
 	// Initialization end
-	
-	// Attributes
-	
-	@Override
-	public void updateAttributes() {
-		/* Update attributes here */
-		/* It will auto-called on initialization and container update. */
-		
-	}
-	
+
 	// Interaction
 	
 	@Override
-	public boolean onInteraction(Player player, InteractionHand hand) {
-
-		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide()) 
-			{
-				switchAIState();
-			}
-			return true;
-		}
-			/* Other actions */
-		return false;
-	}
-
-	@Override
-	public boolean onInteractionShift(Player player, InteractionHand hand) 
+	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{
-		if (player.getUUID().equals(getOwnerUUID())) {
-	
-			if (hand.equals(InteractionHand.MAIN_HAND))
-				BefriendedHelper.openBefriendedInventory(player, this);
-			return true;
-		}
-		/* Other actions... */
-		return false;
+		/* Do something... */
+		return InteractionResult.PASS;	/* Change to the real result */
 	}
+
 
 	// Interaction end
 	
@@ -150,7 +123,6 @@ public class TemplateBefriendedMob /* Your mob class */ extends PathfinderMob /*
 		this.setInit();
 	}
 
-
 	// Data sync 
 
 	// By default owner uuid and ai state need to sync
@@ -159,7 +131,7 @@ public class TemplateBefriendedMob /* Your mob class */ extends PathfinderMob /*
 			.defineId(TemplateBefriendedMob.class/* This class */, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
 			.defineId(TemplateBefriendedMob.class/* This class */, EntityDataSerializers.BYTE);
-	/* More data to sync */
+	/* More data to sync... */
 
 	@Override
 	protected void defineSynchedData() {
@@ -170,6 +142,16 @@ public class TemplateBefriendedMob /* Your mob class */ extends PathfinderMob /*
 	}
 
 	// Data sync end 
+	
+	// Misc
+
+	@Override
+	public String getModId() {
+		throw new UnimplementedException("Missing Mod ID");
+	}
+
+
+	
 	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
@@ -256,7 +238,6 @@ public class TemplateBefriendedMob /* Your mob class */ extends PathfinderMob /*
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
 
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //

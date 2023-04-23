@@ -385,6 +385,10 @@ public class EntityEvents
 	{
 		if (!event.getEntity().level.isClientSide)
 		{
+			event.getEntity().getCapability(BefMobCapabilities.CAP_ATTRIBUTE_MONITOR).ifPresent((cap) -> 
+			{
+				cap.update();
+			});
 			if (event.getEntity() instanceof Mob mob)
 			{
 				// update befriendable mob timers

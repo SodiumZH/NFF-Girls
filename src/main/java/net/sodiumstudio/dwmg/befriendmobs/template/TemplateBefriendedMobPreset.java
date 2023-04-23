@@ -37,6 +37,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.Befriende
 import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
+import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 
 public class TemplateBefriendedMobPreset extends Monster implements IBefriendedMob {
@@ -102,41 +103,44 @@ public class TemplateBefriendedMobPreset extends Monster implements IBefriendedM
 	}
 	
 	@Override
-	public boolean onInteraction(Player player, InteractionHand hand) {
-
+	public InteractionResult mobInteract(Player player, InteractionHand hand)
+	{
 		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide()) 
+			// For normal interaction
+			if (!player.isShiftKeyDown())
 			{
-				/* Put checks before healing item check */
-				/* if (....)
-				 {
-				 	....
-				 }
-				else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) {}
-				// The function above returns PASS when the items are not correct. So when not PASS it should stop here
-				else if (hand == InteractionHand.OFF_HAND)
+				if (!player.level.isClientSide()) 
 				{
-					switchAIState();
+					/* Put checks before healing item check */
+					/* if (....)
+					 {
+					 	....
+					 }
+					else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
+					else if (hand == InteractionHand.OFF_HAND)
+					{
+						switchAIState();
+					}
+					// Here it's main hand but no interaction. Return pass to enable off hand interaction.
+					else return InteractionResult.PASS;
 				}
-				// Here it's main hand but no interaction. Return false to enable off hand interaction.
-				else return false;
+				// Interacted
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
-			// Interacted
-			return true;
+			// For interaction with shift key down
+			else
+			{
+				// Open inventory and GUI
+				BefriendedHelper.openBefriendedInventory(player, this);
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
+			}
 		} 
-		return false;
+		// Always pass when not owning this mob
+		return InteractionResult.PASS;
 	}
-
-	@Override
-	public boolean onInteractionShift(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID())) {
-			// Open inventory and GUI
-			BefriendedHelper.openBefriendedInventory(player, this);
-			return true;
-		}
-		return false;
-	}
-
+	
 	/* Inventory */
 
 	// This enables mob armor and hand items by default.
@@ -163,6 +167,7 @@ public class TemplateBefriendedMobPreset extends Monster implements IBefriendedM
 		}
 	}
 
+	@Override
 	public void setInventoryFromMob()
 	{
 		if (!this.level.isClientSide) {
@@ -194,6 +199,13 @@ public class TemplateBefriendedMobPreset extends Monster implements IBefriendedM
 		setInit();
 	}
 
+	// Misc
+	
+	// Indicates which mod this mob belongs to
+	@Override
+	public String getModId() {
+		throw new UnimplementedException("Missing Mod ID");	/* Set to your mod id */
+	}
 	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
