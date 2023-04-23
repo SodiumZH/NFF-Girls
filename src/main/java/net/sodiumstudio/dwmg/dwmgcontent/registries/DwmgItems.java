@@ -1,5 +1,8 @@
 package net.sodiumstudio.dwmg.dwmgcontent.registries;
 
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.ChorusFruitItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -46,8 +49,31 @@ public class DwmgItems {
 	public static final RegistryObject<Item> SOUL_CAKE_SLICE = regItem("soul_cake_slice", new Item.Properties().food(DwmgFoodProperties.SOUL_CAKE_SLICE).rarity(Rarity.UNCOMMON));
 	public static final RegistryObject<Item> ENDERBERRY = ITEMS.register("enderberry", () -> new ChorusFruitItem(new Item.Properties().tab(TAB).food(DwmgFoodProperties.ENDERBERRY).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> ENDER_PIE = ITEMS.register("ender_pie", () -> new Item(new Item.Properties().tab(TAB).food(DwmgFoodProperties.ENDER_PIE).rarity(Rarity.RARE)));
-
 	
+	// Equipment
+	/*
+	public static final RegistryObject<Item> SUNHAT = ITEMS.register("sunhat", () -> new ArmorItem(
+			ArmorMaterials.LEATHER,
+			EquipmentSlot.HEAD,
+			new Item.Properties().tab(TAB).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> INSOMNIA_HELMET = ITEMS.register("insomnia_helmet", () -> new ArmorItem(
+			ArmorMaterials.LEATHER,
+			EquipmentSlot.HEAD,
+			new Item.Properties().tab(TAB).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> INSOMNIA_CHESTPLATE = ITEMS.register("insomnia_chestplate", () -> new ArmorItem(
+			ArmorMaterials.LEATHER,
+			EquipmentSlot.CHEST,
+			new Item.Properties().tab(TAB).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> INSOMNIA_LEGGINGS = ITEMS.register("insomnia_leggings", () -> new ArmorItem(
+			ArmorMaterials.LEATHER,
+			EquipmentSlot.LEGS,
+			new Item.Properties().tab(TAB).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> INSOMNIA_BOOTS = ITEMS.register("insomnia_boots", () -> new ArmorItem(
+			ArmorMaterials.LEATHER,
+			EquipmentSlot.FEET,
+			new Item.Properties().tab(TAB).rarity(Rarity.UNCOMMON)));*/
+	//
+			
 	/* Item register end */
 	
 	public static void register(IEventBus eventBus){
