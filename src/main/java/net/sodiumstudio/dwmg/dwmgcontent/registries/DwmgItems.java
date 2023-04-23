@@ -49,7 +49,11 @@ public class DwmgItems {
 	public static final RegistryObject<Item> SOUL_CAKE_SLICE = regItem("soul_cake_slice", new Item.Properties().food(DwmgFoodProperties.SOUL_CAKE_SLICE).rarity(Rarity.UNCOMMON));
 	public static final RegistryObject<Item> ENDERBERRY = ITEMS.register("enderberry", () -> new ChorusFruitItem(new Item.Properties().tab(TAB).food(DwmgFoodProperties.ENDERBERRY).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> ENDER_PIE = ITEMS.register("ender_pie", () -> new Item(new Item.Properties().tab(TAB).food(DwmgFoodProperties.ENDER_PIE).rarity(Rarity.RARE)));
-	
+	// Baubles
+	public static final RegistryObject<Item> SOUL_AMULET = regItem("soul_amulet", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
+	public static final RegistryObject<Item> RESISTANCE_AMULET = regItem("resistance_amulet", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
+	public static final RegistryObject<Item> HEALING_JADE = regItem("healing_jade", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
+	public static final RegistryObject<Item> POISONOUS_THORN = regItem("poisonous_thorn", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
 	// Equipment
 	/*
 	public static final RegistryObject<Item> SUNHAT = ITEMS.register("sunhat", () -> new ArmorItem(

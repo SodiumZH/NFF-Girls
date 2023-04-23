@@ -93,7 +93,6 @@ public class BefriendedHelper
 		
 		else modid = "dwmg";	// Porting from 1.18.2-s6 & 1.18.2-s7
 		
-		String modId = nbt.getString("befriended_mod_id");
 		String ownerKey = modid + ":befriended_owner";
 		String aiStateKey = modid + ":befriended_ai_state";
 		String inventoryKey = modid + ":befriended_additional_inventory";

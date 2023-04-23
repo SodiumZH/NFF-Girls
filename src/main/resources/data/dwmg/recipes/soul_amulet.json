@@ -1,0 +1,35 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"ISF",
+	"SCS",
+	"ISI"	
+	],
+	
+	"key":{ 
+	
+		"I":{ 
+		"tag": "forge:nuggets/nether_star"
+		},
+		
+		"S":{ 
+		"tag": "forge:ingots/netherite"
+		},
+		
+		"F":{ 
+		"item": "hmag:necrofiber"
+		},
+		
+		"C":{ 
+		"item": "dwmg:death_crystal"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "dwmg:soul_amulet",
+		"count": 1
+	}
+}

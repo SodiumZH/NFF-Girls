@@ -22,17 +22,17 @@ public class BaubleHandlerVanillaUndead extends BaubleHandlerGeneral
 	@Override
 	public HashSet<Item> getItemsAccepted() {
 		HashSet<Item> set = super.getItemsAccepted();
-		set.add(DwmgItems.DEATH_CRYSTAL.get());
-
+		set.add(DwmgItems.SOUL_AMULET.get());
 		return set;
 	}
 
 	@Override
 	public void applyBaubleEffect(ItemStack bauble, IBaubleHolder owner) {
 		super.applyBaubleEffect(bauble, owner);
-		if (bauble.is(DwmgItems.DEATH_CRYSTAL.get()))
+		if (bauble.is(DwmgItems.SOUL_AMULET.get()))
 		{
-			owner.addBaubleModifier(Attributes.ATTACK_DAMAGE, 2.0d, Operation.ADDITION);
+			owner.addBaubleModifier(Attributes.MAX_HEALTH, 10.0d, Operation.ADDITION);
+			owner.addBaubleModifier(Attributes.ATTACK_DAMAGE, 3.0d, Operation.ADDITION);
 		}
 	}
 }

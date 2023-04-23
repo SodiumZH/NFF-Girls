@@ -1,0 +1,31 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"NND",
+	"DED",
+	"DNN"	
+	],
+	
+	"key":{ 
+	
+		"N":{
+		"tag": "forge:ingots/netherite"
+		},
+		
+		"D":{ 
+		"tag": "forge:gems/diamond"
+		},
+		
+		"E":{ 
+		"tag": "forge:gems/emerald"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "dwmg:resistance_amulet",
+		"count": 1
+	}
+}

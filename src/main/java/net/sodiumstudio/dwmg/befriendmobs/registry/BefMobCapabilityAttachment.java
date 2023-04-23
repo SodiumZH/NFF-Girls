@@ -15,6 +15,7 @@ import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendableMobRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
+import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CAttributeMonitorProvider;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CBefriendableMobProvider;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CHealingHandlerProvider;
 import net.sodiumstudio.dwmg.befriendmobs.item.ItemMobRespawner;
@@ -27,6 +28,11 @@ public class BefMobCapabilityAttachment {
 	@SuppressWarnings("unchecked")
 	@SubscribeEvent
 	public static void attachLivingEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
+		if (event.getObject() instanceof LivingEntity living)
+		{
+			event.addCapability(new ResourceLocation(BefriendMobs.MOD_ID)
+					, new CAttributeMonitorProvider(living));
+		}	
 		// CBefriendableMob
 		if (event.getObject() instanceof Mob mob) {
 			if (BefriendingTypeRegistry.contains((EntityType<? extends Mob>) mob.getType())
