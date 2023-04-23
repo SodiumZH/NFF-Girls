@@ -1,0 +1,35 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"ECM",
+	"EEE",
+	"PPP"	
+	],
+	
+	"key":{ 
+	
+		"E":{
+		"item": "hmag:evil_crystal"
+		},
+		
+		"C":{ 
+		"item": "hmag:cubic_nucleus"
+		},
+		
+		"M":{ 
+		"item": "hmag:mysterious_petal"
+		},
+		
+		"P":{ 
+		"item": "hmag:purification_cloth"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "dwmg:healing_jade",
+		"count": 1
+	}
+}

@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -26,6 +27,7 @@ import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
+import net.sodiumstudio.dwmg.befriendmobs.entity.capability.LivingAttributeValueChangeEvent;
 import net.sodiumstudio.dwmg.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.dwmg.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.dwmg.befriendmobs.events.ServerEntityTickEvent;
@@ -34,6 +36,7 @@ import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
+import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
@@ -228,6 +231,20 @@ public class DwmgEntityEvents
 					event.setCanceled(true);
 			}
 		}
-			
+	}
+	
+	@SubscribeEvent
+	public static void onBefriendedAttributeChange(LivingAttributeValueChangeEvent event)
+	{
+		if (event.entity instanceof IBefriendedMob b 
+				&& b.getModId().equals(Dwmg.MOD_ID)
+				&& event.attribute.equals(Attributes.MAX_HEALTH)
+				)
+		{
+			if (event.newValue > event.oldValue)
+				event.entity.heal((float) (event.newValue - event.oldValue));
+			else if (event.newValue < event.entity.getHealth())
+				event.entity.setHealth((float) event.newValue);
+		}
 	}
 }

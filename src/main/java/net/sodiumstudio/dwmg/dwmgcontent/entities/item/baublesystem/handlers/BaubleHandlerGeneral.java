@@ -22,18 +22,30 @@ public class BaubleHandlerGeneral extends BaubleHandler
 	@Override
 	public HashSet<Item> getItemsAccepted() {
 		HashSet<Item> set = new HashSet<Item>();
-		set.add(Items.NETHERITE_INGOT);
+		set.add(DwmgItems.RESISTANCE_AMULET.get());
 		set.add(ModItems.INSOMNIA_FRUIT.get());
+		set.add(DwmgItems.HEALING_JADE.get());
 		return set;
 	}
 
 	@Override
 	public void applyBaubleEffect(ItemStack bauble, IBaubleHolder owner) {
-		if (bauble.is(Items.NETHERITE_INGOT))
+		if (bauble.is(DwmgItems.RESISTANCE_AMULET.get()))
 		{
-			owner.addBaubleModifier(Attributes.ARMOR, 2.0d, Operation.ADDITION);
+			owner.addBaubleModifier(Attributes.ARMOR, 4.0d, Operation.ADDITION);
+			owner.addBaubleModifier(Attributes.MOVEMENT_SPEED, 0.8d, Operation.MULTIPLY_BASE);
 		}
-		if (bauble.is(ModItems.INSOMNIA_FRUIT.get()))
+		else if (bauble.is(DwmgItems.HEALING_JADE.get()))
+		{
+			owner.getLiving().heal(0.005f);// 0.1 per second
+		}
+	}
+	
+	@Override
+	public void postUpdate(IBaubleHolder owner)
+	{
+		super.postUpdate(owner);
+		if (owner.hasBaubleItem(ModItems.INSOMNIA_FRUIT.get()))
 		{
 			if (owner.getLiving().level.isNight())
 			{
@@ -42,8 +54,6 @@ public class BaubleHandlerGeneral extends BaubleHandler
 			}
 		}
 	}
-	
-	
 	
 
 }
