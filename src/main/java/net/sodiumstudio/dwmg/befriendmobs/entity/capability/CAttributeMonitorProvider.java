@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.befriendmobs.entity.capability;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -24,4 +25,10 @@ public class CAttributeMonitorProvider implements ICapabilityProvider {
 			return LazyOptional.empty();
 	}
 
+	public CAttributeMonitor listen(Attribute attr)
+	{
+		cap.listen(attr);
+		return cap;
+	}
+	
 }

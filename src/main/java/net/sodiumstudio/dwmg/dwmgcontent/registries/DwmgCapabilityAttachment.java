@@ -12,6 +12,7 @@ import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CAttributeMonitor;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CBefriendableMobProvider;
+import net.sodiumstudio.dwmg.befriendmobs.entity.capability.LivingSetupAttributeMonitorEvent;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.capabilities.CUndeadMobProvider;
@@ -28,11 +29,17 @@ public class DwmgCapabilityAttachment {
 			if (living.getMobType() == MobType.UNDEAD && !(living instanceof IBefriendedMob) && !TagHelper.hasTag(living, Dwmg.MOD_ID, "ignore_death_affinity"))	// Befriended mobs aren't affected by Death Affinity
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_undead"), new CUndeadMobProvider());
 			
-			if (living instanceof IBefriendedMob b && b.getModId().equals(Dwmg.MOD_ID))
-			{
-				CAttributeMonitor.listen(living, Attributes.MAX_HEALTH);
-			}
+
 		}
 	}
-
+	
+	@SubscribeEvent
+	public static void setupAttributeMonitor(LivingSetupAttributeMonitorEvent event)
+	{
+		if (event.living instanceof IBefriendedMob b && b.getModId().equals(Dwmg.MOD_ID))
+		{
+			event.addListen(Attributes.MAX_HEALTH);
+		}
+	}
 }
+

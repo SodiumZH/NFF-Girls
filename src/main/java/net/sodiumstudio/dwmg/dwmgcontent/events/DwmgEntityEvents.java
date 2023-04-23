@@ -241,10 +241,7 @@ public class DwmgEntityEvents
 				&& event.attribute.equals(Attributes.MAX_HEALTH)
 				)
 		{
-			if (event.newValue > event.oldValue)
-				event.entity.heal((float) (event.newValue - event.oldValue));
-			else if (event.newValue < event.entity.getHealth())
-				event.entity.setHealth((float) event.newValue);
+			event.entity.setHealth((float) (event.entity.getHealth() * event.newValue / event.oldValue));
 		}
 	}
 }
