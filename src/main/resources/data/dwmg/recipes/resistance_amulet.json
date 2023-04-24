@@ -3,13 +3,17 @@
 	
 	"pattern": 
 	[ 
-	"NND",
-	"DED",
-	"DNN"	
+	"NRD",
+	"RSR",
+	"DRN"	
 	],
 	
 	"key":{ 
 	
+		"R":{
+		"item": "hmag:multiplex_reinforcing_chain"
+		},
+		
 		"N":{
 		"tag": "forge:ingots/netherite"
 		},
@@ -18,8 +22,8 @@
 		"tag": "forge:gems/diamond"
 		},
 		
-		"E":{ 
-		"tag": "forge:gems/emerald"
+		"S":{ 
+		"item": "minecraft:nether_star"
 		}
 		
 	},

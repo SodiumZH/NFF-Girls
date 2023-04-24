@@ -13,6 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.DwmgTab;
+import net.sodiumstudio.dwmg.dwmgcontent.item.ItemNecromancerArmor;
 
 public class DwmgItems {
 	
@@ -55,11 +56,11 @@ public class DwmgItems {
 	public static final RegistryObject<Item> HEALING_JADE = regItem("healing_jade", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
 	public static final RegistryObject<Item> POISONOUS_THORN = regItem("poisonous_thorn", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
 	// Equipment
-	/*
-	public static final RegistryObject<Item> SUNHAT = ITEMS.register("sunhat", () -> new ArmorItem(
-			ArmorMaterials.LEATHER,
+	public static final RegistryObject<Item> NECROMANCER_HAT = ITEMS.register("necromancer_hat", () -> new ItemNecromancerArmor(
+			DwmgArmorMaterials.NECROMANCER,
 			EquipmentSlot.HEAD,
 			new Item.Properties().tab(TAB).rarity(Rarity.UNCOMMON)));
+	/*
 	public static final RegistryObject<Item> INSOMNIA_HELMET = ITEMS.register("insomnia_helmet", () -> new ArmorItem(
 			ArmorMaterials.LEATHER,
 			EquipmentSlot.HEAD,

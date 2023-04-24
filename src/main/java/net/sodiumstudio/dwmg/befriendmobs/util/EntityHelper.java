@@ -26,6 +26,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.animal.Fox;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
@@ -38,6 +39,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 import net.minecraft.network.chat.Component;
 //import net.sodiumstudio.dwmg.dwmgcontent.effects.EnderProtectionTeleportEvent;
 
@@ -206,14 +208,6 @@ public class EntityHelper
 	// Get current swell value (private for Creeper class) as int. Max swell is 30.
 	public static int getCreeperSwell(Creeper creeper) {
 		return Math.round(creeper.getSwelling(1.0f) * 28.0f);
-	}
-
-	// Add effect, preventing to override the existing one if has longer time than this
-	public static void addEffectSafe(LivingEntity entity, MobEffect effect, int ticks, int lvl) {
-		if (!entity.hasEffect(effect) || entity.getEffect(effect).getDuration() < ticks)
-		{
-			entity.addEffect(new MobEffectInstance(effect, ticks, lvl));
-		}
 	}
 
 	public static void addEffectSafe(LivingEntity entity, MobEffect effect, int ticks) {
@@ -465,4 +459,39 @@ public class EntityHelper
 		}
 	}
 
+	// Add effect to living, without overwriting the same effect with higher level or longer duration 
+	public static void addEffectSafe(LivingEntity living, MobEffectInstance effectInst)
+	{
+		if (living.hasEffect(effectInst.getEffect()))
+		{	
+			if (living.getEffect(effectInst.getEffect()).getAmplifier() > effectInst.getAmplifier())
+				return;
+			else if (living.getEffect(effectInst.getEffect()).getAmplifier() > effectInst.getAmplifier()
+					&& living.getEffect(effectInst.getEffect()).getDuration() > effectInst.getDuration())
+				return;
+		}
+		living.addEffect(effectInst);
+	}
+	
+	public static void addEffectSafe(LivingEntity living, MobEffect effectType, int duration, int amplifier)
+	{
+		addEffectSafe(living, new MobEffectInstance(effectType, duration, amplifier));
+	}
+	
+	public static void addEffectIfNotHaving(LivingEntity living, MobEffectInstance effectInst, boolean overrideLowerLevelEffect)
+	{
+		if (living.hasEffect(effectInst.getEffect()) && living.getEffect(effectInst.getEffect()).getDuration() >= 2)
+		{	
+			if (living.getEffect(effectInst.getEffect()).getAmplifier() >= effectInst.getAmplifier())
+				return;
+			else if (!overrideLowerLevelEffect)
+				return;
+		}
+		living.addEffect(effectInst);	
+	}
+	
+	public static void addEffectIfNotHaving(LivingEntity living, MobEffectInstance effectInst)
+	{
+		addEffectIfNotHaving(living, effectInst, false);
+	}
 }

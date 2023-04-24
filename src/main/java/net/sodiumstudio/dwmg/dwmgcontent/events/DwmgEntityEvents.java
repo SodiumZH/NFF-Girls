@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -39,6 +40,7 @@ import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGirl;
+import net.sodiumstudio.dwmg.dwmgcontent.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
 
@@ -243,5 +245,11 @@ public class DwmgEntityEvents
 		{
 			event.entity.setHealth((float) (event.entity.getHealth() * event.newValue / event.oldValue));
 		}
+	}
+	
+	@SubscribeEvent
+	public static void onLivingUpdate(LivingUpdateEvent event)
+	{
+		ItemNecromancerArmor.necromancerArmorUpdate(event.getEntityLiving());
 	}
 }
