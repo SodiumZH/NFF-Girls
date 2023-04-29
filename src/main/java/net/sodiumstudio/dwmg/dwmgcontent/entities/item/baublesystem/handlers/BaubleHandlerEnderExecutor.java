@@ -15,12 +15,5 @@ public class BaubleHandlerEnderExecutor extends BaubleHandlerGeneral
 		return set;
 	}
 
-	@Override
-	public void applyBaubleEffect(ItemStack bauble, IBaubleHolder owner) {
-		super.applyBaubleEffect(bauble, owner);
-	}
-	
-	
-	
 
 }

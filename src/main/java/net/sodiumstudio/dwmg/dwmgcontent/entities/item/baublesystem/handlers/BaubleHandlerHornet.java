@@ -21,16 +21,11 @@ public class BaubleHandlerHornet extends BaubleHandlerGeneral
 		set.add(DwmgItems.POISONOUS_THORN.get());
 		return set;
 	}
-
-	@Override
-	public void applyBaubleEffect(ItemStack bauble, IBaubleHolder owner) {
-		super.applyBaubleEffect(bauble, owner);
-	}
 	
 	@Override
-	public void postUpdate(IBaubleHolder owner)
+	public void postTick(IBaubleHolder owner)
 	{
-		super.postUpdate(owner);
+		super.postTick(owner);
 		if (owner instanceof EntityBefriendedHornet b)
 		{
 			if (owner.hasBaubleItem(DwmgItems.POISONOUS_THORN.get()))

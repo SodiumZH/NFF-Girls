@@ -8,6 +8,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CAttributeMonitor;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CBefriendableMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CHealingHandler;
+import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.CBaubleDataCache;
 import net.sodiumstudio.dwmg.befriendmobs.item.capability.CMobRespawner;
 
 public class BefMobCapabilities {
@@ -17,6 +18,8 @@ public class BefMobCapabilities {
 	public static Capability<CMobRespawner> CAP_MOB_RESPAWNER = CapabilityManager.get(new CapabilityToken<>(){});
 	public static Capability<CAttributeMonitor> CAP_ATTRIBUTE_MONITOR = CapabilityManager.get(new CapabilityToken<>(){});
 	
+	public static Capability<CBaubleDataCache> CAP_BAUBLE_DATA_CACHE = CapabilityManager.get(new CapabilityToken<>(){});
+	
 	@SubscribeEvent
 	public static void register(RegisterCapabilitiesEvent event)
 	{
@@ -25,5 +28,6 @@ public class BefMobCapabilities {
 		event.register(CHealingHandler.class);
 		event.register(CMobRespawner.class);
 		event.register(CAttributeMonitor.class);
+		event.register(CBaubleDataCache.class);
 	}
 }

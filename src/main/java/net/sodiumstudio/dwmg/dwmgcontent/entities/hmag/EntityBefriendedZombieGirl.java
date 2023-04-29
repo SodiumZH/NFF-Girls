@@ -288,24 +288,17 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	/* IBaubleHolder interface */
 
 	@Override
-	public HashSet<ItemStack> getBaubleStacks() {
-		HashSet<ItemStack> set = new HashSet<ItemStack>();
-		set.add(this.getAdditionalInventory().getItem(6));
-		set.add(this.getAdditionalInventory().getItem(7));
-		return set;
+	public HashMap<String, ItemStack> getBaubleSlots() {
+		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
+		map.put("0", this.getAdditionalInventory().getItem(6));
+		map.put("1", this.getAdditionalInventory().getItem(7));
+		return map;
 	}
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.VANILLA_UNDEAD;
 	}
-	
-	protected HashMap<AttributeModifier, Attribute> baubleModifierMap = new HashMap<AttributeModifier, Attribute>();	
-	@Override
-	public HashMap<AttributeModifier, Attribute> getExistingBaubleModifiers() {
-		return baubleModifierMap;
-	}
-
 
 	// ==================================================================== //
 	// ========================= General Settings ========================= //

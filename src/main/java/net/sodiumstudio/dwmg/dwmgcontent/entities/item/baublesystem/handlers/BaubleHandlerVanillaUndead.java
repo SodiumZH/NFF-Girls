@@ -20,12 +20,12 @@ public class BaubleHandlerVanillaUndead extends BaubleHandlerGeneral
 	}
 
 	@Override
-	public void applyBaubleEffect(ItemStack bauble, IBaubleHolder owner) {
-		super.applyBaubleEffect(bauble, owner);
+	public void refreshBaubleEffect(String slotKey, ItemStack bauble, IBaubleHolder owner) {
+		super.refreshBaubleEffect(slotKey, bauble, owner);
 		if (bauble.is(DwmgItems.SOUL_AMULET.get()))
 		{
-			owner.addBaubleModifier(Attributes.MAX_HEALTH, 10.0d, Operation.ADDITION);
-			owner.addBaubleModifier(Attributes.ATTACK_DAMAGE, 3.0d, Operation.ADDITION);
+			owner.addBaubleModifier(slotKey, "sa_health", Attributes.MAX_HEALTH, 10.0d, Operation.ADDITION);
+			owner.addBaubleModifier(slotKey, "sa_atk", Attributes.ATTACK_DAMAGE, 3.0d, Operation.ADDITION);
 		}
 	}
 }

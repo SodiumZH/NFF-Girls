@@ -12,11 +12,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
+import net.sodiumstudio.dwmg.befriendmobs.util.ContainerHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 
 public interface IBaubleHolder {
-
-	public HashSet<ItemStack> getBaubleStacks();
-
+	
+	public HashMap<String, ItemStack> getBaubleSlots();
 
 	public BaubleHandler getBaubleHandler();
 	
@@ -33,71 +35,189 @@ public interface IBaubleHolder {
 	/* Apply effects */
 	public default void updateBaubleEffects()
 	{
-		getBaubleHandler().updateBaubleEffects(this);
+		getBaubleHandler().tick(this);
 	}
 	
 	/* Dynamic modifier management */
 
-	// The modifier map reference for dynamic modifier management.
-	// The added trancient attribute modifiers are added into this container
-	// and are cleared every tick
-	// Simply create an empty hash map param to class and link to this function
-	/* COPY THIS:
-	 protected HashMap<AttributeModifier, Attribute> existingBaubleModifiers = new HashMap<AttributeModifier, Attribute>();
-	 @Override
-	 public HashMap<AttributeModifier, Attribute> getExistingBaubleModifiers()
-	 {
-	 	return existingBaubleModifiers;
-	 }
-	 */
-	public HashMap<AttributeModifier, Attribute> getExistingBaubleModifiers();
+	public static class TransientModifierInfo
+	{
+		public final String slotKey;
+		public final String modifierKey;
+		public final Attribute attribute;
+		public final AttributeModifier modifier;
+		public boolean alwaysUpdate = false;
+		
+		public TransientModifierInfo(String slotKey, String modifierKey, Attribute attribute, AttributeModifier modifier)
+		{
+			this.slotKey = slotKey;
+			this.modifierKey = modifierKey;
+			this.attribute = attribute;
+			this.modifier = modifier;
+		}		
+		
+		public TransientModifierInfo alwaysUpdate()
+		{
+			this.alwaysUpdate = true;
+			return this;
+		}
+		
+	}
+	
+	// The modifier set reference for dynamic modifier management.
+	public default HashSet<TransientModifierInfo> transientModifiers()
+	{
+		return getDataCache().transientModifiers();
+	}
 	
 	// Remove all modifiers
 	public default void clearBaubleModifiers()
 	{
-		Set<AttributeModifier> keys = getExistingBaubleModifiers().keySet();
-		for (AttributeModifier mod: keys)
+		for (TransientModifierInfo tmi: transientModifiers())
 		{
-			AttributeInstance ins = getLiving().getAttribute(getExistingBaubleModifiers().get(mod));
-			ins.removeModifier(mod);
+			AttributeInstance ins = getLiving().getAttribute(tmi.attribute);
+			ins.removeModifier(tmi.modifier);
 		}
-		getExistingBaubleModifiers().clear();
+		transientModifiers().clear();
 	}
 
-	// Add a bauble attribute modifier using existing modifier preset.
-	public default void addBaubleModifier(Attribute attribute, double value, AttributeModifier.Operation operation)
+	/** Add a bauble attribute modifier using existing modifier preset.
+	* @param slotKey String key for the bauble slot (item stack).
+	* @param modifierKey String key for the specific attribute modifier under the slot.
+	*/
+	public default void addBaubleModifier(String slotKey, String modifierKey, Attribute attribute, double value, AttributeModifier.Operation operation)
 	{
+		if (containsModifier(slotKey, modifierKey))
+			throw new IllegalArgumentException("Add Bauble Modifier: duplicate modifier key.");
 		AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), UUID.randomUUID().toString(), value, operation);
-		this.getExistingBaubleModifiers().put(modifier, attribute);
+		this.transientModifiers().add(new TransientModifierInfo(slotKey, modifierKey, attribute, modifier));
 		AttributeInstance ins = getLiving().getAttribute(attribute);
 		ins.addTransientModifier(modifier);
 	}
 	
-	// Add a bauble attribute modifier using existing modifier preset.
-	// Note: the modifier added is freshly created, not the existing preset modifier.
-	public default void addBaubleModifier(Attribute attribute, AttributeModifier modifier)
+	/** Add a bauble attribute modifier using existing modifier preset.
+	* @param slotKey String key for the bauble slot (item stack).
+	* @param modifierKey String key for the specific attribute modifier under the slot.
+	*/
+	public default void addBaubleModifier(String slotKey, String modifierKey, Attribute attribute, AttributeModifier modifier)
 	{
-		addBaubleModifier(attribute, modifier.getAmount(), modifier.getOperation());
+		addBaubleModifier(slotKey, modifierKey, attribute, modifier.getAmount(), modifier.getOperation());
 	}	
-		
+	
+	/** 
+	 * Remove all modifiers under a slot of given key.
+	 */
+	public default void removeBaubleModifiers(String slotKey)
+	{
+		HashSet<TransientModifierInfo> toRemove = new HashSet<TransientModifierInfo>();
+		for (TransientModifierInfo tmi: transientModifiers())
+		{
+			if (tmi.slotKey.equals(slotKey))
+			{
+				AttributeInstance ins = getLiving().getAttribute(tmi.attribute);
+				ins.removeModifier(tmi.modifier);
+				toRemove.add(tmi);
+			}
+		}
+		for (TransientModifierInfo tmi: toRemove)
+		{
+			transientModifiers().remove(tmi);
+		}
+	}
+	
+	/**
+	 * Remove 
+	 */
+	public default void removeBaubleModifier(String slotKey, String modifierKey)
+	{
+		HashSet<TransientModifierInfo> toRemove = new HashSet<TransientModifierInfo>();
+		for (TransientModifierInfo tmi: transientModifiers())
+		{
+			if (tmi.slotKey.equals(slotKey) && tmi.modifierKey.equals(modifierKey))
+			{
+				AttributeInstance ins = getLiving().getAttribute(tmi.attribute);
+				ins.removeModifier(tmi.modifier);
+				toRemove.add(tmi);
+			}
+		}
+		for (TransientModifierInfo tmi: toRemove)
+		{
+			transientModifiers().remove(tmi);
+		}
+	}
+	
+	/* Data Cache and Change Detection */
+	
+	public default CBaubleDataCache getDataCache()
+	{
+		Wrapped<CBaubleDataCache> cache = new Wrapped<CBaubleDataCache>(null);
+		getLiving().getCapability(BefMobCapabilities.CAP_BAUBLE_DATA_CACHE).ifPresent((cap) -> 
+		{
+			cache.set(cap);
+		});
+		if (cache.get() == null)
+			throw new IllegalStateException("IBaubleHolder missing capability CBaubleDataCache.");
+		return cache.get();
+	}
+	
+	public default boolean hasSlotChanged(String slotKey)
+	{
+		return getDataCache().hasSlotChanged(slotKey);
+	}
+	
+	public default void saveDataCache()
+	{
+		getDataCache().write();
+	}
+	
+	
+	
 	/* Misc */	
 	public default LivingEntity getLiving()
 	{
 		return (LivingEntity)this;
 	}
-	
+
 	/* Util */
-	// Whether this BaubleHolder has at least one given item in slots
+	
+	/**
+	 * Check if there's at least one slot containing the given item.
+	 * 
+	 */
 	public default boolean hasBaubleItem(Item inItem)
 	{
-		for (ItemStack stack: getBaubleStacks())
+		for (String key: getBaubleSlots().keySet())
 		{
-			if (stack.is(inItem))
+			if (getBaubleSlots().get(key).is(inItem))
 				return true;
 		}
 		return false;
 	}
 	
+	/**
+	 * Check if it contains a modifier with given slot key and given modifier key.
+	 */
+	public default boolean containsModifier(String slotKey, String modifierKey)
+	{
+		for (TransientModifierInfo tmi: transientModifiers())
+		{
+			if (tmi.slotKey.equals(slotKey) && tmi.modifierKey.equals(modifierKey))
+				return true;
+		}
+		return false;
+	}
 	
+	/**
+	 * Check if it contains a modifier with given slot key.
+	 */
+	public default boolean containsModifier(String slotKey)
+	{
+		for (TransientModifierInfo tmi: transientModifiers())
+		{
+			if (tmi.slotKey.equals(slotKey))
+				return true;
+		}
+		return false;
+	}
 	
 }
