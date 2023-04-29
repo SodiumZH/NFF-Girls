@@ -295,25 +295,17 @@ public class EntityBefriendedHornet extends HornetEntity implements IBaubleHolde
 	}
 	
 	/* IBaubleHolder interface */
-	
-	@Override
-	public HashSet<ItemStack> getBaubleStacks() {
-		HashSet<ItemStack> stacks = new HashSet<ItemStack>();
-		stacks.add(this.getAdditionalInventory().getItem(2));
-		stacks.add(this.getAdditionalInventory().getItem(3));
-		return stacks;
-	}
 
+	@Override
+	public HashMap<String, ItemStack> getBaubleSlots() {
+		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
+		map.put("0", this.getAdditionalInventory().getItem(2));
+		map.put("1", this.getAdditionalInventory().getItem(3));
+		return map;
+	}
 	@Override
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.GENERAL;
-	}
-
-	protected HashMap<AttributeModifier, Attribute> existingBaubleModifiers = new HashMap<AttributeModifier, Attribute>();
-	@Override
-	public HashMap<AttributeModifier, Attribute> getExistingBaubleModifiers()
-	{
-		return existingBaubleModifiers;
 	}
 	
 	// ==================================================================== //

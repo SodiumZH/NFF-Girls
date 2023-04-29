@@ -23,13 +23,19 @@ public class BaubleHandlerGeneral extends BaubleHandler
 		set.add(DwmgItems.HEALING_JADE.get());
 		return set;
 	}
-
+	
 	@Override
-	public void applyBaubleEffect(ItemStack bauble, IBaubleHolder owner) {
+	public boolean shouldAlwaysRefresh(String slotKey, IBaubleHolder holder)
+	{
+		return holder.getBaubleSlots().get(slotKey).is(DwmgItems.HEALING_JADE.get());
+	} 
+	
+	@Override
+	public void refreshBaubleEffect(String slotKey, ItemStack bauble, IBaubleHolder owner) {
 		if (bauble.is(DwmgItems.RESISTANCE_AMULET.get()))
 		{
-			owner.addBaubleModifier(Attributes.ARMOR, 4.0d, Operation.ADDITION);
-			owner.addBaubleModifier(Attributes.MOVEMENT_SPEED, 0.8d, Operation.MULTIPLY_BASE);
+			owner.addBaubleModifier(slotKey, "ra_armor", Attributes.ARMOR, 4.0d, Operation.ADDITION);
+			owner.addBaubleModifier(slotKey, "ra_speed_slow",Attributes.MOVEMENT_SPEED, -0.2d, Operation.MULTIPLY_BASE);
 		}
 		else if (bauble.is(DwmgItems.HEALING_JADE.get()))
 		{
@@ -37,19 +43,19 @@ public class BaubleHandlerGeneral extends BaubleHandler
 		}
 	}
 	
+	
 	@Override
-	public void postUpdate(IBaubleHolder owner)
+	public void postTick(IBaubleHolder owner)
 	{
-		super.postUpdate(owner);
-		if (owner.hasBaubleItem(ModItems.INSOMNIA_FRUIT.get()))
+		super.postTick(owner);
+		
+		owner.removeBaubleModifiers("if");
+		if (owner.hasBaubleItem(ModItems.INSOMNIA_FRUIT.get()) && owner.getLiving().level.isNight())
 		{
-			if (owner.getLiving().level.isNight())
-			{
-				owner.addBaubleModifier(Attributes.MAX_HEALTH, 60d, Operation.ADDITION);
-				owner.addBaubleModifier(Attributes.ATTACK_DAMAGE, 8d, Operation.ADDITION);
-			}
+			owner.addBaubleModifier("if", "if_health", Attributes.MAX_HEALTH, 60d, Operation.ADDITION);
+			owner.addBaubleModifier("if", "if_atk", Attributes.ATTACK_DAMAGE, 8d, Operation.ADDITION);		
 		}
 	}
-	
+
 
 }

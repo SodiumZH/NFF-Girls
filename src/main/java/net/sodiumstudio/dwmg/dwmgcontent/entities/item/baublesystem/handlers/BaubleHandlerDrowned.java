@@ -23,17 +23,13 @@ public class BaubleHandlerDrowned extends BaubleHandlerGeneral
 	}
 
 	@Override
-	public void applyBaubleEffect(ItemStack bauble, IBaubleHolder owner) {
-		super.applyBaubleEffect(bauble, owner);
-	}
-	
-	@Override
-	public void postUpdate(IBaubleHolder owner)
+	public void postTick(IBaubleHolder owner)
 	{
-		super.postUpdate(owner);
+		super.postTick(owner);
+		owner.removeBaubleModifiers("conduit");
 		if (owner.hasBaubleItem(Items.CONDUIT) && owner.getLiving().isInWater())
 		{
-			owner.addBaubleModifier(Attributes.MOVEMENT_SPEED, 3.0d, Operation.MULTIPLY_BASE);
+			owner.addBaubleModifier("conduit", "conduit_speed", Attributes.MOVEMENT_SPEED, 3.0d, Operation.MULTIPLY_BASE);
 		}
 	}
 	

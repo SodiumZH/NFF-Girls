@@ -19,6 +19,8 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CBefriendableMobProv
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CHealingHandlerProvider;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.LivingSetupAttributeMonitorEvent;
 import net.sodiumstudio.dwmg.befriendmobs.item.ItemMobRespawner;
+import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.CBaubleDataCache;
+import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.item.capability.CMobRespawnerProvider;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -35,7 +37,7 @@ public class BefMobCapabilityAttachment {
 			event.addCapability(new ResourceLocation(BefriendMobs.MOD_ID)
 					, prvd);
 			MinecraftForge.EVENT_BUS.post(new LivingSetupAttributeMonitorEvent(living, prvd));
-		}	
+		}			
 		// CBefriendableMob
 		if (event.getObject() instanceof Mob mob) {
 			if (BefriendingTypeRegistry.contains((EntityType<? extends Mob>) mob.getType())
@@ -74,6 +76,14 @@ public class BefMobCapabilityAttachment {
 				}
 			}
 		}
+		
+		// CBaubleDataCache
+		if (event.getObject() instanceof IBaubleHolder b)
+		{
+			event.addCapability(new ResourceLocation(BefriendMobs.MOD_ID, "cap_bauble_data_cache"), 
+					new CBaubleDataCache.Prvd(b));
+		}
+		
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -522,22 +522,15 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	
 	/* IBaubleHolder interface */
 	@Override
-	public HashSet<ItemStack> getBaubleStacks() {
-		HashSet<ItemStack> set = new HashSet<ItemStack>();
-		set.add(this.getAdditionalInventory().getItem(3));
-		set.add(this.getAdditionalInventory().getItem(4));
-		return set;
+	public HashMap<String, ItemStack> getBaubleSlots() {
+		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
+		map.put("0", this.getAdditionalInventory().getItem(3));
+		map.put("1", this.getAdditionalInventory().getItem(4));
+		return map;
 	}
-
 	@Override
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.ENDER_EXECUTOR;
-	}
-	
-	protected HashMap<AttributeModifier, Attribute> baubleModifierMap = new HashMap<AttributeModifier, Attribute>();	
-	@Override
-	public HashMap<AttributeModifier, Attribute> getExistingBaubleModifiers() {
-		return baubleModifierMap;
 	}
 	
 	// ==================================================================== //
