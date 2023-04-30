@@ -7,10 +7,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CarpetBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgBlocks;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
 
 /**
- * Soul Carpet is a carpet which provides mobs 30s Death Affinity effect on it
+ * Soul Carpet is a carpet which provides mobs Death Affinity effect on it
  */
 
 public class BlockSoulCarpet extends CarpetBlock 
@@ -20,16 +22,21 @@ public class BlockSoulCarpet extends CarpetBlock
 		super(prop);
 	}
 
+	@Override
 	@SuppressWarnings("deprecation")
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn) 
 	{
 		if (!level.isClientSide && entityIn != null && entityIn instanceof LivingEntity)
 		{
 			LivingEntity livingentity = (LivingEntity) entityIn;
-			if (!livingentity.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get()))
-			{
-				livingentity.addEffect(new MobEffectInstance(DwmgEffects.UNDEAD_AFFINITY.get(), 20, 0));
-			}
+			EntityHelper.addEffectIfNotHaving(livingentity, new MobEffectInstance(DwmgEffects.UNDEAD_AFFINITY.get(), 3, 0, true, true));
 		}
 	}
+	
+	public static boolean isEntityInside(LivingEntity living)
+	{
+
+		return living.level.getBlockState(living.blockPosition()).is(DwmgBlocks.SOUL_CARPET.get());
+	}
+	
 }

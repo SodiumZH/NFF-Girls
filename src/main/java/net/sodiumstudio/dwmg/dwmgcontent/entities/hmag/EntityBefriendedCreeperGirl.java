@@ -44,9 +44,10 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.Befriende
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.creeper.AbstractBefriendedCreeper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.creeper.BefriendedCreeperSwellGoal;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedCreeperFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedCreeperGirlExplosionAttackGoal;
@@ -207,7 +208,10 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	public boolean onInteraction(Player player, InteractionHand hand) {
 		// Porting from 1.18-s7 & 1.19-s8 bug: missing owner uuid in nbt. Generally this shouldn't be called
 		if (getOwner() == null)
+		{
+			MiscUtil.printToScreen("Mob " + asMob().getName().getString() + " missing owner, set " + player.getName().getString() + " as owner.", player);
 			this.setOwner(player);
+		}
 		// Porting solution end
 		if (player.getUUID().equals(getOwnerUUID()))
 		{
@@ -283,7 +287,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	}
 	
 	@Override
-	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container)
+	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container)
 	{
 		return new InventoryMenuCreeper(containerId, playerInventory, container, this);
 	}

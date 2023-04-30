@@ -22,7 +22,7 @@ import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
@@ -98,7 +98,7 @@ public class TemplateBefriendedMob /* Your mob class */ extends PathfinderMob /*
 	}
 
 	@Override
-	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
+	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return null; /* return new YourMenuClass(containerId, playerInventory, container, this) */
 	}
 	

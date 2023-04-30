@@ -18,7 +18,7 @@ import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.Wrapped;
 
 @Mod.EventBusSubscriber(modid = BefriendMobs.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class ItemEvents
+public class DwmgItemEvents
 {
 	@SubscribeEvent
 	public static void onRespawnerAdded(RespawnerAddedEvent event)

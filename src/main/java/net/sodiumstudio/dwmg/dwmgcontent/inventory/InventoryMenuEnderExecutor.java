@@ -14,13 +14,13 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.client.gui.screens.AbstractGuiBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
 import net.sodiumstudio.dwmg.dwmgcontent.client.gui.screens.GuiEnderExecutor;
 
-public class InventoryMenuEnderExecutor extends AbstractInventoryMenuBefriended{
+public class InventoryMenuEnderExecutor extends BefriendedInventoryMenu{
 
 	public InventoryMenuEnderExecutor(int containerId, Inventory playerInventory, Container container,
 			IBefriendedMob mob) {

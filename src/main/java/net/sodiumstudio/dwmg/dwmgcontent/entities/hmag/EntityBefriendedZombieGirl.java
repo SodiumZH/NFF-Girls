@@ -21,6 +21,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -47,17 +48,20 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedW
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
+import net.minecraft.world.entity.monster.Zombie;
 
 public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBefriendedMob, IBefriendedUndeadMob, IBaubleHolder {
 
@@ -82,7 +86,8 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		goalSelector.addGoal(1, new BefriendedRestrictSunGoal(this));
 		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
 		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0d, true));
-		goalSelector.addGoal(4, new BefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false).avoidSun());
+		goalSelector.addGoal(4, new BefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false)
+				.avoidSunCondition(mob -> {return ((EntityBefriendedZombieGirl)mob).isSunSensitive();}));
 		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -112,13 +117,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 
 		return res;
 	}
-	
-	@Override
-	public void updateAttributes()
-	{
 
-	}
-	
 	/* Interaction */
 
 	@Override
@@ -134,7 +133,10 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	public boolean onInteraction(Player player, InteractionHand hand) {
 		// Porting from 1.18-s7 & 1.19-s8 bug: missing owner uuid in nbt. Generally this shouldn't be called
 		if (getOwner() == null)
+		{
+			MiscUtil.printToScreen("Mob " + asMob().getName().getString() + " missing owner, set " + player.getName().getString() + " as owner.", player);
 			this.setOwner(player);
+		}
 		// Porting solution end
 		
 		if (player.getUUID().equals(getOwnerUUID())) {
@@ -195,7 +197,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	}
 
 	@Override
-	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
+	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuEquipmentTwoBaubles(containerId, playerInventory, container, this);
 	}
 
@@ -279,6 +281,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	/* IBefriendedUndeadMob interface */
 
 	public boolean sunSensitive = true;
+	
 	@Override
 	protected boolean isSunSensitive() {
 		return sunSensitive;

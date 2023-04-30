@@ -34,7 +34,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedW
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
@@ -178,7 +178,7 @@ public class TemplateBefriendedMobPreset extends Monster implements IBefriendedM
 	}
 
 	@Override
-	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
+	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return null; // new YourInventoryMenuClass(containerId, playerInventory, container, this);
 	}
 

@@ -100,7 +100,7 @@ public class BefriendedFollowOwnerGoal extends BefriendedMoveGoal {
 				} 
 				else 
 				{
-					if (!shouldAvoidSun || !LevelHelper.isEntityUnderSun(mob.getOwner()))
+					if (!shouldAvoidSun.test(mob) || !LevelHelper.isEntityUnderSun(mob.getOwner()))
 						this.getPathfinder().getNavigation().moveTo(mob.getOwner(), this.speedModifier);
 				}
 			}
@@ -116,7 +116,7 @@ public class BefriendedFollowOwnerGoal extends BefriendedMoveGoal {
 			int l = this.randomIntInclusive(-3, 3);
 			BlockPos wanted = new BlockPos(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
 			// Don't teleport to positions under sun if avoiding
-			if (shouldAvoidSun && LevelHelper.isUnderSun(wanted, mob.asMob()) && !LevelHelper.isAboveWater(wanted, mob.asMob()))
+			if (shouldAvoidSun.test(mob) && LevelHelper.isUnderSun(wanted, mob.asMob()) && !LevelHelper.isAboveWater(wanted, mob.asMob()))
 				continue;
 			boolean flag = this.tryTeleportTo(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
 			if (flag) {

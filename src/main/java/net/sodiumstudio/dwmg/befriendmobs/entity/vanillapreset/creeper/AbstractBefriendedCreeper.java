@@ -42,7 +42,7 @@ import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 
@@ -533,7 +533,7 @@ public abstract class AbstractBefriendedCreeper extends Monster implements IBefr
 	}
 
 	@Override
-	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
+	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return null; /* return new YourMenuClass(containerId, playerInventory, container, this) */
 	}
 

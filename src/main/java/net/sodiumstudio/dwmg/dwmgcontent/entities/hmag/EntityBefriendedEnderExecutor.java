@@ -60,11 +60,12 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.Befriende
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.AbstractBefriendedEnderMan;
 import net.sodiumstudio.dwmg.befriendmobs.entity.vanillapreset.enderman.BefriendedEnderManGoals;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
@@ -140,7 +141,10 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	public boolean onInteraction(Player player, InteractionHand hand) {
 		// Porting from 1.18-s7 & 1.19-s8 bug: missing owner uuid in nbt. Generally this shouldn't be called
 		if (getOwner() == null)
+		{
+			MiscUtil.printToScreen("Mob " + asMob().getName().getString() + " missing owner, set " + player.getName().getString() + " as owner.", player);
 			this.setOwner(player);
+		}
 		// Porting solution end
 		if (player.getUUID().equals(getOwnerUUID())) {
 			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
@@ -217,7 +221,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	}
 
 	@Override
-	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container)
+	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container)
 	{
 		return new InventoryMenuEnderExecutor(containerId, playerInventory, container, this);
 	}

@@ -9,7 +9,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 
 public class ClientboundBefriendedGuiOpenPacket implements Packet<ClientGamePacketListener> {
@@ -47,7 +47,7 @@ public class ClientboundBefriendedGuiOpenPacket implements Packet<ClientGamePack
 		if (entity instanceof IBefriendedMob bef) {
 			LocalPlayer localplayer = mc.player;
 			BefriendedInventory inv = new BefriendedInventory(getSize());
-			AbstractInventoryMenuBefriended menu =
+			BefriendedInventoryMenu menu =
 					bef.makeMenu(getContainerId(), localplayer.getInventory(), inv);
 			if (menu == null)
 				return;

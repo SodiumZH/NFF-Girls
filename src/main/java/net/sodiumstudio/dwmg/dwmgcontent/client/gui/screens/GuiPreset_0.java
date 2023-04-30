@@ -8,7 +8,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.dwmg.befriendmobs.client.gui.screens.AbstractGuiBefriended;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 
@@ -24,7 +24,7 @@ public class GuiPreset_0 extends AbstractGuiBefriended {
 			"textures/gui/container/gui_preset_0.png");
 	}
 	
-	public GuiPreset_0(AbstractInventoryMenuBefriended menu, Inventory playerInventory, IBefriendedMob mob) {
+	public GuiPreset_0(BefriendedInventoryMenu menu, Inventory playerInventory, IBefriendedMob mob) {
 		super(menu, playerInventory, mob, true);
 		imageWidth = 200;
 		imageHeight = 183;

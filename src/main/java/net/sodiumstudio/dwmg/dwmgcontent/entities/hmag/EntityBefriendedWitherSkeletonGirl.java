@@ -2,14 +2,12 @@ package net.sodiumstudio.dwmg.dwmgcontent.entities.hmag;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.WitherSkeletonGirlEntity;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -21,8 +19,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -32,6 +28,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -51,19 +48,21 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedW
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
+import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuSkeleton;
 
-public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity implements IBefriendedMob, IBefriendedUndeadMob, IBaubleHolder
+
+public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity implements IBefriendedMob, IBaubleHolder
 {
 	
 	public EntityBefriendedWitherSkeletonGirl(EntityType<? extends EntityBefriendedWitherSkeletonGirl> pEntityType, Level pLevel) {
@@ -82,25 +81,16 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 
 	@Override
 	protected void registerGoals() {
-		goalSelector.addGoal(1, new BefriendedRestrictSunGoal(this));
-		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
 		goalSelector.addGoal(3, new BefriendedSkeletonRangedBowAttackGoal(this, 1.0D, 20, 15.0F));
 		goalSelector.addGoal(4, new BefriendedSkeletonMeleeAttackGoal(this, 1.2d, true));
-		goalSelector.addGoal(5, new BefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false).avoidSun());
+		goalSelector.addGoal(5, new BefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 		goalSelector.addGoal(6, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
-	}
-
-	@Override
-	public void updateAttributes()
-	{
-		//TODO: actions
-	}
-	
+	}	
 	
 	/* Bow shooting related */
 	
@@ -115,7 +105,7 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 		
 		// Copied from vanilla skeleton, removed difficulty factor
 		ItemStack itemstack = this.getProjectile(this.getItemInHand(
-				ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof net.minecraft.world.item.BowItem)));
+				ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof BowItem)));
 		AbstractArrow abstractarrow = this.getArrow(itemstack, pVelocity);
 		if (this.getMainHandItem().getItem() instanceof net.minecraft.world.item.BowItem)
 			abstractarrow = ((net.minecraft.world.item.BowItem) this.getMainHandItem().getItem())
@@ -134,18 +124,11 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 	@Override
 	public void aiStep() {
 
-		// Handle sun sensitivity
-		if (!this.sunSensitive)
-		{
-			ItemStack headItem = this.getItemBySlot(EquipmentSlot.HEAD);
-			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
-			super.aiStep();
-			this.setItemSlot(EquipmentSlot.HEAD, headItem);
-		}
-		else 
-		{
-			super.aiStep();
-		}
+		// Wither skeletons don't burn under sun but still damage helmet, so cancel it
+		ItemStack headItem = this.getItemBySlot(EquipmentSlot.HEAD);
+		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
+		super.aiStep();
+		this.setItemSlot(EquipmentSlot.HEAD, headItem);
 		
 		/* Handle combat AI */		
 		if (justShot)
@@ -212,7 +195,10 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 	public boolean onInteraction(Player player, InteractionHand hand) {
 		// Porting from 1.18-s7 & 1.19-s8 bug: missing owner uuid in nbt. Generally this shouldn't be called
 		if (getOwner() == null)
+		{
+			MiscUtil.printToScreen("Mob " + asMob().getName().getString() + " missing owner, set " + player.getName().getString() + " as owner.", player);
 			this.setOwner(player);
+		}
 		// Porting solution end
 		if (player.getUUID().equals(getOwnerUUID())) {
 			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
@@ -271,7 +257,7 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 	}
 	
 	@Override
-	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
+	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuSkeleton(containerId, playerInventory, container, this);
 	}
 	
@@ -289,17 +275,7 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
 		setInit();
 	}
-		
-	/* IBefriendedUndeadMob interface */
 
-	public boolean sunSensitive = true;
-
-	// Implementation is in aiStep()
-	@Override
-	public void setSunSensitive(boolean value) {
-		sunSensitive = value;		
-	}
-	
 	/* IBaubleHolder interface */
 	
 	@Override

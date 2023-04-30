@@ -18,5 +18,4 @@ public class DwmgEffects {
 	
 	public static final RegistryObject<MobEffect> UNDEAD_AFFINITY = EFFECTS.register("undead_affinity", () -> new EffectUndeadAffinity());
 	public static final RegistryObject<MobEffect> ENDER_PROTECTION = EFFECTS.register("ender_protection", () -> new EffectEnderProtection());
-
 }

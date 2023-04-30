@@ -12,13 +12,13 @@ import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 
-public class BaubleHandlerDrowned extends BaubleHandlerGeneral
+public class BaubleHandlerDrowned extends BaubleHandlerVanillaUndead
 {
 
 	@Override
 	public HashSet<Item> getItemsAccepted() {
 		HashSet<Item> set = super.getItemsAccepted();
-		set.add(Items.CONDUIT);
+		set.add(DwmgItems.AQUA_JADE.get());
 		return set;
 	}
 
@@ -26,10 +26,10 @@ public class BaubleHandlerDrowned extends BaubleHandlerGeneral
 	public void postTick(IBaubleHolder owner)
 	{
 		super.postTick(owner);
-		owner.removeBaubleModifiers("conduit");
-		if (owner.hasBaubleItem(Items.CONDUIT) && owner.getLiving().isInWater())
+		owner.removeBaubleModifiers("aj");
+		if (owner.hasBaubleItem(DwmgItems.AQUA_JADE.get()) && owner.getLiving().isInWater())
 		{
-			owner.addBaubleModifier("conduit", "conduit_speed", Attributes.MOVEMENT_SPEED, 3.0d, Operation.MULTIPLY_BASE);
+			owner.addBaubleModifier("aj", "aj_speed", Attributes.MOVEMENT_SPEED, 3.0d, Operation.MULTIPLY_BASE);
 		}
 	}
 	

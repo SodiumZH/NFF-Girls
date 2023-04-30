@@ -10,6 +10,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
@@ -26,6 +27,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.LivingAttributeValueChangeEvent;
@@ -43,6 +45,7 @@ import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedCreeperGi
 import net.sodiumstudio.dwmg.dwmgcontent.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEffects;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 
 @SuppressWarnings("removal")
 @Mod.EventBusSubscriber(modid = BefriendMobs.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -198,17 +201,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onServerEntityTick(ServerEntityTickEvent.PostWorldTick event)
 	{
-		if (event.getEntity() instanceof Mob mob)
-		{
-			/*if (mob instanceof IBaubleHolder holder)
-			{
-				holder.updateBaubleEffects();
-			}*/
-			mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) -> 
-			{
-				((CUndeadMobImpl)l).updateForgivingTimers();
-			});
-		}
+		
 	}
 	
 	@SubscribeEvent
@@ -250,6 +243,21 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onLivingUpdate(LivingUpdateEvent event)
 	{
+		// Necromancer armor
 		ItemNecromancerArmor.necromancerArmorUpdate(event.getEntityLiving());
+		
+		if (event.getEntity() instanceof Mob mob)
+		{
+			// Befriended undead mob sun sensitivity
+			if (mob instanceof IBefriendedUndeadMob un)
+			{
+				un.setSunSensitive(!mob.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
+			}
+			// Undead mob forgiving player
+			mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) -> 
+			{
+				((CUndeadMobImpl)l).updateForgivingTimers();
+			});
+		}
 	}
 }

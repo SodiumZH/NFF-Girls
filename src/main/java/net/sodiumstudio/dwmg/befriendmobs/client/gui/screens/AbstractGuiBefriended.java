@@ -19,11 +19,11 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class AbstractGuiBefriended extends AbstractContainerScreen<AbstractInventoryMenuBefriended> {
+public abstract class AbstractGuiBefriended extends AbstractContainerScreen<BefriendedInventoryMenu> {
 
 	public IBefriendedMob mob;
 	protected float xMouse = 0;
@@ -32,12 +32,12 @@ public abstract class AbstractGuiBefriended extends AbstractContainerScreen<Abst
 
 	public abstract ResourceLocation getTextureLocation();
 	
-	public AbstractGuiBefriended(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory,
+	public AbstractGuiBefriended(BefriendedInventoryMenu pMenu, Inventory pPlayerInventory,
 			IBefriendedMob mob) {
 		this(pMenu, pPlayerInventory, mob, true);
 	}
 
-	public AbstractGuiBefriended(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory,
+	public AbstractGuiBefriended(BefriendedInventoryMenu pMenu, Inventory pPlayerInventory,
 			IBefriendedMob mob, boolean renderName)
 	{
 		super(pMenu, pPlayerInventory, renderName ? ((LivingEntity)mob).getName() : new TextComponent(""));
