@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "dwmg:healing_jade"
+  },
+  "addition": {
+    "item": "minecraft:conduit"
+  },
+  "result": {
+    "item": "dwmg:aqua_jade"
+  }
+}

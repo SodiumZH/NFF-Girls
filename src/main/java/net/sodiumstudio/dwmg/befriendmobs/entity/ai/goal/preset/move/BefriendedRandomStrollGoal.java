@@ -108,7 +108,7 @@ public class BefriendedRandomStrollGoal extends BefriendedMoveGoal {
 	public void start() {
 		super.start();
 		BlockPos wanted = new BlockPos(wantedX, wantedY, wantedZ);
-		if (shouldAvoidSun && mob.asMob().level.canSeeSky(wanted) && mob.asMob().level.isDay())
+		if (shouldAvoidSun.test(mob) && mob.asMob().level.canSeeSky(wanted) && mob.asMob().level.isDay())
 			return;
 		getPathfinder().getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
 	}

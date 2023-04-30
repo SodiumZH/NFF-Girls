@@ -11,14 +11,14 @@ import net.sodiumstudio.dwmg.befriendmobs.client.gui.screens.AbstractGuiBefriend
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
 
-public abstract class AbstractInventoryMenuBefriended extends AbstractContainerMenu {
+public abstract class BefriendedInventoryMenu extends AbstractContainerMenu {
 
 	protected final Container container;
 	protected final IBefriendedMob mob;
 	protected final Inventory playerInventory;
 	// Overall offset that will be applied to all slots
 	
-	protected AbstractInventoryMenuBefriended(int containerId, Inventory playerInventory, Container container,
+	protected BefriendedInventoryMenu(int containerId, Inventory playerInventory, Container container,
 			IBefriendedMob mob) {
 		super(null, containerId);
 		this.mob = mob;

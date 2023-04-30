@@ -19,6 +19,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -56,12 +57,13 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedW
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.util.ItemHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedDrownedTridentAttackGoal;
@@ -70,6 +72,7 @@ import net.sodiumstudio.dwmg.dwmgcontent.entities.ai.goals.BefriendedSunAvoiding
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.dwmgcontent.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgEntityTypes;
+import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 
 public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IBefriendedMob, IBefriendedUndeadMob, IBaubleHolder, IBefriendedAmphibious
 {
@@ -99,7 +102,8 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
 		goalSelector.addGoal(3, new BefriendedDrownedTridentAttackGoal(this, 1.0D, 40, 10.0F));
 		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0D, false));
-		goalSelector.addGoal(4, new BefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false).avoidSun().amphibious());
+		goalSelector.addGoal(4, new BefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false).amphibious()
+				.avoidSunCondition(mob -> {return ((EntityBefriendedDrownedGirl)mob).isSunSensitive();}));
 		//goalSelector.addGoal(4, new BefriendedInWaterFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f));
 		goalSelector.addGoal(5, new BefriendedAmphibiousGoals.GoToBeachGoal(this, 1.0D));
 		goalSelector.addGoal(6, new BefriendedAmphibiousGoals.SwimUpGoal(this, 1.0D, this.level.getSeaLevel()));
@@ -158,7 +162,10 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	{
 		// Porting from 1.18-s7 & 1.19-s8 bug: missing owner uuid in nbt. Generally this shouldn't be called
 		if (getOwner() == null)
+		{
+			MiscUtil.printToScreen("Mob " + asMob().getName().getString() + " missing owner, set " + player.getName().getString() + " as owner.", player);
 			this.setOwner(player);
+		}
 		// Porting solution end
 		if (!player.isShiftKeyDown())
 		{
@@ -260,7 +267,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	}
 
 	@Override
-	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container) {
+	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuEquipmentTwoBaubles(containerId, playerInventory, container, this);
 	}
 
@@ -299,6 +306,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	/* IBefriendedUndeadMob interface */
 
 	public boolean sunSensitive = true;
+	
 	@Override
 	protected boolean isSunSensitive() {
 		return sunSensitive;

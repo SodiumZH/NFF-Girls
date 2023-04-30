@@ -11,8 +11,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.IBefriendedAmphibious;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
 
-// For skeletons, strays and wither skeletons only
-// They consume arrows
+
 public class BefriendedSunAvoidingFollowOwnerGoal extends BefriendedFollowOwnerGoal {
 
 	// If true, the mob will avoid sun even if having a helmet

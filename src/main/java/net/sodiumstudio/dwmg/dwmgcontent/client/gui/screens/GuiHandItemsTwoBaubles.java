@@ -5,12 +5,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.world.entity.player.Inventory;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
 
 public class GuiHandItemsTwoBaubles extends GuiPreset_0 {
 
-	public GuiHandItemsTwoBaubles(AbstractInventoryMenuBefriended pMenu, Inventory pPlayerInventory,
+	public GuiHandItemsTwoBaubles(BefriendedInventoryMenu pMenu, Inventory pPlayerInventory,
 			IBefriendedMob mob) {
 		super(pMenu, pPlayerInventory, mob);
 	}

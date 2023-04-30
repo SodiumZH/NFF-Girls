@@ -1,0 +1,27 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"SHS",
+	"H H",
+	"S S"	
+	],
+	
+	"key":{ 
+	
+		"H":{
+		"item": "minecraft:hay_block"
+		},
+		
+		"S":{ 
+		"item": "minecraft:string"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "dwmg:sunhat",
+		"count": 1
+	}
+}

@@ -1,5 +1,10 @@
 package net.sodiumstudio.dwmg.befriendmobs.entity.ai;
 
+import java.util.function.Function;
+
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.sodiumstudio.dwmg.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
 
 public enum BefriendedAIState {
@@ -10,7 +15,6 @@ public enum BefriendedAIState {
 	CUSTOM_1(98),
 	CUSTOM_2(97);
 	
-	public static final Byte[] IDSET = {0, 1, 2, 3};
 	public final byte id;
 	
 	private BefriendedAIState(int id)
@@ -43,25 +47,26 @@ public enum BefriendedAIState {
 		return fromID(id() + 1 ) != null ? fromID(id() + 1) : fromID(0);
 	}
 	
-	public String getDisplayInfo()
+	public MutableComponent getDisplayInfo()
 	{
 		switch (this)
 		{
 		case WAIT:
 		{
-			return "is waiting.";
+			return InfoHelper.createTrans("info.befriendmobs.mob_wait");
 		}
 		case FOLLOW:
 		{
-			return "is following.";
+			return InfoHelper.createTrans("info.befriendmobs.mob_follow");
 		}
 		case WANDER:
 		{
-			return "is wandering.";
+			return InfoHelper.createTrans("info.befriendmobs.mob_wander");
 		}
 		}
 		throw new UnimplementedException("Befriended AI State display info not implemented.");
 	}
 	
-	
+	// Change this function if any additional states are added
+	public static Function<BefriendedAIState, MutableComponent> getDisplayInfo = BefriendedAIState::getDisplayInfo;
 }

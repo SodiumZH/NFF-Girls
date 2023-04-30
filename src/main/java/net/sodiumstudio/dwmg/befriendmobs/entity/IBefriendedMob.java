@@ -30,9 +30,10 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedChangeAiStateEvent;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CHealingHandlerImpl;
 import net.sodiumstudio.dwmg.befriendmobs.entity.capability.CHealingHandlerImplDefault;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.AbstractInventoryMenuBefriended;
+import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
+import net.sodiumstudio.dwmg.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.ReflectHelper;
@@ -103,7 +104,10 @@ public interface IBefriendedMob extends ContainerListener  {
 		if (MinecraftForge.EVENT_BUS.post(new BefriendedChangeAiStateEvent(this, getAIState(), nextState)))
 			return getAIState();
 		setAIState(nextState);
-		MiscUtil.printToScreen(this.asMob().getName().getString() + " " + this.getAIState().getDisplayInfo(), getOwner());
+		MiscUtil.printToScreen(InfoHelper.createText("")
+				.append(this.asMob().getName())
+				.append(InfoHelper.createText(" "))
+				.append(BefriendedAIState.getDisplayInfo.apply(nextState)), getOwner());
 		return nextState;
 	}
 	
@@ -197,7 +201,7 @@ public interface IBefriendedMob extends ContainerListener  {
 	}
 
 
-	public AbstractInventoryMenuBefriended makeMenu(int containerId, Inventory playerInventory, Container container);
+	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container);
 
 	/* ContainerListener interface */
 	// DO NOT override this. Override onInventoryChanged instead.

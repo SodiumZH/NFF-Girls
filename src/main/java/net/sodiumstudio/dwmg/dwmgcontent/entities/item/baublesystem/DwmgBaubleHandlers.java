@@ -7,6 +7,7 @@ import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.handlers.Bau
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.handlers.BaubleHandlerEnderExecutor;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.handlers.BaubleHandlerGeneral;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.handlers.BaubleHandlerVanillaUndead;
+import net.sodiumstudio.dwmg.dwmgcontent.entities.item.baublesystem.handlers.BaubleHandlerHornet;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgBaubleHandlers {
@@ -15,6 +16,6 @@ public class DwmgBaubleHandlers {
 	public static final BaubleHandler VANILLA_UNDEAD = new BaubleHandlerVanillaUndead();
 	public static final BaubleHandler ENDER_EXECUTOR = new BaubleHandlerEnderExecutor();
 	public static final BaubleHandler DROWNED = new BaubleHandlerDrowned();
-	
+	public static final BaubleHandler HORNET = new BaubleHandlerHornet();
 
 }

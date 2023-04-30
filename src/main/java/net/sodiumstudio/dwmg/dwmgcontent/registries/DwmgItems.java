@@ -54,12 +54,17 @@ public class DwmgItems {
 	public static final RegistryObject<Item> SOUL_AMULET = regItem("soul_amulet", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
 	public static final RegistryObject<Item> RESISTANCE_AMULET = regItem("resistance_amulet", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
 	public static final RegistryObject<Item> HEALING_JADE = regItem("healing_jade", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
+	public static final RegistryObject<Item> AQUA_JADE = regItem("aqua_jade", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
 	public static final RegistryObject<Item> POISONOUS_THORN = regItem("poisonous_thorn", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
 	// Equipment
 	public static final RegistryObject<Item> NECROMANCER_HAT = ITEMS.register("necromancer_hat", () -> new ItemNecromancerArmor(
 			DwmgArmorMaterials.NECROMANCER,
 			EquipmentSlot.HEAD,
 			new Item.Properties().tab(TAB).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> SUNHAT = ITEMS.register("sunhat", () -> new ArmorItem(
+			DwmgArmorMaterials.SUNHAT,
+			EquipmentSlot.HEAD,
+			new Item.Properties().tab(TAB)));
 	/*
 	public static final RegistryObject<Item> INSOMNIA_HELMET = ITEMS.register("insomnia_helmet", () -> new ArmorItem(
 			ArmorMaterials.LEATHER,

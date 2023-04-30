@@ -1,6 +1,7 @@
 package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal;
 
-import net.minecraft.core.BlockPos;
+
+import java.util.function.Predicate;
 import net.minecraft.world.level.block.Blocks;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.IBefriendedAmphibious;
@@ -9,7 +10,7 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.IBefriendedAmphibious;
 public abstract class BefriendedMoveGoal extends BefriendedGoal
 {
 	
-	public boolean shouldAvoidSun = false;
+	public Predicate<IBefriendedMob> shouldAvoidSun = (mob -> false);
 	public boolean isAmphibious = false;
 	public double speedModifier = 1.0d;
 	public boolean canFly = false;
@@ -31,12 +32,19 @@ public abstract class BefriendedMoveGoal extends BefriendedGoal
 	
 	/* Additional modules */
 	
-	// Set the goal should avoid sun
-	public BefriendedMoveGoal avoidSun()
+	// Set the goal should always avoid sun
+	public BefriendedMoveGoal alwaysAvoidSun()
 	{
-		shouldAvoidSun = true;
+		shouldAvoidSun = (mob -> true);
 		return this;
 	}
+	
+	public BefriendedMoveGoal avoidSunCondition(Predicate<IBefriendedMob> condition)
+	{
+		shouldAvoidSun = condition;
+		return this;
+	}
+	
 	
 	// Set this goal should support amphibious mobs i.e. both water and ground navigations.
 	// If amphibious, the mob must implement IBefriendedAmphibious interface.
