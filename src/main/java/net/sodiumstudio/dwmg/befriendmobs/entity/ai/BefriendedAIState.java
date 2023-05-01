@@ -3,7 +3,6 @@ package net.sodiumstudio.dwmg.befriendmobs.entity.ai;
 import java.util.function.Function;
 
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.sodiumstudio.dwmg.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.exceptions.UnimplementedException;
 

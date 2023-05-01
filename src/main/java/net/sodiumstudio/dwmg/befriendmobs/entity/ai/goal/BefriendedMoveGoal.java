@@ -2,6 +2,8 @@ package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal;
 
 
 import java.util.function.Predicate;
+
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
 import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.IBefriendedAmphibious;

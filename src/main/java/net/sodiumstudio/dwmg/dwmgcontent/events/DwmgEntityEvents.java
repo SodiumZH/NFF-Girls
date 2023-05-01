@@ -9,7 +9,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -20,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -34,7 +33,6 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.capability.LivingAttributeValue
 import net.sodiumstudio.dwmg.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.dwmg.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.dwmg.befriendmobs.events.ServerEntityTickEvent;
-import net.sodiumstudio.dwmg.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
@@ -241,10 +239,10 @@ public class DwmgEntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void onLivingUpdate(LivingUpdateEvent event)
+	public static void onLivingUpdate(LivingTickEvent event)
 	{
 		// Necromancer armor
-		ItemNecromancerArmor.necromancerArmorUpdate(event.getEntityLiving());
+		ItemNecromancerArmor.necromancerArmorUpdate(event.getEntity());
 		
 		if (event.getEntity() instanceof Mob mob)
 		{
