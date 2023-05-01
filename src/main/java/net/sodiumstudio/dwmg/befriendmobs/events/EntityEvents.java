@@ -347,14 +347,12 @@ public class EntityEvents
 				BefriendingHandler handler = BefriendingTypeRegistry.getHandler(mob);
 				if (handler.isInProcess(player, mob))
 				{
-					handler.onAttackedByProcessingPlayer(mob, player);
+					handler.onAttackedByProcessingPlayer(mob, player, event.getAmount() > 0.000001);
 				}
 				living.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) ->
 				{
 					cap.addHatredWithReason(player, BefriendableAddHatredReason.ATTACKED);
 				});
-				
-	
 			}
 			// On player attacked by befriendable mob
 			else if (living instanceof Player 
@@ -367,7 +365,7 @@ public class EntityEvents
 				BefriendingHandler handler = BefriendingTypeRegistry.getHandler(mob);
 				if (handler.isInProcess(player, mob))
 				{
-					handler.onAttackProcessingPlayer(mob, player);
+					handler.onAttackProcessingPlayer(mob, player, event.getAmount() > 0.000001);
 				}
 				mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) ->
 				{
