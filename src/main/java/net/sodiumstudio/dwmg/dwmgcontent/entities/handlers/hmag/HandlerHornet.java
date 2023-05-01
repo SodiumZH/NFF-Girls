@@ -106,9 +106,6 @@ public class HandlerHornet extends HandlerItemGivingProgress
 	}
 	
 	@Override
-	public void onAttackProcessingPlayer(Mob mob, Player player) {}
-	
-	@Override
 	public void onAddingHatred(Mob mob, Player player, BefriendableAddHatredReason reason)
 	{
 		if (reason != BefriendableAddHatredReason.ATTACKING)

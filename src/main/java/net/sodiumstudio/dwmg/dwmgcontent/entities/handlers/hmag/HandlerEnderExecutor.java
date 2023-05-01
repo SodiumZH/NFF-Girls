@@ -21,6 +21,7 @@ import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.befriendmobs.util.math.RndUtil;
 import net.sodiumstudio.dwmg.dwmgcontent.registries.DwmgItems;
 
@@ -110,6 +111,8 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 							if (EntityHelper.isEnderManLookedAt(ee, player) && ee.getTarget() != null && ee.getTarget().equals(player))
 							{
 								l.getNbt().putUUID("player_uuid_on_befriending", player.getUUID());
+								// If this time reaches 0, it will be interrupted
+								l.getNbt().putInt("no_attack_expire_time", 200);
 								break;
 							}
 						}
@@ -138,7 +141,19 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 							mob.setTarget(player);
 						}
 					}
+					// Update no attack timer
+					// This timer will be reset in EntityEvent LivingHurtEvent listener
+					if (l.getNbt().contains("no_attack_expire_time") && l.getNbt().getInt("no_attack_expire_time") > 0 && !player.isCreative())
+					{
+						l.getNbt().putInt("no_attack_expire_time", l.getNbt().getInt("no_attack_expire_time") - 1);
+						if (l.getNbt().getInt("no_attack_expire_time") == 0)
+						{
+							interrupt(player, mob, false);
+							Debug.printToScreen("Ender Executor befriending failed because it failed to attack for over 10 s.", player);
+						}
+					}
 				}
+				
 			});
 		}
 	}
@@ -149,6 +164,7 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 		super.interrupt(player, mob, isQuiet);
 		CompoundTag nbt = CBefriendableMob.getCapNbt(mob);
 		nbt.remove("player_uuid_on_befriending");
+		nbt.remove("no_attack_expire_time");
 		nbt.putBoolean("cannot_teleport", false);	
 		mob.setTarget(null);
 	}
@@ -165,6 +181,21 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 		HashSet<BefriendableAddHatredReason> set = new HashSet<BefriendableAddHatredReason>();
 		set.add(BefriendableAddHatredReason.ATTACKED);
 		return set;
+	}
+
+	@Override
+	public void onAttackProcessingPlayer(Mob mob, Player player, boolean damageGiven)
+	{
+		if (mob instanceof EnderExecutorEntity ee)
+		{
+			ee.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> {
+				if (cap.getNbt().contains("no_attack_expire_time"))
+				{
+					cap.getNbt().putInt("no_attack_expire_time", 200);
+				}
+						
+			});
+		}
 	}
 	
 }

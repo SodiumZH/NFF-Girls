@@ -99,24 +99,23 @@ public abstract class BefriendingHandler
 		return false;
 	}
 	
-	// Execute when the mob attacks the player in befriending process with it
-	// Fired in EntityEvents and no need to manually invoke
-	// This function doesn't check if player is in hatred
-	// Interrupt by default
-	public void onAttackProcessingPlayer(Mob mob, Player player)
+	/** Execute when the mob attacks the player in befriending process with it
+	 * Fired in EntityEvents and no need to manually invoke
+	 * This function doesn't check if player is in hatred
+	 * No action by default
+	 *
+	 * @param damageGiven Whether the attack gave any real damage.
+	 */
+	public void onAttackProcessingPlayer(Mob mob, Player player, boolean damageGiven)
 	{
-		if (isInProcess(player, mob))
-			interrupt(player, mob, false);
 	}
 	
 	// Execute when the mob is attacked by the player in befriending process with it
 	// Fired in EntityEvents and no need to manually invoke
 	// This function doesn't check if player is in hatred
-	// Interrupt by default
-	public void onAttackedByProcessingPlayer(Mob mob, Player player)
+	// By default no action. Usually it will interrupt because of hatred
+	public void onAttackedByProcessingPlayer(Mob mob, Player player, boolean damageGiven)
 	{
-		if (isInProcess(player, mob))
-			interrupt(player, mob, false);
 	}
 	
 	// Execute when the mob added player into hatred list

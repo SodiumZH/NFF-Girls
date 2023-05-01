@@ -257,10 +257,6 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 		return set;
 	}
 	
-	@Override
-	public void onAttackProcessingPlayer(Mob mob, Player player)
-	{}
-	
 	@SubscribeEvent
 	public static void onTimerUp(BefriendableTimerUpEvent event)
 	{

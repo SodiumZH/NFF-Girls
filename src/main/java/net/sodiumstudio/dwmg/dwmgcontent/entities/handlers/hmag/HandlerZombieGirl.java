@@ -54,13 +54,13 @@ public class HandlerZombieGirl extends HandlerItemGivingProgress
 	}
 	
 	@Override
-	public void onAttackProcessingPlayer(Mob mob, Player player)
+	public void onAttackProcessingPlayer(Mob mob, Player player, boolean damageGiven)
 	{
 		interrupt(player, mob, false);
 	}
 	
 	@Override
-	public void onAttackedByProcessingPlayer(Mob mob, Player player)
+	public void onAttackedByProcessingPlayer(Mob mob, Player player, boolean damageGiven)
 	{
 		interrupt(player, mob, false);		
 	}
