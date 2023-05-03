@@ -1,10 +1,10 @@
-package net.sodiumstudio.dwmg.befriendmobs.example;
+package net.sodiumstudio.befriendmobs.example;
 
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
-import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
+import net.sodiumstudio.befriendmobs.BefriendMobs;
+import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 
 @Mod.EventBusSubscriber(modid = BefriendMobs.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class EXAMPLE_BefriendingTypeRegister {

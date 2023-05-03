@@ -1,15 +1,15 @@
-package net.sodiumstudio.dwmg.befriendmobs.example;
+package net.sodiumstudio.befriendmobs.example;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendingHandler;
-import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractArguments;
-import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
-import net.sodiumstudio.dwmg.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
-import net.sodiumstudio.dwmg.befriendmobs.registry.BefMobItems;
-import net.sodiumstudio.dwmg.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.befriending.BefriendingHandler;
+import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractArguments;
+import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
+import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
+import net.sodiumstudio.befriendmobs.registry.BefMobItems;
+import net.sodiumstudio.befriendmobs.util.EntityHelper;
 
 // We set that using an item "EXAMPLE Zombie Befriending Item" befriends the zombie
 public class EXAMPLE_BefriendingHandlerZombie extends AbstractBefriendingHandler

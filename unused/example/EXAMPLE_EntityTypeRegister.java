@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.example;
+package net.sodiumstudio.befriendmobs.example;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -6,9 +6,9 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
-import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
-import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedZombieGirl;
+import net.sodiumstudio.befriendmobs.BefriendMobs;
+import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedZombieGirl;
 
 // Register the new mob type
 // This is just the same as registering any other entity types. 

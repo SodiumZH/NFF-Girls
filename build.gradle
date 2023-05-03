@@ -18,7 +18,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-version = '0.0.0-snapshot.10'
+version = '0.0.1-alpha'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'dwmg'
 
@@ -143,6 +143,10 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
      // Put repositories for dependencies here
 	
+	flatDir {
+		dirs "libs"
+	}
+	
 	maven {
         url "https://www.cursemaven.com"
         content {
@@ -174,6 +178,7 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
     implementation fg.deobf("curse.maven:jade-324717:4082408")
+    
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
 
     // Examples using mod jars from ./libs
@@ -183,6 +188,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+	implementation fileTree(dir: 'libs', include: '*.jar')
     implementation fg.deobf("curse.maven:hmag-537613:4392755")
 	implementation fg.deobf("curse.maven:gog4-228948:4249761")
 	implementation fg.deobf("curse.maven:geckolib-388172:4181370")
@@ -199,7 +205,7 @@ jar {
         attributes([
                 "Specification-Title"     : "dwmg",
                 "Specification-Vendor"    : "sodiumstudio",
-                "Specification-Version"   : "0.0.0-snapshot.10",
+                "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "sodiumstudio",

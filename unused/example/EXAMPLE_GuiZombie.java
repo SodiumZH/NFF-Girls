@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.example;
+package net.sodiumstudio.befriendmobs.example;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -11,12 +11,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
-import net.sodiumstudio.dwmg.befriendmobs.client.gui.screens.AbstractGuiBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
-import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
+import net.sodiumstudio.befriendmobs.BefriendMobs;
+import net.sodiumstudio.befriendmobs.client.gui.screens.AbstractGuiBefriended;
+import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
+import net.sodiumstudio.befriendmobs.util.math.IntVec2;
+import net.sodiumstudio.dwmg.Dwmg;
 
 @OnlyIn(Dist.CLIENT)
 public class EXAMPLE_GuiZombie extends AbstractGuiBefriended {

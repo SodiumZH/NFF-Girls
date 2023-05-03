@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.example;
+package net.sodiumstudio.befriendmobs.example;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -21,21 +21,21 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.sodiumstudio.dwmg.befriendmobs.entity.BefriendedHelper;
-import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.BefriendedAIState;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventory;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryWithEquipment;
-import net.sodiumstudio.dwmg.befriendmobs.util.debug.Debug;
+import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
+import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
+import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
+import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
+import net.sodiumstudio.befriendmobs.util.debug.Debug;
 
 /**
  * @author SodiumZH

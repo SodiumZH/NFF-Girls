@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.example;
+package net.sodiumstudio.befriendmobs.example;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Zombie;

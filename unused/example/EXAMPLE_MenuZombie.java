@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.example;
+package net.sodiumstudio.befriendmobs.example;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -7,12 +7,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
-import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
-import net.sodiumstudio.dwmg.befriendmobs.client.gui.screens.AbstractGuiBefriended;
-import net.sodiumstudio.dwmg.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.dwmg.befriendmobs.util.TagHelper;
-import net.sodiumstudio.dwmg.befriendmobs.util.math.IntVec2;
+import net.sodiumstudio.befriendmobs.BefriendMobs;
+import net.sodiumstudio.befriendmobs.client.gui.screens.AbstractGuiBefriended;
+import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
+import net.sodiumstudio.befriendmobs.util.TagHelper;
+import net.sodiumstudio.befriendmobs.util.math.IntVec2;
 
 public class EXAMPLE_MenuZombie extends AbstractInventoryMenuBefriended {
 

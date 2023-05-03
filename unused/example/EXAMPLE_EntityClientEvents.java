@@ -1,7 +1,7 @@
-package net.sodiumstudio.dwmg.befriendmobs.example;
+package net.sodiumstudio.befriendmobs.example;
 
 import net.minecraftforge.fml.common.Mod;
-import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
+import net.sodiumstudio.befriendmobs.BefriendMobs;
 import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraftforge.api.distmarker.Dist;
