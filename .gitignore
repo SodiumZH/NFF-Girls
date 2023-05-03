@@ -21,6 +21,8 @@ build
 # other
 eclipse
 run
+libs
 
 # Files from Forge MDK
 forge*changelog.txt
+libs/befriendmobs-0.0.1-alpha.jar

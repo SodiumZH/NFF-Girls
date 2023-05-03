@@ -188,7 +188,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-	implementation fileTree(dir: 'libs', include: '*.jar')
+	implementation fg.deobf("net.sodiumstudio.befriendmobs:befriendmobs:0.0.1-alpha")
     implementation fg.deobf("curse.maven:hmag-537613:4392755")
 	implementation fg.deobf("curse.maven:gog4-228948:4249761")
 	implementation fg.deobf("curse.maven:geckolib-388172:4181370")
