@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.befriendmobs.example;
+package net.sodiumstudio.befriendmobs.example;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -6,7 +6,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.sodiumstudio.dwmg.befriendmobs.BefriendMobs;
+import net.sodiumstudio.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 import net.sodiumstudio.dwmg.dwmgcontent.entities.hmag.EntityBefriendedZombieGirl;
 

@@ -142,6 +142,10 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
      // Put repositories for dependencies here
+			
+	flatDir {
+		dirs "libs"
+	}
 	
 	maven {
         url "https://www.cursemaven.com"
@@ -174,6 +178,7 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
 	compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
 	runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+	implementation fg.deobf("net.sodiumstudio.befriendmobs:befriendmobs:0.1.1-alpha")
     implementation fg.deobf("curse.maven:jade-324717:4433884")
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
 
@@ -199,7 +204,7 @@ jar {
         attributes([
                 "Specification-Title"     : "dwmg",
                 "Specification-Vendor"    : "sodiumstudio",
-                "Specification-Version"   : "0.1.1-alpha",
+                "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "sodiumstudio",
