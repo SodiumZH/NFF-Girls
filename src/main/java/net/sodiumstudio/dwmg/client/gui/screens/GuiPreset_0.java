@@ -6,7 +6,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.sodiumstudio.befriendmobs.client.gui.screens.AbstractGuiBefriended;
+import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.befriendmobs.client.gui.screens.BefriendedGuiScreen;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.util.math.IntVec2;
@@ -16,7 +17,7 @@ import net.sodiumstudio.dwmg.Dwmg;
 */
 
 @OnlyIn(Dist.CLIENT)
-public class GuiPreset_0 extends AbstractGuiBefriended {
+public class GuiPreset_0 extends BefriendedGuiScreen {
 	
 	@Override
 	public ResourceLocation getTextureLocation() {

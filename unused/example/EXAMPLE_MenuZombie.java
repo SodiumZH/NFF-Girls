@@ -8,7 +8,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.BefriendMobs;
-import net.sodiumstudio.befriendmobs.client.gui.screens.AbstractGuiBefriended;
+import net.sodiumstudio.befriendmobs.client.gui.screens.BefriendedGuiScreen;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.util.TagHelper;
@@ -168,7 +168,7 @@ public class EXAMPLE_MenuZombie extends AbstractInventoryMenuBefriended {
 	}
 
 	@Override
-	public AbstractGuiBefriended makeGui() {
+	public BefriendedGuiScreen makeGui() {
 		return new EXAMPLE_GuiZombie(this, playerInventory, mob);
 	}
 	
