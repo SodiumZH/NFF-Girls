@@ -174,6 +174,14 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 
 	/* Inventory */
 
+	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
+
+	@Override
+	public BefriendedInventory getAdditionalInventory()
+	{
+		return additionalInventory;
+	}
+	
 	@Override
 	public int getInventorySize()
 	{
@@ -206,22 +214,20 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
+		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
 		nbt.put("is_from_husk", ByteTag.valueOf(isFromHusk));
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
-		BefriendedHelper.readBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
+		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
 		isFromHusk = nbt.getBoolean("is_from_husk");
 		setInit();
 	}
 
 	/* Convertions */
-	
-	
-	// In 1.18.2-snapshot-7 & 1.19.2-snapshot-8 DrownedGirl is implemented
+		
 	@Override
 	protected boolean convertsInWater()
 	{
@@ -274,7 +280,17 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 		entityData.define(DATA_OWNERUUID, Optional.empty());
 		entityData.define(DATA_AISTATE, (byte) 0);
 	}
-	
+
+	@Override
+	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
+		return DATA_OWNERUUID;
+	}
+
+	@Override
+	public EntityDataAccessor<Byte> getAIStateData() {
+		return DATA_AISTATE;
+	}
+
 	/* IBefriendedUndeadMob interface */
 
 	public boolean sunSensitive = true;
@@ -309,77 +325,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IBef
 
 	// ------------------ IBefriendedMob interface ------------------ //
 
-	/* Init */
-	
-	protected boolean initialized = false;
-	
-	@Override
-	public boolean hasInit()
-	{
-		return initialized;
-	}
-	
-	@Override
-	public void setInit()
-	{
-		initialized = true;
-	}
-	
-	/* Ownership */
-	
-	@Override
-	public UUID getOwnerUUID() {
-		return entityData.get(DATA_OWNERUUID).orElse(null);
-	}
 
-	@Override
-	public void setOwnerUUID(UUID ownerUUID) {
-		entityData.set(DATA_OWNERUUID, Optional.of(ownerUUID));
-	}
-
-	/* AI */
-	
-	@Override
-	public BefriendedAIState getAIState() {
-		return BefriendedAIState.fromID(entityData.get(DATA_AISTATE));
-	}
-
-	@Override
-	public void setAIState(BefriendedAIState state) {
-		entityData.set(DATA_AISTATE, state.id());
-	}
-
-	protected LivingEntity PreviousTarget = null;
-
-	@Override
-	public LivingEntity getPreviousTarget() {
-		return PreviousTarget;
-	}
-
-	@Override
-	public void setPreviousTarget(LivingEntity target) {
-		PreviousTarget = target;
-	}
-
-	protected Vec3 anchorPos = new Vec3(0, 0, 0);	// This is not important as we initial it again in init()
-	@Override
-	public Vec3 getAnchorPos() {return anchorPos;}
-	
-	@Override
-	public void setAnchorPos(Vec3 pos) {anchorPos = new Vec3(pos.x, pos.y, pos.z);}
-	
-	@Override
-	public double getAnchoredStrollRadius()  {return 64.0d;}
-	
-	/* Inventory */
-
-	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
-
-	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
 	
 	// ------------------ IBefriendedMob interface end ------------------ //
 	

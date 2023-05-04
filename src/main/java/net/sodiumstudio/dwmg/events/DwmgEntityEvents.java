@@ -26,6 +26,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.BefriendMobs;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.befriendmobs.entity.ai.BefriendedChangeAiStateEvent;
 import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
@@ -35,6 +37,7 @@ import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
 import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.Dwmg;
@@ -46,7 +49,7 @@ import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 @SuppressWarnings("removal")
-@Mod.EventBusSubscriber(modid = BefriendMobs.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgEntityEvents
 {
 
@@ -191,16 +194,18 @@ public class DwmgEntityEvents
 			ee.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> 
 			{
 				if (l.getNbt().getBoolean("cannot_teleport"))
-					event.setCanceled(true);
+				{
+					// Still teleport in water
+					if (!ee.isInWater())
+					{
+						event.setCanceled(true);
+					}
+					
+				}
 			});
 		}
 	}
-	
-	@SubscribeEvent
-	public static void onServerEntityTick(ServerEntityTickEvent.PostWorldTick event)
-	{
-		
-	}
+
 	
 	@SubscribeEvent
 	public static void onBefriendableAddHatred(BefriendableAddHatredEvent event)
@@ -256,6 +261,18 @@ public class DwmgEntityEvents
 			{
 				((CUndeadMobImpl)l).updateForgivingTimers();
 			});
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onBefriendedSwitchAiState(BefriendedChangeAiStateEvent event)
+	{
+		if (event.getMob().getModId().equals(Dwmg.MOD_ID) && !event.getMob().asMob().level.isClientSide)
+		{
+			MiscUtil.printToScreen(InfoHelper.createText("")
+					.append(event.getMob().asMob().getName())
+					.append(InfoHelper.createText(" "))
+					.append(BefriendedAIState.getDisplayInfo.apply(event.getStateAfter())), event.getMob().getOwner());
 		}
 	}
 }

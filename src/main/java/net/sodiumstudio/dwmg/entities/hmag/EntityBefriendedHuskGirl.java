@@ -75,7 +75,31 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 	public static Builder createAttributes() {
 		return Zombie.createAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.28D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.ARMOR, 5.0D);
 	}
+	
+	/* Data sync */
 
+	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
+			.defineId(EntityBefriendedHuskGirl.class, EntityDataSerializers.OPTIONAL_UUID);
+	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
+			.defineId(EntityBefriendedHuskGirl.class, EntityDataSerializers.BYTE);
+
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(DATA_OWNERUUID, Optional.empty());
+		entityData.define(DATA_AISTATE, (byte) 0);
+	}
+
+	@Override
+	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
+		return DATA_OWNERUUID;
+	}
+
+	@Override
+	public EntityDataAccessor<Byte> getAIStateData() {
+		return DATA_AISTATE;
+	}
+	
 	/* AI */
 
 	@Override
@@ -191,13 +215,13 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
+		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
-		BefriendedHelper.readBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
+		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
 		this.setInit();
 	}
 
@@ -253,86 +277,6 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 		return DwmgBaubleHandlers.VANILLA_UNDEAD;
 	}
 
-	// ==================================================================== //
-	// ========================= General Settings ========================= //
-	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
-	// ------------------ Data sync ------------------ //
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EntityBefriendedHuskGirl.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedHuskGirl.class, EntityDataSerializers.BYTE);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, (byte) 0);
-	}
-
-	// ------------------ Data sync end ------------------ //
-
-	// ------------------ IBefriendedMob interface ------------------ //
-
-	protected boolean initialized = false;
-	
-	@Override
-	public boolean hasInit()
-	{
-		return initialized;
-	}
-	
-	@Override
-	public void setInit()
-	{
-		initialized = true;
-	}
-
-	@Override
-	public UUID getOwnerUUID() {
-		return entityData.get(DATA_OWNERUUID).orElse(null);
-	}
-
-	@Override
-	public void setOwnerUUID(UUID ownerUUID) {
-		entityData.set(DATA_OWNERUUID, Optional.of(ownerUUID));
-	}
-
-	@Override
-	public BefriendedAIState getAIState() {
-		return BefriendedAIState.fromID(entityData.get(DATA_AISTATE));
-	}
-
-	@Override
-	public void setAIState(BefriendedAIState state) {
-		entityData.set(DATA_AISTATE, state.id());
-	}
-
-	protected LivingEntity PreviousTarget = null;
-
-	@Override
-	public LivingEntity getPreviousTarget() {
-		return PreviousTarget;
-	}
-
-	@Override
-	public void setPreviousTarget(LivingEntity target) {
-		PreviousTarget = target;
-	}
-
-	protected Vec3 anchorPos = new Vec3(0, 0, 0);	// This is not important as we initial it again in init()
-	@Override
-	public Vec3 getAnchorPos() {return anchorPos;}
-	
-	@Override
-	public void setAnchorPos(Vec3 pos) {anchorPos = new Vec3(pos.x, pos.y, pos.z);}
-	
-	@Override
-	public double getAnchoredStrollRadius()  {return 64.0d;}
-	
-	// ------------------ IBefriendedMob interface end ------------------ //
-
 	// ------------------ Misc ------------------ //
 	
 	@Override
@@ -340,6 +284,10 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefrien
 		return Dwmg.MOD_ID;
 	}
 	
+	// ==================================================================== //
+	// ========================= General Settings ========================= //
+	// Generally these can be copy-pasted to other IBefriendedMob classes //
+
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
