@@ -2,7 +2,6 @@ package net.sodiumstudio.dwmg.entities.hmag;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,15 +18,11 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
@@ -40,8 +35,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.sound.SoundEvent;
-import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
@@ -54,25 +47,21 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFollow
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRandomSwimGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
+import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
-import net.sodiumstudio.befriendmobs.util.debug.Debug;
+import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedDrownedTridentAttackGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedInWaterFollowOwnerGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
-import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IBefriendedMob, IBefriendedUndeadMob, IBaubleHolder, IBefriendedAmphibious
 {
@@ -92,6 +81,30 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 		return Zombie.createAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.245D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.ARMOR, 3.0D);
 	}
 
+	// ------------------ Data sync ------------------ //
+
+	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
+			.defineId(EntityBefriendedDrownedGirl.class, EntityDataSerializers.OPTIONAL_UUID);
+	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
+			.defineId(EntityBefriendedDrownedGirl.class, EntityDataSerializers.BYTE);
+
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(DATA_OWNERUUID, Optional.empty());
+		entityData.define(DATA_AISTATE, (byte) 0);
+	}
+
+	@Override
+	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
+		return DATA_OWNERUUID;
+	}
+
+	@Override
+	public EntityDataAccessor<Byte> getAIStateData() {
+		return DATA_AISTATE;
+	}
+	
 	/* AI */
 
 	@Override
@@ -141,7 +154,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 		double d1 = pTarget.getY(0.3333333333333333D) - throwntrident.getY();
 		double d2 = pTarget.getZ() - this.getZ();
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-		throwntrident.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);	// Inaccuracy is fixed at hard mode (i.e. 2.0)
+		throwntrident.shoot(d0, d1 + d3 * 0.2F, d2, 1.6F, 2.0F);	// Inaccuracy is fixed at hard mode (i.e. 2.0)
 		this.playSound(SoundEvents.DROWNED_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 		this.level.addFreshEntity(throwntrident);
 	}
@@ -244,6 +257,14 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 
 	/* Inventory */
 
+	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(
+			getInventorySize(), this);
+
+	@Override
+	public BefriendedInventory getAdditionalInventory() {
+		return additionalInventory;
+	}
+	
 	@Override
 	public int getInventorySize() {
 		return 8;
@@ -276,7 +297,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
+		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
 		nbt.put("is_from_husk", ByteTag.valueOf(isFromHusk));
 		nbt.put("is_from_zombie", ByteTag.valueOf(isFromZombie));
 	}
@@ -284,7 +305,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
-		BefriendedHelper.readBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
+		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
 		isFromHusk = nbt.getBoolean("is_from_husk");
 		isFromZombie = nbt.getBoolean("is_from_zombie");
 		setInit();
@@ -357,94 +378,6 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
 
-	// ------------------ Data sync ------------------ //
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EntityBefriendedDrownedGirl.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedDrownedGirl.class, EntityDataSerializers.BYTE);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, (byte) 0);
-	}
-
-	// ------------------ Data sync end ------------------ //
-
-	// ------------------ IBefriendedMob interface ------------------ //
-
-	/* Init */
-
-	protected boolean initialized = false;
-
-	@Override
-	public boolean hasInit() {
-		return initialized;
-	}
-
-	@Override
-	public void setInit() {
-		initialized = true;
-	}
-
-	/* Ownership */
-
-	@Override
-	public UUID getOwnerUUID() {
-		return entityData.get(DATA_OWNERUUID).orElse(null);
-	}
-
-	@Override
-	public void setOwnerUUID(UUID ownerUUID) {
-		entityData.set(DATA_OWNERUUID, Optional.of(ownerUUID));
-	}
-
-	/* AI */
-
-	@Override
-	public BefriendedAIState getAIState() {
-		return BefriendedAIState.fromID(entityData.get(DATA_AISTATE));
-	}
-
-	@Override
-	public void setAIState(BefriendedAIState state) {
-		entityData.set(DATA_AISTATE, state.id());
-	}
-
-	protected LivingEntity PreviousTarget = null;
-
-	@Override
-	public LivingEntity getPreviousTarget() {
-		return PreviousTarget;
-	}
-
-	@Override
-	public void setPreviousTarget(LivingEntity target) {
-		PreviousTarget = target;
-	}
-
-	/* Inventory */
-
-	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(
-			getInventorySize(), this);
-
-	@Override
-	public BefriendedInventory getAdditionalInventory() {
-		return additionalInventory;
-	}
-
-	protected Vec3 anchorPos = new Vec3(0, 0, 0);	// This is not important as we initial it again in init()
-	@Override
-	public Vec3 getAnchorPos() {return anchorPos;}
-	
-	@Override
-	public void setAnchorPos(Vec3 pos) {anchorPos = new Vec3(pos.x, pos.y, pos.z);}
-	
-	@Override
-	public double getAnchoredStrollRadius()  {return 64.0d;}
-	
 	// ------------------ IBefriendedMob interface end ------------------ //
 
 	// ------------------ Misc ------------------ //

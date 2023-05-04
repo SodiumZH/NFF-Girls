@@ -79,7 +79,6 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	public EntityBefriendedCreeperGirl(EntityType<? extends EntityBefriendedCreeperGirl> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);	
 		befriendedInventory = new BefriendedInventoryWithEquipment(7);
-		this.modId = Dwmg.MOD_ID;
 	}
 
 	@Override

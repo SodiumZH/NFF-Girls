@@ -8,16 +8,15 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.sodiumstudio.befriendmobs.BefriendMobs;
 import net.sodiumstudio.befriendmobs.item.ItemMobRespawner;
-import net.sodiumstudio.befriendmobs.item.capability.CMobRespawnerImpl;
 import net.sodiumstudio.befriendmobs.item.capability.MobRespawnerStartRespawnEvent;
 import net.sodiumstudio.befriendmobs.item.capability.RespawnerAddedEvent;
 import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
+import net.sodiumstudio.dwmg.Dwmg;
 
-@Mod.EventBusSubscriber(modid = BefriendMobs.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgItemEvents
 {
 	@SubscribeEvent
