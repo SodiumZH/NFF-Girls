@@ -12,14 +12,14 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.befriendmobs.BefriendMobs;
-import net.sodiumstudio.befriendmobs.client.gui.screens.AbstractGuiBefriended;
+import net.sodiumstudio.befriendmobs.client.gui.screens.BefriendedGuiScreen;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.util.math.IntVec2;
 import net.sodiumstudio.dwmg.Dwmg;
 
 @OnlyIn(Dist.CLIENT)
-public class EXAMPLE_GuiZombie extends AbstractGuiBefriended {
+public class EXAMPLE_GuiZombie extends BefriendedGuiScreen {
 	
 	@Override
 	public ResourceLocation getTextureLocation() {
