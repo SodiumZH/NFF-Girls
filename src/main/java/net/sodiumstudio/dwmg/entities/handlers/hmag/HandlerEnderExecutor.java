@@ -5,7 +5,9 @@ import java.util.HashSet;
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -148,8 +150,22 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 						l.getNbt().putInt("no_attack_expire_time", l.getNbt().getInt("no_attack_expire_time") - 1);
 						if (l.getNbt().getInt("no_attack_expire_time") == 0)
 						{
-							interrupt(player, mob, false);
-							Debug.printToScreen("Ender Executor befriending failed because it failed to attack for over 10 s.", player);
+							// When 10s no attack expired, process loses 0.2
+							DoubleTag currentValueTag = (DoubleTag) NbtHelper.getPlayerData(l.getPlayerDataNbt(), player, "proc_value");
+							double procValue = currentValueTag == null ? 0 : currentValueTag.getAsDouble();
+							procValue -= 0.2d;
+							// If it drops 0, interrupt
+							if (procValue <= 0)
+							{
+								interrupt(player, mob, false);
+							}
+							// Otherwise put the value back, send some particles and reset timer
+							else 
+							{
+								NbtHelper.putPlayerData(DoubleTag.valueOf(procValue), l.getPlayerDataNbt(), player, "proc_value");
+								EntityHelper.sendParticlesToEntity(mob, ParticleTypes.ANGRY_VILLAGER, mob.getBbHeight() - 0.2, 0.3d, 2, 1d);
+								l.getNbt().putInt("no_attack_expire_time", 200);
+							}
 						}
 					}
 				}
