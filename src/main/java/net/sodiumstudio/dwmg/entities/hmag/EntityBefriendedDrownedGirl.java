@@ -34,10 +34,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedAmphibious;
 import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedAmphibiousGoals;
@@ -141,11 +139,6 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IB
 	}
 	
 	/* Combat */
-
-	@Override
-	public void updateAttributes() {
-		// TODO: actions
-	}
 
 	@Override
 	public void performRangedAttack(LivingEntity pTarget, float pDistanceFactor) {
