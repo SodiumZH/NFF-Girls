@@ -312,6 +312,16 @@ If it failed to attack you for 10s, the hit count will drop by 1. (If the attack
 
 If you get >32 blocks away from it, the process will be interrupted.
 
+##### Interaction
+
+To interact with it, you must either wear a Necromancer's Hat or hold a Necromancer's Wand on either hand. Otherwise you'll not be able to switch its AI state or open the inventory GUI, and it won't follow you or attack targets you attacked or attacked you.
+
+You can customize its hand items. The main hand only accept hoes as weapon. (Non-weapon items are also acceptable, but not taking any effect.)
+
+It can be healed with Soul Powder (5) and Soul Apple (15).
+
+It will be healed by 2 if hit with its owner's Necromancer's Wand magic ball. If the owner is wearing a Necromancer's Hat, it will be healed by 3 and get 5s Strength II effect.
+
 
 
 ## Foods
@@ -415,3 +425,17 @@ It's other properties are identical to Leather Helmet.
 A helmet giving the wearer Effects Strength II, Haste II, Undead Affinity and **Wither I**.  If the wearer is standing on the Soul Carpet, it will not catch Wither effect.
 
 It's other properties are identical to Leather Helmet.
+
+
+
+### Weapons & Tools
+
+#### Necromancer's Wand
+
+On usage it can shoot a magic ball which adds Wither III for 5s on hitting living entity. If the user is wearing a Necromancer's Hat, it will add Wither IV instead of III.
+
+Each time used, the user will take a damage of 2.
+
+Durability: 64 (accepting Unbreaking enchantment)
+
+It will be unable to use if leaving only 1 durability, preventing it from breaking. 
