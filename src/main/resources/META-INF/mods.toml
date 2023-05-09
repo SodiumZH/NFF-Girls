@@ -31,7 +31,6 @@ description='''Enjoy your Minecraft days with monster girls!'''
     modId="befriendmobs"
     mandatory=true
     versionRange="[0.1.2-alpha, 0.2.0)"
-
     ordering="NONE"
     side="BOTH"  
     
