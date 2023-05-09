@@ -2,6 +2,12 @@
 
 ## 1.18.2
 
+### 0.0.1-alpha
+
+Extracted BefriendMobs API out as a lib. Now this mod needs BefriendMobs API as dependency.
+
+(As BefriendMobs API hasn't been approved in CurseForge, the .jar files are also available in Github: https://github.com/SodiumZH/Days-with-Monster-Girls/tree/1.18.2/files)
+
 ### 0.0.0-snapshot.10
 
 Fixed Ender Executor befriending interruption on the mob attacking the player.
@@ -92,7 +98,13 @@ Added befriending Zombie Girl, Husk Girl and Skeleton Girl support.
 
 ## 1.19.2
 
-### 0.0.0-snapshot.11
+### 0.1.1-alpha
+
+Extracted BefriendMobs API out as a lib. Now this mod needs BefriendMobs API as dependency.
+
+(As BefriendMobs API hasn't been approved in CurseForge, the .jar files are also available in Github: https://github.com/SodiumZH/Days-with-Monster-Girls/tree/1.18.2/files)
+
+### 0.1.0-snapshot.11
 
 Fixed Ender Executor befriending interruption on the mob attacking the player.
 

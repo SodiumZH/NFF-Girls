@@ -1,5 +1,9 @@
 package net.sodiumstudio.dwmg.registries;
 
+import com.github.mechalopa.hmag.HMaG;
+import com.github.mechalopa.hmag.world.entity.NecroticReaperEntity;
+import com.github.mechalopa.hmag.world.entity.projectile.MagicBulletEntity;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -11,6 +15,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedNecroticReaper;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedDrownedGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedEnderExecutor;
@@ -20,6 +25,7 @@ import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedStrayGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedWitherSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedZombieGirl;
+import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgEntityTypes {
@@ -107,8 +113,8 @@ public class DwmgEntityTypes {
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
 			.noSummon()
-			.build(new ResourceLocation(Dwmg.MOD_ID, "wither_skeleton_girl").toString()));
-	
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_wither_skeleton_girl").toString()));
+
 	public static final RegistryObject<EntityType<EntityBefriendedHornet>> HMAG_HORNET = 
 			ENTITY_TYPES.register("hmag_hornet", () -> EntityType.Builder
 			.of(EntityBefriendedHornet::new, MobCategory.CREATURE)
@@ -118,6 +124,16 @@ public class DwmgEntityTypes {
 			.setShouldReceiveVelocityUpdates(false)
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_hornet").toString()));
+	
+	public static final RegistryObject<EntityType<EntityBefriendedNecroticReaper>> HMAG_NECROTIC_REAPER =
+			ENTITY_TYPES.register("hmag_necrotic_reaper", () -> EntityType.Builder
+			.of(EntityBefriendedNecroticReaper::new, MobCategory.CREATURE)
+			.sized(0.6F, 1.95F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_necrotic_reaper").toString()));
 	
 	@SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
@@ -130,6 +146,20 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.HMAG_STRAY_GIRL.get(), EntityBefriendedStrayGirl.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_WITHER_SKELETON_GIRL.get(), EntityBefriendedWitherSkeletonGirl.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_HORNET.get(), EntityBefriendedHornet.createAttributes().build());
+        event.put(DwmgEntityTypes.HMAG_NECROTIC_REAPER.get(), EntityBefriendedNecroticReaper.createAttributes().build());
 	}
+	
+	// Projectiles
+	
+	public static final RegistryObject<EntityType<NecromancerMagicBulletEntity>> NECROMANCER_MAGIC_BULLET = 
+			ENTITY_TYPES.register("necromancer_magic_bullet", () -> EntityType.Builder
+			.<NecromancerMagicBulletEntity>of(NecromancerMagicBulletEntity::new, MobCategory.MISC)
+			.sized(0.3215F, 0.3215F)
+			.setTrackingRange(4)
+			.setUpdateInterval(1)
+			.setShouldReceiveVelocityUpdates(true)
+			.setCustomClientFactory(NecromancerMagicBulletEntity::new)
+			.build(new ResourceLocation(Dwmg.MOD_ID, "necromancer_magic_bullet").toString()));
+	
 	
 }

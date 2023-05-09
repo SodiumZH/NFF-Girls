@@ -52,5 +52,10 @@ public class GuiPreset_0 extends BefriendedGuiScreen {
 	   super.render(poseStack, mouseX, mouseY, partialTick);
 	}
 
+	public void renderItemSlots()
+	{
+		
+	}
+	
 }
 
