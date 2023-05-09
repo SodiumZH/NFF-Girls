@@ -43,6 +43,7 @@ import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
+import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
@@ -131,6 +132,12 @@ public class DwmgEntityEvents
 		LivingEntity living = event.getEntity();
 		if (!living.level.isClientSide)
 		{
+			// Cancel necromancer magic bullet normal attack
+			if (event.getSource().getDirectEntity() instanceof NecromancerMagicBulletEntity)
+			{
+				event.setCanceled(true);
+			}
+			
 			// Handle Ender Protection
 			if (living.hasEffect(DwmgEffects.ENDER_PROTECTION.get()))
 			{

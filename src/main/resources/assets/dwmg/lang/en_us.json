@@ -15,6 +15,7 @@
   "item.dwmg.necromancer_hat": "Necromancer's Hat",
   "item.dwmg.aqua_jade": "Aqua Jade",
   "item.dwmg.sunhat": "Sunhat",
+  "item.dwmg.necromancer_wand": "Necromancer's Wand",
   "block.dwmg.soul_cake" : "Soul Cake",
   "block.dwmg.soul_carpet" : "Soul Carpet",
   "effect.dwmg.undead_affinity": "Undead Affinity",
@@ -28,5 +29,7 @@
   "entity.dwmg.hmag_stray_girl" : "Stray Girl",
   "entity.dwmg.hmag_wither_skeleton_girl" : "Wither Skeleton Girl",
   "entity.dwmg.hmag_drowned_girl" : "Drowned Girl",
-  "entity.dwmg.hmag_hornet" : "Hornet"
+  "entity.dwmg.hmag_hornet" : "Hornet",
+  "entity.dwmg.hmag_necrotic_reaper": "Necrotic Reaper",
+  "info.dwmg.necrotic_reaper_not_controllable": "To give command to the Necrotic Reaper, you must have a Necromancer's Hat or Necromancer's Wand. "
 }

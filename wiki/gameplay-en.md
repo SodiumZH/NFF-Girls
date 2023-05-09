@@ -4,13 +4,13 @@
 
 ### Current version: 
 
-#### 0.0.0-snapshot.10 (1.18.2)
+#### 0.0.2-alpha (1.18.2)
 
-#### 0.1.0-snapshot.11 (1.19.2)
+#### 0.1.2-alpha (1.19.2)
 
 
 
-### *WARNING: everything is experimental now!!! Keep your backup to prevent data-breaking on unexpected errors.*
+### *WARNING: This mod is still in development. Keep your backup to prevent data-breaking on unexpected errors.*
 
 ##### Note: the wiki update may lag behind the game. Check the version wiki is supporting.
 
@@ -37,6 +37,8 @@ Wither Skeleton Girl
 Drowned Girl
 
 Hornet
+
+Necrotic Reaper
 
 
 
@@ -254,7 +256,7 @@ First, look at it to make it be angry with you. When it's less than 8 blocks awa
 
 During the process the mob will always be hostile to you. You must do the item-giving process while getting attacked. (Item giving cooldown 15s)
 
-If it failed to attack you (no matter if blocked with shield) for 10s, it will be interrupted.
+If it failed to attack you for 10s, the progress will drop by 0.2. (If the attack is Shield-blocked, it's still regarded as attacked.)
 
 Accepted items:
 
@@ -295,6 +297,20 @@ You can customize its hand items.
 It can be healed with *Honey Bottle* (5), *Honeycomb*(10), *Honey Block*(15) and *Mysterious Petal* (to max).
 
 It has 2 bauble slots.
+
+
+
+#### Necrotic Reaper (HMaG)
+
+##### Befriending
+
+At first you must be wearing Necromancer's Hat on head and have a Necromancer's Wand.
+
+When it's standing on a Soul Carpet, cast with Necromancer's Wand to hit it. 6 hits overall are required. Once hit, it will be always hostile to you. Each time it's hit, it will release more smoke particles, and increase attack damage by 5. 
+
+If it failed to attack you for 10s, the hit count will drop by 1. (If the attack is Shield-blocked, it's still regarded as attacked.)
+
+If you get >32 blocks away from it, the process will be interrupted.
 
 
 

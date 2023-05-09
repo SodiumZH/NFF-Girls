@@ -14,6 +14,7 @@ import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHuskGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerWitherSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerZombieGirl;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNecroticReaper;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgBefriendingTypes {
@@ -58,6 +59,10 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.HORNET.get(),
 				DwmgEntityTypes.HMAG_HORNET.get(),
 				new HandlerHornet());
+		BefriendingTypeRegistry.register(
+				ModEntityTypes.NECROTIC_REAPER.get(),
+				DwmgEntityTypes.HMAG_NECROTIC_REAPER.get(),
+				new HandlerNecroticReaper());
 	}
 	
 }

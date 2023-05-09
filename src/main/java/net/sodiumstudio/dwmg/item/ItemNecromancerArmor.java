@@ -5,10 +5,12 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.blocks.BlockSoulCarpet;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedNecroticReaper;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
@@ -32,7 +34,19 @@ public class ItemNecromancerArmor extends ArmorItem
 			EntityHelper.addEffectIfNotHaving(living, new MobEffectInstance(DwmgEffects.UNDEAD_AFFINITY.get(), 40, 0, true, false));
 			EntityHelper.addEffectIfNotHaving(living, new MobEffectInstance(MobEffects.DIG_SPEED, 40, 1, true, false));
 			if (!BlockSoulCarpet.isEntityInside(living))
-				EntityHelper.addEffectIfNotHaving(living, new MobEffectInstance(MobEffects.WITHER, 40, 0, true, false));			
+				EntityHelper.addEffectIfNotHaving(living, new MobEffectInstance(MobEffects.WITHER, 40, 0, true, false));	
+			if (living instanceof Player p)
+			{
+				// Nearby Necrotic Reapers add regeneration
+				int regLvl = EntityBefriendedNecroticReaper.countNearby(p) - 1;
+				// Max level 3
+				if (regLvl > 2)
+					regLvl = 2;
+				if (regLvl >= 0)
+				{
+					EntityHelper.addEffectIfNotHaving(living, new MobEffectInstance(MobEffects.REGENERATION, 80, regLvl, true, false)); 
+				}
+			}
 		}	
 	}
 
