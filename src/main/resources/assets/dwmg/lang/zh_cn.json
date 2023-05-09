@@ -31,6 +31,8 @@
   "entity.dwmg.hmag_drowned_girl" : "溺尸娘",
   "entity.dwmg.hmag_hornet" : "蜜蜂娘",
   "entity.dwmg.hmag_necrotic_reaper": "死灵收割者",
-  "info.dwmg.necrotic_reaper_not_controllable": "你需要拥有死灵巫师的帽子或死灵巫师之杖以指挥死灵收割者。"
+  "info.dwmg.necrotic_reaper_not_controllable": "你需要拥有死灵巫师的帽子或死灵巫师之杖以指挥死灵收割者。",
+  "info.dwmg.necrotic_reaper_not_controllable_inventory": "你需要拥有死灵巫师的帽子或死灵巫师之杖以打开死灵收割者的道具栏。"
+  
   
 }

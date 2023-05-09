@@ -174,20 +174,6 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 	
 	/* Interaction */
 
-	// Add controllable test
-	@Override
-	public BefriendedAIState switchAIState()
-	{
-		if (!this.controllable())
-		{
-			MiscUtil.printToScreen(InfoHelper.createTrans("info.dwmg.necrotic_reaper_not_controllable"), getOwner());
-			return getAIState();
-		}
-		else
-		{
-			return IBefriendedMob.super.switchAIState();
-		}
-	}
 	
 	// Map items that can heal the mob and healing values here.
 	// Leave it empty if you don't need healing features.
@@ -228,7 +214,14 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 					else if (hand == InteractionHand.MAIN_HAND)
 					{
-						switchAIState();
+						if (this.controllable())
+						{
+							switchAIState();
+						}
+						else
+						{
+						MiscUtil.printToScreen(InfoHelper.createTrans("info.dwmg.necrotic_reaper_not_controllable"), getOwner());
+						}
 					}
 					// Here it's main hand but no interaction. Return pass to enable off hand interaction.
 					else return InteractionResult.PASS;
@@ -240,7 +233,14 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 			else
 			{
 				// Open inventory and GUI
-				BefriendedHelper.openBefriendedInventory(player, this);
+				if (this.controllable())
+				{
+					BefriendedHelper.openBefriendedInventory(player, this);					
+				}
+				else
+				{
+					MiscUtil.printToScreen(InfoHelper.createTrans("info.dwmg.necrotic_reaper_not_controllable_inventory"), player);
+				}
 				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
 		} 
