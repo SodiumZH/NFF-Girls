@@ -16,7 +16,7 @@ public class BaubleHandlerGeneral extends BaubleHandler
 {
 	
 	@Override
-	public HashSet<Item> getItemsAccepted() {
+	public HashSet<Item> getItemsAccepted(String key) {
 		HashSet<Item> set = new HashSet<Item>();
 		set.add(DwmgItems.RESISTANCE_AMULET.get());
 		set.add(ModItems.INSOMNIA_FRUIT.get());

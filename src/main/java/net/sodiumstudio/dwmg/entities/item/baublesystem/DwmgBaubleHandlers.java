@@ -7,15 +7,17 @@ import net.sodiumstudio.dwmg.entities.item.baublesystem.handlers.BaubleHandlerDr
 import net.sodiumstudio.dwmg.entities.item.baublesystem.handlers.BaubleHandlerEnderExecutor;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.handlers.BaubleHandlerGeneral;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.handlers.BaubleHandlerHornet;
+import net.sodiumstudio.dwmg.entities.item.baublesystem.handlers.BaubleHandlerNecroticReaper;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.handlers.BaubleHandlerVanillaUndead;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgBaubleHandlers {
 	
-	public static final BaubleHandler GENERAL = new BaubleHandlerGeneral();
-	public static final BaubleHandler VANILLA_UNDEAD = new BaubleHandlerVanillaUndead();
-	public static final BaubleHandler ENDER_EXECUTOR = new BaubleHandlerEnderExecutor();
-	public static final BaubleHandler DROWNED = new BaubleHandlerDrowned();
-	public static final BaubleHandler HORNET = new BaubleHandlerHornet();
+	public static final BaubleHandlerGeneral GENERAL = new BaubleHandlerGeneral();
+	public static final BaubleHandlerVanillaUndead VANILLA_UNDEAD = new BaubleHandlerVanillaUndead();
+	public static final BaubleHandlerEnderExecutor ENDER_EXECUTOR = new BaubleHandlerEnderExecutor();
+	public static final BaubleHandlerDrowned DROWNED = new BaubleHandlerDrowned();
+	public static final BaubleHandlerHornet HORNET = new BaubleHandlerHornet();
+	public static final BaubleHandlerNecroticReaper NECROTIC_REAPER = new BaubleHandlerNecroticReaper();
 
 }

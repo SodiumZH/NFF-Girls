@@ -27,11 +27,15 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
@@ -172,9 +176,21 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 		}
 	}
 	
+	/* Combat */
+	@SubscribeEvent
+	public static void onAttack(LivingHurtEvent event)
+	{/*
+		if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityBefriendedNecroticReaper nr)
+		{
+			if (!nr.getAdditionalInventory().getItem(0).isEmpty() && nr.getAdditionalInventory().getItem(0).getItem() instanceof HoeItem hoe)
+			{
+				if (nr.level.random.nextDouble() < 1d / EnchantmentHelper.getItemEnchantmentLevel(Enchantments., null))
+			}
+		}*/
+	}
+	
 	/* Interaction */
 
-	
 	// Map items that can heal the mob and healing values here.
 	// Leave it empty if you don't need healing features.
 	@Override
@@ -312,12 +328,13 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 		map.put("1", this.getAdditionalInventory().getItem(3));
 		map.put("2", this.getAdditionalInventory().getItem(4));
 		map.put("3", this.getAdditionalInventory().getItem(5));
+		map.put("main_hand", this.getAdditionalInventory().getItem(0));
 		return map;
 	}
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.VANILLA_UNDEAD;
+		return DwmgBaubleHandlers.NECROTIC_REAPER;
 	}
 	
 	// IBefriendedUndeadMob interface
