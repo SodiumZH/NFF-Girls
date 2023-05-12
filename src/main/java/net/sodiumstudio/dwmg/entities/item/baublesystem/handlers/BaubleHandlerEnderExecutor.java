@@ -10,8 +10,8 @@ public class BaubleHandlerEnderExecutor extends BaubleHandlerGeneral
 {
 	
 	@Override
-	public HashSet<Item> getItemsAccepted() {
-		HashSet<Item> set = super.getItemsAccepted();
+	public HashSet<Item> getItemsAccepted(String key) {
+		HashSet<Item> set = super.getItemsAccepted(key);
 		return set;
 	}
 

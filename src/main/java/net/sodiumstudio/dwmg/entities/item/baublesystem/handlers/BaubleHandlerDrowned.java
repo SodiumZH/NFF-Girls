@@ -16,8 +16,8 @@ public class BaubleHandlerDrowned extends BaubleHandlerVanillaUndead
 {
 
 	@Override
-	public HashSet<Item> getItemsAccepted() {
-		HashSet<Item> set = super.getItemsAccepted();
+	public HashSet<Item> getItemsAccepted(String key) {
+		HashSet<Item> set = super.getItemsAccepted(key);
 		set.add(DwmgItems.AQUA_JADE.get());
 		return set;
 	}

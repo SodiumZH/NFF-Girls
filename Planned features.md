@@ -56,33 +56,33 @@ It will make the undead mobs neutral. And some actions are available only with t
 
 
 
-#### Materials
+#### ~~<u>Materials</u>~~
 
-##### Crystal of Death
+##### ~~<u>Crystal of Death</u>~~
 
-A key material for several undead-related features.
+~~<u>A key material for several undead-related features.</u>~~
 
-Expensive, using multiple products from various undead mobs.
+~~<u>Expensive, using multiple products from various undead mobs.</u>~~
 
-##### Cloth of Death
+##### ~~<u>Cloth of Death</u>~~
 
-An undead material for making related armor and decorative blocks.
+~~<u>An undead material for making related armor and decorative blocks.</u>~~
 
-Not very expensive.
+~~<u>Not very expensive.</u>~~
 
 
 
 #### Foods
 
-Undead foods are edibles providing some effects and applied for interaction with undead mobs.
+~~<u>Undead foods are edibles providing some effects and applied for interaction with undead mobs.</u>~~
 
-Usually undead foods provide Death Affinity, and sometimes other effects.
+~~<u>Usually undead foods provide Death Affinity, and sometimes other effects.</u>~~
 
-Those applied on taming should be VERY expensive.
+~~<u>Those applied on taming should be VERY expensive.</u>~~
 
-##### Soul Flour
+##### ~~<u>Soul Flour</u>~~
 
-A key material for making undead foods.
+~~<u>A key material for making undead foods.</u>~~
 
 ##### Soul Cookie
 
@@ -96,17 +96,17 @@ The undead version of Pumpkin Pie.
 
 Expensive.
 
-##### Soul Cake
+##### <u>~~Soul Cake~~</u>
 
-The undead version of Cake. 
+<u>~~The undead version of Cake.~~</u> 
 
-Very expensive. For taming.
+<u>~~Very expensive. For taming.~~</u>
 
-##### Soul Cake Slice
+##### <u>~~Soul Cake Slice~~</u>
 
-The non-block version of Soul Cake.
+<u>~~The non-block version of Soul Cake.~~</u>
 
-Very expensive. For taming.
+<u>~~Very expensive. For taming.~~</u>
 
 
 
@@ -122,43 +122,43 @@ It could have a pure-decorative version, which is cheaper and not providing any 
 
 
 
-#### Equipment
+#### <u>~~Equipment~~</u>
 
-##### Necromancer's Hat
+##### <u>~~Necromancer's Hat~~</u>
 
-A helmet providing several positive effects as well as **Wither**. (Wearing this hat will lead to consistent HP loss)
+<u>~~A helmet providing several positive effects as well as **Wither**. (Wearing this hat will lead to consistent HP loss)~~</u>
 
-Some actions are available only wearing this hat.
+<u>~~Some actions are available only wearing this hat.~~</u>
 
-##### Necromancer's Wand
+##### <u>~~Necromancer's Wand~~</u>
 
-A weapon allowing to attack non-undead mobs with negative effects, and heal undead mobs.
+<u>~~A weapon allowing to attack non-undead mobs with negative effects, and heal undead mobs.~~</u>
 
-Some other actions need this weapon.
+<u>~~Some other actions need this weapon.~~</u>
 
-##### Sun Hat
+##### <u>~~Sun Hat~~</u>
 
-A helmet for undead mobs to get immune to sun, without damaged.
+<u>~~A helmet for undead mobs to get immune to sun, without damaged.~~</u>
 
 
 
 ### Ender Related
 
-#### Foods
+#### <u>~~Foods~~</u>
 
-##### Enderberry / Enderberry Jam
+##### <u>~~Enderberry / Enderberry Jam~~</u>
 
-The key material for all Ender foods.
+<u>~~The key material for all Ender foods.~~</u>
 
-Obtaining Enderberry should be very hard.  It's a treasure, and can also be made in a very complex way.
+<u>~~Obtaining Enderberry should be very hard.  It's a treasure, and can also be made in a very complex way.~~</u>
 
-###### Ender Pie
+###### <u>~~Ender Pie~~</u>
 
-The Ender version of Pumpkin Pie.
+<u>~~The Ender version of Pumpkin Pie.~~</u>
 
-Just like the Chorus Fruit, it can teleport the player.
+<u>~~Just like the Chorus Fruit, it can teleport the player.~~</u>
 
-Very expensive.
+<u>~~Very expensive.~~</u>
 
 
 
@@ -232,53 +232,53 @@ To tame a mob, the player must not have made any damage to it. Also, if a taming
 
 ### Details
 
-#### Zombie Girl / Skeleton Girl / Husk Girl / Stray Girl / Drowned Girl / Wither Skeleton Girl
+#### ~~<u>Zombie Girl / Skeleton Girl / Husk Girl / Stray Girl / Drowned Girl / Wither Skeleton Girl</u>~~
 
-##### Taming condition
+##### ~~<u>Taming condition</u>~~
 
-The player must have the *Death Affinity* effect, and the mob must not have already been hostile to the player. At this time the player could give (right click) the mob 1-3 *Soul Pancake(s)* to tame it. (10% for 1, 30% for 2, 60% for 3.)
+~~<u>The player must have the *Death Affinity* effect, and the mob must not have already been hostile to the player. At this time the player could give (right click) the mob 1-3 *Soul Pancake(s)* to tame it. (10% for 1, 30% for 2, 60% for 3.)</u>~~
 
-##### Behaviors
+##### ~~<u>Behaviors</u>~~
 
-After tamed, all their equipment will vanish. (Except picked-up items, they will drop.)  You can customize their weapon and armor via GUI.
+~~<u>After tamed, all their equipment will vanish. (Except picked-up items, they will drop.)  You can customize their weapon and armor via GUI.</u>~~
 
-They can be healed by feeding with *Bone Meal*.
-
-
-
-#### Creeper Girl
-
-##### Taming condition
-
-Give it 3 TNTs. (It's difficult to do that before it explodes! ) After that the Creeper Girl will stop moving and exploding, and start shaking (like Zombie Villagers) for 5-10s. During the process, once the player gets >4 blocks away the Creeper Girl, the process will stop. (The TNTs are gone and it restarts to chase you and explode.) After the process, a huge explosion (power 12, twice of the charged Creeper) will happen. If the player is not killed by the explosion, it's done. 
-
-##### Behaviors
-
-Tamed Creeper Girl will no longer randomly explode. You can give it TNTs to allow it to explode (power 3 at its position, no damage to itself but can damage the player). One TNT can provide one explosion. You can bind a *Creeper Controller* to a specific Creeper Girl to control its explosion. Whether the explosion breaks blocks can be switched on *Creeper Controller*. You can also use a *Particle of Lightning* to make it charged, and its next explosion will have power 6 and consume 2 TNTs.
-
-Its armor can be customized.
-
-It can be healed by feeding with *Gunpowder*.
+~~<u>They can be healed by feeding with *Bone Meal*.</u>~~
 
 
 
-#### Ender Executor
+#### ~~<u>Creeper Girl</u>~~
 
-##### Taming condition
+##### ~~<u>Taming condition</u>~~
 
-Keep it not hostile and give it 3-5 *Ender Pies*. (10% for 3, 30% for 4, 60% for 5.) After that it will temporarily become hostile for 10-20s, and you cannot get >4 blocks away or die(or taming will fail). After the process it's done.
+~~<u>Give it 3 TNTs. (It's difficult to do that before it explodes! ) After that the Creeper Girl will stop moving and exploding, and start shaking (like Zombie Villagers) for 5-10s. During the process, once the player gets >4 blocks away the Creeper Girl, the process will stop. (The TNTs are gone and it restarts to chase you and explode.) After the process, a huge explosion (power 12, twice of the charged Creeper) will happen. If the player is not killed by the explosion, it's done.</u>~~ 
 
-##### Behaviors
+##### ~~<u>Behaviors</u>~~
 
-Similar to wolves. When hostile to a mob, it will perform similarly to the behaviors when it attacks players.  However, if it touches water (including rain) or gets hit by projectiles, it will still randomly teleport.
+~~<u>Tamed Creeper Girl will no longer randomly explode. You can give it TNTs to allow it to explode (power 3 at its position, no damage to itself but can damage the player). One TNT can provide one explosion. You can bind a *Creeper Controller* to a specific Creeper Girl to control its explosion. Whether the explosion breaks blocks can be switched on *Creeper Controller*. You can also use a *Particle of Lightning* to make it charged, and its next explosion will have power 6 and consume 2 TNTs.</u>~~
 
-Its weapon can be customized.
+~~<u>Its armor can be customized.</u>~~
 
-It can be healed by feeding with *Chorus Fruit*.
+~~<u>It can be healed by feeding with *Gunpowder*.</u>~~
 
-If it's given an *apple* or a *lemon*, it will drop an *Ender Pearl */ *Ender Plasm* / *Evil Crystal Fragment* . 
 
-If it's given an HMaG berry (tag dwmg:hmag_berries),  it will drop an *Ender Eye* / *Ender Plasm* / *Shulker Shell* / *Shulker Shell* *2 (10%), added with *Evil Crystal Fragments* 1~3.  (Shared cooldown 5min)
+
+#### ~~<u>Ender Executor</u>~~
+
+##### ~~<u>Taming condition</u>~~
+
+~~<u>Keep it not hostile and give it 3-5 *Ender Pies*. (10% for 3, 30% for 4, 60% for 5.) After that it will temporarily become hostile for 10-20s, and you cannot get >4 blocks away or die(or taming will fail). After the process it's done.</u>~~
+
+##### ~~<u>Behaviors</u>~~
+
+~~<u>Similar to wolves. When hostile to a mob, it will perform similarly to the behaviors when it attacks players.  However, if it touches water (including rain) or gets hit by projectiles, it will still randomly teleport.</u>~~
+
+~~<u>Its weapon can be customized.</u>~~
+
+~~<u>It can be healed by feeding with *Chorus Fruit*.</u>~~
+
+~~<u>If it's given an *apple* or a *lemon*, it will drop an *Ender Pearl */ *Ender Plasm* / *Evil Crystal Fragment* .</u>~~ 
+
+~~<u>If it's given an HMaG berry (tag dwmg:hmag_berries),  it will drop an *Ender Eye* / *Ender Plasm* / *Shulker Shell* / *Shulker Shell* *2 (10%), added with *Evil Crystal Fragments* 1~3.  (Shared cooldown 5min)</u>~~
 
 For other mods:
 
