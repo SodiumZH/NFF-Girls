@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -30,6 +31,13 @@ public class BlockSoulCarpet extends CarpetBlock
 		{
 			LivingEntity livingentity = (LivingEntity) entityIn;
 			EntityHelper.addEffectIfNotHaving(livingentity, new MobEffectInstance(DwmgEffects.UNDEAD_AFFINITY.get(), 3, 0, true, true));
+			// If player has <2s Wither I (usually brought by Necromancer's Hat), remove it
+			if (livingentity.hasEffect(MobEffects.WITHER) 
+					&& livingentity.getEffect(MobEffects.WITHER).getAmplifier() == 1
+					&& livingentity.getEffect(MobEffects.WITHER).getDuration() <= 40)
+			{
+				livingentity.removeEffect(MobEffects.WITHER);
+			}
 		}
 	}
 	

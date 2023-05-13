@@ -46,6 +46,7 @@ import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
+import net.sodiumstudio.befriendmobs.util.TagHelper;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
@@ -64,7 +65,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onLivingSetAttackTargetEvent(LivingSetAttackTargetEvent event)
 	{
-
+		LivingEntity living = (LivingEntity) event.getEntity();
 		LivingEntity target = event.getTarget();		
 		LivingEntity lastHurtBy = event.getEntityLiving().getLastHurtByMob();
 		Wrapped<Boolean> isCancelledByEffect = new Wrapped<Boolean>(Boolean.FALSE);
@@ -73,7 +74,9 @@ public class DwmgEntityEvents
 		if (target != null && event.getEntity() instanceof Mob mob)
 		{
 			// Handle undead mobs start //
-	        if (mob.getMobType() == MobType.UNDEAD && !(event.getEntity() instanceof IBefriendedMob)) 
+	        if (mob.getMobType() == MobType.UNDEAD 
+	        		&& !(event.getEntity() instanceof IBefriendedMob) 
+	        		&& !TagHelper.hasTag(mob, Dwmg.MOD_ID, "ignore_undead_affinity")) 
 	        {
 	        	// Handle CUndeadMob //
         		mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) ->
@@ -91,7 +94,26 @@ public class DwmgEntityEvents
         		// Handle CUndeadMob end //
 		    } 
 	        // Handle undead mobs end //
+	        
+	        // Befriendable mobs don't attack their befriended variation
+	        if (BefriendingTypeRegistry.contains(mob) 
+	        		&& BefriendingTypeRegistry.getConvertTo(mob) == target.getType()
+	        		&& target instanceof IBefriendedMob bef
+	        		&& bef.getModId().equals(Dwmg.MOD_ID))
+	        {
+				mob.setTarget(null);
+	        }
+	        // Befriended mobs don't attack their wild variation
+	        if (mob instanceof IBefriendedMob bef 
+	        		&& bef.getModId().equals(Dwmg.MOD_ID)
+	        		&& BefriendingTypeRegistry.getTypeBefore(mob) == target.getType())
+	        {
+				mob.setTarget(null);
+	        }
+	        
 		}
+		// Handle befriended mobs //
+
 		// Handle mobs end //
 	}
 	
@@ -219,6 +241,8 @@ public class DwmgEntityEvents
 					}
 				}
 			}
+			
+			// Handle Befriended Mobs armor 
 		}
 	}
 	
@@ -283,20 +307,23 @@ public class DwmgEntityEvents
 	public static void onLivingUpdate(LivingUpdateEvent event)
 	{
 		// Necromancer armor
-		ItemNecromancerArmor.necromancerArmorUpdate(event.getEntityLiving());
-		
-		if (event.getEntity() instanceof Mob mob)
+		if (!event.getEntity().level.isClientSide)
 		{
-			// Befriended undead mob sun sensitivity
-			if (mob instanceof IBefriendedUndeadMob un)
+			ItemNecromancerArmor.necromancerArmorUpdate(event.getEntityLiving());
+			
+			if (event.getEntity() instanceof Mob mob)
 			{
-				un.setSunSensitive(!mob.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
+				// Befriended undead mob sun sensitivity
+				if (mob instanceof IBefriendedUndeadMob un)
+				{
+					un.setSunSensitive(!mob.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
+				}
+				// Undead mob forgiving player
+				mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) -> 
+				{
+					((CUndeadMobImpl)l).updateForgivingTimers();
+				});
 			}
-			// Undead mob forgiving player
-			mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) -> 
-			{
-				((CUndeadMobImpl)l).updateForgivingTimers();
-			});
 		}
 	}
 	

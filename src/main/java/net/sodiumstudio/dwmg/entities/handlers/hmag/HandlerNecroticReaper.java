@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
+import com.github.mechalopa.hmag.world.entity.NecroticReaperEntity;
 
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,6 +23,7 @@ import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.blocks.BlockSoulCarpet;
+import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 /**
@@ -107,6 +109,7 @@ public class HandlerNecroticReaper extends BefriendingHandler
 		CBefriendableMob cap = CBefriendableMob.getCap(mob);
 		cap.getNbt().remove("ongoing_player_uuid");
 		cap.getNbt().putInt("already_hits", 0);
+		mob.setLastHurtByPlayer(null);
 		mob.setTarget(null);
 		if (!isQuiet)
 			EntityHelper.sendAngryParticlesToLivingDefault(mob);
@@ -205,7 +208,13 @@ public class HandlerNecroticReaper extends BefriendingHandler
 			&& mob.level.getPlayerByUUID(cap.getNbt().getUUID("ongoing_player_uuid")) != null)
 		{
 			Player player = mob.level.getPlayerByUUID(cap.getNbt().getUUID("ongoing_player_uuid"));
-			mob.setTarget(player);
+			mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((capUM) ->
+			{
+				capUM.addHatred(player);	// This blocks the effect of undead affinity
+			});
+			if (!player.isCreative())
+				mob.setTarget(player);
+			// Amount of particles emitting each frame
 			int amountPerTick = 0;
 			
 			// Interrupt if player is > 32 blocks away from the mob
@@ -222,13 +231,12 @@ public class HandlerNecroticReaper extends BefriendingHandler
 				if (!player.isCreative() && cap.getNbt().getInt("already_hits") > 0)
 				{
 					int hits = cap.getNbt().getInt("already_hits");
-					cap.getNbt().putInt("already_hits", hits - 1);
+						cap.getNbt().putInt("already_hits", hits - 1);
+					if (cap.getNbt().getInt("already_hits") <= 0)
+						interrupt(player, mob, true);
 					updateModifier(cap);
 					EntityHelper.sendParticlesToEntity(mob, ParticleTypes.ANGRY_VILLAGER, mob.getBbHeight() - 0.2, 0.3d, 1, 1d);
-					if (hits == 1)
-					{
-						interrupt(player, mob, true);
-					}
+					cap.getNbt().putInt("no_attack_expire_time", 200);// Reset timer
 				}
 
 			}
@@ -237,9 +245,14 @@ public class HandlerNecroticReaper extends BefriendingHandler
 				cap.getNbt().putInt("no_attack_expire_time", atkCtd - 1);
 			}			
 
-			
+			// Send smoke particles during befriending process
 			switch (cap.getNbt().getInt("already_hits"))
 			{
+			case 0:
+			{
+				amountPerTick = 0;
+				break;
+			}
 			case 1:
 			{
 				amountPerTick = 1;
@@ -270,7 +283,8 @@ public class HandlerNecroticReaper extends BefriendingHandler
 				throw new IllegalStateException("Illegal already-hits count; if 0, there shouldn't be an ongoing-player.");
 			}
 			}			
-			EntityHelper.sendParticlesToEntity(
+			if (amountPerTick > 0)
+				EntityHelper.sendParticlesToEntity(
 					mob, ParticleTypes.SMOKE, mob.getBbHeight() - 0.2d, 0.5d, amountPerTick, 0d);
 
 			
@@ -281,7 +295,7 @@ public class HandlerNecroticReaper extends BefriendingHandler
 	@Override
 	public void onAttackProcessingPlayer(Mob mob, Player player, boolean damageGiven)
 	{
-		if (mob instanceof EnderExecutorEntity ee)
+		if (mob instanceof NecroticReaperEntity ee)
 		{
 			ee.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> {
 				if (cap.getNbt().contains("no_attack_expire_time"))

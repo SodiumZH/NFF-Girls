@@ -14,7 +14,7 @@ import net.sodiumstudio.dwmg.Dwmg;
 
 public enum DwmgArmorMaterials implements ArmorMaterial
 {
-	NECROMANCER(Dwmg.MOD_ID + ":necromancer", 5, new int[] { 1, 2, 3, 1 }, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(Items.LEATHER)),
+	NECROMANCER(Dwmg.MOD_ID + ":necromancer", 15, new int[] { 1, 2, 3, 1 }, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(Items.LEATHER)),
 	SUNHAT(Dwmg.MOD_ID + ":sunhat", 5, new int[] { 0, 2, 3, 1 }, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(Items.LEATHER));
 
 	private static final int[] HEALTH_PER_SLOT = new int[]
