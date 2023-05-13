@@ -394,6 +394,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 		for (Entity e: entityList)
 		{
 			if (e instanceof EntityBefriendedNecroticReaper nr
+					&& nr.getOwnerUUID() != null // On Necrotic Reaper befriended, a nullptr exception occured here
 					&& nr.getOwnerUUID().equals(player.getUUID())
 					&& nr.distanceToSqr(player) <= 64d)
 			{

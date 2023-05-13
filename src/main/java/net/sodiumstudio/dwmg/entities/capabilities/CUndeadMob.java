@@ -19,8 +19,10 @@ public interface CUndeadMob extends INBTSerializable<CompoundTag>{
 		addHatred(entity, 18000);
 	}
 	
-	// Add a living entity to the hatred list
-	// Param forgiveTime in tick, -1 means never forgive
+	/**
+	 *  Add a living entity to the hatred list
+	 * Param forgiveTime in tick, -1 means never forgive
+	 * */
 	public void addHatred(LivingEntity entity, int forgiveTime);
-	
+
 }

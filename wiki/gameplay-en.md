@@ -306,7 +306,7 @@ It has 2 bauble slots.
 
 At first you must be wearing Necromancer's Hat on head and have a Necromancer's Wand.
 
-When it's standing on a Soul Carpet, cast with Necromancer's Wand to hit it. 6 hits overall are required. Once hit, it will be always hostile to you. Each time it's hit, it will release more smoke particles, and increase attack damage by 5. 
+When it's standing on a Soul Carpet, cast with *Necromancer's Wand* to hit it. 6 hits overall are required. Once hit, it will be always hostile to you. Each time it's hit, it will release more smoke particles, and increase attack damage by 5. 
 
 If it failed to attack you for 10s, the hit count will drop by 1. (If the attack is Shield-blocked, it's still regarded as attacked.)
 
@@ -314,13 +314,19 @@ If you get >32 blocks away from it, the process will be interrupted.
 
 ##### Interaction
 
-To interact with it, you must either wear a Necromancer's Hat or hold a Necromancer's Wand on either hand. Otherwise you'll not be able to switch its AI state or open the inventory GUI, and it won't follow you or attack targets you attacked or attacked you.
+To interact with it, you must either wear a Necromancer's Hat or hold a Necromancer's Wand on either hand. Otherwise you'll not be able to switch its AI state or open the inventory GUI, and it won't follow you or attack targets that you attacked or that attacked you.
 
-You can customize its hand items. The main hand only accept hoes as weapon. (Non-weapon items are also acceptable, but not taking any effect.)
+You can customize its hand items. The main hand only accept hoes as weapon. (Non-weapon items are also acceptable, but not taking any effect.) 
+
+Its attack damage greatly increases depending on the tier of the hoe. Efficiency enchantment also increases the attack damage.
+
+It has 4 Bauble slots.
 
 It can be healed with Soul Powder (5) and Soul Apple (15).
 
-It will be healed by 2 if hit with its owner's Necromancer's Wand magic ball. If the owner is wearing a Necromancer's Hat, it will be healed by 3 and get 5s Strength II effect.
+It will be healed by 2 if hit by its owner's *Necromancer's Wand* magic ball. If the owner is wearing a *Necromancer's Hat*, it will be healed by 3 and get 5s Strength II effect.
+
+When the player is wearing a *Necromancer's Hat*, the Necrotic Reapers nearby (< 8 blocks) will provide Regeneration effect. The effect level depends on how many Necrotic Reapers there are around. (Regeneration III at most.)
 
 
 
@@ -424,7 +430,7 @@ It's other properties are identical to Leather Helmet.
 
 A helmet giving the wearer Effects Strength II, Haste II, Undead Affinity and **Wither I**.  If the wearer is standing on the Soul Carpet, it will not catch Wither effect.
 
-It's other properties are identical to Leather Helmet.
+It's durability is identical to Iron Helmet, and other properties are identical to Leather Helmet.
 
 
 
@@ -439,3 +445,5 @@ Each time used, the user will take a damage of 2.
 Durability: 64 (accepting Unbreaking enchantment)
 
 It will be unable to use if leaving only 1 durability, preventing it from breaking. 
+
+It can be repaired with Death Crystal Powder on Anvil. Each item repairs 16 durability.
