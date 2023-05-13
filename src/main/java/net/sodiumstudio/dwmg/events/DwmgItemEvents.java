@@ -1,14 +1,21 @@
 package net.sodiumstudio.dwmg.events;
 
+import java.util.UUID;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.item.ItemMobRespawner;
+import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
 import net.sodiumstudio.befriendmobs.item.capability.MobRespawnerStartRespawnEvent;
 import net.sodiumstudio.befriendmobs.item.capability.RespawnerAddedEvent;
 import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
@@ -72,5 +79,23 @@ public class DwmgItemEvents
 		{
 			event.setCanceled(true);
 		}
+	}
+	
+	protected static final UUID SHARPNESS_MODIFIER_UUID = UUID.fromString("9c12b503-63c0-43e6-bd30-d7aae9818c99");
+	
+	/**
+	 * Add sharpness atk modifier to befriended mobs
+	 */
+	@SubscribeEvent
+	public static void onBefriendedMainHandItemChange(CItemStackMonitor.ChangeEvent event)
+	{
+		event.living.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(SHARPNESS_MODIFIER_UUID);
+		int lv = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, event.to);
+		if (lv > 0)
+		{
+			event.living.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(new AttributeModifier(
+					SHARPNESS_MODIFIER_UUID, "sharpness_modifier", lv, AttributeModifier.Operation.ADDITION));
+		}
+		
 	}
 }
