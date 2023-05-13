@@ -18,7 +18,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-version = '0.1.1-alpha'
+version = '0.1.2-alpha'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'dwmg'
 
@@ -178,7 +178,7 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
 	compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
 	runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
-	implementation fg.deobf("net.sodiumstudio.befriendmobs:befriendmobs:0.1.1-alpha")
+	implementation fg.deobf("net.sodiumstudio.befriendmobs:befriendmobs:${bm_version}")
     implementation fg.deobf("curse.maven:jade-324717:4433884")
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
 
