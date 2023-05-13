@@ -1,5 +1,7 @@
 package net.sodiumstudio.dwmg.events;
 
+import java.util.UUID;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -16,6 +18,7 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.item.ItemMobRespawner;
+import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
 import net.sodiumstudio.befriendmobs.item.capability.MobRespawnerStartRespawnEvent;
 import net.sodiumstudio.befriendmobs.item.capability.RespawnerAddedEvent;
 import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
@@ -115,5 +118,4 @@ public class DwmgItemEvents
 			event.setOutput(out);
 		}
 	}
-
 }
