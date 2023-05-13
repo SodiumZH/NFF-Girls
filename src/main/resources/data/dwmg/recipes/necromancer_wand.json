@@ -1,0 +1,39 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"LED",
+	" WE",
+	"S L"	
+	],
+	
+	"key":{ 
+	
+		"L":{
+		"item": "hmag:lich_cloth"
+		},
+		
+		"E":{ 
+		"item": "hmag:evil_crystal"
+		},
+		
+		"D":{ 
+		"item": "dwmg:death_crystal"
+		},
+		
+		"W":{ 
+		"item": "minecraft:wither_skeleton_skull"
+		},
+		
+		"S":{ 
+		"item": "minecraft:blaze_rod"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "dwmg:necromancer_wand",
+		"count": 1
+	}
+}

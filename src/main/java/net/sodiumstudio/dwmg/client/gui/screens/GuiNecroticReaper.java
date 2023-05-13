@@ -34,7 +34,7 @@ public class GuiNecroticReaper extends GuiPreset_0
 		IntVec2 v1 = v.copy().add(7, 17);
 		// Off hand
 		v1.slotBelow(3);
-		this.addSlotBg(pPoseStack, 1, v1, ab.coord(1, 4), vf);
+		this.addSlotBg(pPoseStack, 1, v1, ab.coord(2, 4), vf);
 		// Baubles
 		v1.slotAbove(3);
 		this.addSlotBg(pPoseStack, 2, v1, ab.coord(1, 0), vf);
@@ -47,7 +47,7 @@ public class GuiNecroticReaper extends GuiPreset_0
 		IntVec2 v2 = v.copy().add(79, 17);
 		// Main hand
 		v2.slotBelow(3);
-		this.addSlotBg(pPoseStack, 0, v2, ab.coord(2, 4), vf);
+		this.addSlotBg(pPoseStack, 0, v2, ab.coord(1, 4), vf);
 		// Baubles
 		v2.slotAbove(3);
 		this.addSlotBg(pPoseStack, 4, v2, ab.coord(1, 0), vf);
@@ -73,6 +73,6 @@ public class GuiNecroticReaper extends GuiPreset_0
 	@Override
 	public int getMobRenderScale()
 	{
-		return 18;
+		return 26;
 	}
 }

@@ -116,6 +116,7 @@ public class DwmgItemEvents
 			event.setMaterialCost(1);
 			out.setDamageValue(event.getLeft().getDamageValue() - 16);
 			event.setOutput(out);
+
 		}
 	}
 }

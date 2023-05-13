@@ -30,14 +30,6 @@ public class DwmgCapabilityAttachment {
 		{
 			if (living.getMobType() == MobType.UNDEAD && !(living instanceof IBefriendedMob) && !TagHelper.hasTag(living, Dwmg.MOD_ID, "ignore_death_affinity"))	// Befriended mobs aren't affected by Death Affinity
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_undead"), new CUndeadMobProvider());
-			if (living instanceof IBefriendedMob b && b.getModId().equals(Dwmg.MOD_ID))
-			{
-				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_item_stack_monitor"), new CItemStackMonitor.Prvd(living));
-				living.getCapability(BefMobCapabilities.CAP_ITEM_STACK_MONITOR).ifPresent((cap) ->
-				{
-					cap.listen("main_hand", () -> living.getItemInHand(InteractionHand.MAIN_HAND));
-				});				
-			}
 		}
 	}
 	
@@ -55,7 +47,7 @@ public class DwmgCapabilityAttachment {
 	{
 		if (event.living instanceof IBefriendedMob b && b.getModId().equals(Dwmg.MOD_ID))
 		{
-			event.monitor.listen("main_hand", () -> event.living.getItemBySlot(EquipmentSlot.MAINHAND));
+			event.monitor.listen("main_hand", LivingEntity::getMainHandItem);
 		}
 	}
 }
