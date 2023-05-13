@@ -94,7 +94,7 @@ public class DwmgItemEvents
 		if (lv > 0)
 		{
 			event.living.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(new AttributeModifier(
-					SHARPNESS_MODIFIER_UUID, "sharpness_modifier", lv, AttributeModifier.Operation.ADDITION));
+					SHARPNESS_MODIFIER_UUID, "sharpness_modifier", 0.5d + 0.5d * (double) lv, AttributeModifier.Operation.ADDITION));
 		}
 		
 	}

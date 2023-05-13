@@ -16,7 +16,11 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
@@ -192,6 +196,29 @@ public class DwmgEntityEvents
 					EntityHelper.chorusLikeTeleport(living);
 				}
 			} 
+			
+			// Handle Befriended Mobs weapon duration drop on attacking
+			if (event.getSource().getEntity() != null 
+					&& event.getSource().getEntity() instanceof IBefriendedMob bm 
+					&& bm.getModId().equals(Dwmg.MOD_ID))
+			{
+				if (!bm.asMob().getMainHandItem().isEmpty() && bm.asMob().getMainHandItem().getItem() instanceof DiggerItem dg)
+				{
+					int unb = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, bm.asMob().getMainHandItem());
+					if (bm.asMob().getRandom().nextDouble() <= 1d / (double)(unb + 1))
+					{
+						bm.asMob().getMainHandItem().setDamageValue(bm.asMob().getMainHandItem().getDamageValue() + 2);
+					}
+				}
+				if (!bm.asMob().getMainHandItem().isEmpty() && bm.asMob().getMainHandItem().getItem() instanceof SwordItem sw)
+				{
+					int unb = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, bm.asMob().getMainHandItem());
+					if (bm.asMob().getRandom().nextDouble() <= 1d / (double)(unb + 1))
+					{
+						bm.asMob().getMainHandItem().setDamageValue(bm.asMob().getMainHandItem().getDamageValue() + 1);
+					}
+				}
+			}
 		}
 	}
 	

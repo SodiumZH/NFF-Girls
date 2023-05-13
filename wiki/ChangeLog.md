@@ -2,6 +2,16 @@
 
 ## 1.18.2
 
+### 0.0.2-alpha
+
+Added Necrotic Reaper support.
+
+Added Necromancer's Wand.
+
+Added Sharpness enchantment effect and durability drop features on befriended mob attacking with weapons.
+
+Increased *Death Crystal Powder* production from 4 to 9 each *Crystal of Death*.
+
 ### 0.0.1-alpha
 
 Extracted BefriendMobs API out as a lib. Now this mod needs BefriendMobs API as dependency.
