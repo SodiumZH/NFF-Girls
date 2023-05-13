@@ -5,9 +5,6 @@ import java.util.UUID;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
@@ -119,22 +116,6 @@ public class DwmgItemEvents
 
 		}
 	}
-	
-	@SubscribeEvent
-	public static void onAnvilChange(AnvilUpdateEvent event)
-	{
-		// Necromancer's Wand fixing
-		if (event.getLeft().is(DwmgItems.NECROMANCER_WAND.get()) 
-				&& event.getRight().is(DwmgItems.DEATH_CRYSTAL_POWDER.get())
-				&& event.getLeft().getDamageValue() > 0)
-		{
-			ItemStack out = event.getLeft().copy();
-			event.setCost(1);
-			event.setMaterialCost(1);
-			out.setDamageValue(event.getLeft().getDamageValue() - 16);
-			event.setOutput(out);
-		}
-	}
-	
+
 	
 }
