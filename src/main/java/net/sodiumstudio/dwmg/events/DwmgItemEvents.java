@@ -100,7 +100,7 @@ public class DwmgItemEvents
 		{
 			event.living.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(new AttributeModifier(
 					SHARPNESS_MODIFIER_UUID, "sharpness_modifier", 0.5d + 0.5d * (double) lv, AttributeModifier.Operation.ADDITION));
-		}		
+		}
 	}
 	
 	@SubscribeEvent
@@ -119,4 +119,22 @@ public class DwmgItemEvents
 
 		}
 	}
+	
+	@SubscribeEvent
+	public static void onAnvilChange(AnvilUpdateEvent event)
+	{
+		// Necromancer's Wand fixing
+		if (event.getLeft().is(DwmgItems.NECROMANCER_WAND.get()) 
+				&& event.getRight().is(DwmgItems.DEATH_CRYSTAL_POWDER.get())
+				&& event.getLeft().getDamageValue() > 0)
+		{
+			ItemStack out = event.getLeft().copy();
+			event.setCost(1);
+			event.setMaterialCost(1);
+			out.setDamageValue(event.getLeft().getDamageValue() - 16);
+			event.setOutput(out);
+		}
+	}
+	
+	
 }
