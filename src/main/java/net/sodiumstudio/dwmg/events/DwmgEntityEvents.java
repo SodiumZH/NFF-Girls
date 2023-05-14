@@ -306,7 +306,7 @@ public class DwmgEntityEvents
 	{
 		if (!event.getEntity().level.isClientSide)
 		{
-			ItemNecromancerArmor.necromancerArmorUpdate(event.getEntityLiving());
+			ItemNecromancerArmor.necromancerArmorUpdate(event.getEntity());
 			
 			if (event.getEntity() instanceof Mob mob)
 			{
