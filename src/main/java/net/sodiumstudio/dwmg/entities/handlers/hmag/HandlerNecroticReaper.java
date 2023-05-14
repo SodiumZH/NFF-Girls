@@ -159,6 +159,11 @@ public class HandlerNecroticReaper extends BefriendingHandler
 			EntityHelper.sendAngryParticlesToLivingDefault(mob);
 			return true;
 		}
+		// Block if it's passenger
+		else if (mob.isPassenger())
+		{
+			return true;
+		}
 
 		int hits = cap.getNbt().getInt("already_hits");
 
