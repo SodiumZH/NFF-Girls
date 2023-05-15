@@ -62,7 +62,7 @@ import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 
-public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob, IBaubleHolder, IBefriendedAmphibious
+public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob, IBefriendedAmphibious
 {
 
 	/* Initialization */
