@@ -11,6 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -28,7 +29,7 @@ public class DwmgLevelEvents
 				List<Entity> entities = level.getEntities(player, bound);
 				for (Entity entity: entities)
 				{
-					if (entity instanceof IDwmgBefriendedMob bm 
+					if (entity instanceof IDwmgBefriendedMob bm
 							&& bm.getModId().equals(Dwmg.MOD_ID)
 							&& bm.getOwnerUUID().equals(player.getUUID())
 							&& entity.distanceToSqr(player) < 64f)

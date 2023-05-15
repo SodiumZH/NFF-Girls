@@ -17,7 +17,7 @@ public class DwmgSubsystemEvents
 {
 
 	protected static final UUID FAV_ATK_MODIFIER_UUID = UUID.fromString("0e570979-9f96-4559-b31e-93500e69da07");
-	
+
 	@SubscribeEvent
 	public static void onFavorabilityChangeValue(CFavorabilityHandler.ChangeValueEvent event)
 	{
@@ -36,7 +36,7 @@ public class DwmgSubsystemEvents
 		else if (event.toValue < 99.9999d)
 			atkmod = 1.1;
 		else atkmod = 1.2;
-		
+
 		event.mob.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(new AttributeModifier(FAV_ATK_MODIFIER_UUID,
 				"favorability_atk", atkmod - 1, AttributeModifier.Operation.MULTIPLY_TOTAL));		
 	}

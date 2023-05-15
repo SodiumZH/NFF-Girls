@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.item.ItemMobRespawner;
 import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
 import net.sodiumstudio.befriendmobs.item.capability.MobRespawnerStartRespawnEvent;
+import net.sodiumstudio.befriendmobs.item.capability.RespawnerAddedEvent;
 import net.sodiumstudio.befriendmobs.item.capability.RespawnerConstructEvent;
 import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.befriendmobs.util.InfoHelper;

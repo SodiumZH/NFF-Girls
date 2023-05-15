@@ -37,6 +37,8 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSu
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
@@ -44,11 +46,16 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.Dwmg;
-
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.befriendmobs.util.MiscUtil;
+import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
+import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 
 public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob {
 

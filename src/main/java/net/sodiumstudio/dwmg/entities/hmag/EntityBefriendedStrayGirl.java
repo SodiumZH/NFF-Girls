@@ -61,6 +61,7 @@ import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.befriendmobs.util.debug.Debug;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;

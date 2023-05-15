@@ -12,6 +12,9 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -57,13 +60,13 @@ public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 	public void setMaxFavorability(float value);
 
 	public void addFavorability(float deltaValue);
-	
+
 	/**
 	 * Sync the data to client.
 	 * executed on server every tick
 	 */
 	public void sync(ServerPlayer toPlayer);
-	
+
 	// ========================
 	
 	public static class Impl implements CFavorabilityHandler
@@ -326,5 +329,5 @@ public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 	{
 		return isLowFavorability(mob, 5f);
 	}
-	
+
 }

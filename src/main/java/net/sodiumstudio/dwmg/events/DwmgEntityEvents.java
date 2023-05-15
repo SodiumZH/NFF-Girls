@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -38,9 +39,9 @@ import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.befriendmobs.entity.capability.CAttributeMonitor;
+import net.sodiumstudio.befriendmobs.entity.capability.LivingAttributeValueChangeEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
-
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
@@ -241,9 +242,9 @@ public class DwmgEntityEvents
 							(living.getRandom().nextDouble() - 0.5D) * 2.0D);*/
 					EntityHelper.chorusLikeTeleport(living);
 				}
-			} 
+			}
 			/** Ender Protection Effect end */
-			
+
 			/** Durability */
 			// Weapon durability
 			if (event.getSource().getEntity() != null 
@@ -307,7 +308,9 @@ public class DwmgEntityEvents
 					});
 				}
 			}
-			
+
+			/* Favorability related */
+
 			/** Favorability end */
 			
 			// Label player on bef mob attacking target, just like for TamableAnimal, so that it can drop player's loot table
@@ -317,7 +320,34 @@ public class DwmgEntityEvents
 			{
 				mob.setLastHurtByPlayer(bm.getOwner());
 			}
+
+			// If owner attacked friendly mob, lose favorability depending on damage; no lost if < 0.5
+			if (event.getEntity() instanceof IBefriendedMob bm 
+					&& bm.getModId().equals(Dwmg.MOD_ID)
+					&& event.getSource().getEntity() != null
+					&& event.getSource().getEntity() instanceof Player player
+					&& bm.getOwnerUUID().equals(player.getUUID())
+					&& !event.getSource().equals(DamageSource.OUT_OF_WORLD)
+					&& !event.getSource().isCreativePlayer())
+			{
+				if (event.getAmount() >= 0.5f)
+				{
+					event.getEntity().getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).ifPresent((cap) -> 
+					{
+						float loseValue = event.getAmount() / 2f;
+						if (loseValue > 10f)
+							loseValue = 10f;
+						cap.addFavorability(-loseValue);
+						if (loseValue < 1.0f)
+							EntityHelper.sendSmokeParticlesToLivingDefault(bm.asMob());
+						else
+							EntityHelper.sendAngryParticlesToLivingDefault(bm.asMob());
+					});
+					
+				}
+			}
 			
+			/* Favorability end */
 		}
 	}
 		
@@ -462,7 +492,7 @@ public class DwmgEntityEvents
 	{
 		if (!event.getEntity().level.isClientSide)
 		{
-			// This function only handler non-befriended
+			// This function only handle non-befriended
 			if (event.getEntity() instanceof IBefriendedMob)
 				return;
 			// When BM killed a mob targeting the player, favorability + 0.5 

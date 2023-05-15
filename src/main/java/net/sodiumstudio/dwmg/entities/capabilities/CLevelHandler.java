@@ -20,12 +20,16 @@ import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler.SyncPacket;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.LongTag;
+import net.minecraft.world.entity.Mob;
+import net.minecraftforge.common.util.INBTSerializable;
 
 public interface CLevelHandler extends INBTSerializable<LongTag>
 {
 	
 	public Mob getMob();
-	
+
 	/**
 	 * Get the accumulated exp of the mob.
 	 */
@@ -139,6 +143,7 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 					MinecraftForge.EVENT_BUS.post(new LevelChangeEvent(this, lvlOld, lvl));
 			}
 		}
+		}
 
 		@Override
 		public int getExpectedLevel() {
@@ -190,11 +195,10 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 		public void deserializeNBT(LongTag nbt) {
 			handler.deserializeNBT(nbt);
 		}
-		
 	}
 	
 	// ==============================
-	
+
 	/**
 	 * Fired when the mob's exp changes by {@code setExp}.
 	 * The param {@value newExp} can be reset. If reset, the exp will be set to the new value instead.
