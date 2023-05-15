@@ -33,7 +33,7 @@ public class NecromancerWandItem extends Item
 		{
 			// Movement velocity vector
 			Vec3 velocity = player.getLookAngle().scale(2d);
-			Vec3 offset = player.getLookAngle();
+			Vec3 offset = player.getLookAngle().scale(0.2d);
 			NecromancerMagicBulletEntity bullet = new NecromancerMagicBulletEntity(level, player, velocity.x, velocity.y, velocity.z);
 			bullet.setPos(player.getX() + offset.x , player.getY() + 1d + offset.y, player.getZ() + offset.z);
 			bullet.setDamage(0);

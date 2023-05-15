@@ -47,15 +47,18 @@ import net.sodiumstudio.befriendmobs.entity.vanillapreset.creeper.AbstractBefrie
 import net.sodiumstudio.befriendmobs.entity.vanillapreset.creeper.BefriendedCreeperSwellGoal;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
+import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperGirlExplosionAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperGirlMeleeAttackGoal;
+import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuCreeper;
 
 // Rewritten from HMaG CreeperGirlEntity
-public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
+public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper implements IDwmgBefriendedMob
 {
 
 	protected static final EntityDataAccessor<Integer> DATA_VARIANT_ID = 
@@ -336,7 +339,18 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper
 	}
 	
 
+	// IBaubleHolder interface
+	// Actually it doesn't have bauble
 	
+	@Override
+	public HashMap<String, ItemStack> getBaubleSlots() {
+		return new HashMap<String, ItemStack>();
+	}
+
+	@Override
+	public BaubleHandler getBaubleHandler() {
+		return DwmgBaubleHandlers.EMPTY;
+	}
 	
 	// Misc
 	

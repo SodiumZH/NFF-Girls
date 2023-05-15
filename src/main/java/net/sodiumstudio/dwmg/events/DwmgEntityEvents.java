@@ -6,6 +6,7 @@ import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -37,6 +38,7 @@ import net.sodiumstudio.befriendmobs.entity.ai.BefriendedChangeAiStateEvent;
 import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
+import net.sodiumstudio.befriendmobs.entity.capability.CAttributeMonitor;
 import net.sodiumstudio.befriendmobs.entity.capability.LivingAttributeValueChangeEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
@@ -166,7 +168,7 @@ public class DwmgEntityEvents
 				event.setCanceled(true);
 			}
 			
-			// Handle Ender Protection
+			/* Ender Protection Effect */
 			if (living.hasEffect(DwmgEffects.ENDER_PROTECTION.get()))
 			{
 				// If the player drops into the void, try pull up
@@ -218,6 +220,7 @@ public class DwmgEntityEvents
 					EntityHelper.chorusLikeTeleport(living);
 				}
 			} 
+			/* Ender Protection Effect end */
 			
 			// Handle Befriended Mobs weapon duration drop on attacking
 			if (event.getSource().getEntity() != null 
@@ -241,8 +244,36 @@ public class DwmgEntityEvents
 					}
 				}
 			}
+
+			/* Favorability related */
 			
-			// Handle Befriended Mobs armor 
+			// If owner attacked friendly mob, lose favorability depending on damage; no lost if < 0.5
+			if (event.getEntity() instanceof IBefriendedMob bm 
+					&& bm.getModId().equals(Dwmg.MOD_ID)
+					&& event.getSource().getEntity() != null
+					&& event.getSource().getEntity() instanceof Player player
+					&& bm.getOwnerUUID().equals(player.getUUID())
+					&& !event.getSource().equals(DamageSource.OUT_OF_WORLD)
+					&& !event.getSource().isCreativePlayer())
+			{
+				if (event.getAmount() >= 0.5f)
+				{
+					event.getEntity().getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).ifPresent((cap) -> 
+					{
+						float loseValue = event.getAmount() / 2f;
+						if (loseValue > 10f)
+							loseValue = 10f;
+						cap.addFavorability(-loseValue);
+						if (loseValue < 1.0f)
+							EntityHelper.sendSmokeParticlesToLivingDefault(bm.asMob());
+						else
+							EntityHelper.sendAngryParticlesToLivingDefault(bm.asMob());
+					});
+					
+				}
+			}
+			
+			/* Favorability end */
 		}
 	}
 	
@@ -292,7 +323,7 @@ public class DwmgEntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void onBefriendedAttributeChange(LivingAttributeValueChangeEvent event)
+	public static void onBefriendedAttributeChange(CAttributeMonitor.ChangeEvent event)
 	{
 		if (event.entity instanceof IBefriendedMob b 
 				&& b.getModId().equals(Dwmg.MOD_ID)
@@ -338,4 +369,5 @@ public class DwmgEntityEvents
 					.append(BefriendedAIState.getDisplayInfo.apply(event.getStateAfter())), event.getMob().getOwner());
 		}
 	}
+
 }

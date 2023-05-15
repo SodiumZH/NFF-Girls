@@ -59,6 +59,7 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
@@ -66,7 +67,7 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
-public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements IBefriendedMob, IBefriendedUndeadMob, IBaubleHolder
+public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
 
 	

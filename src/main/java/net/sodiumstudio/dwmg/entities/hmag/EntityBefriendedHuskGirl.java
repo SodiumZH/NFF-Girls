@@ -54,12 +54,13 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.befriendmobs.util.debug.Debug;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 
-public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IBefriendedMob, IBefriendedUndeadMob, IBaubleHolder
+public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
 
 	/* Initialization */
