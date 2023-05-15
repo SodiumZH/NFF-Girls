@@ -18,6 +18,7 @@ import net.sodiumstudio.befriendmobs.item.ItemMobRespawner;
 import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
 import net.sodiumstudio.befriendmobs.item.capability.MobRespawnerStartRespawnEvent;
 import net.sodiumstudio.befriendmobs.item.capability.RespawnerAddedEvent;
+import net.sodiumstudio.befriendmobs.item.capability.RespawnerConstructEvent;
 import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.NbtHelper;
@@ -29,10 +30,20 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 public class DwmgItemEvents
 {
 	@SubscribeEvent
-	public static void onRespawnerAdded(RespawnerAddedEvent event)
+	public static void beforeRespawnerConstruct(RespawnerConstructEvent.Before event)
+	{
+	}
+	
+	@SubscribeEvent
+	public static void afterRespawnerConstruct(RespawnerConstructEvent.After event)
 	{
 		CompoundTag mobNbt = event.getRespawner().getMobNbt();
-		if (mobNbt.contains("CustomName", NbtHelper.TagType.TAG_STRING.getID())
+		
+		// Remove fire
+		mobNbt.putShort("Fire", (short) 0);
+		
+		// Update item name from mob name
+		if (mobNbt.contains("CustomName", NbtHelper.TAG_STRING_ID)
 				&& mobNbt.contains("dwmg:befriended_owner"))
 		{
 			String name = Component.Serializer.fromJson(mobNbt.getString("CustomName")).getString();

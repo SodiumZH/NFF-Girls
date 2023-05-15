@@ -60,11 +60,12 @@ import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
-public class EntityBefriendedNecroticReaper extends NecroticReaperEntity implements IBefriendedMob, IBaubleHolder, IBefriendedUndeadMob
+public class EntityBefriendedNecroticReaper extends NecroticReaperEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
 
 	/* Data sync */

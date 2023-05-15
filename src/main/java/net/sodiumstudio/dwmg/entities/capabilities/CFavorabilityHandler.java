@@ -1,0 +1,228 @@
+package net.sodiumstudio.dwmg.entities.capabilities;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Mob;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event;
+import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
+
+public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
+{
+	
+	public Mob getMob();
+	
+	public CompoundTag getExtraNbt();
+	
+	public float getFavorability();
+	
+	public float getMaxFavorability();
+	
+	public void setFavorability(float value);
+	
+	public void setMaxFavorability(float value);
+
+	public void addFavorability(float deltaValue);
+	
+	// ========================
+	
+	public static class Impl implements CFavorabilityHandler
+	{
+
+		protected float value = 50f;
+		protected float maxValue = 100f;
+		protected final Mob mob;
+		protected CompoundTag extraNbt = new CompoundTag();
+		
+		public Impl(Mob mob)
+		{
+			this.mob = mob;
+		}
+		
+		@Override
+		public CompoundTag serializeNBT() {
+			CompoundTag tag = new CompoundTag();
+			tag.putFloat("value", value);
+			tag.putFloat("max", maxValue);
+			tag.put("nbt", extraNbt);
+			return tag;
+		}
+		@Override
+		public void deserializeNBT(CompoundTag nbt) {
+			this.value = nbt.getFloat("value");
+			this.maxValue = nbt.getFloat("max");
+			this.extraNbt = nbt.getCompound("nbt");
+		}
+		@Override
+		public Mob getMob() {
+			return mob;
+		}
+		
+		@Override
+		public CompoundTag getExtraNbt() {
+			return extraNbt;
+		}
+		
+		@Override
+		public float getFavorability() {
+			return value;
+		}
+		@Override
+		public void setFavorability(float value) {
+			float actualValue = Mth.clamp(value, 0, getMaxFavorability());
+			if (this.value == actualValue)
+				return;
+			if (!MinecraftForge.EVENT_BUS.post(new ChangeValueEvent(getMob(), this.value, actualValue)))
+			{
+				this.value = actualValue;
+			}
+		}
+		@Override
+		public void addFavorability(float deltaValue) {
+			setFavorability(value + deltaValue);
+		}
+
+		@Override
+		public float getMaxFavorability() {
+			return maxValue;
+		}
+
+		@Override
+		public void setMaxFavorability(float value) {
+			if (this.maxValue == value)
+				return;
+			if (!MinecraftForge.EVENT_BUS.post(new ChangeMaxEvent(getMob(), this.maxValue, value)))
+			{
+				this.maxValue = value;					
+				if (this.getFavorability() > this.getMaxFavorability())
+				{
+					this.setFavorability(this.getMaxFavorability());
+				}
+			}
+		}			
+	}
+	
+	// ========================
+	
+	public class Prvd implements ICapabilitySerializable<CompoundTag>
+	{
+
+		CFavorabilityHandler cap;
+		
+		public Prvd(Mob mob)
+		{
+			cap = new Impl(mob);
+		}
+		
+		@Override
+		public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+			if (cap == DwmgCapabilities.CAP_FAVORABILITY_HANDLER)
+				return LazyOptional.of(() -> {return this.cap;}).cast();
+			else return LazyOptional.empty();
+		}
+
+		@Override
+		public CompoundTag serializeNBT() {
+			return cap.serializeNBT();
+		}
+
+		@Override
+		public void deserializeNBT(CompoundTag nbt) {
+			cap.deserializeNBT(nbt);		
+		}
+	}
+	
+	// ========================
+	
+	/**
+	 * Fired when the favorability value changes.
+	 * Cancelable. If canceled the value won't change.
+	 */
+	@Cancelable
+	public class ChangeValueEvent extends Event
+	{
+		public final Mob mob;
+		public final float fromValue;
+		public final float toValue;
+		
+		public ChangeValueEvent(Mob mob, float fromVal, float toVal)
+		{
+			this.mob = mob;
+			this.fromValue = fromVal;
+			this.toValue = toVal;
+		}
+		
+		public ChangeValueEvent(IBefriendedMob mob, float fromVal, float toVal)
+		{
+			this.mob = mob.asMob();
+			this.fromValue = fromVal;
+			this.toValue = toVal;
+		}
+		
+		
+		/**
+		 * Cast the mob to IBefriendedMob.
+		 * @return Cast result, or {@code null} if the mob doesn't implement IBefriendedMob.
+		 */
+		@Nullable
+		public IBefriendedMob asBefriended()
+		{
+			if (mob instanceof IBefriendedMob bm)
+			{
+				return bm;
+			}
+			else return null;
+		}
+	}
+	
+	// ========================
+	
+	/**
+	 * Fired when the max value changes.
+	 * Cancelable. If canceled the value won't change.
+	 */
+	@Cancelable
+	public class ChangeMaxEvent extends Event
+	{
+		public final Mob mob;
+		public final float fromMax;
+		public final float toMax;
+		
+		public ChangeMaxEvent(Mob mob, float fromVal, float toVal)
+		{
+			this.mob = mob;
+			this.fromMax = fromVal;
+			this.toMax = toVal;
+		}
+		
+		public ChangeMaxEvent(IBefriendedMob mob, float fromVal, float toVal)
+		{
+			this.mob = mob.asMob();
+			this.fromMax = fromVal;
+			this.toMax = toVal;
+		}
+
+		/**
+		 * Cast the mob to {@code IBefriendedMob}.
+		 * @return Cast result, or {@code null} if the mob doesn't implement {@code IBefriendedMob}.
+		 */
+		@Nullable
+		public IBefriendedMob asBefriended()
+		{
+			if (mob instanceof IBefriendedMob bm)
+			{
+				return bm;
+			}
+			else return null;
+		}
+	}
+}

@@ -55,12 +55,11 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.Dwmg;
-
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEnderExecutor;
 
 // Adjusted from EnderExcutor in HMaG
-public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan implements IBeamAttackMob, IBaubleHolder
+public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan implements IBeamAttackMob, IDwmgBefriendedMob
 {
 
 	protected static final EntityDataAccessor<Integer> ATTACKING_TIME = SynchedEntityData.defineId(EntityBefriendedEnderExecutor.class, EntityDataSerializers.INT);

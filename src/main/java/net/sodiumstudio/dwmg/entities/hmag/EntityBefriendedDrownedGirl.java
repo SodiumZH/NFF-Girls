@@ -56,12 +56,13 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedDrownedTridentAttackGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 
-public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IBefriendedMob, IBefriendedUndeadMob, IBaubleHolder, IBefriendedAmphibious
+public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob, IBaubleHolder, IBefriendedAmphibious
 {
 
 	/* Initialization */
