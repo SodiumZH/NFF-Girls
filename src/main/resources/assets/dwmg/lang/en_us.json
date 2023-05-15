@@ -32,5 +32,8 @@
   "entity.dwmg.hmag_hornet" : "Hornet",
   "entity.dwmg.hmag_necrotic_reaper": "Necrotic Reaper",
   "info.dwmg.necrotic_reaper_not_controllable": "To give command to the Necrotic Reaper, you must have a Necromancer's Hat or Necromancer's Wand.",
-  "info.dwmg.necrotic_reaper_not_controllable_inventory": "To open Necrotic Reaper's inventory, you must have a Necromancer's Hat or Necromancer's Wand."
+  "info.dwmg.necrotic_reaper_not_controllable_inventory": "To open Necrotic Reaper's inventory, you must have a Necromancer's Hat or Necromancer's Wand.",
+  "info.dwmg.gui_level": "Level",
+  "info.dwmg.gui_exp": "Exp",
+  "info.dwmg.gui_favorability": "Favorability"
 }

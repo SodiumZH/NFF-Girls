@@ -1,26 +1,57 @@
 package net.sodiumstudio.dwmg.entities.capabilities;
 
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.LongTag;
 import net.minecraft.world.entity.Mob;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event;
+import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
 public interface CLevelHandler extends INBTSerializable<LongTag>
 {
 	
 	public Mob getMob();
 	
+	/**
+	 * Get the accumulated exp of the mob.
+	 */
 	public long getExp();
 	
+	/**
+	 * Force set the exp value to a given value.
+	 * This method fires {@code ChangeExpValueEvent}, but not {@code GetExpEvent}.
+	 */
 	public void setExp(long val);
 	
+	/**
+	 * Add a positive exp value.
+	 * This method fires {@code GetExpEvent} but not {@code ChangeExpValueEvent}.
+	 */
 	public void addExp(long deltaVal);
 	
+	/**
+	 * Get the expected level this mob should have.
+	 */
 	public int getExpectedLevel();
 	
-	public int getExpInThisLevel();
+	/**
+	 * Get the additional exp after upgrading to this level.
+	 * Example: current accumulated exp is 45, upgrading to this level needs overall 40, then return 5.
+	 */
+	public long getExpInThisLevel();
 	
-	public int getRequiredExpInThisLevel();
+	/**
+	 * Get the additional exp required to upgrade from this level to next level.
+	 */
+	public long getRequiredExpInThisLevel();
+	
+	// ===========
 	
 	public static class Impl implements CLevelHandler
 	{
@@ -57,46 +88,154 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 
 		@Override
 		public void setExp(long val) {
-			
+			if (val < 0)
+				throw new IllegalArgumentException("Dwmg Level System: Illegal exp value (negative).");
+			if (val == exp)
+				return;
+			ChangeExpEvent event = new ChangeExpEvent(this, getExp(), val);
+			boolean canceled = MinecraftForge.EVENT_BUS.post(event);
+			if (!canceled)
+			{
+				exp = event.newExp;
+				int lvlOld = lvl;
+				lvl = getExpectedLevel();
+				if (lvlOld != lvl)
+					MinecraftForge.EVENT_BUS.post(new LevelChangeEvent(this, lvlOld, lvl));
+			}
 		}
 
 		@Override
 		public void addExp(long deltaVal) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public long[] getExpRequirementList() {
-			// TODO Auto-generated method stub
-			return null;
+			if (deltaVal < 0)
+				throw new IllegalArgumentException("Dwmg Level System: Negative exp value to add. If reducing exp is needed, use setExp().");
+			if (deltaVal == 0)
+				return;
+			GetExpEvent event = new GetExpEvent(this, getExp(), deltaVal);
+			boolean canceled = MinecraftForge.EVENT_BUS.post(event);
+			if (!canceled)
+			{
+				exp += event.expAdded;
+				int lvlOld = lvl;
+				lvl = getExpectedLevel();
+				if (lvlOld != lvl)
+					MinecraftForge.EVENT_BUS.post(new LevelChangeEvent(this, lvlOld, lvl));
+			}
 		}
 
 		@Override
 		public int getExpectedLevel() {
-			// TODO Auto-generated method stub
-			return 0;
+			return CLevelHandler.getExpectedLevel(exp);
 		}
 
 		@Override
-		public int getExpInThisLevel() {
-			// TODO Auto-generated method stub
-			return 0;
+		public long getExpInThisLevel() {
+			return CLevelHandler.getCurrentExp(exp);
 		}
 
 		@Override
-		public int getRequiredExpInThisLevel() {
-			// TODO Auto-generated method stub
-			return 0;
+		public long getRequiredExpInThisLevel() {
+			return CLevelHandler.getExpRequiredForLevelUp(lvl);
+		}		
+	}
+	// ========================
+	
+	public class Prvd implements ICapabilitySerializable<LongTag>
+	{
+
+		protected final CLevelHandler handler;
+		
+		public Prvd(Mob mob)
+		{
+			handler = new Impl(mob);
+		}
+		
+		@Override
+		public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+			if (cap == DwmgCapabilities.CAP_LEVEL_HANDLER)
+				return LazyOptional.of(() -> {return this.handler;}).cast();
+			else return LazyOptional.empty();
+		}
+
+		@Override
+		public LongTag serializeNBT() {
+			return handler.serializeNBT();
+		}
+
+		@Override
+		public void deserializeNBT(LongTag nbt) {
+			handler.deserializeNBT(nbt);
 		}
 		
 	}
 	
 	// ==============================
 	
+	/**
+	 * Fired when the mob's exp changes by {@code setExp}.
+	 * The param {@value newExp} can be reset. If reset, the exp will be set to the new value instead.
+	 * This event is cancelable. If canceled, the exp will not change.
+	 */
+	@Cancelable
 	public static class ChangeExpEvent extends Event
 	{
+		public final Mob mob;
+		public final CLevelHandler levelHandler;
+		public final long oldExp;
+		public long newExp;
 		
+		public ChangeExpEvent(CLevelHandler levelHandler, long oldExp, long newExp)
+		{
+			this.mob = levelHandler.getMob();
+			this.levelHandler = levelHandler;
+			this.oldExp = oldExp;
+			this.newExp = newExp;
+		}
+	}
+	
+	// ==============================
+	
+	/**
+	 * Fired only when the mob's exp changed by {@code addExp}.
+	 * The param {@value expAdded} can be reset. If reset, the exp will be added the new value instead.
+	 * This event is cancelable. If canceled, the exp will not change.
+	 */
+	@Cancelable
+	public static class GetExpEvent extends Event
+	{
+		public final Mob mob;
+		public final CLevelHandler levelHandler;
+		public final long expBefore;
+		public long expAdded;
+		
+		public GetExpEvent(CLevelHandler levelHandler, long expBefore, long expAdded)
+		{
+			this.mob = levelHandler.getMob();
+			this.levelHandler = levelHandler;
+			this.expBefore = expBefore;
+			this.expAdded = expAdded;
+		}
+	}
+	
+	// ==============================
+	
+	/**
+	 * Fired when mob level changes.
+	 * This event is not {@code Cancelable}.
+	 */
+	public static class LevelChangeEvent extends Event
+	{
+		public final Mob mob;
+		public final CLevelHandler levelHandler;
+		public final int levelBefore;
+		public final int levelAfter;
+		
+		public LevelChangeEvent(CLevelHandler levelHandler, int levelBefore, int levelAfter)
+		{
+			this.mob = levelHandler.getMob();
+			this.levelHandler = levelHandler;
+			this.levelBefore = levelBefore;
+			this.levelAfter = levelAfter;
+		}
 	}
 	
 	
@@ -105,10 +244,10 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 	
 	
 	/**
-	 * Get ACCUMULATED exp for upgrading to next level from this level.
+	 * Get ACCUMULATED exp for reaching this level.
 	 * Identical to player exp table
 	 */
-	public static long getExpRequirement(int level)
+	public static long getAccumulatedExpRequirement(int level)
 	{
 		if (level < 0)
 			throw new IllegalArgumentException("Illegal level value");
@@ -122,5 +261,33 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 			else
 				return Math.round(4.5d * leveld * leveld - 162.5 * leveld + 2220d);
 		}
+	}
+	
+	/**
+	 * Get expected level for a given accumulated exp.
+	 */
+	public static int getExpectedLevel(long exp)
+	{
+		if (exp < 0)
+			throw new IllegalArgumentException("Illegal exp value");
+		int i = 0;
+		while (getAccumulatedExpRequirement(i + 1) < exp)
+		{
+			++i;
+		}
+		return i;
+	}
+	
+	/**
+	 * Get exp under this level, i.e. accumulated exp - exp required to reach this level
+	 */
+	public static long getCurrentExp(long accumulatedExp)
+	{
+		return accumulatedExp - getAccumulatedExpRequirement(getExpectedLevel(accumulatedExp));
+	}
+	
+	public static long getExpRequiredForLevelUp(int levelNow)
+	{
+		return getAccumulatedExpRequirement(levelNow + 1) - getAccumulatedExpRequirement(levelNow);
 	}
 }

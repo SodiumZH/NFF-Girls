@@ -14,6 +14,7 @@ import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
 import net.sodiumstudio.befriendmobs.util.TagHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
+import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobProvider;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -32,6 +33,7 @@ public class DwmgCapabilityAttachment {
 			if (living instanceof IBefriendedMob bm && bm.getModId().equals(Dwmg.MOD_ID))
 			{
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_favorability"), new CFavorabilityHandler.Prvd(bm.asMob()));
+				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_level"), new CLevelHandler.Prvd(bm.asMob()));
 			}
 		}
 	}
