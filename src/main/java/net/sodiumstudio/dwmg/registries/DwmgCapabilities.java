@@ -17,7 +17,6 @@ public class DwmgCapabilities
 
 	public static Capability<CUndeadMob> CAP_UNDEAD_MOB = CapabilityManager.get(new CapabilityToken<>(){});
 	public static Capability<CFavorabilityHandler> CAP_FAVORABILITY_HANDLER = CapabilityManager.get(new CapabilityToken<>(){});
-	public static Capability<CLevelHandler> CAP_LEVEL_HANDLER = CapabilityManager.get(new CapabilityToken<>(){}); 
 
 	// Register capabilities
 	@SubscribeEvent

@@ -33,5 +33,4 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleHolder
 		return cap.get();
 	}
 
-	
 }

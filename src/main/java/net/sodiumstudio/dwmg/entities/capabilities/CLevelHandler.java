@@ -20,10 +20,18 @@ import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler.SyncPacket;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.LongTag;
 import net.minecraft.world.entity.Mob;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event;
+import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
 public interface CLevelHandler extends INBTSerializable<LongTag>
 {
@@ -62,13 +70,13 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 	 * Get the additional exp required to upgrade from this level to next level.
 	 */
 	public long getRequiredExpInThisLevel();
-	
+
 	/**
 	 * Sync the data to client.
 	 * executed on server every tick
 	 */
 	public void sync(ServerPlayer toPlayer);
-	
+
 	// ===========
 	
 	public static class Impl implements CLevelHandler
@@ -143,7 +151,6 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 					MinecraftForge.EVENT_BUS.post(new LevelChangeEvent(this, lvlOld, lvl));
 			}
 		}
-		}
 
 		@Override
 		public int getExpectedLevel() {
@@ -164,7 +171,7 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 		public void sync(ServerPlayer toPlayer) {
 			SyncPacket packet = new SyncPacket(mob.getId(), getExp());
 			toPlayer.connection.send(packet);
-			
+
 		}		
 	}
 	// ========================
@@ -177,6 +184,23 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 		public Prvd(Mob mob)
 		{
 			handler = new Impl(mob);
+		}
+		
+		@Override
+		public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+			if (cap == DwmgCapabilities.CAP_LEVEL_HANDLER)
+				return LazyOptional.of(() -> {return this.handler;}).cast();
+			else return LazyOptional.empty();
+		}
+
+		@Override
+		public LongTag serializeNBT() {
+			return handler.serializeNBT();
+		}
+
+		@Override
+		public void deserializeNBT(LongTag nbt) {
+			handler.deserializeNBT(nbt);
 		}
 		
 		@Override
@@ -224,6 +248,30 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 	// ==============================
 	
 	/**
+	 * Fired when the mob's exp changes by {@code setExp}.
+	 * The param {@value newExp} can be reset. If reset, the exp will be set to the new value instead.
+	 * This event is cancelable. If canceled, the exp will not change.
+	 */
+	@Cancelable
+	public static class ChangeExpEvent extends Event
+	{
+		public final Mob mob;
+		public final CLevelHandler levelHandler;
+		public final long oldExp;
+		public long newExp;
+		
+		public ChangeExpEvent(CLevelHandler levelHandler, long oldExp, long newExp)
+		{
+			this.mob = levelHandler.getMob();
+			this.levelHandler = levelHandler;
+			this.oldExp = oldExp;
+			this.newExp = newExp;
+		}
+	}
+	
+	// ==============================
+	
+	/**
 	 * Fired only when the mob's exp changed by {@code addExp}.
 	 * The param {@value expAdded} can be reset. If reset, the exp will be added the new value instead.
 	 * This event is cancelable. If canceled, the exp will not change.
@@ -235,13 +283,35 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 		public final CLevelHandler levelHandler;
 		public final long expBefore;
 		public long expAdded;
-		
+
 		public GetExpEvent(CLevelHandler levelHandler, long expBefore, long expAdded)
 		{
 			this.mob = levelHandler.getMob();
 			this.levelHandler = levelHandler;
 			this.expBefore = expBefore;
 			this.expAdded = expAdded;
+		}
+	}
+	
+	// ==============================
+	
+	/**
+	 * Fired when mob level changes.
+	 * This event is not {@code Cancelable}.
+	 */
+	public static class LevelChangeEvent extends Event
+	{
+		public final Mob mob;
+		public final CLevelHandler levelHandler;
+		public final int levelBefore;
+		public final int levelAfter;
+		
+		public LevelChangeEvent(CLevelHandler levelHandler, int levelBefore, int levelAfter)
+		{
+			this.mob = levelHandler.getMob();
+			this.levelHandler = levelHandler;
+			this.levelBefore = levelBefore;
+			this.levelAfter = levelAfter;
 		}
 	}
 	
