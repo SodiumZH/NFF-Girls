@@ -7,10 +7,10 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFollow
 import net.sodiumstudio.befriendmobs.entity.vanillapreset.creeper.AbstractBefriendedCreeper;
 
 /* Adjusted from vanilla FollowOwnerGoal for TameableAnimal */
-public class BefriendedCreeperFollowOwnerGoal extends BefriendedFollowOwnerGoal {
+public class DwmgBefriendedCreeperFollowOwnerGoal extends DwmgBefriendedFollowOwnerGoal {
 
 	protected AbstractBefriendedCreeper creeper;
-	public BefriendedCreeperFollowOwnerGoal(@Nonnull IBefriendedMob inMob, double pSpeedModifier, float pStartDistance,
+	public DwmgBefriendedCreeperFollowOwnerGoal(@Nonnull IBefriendedMob inMob, double pSpeedModifier, float pStartDistance,
 			float pStopDistance, boolean pCanFly) {
 		super(inMob, pSpeedModifier, pStartDistance, pStopDistance, pCanFly);
 		creeper = (AbstractBefriendedCreeper) inMob;

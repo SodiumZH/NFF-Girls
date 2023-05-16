@@ -7,6 +7,7 @@ import com.github.mechalopa.hmag.world.entity.AbstractFlyingMonsterEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
@@ -15,6 +16,7 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedMoveGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedTargetGoal;
 import net.sodiumstudio.befriendmobs.util.LevelHelper;
+import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 
 /* Ported from HMaG-AbstractFlyingMonsterEntity (Mechalopa)
  */
@@ -305,6 +307,12 @@ public interface HmagFlyingGoal
 		public FollowOwnerGoal(IBefriendedMob mob)
 		{
 			this(mob, 0.25D);
+		}
+		
+		@Override
+		public boolean canUse()
+		{
+			return super.canUse() && !CFavorabilityHandler.isLowFavorability(mob.asMob());
 		}
 		
 		@Override

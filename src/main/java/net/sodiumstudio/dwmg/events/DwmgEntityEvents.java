@@ -6,6 +6,7 @@ import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -24,11 +25,9 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.sodiumstudio.befriendmobs.BefriendMobs;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
@@ -45,9 +44,10 @@ import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
+import net.sodiumstudio.befriendmobs.util.ReflectHelper;
 import net.sodiumstudio.befriendmobs.util.TagHelper;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
-import net.sodiumstudio.dwmg.Dwmg;
+
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
@@ -118,7 +118,7 @@ public class DwmgEntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void onBefDie(BefriendedDeathEvent event)
+	public static void onBefriendedDie(BefriendedDeathEvent event)
 	{
 		if (event.getDamageSource().getEntity() != null)
 		{
@@ -152,6 +152,19 @@ public class DwmgEntityEvents
 		{
 			if (cg.isPowered())
 				cg.spawnAtLocation(new ItemStack(ModItems.LIGHTNING_PARTICLE.get(), 1));
+		}
+
+		if (event.getMob() instanceof IDwmgBefriendedMob bm)
+		{
+			// Favorability loss on death
+			if (event.getDamageSource().getEntity() != null
+					&& event.getDamageSource().getEntity() == bm.getOwner())
+				bm.getFavorability().setFavorability(0);
+			else if (bm.asMob().distanceToSqr(bm.getOwner()) < 64d && event.getDamageSource() != DamageSource.OUT_OF_WORLD)
+				bm.getFavorability().addFavorability(-20);
+			// EXP loses by a half on death
+			// As respawner construction (in befriendmobs) is after posting BefriendedDeathEvent, it can be set here
+			bm.getLevelHandler().setExp(bm.getLevelHandler().getExp() / 2);
 		}
 	}
 	
@@ -246,7 +259,7 @@ public class DwmgEntityEvents
 			/* Favorability related */
 			
 			// If owner attacked friendly mob, lose favorability depending on damage; no lost if < 0.5
-			if (event.getEntity() instanceof IBefriendedMob bm 
+			if (event.getEntity() instanceof IDwmgBefriendedMob bm 
 					&& bm.getModId().equals(Dwmg.MOD_ID)
 					&& event.getSource().getEntity() != null
 					&& event.getSource().getEntity() instanceof Player player
@@ -267,11 +280,19 @@ public class DwmgEntityEvents
 						else
 							EntityHelper.sendAngryParticlesToLivingDefault(bm.asMob());
 					});
-					
 				}
 			}
 			
 			/* Favorability end */
+			
+			// Label player on bef mob attacking target, just like for TamableAnimal, so that it can drop player's loot table
+			if (event.getEntity() instanceof Mob mob
+					&& event.getSource().getEntity() != null
+					&& event.getSource().getEntity() instanceof IDwmgBefriendedMob bm)
+			{
+				mob.setLastHurtByPlayer(bm.getOwner());
+			}
+			
 		}
 	}
 	
@@ -294,7 +315,6 @@ public class DwmgEntityEvents
 			});
 		}
 	}
-
 	
 	@SubscribeEvent
 	public static void onBefriendableAddHatred(BefriendableAddHatredEvent event)
@@ -351,6 +371,21 @@ public class DwmgEntityEvents
 				{
 					((CUndeadMobImpl)l).updateForgivingTimers();
 				});
+				// Sync favorability and level
+				for (Player player: mob.level.players())
+				{
+					if (player instanceof ServerPlayer sp)
+					{
+						mob.getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).ifPresent((cap) -> 
+						{
+							cap.sync(sp);
+						});
+						mob.getCapability(DwmgCapabilities.CAP_LEVEL_HANDLER).ifPresent((cap) -> 
+						{
+							cap.sync(sp);
+						});
+					}
+				}
 			}
 		}
 	}
@@ -367,4 +402,86 @@ public class DwmgEntityEvents
 		}
 	}
 
+/*	@SubscribeEvent
+	public static void onNonBefriendedDie(LivingDeathEvent event)
+	{
+		if (!event.getEntity().level.isClientSide)
+		{
+			if (event.getEntity() instanceof IBefriendedMob)
+				return;
+			if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof IDwmgBefriendedMob bm)
+			{
+				if (event.getEntity() instanceof Mob mob)
+				{
+		
+				}
+			}
+		}
+	}*/
+	
+	@SubscribeEvent
+	public static void onDropExp(LivingExperienceDropEvent event)
+	{
+		// When a mob is killed by a befriended mob, it don't drop exp orbs, but directly add exp to the mob.
+		if (event.getEntityLiving().getLastHurtByMob() != null 
+				&& event.getEntityLiving().getLastHurtByMob() instanceof IDwmgBefriendedMob bm)
+		{
+			int exp = event.getOriginalExperience();
+			exp = (int)handleMending(exp, bm.asMob());
+			bm.getLevelHandler().addExp(exp);
+			event.setCanceled(true);
+		}
+	}
+	
+	
+	// Handle equipment fixing from Mending enchantment for mobs, and return the exp remains
+	protected static long handleMending(long expBefore, Mob mob)
+	{
+		EquipmentSlot[] slots =
+			{EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+		
+		if (expBefore >= (long) Integer.MAX_VALUE)
+		{
+			throw new UnsupportedOperationException("Adding too many exp (more than INT_MAX).");
+		}
+		
+		int remained = (int)expBefore;
+		for (int i = 0; i < 6; ++i)
+		{
+			if (mob.getItemBySlot(slots[i]).isDamageableItem() 
+					&& mob.getItemBySlot(slots[i]).getDamageValue() > 0
+					&& EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, mob.getItemBySlot(slots[i])) > 0)
+			{
+				// If cannot fix up
+				if (mob.getItemBySlot(slots[i]).getDamageValue() > remained * 2)
+				{
+					mob.getItemBySlot(slots[i]).setDamageValue(
+							(int) (mob.getItemBySlot(slots[i]).getDamageValue() - 2 * remained));
+					remained = 0;
+				}
+				else
+				{
+					int needed = (mob.getItemBySlot(slots[i]).getDamageValue() + 1) / 2;
+					mob.getItemBySlot(slots[i]).setDamageValue(0);
+					remained -= needed;
+				}
+				if (remained < 0)
+				{
+					throw new RuntimeException("Math error: handleMending");
+				}
+				else if (remained == 0)
+				{
+					// Sync inventory
+					if (mob instanceof IBefriendedMob bm)
+						bm.setInventoryFromMob();
+					return 0;
+				}
+			}
+		}
+		// Sync inventory
+		if (mob instanceof IBefriendedMob bm)
+			bm.setInventoryFromMob();
+		return (long)remained;
+	}
+	
 }

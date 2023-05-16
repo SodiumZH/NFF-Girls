@@ -61,6 +61,9 @@ import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -119,7 +122,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
 		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0d, true));
 		// To control a NecroticReaper player must have a Necromancer's Hat or a Necromancer's Wand
-		goalSelector.addGoal(4, new BefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false)
+		goalSelector.addGoal(4, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false)
 		{
 			@Override
 			public boolean canUse()
@@ -142,7 +145,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
 		// Without a Necromancer's Hat, NecroticReaper will not 
-		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this)
+		targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this)
 		{
 			@Override
 			public boolean canUse()
@@ -151,7 +154,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 			}
 		});
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
-		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this)
+		targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this)
 		{
 			@Override
 			public boolean canUse()

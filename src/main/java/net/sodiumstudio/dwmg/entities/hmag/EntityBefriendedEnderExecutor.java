@@ -55,6 +55,7 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.Dwmg;
+
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEnderExecutor;
 
@@ -91,16 +92,16 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	protected void registerGoals() {
 	      this.goalSelector.addGoal(1, new FloatGoal(this));
 	      this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
-	      this.goalSelector.addGoal(4, new BefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
+	      this.goalSelector.addGoal(4, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 	      this.goalSelector.addGoal(7, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0D, 0.0F));
 	      this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
 	      this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 	      this.goalSelector.addGoal(10, new BefriendedEnderManGoals.LeaveBlockGoal(this));
 	      this.goalSelector.addGoal(11, new BefriendedEnderManGoals.TakeBlockGoal(this));
-	      this.targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
+	      this.targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this));
 	      this.targetSelector.addGoal(2, new BefriendedNearestAttackableTargetGoal<Endermite>(this, Endermite.class, true, false).allowAllStates());
 	      this.targetSelector.addGoal(3, new BefriendedHurtByTargetGoal(this));
-	      this.targetSelector.addGoal(4, new BefriendedOwnerHurtTargetGoal(this));
+	      this.targetSelector.addGoal(4, new DwmgBefriendedOwnerHurtTargetGoal(this));
 	}
 
 	// Initialization end

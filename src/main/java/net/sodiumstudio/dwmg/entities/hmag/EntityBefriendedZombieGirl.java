@@ -47,6 +47,7 @@ import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.Dwmg;
+
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
@@ -74,14 +75,14 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IDwm
 		goalSelector.addGoal(1, new BefriendedRestrictSunGoal(this));
 		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
 		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0d, true));
-		goalSelector.addGoal(4, new BefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false)
+		goalSelector.addGoal(4, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false)
 				.avoidSunCondition(mob -> {return ((EntityBefriendedZombieGirl)mob).isSunSensitive();}));
 		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
+		targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
-		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
+		targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
 
 	}
 
