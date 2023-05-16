@@ -16,7 +16,8 @@ public class DwmgSubsystemEvents
 	
 	public static void onFavorabilityChangeValue(CFavorabilityHandler.ChangeValueEvent event)
 	{
-		// Inspired by Girl's Frontline
+		// Handle Favorability attack modifier
+		// Inspired by *Girl's Frontline*
 		event.mob.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(FAV_ATK_MODIFIER_UUID);
 		double atkmod = 1;
 		if (event.toValue < 5d)

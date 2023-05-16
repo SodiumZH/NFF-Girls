@@ -2,9 +2,16 @@ package net.sodiumstudio.dwmg.entities.capabilities;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.PacketUtils;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -14,8 +21,24 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
+/**
+ * @author SodiumZH
+ * Main capability of Favorability system.
+ * Favorability change rule:
+ * 
+ * Increase
+ * * Sleep to skip night near the mob: +2
+ * * Kill an entity attacking the mob: +1
+ * * The mob killing an entity attacking the player: +0.5 
+ * 
+ * Decrease
+ * * Hurting the mob: -(0~5) depending on the damage
+ * * Killing the mob: to zero
+ * * Mob killed with player nearby (8 blocks): -20
+ */
 public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 {
 	
@@ -32,6 +55,12 @@ public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 	public void setMaxFavorability(float value);
 
 	public void addFavorability(float deltaValue);
+	
+	/**
+	 * Sync the data to client.
+	 * executed on server every tick
+	 */
+	public void sync(ServerPlayer toPlayer);
 	
 	// ========================
 	
@@ -108,7 +137,14 @@ public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 					this.setFavorability(this.getMaxFavorability());
 				}
 			}
-		}			
+		}	
+		
+		@Override
+		public void sync(ServerPlayer toPlayer)
+		{
+			SyncPacket packet = new SyncPacket(mob.getId(), getFavorability(), getMaxFavorability());
+			toPlayer.connection.send(packet);
+		}
 	}
 	
 	// ========================
@@ -225,4 +261,68 @@ public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 			else return null;
 		}
 	}
+	
+	// ====================================
+	
+	public static class SyncPacket implements Packet<ClientGamePacketListener>
+	{
+		public final int entityId;
+		public final float favorability;
+		public final float maxFavorability;
+		
+		public SyncPacket(int entityId, float favorability, float maxFavorability) {
+			this.entityId = entityId;
+			this.favorability = favorability;
+			this.maxFavorability = maxFavorability;
+		}
+
+		public SyncPacket(FriendlyByteBuf buffer) {
+			this.entityId = buffer.readInt();
+			this.favorability = buffer.readFloat();
+			this.maxFavorability = buffer.readFloat();
+		}
+
+
+		@Override
+		public void write(FriendlyByteBuf buffer) {
+			buffer.writeInt(this.entityId);
+			buffer.writeFloat(this.favorability);
+			buffer.writeFloat(this.maxFavorability);
+			
+		}
+
+		@SuppressWarnings("resource")
+		@Override
+		public void handle(ClientGamePacketListener handler) {
+			Minecraft mc = Minecraft.getInstance();
+			PacketUtils.ensureRunningOnSameThread(this, handler, mc);
+			Entity entity = mc.level.getEntity(this.entityId);
+			// Needs a null check here as sometimes it may invoke on null??
+			if (entity != null)
+			{
+				entity.getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).ifPresent((cap) ->
+				{
+					cap.setFavorability(this.favorability);
+					cap.setMaxFavorability(this.maxFavorability);
+				});	
+			}
+		}	
+	}
+	
+	// =====================
+	
+	public static boolean isLowFavorability(Mob mob, float threshold)
+	{
+		Wrapped<Boolean> res = new Wrapped<Boolean>(true);
+		mob.getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).ifPresent((cap) -> {
+			res.set(cap.getFavorability() < threshold);
+		});
+		return res.get();
+	}
+	
+	public static boolean isLowFavorability(Mob mob)
+	{
+		return isLowFavorability(mob, 5f);
+	}
+	
 }

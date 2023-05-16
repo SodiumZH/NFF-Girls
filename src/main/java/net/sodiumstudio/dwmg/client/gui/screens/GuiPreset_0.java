@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -70,8 +71,8 @@ public class GuiPreset_0 extends BefriendedGuiScreen {
 		String lv = Integer.toString(bm.getLevelHandler().getExpectedLevel());
 		String exp = Long.toString(bm.getLevelHandler().getExpInThisLevel());
 		String expup = Long.toString(bm.getLevelHandler().getRequiredExpInThisLevel());
-		String fav = Integer.toString(Math.round(bm.getFavorability().getFavorability()));
-		String favmax = Integer.toString(Math.round(bm.getFavorability().getMaxFavorability()));
+		String fav = Integer.toString(Mth.floor(bm.getFavorability().getFavorability()));
+		String favmax = Integer.toString(Mth.floor(bm.getFavorability().getMaxFavorability()));
 		
 		MutableComponent lvcomp = InfoHelper.createTrans("info.dwmg.gui_level")
 				.append(InfoHelper.createText(": " + lv));	

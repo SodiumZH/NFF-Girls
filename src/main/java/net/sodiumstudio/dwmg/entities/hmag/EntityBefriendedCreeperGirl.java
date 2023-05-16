@@ -51,9 +51,11 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
-import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperFollowOwnerGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedCreeperFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperGirlExplosionAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperGirlMeleeAttackGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuCreeper;
 
@@ -97,13 +99,13 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper imple
 		this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Cat.class, 6.0F, 1.0D, 1.2D));
 		this.goalSelector.addGoal(3, new BefriendedCreeperGirlExplosionAttackGoal(this, 1.0D, false));
 		this.goalSelector.addGoal(4, new BefriendedCreeperGirlMeleeAttackGoal(this, 1.0d, true));
-		this.goalSelector.addGoal(5, new BefriendedCreeperFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
+		this.goalSelector.addGoal(5, new DwmgBefriendedCreeperFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 		this.goalSelector.addGoal(6, new BefriendedWaterAvoidingRandomStrollGoal(this, 0.8D));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
+		this.targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
-		this.targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
+		this.targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
 	}
 	
 	@Override

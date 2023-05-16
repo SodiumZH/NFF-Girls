@@ -59,6 +59,8 @@ import net.sodiumstudio.befriendmobs.template.TemplateBefriendedMobPreset;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.HmagFlyingGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
 
@@ -91,9 +93,9 @@ public class EntityBefriendedHornet extends HornetEntity implements IBaubleHolde
 		this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
 		this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
 		this.goalSelector.addGoal(11, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
+		this.targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
-		this.targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
+		this.targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
 	}
 	
 	/* Combat */
