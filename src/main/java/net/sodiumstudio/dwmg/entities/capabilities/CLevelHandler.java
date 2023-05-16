@@ -23,6 +23,12 @@ import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.LongTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.PacketUtils;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -31,6 +37,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
+import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler.SyncPacket;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
 public interface CLevelHandler extends INBTSerializable<LongTag>
@@ -70,13 +77,11 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 	 * Get the additional exp required to upgrade from this level to next level.
 	 */
 	public long getRequiredExpInThisLevel();
-
 	/**
 	 * Sync the data to client.
 	 * executed on server every tick
 	 */
 	public void sync(ServerPlayer toPlayer);
-
 	// ===========
 	
 	public static class Impl implements CLevelHandler
@@ -171,7 +176,6 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 		public void sync(ServerPlayer toPlayer) {
 			SyncPacket packet = new SyncPacket(mob.getId(), getExp());
 			toPlayer.connection.send(packet);
-
 		}		
 	}
 	// ========================
@@ -314,7 +318,7 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 			this.levelAfter = levelAfter;
 		}
 	}
-	
+
 	// ==============================
 	
 	/**
@@ -336,7 +340,7 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 			this.levelAfter = levelAfter;
 		}
 	}
-	
+
 	// ====================================
 	
 	public static class SyncPacket implements Packet<ClientGamePacketListener>

@@ -14,7 +14,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.PacketUtils;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -28,16 +34,19 @@ import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
 /**
+ * @author SodiumZH
  * Main capability of Favorability system.
  * Favorability change rule:
  * 
  * Increase
  * * Sleep to skip night near the mob: +2
+
  * * Attack an entity attacking the mob: +(final damage / 50)
  * * Kill an entity attacking the mob: +1
  * * The mob killing an entity attacking the player: +0.5
  * * The mob attacking an entity attacking the player: +(final damage / 100)
  * * Apply healing item: + (healing value / 50)
+
  * 
  * Decrease
  * * Hurting the mob: -(0~5) depending on the damage
@@ -60,7 +69,6 @@ public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 	public void setMaxFavorability(float value);
 
 	public void addFavorability(float deltaValue);
-
 	/**
 	 * Sync the data to client.
 	 * executed on server every tick
@@ -329,5 +337,4 @@ public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 	{
 		return isLowFavorability(mob, 5f);
 	}
-
 }

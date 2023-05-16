@@ -31,7 +31,16 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
-
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.Util.DwmgUtil;
+import net.sodiumstudio.befriendmobs.BefriendMobs;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedChangeAiStateEvent;
@@ -43,6 +52,15 @@ import net.sodiumstudio.befriendmobs.entity.capability.LivingAttributeValueChang
 import net.sodiumstudio.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
+import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
+import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
+import net.sodiumstudio.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.befriendmobs.util.InfoHelper;
+import net.sodiumstudio.befriendmobs.util.MiscUtil;
+import net.sodiumstudio.befriendmobs.util.ReflectHelper;
+import net.sodiumstudio.befriendmobs.util.TagHelper;
+import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
@@ -322,7 +340,7 @@ public class DwmgEntityEvents
 			}
 
 			// If owner attacked friendly mob, lose favorability depending on damage; no lost if < 0.5
-			if (event.getEntity() instanceof IBefriendedMob bm 
+			if (event.getEntity() instanceof IDwmgBefriendedMob bm 
 					&& bm.getModId().equals(Dwmg.MOD_ID)
 					&& event.getSource().getEntity() != null
 					&& event.getSource().getEntity() instanceof Player player
@@ -343,11 +361,19 @@ public class DwmgEntityEvents
 						else
 							EntityHelper.sendAngryParticlesToLivingDefault(bm.asMob());
 					});
-					
 				}
 			}
 			
 			/* Favorability end */
+			
+			// Label player on bef mob attacking target, just like for TamableAnimal, so that it can drop player's loot table
+			if (event.getEntity() instanceof Mob mob
+					&& event.getSource().getEntity() != null
+					&& event.getSource().getEntity() instanceof IDwmgBefriendedMob bm)
+			{
+				mob.setLastHurtByPlayer(bm.getOwner());
+			}
+			
 		}
 	}
 		
@@ -578,7 +604,7 @@ public class DwmgEntityEvents
 			bm.setInventoryFromMob();
 		return (long)remained;
 	}
-	
+
 	@SubscribeEvent
 	public static void onLivingDamage(LivingDamageEvent event)
 	{
