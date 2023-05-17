@@ -7,7 +7,6 @@ import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -25,10 +24,9 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
-import net.sodiumstudio.befriendmobs.BefriendMobs;
+
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedChangeAiStateEvent;
@@ -36,18 +34,11 @@ import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.befriendmobs.entity.capability.CAttributeMonitor;
-import net.sodiumstudio.befriendmobs.entity.capability.LivingAttributeValueChangeEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
-import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
-import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
-import net.sodiumstudio.befriendmobs.util.EntityHelper;
-import net.sodiumstudio.befriendmobs.util.InfoHelper;
-import net.sodiumstudio.befriendmobs.util.MiscUtil;
-import net.sodiumstudio.befriendmobs.util.ReflectHelper;
-import net.sodiumstudio.befriendmobs.util.TagHelper;
-import net.sodiumstudio.befriendmobs.util.Wrapped;
 
+import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
@@ -61,11 +52,9 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 public class DwmgEntityEvents
 {
 
-	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public static void onLivingSetAttackTargetEvent(LivingSetAttackTargetEvent event)
 	{
-		LivingEntity living = (LivingEntity) event.getEntity();
 		LivingEntity target = event.getTarget();		
 		LivingEntity lastHurtBy = event.getEntity().getLastHurtByMob();
 		Wrapped<Boolean> isCancelledByEffect = new Wrapped<Boolean>(Boolean.FALSE);

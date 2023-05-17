@@ -305,7 +305,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IDwm
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.VANILLA_UNDEAD;
+		return DwmgBaubleHandlers.UNDEAD;
 	}
 
 	// ==================================================================== //

@@ -1,6 +1,8 @@
 package net.sodiumstudio.dwmg.entities.item.baublesystem.handlers;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.function.Predicate;
 
 import com.github.mechalopa.hmag.registry.ModItems;
 
@@ -16,10 +18,10 @@ public class BaubleHandlerHornet extends BaubleHandlerGeneral
 {
 	
 	@Override
-	public HashSet<Item> getItemsAccepted(String key) {
-		HashSet<Item> set = super.getItemsAccepted(key);
-		set.add(DwmgItems.POISONOUS_THORN.get());
-		return set;
+	public HashMap<Item, Predicate<IBaubleHolder>> getItemsAccepted(String key, IBaubleHolder mob) {
+		HashMap<Item, Predicate<IBaubleHolder>> map = super.getItemsAccepted(key, mob);
+		map.put(DwmgItems.POISONOUS_THORN.get(), null);
+		return map;
 	}
 	
 	@Override

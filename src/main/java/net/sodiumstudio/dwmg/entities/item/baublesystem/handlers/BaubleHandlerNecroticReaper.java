@@ -11,17 +11,17 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
-public class BaubleHandlerNecroticReaper extends BaubleHandlerVanillaUndead
+public class BaubleHandlerNecroticReaper extends BaubleHandlerUndead
 {
 
 	@Override
-	public boolean isAccepted(Item item, String key)
+	public boolean isAccepted(Item item, String key, IBaubleHolder mob)
 	{
 		if (key.equals("main_hand"))
 		{
 			return !(item instanceof TieredItem) || (item instanceof HoeItem);
 		}
-		else return super.isAccepted(item, key);
+		else return super.isAccepted(item, key, mob);
 	}
 	
 	// Atk added by main-hand hoe from tier atk level.
