@@ -359,11 +359,6 @@ public class DwmgEntityEvents
 			
 			if (event.getEntity() instanceof Mob mob)
 			{
-				// Befriended undead mob sun sensitivity
-				if (mob instanceof IBefriendedUndeadMob un)
-				{
-					un.setSunSensitive(!mob.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
-				}
 				// Undead mob forgiving player
 				mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) -> 
 				{

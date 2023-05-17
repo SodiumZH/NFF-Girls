@@ -130,7 +130,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 				return super.canUse() && ((EntityBefriendedNecroticReaper)mob).controllable();
 			}
 		}
-				.avoidSunCondition(mob -> {return ((EntityBefriendedNecroticReaper)mob).isSunSensitive;}));
+				.avoidSunCondition(mob -> !((IBefriendedUndeadMob)mob).isSunImmune()));
 		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d)
 		{
 			@Override
@@ -167,7 +167,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 	@Override
 	public void aiStep()
 	{
-		if (!isSunSensitive)
+		if (isSunImmune())
 		{
 			ItemStack head = this.getItemBySlot(EquipmentSlot.HEAD);
 			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
@@ -259,7 +259,8 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 				}
 				else
 				{
-					MiscUtil.printToScreen(InfoHelper.createTrans("info.dwmg.necrotic_reaper_not_controllable_inventory"), player);
+					if (!player.level.isClientSide)
+						MiscUtil.printToScreen(InfoHelper.createTrans("info.dwmg.necrotic_reaper_not_controllable_inventory"), player);
 				}
 				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
@@ -343,12 +344,12 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 	
 	// IBefriendedUndeadMob interface
 	
-	protected boolean isSunSensitive = true;
 	@Override
-	public void setSunSensitive(boolean value) {
-		isSunSensitive = value;
+	public void setupSunImmunityRules() {
+		this.sunImmuneConditions().put("sunhat", () -> this.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
+		this.sunImmuneConditions().put("soul_amulet", () -> this.hasBaubleItem(DwmgItems.SOUL_AMULET.get()));
+		this.sunImmuneConditions().put("resis_amulet", () -> this.hasBaubleItem(DwmgItems.RESISTANCE_AMULET.get()));
 	}
-
 	// Misc
 	
 	// Indicates which mod this mob belongs to
