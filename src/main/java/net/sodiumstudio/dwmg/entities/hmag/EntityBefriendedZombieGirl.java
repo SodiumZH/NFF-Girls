@@ -59,6 +59,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTar
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob {
 
