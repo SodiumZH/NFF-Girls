@@ -11,6 +11,7 @@ public class DwmgUtil
 	/**
 	 * Force invoke a unaccessible method without return value.
 	 */
+	@Deprecated
 	public static void forceInvoke(Object obj, Class<?> objClass, String methodName, Object... params)
 	{
 		try
@@ -29,6 +30,7 @@ public class DwmgUtil
 	/**
 	 * Force invoke a unaccessible method with return value.
 	 */
+	@Deprecated
 	public static Object forceInvokeRetVal(Object obj, Class<?> objClass, String methodName, Object... params)
 	{
 		Object result = null;

@@ -1,25 +1,22 @@
 package net.sodiumstudio.dwmg.entities.item.baublesystem.handlers;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.function.Predicate;
 
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
-public class BaubleHandlerDrowned extends BaubleHandlerVanillaUndead
+public class BaubleHandlerDrowned extends BaubleHandlerUndead
 {
 
 	@Override
-	public HashSet<Item> getItemsAccepted(String key) {
-		HashSet<Item> set = super.getItemsAccepted(key);
-		set.add(DwmgItems.AQUA_JADE.get());
-		return set;
+	public HashMap<Item, Predicate<IBaubleHolder>> getItemsAccepted(String key, IBaubleHolder mob) {
+		HashMap<Item, Predicate<IBaubleHolder>> map = super.getItemsAccepted(key, mob);
+		map.put(DwmgItems.AQUA_JADE.get(), null);
+		return map;
 	}
 
 	@Override

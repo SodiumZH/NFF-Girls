@@ -1,6 +1,8 @@
 package net.sodiumstudio.dwmg.entities.item.baublesystem.handlers;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.function.Predicate;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,11 +16,6 @@ public class BaubleHandlerEmpty extends BaubleHandler
 {
 
 	@Override
-	public HashSet<Item> getItemsAccepted(String key) {
-		return new HashSet<Item>();
-	}
-
-	@Override
 	public void refreshBaubleEffect(String slotKey, ItemStack bauble, IBaubleHolder owner) 
 	{}
 	
@@ -28,5 +25,11 @@ public class BaubleHandlerEmpty extends BaubleHandler
 	@Override
 	public void tick(IBaubleHolder holder)
 	{}
+
+	@Override
+	public HashMap<Item, Predicate<IBaubleHolder>> getItemsAccepted(String key, IBaubleHolder mob) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

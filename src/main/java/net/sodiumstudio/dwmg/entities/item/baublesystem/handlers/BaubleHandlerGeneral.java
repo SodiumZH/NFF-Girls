@@ -1,6 +1,8 @@
 package net.sodiumstudio.dwmg.entities.item.baublesystem.handlers;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.function.Predicate;
 
 import com.github.mechalopa.hmag.registry.ModItems;
 
@@ -16,12 +18,12 @@ public class BaubleHandlerGeneral extends BaubleHandler
 {
 	
 	@Override
-	public HashSet<Item> getItemsAccepted(String key) {
-		HashSet<Item> set = new HashSet<Item>();
-		set.add(DwmgItems.RESISTANCE_AMULET.get());
-		set.add(ModItems.INSOMNIA_FRUIT.get());
-		set.add(DwmgItems.HEALING_JADE.get());
-		return set;
+	public HashMap<Item, Predicate<IBaubleHolder>> getItemsAccepted(String key, IBaubleHolder mob) {
+		HashMap<Item, Predicate<IBaubleHolder>> map = new HashMap<Item, Predicate<IBaubleHolder>>();
+		map.put(DwmgItems.RESISTANCE_AMULET.get(), null);
+		map.put(ModItems.INSOMNIA_FRUIT.get(), null);
+		map.put(DwmgItems.HEALING_JADE.get(), null);
+		return map;
 	}
 	
 	@Override
@@ -56,6 +58,5 @@ public class BaubleHandlerGeneral extends BaubleHandler
 			owner.addBaubleModifier("if", "if_atk", Attributes.ATTACK_DAMAGE, 8d, Operation.ADDITION);		
 		}
 	}
-
-
+	
 }

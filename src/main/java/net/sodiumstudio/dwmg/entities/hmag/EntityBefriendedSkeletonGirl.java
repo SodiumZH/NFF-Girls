@@ -366,7 +366,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	}
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.VANILLA_UNDEAD;
+		return DwmgBaubleHandlers.UNDEAD;
 	}
 
 	// ------------------ Misc ------------------ //

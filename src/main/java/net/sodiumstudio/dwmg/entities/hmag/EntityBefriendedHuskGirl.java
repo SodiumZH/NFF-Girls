@@ -122,13 +122,6 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IDwmgBef
 
 	}
 
-	
-	@Override
-	public void updateAttributes()
-	{
-		//TODO: actions
-	}
-	
 	/* Interaction */
 
 	@Override
@@ -278,7 +271,7 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IDwmgBef
 	}
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.VANILLA_UNDEAD;
+		return DwmgBaubleHandlers.UNDEAD;
 	}
 
 	// ------------------ Misc ------------------ //

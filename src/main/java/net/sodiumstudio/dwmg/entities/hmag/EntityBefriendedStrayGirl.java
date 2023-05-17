@@ -385,7 +385,7 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 	
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.VANILLA_UNDEAD;
+		return DwmgBaubleHandlers.UNDEAD;
 	}
 
 	// ------------------ Misc ------------------ //
