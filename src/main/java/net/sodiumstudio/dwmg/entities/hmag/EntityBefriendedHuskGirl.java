@@ -18,6 +18,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -61,6 +62,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTar
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
@@ -248,17 +250,19 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IDwmgBef
 	
 	/* IBefriendedUndeadMob interface */
 
-	public boolean sunSensitive = true;
-	
 	@Override
-	protected boolean isSunSensitive() {
-		return sunSensitive;
-	}
-	@Override
-	public void setSunSensitive(boolean value) {
-		sunSensitive = value;		
+	public void setupSunImmunityRules() {
+		this.sunImmuneConditions().put("sunhat", () -> this.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
+		this.sunImmuneConditions().put("soul_amulet", () -> this.hasBaubleItem(DwmgItems.SOUL_AMULET.get()));
+		this.sunImmuneConditions().put("resis_amulet", () -> this.hasBaubleItem(DwmgItems.RESISTANCE_AMULET.get()));
 	}
 
+	@Override
+	protected boolean isSunSensitive()
+	{
+		return !this.isSunImmune();
+	}
+	
 	/* IBaubleHolder interface */
 	
 	@Override

@@ -30,17 +30,6 @@ public class BaubleHandlerUndead extends BaubleHandlerGeneral
 			owner.addBaubleModifier(slotKey, "sa_health", Attributes.MAX_HEALTH, 10.0d, Operation.ADDITION);
 			owner.addBaubleModifier(slotKey, "sa_atk", Attributes.ATTACK_DAMAGE, 3.0d, Operation.ADDITION);
 		}
-		if (owner instanceof IBefriendedUndeadMob undead)
-		{
-			if (shouldBeSunImmune(owner))
-			{
-				undead.setSunSensitive(false);
-			}
-			else
-			{
-				undead.setSunSensitive(true);
-			}
-		}
 	}
 	
 	/**

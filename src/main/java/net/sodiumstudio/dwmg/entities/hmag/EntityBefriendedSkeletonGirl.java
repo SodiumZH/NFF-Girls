@@ -118,7 +118,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		goalSelector.addGoal(3, new BefriendedSkeletonRangedBowAttackGoal(this, 1.0D, 20, 15.0F));
 		goalSelector.addGoal(4, new BefriendedSkeletonMeleeAttackGoal(this, 1.2d, true));
 		goalSelector.addGoal(5, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false)
-				.avoidSunCondition(mob -> {return ((EntityBefriendedSkeletonGirl)mob).sunSensitive;}));
+				.avoidSunCondition(mob -> {return !((IBefriendedUndeadMob)mob).isSunImmune();}));
 		goalSelector.addGoal(6, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -160,7 +160,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	public void aiStep() {
 
 		// Handle sun sensitivity
-		if (!this.sunSensitive)
+		if (this.isSunImmune())
 		{
 			ItemStack headItem = this.getItemBySlot(EquipmentSlot.HEAD);
 			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
@@ -347,13 +347,14 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 
 	/* IBefriendedUndeadMob interface */
 
-	public boolean sunSensitive = true;
-
 	// Implementation is in aiStep()
 	@Override
-	public void setSunSensitive(boolean value) {
-		sunSensitive = value;		
+	public void setupSunImmunityRules() {
+		this.sunImmuneConditions().put("sunhat", () -> this.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
+		this.sunImmuneConditions().put("soul_amulet", () -> this.hasBaubleItem(DwmgItems.SOUL_AMULET.get()));
+		this.sunImmuneConditions().put("resis_amulet", () -> this.hasBaubleItem(DwmgItems.RESISTANCE_AMULET.get()));
 	}
+	
 	
 	/* IBaubleHolder interface */
 
