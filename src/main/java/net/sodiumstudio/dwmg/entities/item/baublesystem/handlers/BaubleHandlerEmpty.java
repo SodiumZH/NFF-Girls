@@ -3,7 +3,6 @@ package net.sodiumstudio.dwmg.entities.item.baublesystem.handlers;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.function.Predicate;
-import java.util.HashSet;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
@@ -14,11 +13,6 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 */
 public class BaubleHandlerEmpty extends BaubleHandler
 {
-
-	@Override
-	public HashSet<Item> getItemsAccepted(String key) {
-		return new HashSet<Item>();
-	}
 
 	@Override
 	public void refreshBaubleEffect(String slotKey, ItemStack bauble, IBaubleHolder owner) 

@@ -1,5 +1,8 @@
 package net.sodiumstudio.dwmg.entities;
 
+import java.util.HashSet;
+import java.util.function.Predicate;
+
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
