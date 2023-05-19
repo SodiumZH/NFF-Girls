@@ -337,11 +337,11 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 			throw new IllegalArgumentException("Illegal exp value");
 		// TODO Need this awkward algorithm be optimized?
 		int i = 0;
-		while (getAccumulatedExpRequirement(i) < exp)
+		while (getAccumulatedExpRequirement(i) <= exp)
 		{
 			++i;
 		}
-		return i;
+		return i - 1;
 	}
 	
 	/**

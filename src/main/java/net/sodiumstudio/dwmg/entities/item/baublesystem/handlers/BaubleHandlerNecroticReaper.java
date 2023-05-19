@@ -43,7 +43,7 @@ public class BaubleHandlerNecroticReaper extends BaubleHandlerUndead
 			if (bauble.getItem() instanceof HoeItem hoe)
 			{
 				int lv = Math.round(hoe.getTier().getAttackDamageBonus());
-				double atk = (double)getHoeAtk(lv) * (1d + (double)EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, bauble) * 0.2d);
+				double atk = (double)getHoeAtk(lv) * (1d + (double)EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, bauble) * 0.1d);
 				owner.addBaubleModifier(slotKey, "hoe_atk", Attributes.ATTACK_DAMAGE, atk, Operation.ADDITION);
 			}
 		}

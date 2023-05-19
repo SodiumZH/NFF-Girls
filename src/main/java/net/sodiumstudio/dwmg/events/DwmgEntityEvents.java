@@ -24,6 +24,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -151,11 +153,13 @@ public class DwmgEntityEvents
 				cg.spawnAtLocation(new ItemStack(ModItems.LIGHTNING_PARTICLE.get(), 1));
 		}
 
+		/** Favorability & Level */
 		if (event.getMob() instanceof IDwmgBefriendedMob bm)
 		{
 			// Favorability loss on death
 			if (event.getDamageSource().getEntity() != null
-					&& event.getDamageSource().getEntity() == bm.getOwner())
+					&& event.getDamageSource().getEntity() == bm.getOwner()
+					&& event.getDamageSource() != DamageSource.OUT_OF_WORLD)
 				bm.getFavorability().setFavorability(0);
 			else if (bm.asMob().distanceToSqr(bm.getOwner()) < 64d && event.getDamageSource() != DamageSource.OUT_OF_WORLD)
 				bm.getFavorability().addFavorability(-20);
@@ -163,6 +167,7 @@ public class DwmgEntityEvents
 			// As respawner construction (in befriendmobs) is after posting BefriendedDeathEvent, it can be set here
 			bm.getLevelHandler().setExp(bm.getLevelHandler().getExp() / 2);
 		}
+		/** Favorability & Level end */
 	}
 	
 	@SubscribeEvent
@@ -350,7 +355,7 @@ public class DwmgEntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void onLivingUpdate(LivingUpdateEvent event)
+	public static void onLivingTick(LivingUpdateEvent event)
 	{
 		// Necromancer armor
 		if (!event.getEntity().level.isClientSide)
@@ -395,22 +400,35 @@ public class DwmgEntityEvents
 		}
 	}
 
-/*	@SubscribeEvent
+	@SubscribeEvent
 	public static void onNonBefriendedDie(LivingDeathEvent event)
 	{
 		if (!event.getEntity().level.isClientSide)
 		{
+			// This function only handler non-befriended
 			if (event.getEntity() instanceof IBefriendedMob)
 				return;
-			if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof IDwmgBefriendedMob bm)
+			// When BM killed a mob targeting the player, favorability + 0.5 
+			if (event.getSource().getEntity() != null 
+					&& event.getSource().getEntity() instanceof IDwmgBefriendedMob bm
+					&& event.getEntity() instanceof Mob mob
+					&& mob.getTarget() != null
+					&& mob.getTarget() == bm.getOwner())
 			{
-				if (event.getEntity() instanceof Mob mob)
-				{
-		
-				}
+				bm.getFavorability().addFavorability(0.5f);
 			}
+			// When player killed a mob targeting BM, fav + 1
+			if (event.getSource().getEntity() != null
+					&& event.getSource().getEntity() instanceof Player player
+					&& event.getEntity() instanceof Mob mob
+					&& mob.getTarget() instanceof IDwmgBefriendedMob bm
+					&& bm.getOwner() == player)
+			{
+				bm.getFavorability().addFavorability(1f);
+			}
+			
 		}
-	}*/
+	}
 	
 	@SubscribeEvent
 	public static void onDropExp(LivingExperienceDropEvent event)
@@ -477,4 +495,31 @@ public class DwmgEntityEvents
 		return (long)remained;
 	}
 	
+	@SubscribeEvent
+	public static void onLivingDamage(LivingDamageEvent event)
+	{
+		if (!event.getEntity().level.isClientSide && event.getEntity() instanceof Mob mob)
+		{
+			if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof LivingEntity source)
+			{
+				// Favorbility change
+				// On player attack a mob attacking the BM
+				if (source instanceof Player player 
+						&& mob.getTarget() != null
+						&& mob.getTarget() instanceof IDwmgBefriendedMob bm
+						&& bm.getOwner() == player)
+				{
+					bm.getFavorability().addFavorability(event.getAmount() / 50f);
+				}
+				// On BM attack a mob attacking the player
+				if (source instanceof IDwmgBefriendedMob bm
+						&& mob.getTarget() != null
+						&& mob.getTarget() instanceof Player player
+						&& bm.getOwner() == player)
+				{
+					bm.getFavorability().addFavorability(event.getAmount() / 100f);
+				}
+			}
+		}
+	}
 }

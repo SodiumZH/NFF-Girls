@@ -25,19 +25,21 @@ import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
 /**
- * @author SodiumZH
  * Main capability of Favorability system.
  * Favorability change rule:
  * 
  * Increase
  * * Sleep to skip night near the mob: +2
+ * * Attack an entity attacking the mob: +(final damage / 50)
  * * Kill an entity attacking the mob: +1
- * * The mob killing an entity attacking the player: +0.5 
+ * * The mob killing an entity attacking the player: +0.5
+ * * The mob attacking an entity attacking the player: +(final damage / 100)
+ * * Apply healing item: + (healing value / 50)
  * 
  * Decrease
  * * Hurting the mob: -(0~5) depending on the damage
  * * Killing the mob: to zero
- * * Mob killed with player nearby (8 blocks): -20
+ * * Mob dying with player nearby (8 blocks): -20
  */
 public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 {
