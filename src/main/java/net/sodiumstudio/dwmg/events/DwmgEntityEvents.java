@@ -357,7 +357,7 @@ public class DwmgEntityEvents
 				}
 			}
 			
-			/* Favorability end */
+			/** Favorability end */
 			
 			// Label player on bef mob attacking target, just like for TamableAnimal, so that it can drop player's loot table
 			if (event.getEntity() instanceof Mob mob
