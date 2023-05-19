@@ -12,6 +12,8 @@ Added Favorability System.
 
 Added Exp & Level System. 
 
+Added armor durability drop on mob hurt.
+
 Now Soul Amulet and Resistance Amulet can provide undead mobs sun immunity.
 
 Reduced the atk enhancement from Efficiency enchantment for Necrotic Reapers, from 20% to 10% hoe basic atk each level. 

@@ -127,11 +127,9 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
-		// Porting from 1.18-s7 & 1.19-s8 bug: missing owner uuid in nbt. Generally this shouldn't be called
 		if (getOwner() == null)
 		{
-			MiscUtil.printToScreen("Mob " + asMob().getName().getString() + " missing owner, set " + player.getName().getString() + " as owner.", player);
-			this.setOwner(player);
+			throw new RuntimeException("Mob \"" + this.getName().getString() + "\" missing owner.");
 		}
 		// Porting solution end
 		if (player.getUUID().equals(getOwnerUUID())) {
@@ -247,7 +245,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 							if (this.getActiveAttackTarget() != null)
 							{
 								if (doBeamAttack 
-										&& this.attackEntityWithBeamAttack(this.getActiveAttackTarget(), 6.0F) 
+										&& this.attackEntityWithBeamAttack(this.getActiveAttackTarget(), 8f + 0.1f * (float)(this.getLevelHandler().getExpectedLevel())) 
 										&& this.teleportNotOnHurtByWater 
 										&& this.random.nextInt(10) == 0)
 								{
@@ -414,9 +412,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 			this.level.playSound((Player)null, target.getX(), target.getY(), target.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.2F + 0.9F);
 		}
 
-		float f = damage;
-			f += 2.0F;
-			
+		float f = damage;			
 		return target.hurt(DamageSource.indirectMagic(this, this), f);
 	}
 

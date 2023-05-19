@@ -6,6 +6,7 @@ import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -53,7 +55,15 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgEntityEvents
 {
-
+	private static final EquipmentSlot[] ARMOR_SLOTS =
+		{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+	private static final EquipmentSlot[] ARMOR_SLOT_HELMET =
+		{EquipmentSlot.HEAD};
+	private static final EquipmentSlot[] ARMOR_AND_HANDS =
+		{EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+	
+	
+	
 	@SubscribeEvent
 	public static void onLivingSetAttackTargetEvent(LivingSetAttackTargetEvent event)
 	{
@@ -162,6 +172,8 @@ public class DwmgEntityEvents
 		/** Favorability & Level end */
 	}
 	
+	
+	
 	@SubscribeEvent
 	public static void onLivingHurt(LivingHurtEvent event) {
 		LivingEntity living = event.getEntity();
@@ -219,38 +231,57 @@ public class DwmgEntityEvents
 				else if (!event.getSource().equals(DamageSource.IN_FIRE)
 						&& !event.getSource().equals(DamageSource.STARVE))
 				{
-					living.level.addParticle(ParticleTypes.PORTAL, living.getRandomX(0.5D), living.getRandomY() - 0.25D,
-							living.getRandomZ(0.5D), (living.getRandom().nextDouble() - 0.5D) * 2.0D,
-							-living.getRandom().nextDouble(), (living.getRandom().nextDouble() - 0.5D) * 2.0D);
+					EntityHelper.sendParticlesToEntity(living, null, 0, living.getBbHeight()/2, 0, 0.5, living.getBbHeight()/2, 0.5, 2, 1);
+					/*living.level.addParticle(ParticleTypes.PORTAL, 
+							living.getRandomX(0.5D), 
+							living.getRandomY() - 0.25D,
+							living.getRandomZ(0.5D), 
+							(living.getRandom().nextDouble() - 0.5D) * 2.0D,
+							-living.getRandom().nextDouble(), 
+							(living.getRandom().nextDouble() - 0.5D) * 2.0D);*/
 					EntityHelper.chorusLikeTeleport(living);
 				}
 			} 
-			/* Ender Protection Effect end */
+			/** Ender Protection Effect end */
 			
-			// Handle Befriended Mobs weapon duration drop on attacking
+			/** Durability */
+			// Weapon durability
 			if (event.getSource().getEntity() != null 
-					&& event.getSource().getEntity() instanceof IBefriendedMob bm 
+					&& event.getSource().getEntity() instanceof IDwmgBefriendedMob bm 
 					&& bm.getModId().equals(Dwmg.MOD_ID))
 			{
 				if (!bm.asMob().getMainHandItem().isEmpty() && bm.asMob().getMainHandItem().getItem() instanceof DiggerItem dg)
 				{
-					int unb = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, bm.asMob().getMainHandItem());
-					if (bm.asMob().getRandom().nextDouble() <= 1d / (double)(unb + 1))
+					bm.asMob().getMainHandItem().hurtAndBreak(2, bm.asMob(), (mob) ->
 					{
-						bm.asMob().getMainHandItem().setDamageValue(bm.asMob().getMainHandItem().getDamageValue() + 2);
-					}
+						mob.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+					});			
 				}
 				if (!bm.asMob().getMainHandItem().isEmpty() && bm.asMob().getMainHandItem().getItem() instanceof SwordItem sw)
 				{
-					int unb = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, bm.asMob().getMainHandItem());
-					if (bm.asMob().getRandom().nextDouble() <= 1d / (double)(unb + 1))
+					bm.asMob().getMainHandItem().hurtAndBreak(1, bm.asMob(), (mob) ->
 					{
-						bm.asMob().getMainHandItem().setDamageValue(bm.asMob().getMainHandItem().getDamageValue() + 1);
-					}
-				}
+						mob.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+					});
+				}			
 			}
-
-			/* Favorability related */
+			// Armor durability
+			if (event.getEntity() instanceof IDwmgBefriendedMob bm
+					&& bm.getModId().equals(Dwmg.MOD_ID))
+			{
+				if (!bm.asMob().getItemBySlot(EquipmentSlot.HEAD).isEmpty())
+				{
+					if (event.getSource().isDamageHelmet())
+					{
+						hurtHelmet(bm.asMob(), event.getSource(), event.getAmount());
+					}
+					hurtArmor(bm.asMob(), event.getSource(), event.getAmount());
+				}				
+			}
+			
+			/** Durability end */
+			
+			/** Favorability */
 			
 			// If owner attacked friendly mob, lose favorability depending on damage; no lost if < 0.5
 			if (event.getEntity() instanceof IDwmgBefriendedMob bm 
@@ -277,7 +308,7 @@ public class DwmgEntityEvents
 				}
 			}
 			
-			/* Favorability end */
+			/** Favorability end */
 			
 			// Label player on bef mob attacking target, just like for TamableAnimal, so that it can drop player's loot table
 			if (event.getEntity() instanceof Mob mob
@@ -289,6 +320,41 @@ public class DwmgEntityEvents
 			
 		}
 	}
+		
+	protected static void hurtArmor(Mob mob, DamageSource damageSource, float damage, EquipmentSlot[] slots)
+	{
+		if (!(damage <= 0.0F))
+		{
+			damage /= 4.0F;
+			if (damage < 1.0F)
+			{
+				damage = 1.0F;
+			}
+			for (EquipmentSlot slot : slots)
+			{
+				ItemStack itemstack = mob.getItemBySlot(slot);
+				if ((!damageSource.isFire() || !itemstack.getItem().isFireResistant())
+						&& itemstack.getItem() instanceof ArmorItem)
+				{
+					itemstack.hurtAndBreak((int) damage, mob, (m) ->
+					{
+						m.broadcastBreakEvent(EquipmentSlot.byTypeAndIndex(EquipmentSlot.Type.ARMOR, slot.getIndex()));
+					});
+				}
+			}
+		}
+	}
+	
+	protected static void hurtArmor(Mob mob, DamageSource damageSource, float damage)
+	{
+		hurtArmor(mob, damageSource, damage, ARMOR_SLOTS);
+	}
+	
+	protected static void hurtHelmet(Mob mob, DamageSource damageSource, float damage)
+	{
+		hurtArmor(mob, damageSource, damage, ARMOR_SLOT_HELMET);
+	}
+	
 	
 	@SubscribeEvent
 	public static void onEnderTeleport(EntityTeleportEvent.EnderEntity event)
@@ -439,9 +505,6 @@ public class DwmgEntityEvents
 	// Handle equipment fixing from Mending enchantment for mobs, and return the exp remains
 	protected static long handleMending(long expBefore, Mob mob)
 	{
-		EquipmentSlot[] slots =
-			{EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
-		
 		if (expBefore >= (long) Integer.MAX_VALUE)
 		{
 			throw new UnsupportedOperationException("Adding too many exp (more than INT_MAX).");
@@ -450,21 +513,21 @@ public class DwmgEntityEvents
 		int remained = (int)expBefore;
 		for (int i = 0; i < 6; ++i)
 		{
-			if (mob.getItemBySlot(slots[i]).isDamageableItem() 
-					&& mob.getItemBySlot(slots[i]).getDamageValue() > 0
-					&& EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, mob.getItemBySlot(slots[i])) > 0)
+			if (mob.getItemBySlot(ARMOR_AND_HANDS[i]).isDamageableItem() 
+					&& mob.getItemBySlot(ARMOR_AND_HANDS[i]).getDamageValue() > 0
+					&& EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, mob.getItemBySlot(ARMOR_AND_HANDS[i])) > 0)
 			{
 				// If cannot fix up
-				if (mob.getItemBySlot(slots[i]).getDamageValue() > remained * 2)
+				if (mob.getItemBySlot(ARMOR_AND_HANDS[i]).getDamageValue() > remained * 2)
 				{
-					mob.getItemBySlot(slots[i]).setDamageValue(
-							(int) (mob.getItemBySlot(slots[i]).getDamageValue() - 2 * remained));
+					mob.getItemBySlot(ARMOR_AND_HANDS[i]).setDamageValue(
+							(int) (mob.getItemBySlot(ARMOR_AND_HANDS[i]).getDamageValue() - 2 * remained));
 					remained = 0;
 				}
 				else
 				{
-					int needed = (mob.getItemBySlot(slots[i]).getDamageValue() + 1) / 2;
-					mob.getItemBySlot(slots[i]).setDamageValue(0);
+					int needed = (mob.getItemBySlot(ARMOR_AND_HANDS[i]).getDamageValue() + 1) / 2;
+					mob.getItemBySlot(ARMOR_AND_HANDS[i]).setDamageValue(0);
 					remained -= needed;
 				}
 				if (remained < 0)
