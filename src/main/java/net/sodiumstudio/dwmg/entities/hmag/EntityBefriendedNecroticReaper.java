@@ -224,6 +224,10 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 			{
 				if (!player.level.isClientSide()) 
 				{
+					if (getOwner() == null)
+					{
+						throw new RuntimeException("Mob \"" + this.getName().getString() + "\" missing owner.");
+					}
 					/* Put checks before healing item check */
 					/* if (....)
 					 {

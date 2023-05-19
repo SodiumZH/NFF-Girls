@@ -140,8 +140,7 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IDwmgBef
 		// Porting from 1.18-s7 & 1.19-s8 bug: missing owner uuid in nbt. Generally this shouldn't be called
 		if (getOwner() == null)
 		{
-			MiscUtil.printToScreen("Mob " + asMob().getName().getString() + " missing owner, set " + player.getName().getString() + " as owner.", player);
-			this.setOwner(player);
+			throw new RuntimeException("Mob \"" + this.getName().getString() + "\" missing owner.");		
 		}
 		// Porting solution end
 		if (player.getUUID().equals(getOwnerUUID())) 
