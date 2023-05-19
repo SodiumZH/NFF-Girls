@@ -36,7 +36,6 @@ public class DwmgSubsystemEvents
 		else if (event.toValue < 99.9999d)
 			atkmod = 1.1;
 		else atkmod = 1.2;
-
 		event.mob.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(new AttributeModifier(FAV_ATK_MODIFIER_UUID,
 				"favorability_atk", atkmod - 1, AttributeModifier.Operation.MULTIPLY_TOTAL));		
 	}
