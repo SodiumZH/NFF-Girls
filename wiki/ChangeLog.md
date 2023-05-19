@@ -2,6 +2,24 @@
 
 ## 1.18.2
 
+### 0.0.3
+
+Versions above won't use "alpha" postfix anymore. All versions with prefix 0 are alpha.
+
+Saves of snapshot versions are no longer supported since this version. To port legacy data to new versions, open it in 0.0.2-alpha, interact with all your mobs and save.
+
+Added Favorability System.
+
+Added Exp & Level System. 
+
+Now Soul Amulet and Resistance Amulet can provide undead mobs sun immunity.
+
+Reduced the atk enhancement from Efficiency enchantment for Necrotic Reapers, from 20% to 10% hoe basic atk each level. 
+
+Reduced the movement speed dropping of Resistance Amulet from 20% to 10% each.
+
+Fixed befriended mob unable to drop inventory on death.
+
 ### 0.0.2-alpha
 
 Added Necrotic Reaper support.

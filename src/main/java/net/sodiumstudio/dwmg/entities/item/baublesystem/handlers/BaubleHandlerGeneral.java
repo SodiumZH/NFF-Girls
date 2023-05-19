@@ -37,7 +37,7 @@ public class BaubleHandlerGeneral extends BaubleHandler
 		if (bauble.is(DwmgItems.RESISTANCE_AMULET.get()))
 		{
 			owner.addBaubleModifier(slotKey, "ra_armor", Attributes.ARMOR, 4.0d, Operation.ADDITION);
-			owner.addBaubleModifier(slotKey, "ra_speed_slow",Attributes.MOVEMENT_SPEED, -0.2d, Operation.MULTIPLY_BASE);
+			owner.addBaubleModifier(slotKey, "ra_speed_slow",Attributes.MOVEMENT_SPEED, -0.1d, Operation.MULTIPLY_BASE);
 		}
 		else if (bauble.is(DwmgItems.HEALING_JADE.get()))
 		{
