@@ -275,7 +275,7 @@ public class DwmgEntityEvents
 					{
 						mob.broadcastBreakEvent(EquipmentSlot.MAINHAND);
 					});
-				}			
+				}
 			}
 			// Armor durability
 			if (event.getEntity() instanceof IDwmgBefriendedMob bm
