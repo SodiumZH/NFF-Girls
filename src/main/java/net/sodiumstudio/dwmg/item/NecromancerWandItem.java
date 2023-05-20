@@ -32,15 +32,15 @@ public class NecromancerWandItem extends Item
 		else
 		{
 			// Movement velocity vector
-			Vec3 velocity = player.getLookAngle().scale(2d);
+			Vec3 velocity = player.getLookAngle().scale(4d);
 			Vec3 offset = player.getLookAngle().scale(0.2d);
 			NecromancerMagicBulletEntity bullet = new NecromancerMagicBulletEntity(level, player, velocity.x, velocity.y, velocity.z);
-			bullet.setPos(player.getX() + offset.x , player.getY() + 1d + offset.y, player.getZ() + offset.z);
+			bullet.setPos(player.getX() + offset.x , player.getY() + 0.8d + offset.y, player.getZ() + offset.z);
 			bullet.setDamage(0);
 			if (player.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.NECROMANCER_HAT.get()))
 				bullet.hasNecromancerHat = true;
 			level.addFreshEntity(bullet);
-			stack.hurt(1, level.random, null);
+			stack.hurtAndBreak(1, player, (m) -> {throw new RuntimeException("Necromancer's Wand should not be broken and should leave 1 durability.");});
 			player.hurt(DamageSource.MAGIC, 2);
 			player.getCooldowns().addCooldown(DwmgItems.NECROMANCER_WAND.get(), 100);
 			return InteractionResultHolder.success(stack);
