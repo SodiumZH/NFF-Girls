@@ -4,6 +4,8 @@ import com.github.mechalopa.hmag.registry.ModEntityTypes;
 import com.github.mechalopa.hmag.world.entity.NecroticReaperEntity;
 import com.github.mechalopa.hmag.world.entity.projectile.MagicBulletEntity;
 
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -12,7 +14,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.PlayMessages;
@@ -106,8 +110,17 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 					}
 				}
 			}
+			EntityHelper.sendParticlesToEntity(this, ParticleTypes.EXPLOSION, Vec3.ZERO, 1, 1, 0);
 			this.level.broadcastEntityEvent(this, (byte)3);
 		}
+		
+	}
+	
+	@Override
+	protected void onHitBlock(BlockHitResult result)
+	{
+		if (!this.level.isClientSide)
+			EntityHelper.sendParticlesToEntity(this, ParticleTypes.EXPLOSION, Vec3.ZERO, 1, 1, 0);
 	}
 	
 	@Override
@@ -116,4 +129,17 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 		return 1;
 	}
 	
+	@Override
+	public void addAdditionalSaveData(CompoundTag compound)
+	{
+		super.addAdditionalSaveData(compound);
+		compound.putBoolean("has_necromancer_hat", hasNecromancerHat);
+	}
+	
+	@Override
+	public void readAdditionalSaveData(CompoundTag compound)
+	{
+		super.readAdditionalSaveData(compound);
+		hasNecromancerHat = compound.getBoolean("has_necromancer_hat");
+	}
 }

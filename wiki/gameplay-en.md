@@ -4,15 +4,15 @@
 
 ### Current version: 
 
-#### 0.0.2-alpha (1.18.2)
+#### 0.0.3 (1.18.2)
 
-#### 0.1.2-alpha (1.19.2)
+#### 0.1.3 (1.19.2)
 
 
 
 ### *WARNING: This mod is still in development. Keep your backup to prevent data-breaking on unexpected errors.*
 
-##### Note: the wiki update may lag behind the game. Check the version wiki is supporting.
+##### Note: the wiki update may lag behind the game. Check which version the wiki is supporting. You could also check the wiki/gameplay_en.md file, but it may contain information and changes that haven't been published.
 
 
 
@@ -68,7 +68,33 @@ Bauble system adds several additional "Bauble" slots. These Bauble slots allows 
 
 In DWMG, mobs' Bauble slots are labelled with gem icon. For effects, see "Bauble Items" below.
 
+## Favorability System
 
+Favorability shows the affinity between you and your mob. It's a value between 0 - 100, and 50 initially.
+
+You can slightly increase the favorability by doing things below:
+
+- Sleeping with your mob nearby.
+- Attacking and killing enemies with your mob.
+- Healing them with items.
+
+Actions below will GREATLY drop the favorability:
+
+- Killing your mob by yourself will drop the favorability to zero.
+- Attacking your mob. (If the damage value is below 0.5 it will not drop.)
+- Watching your mob die in front of you (-20).
+
+High favorability will increase the mob's attack damage, while low favorability will decrease it. Also, if the favorability is below 5, the mob will refuse to follow you or attack your target.
+
+For their attitudes towards you, be kind to your mobs!
+
+## Experience and Level
+
+Mobs can upgrade their level by killing enemies. If an enemy is killed by a befriended mob, it will not drop EXP Orbs, but the EXP will be directly given to your mob. The EXP amount needed for level-up is identical to players. The given EXP can also fix its equipment with Mending enchantment.
+
+Each level increases the mob's max HP by 1 and attack damage by 0.1.
+
+If the mob dies, it will lose a half of all its EXP accumulated.
 
 ## Mob details
 
@@ -314,11 +340,15 @@ If you get >32 blocks away from it, the process will be interrupted.
 
 ##### Interaction
 
-To interact with it, you must either wear a Necromancer's Hat or hold a Necromancer's Wand on either hand. Otherwise you'll not be able to switch its AI state or open the inventory GUI, and it won't follow you or attack targets that you attacked or that attacked you.
+To interact with it, you must either wear a Necromancer's Hat or hold a Necromancer's Wand on either hand. Otherwise you'll not be able to switch its AI state or open the inventory GUI, and it will refuse to follow you or attack your targets.
 
-You can customize its hand items. The main hand only accept hoes as weapon. (Non-weapon items are also acceptable, but not taking any effect.) 
+You can customize its hand items. The main hand only accept hoes as weapon. (Non-weapon items are also acceptable, but not taking any effect.)  The offhand slot doesn't accept anything so far. (Will be added in the future.)
 
-Its attack damage greatly increases depending on the tier of the hoe. Efficiency enchantment also increases the attack damage.
+Its attack damage greatly increases depending on the tier of the hoe. Efficiency enchantment also increases the attack damage, 10% each level.
+
+Hoe attack (only for Necrotic Reapers):  Wood/Gold = 1, Stone = 2, Iron = 3, Diamond = 5, Netherite = 8. Effeciency enhancement will be multiplied to this value, each level provides 10%. For example, a Netherite Hoe with Efficiency V will provide ATK = 8 x (1 + 10% * 5)  = 12. 
+
+*Tip: if other mods provide hoes with higher tier than Netherite, it will be a strong weapon. Tiers above Netherite hoes (without Efficiency) will be subsequently: 13, 21, 34(max).
 
 It has 4 Bauble slots.
 
@@ -394,15 +424,15 @@ The dropped respawner item entities are invulnerable (except to creative player 
 
 #### Soul Amulet
 
-Max HP +10, ATK +3 (Only for undead mobs)
+Max HP +10, ATK +3, sun immunity (Only for undead mobs)
 
 #### Amulet of Resistance
 
-Armor +4, Speed -20%
+Armor +4, Speed -10%, sun immunity for undead mobs
 
 #### Fruit of Insomnia (HMaG)
 
-Max HP +60, ATK +8 (Only at night, not repeatable)
+Max HP +60, ATK +8 (Only at night, applies only once)
 
 #### Healing Jade
 
@@ -438,7 +468,9 @@ It's durability is identical to Iron Helmet, and other properties are identical 
 
 #### Necromancer's Wand
 
-On usage it can shoot a magic ball which adds Wither III for 5s on hitting living entity. If the user is wearing a Necromancer's Hat, it will add Wither IV instead of III.
+On usage it can shoot a magic ball which adds Wither III for 5s on hitting living entity. If the user is wearing a Necromancer's Hat, it will add Wither IV instead of III. 
+
+The target will NOT regard the effect of Necromancer's Wand as your attack, so it will not cause your target's hatred.
 
 Each time used, the user will take a damage of 2.
 

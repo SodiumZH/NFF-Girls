@@ -67,7 +67,7 @@ public class BlockSoulCake extends CakeBlock
 	  {
 	         player.getFoodData().eat(3, 0.1F);
 	         // 30s undead affinity
-	         EntityHelper.addEffectSafe(player, DwmgEffects.UNDEAD_AFFINITY.get(), 600);
+	         EntityHelper.addEffectSafe(player, DwmgEffects.UNDEAD_AFFINITY.get(), 90*20);
 	         int i = pState.getValue(BITES);
 	         pLevel.gameEvent(player, GameEvent.EAT, pPos);
 	         if (i < 6) {
