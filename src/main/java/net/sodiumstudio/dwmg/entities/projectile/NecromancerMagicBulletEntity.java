@@ -110,7 +110,7 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 					}
 				}
 			}
-			EntityHelper.sendParticlesToEntity(this, ParticleTypes.EXPLOSION, Vec3.ZERO, 1, 1, 0);
+			EntityHelper.sendParticlesToEntity(this, ParticleTypes.EXPLOSION, 0.5, 1, 1, 0);
 			this.level.broadcastEntityEvent(this, (byte)3);
 		}
 		
@@ -120,7 +120,7 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 	protected void onHitBlock(BlockHitResult result)
 	{
 		if (!this.level.isClientSide)
-			EntityHelper.sendParticlesToEntity(this, ParticleTypes.EXPLOSION, Vec3.ZERO, 1, 1, 0);
+			EntityHelper.sendParticlesToEntity(this, ParticleTypes.EXPLOSION, 0.5, 1, 1, 0);
 	}
 	
 	@Override

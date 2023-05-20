@@ -13,7 +13,7 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.util.math.IntVec2;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiHandItemsTwoBaubles;
 
-public class InventoryMenuHandItemsTwoBaubles extends BefriendedInventoryMenu
+public class InventoryMenuHandItemsTwoBaubles extends InventoryMenuPreset0
 {
 
 	public InventoryMenuHandItemsTwoBaubles(int containerId, Inventory playerInventory, Container container,
@@ -79,46 +79,14 @@ public class InventoryMenuHandItemsTwoBaubles extends BefriendedInventoryMenu
 	
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
-
-		Slot slot = this.slots.get(index);
-		boolean done = false;
-
-		if (slot == null || !slot.hasItem())
-			return ItemStack.EMPTY;
-
-		ItemStack stack = slot.getItem();
-
-		// From mob equipment to player inventory
-		if (index < 4) {
-			if (!this.moveItemStackTo(stack, 4, 40, true)) {
-				return ItemStack.EMPTY;
-			} else {
-				done = true;
-			}
-		}
-		// From inventory to mob
-		else {
-			int[] order = {2, 3, 0, 1};			
-			// Try each mob slot
-			for (int i: order) {
-				// If the item is suitable and slot isn't occupied
-				if (!done && this.getSlot(i).mayPlace(stack) && !this.getSlot(i).hasItem()) {
-					// Try moving
-					if (this.moveItemStackTo(stack, i, i + 1, false)) {
-						done = true;
-						break;
-					}
-				}
-			}
-		}
-		mob.updateFromInventory();
-		return done ? stack.copy() : ItemStack.EMPTY;
+		int[] order = {2, 3, 0, 1};
+		return this.quickMovePreset(order.length, player, index, order);
 	}
 	
 	@Override
 	protected IntVec2 getPlayerInventoryPosition()
 	{
-		return IntVec2.valueOf(20, 101);
+		return IntVec2.valueOf(32, 101);
 	}
 
 }
