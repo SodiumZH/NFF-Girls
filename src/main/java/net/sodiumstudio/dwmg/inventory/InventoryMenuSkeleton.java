@@ -19,7 +19,7 @@ import net.sodiumstudio.befriendmobs.util.TagHelper;
 import net.sodiumstudio.befriendmobs.util.math.IntVec2;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiBowSecWeaponOneBauble;
 
-public class InventoryMenuSkeleton extends BefriendedInventoryMenu
+public class InventoryMenuSkeleton extends InventoryMenuPreset0
 {
 
 	public InventoryMenuSkeleton(int containerId, Inventory playerInventory, Container container,
@@ -30,151 +30,21 @@ public class InventoryMenuSkeleton extends BefriendedInventoryMenu
 
 	@Override
 	protected void addMenuSlots() {
-		// Helmet
-		IntVec2 v = new IntVec2(8, 18);
-		addSlot(new Slot(container, 0, v.x, v.y) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return (stack.getItem() instanceof ArmorItem)
-						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.HEAD 
-						&& !EnchantmentHelper.hasBindingCurse(stack)
-						&& !this.hasItem();
-			}
-		});
-
-		v.slotBelow();
-		// Chest
-		addSlot(new Slot(container, 1, v.x, v.y) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return (stack.getItem() instanceof ArmorItem)
-						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.CHEST 
-						&& !EnchantmentHelper.hasBindingCurse(stack)
-						&& !this.hasItem();
-			}
-		});
-
-		v.slotBelow();
-		// Legs
-		addSlot(new Slot(container, 2, v.x, v.y) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return (stack.getItem() instanceof ArmorItem)
-						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.LEGS 
-						&& !EnchantmentHelper.hasBindingCurse(stack)
-						&& !this.hasItem();
-			}
-		});
-
-		v.slotBelow();
-		// Feet
-		addSlot(new Slot(container, 3, v.x, v.y) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return (stack.getItem() instanceof ArmorItem)
-						&& ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.FEET 
-						&& !EnchantmentHelper.hasBindingCurse(stack)
-						&& !this.hasItem();
-			}
-		});
-
-		v.set(80, 18).slotBelow(3);
-		// Main hand
-		addSlot(new Slot(container, 4, v.x, v.y) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return !this.hasItem();
-			}
-		});
-
-		v.slotAbove();
-		// Off hand
-		addSlot(new Slot(container, 5, v.x, v.y) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return !this.hasItem() && !stack.is(Items.BOW);	// Don't allow to hold bow on offhand
-			}
-		});
-
-		// Bauble
-		v.slotAbove(2);
-		addSlot(new Slot(container, 6, v.x, v.y) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return BaubleHandler.shouldBaubleSlotAccept(stack, this, mob);
-			}
-
-			@Override
-			public int getMaxStackSize() {
-				return 1;
-			}
-		});
-
-		// backup weapon
-		v.slotBelow();
-		addSlot(new Slot(container, 7, v.x, v.y) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return !this.hasItem();
-			}
-		});
-
-		// arrows
-		v.slotBelow(2).slotRight().addX(2);
-		addSlot(new Slot(container, 8, v.x, v.y) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return !this.hasItem() && stack.getItem().equals(Items.ARROW);
-			}
-		});
+		this.addArmorSlot(0, leftRowPos(), HEAD, null);
+		this.addArmorSlot(1, leftRowPos().slotBelow(), CHEST, null);
+		this.addArmorSlot(2, leftRowPos().slotBelow(2), LEGS, null);
+		this.addArmorSlot(3, leftRowPos().slotBelow(3), FEET, null);
+		this.addGeneralSlot(4, rightRowPos().slotBelow(3), null);
+		this.addGeneralSlot(5, rightRowPos().slotBelow(2), null);
+		this.addBaubleSlot(6, rightRowPos(), "0");
+		this.addGeneralSlot(7, rightRowPos().slotBelow(), null);
+		this.addGeneralSlot(8, rightRowPos().slotLeft().addX(-3), (stack) -> stack.is(Items.ARROW));
 	}
-
+	
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
-
-		Slot slot = this.slots.get(index);
-		boolean done = false;
-
-		if (slot == null || !slot.hasItem())
-			return ItemStack.EMPTY;
-
-		ItemStack stack = slot.getItem();
-
-		// From mob equipment to player befriendedInventory
-		if (index < 9) {
-			if (!this.moveItemStackTo(stack, 9, 45, true)) {
-				return ItemStack.EMPTY;
-			} else {
-				done = true;
-			}
-		}
-		// From befriendedInventory to mob
-		else {
-			// Try put arrow
-			if (stack.is(Items.ARROW))
-				if (this.moveItemStackTo(stack, 8, 9, false))
-					done = true;
-			// Try put bow
-			if (!done && stack.is(Items.BOW))
-				if (this.moveItemStackTo(stack, 4, 5, false) || this.moveItemStackTo(stack, 7, 8, false))
-					done = true;
-			if (!done)
-			{
-				// Try each mob slot
-				int[] order = {0,1,2,3,6,4,5,7,8};
-				for (int i = 0; i < 9; ++i) {
-					// If the item is suitable and slot isn't occupied
-					if (this.getSlot(order[i]).mayPlace(stack) && !this.getSlot(order[i]).hasItem()) {
-						// Try moving
-						if (this.moveItemStackTo(stack, order[i], order[i] + 1, false)) {
-							done = true;
-							break;
-						}
-					}
-				}
-			}
-		}
-		return done ? stack.copy() : ItemStack.EMPTY;
+		int[] order = {8, 9, 0, 1, 2, 3, 4, 6, 5};
+		return this.quickMovePreset(order.length, player, index, order);
 	}
 	
 	@Override
@@ -184,7 +54,7 @@ public class InventoryMenuSkeleton extends BefriendedInventoryMenu
 
 	@Override
 	protected IntVec2 getPlayerInventoryPosition() {
-		return IntVec2.valueOf(20, 101);
+		return IntVec2.valueOf(32, 101);
 	}
 
 	@Override

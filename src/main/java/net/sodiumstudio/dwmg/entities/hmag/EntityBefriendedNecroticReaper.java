@@ -390,7 +390,8 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 	{
 		return this.getOwner().getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.NECROMANCER_HAT.get())
 				|| this.getOwner().getItemBySlot(EquipmentSlot.MAINHAND).is(DwmgItems.NECROMANCER_WAND.get())
-				|| this.getOwner().getItemBySlot(EquipmentSlot.OFFHAND).is(DwmgItems.NECROMANCER_WAND.get());
+				|| this.getOwner().getItemBySlot(EquipmentSlot.OFFHAND).is(DwmgItems.NECROMANCER_WAND.get())
+				|| this.getFavorability().getFavorability() >= 90f;
 	}
 	
 	// Get how many Necrotic Reapers is <8 blocks away from owner 
