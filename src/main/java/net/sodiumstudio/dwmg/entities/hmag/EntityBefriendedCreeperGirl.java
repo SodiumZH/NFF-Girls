@@ -48,9 +48,11 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
-
+import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperGirlExplosionAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperGirlMeleeAttackGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedCreeperFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;

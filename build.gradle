@@ -18,7 +18,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-version = '0.1.2-alpha'
+version = '0.1.3'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'dwmg'
 
@@ -190,7 +190,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
 	//implementation fg.deobf("curse.maven:hmag-537613:4445103")
-    implementation fg.deobf("curse.maven:hmag-537613:4056253")
+    implementation fg.deobf("curse.maven:hmag-537613:4526251")
 	//implementation fg.deobf("curse.maven:gog4-228948:4249761")
 	//implementation fg.deobf("curse.maven:citadel-331936:3683007")
 	//implementation fg.deobf("curse.maven:am-426558:3853078")

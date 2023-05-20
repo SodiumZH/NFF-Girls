@@ -56,7 +56,8 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.template.TemplateBefriendedMobPreset;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
-
+import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.HmagFlyingGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
