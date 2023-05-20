@@ -21,6 +21,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -118,6 +119,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 
 	@Override
 	protected void registerGoals() {
+		goalSelector.addGoal(1, new FloatGoal(this));
 		goalSelector.addGoal(1, new BefriendedRestrictSunGoal(this));
 		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
 		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0d, true));

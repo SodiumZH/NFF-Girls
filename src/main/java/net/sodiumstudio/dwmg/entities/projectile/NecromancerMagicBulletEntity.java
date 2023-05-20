@@ -67,7 +67,7 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 
 		if (!this.level.isClientSide)
 		{
-
+			boolean isHitNecroticReaper = false;
 			if (entity != null && entity instanceof LivingEntity living)
 			{
 				if (!(living instanceof ArmorStand))
@@ -97,6 +97,7 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 								nr.heal(2);
 							}
 							EntityHelper.sendGlintParticlesToLivingDefault(nr);
+							isHitNecroticReaper = true;
 						}
 						shouldAddWither = false;
 					}
@@ -110,7 +111,8 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 					}
 				}
 			}
-			EntityHelper.sendParticlesToEntity(this, ParticleTypes.EXPLOSION, 0.5, 1, 1, 0);
+			if (!isHitNecroticReaper)
+				EntityHelper.sendParticlesToEntity(this, ParticleTypes.EXPLOSION, 0.5, 1, 1, 0);
 			this.level.broadcastEntityEvent(this, (byte)3);
 		}
 		
