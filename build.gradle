@@ -20,7 +20,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 version = '0.0.3'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'dwmg'
+archivesBaseName = 'dwmg-1.18.2'
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -154,11 +154,11 @@ repositories {
         }
     }
     
-    maven {
+ /*   maven {
     // location of the maven that hosts JEI files
   		  name = "Progwml6 maven"
   		  url = "https://dvs1.progwml6.com/files/maven/"
-  			}
+  			}*/
  	 maven {
   		  // location of a maven mirror for JEI files, as a fallback
     	name = "ModMaven"
@@ -188,7 +188,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-	implementation fg.deobf("net.sodiumstudio.befriendmobs:befriendmobs:0.0.3")
+	implementation fg.deobf("net.sodiumstudio.befriendmobs:befriendmobs:${mc_version}-${bm_version}")
     implementation fg.deobf("curse.maven:hmag-537613:4526196")
 	implementation fg.deobf("curse.maven:gog4-228948:4525159")
 	implementation fg.deobf("curse.maven:geckolib-388172:4181370")
