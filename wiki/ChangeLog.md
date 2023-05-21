@@ -16,6 +16,8 @@ Added armor durability drop on mob hurt.
 
 Now Soul Amulet and Resistance Amulet can provide undead mobs sun immunity.
 
+Optimized the performance of Necromancer's Wand.
+
 Some numerical changes:
 
 - Reduced the atk enhancement from Efficiency enchantment for Necrotic Reapers, from 20% to 10% hoe basic atk each level. 
@@ -134,6 +136,33 @@ Added Creeper Girl support.
 Added befriending Zombie Girl, Husk Girl and Skeleton Girl support.
 
 ## 1.19.2
+
+### 0.1.3
+
+Versions above won't use "alpha" postfix anymore. All versions with prefix 0 are alpha.
+
+Saves of snapshot versions are no longer supported since this version. To port legacy data to new versions, open it in 0.0.2-alpha, interact with all your mobs and save.
+
+Added Favorability System.
+
+Added Exp & Level System. 
+
+Added armor durability drop on mob hurt.
+
+Now Soul Amulet and Resistance Amulet can provide undead mobs sun immunity.
+
+Optimized the performance of Necromancer's Wand.
+
+Some numerical changes:
+
+- Reduced the atk enhancement from Efficiency enchantment for Necrotic Reapers, from 20% to 10% hoe basic atk each level. 
+- Reduced the speed-down effect of Resistance Amulet from 20% to 10% each.
+- Increased Undead Affinity effect duration from Soul Cake from 30 s to 1.5 min each slice; from 1.5 min to 5 min for Each Soul Cake Slice.
+- Increased Ender Protection effect duration from Ender Pie, from 30 s to 3 min.
+
+Fixed befriended mob not dropping inventory on death.
+
+Fixed mob main-hand weapons not breaking on durability ran out.
 
 ### 0.1.2-alpha
 
