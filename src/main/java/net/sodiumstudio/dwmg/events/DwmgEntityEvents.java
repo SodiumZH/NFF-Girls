@@ -6,7 +6,6 @@ import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -28,10 +27,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -40,15 +36,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedChangeAiStateEvent;
-import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.befriendmobs.entity.capability.CAttributeMonitor;
 import net.sodiumstudio.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
-import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.befriendmobs.util.InfoHelper;
@@ -63,7 +55,6 @@ import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
-import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 @SuppressWarnings("removal")
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -462,7 +453,7 @@ public class DwmgEntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void onLivingTick(LivingUpdateEvent event)
+	public static void onLivingTick(LivingTickEvent event)
 	{
 		if (!event.getEntity().level.isClientSide)
 		{
@@ -540,8 +531,8 @@ public class DwmgEntityEvents
 	public static void onDropExp(LivingExperienceDropEvent event)
 	{
 		// When a mob is killed by a befriended mob, it don't drop exp orbs, but directly add exp to the mob.
-		if (event.getEntityLiving().getLastHurtByMob() != null 
-				&& event.getEntityLiving().getLastHurtByMob() instanceof IDwmgBefriendedMob bm)
+		if (event.getEntity().getLastHurtByMob() != null 
+				&& event.getEntity().getLastHurtByMob() instanceof IDwmgBefriendedMob bm)
 		{
 			int exp = event.getOriginalExperience();
 			exp = (int)handleMending(exp, bm.asMob());

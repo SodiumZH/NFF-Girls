@@ -180,7 +180,7 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 	}
 	// ========================
 	
-	public class Prvd implements ICapabilitySerializable<LongTag>
+	public static class Prvd implements ICapabilitySerializable<LongTag>
 	{
 
 		protected final CLevelHandler handler;
@@ -206,51 +206,10 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 		public void deserializeNBT(LongTag nbt) {
 			handler.deserializeNBT(nbt);
 		}
-		
-		@Override
-		public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-			if (cap == DwmgCapabilities.CAP_LEVEL_HANDLER)
-				return LazyOptional.of(() -> {return this.handler;}).cast();
-			else return LazyOptional.empty();
-		}
-
-		@Override
-		public LongTag serializeNBT() {
-			return handler.serializeNBT();
-		}
-
-		@Override
-		public void deserializeNBT(LongTag nbt) {
-			handler.deserializeNBT(nbt);
-		}
 	}
 	
 	// ==============================
 
-	/**
-	 * Fired when the mob's exp changes by {@code setExp}.
-	 * The param {@value newExp} can be reset. If reset, the exp will be set to the new value instead.
-	 * This event is cancelable. If canceled, the exp will not change.
-	 */
-	@Cancelable
-	public static class ChangeExpEvent extends Event
-	{
-		public final Mob mob;
-		public final CLevelHandler levelHandler;
-		public final long oldExp;
-		public long newExp;
-		
-		public ChangeExpEvent(CLevelHandler levelHandler, long oldExp, long newExp)
-		{
-			this.mob = levelHandler.getMob();
-			this.levelHandler = levelHandler;
-			this.oldExp = oldExp;
-			this.newExp = newExp;
-		}
-	}
-	
-	// ==============================
-	
 	/**
 	 * Fired when the mob's exp changes by {@code setExp}.
 	 * The param {@value newExp} can be reset. If reset, the exp will be set to the new value instead.
@@ -297,28 +256,6 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 		}
 	}
 	
-	// ==============================
-	
-	/**
-	 * Fired when mob level changes.
-	 * This event is not {@code Cancelable}.
-	 */
-	public static class LevelChangeEvent extends Event
-	{
-		public final Mob mob;
-		public final CLevelHandler levelHandler;
-		public final int levelBefore;
-		public final int levelAfter;
-		
-		public LevelChangeEvent(CLevelHandler levelHandler, int levelBefore, int levelAfter)
-		{
-			this.mob = levelHandler.getMob();
-			this.levelHandler = levelHandler;
-			this.levelBefore = levelBefore;
-			this.levelAfter = levelAfter;
-		}
-	}
-
 	// ==============================
 	
 	/**
