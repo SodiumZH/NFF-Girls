@@ -340,11 +340,11 @@ If you get >32 blocks away from it, the process will be interrupted.
 
 ##### Interaction
 
-To interact with it, you must either wear a Necromancer's Hat or hold a Necromancer's Wand on either hand. Otherwise you'll not be able to switch its AI state or open the inventory GUI, and it will refuse to follow you or attack your targets.
+To interact with it, you must either wear a Necromancer's Hat or hold a Necromancer's Wand on either hand. Otherwise you'll not be able to switch its AI state or open the inventory GUI, and it will refuse to follow you or attack your targets. The requirements are removed if its favorability reaches 90.
 
 You can customize its hand items. The main hand only accept hoes as weapon. (Non-weapon items are also acceptable, but not taking any effect.)  The offhand slot doesn't accept anything so far. (Will be added in the future.)
 
-Its attack damage greatly increases depending on the tier of the hoe. Efficiency enchantment also increases the attack damage, 10% each level.
+Its attack damage greatly increases depending on the tier of the hoe. Efficiency enchantment also increases the attack damage of the hoe, 10% each level.
 
 Hoe attack (only for Necrotic Reapers):  Wood/Gold = 1, Stone = 2, Iron = 3, Diamond = 5, Netherite = 8. Effeciency enhancement will be multiplied to this value, each level provides 10%. For example, a Netherite Hoe with Efficiency V will provide ATK = 8 x (1 + 10% * 5)  = 12. 
 
@@ -356,7 +356,7 @@ It can be healed with Soul Powder (5) and Soul Apple (15).
 
 It will be healed by 2 if hit by its owner's *Necromancer's Wand* magic ball. If the owner is wearing a *Necromancer's Hat*, it will be healed by 3 and get 5s Strength II effect.
 
-When the player is wearing a *Necromancer's Hat*, the Necrotic Reapers nearby (< 8 blocks) will provide Regeneration effect. The effect level depends on how many Necrotic Reapers there are around. (Regeneration III at most.)
+When the player is wearing a *Necromancer's Hat*, the owning Necrotic Reapers nearby (< 8 blocks) will provide Regeneration effect. The effect level depends on how many Necrotic Reapers there are around. (Regeneration III at most.)
 
 
 
@@ -364,11 +364,11 @@ When the player is wearing a *Necromancer's Hat*, the Necrotic Reapers nearby (<
 
 ### Soul Cake
 
-Put on the ground to eat. Similar to vanilla cakes, providing nutrition 3 and 30s Undead Affinity effect each slice.
+Put on the ground to eat. Similar to vanilla cakes, providing nutrition 3 and 1.5 min Undead Affinity effect each slice.
 
 ### Soul Cake Slice
 
-The non-block variation of Soul Cake. Each item provides nutrition 9 and 90s Undead Affinity.
+The non-block variation of Soul Cake. Each item provides nutrition 9 and 5 min Undead Affinity.
 
 ### Enderberry
 
@@ -378,7 +378,7 @@ Tip: it's probably unadvisable to eat raw Enderberries. It's much more useful as
 
 ### Ender Pie
 
-A food providing nutrition 16 and 30s Ender Protection effect.
+A food providing nutrition 16 and 3 min Ender Protection effect.
 
 
 
@@ -390,7 +390,7 @@ Making undead mobs be neutral to you.
 
 Befriending of most undead mobs requires this effect.
 
-It can be obtained by eating Soul Cake or Soul Cake Slice, or standing on a Soul Carpet.
+It can be obtained by eating Soul Cake or Soul Cake Slice, standing on a Soul Carpet or wear a Necromancer's Hat.
 
 ### Ender Protection
 
@@ -406,7 +406,7 @@ It can be obtained by eating Ender Pie.
 
 ### Soul Carpet
 
-A variation of Carpet. Player standing on it will get Undead Affinity effect which immediately expires once player steps out, including jumping up.
+A variation of Carpet. Player/mob standing on it will get Undead Affinity effect which immediately expires once player steps out, including jumping up. It will also remove the Wither I effect of Necromancer's Hat.
 
 
 
