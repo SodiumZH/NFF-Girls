@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.Util;
+package net.sodiumstudio.dwmg.befriendmobs.util;
 
 import java.lang.reflect.Method;
 

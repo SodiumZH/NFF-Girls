@@ -41,13 +41,16 @@ import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingType
 import net.sodiumstudio.befriendmobs.entity.capability.CAttributeMonitor;
 import net.sodiumstudio.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
+import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
 import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
+import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.befriendmobs.util.TagHelper;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.compat.CompatTwilightForest;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
@@ -179,7 +182,16 @@ public class DwmgEntityEvents
 	
 	@SubscribeEvent
 	public static void onLivingHurt(LivingHurtEvent event) {
-		LivingEntity living = event.getEntity();
+
+		/** Compat */
+		
+		CompatTwilightForest.onLivingHurt(event);
+		if (event.isCanceled())
+			return;
+			
+		/** Compat end */
+			
+		LivingEntity living = event.getEntityLiving()
 		if (!living.level.isClientSide)
 		{
 			// Cancel necromancer magic bullet normal attack
@@ -187,7 +199,7 @@ public class DwmgEntityEvents
 			{
 				event.setCanceled(true);
 			}
-			
+
 			/* Ender Protection Effect */
 			if (living.hasEffect(DwmgEffects.ENDER_PROTECTION.get()))
 			{
@@ -616,4 +628,19 @@ public class DwmgEntityEvents
 			}
 		}
 	}
+	
+	@SubscribeEvent
+	public static void onEntityTickEnd(ServerEntityTickEvent.PostWorldTick event)
+	{
+		if (event instanceof IDwmgBefriendedMob bm)
+		{
+			// For unknown reason, it was observed that a Dummy Item remaining on the mob's head, so clear after tick
+			if (bm.asMob().getItemBySlot(EquipmentSlot.HEAD).is(BefMobItems.DUMMY_ITEM.get()))
+			{
+				bm.asMob().setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+				bm.setInventoryFromMob();
+			}
+		}
+	}
+	
 }
