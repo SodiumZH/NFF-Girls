@@ -1,8 +1,12 @@
 package net.sodiumstudio.dwmg.entities;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.function.Predicate;
 
+import com.github.mechalopa.hmag.registry.ModItems;
+
+import net.minecraft.world.item.Item;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
@@ -12,6 +16,7 @@ import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
 public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleHolder
 {
+	
 	public default CFavorabilityHandler getFavorability()
 	{
 		Wrapped<CFavorabilityHandler> cap = new Wrapped<CFavorabilityHandler>(null);
@@ -36,5 +41,7 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleHolder
 		return cap.get();
 	}
 
+	
+	
 	
 }

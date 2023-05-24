@@ -64,7 +64,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTar
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
 
-public class EntityBefriendedHornet extends HornetEntity implements IBaubleHolder, IDwmgBefriendedMob
+public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefriendedMob
 {
 	public EntityBefriendedHornet(EntityType<? extends HornetEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
