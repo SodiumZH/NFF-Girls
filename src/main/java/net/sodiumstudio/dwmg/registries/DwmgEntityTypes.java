@@ -1,6 +1,7 @@
 package net.sodiumstudio.dwmg.registries;
 
 import com.github.mechalopa.hmag.HMaG;
+import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
 import com.github.mechalopa.hmag.world.entity.NecroticReaperEntity;
 import com.github.mechalopa.hmag.world.entity.projectile.MagicBulletEntity;
 
@@ -19,6 +20,7 @@ import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedNecroticReaper;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedDrownedGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedEnderExecutor;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedGhastlySeeker;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHornet;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHuskGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedSkeletonGirl;
@@ -134,6 +136,15 @@ public class DwmgEntityTypes {
 			.setShouldReceiveVelocityUpdates(false)
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_necrotic_reaper").toString()));
+	public static final RegistryObject<EntityType<EntityBefriendedGhastlySeeker>> HMAG_GHASTLY_SEEKER = 
+			ENTITY_TYPES.register("hmag_ghastly_seeker", () -> EntityType.Builder
+			.of(EntityBefriendedGhastlySeeker::new, MobCategory.CREATURE)
+			.fireImmune()
+			.sized(0.9F, 2.9F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_ghastly_seeker").toString()));
 	
 	@SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
@@ -147,6 +158,7 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.HMAG_WITHER_SKELETON_GIRL.get(), EntityBefriendedWitherSkeletonGirl.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_HORNET.get(), EntityBefriendedHornet.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_NECROTIC_REAPER.get(), EntityBefriendedNecroticReaper.createAttributes().build());
+        event.put(DwmgEntityTypes.HMAG_GHASTLY_SEEKER.get(), EntityBefriendedGhastlySeeker.createAttributes().build());
 	}
 	
 	// Projectiles

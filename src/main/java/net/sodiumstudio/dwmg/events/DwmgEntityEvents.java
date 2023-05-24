@@ -1,7 +1,9 @@
 package net.sodiumstudio.dwmg.events;
 
+import com.github.mechalopa.hmag.HMaG;
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.CreeperGirlEntity;
+import com.github.mechalopa.hmag.world.entity.DyssomniaEntity;
 import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 
 import net.minecraft.core.BlockPos;
@@ -11,12 +13,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.Phantom;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DiggerItem;
@@ -40,6 +46,7 @@ import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedChangeAiStateEvent;
 import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
+import net.sodiumstudio.befriendmobs.entity.ai.util.AiHelper;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.befriendmobs.entity.capability.CAttributeMonitor;
@@ -58,6 +65,15 @@ import net.sodiumstudio.dwmg.compat.CompatTwilightForest;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedDrownedGirl;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedEnderExecutor;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedGhastlySeeker;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHornet;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHuskGirl;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedNecroticReaper;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedSkeletonGirl;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedStrayGirl;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedWitherSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedZombieGirl;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
@@ -615,15 +631,56 @@ public class DwmgEntityEvents
 		}
 	}
 	
+	/**
+	 * Check if a befriended mob is not waiting.
+	 * If it's not a befriended mob, return always true.
+	 */
+	protected static boolean isNotWaiting(LivingEntity living)
+	{
+		return living instanceof IBefriendedMob bm && bm.getAIState() != BefriendedAIState.WAIT;
+	}
+	
 	@SubscribeEvent
 	public static void onEntityJoinLevel(EntityJoinLevelEvent event)
 	{
-		if (event.getEntity() instanceof Mob mob)
+		if (event.getEntity() instanceof Mob mob && AiHelper.isMobHostileToPlayer(mob))
 		{
-			// Illagers attack undead BMs
+			// Illagers attack all non-flying mobs
 			if (mob.getMobType() == MobType.ILLAGER)
 			{
-				mob.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(mob, EntityBefriendedZombieGirl.class, true));
+				AiHelper.setHostileTo(mob, EntityBefriendedZombieGirl.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedHuskGirl.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedDrownedGirl.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedStrayGirl.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedWitherSkeletonGirl.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedEnderExecutor.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedNecroticReaper.class, DwmgEntityEvents::isNotWaiting);
+			}
+			// Skeletons hostile to zombies & creepers
+			if (mob instanceof AbstractSkeleton 
+				&& !(EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID))	// Exclude HMAG mob girls
+				&& AiHelper.isMobHostileToPlayer(mob))	// For hostile mobs only
+			{
+				AiHelper.setHostileTo(mob, EntityBefriendedZombieGirl.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedHuskGirl.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedDrownedGirl.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class, DwmgEntityEvents::isNotWaiting);
+			}
+			// Zombies hostile to skeletons & creepers
+			if (mob instanceof Zombie
+					&& !(EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID)))	// Exclude HMAG mob girls
+			{
+				AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedStrayGirl.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedDrownedGirl.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class, DwmgEntityEvents::isNotWaiting);
+			}
+			if (mob instanceof Phantom || mob instanceof DyssomniaEntity)
+			{
+				AiHelper.setHostileTo(mob, EntityBefriendedHornet.class, DwmgEntityEvents::isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedGhastlySeeker.class, DwmgEntityEvents::isNotWaiting);
 			}
 		}
 	}

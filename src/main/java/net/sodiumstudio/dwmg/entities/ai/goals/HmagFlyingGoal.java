@@ -3,12 +3,16 @@ package net.sodiumstudio.dwmg.entities.ai.goals;
 import java.util.EnumSet;
 
 import com.github.mechalopa.hmag.world.entity.AbstractFlyingMonsterEntity;
+import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.LargeFireball;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
@@ -16,6 +20,7 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedMoveGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedTargetGoal;
 import net.sodiumstudio.befriendmobs.util.LevelHelper;
+import net.sodiumstudio.befriendmobs.util.ReflectHelper;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 
 /* Ported from HMaG-AbstractFlyingMonsterEntity (Mechalopa)
@@ -329,8 +334,80 @@ public interface HmagFlyingGoal
 				flyingentity.getMoveControl().setWantedPosition(playerPos.getX() + 0.5D, playerPos.getY() + 0.5D,
 						playerPos.getZ() + 0.5D, this.moveSpeed);
 			}
-		}
-					
+		}		
 	}
+	
+	public static class GhastlySeekerFireballAttackGoal extends BefriendedGoal
+	{
+		private final GhastlySeekerEntity parent;
+		public int attackTimer;
+
+		public GhastlySeekerFireballAttackGoal(GhastlySeekerEntity mob)
+		{
+			super((IBefriendedMob)mob);
+			this.parent = mob;
+		}
+
+		@Override
+		public boolean canUse()
+		{
+			return this.parent.getTarget() != null;
+		}
+
+		@Override
+		public void start()
+		{
+			this.attackTimer = 0;
+		}
+
+		@Override
+		public void stop()
+		{
+			ReflectHelper.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", -1);
+		}
+
+		@Override
+		public void tick()
+		{
+			LivingEntity target = this.parent.getTarget();
+			double d0 = 24.0D;
+
+			if ((target.distanceToSqr(this.parent) < d0 * d0 || this.attackTimer > 10) && this.parent.hasLineOfSight(target))
+			{
+				Level world = this.parent.level;
+				++this.attackTimer;
+
+				if (this.attackTimer == 10 && !this.parent.isSilent())
+				{
+					world.levelEvent((Player)null, 1015, this.parent.blockPosition(), 0);
+				}
+
+				if (this.attackTimer == 20)
+				{
+					double d1 = 4.0D;
+					Vec3 vec3 = this.parent.getViewVector(1.0F);
+					double d2 = target.getX() - (this.parent.getX() + vec3.x * d1);
+					double d3 = target.getY() + target.getEyeHeight() * 0.5D - this.parent.getY(0.5D) + 0.25D;
+					double d4 = target.getZ() - (this.parent.getZ() + vec3.z * d1);
+
+					if (!this.parent.isSilent())
+					{
+						world.levelEvent((Player)null, 1016, this.parent.blockPosition(), 0);
+					}
+
+					LargeFireball largefireball = new LargeFireball(world, this.parent, d2, d3, d4, this.parent.getExplosionPower());
+					largefireball.setPos(this.parent.getX() + vec3.x * 0.5D, this.parent.getY(0.5D) + 0.25D, largefireball.getZ() + vec3.z * 0.5D);
+					world.addFreshEntity(largefireball);
+					this.attackTimer = -50;
+				}
+			}
+			else if (this.attackTimer > 0)
+			{
+				--this.attackTimer;
+			}
+			ReflectHelper.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", this.attackTimer < 0 ? -1 : this.attackTimer);
+		}
+	}
+
 	
 }
