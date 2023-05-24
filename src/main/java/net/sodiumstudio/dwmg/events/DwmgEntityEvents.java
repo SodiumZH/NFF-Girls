@@ -15,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DiggerItem;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -54,6 +56,7 @@ import net.sodiumstudio.dwmg.compat.CompatTwilightForest;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedZombieGirl;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
@@ -191,7 +194,7 @@ public class DwmgEntityEvents
 			
 		/** Compat end */
 			
-		LivingEntity living = event.getEntityLiving()
+		LivingEntity living = event.getEntity();
 		if (!living.level.isClientSide)
 		{
 			// Cancel necromancer magic bullet normal attack
@@ -505,7 +508,7 @@ public class DwmgEntityEvents
 			MiscUtil.printToScreen(InfoHelper.createText("")
 					.append(event.getMob().asMob().getName())
 					.append(InfoHelper.createText(" "))
-					.append(BefriendedAIState.getDisplayInfo.apply(event.getStateAfter())), event.getMob().getOwner());
+					.append(event.getStateAfter().getDisplayInfo()), event.getMob().getOwner());
 		}
 	}
 
@@ -639,6 +642,19 @@ public class DwmgEntityEvents
 			{
 				bm.asMob().setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
 				bm.setInventoryFromMob();
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onEntityJoinLevel(EntityJoinLevelEvent event)
+	{
+		if (event.getEntity() instanceof Mob mob)
+		{
+			// Illagers attack undead BMs
+			if (mob.getMobType() == MobType.ILLAGER)
+			{
+				mob.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(mob, EntityBefriendedZombieGirl.class, true));
 			}
 		}
 	}
