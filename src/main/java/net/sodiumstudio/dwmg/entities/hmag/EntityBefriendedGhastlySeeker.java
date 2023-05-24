@@ -35,6 +35,8 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.entities.DwmgBMStatics;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
 
 public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implements IDwmgBefriendedMob
 {
@@ -77,6 +79,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 		return Monster.createMonsterAttributes()
 				.add(Attributes.MAX_HEALTH, 60.0D)
 				.add(Attributes.ARMOR, 2.0D)
+				.add(Attributes.ATTACK_DAMAGE, 0d)
 				.add(Attributes.FOLLOW_RANGE, 64.0D);
 	}
 
@@ -187,8 +190,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return null; // new YourInventoryMenuClass(containerId, playerInventory, container, this);
-		// You can keep it null, but in this case never call openBefriendedInventory() or it will crash.
+		return new InventoryMenuNecroticReaper(containerId, playerInventory, container, this);   // TEMP
 	}
 
 	/* Save and Load */
@@ -212,14 +214,18 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
-		// TODO Auto-generated method stub
-		return null;
+		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
+		map.put("0", this.getAdditionalInventory().getItem(2));
+		map.put("1", this.getAdditionalInventory().getItem(3));
+		map.put("2", this.getAdditionalInventory().getItem(4));
+		map.put("3", this.getAdditionalInventory().getItem(5));
+		map.put("main_hand", this.getAdditionalInventory().getItem(0));
+		return map;
 	}
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		// TODO Auto-generated method stub
-		return null;
+		return DwmgBaubleHandlers.NECROTIC_REAPER;
 	}
 
 	
@@ -228,7 +234,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 	// Indicates which mod this mob belongs to
 	@Override
 	public String getModId() {
-		throw new UnimplementedException("Missing Mod ID");	/* Set to your mod id */
+		return "dwmg";
 	}
 	
 	// ==================================================================== //
