@@ -86,14 +86,14 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IDwmgBef
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
 			.defineId(EntityBefriendedHuskGirl.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedHuskGirl.class, EntityDataSerializers.BYTE);
+	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
+			.defineId(EntityBefriendedHuskGirl.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, (byte) 0);
+		entityData.define(DATA_AISTATE, 0);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IDwmgBef
 	}
 
 	@Override
-	public EntityDataAccessor<Byte> getAIStateData() {
+	public EntityDataAccessor<Integer> getAIStateData() {
 		return DATA_AISTATE;
 	}
 	

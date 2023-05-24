@@ -289,14 +289,14 @@ public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefrien
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
 			.defineId(EntityBefriendedHornet.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedHornet.class, EntityDataSerializers.BYTE);
+	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
+			.defineId(EntityBefriendedHornet.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, (byte) 0);
+		entityData.define(DATA_AISTATE, 0);
 	}
 
 	@Override
@@ -305,7 +305,7 @@ public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefrien
 	}
 
 	@Override
-	public EntityDataAccessor<Byte> getAIStateData() {
+	public EntityDataAccessor<Integer> getAIStateData() {
 		return DATA_AISTATE;
 	}
 

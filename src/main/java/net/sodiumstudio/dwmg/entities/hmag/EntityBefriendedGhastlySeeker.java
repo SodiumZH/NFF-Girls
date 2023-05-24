@@ -44,14 +44,14 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
 			.defineId(EntityBefriendedGhastlySeeker.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedGhastlySeeker.class, EntityDataSerializers.BYTE);
+	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
+			.defineId(EntityBefriendedGhastlySeeker.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, (byte) 0);
+		entityData.define(DATA_AISTATE, 0);
 	}
 	
 	@Override
@@ -60,7 +60,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 	}
 
 	@Override
-	public EntityDataAccessor<Byte> getAIStateData() {
+	public EntityDataAccessor<Integer> getAIStateData() {
 		return DATA_AISTATE;
 	}
 

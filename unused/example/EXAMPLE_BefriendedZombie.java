@@ -207,14 +207,14 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	// By default owner uuid and ai state need to sync
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
 			.defineId(EXAMPLE_BefriendedZombie.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Byte> DATA_AISTATE = SynchedEntityData
-			.defineId(EXAMPLE_BefriendedZombie.class, EntityDataSerializers.BYTE);
+	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
+			.defineId(EXAMPLE_BefriendedZombie.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, (byte) 0);
+		entityData.define(DATA_AISTATE, 0);
 	}
 
 	// ------------------ Data sync end ------------------ //
