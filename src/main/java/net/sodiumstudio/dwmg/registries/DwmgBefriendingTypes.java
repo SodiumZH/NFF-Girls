@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerBanshee;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerCreeperGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerEnderExecutor;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerGhastlySeeker;
@@ -64,10 +65,14 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.NECROTIC_REAPER.get(),
 				DwmgEntityTypes.HMAG_NECROTIC_REAPER.get(),
 				new HandlerNecroticReaper());
-		BefriendingTypeRegistry.register(
+		/*BefriendingTypeRegistry.register(
 				ModEntityTypes.GHASTLY_SEEKER.get(),
 				DwmgEntityTypes.HMAG_GHASTLY_SEEKER.get(),
 				new HandlerGhastlySeeker());
+		BefriendingTypeRegistry.register(
+				ModEntityTypes.BANSHEE.get(),
+				DwmgEntityTypes.HMAG_BANSHEE.get(),
+				new HandlerBanshee());*/
 	}
 	
 }
