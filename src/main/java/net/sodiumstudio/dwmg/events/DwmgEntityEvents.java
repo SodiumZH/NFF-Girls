@@ -32,6 +32,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -713,6 +714,14 @@ public class DwmgEntityEvents
 				AiHelper.setHostileTo(mob, EntityBefriendedHornet.class, DwmgEntityEvents::isNotWaiting);
 				AiHelper.setHostileTo(mob, EntityBefriendedGhastlySeeker.class, DwmgEntityEvents::isNotWaiting);
 			}
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onMobGriefing(EntityMobGriefingEvent event)
+	{
+		if (event.getEntity() instanceof EntityBefriendedGhastlySeeker gs)
+		{
 		}
 	}
 	

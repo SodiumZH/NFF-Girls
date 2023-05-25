@@ -16,7 +16,7 @@ public class DwmgBefriendedOwnerHurtTargetGoal extends BefriendedOwnerHurtTarget
 	@Override
 	public boolean canUse()
 	{
-		return super.canUse() && !CFavorabilityHandler.isLowFavorability(mob.asMob());
+		return super.canUse(); //&& !CFavorabilityHandler.isLowFavorability(mob.asMob());
 	}
 	
 }

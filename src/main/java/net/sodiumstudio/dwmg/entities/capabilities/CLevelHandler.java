@@ -2,7 +2,6 @@ package net.sodiumstudio.dwmg.entities.capabilities;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.LongTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
@@ -18,26 +17,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
-import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler.SyncPacket;
-import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.LongTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.PacketUtils;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
-import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler.SyncPacket;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
 public interface CLevelHandler extends INBTSerializable<LongTag>
