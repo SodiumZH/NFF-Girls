@@ -12,10 +12,10 @@ import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
-public class NecromancerWandItem extends Item
+public class ItemNecromancerWand extends Item
 {
 
-	public NecromancerWandItem(Properties pProperties)
+	public ItemNecromancerWand(Properties pProperties)
 	{
 		super(pProperties);
 	}

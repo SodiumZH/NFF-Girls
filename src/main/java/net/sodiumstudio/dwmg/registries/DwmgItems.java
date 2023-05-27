@@ -14,7 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.DwmgTab;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
-import net.sodiumstudio.dwmg.item.NecromancerWandItem;
+import net.sodiumstudio.dwmg.item.ItemNecromancerWand;
 
 public class DwmgItems {
 	
@@ -66,7 +66,7 @@ public class DwmgItems {
 			DwmgArmorMaterials.SUNHAT,
 			EquipmentSlot.HEAD,
 			new Item.Properties().tab(TAB)));
-	public static final RegistryObject<Item> NECROMANCER_WAND = ITEMS.register("necromancer_wand", () -> new NecromancerWandItem(
+	public static final RegistryObject<Item> NECROMANCER_WAND = ITEMS.register("necromancer_wand", () -> new ItemNecromancerWand(
 			new Item.Properties().tab(TAB).durability(64).rarity(Rarity.UNCOMMON)));
 	
 	/*
