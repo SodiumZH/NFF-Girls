@@ -76,6 +76,7 @@ import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
 import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
+import net.sodiumstudio.befriendmobs.util.AiHelper;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
@@ -706,7 +707,7 @@ public class DwmgEntityEvents
 			// Phantom/dyssomnia hostile to all mobs
 			else if (mob instanceof Phantom || mob.getClass() == DyssomniaEntity.class)
 			{
-				setHostileToAllBefriendedMobs(mob, isNotWaiting);
+				setHostileToAllBefriendedMobs(mob);
 			}
 			// Skeletons hostile to zombies & creepers
 			else if (mob instanceof AbstractSkeleton 
@@ -718,8 +719,7 @@ public class DwmgEntityEvents
 				AiHelper.setHostileTo(mob, EntityBefriendedDrownedGirl.class);
 				AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class);
 			}
-			// Zombies (including Zombified Piglins and Z
-			oglins) hostile to skeletons & creepers
+			// Zombies (including Zombified Piglins and Zoglins) hostile to skeletons & creepers
 			if ((mob instanceof Zombie || mob instanceof Zoglin)
 					&& !(EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID)))	// Exclude HMAG mob girls
 			{
@@ -731,7 +731,7 @@ public class DwmgEntityEvents
 			// Piglins hostile to all mobs not wearing gold
 			if (mob instanceof Piglin)
 			{
-				setHostileToAllBefriendedMobs(mob.and(isNotWearingGold));
+				setHostileToAllBefriendedMobs(mob, isNotWearingGold);
 			}
 			// Piglin brutes, Hoglins hostile to all mobs
 			if (mob instanceof PiglinBrute || mob instanceof Hoglin)
@@ -741,7 +741,7 @@ public class DwmgEntityEvents
 			// Ghasts attack non-undead mobs
 			if (mob instanceof Ghast)
 			{
-				setHostileToAllBefriendedMobs(mob.and(isUndead.negate()));
+				setHostileToAllBefriendedMobs(mob, isUndead.negate());
 			}
 			// Slimes (including magical) and magma cubes attack all mobs
 			if (mob instanceof Slime)
@@ -781,6 +781,11 @@ public class DwmgEntityEvents
 		// Extending...
 	}
 
+	public static void setHostileToAllBefriendedMobs(Mob mob)
+	{
+		setHostileToAllBefriendedMobs(mob, (l) -> true);
+	}
+	
 	protected static boolean shouldPiglinAttack(LivingEntity living)
 	{
 		return DwmgEntityHelper.isNotWearingGold(living);

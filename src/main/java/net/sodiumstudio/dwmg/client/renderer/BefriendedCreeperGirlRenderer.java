@@ -18,9 +18,9 @@ import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
 // Ported from HMaG CreeperGirlRenderer
 public class BefriendedCreeperGirlRenderer extends AbstractGirlRenderer<EntityBefriendedCreeperGirl, AbstractGirlModel<EntityBefriendedCreeperGirl>>
 {
-	private static final ResourceLocation TEX0 = new ResourceLocation(HMaG.MODID, "textures/entity/creeper_girl_0.png");
-	private static final ResourceLocation TEX1 = new ResourceLocation(HMaG.MODID, "textures/entity/creeper_girl_1.png");
-	private static final ResourceLocation TEX2 = new ResourceLocation(HMaG.MODID, "textures/entity/creeper_girl_2.png");
+	private static final ResourceLocation TEX0 = new ResourceLocation(HMaG.MODID, "textures/entity/creeper_girl/creeper_girl_0.png");
+	private static final ResourceLocation TEX1 = new ResourceLocation(HMaG.MODID, "textures/entity/creeper_girl/creeper_girl_1.png");
+	private static final ResourceLocation TEX2 = new ResourceLocation(HMaG.MODID, "textures/entity/creeper_girl/creeper_girl_2.png");
 
 	public BefriendedCreeperGirlRenderer(EntityRendererProvider.Context context)
 	{
