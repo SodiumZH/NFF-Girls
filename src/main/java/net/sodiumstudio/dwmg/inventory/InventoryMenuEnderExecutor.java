@@ -28,11 +28,6 @@ public class InventoryMenuEnderExecutor extends InventoryMenuPreset0{
 	}
 
 	@Override
-	public BefriendedGuiScreen makeGui() {
-		return new GuiEnderExecutor(this, playerInventory, mob);
-	}
-
-	@Override
 	protected void addMenuSlots()
 	{
 		this.addGeneralSlot(0, leftRowPos().addY(4), null);

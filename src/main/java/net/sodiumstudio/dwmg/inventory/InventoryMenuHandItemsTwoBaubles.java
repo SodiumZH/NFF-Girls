@@ -21,10 +21,6 @@ public class InventoryMenuHandItemsTwoBaubles extends InventoryMenuPreset0
 		super(containerId, playerInventory, container, mob);
 	}
 
-	@Override
-	public BefriendedGuiScreen makeGui() {
-		return new GuiHandItemsTwoBaubles(this, playerInventory, mob);
-	}
 
 	@Override
 	protected void addMenuSlots()

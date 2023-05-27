@@ -2,7 +2,11 @@
 
 ## 1.19.2
 
-### 0.0.4
+### 0.1.4
+
+Fixed GUI not working in multiplayer games.
+
+Fixed 0.0.3 incompatible to (crashing) the dedicated server.
 
 Set that monsters are hostile to certain types of befriended mobs:
 
@@ -15,7 +19,7 @@ Set that monsters are hostile to certain types of befriended mobs:
 
 other
 
-### 0.0.3
+### 0.1.3
 
 Versions above won't use "alpha" postfix anymore. All versions with prefix 0 are alpha.
 

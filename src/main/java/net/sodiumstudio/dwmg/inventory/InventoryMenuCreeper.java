@@ -42,11 +42,6 @@ public class InventoryMenuCreeper extends InventoryMenuPreset0
 		int[] order = {6, 0, 1, 2, 3, 4, 5};
 		return this.quickMovePreset(order.length, player, index, order);
 	}
-	
-	@Override
-	public BefriendedGuiScreen makeGui() {
-		return new GuiCreeperGirl(this, playerInventory, mob);
-	}
 
 	@Override
 	protected IntVec2 getPlayerInventoryPosition() {

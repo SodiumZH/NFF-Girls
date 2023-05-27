@@ -1,5 +1,6 @@
 package net.sodiumstudio.dwmg.events;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 import com.github.mechalopa.hmag.HMaG;
@@ -14,6 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -47,6 +49,7 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
@@ -74,6 +77,7 @@ import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
+import net.sodiumstudio.befriendmobs.util.ReflectHelper;
 import net.sodiumstudio.befriendmobs.util.TagHelper;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.Dwmg;
@@ -532,6 +536,39 @@ public class DwmgEntityEvents
 					}
 				}
 			}
+			/** Send overlap event */
+			if (event.getEntity() instanceof IDwmgBefriendedMob bm)
+			{
+				if (bm.asMob().getHealth() > 0.0F) {
+			         AABB aabb;
+			         if (bm.asMob().isPassenger() && !bm.asMob().getVehicle().isRemoved()) {
+			            aabb = bm.asMob().getBoundingBox().minmax(bm.asMob().getVehicle().getBoundingBox()).inflate(1.0D, 0.0D, 1.0D);
+			         } else {
+			            aabb = bm.asMob().getBoundingBox().inflate(1.0D, 0.5D, 1.0D);
+			         }
+
+			         List<Entity> list = bm.asMob().level.getEntities(bm.asMob(), aabb);
+
+			         for(int i = 0; i < list.size(); ++i) {
+			            Entity entity = list.get(i);
+			            if (!entity.isRemoved()) {
+			               bm.touchEntity(entity);
+			            }
+			         }
+			     }
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onBMOverlap(IDwmgBefriendedMob.OverlapEntityEvent event)
+	{
+		if (event.touchedEntity instanceof Slime slime)
+		{
+		      if (!slime.isTiny() && slime.isEffectiveAi() && slime.getTarget() == event.thisMob.asMob()) 
+		      {
+		    	  ReflectHelper.forceInvoke(slime, Slime.class, "dealDamage", event.thisMob.asMob());
+		      }
 		}
 	}
 	
@@ -685,19 +722,20 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onEntityJoinLevel(EntityJoinLevelEvent event)
 	{
-		if (event.getEntity() instanceof Mob mob && AiHelper.isMobHostileToPlayer(mob))
+		if (event.getEntity() instanceof Mob mob && AiHelper.isMobHostileToPlayer(mob) && !(event.getEntity() instanceof IBefriendedMob))
 		{
+			Predicate<LivingEntity> none = (l) -> true;
 			Predicate<LivingEntity> isNotWaiting = DwmgEntityHelper::isNotWaiting;
 			Predicate<LivingEntity> isNotWearingGold = DwmgEntityHelper::isNotWearingGold;
 			Predicate<LivingEntity> isUndead = (living -> living.getMobType() == MobType.UNDEAD);
 			
 			// Illagers and witches attack all mobs
-			if (mob.getMobType() == MobType.ILLAGER || mob instanceof Witch)
+			if (mob.getMobType() == MobType.ILLAGER)
 			{
 				setHostileToAllBefriendedMobs(mob, isNotWaiting);
 			}
 			// Phantom/dyssomnia hostile to all mobs
-			else if (mob instanceof Phantom || mob instanceof DyssomniaEntity)
+			else if (mob instanceof Phantom || mob.getClass() == DyssomniaEntity.class)
 			{
 				setHostileToAllBefriendedMobs(mob, isNotWaiting);
 			}
@@ -706,46 +744,47 @@ public class DwmgEntityEvents
 				&& !(EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID))	// Exclude HMAG mob girls
 				&& AiHelper.isMobHostileToPlayer(mob))	// For hostile mobs only
 			{
-				AiHelper.setHostileTo(mob, EntityBefriendedZombieGirl.class, isNotWaiting);
-				AiHelper.setHostileTo(mob, EntityBefriendedHuskGirl.class, isNotWaiting);
-				AiHelper.setHostileTo(mob, EntityBefriendedDrownedGirl.class, isNotWaiting);
-				AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class, isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedZombieGirl.class);
+				AiHelper.setHostileTo(mob, EntityBefriendedHuskGirl.class);
+				AiHelper.setHostileTo(mob, EntityBefriendedDrownedGirl.class);
+				AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class);
 			}
-			// Zombies (including Zombie Piglins and zoglins) hostile to skeletons & creepers
+			// Zombies (including Zombified Piglins and Z
+			oglins) hostile to skeletons & creepers
 			if ((mob instanceof Zombie || mob instanceof Zoglin)
 					&& !(EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID)))	// Exclude HMAG mob girls
 			{
-				AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class, isNotWaiting);
-				AiHelper.setHostileTo(mob, EntityBefriendedStrayGirl.class, isNotWaiting);
-				AiHelper.setHostileTo(mob, EntityBefriendedWitherSkeletonGirl.class, isNotWaiting);
-				AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class, isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class);
+				AiHelper.setHostileTo(mob, EntityBefriendedStrayGirl.class);
+				AiHelper.setHostileTo(mob, EntityBefriendedWitherSkeletonGirl.class);
+				AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class);
 			}
 			// Piglins hostile to all mobs not wearing gold
 			if (mob instanceof Piglin)
 			{
-				setHostileToAllBefriendedMobs(mob, isNotWaiting.and(isNotWearingGold));
+				setHostileToAllBefriendedMobs(mob.and(isNotWearingGold));
 			}
 			// Piglin brutes, Hoglins hostile to all mobs
 			if (mob instanceof PiglinBrute || mob instanceof Hoglin)
 			{
-				setHostileToAllBefriendedMobs(mob, isNotWaiting);
+				setHostileToAllBefriendedMobs(mob);
 			}
 			// Ghasts attack non-undead mobs
 			if (mob instanceof Ghast)
 			{
-				setHostileToAllBefriendedMobs(mob, isNotWaiting.and(isUndead.negate()));
+				setHostileToAllBefriendedMobs(mob.and(isUndead.negate()));
 			}
-			// Slimes (not magical) and magma cubes attack all mobs
-			if (mob.getClass() == Slime.class || mob instanceof MagmaCube)
+			// Slimes (including magical) and magma cubes attack all mobs
+			if (mob instanceof Slime)
 			{
-				setHostileToAllBefriendedMobs(mob, isNotWaiting);
+				setHostileToAllBefriendedMobs(mob);
 			}
 			// Blaze attacks all flying mobs and skeletons (excluding wither)
 			if (mob instanceof Blaze)
 			{
-				AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class, isNotWaiting);
-				AiHelper.setHostileTo(mob, EntityBefriendedStrayGirl.class, isNotWaiting);
-				AiHelper.setHostileTo(mob, EntityBefriendedHornet.class, isNotWaiting);
+				AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class);
+				AiHelper.setHostileTo(mob, EntityBefriendedStrayGirl.class);
+				AiHelper.setHostileTo(mob, EntityBefriendedHornet.class);
 			}
 			if (mob instanceof Spider)
 			{
@@ -775,7 +814,7 @@ public class DwmgEntityEvents
 
 	protected static boolean shouldPiglinAttack(LivingEntity living)
 	{
-		return DwmgEntityHelper.isNotWaiting(living) && DwmgEntityHelper.isNotWearingGold(living);
+		return DwmgEntityHelper.isNotWearingGold(living);
 	}
 	
 	

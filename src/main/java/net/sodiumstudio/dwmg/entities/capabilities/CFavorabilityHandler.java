@@ -20,8 +20,12 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.network.PacketDistributor;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
+import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler.SyncPacket;
+import net.sodiumstudio.dwmg.network.ClientGamePacketHandler;
+import net.sodiumstudio.dwmg.network.DwmgChannels;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
 /**
@@ -144,7 +148,7 @@ public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 		public void sync(ServerPlayer toPlayer)
 		{
 			SyncPacket packet = new SyncPacket(mob.getId(), getFavorability(), getMaxFavorability());
-			toPlayer.connection.send(packet);
+			DwmgChannels.SYNC_CHANNEL.send(PacketDistributor.PLAYER.with(() -> toPlayer), packet);
 		}
 	}
 	
@@ -294,19 +298,9 @@ public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 
 		@SuppressWarnings("resource")
 		@Override
-		public void handle(ClientGamePacketListener handler) {
-			Minecraft mc = Minecraft.getInstance();
-			PacketUtils.ensureRunningOnSameThread(this, handler, mc);
-			Entity entity = mc.level.getEntity(this.entityId);
-			// Needs a null check here as sometimes it may invoke on null??
-			if (entity != null)
-			{
-				entity.getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).ifPresent((cap) ->
-				{
-					cap.setFavorability(this.favorability);
-					cap.setMaxFavorability(this.maxFavorability);
-				});	
-			}
+		public void handle(ClientGamePacketListener handler) 
+		{
+			ClientGamePacketHandler.handleFavorabilityHandlerSync(this, handler);
 		}	
 	}
 	
