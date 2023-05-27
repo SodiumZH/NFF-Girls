@@ -24,11 +24,6 @@ public class InventoryMenuGhastlySeeker extends InventoryMenuPreset0
 	}
 
 	@Override
-	public BefriendedGuiScreen makeGui() {
-		return new GuiGhastlySeeker(this, playerInventory, mob);
-	}
-
-	@Override
 	protected void addMenuSlots()
 	{
 		this.addBaubleSlot(0, leftRowPos().addY(10), "0");

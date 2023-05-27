@@ -46,11 +46,6 @@ public class InventoryMenuSkeleton extends InventoryMenuPreset0
 		int[] order = {8, 9, 0, 1, 2, 3, 4, 6, 5};
 		return this.quickMovePreset(order.length, player, index, order);
 	}
-	
-	@Override
-	public BefriendedGuiScreen makeGui() {
-		return new GuiBowSecWeaponOneBauble(this, playerInventory, mob);
-	}
 
 	@Override
 	protected IntVec2 getPlayerInventoryPosition() {

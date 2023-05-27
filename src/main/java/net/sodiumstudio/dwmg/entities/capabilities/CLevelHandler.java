@@ -18,6 +18,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler.SyncPacket;
+import net.minecraftforge.network.PacketDistributor;
+import net.sodiumstudio.dwmg.network.ClientGamePacketHandler;
+import net.sodiumstudio.dwmg.network.DwmgChannels;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
 public interface CLevelHandler extends INBTSerializable<LongTag>
@@ -157,8 +160,7 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 		@Override
 		public void sync(ServerPlayer toPlayer) {
 			SyncPacket packet = new SyncPacket(mob.getId(), getExp());
-			toPlayer.connection.send(packet);
-			
+			DwmgChannels.SYNC_CHANNEL.send(PacketDistributor.PLAYER.with(() -> toPlayer), packet);
 		}		
 	}
 	// ========================
@@ -288,18 +290,9 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 
 		@SuppressWarnings("resource")
 		@Override
-		public void handle(ClientGamePacketListener handler) {
-			Minecraft mc = Minecraft.getInstance();
-			PacketUtils.ensureRunningOnSameThread(this, handler, mc);
-			Entity entity = mc.level.getEntity(this.entityId);
-			// Needs a null check here as sometimes it may invoke on null??
-			if (entity != null)
-			{
-				entity.getCapability(DwmgCapabilities.CAP_LEVEL_HANDLER).ifPresent((cap) ->
-				{
-					cap.setExp(this.exp);
-				});	
-			}
+		public void handle(ClientGamePacketListener handler) 
+		{
+			ClientGamePacketHandler.handleLevelHandlerSync(this, handler);	
 		}	
 	}
 	

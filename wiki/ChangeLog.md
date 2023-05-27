@@ -4,6 +4,10 @@
 
 ### 0.1.4
 
+Fixed GUI not working in multiplayer games.
+
+Fixed 0.0.3 incompatible to (crashing) the dedicated server.
+
 Set that monsters are hostile to certain types of befriended mobs:
 
 - Zombies and derivatives (not girls, including Zombified Piglins and Zoglins) attacks Skeleton/Stray/Wither Skeleton Girls.

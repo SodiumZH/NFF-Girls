@@ -17,11 +17,6 @@ public class InventoryMenuNecroticReaper extends InventoryMenuHandItemsFourBaubl
 	{
 		super(containerId, playerInventory, container, mob);
 	}
-
-	@Override
-	public BefriendedGuiScreen makeGui() {
-		return new GuiNecroticReaper(this, playerInventory, mob);
-	}
 	
 	@Override
 	protected boolean shouldMainHandAccept(ItemStack stack)
