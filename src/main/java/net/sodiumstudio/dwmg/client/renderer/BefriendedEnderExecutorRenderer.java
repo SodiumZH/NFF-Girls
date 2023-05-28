@@ -33,8 +33,8 @@ import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedEnderExecutor;
 @OnlyIn(Dist.CLIENT)
 public class BefriendedEnderExecutorRenderer extends MobRenderer<EntityBefriendedEnderExecutor, BefriendedEnderExecutorModel<EntityBefriendedEnderExecutor>>
 {
-	private static final ResourceLocation TEX = new ResourceLocation(HMaG.MODID, "textures/entity/ender_executor/ender_executor.png");
-	private static final ResourceLocation BEAM_TEX = new ResourceLocation(HMaG.MODID, "textures/entity/ender_executor/ender_executor_beam.png");
+	private static final ResourceLocation TEX = new ResourceLocation(HMaG.MODID, "textures/entity/ender_executor.png");
+	private static final ResourceLocation BEAM_TEX = new ResourceLocation(HMaG.MODID, "textures/entity/ender_executor_beam.png");
 	private static final RenderType BEAM_RENDER_TYPE = RenderType.entityCutoutNoCull(BEAM_TEX);
 	private final Random rand = new Random();
 

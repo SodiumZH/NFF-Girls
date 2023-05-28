@@ -15,8 +15,8 @@ import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedEnderExecutor;
 @OnlyIn(Dist.CLIENT)
 public class BefriendedEnderExecutorEyesLayer<T extends EntityBefriendedEnderExecutor, M extends BefriendedEnderExecutorModel<T>> extends EyesLayer2<T, M>
 {
-	private static final RenderType RENDER_TYPE0 = RenderType.eyes(new ResourceLocation(HMaG.MODID, "textures/entity/ender_executor/ender_executor_eyes.png"));
-	private static final RenderType RENDER_TYPE1 = RenderType.eyes(new ResourceLocation(HMaG.MODID, "textures/entity/ender_executor/ender_executor_eyes_is_beam.png"));
+	private static final RenderType RENDER_TYPE0 = RenderType.eyes(new ResourceLocation(HMaG.MODID, "textures/entity/ender_executor_eyes.png"));
+	private static final RenderType RENDER_TYPE1 = RenderType.eyes(new ResourceLocation(HMaG.MODID, "textures/entity/ender_executor_eyes_is_beam.png"));
 
 	public BefriendedEnderExecutorEyesLayer(RenderLayerParent<T, M> renderLayerParent)
 	{
