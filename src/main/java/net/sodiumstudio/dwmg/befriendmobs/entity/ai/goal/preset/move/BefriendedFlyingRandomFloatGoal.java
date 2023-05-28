@@ -1,8 +1,8 @@
 package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move;
 
 import java.util.EnumSet;
+import java.util.Random;
 
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
@@ -51,7 +51,7 @@ public class BefriendedFlyingRandomFloatGoal extends BefriendedFlyingMoveGoal
      */
     @Override
 	public void start() {
-       RandomSource randomsource = this.mob.asMob().getRandom();
+       Random randomsource = this.mob.asMob().getRandom();
        double d0 = this.mob.asMob().getX() + (double)((randomsource.nextFloat() * 2.0F - 1.0F) * maxStepLength);
        double d1 = this.mob.asMob().getY() + (double)((randomsource.nextFloat() * 2.0F - 1.0F) * maxStepLength);
        double d2 = this.mob.asMob().getZ() + (double)((randomsource.nextFloat() * 2.0F - 1.0F) * maxStepLength);

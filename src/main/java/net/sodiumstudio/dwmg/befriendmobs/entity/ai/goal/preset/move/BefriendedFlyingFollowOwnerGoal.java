@@ -3,7 +3,6 @@ package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move;
 import java.util.EnumSet;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
