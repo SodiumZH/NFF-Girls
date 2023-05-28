@@ -4,20 +4,24 @@
 
 ### 0.1.4
 
-Fixed GUI not working in multiplayer games.
+WARNING: Mob Respawner save data format changed in this version, making it incompatible with versions below. To solve this, load 0.1.3 (or 0.1.2 for multiplayer), respawn all mobs in the respawners, and then update to 0.1.4.
 
-Fixed 0.0.3 incompatible to (crashing) the dedicated server.
+Fixed GUI not working in the multiplayer game.
+
+Fixed 0.1.3 crashing the multiplayer server.
+
+Fixed Respawners spawning pigs in the multiplayer game.
+
+Fixed Slimes not damaging befriended mobs.
 
 Set that monsters are hostile to certain types of befriended mobs:
 
 - Zombies and derivatives (not girls, including Zombified Piglins and Zoglins) attacks Skeleton/Stray/Wither Skeleton Girls.
 - Skeletons and derivatives (not girls) attacks Zombie/Husk/Drowned Girls.
-- Slimes (not girls), Magma Cubes, Illagers, Witches, Phantoms (including Dyssomnias), Piglin Brutes and Hoglins attack all befriended mobs.
+- Slimes (not girls), Magma Cubes, Illagers, Phantoms (including Dyssomnias), Piglin Brutes and Hoglins attack all befriended mobs.
 - Ghasts attack non-undead mobs.
 - Blazes attack Skeleton/Stray Girls and flying befriended mobs.
 - Spiders attack non-arthropod befriended mobs.
-
-other
 
 ### 0.1.3
 
@@ -135,6 +139,27 @@ Rollbacked HMaG dependency to 6.1.0.
 Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.18.2
+
+### 0.0.4
+
+WARNING: Mob Respawner save data format changed in this version, making it incompatible with versions below. To solve this, load 0.0.3 (or 0.0.2 for multiplayer), respawn all mobs in the respawners, and then update to 0.0.4.
+
+Fixed GUI not working in the multiplayer game.
+
+Fixed 0.0.3 crashing the multiplayer server.
+
+Fixed Respawners spawning pigs in the multiplayer game.
+
+Fixed Slimes not damaging befriended mobs.
+
+Set that monsters are hostile to certain types of befriended mobs:
+
+- Zombies and derivatives (not girls, including Zombified Piglins and Zoglins) attacks Skeleton/Stray/Wither Skeleton Girls.
+- Skeletons and derivatives (not girls) attacks Zombie/Husk/Drowned Girls.
+- Slimes (not girls), Magma Cubes, Illagers, Phantoms (including Dyssomnias), Piglin Brutes and Hoglins attack all befriended mobs.
+- Ghasts attack non-undead mobs.
+- Blazes attack Skeleton/Stray Girls and flying befriended mobs.
+- Spiders attack non-arthropod befriended mobs.
 
 ### 0.0.3
 
