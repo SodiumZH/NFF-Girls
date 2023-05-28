@@ -17,9 +17,10 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.item.ItemMobRespawner;
+import net.sodiumstudio.befriendmobs.item.MobRespawnerInstance;
+import net.sodiumstudio.befriendmobs.item.MobRespawnerStartRespawnEvent;
+import net.sodiumstudio.befriendmobs.item.RespawnerConstructEvent;
 import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
-import net.sodiumstudio.befriendmobs.item.capability.MobRespawnerStartRespawnEvent;
-import net.sodiumstudio.befriendmobs.item.capability.RespawnerConstructEvent;
 import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
@@ -54,7 +55,7 @@ public class DwmgItemEvents
 					.append(" - ");
 			comp.setStyle(comp.getStyle().withItalic(false));
 			comp.append(nameComp);
-			event.getRespawner().getItemStack().setHoverName(comp);
+			event.getRespawner().get().setHoverName(comp);
 		}
 		else 
 		{
@@ -63,7 +64,7 @@ public class DwmgItemEvents
 					.append(" - ")
 					.append(event.getRespawner().getType().getDescription());
 			comp.setStyle(comp.getStyle().withItalic(false));
-			event.getRespawner().getItemStack().setHoverName(comp);
+			event.getRespawner().get().setHoverName(comp);
 		}
 	}
 	
@@ -72,15 +73,13 @@ public class DwmgItemEvents
 	{
 		if (event.getItem().getItem().getItem() instanceof ItemMobRespawner)
 		{
-			Wrapped<Boolean> isOwner = new Wrapped<Boolean>(true);
-			event.getItem().getItem().getCapability(BefMobCapabilities.CAP_MOB_RESPAWNER).ifPresent((c) -> 
-			{
+			MobRespawnerInstance ins = MobRespawnerInstance.create(event.getItem().getItem());
 				// If the mob isn't a dwmg befriended mob, it should not have this uuid
-				if (c.getMobNbt().hasUUID("dwmg:befriended_owner"))
-					isOwner.set(c.getMobNbt().getUUID("dwmg:befriended_owner").equals(event.getPlayer().getUUID()));
-			});
-			if (!isOwner.get())
-				event.setCanceled(true);
+				if (ins.getMobNbt().hasUUID("dwmg:befriended_owner")
+					 && !ins.getMobNbt().getUUID("dwmg:befriended_owner").equals(event.getEntity().getUUID()))
+				{
+					event.setCanceled(true);
+				}
 		}
 	}
 	

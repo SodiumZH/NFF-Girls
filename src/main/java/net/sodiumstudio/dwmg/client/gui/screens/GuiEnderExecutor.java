@@ -18,6 +18,7 @@ public class GuiEnderExecutor extends GuiPreset0 {
 	@Override
 	protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
 		super.renderBg(pPoseStack, pPartialTick, pMouseX, pMouseY);
+		this.addMainScreen(pPoseStack);
 		this.addSlotBg(pPoseStack, 0, leftRowPos().addY(4), 1, 1);
 		this.addSlotBg(pPoseStack, 1, leftRowPos().slotBelow().addY(8), 1, 0);
 		this.addSlotBg(pPoseStack, 2, leftRowPos().slotBelow(2).addY(12), 2, 2);
