@@ -14,6 +14,8 @@ Fixed Respawners spawning pigs in the multiplayer game.
 
 Fixed Slimes not damaging befriended mobs.
 
+Fixed Creeper Girls and Ender Executors missing texture.
+
 Set that monsters are hostile to certain types of befriended mobs:
 
 - Zombies and derivatives (not girls, including Zombified Piglins and Zoglins) attacks Skeleton/Stray/Wither Skeleton Girls.
