@@ -18,7 +18,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-version = '0.0.4'
+version = '0.0.5'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'dwmg-1.18.2'
 
@@ -197,6 +197,8 @@ dependencies {
 	//implementation fg.deobf("curse.maven:citadel-331936:3683007")
 	//implementation fg.deobf("curse.maven:am-426558:3853078")
 	
+	/* Compat */
+	implementation fg.deobf("curse.maven:faa-309858:4512412")
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
