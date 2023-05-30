@@ -72,7 +72,7 @@ import net.sodiumstudio.befriendmobs.util.ReflectHelper;
 import net.sodiumstudio.befriendmobs.util.TagHelper;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.compat.CompatTwilightForest;
+import net.sodiumstudio.dwmg.compat.CompatEventHandlers;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
@@ -220,7 +220,7 @@ public class DwmgEntityEvents
 		
 		/** Compat */
 		
-		CompatTwilightForest.onLivingHurt(event);
+		//CompatEventHandlers.onLivingHurt(event);
 		if (event.isCanceled())
 			return;
 			

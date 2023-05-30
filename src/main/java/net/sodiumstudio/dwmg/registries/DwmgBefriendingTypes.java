@@ -68,8 +68,8 @@ public class DwmgBefriendingTypes {
 		/*BefriendingTypeRegistry.register(
 				ModEntityTypes.GHASTLY_SEEKER.get(),
 				DwmgEntityTypes.HMAG_GHASTLY_SEEKER.get(),
-				new HandlerGhastlySeeker());
-		BefriendingTypeRegistry.register(
+				new HandlerGhastlySeeker());*/
+	/*	BefriendingTypeRegistry.register(
 				ModEntityTypes.BANSHEE.get(),
 				DwmgEntityTypes.HMAG_BANSHEE.get(),
 				new HandlerBanshee());*/
