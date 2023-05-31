@@ -1,7 +1,7 @@
 {
   "replace" : false,
   "values" : [ 
-      "forge:nuggets/netherite_scrap",
+      "minecraft:netherite_scrap",
 	  "hmag:evil_crystal",
 	  "hmag:ancient_stone_block"
   ]

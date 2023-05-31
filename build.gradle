@@ -153,12 +153,13 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+
     
-/*    maven {
+    maven {
     // location of the maven that hosts JEI files
   		  name = "Progwml6 maven"
   		  url = "https://dvs1.progwml6.com/files/maven/"
-  			}*/
+  			}
  	 maven {
   		  // location of a maven mirror for JEI files, as a fallback
     	name = "ModMaven"
@@ -191,6 +192,8 @@ dependencies {
 
     implementation fg.deobf("curse.maven:hmag-537613:4526251")
 	implementation fg.deobf("curse.maven:tf-227639:4389567")
+	
+	
 	
 }
 

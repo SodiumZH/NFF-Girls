@@ -2,9 +2,21 @@
 
 ## 1.19.2
 
+### 0.1.5
+
+Slightly adjusted the recipes to reduce the Evil Crystal cost.
+
+Fixed server crashing on befriended mob converting.
+
+Fixed some compatibility issues:
+
+*Solved mob interaction conflict with Quantum Catcher (Forbidden and Arcanus), fixed issue #6.
+
+*Fixed undead mob still adding hatred when player got undead-neutral by other methods e.g. Alex's Mobs: Unsettling Kimono.
+
 ### 0.1.4
 
-WARNING: Mob Respawner save data format changed in this version, making it incompatible with versions below. To solve this, load 0.1.3 (or 0.1.2 for multiplayer), respawn all mobs in the respawners, and then update to 0.1.4.
+WARNING: Mob Respawner save dat format changed in this version, making it incompatible with versions below. To solve this, load 0.1.3 (or 0.1.2 for multiplayer), respawn all mobs in the respawners, and then update to 0.1.4.
 
 Fixed GUI not working in the multiplayer game.
 
