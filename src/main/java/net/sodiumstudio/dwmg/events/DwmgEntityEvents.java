@@ -527,7 +527,8 @@ public class DwmgEntityEvents
 		{
 		      if (!slime.isTiny() && slime.isEffectiveAi() && slime.getTarget() == event.thisMob.asMob()) 
 		      {
-		    	  ReflectHelper.forceInvoke(slime, Slime.class, "dealDamage", event.thisMob.asMob());
+		    	  ReflectHelper.forceInvoke(slime, Slime.class, "dealDamage", 
+		    			  LivingEntity.class, event.thisMob.asMob());
 		      }
 		}
 	}

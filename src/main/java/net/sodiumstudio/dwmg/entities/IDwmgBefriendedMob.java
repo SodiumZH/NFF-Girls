@@ -8,6 +8,7 @@ import com.github.mechalopa.hmag.registry.ModItems;
 import net.minecraft.world.item.Item;
 
 
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
@@ -70,4 +71,5 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleHolder
 			this.touchedEntity = touchedEntity;
 		}
 	}
+	
 }

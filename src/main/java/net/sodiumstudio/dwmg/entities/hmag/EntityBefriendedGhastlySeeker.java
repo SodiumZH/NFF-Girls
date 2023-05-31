@@ -324,7 +324,8 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 		@Override
 		public void stop()
 		{
-			ReflectHelper.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", -1);
+			ReflectHelper.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", 
+					Integer.class, -1);
 		}
 
 		@Override
@@ -371,7 +372,8 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 			{
 				--this.attackTimer;
 			}
-			ReflectHelper.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", this.attackTimer < 0 ? -1 : this.attackTimer);
+			ReflectHelper.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", 
+					Integer.class, this.attackTimer < 0 ? -1 : this.attackTimer);
 		}
 	}
 
