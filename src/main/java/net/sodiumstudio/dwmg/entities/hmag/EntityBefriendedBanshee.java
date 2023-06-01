@@ -32,6 +32,9 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
@@ -42,10 +45,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
@@ -56,11 +59,13 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
+import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.DwmgBMStatics;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.ai.goals.HmagFlyingGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
-import net.sodiumstudio.dwmg.util.EntityLoopTimer;
 
 public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
@@ -110,8 +115,14 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 
 		@Override
 		protected void registerGoals() {
-			// Add goals here
-			// Generally target goals can be preset below. Change if it needs to modify.
+			this.goalSelector.addGoal(0, new FloatGoal(this));
+			this.goalSelector.addGoal(4, new HmagFlyingGoal.ChargeAttackGoal(this, 0.5D, 1.5F));
+			this.goalSelector.addGoal(4, new BefriendedMeleeAttackGoal(this, 1d, false));
+			this.goalSelector.addGoal(6, new HmagFlyingGoal.FollowOwnerGoal(this));
+			this.goalSelector.addGoal(8, new HmagFlyingGoal.MoveRandomGoal(this).heightLimit(10));
+			this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
+			this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
+			this.goalSelector.addGoal(11, new RandomLookAroundGoal(this));
 			targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 			targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 			targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
@@ -176,9 +187,11 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 			return InteractionResult.PASS;
 		}
 		
-		/** Combat **/
+		/** Flower Effects **/
 		
-		protected int addEffectTimePoint = new Random().nextInt(300);
+		protected int allyEffectCooldown = 300;
+		protected int addEffectTimePoint = new Random().nextInt(allyEffectCooldown);
+		protected FlowerBlock lastFlower = null;
 		
 		@Nullable
 		protected FlowerBlock getFlowerOnOffhand()
@@ -304,9 +317,17 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 				super.aiStep();
 			}
 			applyAllyEffect();
+			if (!this.level.isClientSide)
+			{
+				FlowerBlock flower = this.getFlowerOnOffhand();
+				if (flower != null && flower != lastFlower)
+				{
+					addEffectTimePoint = this.random.nextInt(allyEffectCooldown);
+					lastFlower = flower;
+				}
+			}
 		}
-		
-		
+				
 		/** Inventory **/
 
 		// This enables mob armor and hand items by default.
@@ -346,8 +367,7 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 
 		@Override
 		public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-			return null; // new YourInventoryMenuClass(containerId, playerInventory, container, this);
-			// You can keep it null, but in this case never call openBefriendedInventory() or it will crash.
+			return new InventoryMenuBanshee(containerId, playerInventory, container, this);
 		}
 
 		/* IBaubleHolder interface */
@@ -379,7 +399,6 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 		public void addAdditionalSaveData(CompoundTag nbt) {
 			super.addAdditionalSaveData(nbt);
 			BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-			nbt.putInt("add_effect_time_point", addEffectTimePoint);
 			// Add other data to save here
 		}
 
@@ -387,7 +406,6 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 		public void readAdditionalSaveData(CompoundTag nbt) {
 			super.readAdditionalSaveData(nbt);
 			BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-			addEffectTimePoint = nbt.getInt("add_effect_time_point");
 			// Add other data reading here
 			setInit();
 		}
@@ -397,7 +415,7 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 		// Indicates which mod this mob belongs to
 		@Override
 		public String getModId() {
-			throw new UnimplementedException("Missing Mod ID");	/* Set to your mod id */
+			return Dwmg.MOD_ID;
 		}
 		
 		// ==================================================================== //

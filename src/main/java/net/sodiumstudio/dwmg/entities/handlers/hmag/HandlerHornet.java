@@ -13,14 +13,20 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.sodiumstudio.befriendmobs.BefriendMobs;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
+import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
+import net.sodiumstudio.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.befriendmobs.util.math.RndUtil;
 
 public class HandlerHornet extends HandlerItemGivingProgress
 {
+
 
 	@Override
 	protected double getProcValueToAdd(ItemStack item) {
@@ -79,8 +85,22 @@ public class HandlerHornet extends HandlerItemGivingProgress
 	@Override
 	public void serverTick(Mob mob)
 	{
-		if (!has8HoneyBlocksAround(mob))
-			this.interruptAll(mob, false);
+		this.forAllPlayersInProcess(mob, (p) -> {
+			if (p != null && mob != null && p.distanceToSqr(mob) > 32 * 32)
+				this.interrupt(p, mob, false);
+		});
+		
+		if (!has8HoneyBlocksAround(mob) && this.isInProcess(mob))
+		{
+			this.forAllPlayersInProcess(mob, player -> {
+				this.addProgressValue(mob, player, -0.005);	// 0.1 per second
+				if (this.getProgressValue(mob, player) <= 0)
+				{
+					interrupt(player, mob, false);
+				}
+			});
+			EntityHelper.sendSmokeParticlesToLivingDefault(mob);
+		}		
 	}
 
 	@Override

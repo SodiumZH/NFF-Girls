@@ -4,15 +4,19 @@
 
 ### 0.1.5
 
+Added Banshee support.
+
+Adjusted Hornet befriending condition. Now it won't be immediately interrupted if there're no enough Honey Blocks, but the progress will drop by 0.1 per second while the mob releases massive smoke particles.
+
 Slightly adjusted the recipes to reduce the Evil Crystal cost.
 
-Fixed server crashing on befriended mob converting.
+Fixed server crashing on befriended mobs' conversion.
 
 Fixed some compatibility issues:
 
 *Solved mob interaction conflict with Quantum Catcher (Forbidden and Arcanus), fixed issue #6.
 
-*Fixed undead mob still adding hatred when player got undead-neutral by other methods e.g. Alex's Mobs: Unsettling Kimono.
+*Fixed undead mob still adding hatred when player got undead-neutral by other methods e.g.  Unsettling Kimono (Alex's Mobs).
 
 ### 0.1.4
 

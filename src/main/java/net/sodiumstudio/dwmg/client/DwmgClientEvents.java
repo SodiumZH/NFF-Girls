@@ -20,6 +20,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.sodiumstudio.befriendmobs.client.gui.screens.BefriendedGuiScreenMaker;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.client.gui.screens.GuiBanshee;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiBowSecWeaponOneBauble;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiCreeperGirl;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiEnderExecutor;
@@ -29,6 +30,7 @@ import net.sodiumstudio.dwmg.client.gui.screens.GuiHandItemsTwoBaubles;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiNecroticReaper;
 import net.sodiumstudio.dwmg.client.renderer.BefriendedCreeperGirlRenderer;
 import net.sodiumstudio.dwmg.client.renderer.BefriendedEnderExecutorRenderer;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuCreeper;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEnderExecutor;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
@@ -75,6 +77,7 @@ public class DwmgClientEvents
 		BefriendedGuiScreenMaker.put(InventoryMenuHandItemsTwoBaubles.class, (menu) -> new GuiHandItemsTwoBaubles(menu, menu.playerInventory, menu.mob));
 		BefriendedGuiScreenMaker.put(InventoryMenuNecroticReaper.class, (menu) -> new GuiNecroticReaper(menu, menu.playerInventory, menu.mob));
 		BefriendedGuiScreenMaker.put(InventoryMenuSkeleton.class, (menu) -> new GuiBowSecWeaponOneBauble(menu, menu.playerInventory, menu.mob));
+		BefriendedGuiScreenMaker.put(InventoryMenuBanshee.class, (menu) -> new GuiBanshee(menu, menu.playerInventory, menu.mob));
 	}
 	
 }

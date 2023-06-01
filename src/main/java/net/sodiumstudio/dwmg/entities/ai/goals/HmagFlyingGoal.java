@@ -19,8 +19,10 @@ import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedMoveGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
 import net.sodiumstudio.befriendmobs.util.LevelHelper;
 import net.sodiumstudio.befriendmobs.util.ReflectHelper;
+import net.sodiumstudio.befriendmobs.util.math.RndUtil;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 
 /* Ported from HMaG-AbstractFlyingMonsterEntity (Mechalopa)
@@ -41,7 +43,7 @@ public interface HmagFlyingGoal
 	{
 		protected final double moveSpeed;
 		protected final float attackRadius;
-		protected final int chance;
+		protected final int chance = 1;
 		protected int attackTime;
 
 		public ChargeAttackGoal(IBefriendedMob mob)
@@ -51,19 +53,21 @@ public interface HmagFlyingGoal
 
 		public ChargeAttackGoal(IBefriendedMob mob, double moveSpeed, float maxAttackDistance)
 		{
-			this(mob, moveSpeed, maxAttackDistance, 4);
-		}
-
-		public ChargeAttackGoal(IBefriendedMob mob, double moveSpeed, float maxAttackDistance, int chance)
-		{
 			super(mob);
 			this.moveSpeed = moveSpeed;
 			this.attackRadius = maxAttackDistance;
-			this.chance = chance;
 			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
 			this.allowAllStatesExceptWait();
 		}
 
+		@Deprecated
+		public ChargeAttackGoal(IBefriendedMob mob, double moveSpeed, float maxAttackDistance, int chance)
+		{
+			this(mob, moveSpeed, maxAttackDistance);
+		}
+
+		
+		
 		@Override
 		public boolean canUse()
 		{
@@ -99,8 +103,8 @@ public interface HmagFlyingGoal
 
 			if (getFlying().hasLineOfSight(livingentity) || getFlying().getAttackPhase() != 0)
 			{
-				Vec3 vec3 = livingentity.getEyePosition();
-				getFlying().getMoveControl().setWantedPosition(vec3.x, vec3.y - 0.75D, vec3.z, this.moveSpeed);
+				Vec3 vec3 = livingentity.position();
+				getFlying().getMoveControl().setWantedPosition(vec3.x, vec3.y - 1.5D, vec3.z, this.moveSpeed);
 				getFlying().setAttackPhase(2);
 			}
 		}
@@ -276,9 +280,12 @@ public interface HmagFlyingGoal
 				blockpos = flyingentity.blockPosition();
 			}
 
-			for (int i = 0; i < 3; ++i)
+			for (int i = 0; i < 6; ++i)
 			{
 				BlockPos blockpos1 = getWantedPosition();
+				
+				if (shouldAvoidSun.test(mob) && LevelHelper.isUnderSun(blockpos1, mob.asMob()))
+					continue;
 				
 				if (flyingentity.level.isEmptyBlock(blockpos1))
 				{
@@ -297,6 +304,8 @@ public interface HmagFlyingGoal
 	
 	public static class FollowOwnerGoal extends MoveRandomGoal implements HmagFlyingGoal
 	{
+		public double teleportDistance = 12d;
+		
 		public FollowOwnerGoal(IBefriendedMob mob, double moveSpeed, int width, int height)
 		{
 			super(mob, moveSpeed, 1, width, height);
@@ -328,13 +337,66 @@ public interface HmagFlyingGoal
 			{
 				blockpos = flyingentity.blockPosition();
 			}
+			if (mob.getOwner() != null && mob.asMob().distanceToSqr(mob.getOwner()) > teleportDistance * teleportDistance)
+			{
+				teleportToOwner();
+			}
 			BlockPos playerPos = new BlockPos(this.mob.getOwner().getEyePosition());
 			if (flyingentity.level.isEmptyBlock(playerPos))
 			{
-				flyingentity.getMoveControl().setWantedPosition(playerPos.getX() + 0.5D, playerPos.getY() + 0.5D,
+				if (!shouldAvoidSun.test(mob) || !LevelHelper.isUnderSun(playerPos, mob.asMob()))
+				{
+					flyingentity.getMoveControl().setWantedPosition(playerPos.getX() + 0.5D, playerPos.getY() + 0.5D,
 						playerPos.getZ() + 0.5D, this.moveSpeed);
+				}
 			}
-		}		
+		}	
+		protected void teleportToOwner() {
+			BlockPos blockpos = mob.getOwner().blockPosition();
+
+			for (int i = 0; i < 20; ++i) {
+				int j = this.randomIntInclusive(-3, 3);
+				int k = this.randomIntInclusive(-1, 1);
+				int l = this.randomIntInclusive(-3, 3);
+				BlockPos wanted = new BlockPos(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
+				// Don't teleport to positions under sun if avoiding
+				if (shouldAvoidSun.test(mob) && LevelHelper.isUnderSun(wanted, mob.asMob()))
+					continue;
+				boolean flag = this.tryTeleportTo(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
+				if (flag) {
+					return;
+				}
+			}
+		}
+		
+		protected boolean tryTeleportTo(int pX, int pY, int pZ) {
+			if (Math.abs((double) pX - mob.getOwner().getX()) < 2.0D
+					&& Math.abs((double) pZ - mob.getOwner().getZ()) < 2.0D) {
+				return false;
+			} else if (!this.canTeleportTo(new BlockPos(pX, pY, pZ))) {
+				return false;
+			} else {
+				mob.asMob().moveTo((double) pX + 0.5D, (double) pY, (double) pZ + 0.5D, mob.asMob().getYRot(),
+						mob.asMob().getXRot());
+				return true;
+			}
+		}
+
+		protected boolean canTeleportTo(BlockPos pos) {
+			if (!allowTeleport())
+				return false;		
+			BlockPos blockpos = pos.subtract(mob.asMob().blockPosition());
+			return this.mob.asMob().level.noCollision(mob.asMob(), mob.asMob().getBoundingBox().move(blockpos));
+		}
+
+		protected boolean allowTeleport()
+		{
+			return true;
+		}
+		
+		protected int randomIntInclusive(int pMin, int pMax) {
+			return mob.asMob().getRandom().nextInt(pMax - pMin + 1) + pMin;
+		}
 	}
 	
 
