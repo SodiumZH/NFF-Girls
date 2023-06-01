@@ -30,7 +30,7 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	@Override
 	public ResourceLocation getTextureLocation() {
 		return new ResourceLocation(Dwmg.MOD_ID,
-			"textures/gui/container/gui_preset_1.png");
+			"textures/gui/container/gui_preset_0.png");
 	}
 	
 	@Override

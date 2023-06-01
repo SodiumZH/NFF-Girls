@@ -48,6 +48,9 @@ public class Dwmg
         
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        
+        
+		BefriendMobs.setDebugMode(true);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

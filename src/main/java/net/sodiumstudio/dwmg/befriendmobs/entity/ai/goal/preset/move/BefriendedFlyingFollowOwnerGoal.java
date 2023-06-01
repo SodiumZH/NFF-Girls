@@ -73,7 +73,7 @@ public class BefriendedFlyingFollowOwnerGoal extends BefriendedFlyingMoveGoal
 			int l = this.randomIntInclusive(-3, 3);
 			BlockPos wanted = new BlockPos(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
 			// Don't teleport to positions under sun if avoiding
-			if (shouldAvoidSun.test(mob) && LevelHelper.isUnderSun(wanted, mob.asMob()) && !LevelHelper.isAboveWater(wanted, mob.asMob()))
+			if (shouldAvoidSun.test(mob) && LevelHelper.isUnderSun(wanted, mob.asMob()))
 				continue;
 			boolean flag = this.tryTeleportTo(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
 			if (flag) {
