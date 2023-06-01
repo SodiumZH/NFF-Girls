@@ -3,8 +3,12 @@ package net.sodiumstudio.dwmg.entities.hmag;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
+
+import javax.annotation.Nullable;
 
 import com.github.mechalopa.hmag.world.entity.BansheeEntity;
 
@@ -13,37 +17,59 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Container;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
+import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
+import net.sodiumstudio.befriendmobs.registry.BefMobItems;
+import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
+import net.sodiumstudio.dwmg.entities.DwmgBMStatics;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.util.EntityLoopTimer;
 
 public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
 		/* Data sync */
 
 		protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-				.defineId(EntityBefriendedBanshee.class/* CHANGE TO YOUR CLASS */, EntityDataSerializers.OPTIONAL_UUID);
+				.defineId(EntityBefriendedBanshee.class, EntityDataSerializers.OPTIONAL_UUID);
 		protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-				.defineId(EntityBefriendedBanshee.class/* CHANGE TO YOUR CLASS */, EntityDataSerializers.INT);
+				.defineId(EntityBefriendedBanshee.class, EntityDataSerializers.INT);
 
 		@Override
 		protected void defineSynchedData() {
@@ -98,9 +124,7 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 		@Override
 		public HashMap<Item, Float> getHealingItems()
 		{
-			HashMap<Item, Float> map = new HashMap<Item, Float>();
-			// map.put(YOUR_ITEM_TYPE, HEALING_HEALTH_VALUE);
-			return map;
+			return DwmgBMStatics.UNDEAD_DEFAULT_HEALING_ITEMS;
 		}
 		
 		// Set of items that can heal the mob WITHOUT CONSUMING.
@@ -152,11 +176,142 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 			return InteractionResult.PASS;
 		}
 		
-		/* Inventory */
+		/** Combat **/
+		
+		protected int addEffectTimePoint = new Random().nextInt(300);
+		
+		@Nullable
+		protected FlowerBlock getFlowerOnOffhand()
+		{
+			if (this.getItemBySlot(EquipmentSlot.OFFHAND).isEmpty())
+				return null;
+			Item item = this.getItemBySlot(EquipmentSlot.OFFHAND).getItem();
+			if (item instanceof BlockItem blockitem && blockitem.getBlock() instanceof FlowerBlock flower)
+				return flower;
+			else return null;
+		}
+		
+		protected void applyEnemyEffect(LivingEntity target)
+		{
+			if (!this.level.isClientSide)
+			{
+				FlowerBlock flower = getFlowerOnOffhand();
+				if (flower == null)
+					return;
+				MobEffect effect = flower.getSuspiciousStewEffect();
+				int duration = flower.getEffectDuration();
+				
+				// Reverse for undead mob to apply the expected effect
+				if (target instanceof Mob mob && mob.getMobType() == MobType.UNDEAD)
+				{
+					if (effect == MobEffects.HEAL)
+						effect = MobEffects.HARM;
+					else if (effect == MobEffects.HARM)
+						effect = MobEffects.HEAL;
+				}
+				
+				if (effect.getCategory() != MobEffectCategory.BENEFICIAL)
+					EntityHelper.addEffectSafe(target, new MobEffectInstance(effect, duration, 0));
+			}
+		}
+		
+		protected void applyAllyEffect()
+		{
+			if (!this.level.isClientSide)
+			{
+				// Add effect each 15s
+				if (this.tickCount % 300 != addEffectTimePoint)
+					return;
+				FlowerBlock flower = getFlowerOnOffhand();
+				if (flower == null)
+					return;
+				
+				// Block harmful effect first
+				if (flower.getSuspiciousStewEffect().getCategory() == MobEffectCategory.HARMFUL && 
+						flower.getSuspiciousStewEffect() != MobEffects.HARM)
+					return;
+								
+				// Applie on owner and owner's other befriended mobs/tamed animals
+				List<Entity> entities = this.level.getEntities(this, new AABB(this.position().add(-8, -8, -8), this.position().add(8, 8, 8)));
+				entities = entities.stream().filter(e -> 
+				{
+					if (e instanceof Player player && player == this.getOwner())
+						return true;
+					else if (e instanceof IBefriendedMob bm && bm.getOwner() == this.getOwner())
+						return true;
+					else if (e instanceof TamableAnimal ta && ta.getOwner() == this.getOwner())
+						return true;
+					else return false;
+				}).toList();
+				
+				for (Entity entity: entities)
+				{
+					MobEffect effect = flower.getSuspiciousStewEffect();
+					int duration = flower.getEffectDuration();
+					// Reverse for undead mob to apply the expected effect
+					if (entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD)
+					{
+						if (effect == MobEffects.HEAL)
+							effect = MobEffects.HARM;
+						else if (effect == MobEffects.HARM)
+							effect = MobEffects.HEAL;
+					}
+					if (effect.getCategory() != MobEffectCategory.HARMFUL)
+						EntityHelper.addEffectSafe((LivingEntity) entity, new MobEffectInstance(effect, duration, 0));
+				}
+			}
+		}
+		
+		
+		public void removeDefaultEffects(LivingEntity target)
+		{
+			int time = this.level.getDifficulty() == Difficulty.NORMAL ? 7 * 20 : (
+					this.level.getDifficulty() == Difficulty.HARD ? 15 * 20 : 0) ;
+			if (target.getEffect(MobEffects.HUNGER) == null || 
+					target.getEffect(MobEffects.HUNGER).getDuration() <= time && target.getEffect(MobEffects.HUNGER).getAmplifier() == 0)
+				target.removeEffect(MobEffects.HUNGER);
+			if (target.getEffect(MobEffects.WEAKNESS) == null || 
+					target.getEffect(MobEffects.WEAKNESS).getDuration() <= time && target.getEffect(MobEffects.WEAKNESS).getAmplifier() == 0)
+				target.removeEffect(MobEffects.WEAKNESS);
+		}
+
+		@Override
+		public boolean doHurtTarget(Entity target)
+		{
+			if (super.doHurtTarget(target))
+			{
+				if (target instanceof LivingEntity living)
+				{
+					removeDefaultEffects(living);
+					applyEnemyEffect(living);
+				}
+				return true;
+			}
+			return false;
+		}
+		
+		@Override
+		public void aiStep() {
+			if (isSunImmune())
+			{
+				ItemStack head = this.getItemBySlot(EquipmentSlot.HEAD);
+				this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
+				super.aiStep();
+				this.setItemSlot(EquipmentSlot.HEAD, head);
+			}
+			else
+			{
+				super.aiStep();
+			}
+			applyAllyEffect();
+		}
+		
+		
+		/** Inventory **/
 
 		// This enables mob armor and hand items by default.
 		// If not needed, use BefriendedInventory class instead.
-		protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
+		protected BefriendedInventoryWithHandItems additionalInventory = new BefriendedInventoryWithHandItems(getInventorySize(), this);
 
 		@Override
 		public BefriendedInventory getAdditionalInventory()
@@ -167,7 +322,8 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 		@Override
 		public int getInventorySize()
 		{
-			return 8;
+			// mainhand, offhand, 3 baubles
+			return 5;
 		}
 
 		@Override
@@ -199,19 +355,22 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 
 		@Override
 		public HashMap<String, ItemStack> getBaubleSlots() {
-			return null;
+			HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
+			map.put("0", this.getAdditionalInventory().getItem(2));
+			map.put("1", this.getAdditionalInventory().getItem(3));
+			map.put("2", this.getAdditionalInventory().getItem(4));
+			return map;
 		}
 
 		@Override
 		public BaubleHandler getBaubleHandler() {
-			// TODO Auto-generated method stub
-			return null;
+			return DwmgBaubleHandlers.UNDEAD;
 		}
 
 		@Override
 		public void setupSunImmunityRules() {
-			// TODO Auto-generated method stub
-			
+			this.sunImmuneConditions().put("soul_amulet", () -> this.hasBaubleItem(DwmgItems.SOUL_AMULET.get()));
+			this.sunImmuneConditions().put("resis_amulet", () -> this.hasBaubleItem(DwmgItems.RESISTANCE_AMULET.get()));
 		}
 		
 		/* Save and Load */
@@ -220,6 +379,7 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 		public void addAdditionalSaveData(CompoundTag nbt) {
 			super.addAdditionalSaveData(nbt);
 			BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
+			nbt.putInt("add_effect_time_point", addEffectTimePoint);
 			// Add other data to save here
 		}
 
@@ -227,6 +387,7 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 		public void readAdditionalSaveData(CompoundTag nbt) {
 			super.readAdditionalSaveData(nbt);
 			BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
+			addEffectTimePoint = nbt.getInt("add_effect_time_point");
 			// Add other data reading here
 			setInit();
 		}
