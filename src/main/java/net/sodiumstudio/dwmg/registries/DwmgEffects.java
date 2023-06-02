@@ -18,5 +18,5 @@ public class DwmgEffects {
 	
 	public static final RegistryObject<MobEffect> UNDEAD_AFFINITY = EFFECTS.register("undead_affinity", () -> new EffectUndeadAffinity());
 	public static final RegistryObject<MobEffect> ENDER_PROTECTION = EFFECTS.register("ender_protection", () -> new EffectEnderProtection());
-	public static final RegistryObject<MobEffect> NECROTIC_CURSE = EFFECTS.register("necrotic_curse", () -> new MobEffects.());
+	//public static final RegistryObject<MobEffect> NECROTIC_CURSE = EFFECTS.register("necrotic_curse", () -> new MobEffects.());
 }

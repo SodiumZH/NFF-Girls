@@ -127,7 +127,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 	
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
-		if (getOwner() == null)
+		if (this.getOwnerUUID() == null)
 		{
 			throw new RuntimeException("Mob \"" + this.getName().getString() + "\" missing owner.");
 		}

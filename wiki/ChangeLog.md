@@ -16,7 +16,7 @@ Fixed some compatibility issues:
 
 *Solved mob interaction conflict with Quantum Catcher (Forbidden and Arcanus), fixed issue #6.
 
-*Fixed undead mob still adding hatred when player got undead-neutral by other methods e.g.  Unsettling Kimono (Alex's Mobs).
+*Fixed undead mob still adding hatred when player got undead-neutral by other ways e.g.  Unsettling Kimono (Alex's Mobs).
 
 ### 0.1.4
 

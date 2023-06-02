@@ -253,10 +253,6 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 	
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
-		if (getOwner() == null)
-		{
-			throw new RuntimeException("Mob \"" + this.getName().getString() + "\" missing owner.");
-		}
 		// Porting solution end
 		if (player.getUUID().equals(getOwnerUUID())) {
 			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
