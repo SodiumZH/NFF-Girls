@@ -20,6 +20,7 @@
   "block.dwmg.soul_carpet" : "Soul Carpet",
   "effect.dwmg.undead_affinity": "Undead Affinity",
   "effect.dwmg.ender_protection": "Protection of the End",
+  "effect.dwmg.necromancer_wither": "Curse of Necromancy",
   "itemGroup.dwmg_tab" : "Days with Monster Girls",
   "entity.dwmg.hmag_zombie_girl" : "Zombie Girl",
   "entity.dwmg.hmag_skeleton_girl" : "Skeleton Girl",
@@ -31,9 +32,11 @@
   "entity.dwmg.hmag_drowned_girl" : "Drowned Girl",
   "entity.dwmg.hmag_hornet" : "Hornet",
   "entity.dwmg.hmag_necrotic_reaper": "Necrotic Reaper",
+  "entity.dwmg.hmag_banshee": "Banshee",
   "info.dwmg.necrotic_reaper_not_controllable": "To give command to the Necrotic Reaper, you must have a Necromancer's Hat or Necromancer's Wand.",
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "To open Necrotic Reaper's inventory, you must have a Necromancer's Hat or Necromancer's Wand.",
   "info.dwmg.gui_level": "Level",
   "info.dwmg.gui_exp": "Exp",
-  "info.dwmg.gui_favorability": "Favorability"
+  "info.dwmg.gui_favorability": "Favorability",
+  "death.attack.necromancer_wither": "%1$s failed to bear the curse of necromancy."
 }

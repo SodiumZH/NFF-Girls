@@ -7,6 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.effects.EffectEnderProtection;
+import net.sodiumstudio.dwmg.effects.EffectNecromancerWither;
 import net.sodiumstudio.dwmg.effects.EffectUndeadAffinity;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -18,5 +19,5 @@ public class DwmgEffects {
 	
 	public static final RegistryObject<MobEffect> UNDEAD_AFFINITY = EFFECTS.register("undead_affinity", () -> new EffectUndeadAffinity());
 	public static final RegistryObject<MobEffect> ENDER_PROTECTION = EFFECTS.register("ender_protection", () -> new EffectEnderProtection());
-	//public static final RegistryObject<MobEffect> NECROTIC_CURSE = EFFECTS.register("necrotic_curse", () -> new MobEffects.());
+	public static final RegistryObject<MobEffect> NECROMANCER_WITHER = EFFECTS.register("necromancer_wither", () -> new EffectNecromancerWither());
 }

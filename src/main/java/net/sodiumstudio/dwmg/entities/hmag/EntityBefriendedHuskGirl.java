@@ -137,11 +137,6 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IDwmgBef
 	
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
-		if (this.getOwnerUUID() == null)
-		{
-			throw new RuntimeException("Mob \"" + this.getName().getString() + "\" missing owner.");		
-		}
-		// Porting solution end
 		if (player.getUUID().equals(getOwnerUUID())) 
 		{
 			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 

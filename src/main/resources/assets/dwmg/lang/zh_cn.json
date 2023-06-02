@@ -20,6 +20,7 @@
   "block.dwmg.soul_carpet" : "灵魂地毯",
   "effect.dwmg.undead_affinity": "亡灵亲和",
   "effect.dwmg.ender_protection": "末影之护",
+  "effect.dwmg.necromancer_wither": "死灵诅咒",
   "itemGroup.dwmg_tab" : "与怪物娘的日常",
   "entity.dwmg.hmag_zombie_girl" : "僵尸娘",
   "entity.dwmg.hmag_skeleton_girl" : "骷髅娘",
@@ -31,11 +32,11 @@
   "entity.dwmg.hmag_drowned_girl" : "溺尸娘",
   "entity.dwmg.hmag_hornet" : "蜜蜂娘",
   "entity.dwmg.hmag_necrotic_reaper": "死灵收割者",
+  "entity.dwmg.hmag_banshee": "报丧女妖",
   "info.dwmg.necrotic_reaper_not_controllable": "你需要拥有死灵巫师的帽子或死灵巫师之杖以指挥死灵收割者。",
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "你需要拥有死灵巫师的帽子或死灵巫师之杖以打开死灵收割者的道具栏。",
   "info.dwmg.gui_level": "等级",
   "info.dwmg.gui_exp": "经验",
-  "info.dwmg.gui_favorability": "好感度"
-  
-  
+  "info.dwmg.gui_favorability": "好感度",
+  "death.attack.necromancer_wither": "%1$s没能承受住死灵巫术的诅咒"
 }
