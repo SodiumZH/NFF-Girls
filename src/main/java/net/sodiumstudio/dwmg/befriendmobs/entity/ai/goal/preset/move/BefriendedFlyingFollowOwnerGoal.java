@@ -27,6 +27,8 @@ public class BefriendedFlyingFollowOwnerGoal extends BefriendedFlyingMoveGoal
      */
     @Override
 	public boolean canUse() {
+    	if (isDisabled())
+    		return false;
        MoveControl movecontrol = this.mob.asMob().getMoveControl();
        if (!movecontrol.hasWanted()) {
           return true;
@@ -66,6 +68,8 @@ public class BefriendedFlyingFollowOwnerGoal extends BefriendedFlyingMoveGoal
     }
     
 	protected void teleportToOwner() {
+		
+		
 		BlockPos blockpos = mob.getOwner().blockPosition();
 
 		for (int i = 0; i < 20; ++i) {
@@ -84,6 +88,8 @@ public class BefriendedFlyingFollowOwnerGoal extends BefriendedFlyingMoveGoal
 	}
 
 	protected void moveToOwner() {
+		if (!mob.isOwnerPresent())
+			return;
 		BlockPos blockpos = mob.getOwner().blockPosition();
 
 		int j = 0;
@@ -110,6 +116,8 @@ public class BefriendedFlyingFollowOwnerGoal extends BefriendedFlyingMoveGoal
 	}
 	
 	protected boolean tryTeleportTo(int pX, int pY, int pZ) {
+		if (mob.isOwnerPresent())
+			return false;
 		if (Math.abs((double) pX - mob.getOwner().getX()) < 2.0D
 				&& Math.abs((double) pZ - mob.getOwner().getZ()) < 2.0D) {
 			return false;

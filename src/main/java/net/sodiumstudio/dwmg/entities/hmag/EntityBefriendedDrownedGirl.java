@@ -172,7 +172,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements ID
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{
-		if (getOwner() == null)
+		if (this.getOwnerUUID() == null)
 		{			
 			throw new RuntimeException("Mob \"" + this.getName().getString() + "\" missing owner.");
 		}

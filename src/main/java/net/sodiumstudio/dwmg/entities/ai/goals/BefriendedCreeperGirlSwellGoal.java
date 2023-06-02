@@ -18,6 +18,8 @@ public class BefriendedCreeperGirlSwellGoal extends BefriendedCreeperSwellGoal
 	@Override
 	public boolean canUse()
 	{
+		if (isDisabled())
+			return false;
 		return cg.getSwell() > 0;
 	}
 	

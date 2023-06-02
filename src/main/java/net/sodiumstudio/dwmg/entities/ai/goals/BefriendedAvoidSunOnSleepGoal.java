@@ -17,6 +17,8 @@ public class BefriendedAvoidSunOnSleepGoal extends BefriendedFleeSunGoal
 	@Override
 	public boolean canUse()
 	{
+		if (isDisabled())
+			return false;
 		if (!mob.getOwner().isSleeping())
 			return false;
 		// Not taking effect when player is > 16 blocks away
