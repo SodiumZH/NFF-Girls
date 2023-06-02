@@ -34,7 +34,7 @@ public class ItemNecromancerArmor extends ArmorItem
 			EntityHelper.addEffectIfNotHaving(living, new MobEffectInstance(DwmgEffects.UNDEAD_AFFINITY.get(), 40, 0, true, false));
 			EntityHelper.addEffectIfNotHaving(living, new MobEffectInstance(MobEffects.DIG_SPEED, 40, 1, true, false));
 			if (!BlockSoulCarpet.isEntityInside(living))
-				EntityHelper.addEffectIfNotHaving(living, new MobEffectInstance(MobEffects.WITHER, 40, 0, true, false));	
+				EntityHelper.addEffectIfNotHaving(living, new MobEffectInstance(DwmgEffects.NECROMANCER_WITHER.get(), 40, 0, true, false));	
 			if (living instanceof Player p)
 			{
 				// Nearby Necrotic Reapers add regeneration

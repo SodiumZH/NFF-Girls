@@ -12,6 +12,7 @@ import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -52,6 +53,8 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
@@ -73,6 +76,7 @@ import net.sodiumstudio.befriendmobs.util.TagHelper;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.compat.CompatEventHandlers;
+import net.sodiumstudio.dwmg.effects.EffectNecromancerWither;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
@@ -89,6 +93,7 @@ import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedZombieGirl;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
+import net.sodiumstudio.dwmg.registries.DwmgDamageSources;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
@@ -217,25 +222,24 @@ public class DwmgEntityEvents
 	
 	@SubscribeEvent
 	public static void onLivingHurt(LivingHurtEvent event) {
-		
 		/** Compat */
-		
+
 		//CompatEventHandlers.onLivingHurt(event);
 		if (event.isCanceled())
 			return;
-			
+
 		/** Compat end */
-			
+					
 		LivingEntity living = event.getEntityLiving();
 		if (!living.level.isClientSide)
 		{
 			// Cancel necromancer magic bullet normal attack
-			if (event.getSource().getDirectEntity() instanceof NecromancerMagicBulletEntity)
+			if (event.getSource().getDirectEntity() != null && event.getSource().getDirectEntity() instanceof NecromancerMagicBulletEntity)
 			{
 				event.setCanceled(true);
 			}
-
-			/* Ender Protection Effect */
+			
+			/** Ender Protection Effect */
 			if (living.hasEffect(DwmgEffects.ENDER_PROTECTION.get()))
 			{
 				// If the player drops into the void, try pull up
@@ -517,6 +521,17 @@ public class DwmgEntityEvents
 			         }
 			     }
 			}
+			/** Handle necromancer wither effect */
+			if (event.getEntity().hasEffect(DwmgEffects.NECROMANCER_WITHER.get()))
+			{
+				int ampl = event.getEntity().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
+				if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
+				{
+					event.getEntity().hurt(DwmgDamageSources.NECROMANCER_WITHER, 1);
+				}
+			}
+
+
 		}
 	}
 	
@@ -791,4 +806,15 @@ public class DwmgEntityEvents
 		}
 	}
 	
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public static void onEntityInteract_PriorityHighest(EntityInteract event)
+	{
+		// Detect missing-owner cases
+		if (event.getTarget() instanceof IDwmgBefriendedMob bm)
+		{
+			if (bm.getOwnerUUID() == null)
+				throw new IllegalStateException("Mob \"" + bm.asMob().getName().getString() + 
+						"\" missing owner. This is probably a bug. Please contact the author for help: https://github.com/SodiumZH/Days-with-Monster-Girls/issues");
+		}
+	}
 }

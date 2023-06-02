@@ -57,6 +57,21 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 		});
 	}
 	
+	protected void addGeneralSlot(int slotIndex, IntVec2 pos, Predicate<ItemStack> additionalCondition, int maxStackSize)
+	{
+		addSlot(new Slot(container, slotIndex, pos.x, pos.y) {
+			@Override
+			public boolean mayPlace(ItemStack stack) {
+				return !this.hasItem() && (additionalCondition == null || additionalCondition.test(stack));
+			}
+			@Override
+			public int getMaxStackSize()
+			{
+				return maxStackSize;
+			}
+		});
+	}
+	
 	protected void addArmorSlot(int slotIndex, IntVec2 pos, EquipmentSlot ArmorType, Predicate<ItemStack> additionalCondition)
 	{
 		addSlot(new Slot(container, slotIndex, pos.x, pos.y) {

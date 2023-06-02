@@ -21,7 +21,7 @@ public class InventoryMenuBanshee extends InventoryMenuPreset0
 	@Override
 	protected void addMenuSlots() {
 		this.addGeneralSlot(0, leftRowPos().addY(10), null);
-		this.addGeneralSlot(1, leftRowPos().slotBelow().addY(20), null);
+		this.addGeneralSlot(1, leftRowPos().slotBelow().addY(20), null, 1);
 		this.addBaubleSlot(2, rightRowPos().addY(4), "0");
 		this.addBaubleSlot(3, rightRowPos().slotBelow().addY(8), "1");
 		this.addBaubleSlot(4, rightRowPos().slotBelow(2).addY(12), "2");

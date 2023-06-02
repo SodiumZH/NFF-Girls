@@ -33,7 +33,7 @@ public class CompatEventHandlers
 	protected static final String FAA_MOD_ID = "forbidden_arcanus";
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public static void onFinalizeLivingHurt(LivingHurtEvent event)
+	public static void onLivingHurt_PriorityLowest(LivingHurtEvent event)
 	{
 		
 		// Fix TF Seeker Arrow targeting BM
@@ -53,7 +53,7 @@ public class CompatEventHandlers
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGH)
-	public static void onEntityInteract(EntityInteract event)
+	public static void onEntityInteract_PriorityHigh(EntityInteract event)
 	{
 		Player player = event.getEntity();
 		Entity entity = event.getTarget();

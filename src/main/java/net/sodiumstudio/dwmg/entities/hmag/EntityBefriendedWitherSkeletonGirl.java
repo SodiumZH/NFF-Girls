@@ -218,6 +218,10 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 		map.put(ModItems.SOUL_APPLE.get(), 15.0f);
 		return map;
 	}
+	/*
+	@Override
+	public InteractionResult mobInteract(Player Player player, InteractionHand hand)
+	{}*/
 	
 	@Override
 	public boolean onInteraction(Player player, InteractionHand hand) {
