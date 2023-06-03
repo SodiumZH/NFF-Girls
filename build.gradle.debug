@@ -9,7 +9,7 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.parchmentmc:librarian:1.+'
-       // classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
@@ -19,11 +19,11 @@ plugins {
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
-//apply plugin: 'org.spongepowered.mixin'
-/*mixin {
+apply plugin: 'org.spongepowered.mixin'
+mixin {
 	// Alex support
     add sourceSets.main, "citadel.refmap.json"
-}*/
+}
 
 
 version = '0.1.5'
@@ -74,10 +74,10 @@ minecraft {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'dwmg'
 
-           // property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
+            property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
             
             /** For Alex support */
-            //arg "-mixin.config="+"citadel.mixins.json"
+            arg "-mixin.config="+"citadel.mixins.json"
 
             mods {
                 dwmg {
@@ -202,12 +202,12 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    //annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     implementation fg.deobf("curse.maven:hmag-537613:4526251")
 	implementation fg.deobf("curse.maven:tf-227639:4389567")
-	//implementation fg.deobf("curse.maven:citadel-331936:4556677")
-	//implementation fg.deobf("curse.maven:am-426558:4159154")	
+	implementation fg.deobf("curse.maven:citadel-331936:4556677")
+	implementation fg.deobf("curse.maven:am-426558:4159154")	
 	
 	
 }
