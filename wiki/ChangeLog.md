@@ -8,15 +8,17 @@ Added Banshee support.
 
 Adjusted Hornet befriending condition. Now it won't be immediately interrupted if there're no enough Honey Blocks, but the progress will drop by 0.1 per second while the mob releases massive smoke particles.
 
+Added Curse of Necromancy effect in place of Wither effect for Necromancer's Hat. The damaging effect is identical to Wither I, but not causing the HP slot turning black.
+
 Slightly adjusted the recipes to reduce the Evil Crystal cost.
 
 Fixed server crashing on befriended mobs' conversion.
 
 Fixed some compatibility issues:
 
-*Solved mob interaction conflict with Quantum Catcher (Forbidden and Arcanus), fixed issue #6.
+--Solved mob interaction conflict with Quantum Catcher (*Forbidden and Arcanus*), fixed issue #6.
 
-*Fixed undead mob still adding hatred when player got undead-neutral by other ways e.g.  Unsettling Kimono (Alex's Mobs).
+--Fixed undead mob still adding hatred when player got undead-neutral by other ways e.g.  Unsettling Kimono (*Alex's Mobs*).
 
 ### 0.1.4
 
@@ -34,12 +36,17 @@ Fixed Creeper Girls and Ender Executors missing texture.
 
 Set that monsters are hostile to certain types of befriended mobs:
 
-- Zombies and derivatives (not girls, including Zombified Piglins and Zoglins) attacks Skeleton/Stray/Wither Skeleton Girls.
-- Skeletons and derivatives (not girls) attacks Zombie/Husk/Drowned Girls.
-- Slimes (not girls), Magma Cubes, Illagers, Phantoms (including Dyssomnias), Piglin Brutes and Hoglins attack all befriended mobs.
-- Ghasts attack non-undead mobs.
-- Blazes attack Skeleton/Stray Girls and flying befriended mobs.
-- Spiders attack non-arthropod befriended mobs.
+--Zombies and derivatives (not girls, including Zombified Piglins and Zoglins) attacks Skeleton/Stray/Wither Skeleton Girls.
+
+Skeletons and derivatives (not girls) attacks Zombie/Husk/Drowned Girls.
+
+--Slimes (not girls), Magma Cubes, Illagers, Phantoms (including Dyssomnias), Piglin Brutes and Hoglins attack all befriended mobs.
+
+--Ghasts attack non-undead mobs.
+
+--Blazes attack Skeleton/Stray Girls and flying befriended mobs.
+
+--Spiders attack non-arthropod befriended mobs.
 
 ### 0.1.3
 
