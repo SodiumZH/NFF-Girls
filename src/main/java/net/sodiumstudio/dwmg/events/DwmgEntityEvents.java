@@ -12,7 +12,6 @@ import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -75,7 +74,6 @@ import net.sodiumstudio.befriendmobs.util.ReflectHelper;
 import net.sodiumstudio.befriendmobs.util.TagHelper;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.compat.CompatEventHandlers;
 import net.sodiumstudio.dwmg.effects.EffectNecromancerWither;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
@@ -109,7 +107,7 @@ public class DwmgEntityEvents
 		{EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 
 	@SubscribeEvent
-	public static void onLivingSetAttackTargetEvent(LivingSetAttackTargetEvent event)
+	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
 		LivingEntity target = event.getTarget();		
 		LivingEntity lastHurtBy = event.getEntity().getLastHurtByMob();
@@ -131,10 +129,7 @@ public class DwmgEntityEvents
         				mob.setTarget(null);
         				isCancelledByEffect.set(true);
         			}
-        			else if(target != null)
-        			{
-        				l.addHatred(target);
-        			}
+        			// Hatred will be added in priority-lowest event
         		});
         		// Handle CUndeadMob end //
 		    } 
@@ -160,6 +155,22 @@ public class DwmgEntityEvents
 		// Handle befriended mobs //
 
 		// Handle mobs end //
+	}
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public static void onLivingSetAttackTarget_PriorityLowest(LivingSetAttackTargetEvent event)
+	{
+		if (event.getEntity() instanceof Mob mob)
+		{
+			// Undead mob add hatred here to prevent compat issues with other mods that can make undead mobs non-hostile
+			event.getEntity().getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) ->
+			{
+				LivingEntity target = mob.getTarget();
+				if (target != null)
+				{
+					l.addHatred(target);
+				}		
+			});	        
+		}
 	}
 	
 	@SubscribeEvent
