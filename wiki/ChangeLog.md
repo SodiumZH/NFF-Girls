@@ -165,6 +165,24 @@ Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.18.2
 
+### 0.0.5
+
+Added Banshee support.
+
+Adjusted Hornet befriending condition. Now it won't be immediately interrupted if there're no enough Honey Blocks, but the progress will drop by 0.1 per second while the mob releases massive smoke particles.
+
+Added Curse of Necromancy effect in place of Wither effect for Necromancer's Hat. The damaging effect is identical to Wither I, but not causing the HP slot turning black.
+
+Slightly adjusted the recipes to reduce the Evil Crystal cost.
+
+Fixed server crashing on befriended mobs' conversion.
+
+Fixed some compatibility issues:
+
+--Solved mob interaction conflict with Quantum Catcher (*Forbidden and Arcanus*), fixed issue #6.
+
+--Fixed undead mob still adding hatred when player got undead-neutral by other ways.
+
 ### 0.0.4
 
 WARNING: Mob Respawner save data format changed in this version, making it incompatible with versions below. To solve this, load 0.0.3 (or 0.0.2 for multiplayer), respawn all mobs in the respawners, and then update to 0.0.4.
