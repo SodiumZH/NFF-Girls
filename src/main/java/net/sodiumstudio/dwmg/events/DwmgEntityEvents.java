@@ -533,9 +533,9 @@ public class DwmgEntityEvents
 			     }
 			}
 			/** Handle necromancer wither effect */
-			if (event.getEntity().hasEffect(DwmgEffects.NECROMANCER_WITHER.get()))
+			if (event.getEntityLiving().hasEffect(DwmgEffects.NECROMANCER_WITHER.get()))
 			{
-				int ampl = event.getEntity().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
+				int ampl = event.getEntityLiving().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
 				if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
 				{
 					event.getEntity().hurt(DwmgDamageSources.NECROMANCER_WITHER, 1);

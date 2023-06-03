@@ -55,7 +55,7 @@ public class CompatEventHandlers
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onEntityInteract_PriorityHigh(EntityInteract event)
 	{
-		Player player = event.getEntity();
+		Player player = event.getPlayer();
 		Entity entity = event.getTarget();
 		InteractionHand hand = event.getHand();
 		if (!player.level.isClientSide)
