@@ -4,9 +4,9 @@
 
 ### Current version: 
 
-#### 0.0.3 (1.18.2)
+#### 0.0.5 (1.18.2)
 
-#### 0.1.3 (1.19.2)
+#### 0.1.5 (1.19.2)
 
 
 
@@ -39,6 +39,8 @@ Drowned Girl
 Hornet
 
 Necrotic Reaper
+
+Banshee
 
 
 
@@ -308,7 +310,7 @@ It can be healed with Eye of Ender(5).
 
 With general item-giving process. (Item giving cooldown 10s)
 
-During the whole process, there must be at least 8 Honey Blocks in the 9x9x9 area around it. (As it can fly, probably you need far more than 8 Honey Blocks.) Once there is <8, it will be interrupted. If it damaged you, there will be 60s cooldown during which you cannot give item, but no interruption.
+During the whole process, there must be at least 8 Honey Blocks in the 9x9x9 area around it. (As it can fly, probably you need far more than 8 Honey Blocks.) Once there is <8, ~~it will be interrupted~~ the progress will drop by 0.1 each second. If it damaged you, there will be 60s cooldown during which you cannot give item, but no interruption.
 
 Accepted Items:
 
@@ -340,11 +342,11 @@ If you get >32 blocks away from it, the process will be interrupted.
 
 ##### Interaction
 
-To interact with it, you must either wear a Necromancer's Hat or hold a Necromancer's Wand on either hand. Otherwise you'll not be able to switch its AI state or open the inventory GUI, and it will refuse to follow you or attack your targets.
+To interact with it, you must either wear a Necromancer's Hat or hold a Necromancer's Wand on either hand. Otherwise you'll not be able to switch its AI state or open the inventory GUI, and it will refuse to follow you or attack your targets. The requirements are removed if its favorability reaches 90.
 
 You can customize its hand items. The main hand only accept hoes as weapon. (Non-weapon items are also acceptable, but not taking any effect.)  The offhand slot doesn't accept anything so far. (Will be added in the future.)
 
-Its attack damage greatly increases depending on the tier of the hoe. Efficiency enchantment also increases the attack damage, 10% each level.
+Its attack damage greatly increases depending on the tier of the hoe. Efficiency enchantment also increases the attack damage of the hoe, 10% each level.
 
 Hoe attack (only for Necrotic Reapers):  Wood/Gold = 1, Stone = 2, Iron = 3, Diamond = 5, Netherite = 8. Effeciency enhancement will be multiplied to this value, each level provides 10%. For example, a Netherite Hoe with Efficiency V will provide ATK = 8 x (1 + 10% * 5)  = 12. 
 
@@ -356,7 +358,27 @@ It can be healed with Soul Powder (5) and Soul Apple (15).
 
 It will be healed by 2 if hit by its owner's *Necromancer's Wand* magic ball. If the owner is wearing a *Necromancer's Hat*, it will be healed by 3 and get 5s Strength II effect.
 
-When the player is wearing a *Necromancer's Hat*, the Necrotic Reapers nearby (< 8 blocks) will provide Regeneration effect. The effect level depends on how many Necrotic Reapers there are around. (Regeneration III at most.)
+When the player is wearing a *Necromancer's Hat*, the owning Necrotic Reapers nearby (< 8 blocks) will provide Regeneration effect. The effect level depends on how many Necrotic Reapers there are around. (Regeneration III at most.)
+
+
+
+#### Banshee (HMaG)
+
+##### Befriending
+
+Using item-giving process. Accepted items are identical to Skeleton Girls.
+
+To befriend, the player must have Wither effect (not the effect of Necromancer's Hat), and there are must >=8 wither roses (blocks) in the 15x15x15 area centered by the mob. Once there're <8, the progress will drop by 0.1 each second. If it damaged you, there will be 60s cooldown during which you cannot give item, but no interruption.
+
+##### Interaction
+
+You can customize its hand items. The item on off-hand can only stack to 1 no matter it's originally stackable.
+
+When it's off-hand is holding a flower, it will apply effects of the Suspicious Stew of the corresponding flower. If the effect is positive, it will be applied to the allies in 8 blocks each 15 s, including the owner, the owner's other befriended mobs and tamed animals. If the effect is negative, it will be applied to the target on attacking. 
+
+It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as vanilla undead mob girls.)
+
+It has 3 bauble slots.
 
 
 
@@ -364,11 +386,11 @@ When the player is wearing a *Necromancer's Hat*, the Necrotic Reapers nearby (<
 
 ### Soul Cake
 
-Put on the ground to eat. Similar to vanilla cakes, providing nutrition 3 and 30s Undead Affinity effect each slice.
+Put on the ground to eat. Similar to vanilla cakes, providing nutrition 3 and 1.5 min Undead Affinity effect each slice.
 
 ### Soul Cake Slice
 
-The non-block variation of Soul Cake. Each item provides nutrition 9 and 90s Undead Affinity.
+The non-block variation of Soul Cake. Each item provides nutrition 9 and 5 min Undead Affinity.
 
 ### Enderberry
 
@@ -378,7 +400,7 @@ Tip: it's probably unadvisable to eat raw Enderberries. It's much more useful as
 
 ### Ender Pie
 
-A food providing nutrition 16 and 30s Ender Protection effect.
+A food providing nutrition 16 and 3 min Ender Protection effect.
 
 
 
@@ -390,7 +412,7 @@ Making undead mobs be neutral to you.
 
 Befriending of most undead mobs requires this effect.
 
-It can be obtained by eating Soul Cake or Soul Cake Slice, or standing on a Soul Carpet.
+It can be obtained by eating Soul Cake or Soul Cake Slice, standing on a Soul Carpet or wear a Necromancer's Hat.
 
 ### Ender Protection
 
@@ -400,13 +422,17 @@ If you drop into the void with this effect, you'll be pulled up to Y=64. If ther
 
 It can be obtained by eating Ender Pie.
 
+### Curse of Necromancy
+
+The harmful effect of Necromancer's Hat. This effect is same as Wither, but not causing the health bar turning black. Wither Skeletons are not immune to this effect.
+
 
 
 ## Blocks
 
 ### Soul Carpet
 
-A variation of Carpet. Player standing on it will get Undead Affinity effect which immediately expires once player steps out, including jumping up.
+A variation of Carpet. Player/mob standing on it will get Undead Affinity effect which immediately expires once player steps out, including jumping up. It will also remove the ~~Wither I~~ Curse of Necromancy effect of Necromancer's Hat.
 
 
 
@@ -424,7 +450,7 @@ The dropped respawner item entities are invulnerable (except to creative player 
 
 #### Soul Amulet
 
-Max HP +10, ATK +3, sun immunity (Only for undead mobs)
+Max HP +10, ATK +3, sun immunity (Wearable only for undead mobs)
 
 #### Amulet of Resistance
 
@@ -432,7 +458,7 @@ Armor +4, Speed -10%, sun immunity for undead mobs
 
 #### Fruit of Insomnia (HMaG)
 
-Max HP +60, ATK +8 (Only at night, applies only once)
+Max HP +60, ATK +8 (Only working at night, applying only once)
 
 #### Healing Jade
 
@@ -440,11 +466,11 @@ Persistently healing 0.1 HP per second.
 
 #### Aqua Jade
 
-Speed 4x in water (Only for Drowned Girls, not repeatable)
+Speed 4x in water (Only usable for Drowned Girls, applying only once)
 
 #### Poisonous Thorn
 
-Adding Poison III instead of II on attacking. (Only for Hornet)
+Adding Poison III instead of II on attacking. (Only usable for Hornet)
 
 
 
@@ -458,7 +484,7 @@ It's other properties are identical to Leather Helmet.
 
 #### Necromancer's Hat
 
-A helmet giving the wearer Effects Strength II, Haste II, Undead Affinity and **Wither I**.  If the wearer is standing on the Soul Carpet, it will not catch Wither effect.
+A helmet giving the wearer Effects Strength II, Haste II, Undead Affinity and ~~**Wither I**~~ **Curse of Necromancy**.  If the wearer is standing on the Soul Carpet, it will not catch ~~Wither~~ the curse effect.
 
 It's durability is identical to Iron Helmet, and other properties are identical to Leather Helmet.
 
