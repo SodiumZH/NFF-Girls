@@ -8,7 +8,7 @@ Added Banshee support.
 
 Adjusted Hornet befriending condition. Now it won't be immediately interrupted if there're no enough Honey Blocks, but the progress will drop by 0.1 per second while the mob releases massive smoke particles.
 
-Added Curse of Necromancy effect in place of Wither effect for Necromancer's Hat. The damaging effect is identical to Wither I, but not causing the HP slot turning black.
+Added Curse of Necromancy effect in place of Wither effect for Necromancer's Hat. The damaging effect is same to Wither I, but not causing the HP slot turning black.
 
 Slightly adjusted the recipes to reduce the Evil Crystal cost.
 
@@ -16,7 +16,7 @@ Fixed server crashing on befriended mobs' conversion.
 
 Fixed some compatibility issues:
 
---Solved mob interaction conflict with Quantum Catcher (*Forbidden and Arcanus*), fixed issue #6.
+--Solved mob interaction conflict with Quantum Catcher (*Forbidden and Arcanus*), fixed GitHub issue #6.
 
 --Fixed undead mob still adding hatred when player got undead-neutral by other ways e.g.  Unsettling Kimono (*Alex's Mobs*).
 
@@ -171,7 +171,7 @@ Added Banshee support.
 
 Adjusted Hornet befriending condition. Now it won't be immediately interrupted if there're no enough Honey Blocks, but the progress will drop by 0.1 per second while the mob releases massive smoke particles.
 
-Added Curse of Necromancy effect in place of Wither effect for Necromancer's Hat. The damaging effect is identical to Wither I, but not causing the HP slot turning black.
+Added Curse of Necromancy effect in place of Wither effect for Necromancer's Hat. The damaging effect is same to Wither I, but not causing the HP slot turning black.
 
 Slightly adjusted the recipes to reduce the Evil Crystal cost.
 
@@ -179,7 +179,7 @@ Fixed server crashing on befriended mobs' conversion.
 
 Fixed some compatibility issues:
 
---Solved mob interaction conflict with Quantum Catcher (*Forbidden and Arcanus*), fixed issue #6.
+--Solved mob interaction conflict with Quantum Catcher (*Forbidden and Arcanus*), fixed GitHub issue #6.
 
 --Fixed undead mob still adding hatred when player got undead-neutral by other ways.
 
