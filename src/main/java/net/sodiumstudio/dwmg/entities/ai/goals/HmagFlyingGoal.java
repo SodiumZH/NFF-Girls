@@ -43,8 +43,9 @@ public interface HmagFlyingGoal
 	{
 		protected final double moveSpeed;
 		protected final float attackRadius;
-		protected final int chance = 1;
+		protected final int chance;
 		protected int attackTime;
+		public double forceFollowDistance = 9d;
 
 		public ChargeAttackGoal(IBefriendedMob mob)
 		{
@@ -53,17 +54,17 @@ public interface HmagFlyingGoal
 
 		public ChargeAttackGoal(IBefriendedMob mob, double moveSpeed, float maxAttackDistance)
 		{
+			this(mob, moveSpeed, maxAttackDistance, 4);
+		}
+
+		public ChargeAttackGoal(IBefriendedMob mob, double moveSpeed, float maxAttackDistance, int chance)
+		{
 			super(mob);
 			this.moveSpeed = moveSpeed;
 			this.attackRadius = maxAttackDistance;
 			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
 			this.allowAllStatesExceptWait();
-		}
-
-		@Deprecated
-		public ChargeAttackGoal(IBefriendedMob mob, double moveSpeed, float maxAttackDistance, int chance)
-		{
-			this(mob, moveSpeed, maxAttackDistance);
+			this.chance = chance;
 		}
 
 		
@@ -73,9 +74,12 @@ public interface HmagFlyingGoal
 		{
 			if (isDisabled())
 				return false;
+			if (mob.isOwnerPresent() && mob.getAIState() == BefriendedAIState.FOLLOW && mob.asMob().distanceToSqr(mob.getOwner()) > forceFollowDistance * forceFollowDistance)
+				return false;
 			if (getFlying().getTarget() != null 
 					&& !getFlying().getMoveControl().hasWanted() 
-					&& getFlying().getRandom().nextInt(this.chance) == 0)
+					&& getFlying().getRandom().nextInt(this.chance) == 0
+					)
 			{
 				return getFlying().distanceToSqr(getFlying().getTarget()) > this.attackRadius;
 			}
@@ -141,6 +145,14 @@ public interface HmagFlyingGoal
 					{
 						Vec3 vec3 = livingentity.getEyePosition();
 						attacker.getMoveControl().setWantedPosition(vec3.x, vec3.y - 0.75D, vec3.z, this.moveSpeed);
+						/*
+						Vec3 attackerPos = attacker.position();
+						Vec3 targetPos = livingentity.position();
+						Vec3 offset = attackerPos.subtract(targetPos);
+						offset = new Vec3(offset.x, 0, offset.z);	// Project to xz plane;
+						offset = offset.normalize().scale(livingentity.getBbWidth() / 2 + 0.2d);
+						Vec3 actualPos = targetPos.add(offset);
+						attacker.getMoveControl().setWantedPosition(actualPos.x, actualPos.y, actualPos.z, this.moveSpeed);*/
 					}
 				}
 				else if (attacker.getRandom().nextInt(16) == 0)
@@ -182,7 +194,8 @@ public interface HmagFlyingGoal
 			this.width = width;
 			this.height = height;
 			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-			this.allowAllStatesExceptWait();
+			//this.allowAllStatesExceptWait();
+			this.allowState(BefriendedAIState.WANDER);
 		}
 
 		public MoveRandomGoal heightLimit(int value)
@@ -305,6 +318,8 @@ public interface HmagFlyingGoal
 	public static class FollowOwnerGoal extends MoveRandomGoal implements HmagFlyingGoal
 	{
 		public double teleportDistance = 12d;
+		public double noFollowOnCombatDistance = 6d;
+		public double minStartDistance = 4d;
 		
 		public FollowOwnerGoal(IBefriendedMob mob, double moveSpeed, int width, int height)
 		{
@@ -326,12 +341,26 @@ public interface HmagFlyingGoal
 		@Override
 		public boolean canUse()
 		{
-			return super.canUse() && !CFavorabilityHandler.isLowFavorability(mob.asMob());
+			if (isDisabled())
+				return false;
+			if (getFlying().getMoveControl().hasWanted())
+				return false;
+			if (!mob.isOwnerPresent())
+				return false;
+			if (mob.asMob().getTarget() != null && mob.asMob().distanceToSqr(mob.getOwner()) < noFollowOnCombatDistance * noFollowOnCombatDistance)
+				return false;
+			if (mob.asMob().distanceToSqr(mob.getOwner()) < minStartDistance * minStartDistance)
+				return false;
+			if (CFavorabilityHandler.isLowFavorability(mob.asMob()))
+				return false;
+			else return true;
 		}
 		
 		@Override
 		public void tick() {
 			AbstractFlyingMonsterEntity flyingentity = getFlying();
+			if (!mob.isOwnerPresent())
+				return;	// Prevent potential nullptr crash
 			BlockPos blockpos = flyingentity.getBoundOrigin();
 			if (blockpos == null)
 			{
@@ -348,6 +377,12 @@ public interface HmagFlyingGoal
 				{
 					flyingentity.getMoveControl().setWantedPosition(playerPos.getX() + 0.5D, playerPos.getY() + 0.5D,
 						playerPos.getZ() + 0.5D, this.moveSpeed);
+					/*
+					Vec3 wantedPlayerPos = new Vec3(playerPos.getX(), playerPos.getY() + 0.25D, playerPos.getZ());
+					Vec3 offset = mob.asMob().position().subtract(wantedPlayerPos).normalize(); // Stop 1 block away from player
+					Vec3 actualPos = wantedPlayerPos.add(offset);
+					flyingentity.getMoveControl().setWantedPosition(actualPos.x, actualPos.y, actualPos.z, this.moveSpeed);
+					*/
 				}
 			}
 		}	
