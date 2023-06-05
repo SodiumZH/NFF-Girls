@@ -2,6 +2,10 @@
 
 ## 1.19.2
 
+### 0.1.5.1
+
+Removed verbose debug output.
+
 ### 0.1.5
 
 Added Banshee support.
@@ -164,6 +168,10 @@ Rollbacked HMaG dependency to 6.1.0.
 Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.18.2
+
+### 0.1.5.1
+
+Removed verbose debug output.
 
 ### 0.0.5
 
