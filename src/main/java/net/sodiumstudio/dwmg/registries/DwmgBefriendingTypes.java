@@ -65,10 +65,10 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.NECROTIC_REAPER.get(),
 				DwmgEntityTypes.HMAG_NECROTIC_REAPER.get(),
 				new HandlerNecroticReaper());
-		/*BefriendingTypeRegistry.register(
+		BefriendingTypeRegistry.register(
 				ModEntityTypes.GHASTLY_SEEKER.get(),
 				DwmgEntityTypes.HMAG_GHASTLY_SEEKER.get(),
-				new HandlerGhastlySeeker());*/
+				new HandlerGhastlySeeker());
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.BANSHEE.get(),
 				DwmgEntityTypes.HMAG_BANSHEE.get(),

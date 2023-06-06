@@ -3,7 +3,6 @@ package net.sodiumstudio.dwmg.entities.ai.goals;
 import java.util.EnumSet;
 
 import com.github.mechalopa.hmag.world.entity.AbstractFlyingMonsterEntity;
-import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -11,18 +10,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.LargeFireball;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedMoveGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
 import net.sodiumstudio.befriendmobs.util.LevelHelper;
-import net.sodiumstudio.befriendmobs.util.ReflectHelper;
-import net.sodiumstudio.befriendmobs.util.math.RndUtil;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.IBefriendedFollowOwner;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 
 /* Ported from HMaG-AbstractFlyingMonsterEntity (Mechalopa)
@@ -66,11 +61,9 @@ public interface HmagFlyingGoal
 			this.allowAllStatesExceptWait();
 			this.chance = chance;
 		}
-
-		
 		
 		@Override
-		public boolean canUse()
+		public boolean checkCanUse()
 		{
 			if (isDisabled())
 				return false;
@@ -90,7 +83,7 @@ public interface HmagFlyingGoal
 		}
 
 		@Override
-		public boolean canContinueToUse()
+		public boolean checkCanContinueToUse()
 		{
 			if (isDisabled())
 				return false;
@@ -205,7 +198,7 @@ public interface HmagFlyingGoal
 		}
 		
 		@Override
-		public boolean canUse()
+		public boolean checkCanUse()
 		{
 			if (isDisabled())
 				return false;		
@@ -213,7 +206,7 @@ public interface HmagFlyingGoal
 		}
 
 		@Override
-		public boolean canContinueToUse()
+		public boolean checkCanContinueToUse()
 		{
 			return false;
 		}
@@ -315,7 +308,7 @@ public interface HmagFlyingGoal
 		}	
 	}
 	
-	public static class FollowOwnerGoal extends MoveRandomGoal implements HmagFlyingGoal
+	public static class FollowOwnerGoal extends MoveRandomGoal implements HmagFlyingGoal, IBefriendedFollowOwner
 	{
 		public double teleportDistance = 12d;
 		public double noFollowOnCombatDistance = 6d;
@@ -339,10 +332,8 @@ public interface HmagFlyingGoal
 		}
 		
 		@Override
-		public boolean canUse()
+		public boolean checkCanUse()
 		{
-			if (isDisabled())
-				return false;
 			if (getFlying().getMoveControl().hasWanted())
 				return false;
 			if (!mob.isOwnerPresent())
@@ -361,76 +352,18 @@ public interface HmagFlyingGoal
 			AbstractFlyingMonsterEntity flyingentity = getFlying();
 			if (!mob.isOwnerPresent())
 				return;	// Prevent potential nullptr crash
-			BlockPos blockpos = flyingentity.getBoundOrigin();
-			if (blockpos == null)
-			{
-				blockpos = flyingentity.blockPosition();
-			}
-			if (mob.getOwner() != null && mob.asMob().distanceToSqr(mob.getOwner()) > teleportDistance * teleportDistance)
-			{
-				teleportToOwner();
-			}
-			BlockPos playerPos = new BlockPos(this.mob.getOwner().getEyePosition());
-			if (flyingentity.level.isEmptyBlock(playerPos))
-			{
-				if (!shouldAvoidSun.test(mob) || !LevelHelper.isUnderSun(playerPos, mob.asMob()))
-				{
-					flyingentity.getMoveControl().setWantedPosition(playerPos.getX() + 0.5D, playerPos.getY() + 0.5D,
-						playerPos.getZ() + 0.5D, this.moveSpeed);
-					/*
-					Vec3 wantedPlayerPos = new Vec3(playerPos.getX(), playerPos.getY() + 0.25D, playerPos.getZ());
-					Vec3 offset = mob.asMob().position().subtract(wantedPlayerPos).normalize(); // Stop 1 block away from player
-					Vec3 actualPos = wantedPlayerPos.add(offset);
-					flyingentity.getMoveControl().setWantedPosition(actualPos.x, actualPos.y, actualPos.z, this.moveSpeed);
-					*/
-				}
-			}
+			goToOwnerPreset(moveSpeed);
 		}	
-		protected void teleportToOwner() {
-			BlockPos blockpos = mob.getOwner().blockPosition();
-
-			for (int i = 0; i < 20; ++i) {
-				int j = this.randomIntInclusive(-3, 3);
-				int k = this.randomIntInclusive(-1, 1);
-				int l = this.randomIntInclusive(-3, 3);
-				BlockPos wanted = new BlockPos(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
-				// Don't teleport to positions under sun if avoiding
-				if (shouldAvoidSun.test(mob) && LevelHelper.isUnderSun(wanted, mob.asMob()))
-					continue;
-				boolean flag = this.tryTeleportTo(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
-				if (flag) {
-					return;
-				}
-			}
-		}
 		
-		protected boolean tryTeleportTo(int pX, int pY, int pZ) {
-			if (Math.abs((double) pX - mob.getOwner().getX()) < 2.0D
-					&& Math.abs((double) pZ - mob.getOwner().getZ()) < 2.0D) {
-				return false;
-			} else if (!this.canTeleportTo(new BlockPos(pX, pY, pZ))) {
-				return false;
-			} else {
-				mob.asMob().moveTo((double) pX + 0.5D, (double) pY, (double) pZ + 0.5D, mob.asMob().getYRot(),
-						mob.asMob().getXRot());
-				return true;
-			}
-		}
-
-		protected boolean canTeleportTo(BlockPos pos) {
-			if (!allowTeleport())
-				return false;		
-			BlockPos blockpos = pos.subtract(mob.asMob().blockPosition());
-			return this.mob.asMob().level.noCollision(mob.asMob(), mob.asMob().getBoundingBox().move(blockpos));
-		}
-
-		protected boolean allowTeleport()
+		@Override
+		public void moveToOwner(double param)
 		{
-			return true;
-		}
-		
-		protected int randomIntInclusive(int pMin, int pMax) {
-			return mob.asMob().getRandom().nextInt(pMax - pMin + 1) + pMin;
+			if (!asGoal().getMob().isOwnerPresent())
+				return;
+			Mob mob = asGoal().getMob().asMob();
+			Player owner = asGoal().getMob().getOwner();
+			Vec3 pos = owner.getEyePosition();
+			mob.getMoveControl().setWantedPosition(pos.x, pos.y, pos.z, param);
 		}
 	}
 	

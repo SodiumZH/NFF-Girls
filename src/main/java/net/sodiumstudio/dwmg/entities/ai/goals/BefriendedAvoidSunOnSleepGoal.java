@@ -15,7 +15,7 @@ public class BefriendedAvoidSunOnSleepGoal extends BefriendedFleeSunGoal
 	}
 
 	@Override
-	public boolean canUse()
+	public boolean checkCanUse()
 	{
 		if (isDisabled())
 			return false;

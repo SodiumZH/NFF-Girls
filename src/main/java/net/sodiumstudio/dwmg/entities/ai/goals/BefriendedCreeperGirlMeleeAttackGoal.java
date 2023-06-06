@@ -19,7 +19,7 @@ public class BefriendedCreeperGirlMeleeAttackGoal extends BefriendedMeleeAttackG
 	}
 
 	@Override
-	public boolean canUse()
+	public boolean checkCanUse()
 	{
 		if (creeper.hasEnoughAmmoToExplode() && creeper.blowEnemyCooldown == 0)
 			return false;
@@ -29,16 +29,16 @@ public class BefriendedCreeperGirlMeleeAttackGoal extends BefriendedMeleeAttackG
 		if (creeper.getAdditionalInventory().getItem(4).isEmpty() 
 				|| !(creeper.getAdditionalInventory().getItem(4).getItem() instanceof TieredItem))
 			return false;
-		return super.canUse();
+		return super.checkCanUse();
 	}
 
 	@Override
-	public boolean canContinueToUse()
+	public boolean checkCanContinueToUse()
 	{
 		if (creeper.getAdditionalInventory().getItem(4).isEmpty() 
 				|| !(creeper.getAdditionalInventory().getItem(4).getItem() instanceof TieredItem))
 			return false;
-		else return super.canContinueToUse();
+		else return super.checkCanContinueToUse();
 	}
 	
 	@Override

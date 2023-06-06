@@ -15,13 +15,13 @@ public class BefriendedSkeletonRangedBowAttackGoal extends BefriendedRangedBowAt
 	}
 	
 	@Override
-	public boolean canUse() {
+	public boolean checkCanUse() {
 		if (!mob.getAdditionalInventory().getItem(4).is(Items.BOW))
 			return false;
 		else if (mob.getAdditionalInventory().getItem(8).isEmpty())
 			return false;
 		else
-			return super.canUse();
+			return super.checkCanUse();
 	}
 	
 }
