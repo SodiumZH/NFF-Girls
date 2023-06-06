@@ -60,7 +60,7 @@ public class DwmgClientEvents
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_WITHER_SKELETON_GIRL.get(), WitherSkeletonGirlRenderer::new); 
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_HORNET.get(), HornetRenderer::new); 
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_NECROTIC_REAPER.get(), NecroticReaperRenderer::new);
-        //event.registerEntityRenderer(DwmgEntityTypes.HMAG_GHASTLY_SEEKER.get(), GhastlySeekerRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_GHASTLY_SEEKER.get(), GhastlySeekerRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_BANSHEE.get(), BansheeRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_KOBOLD.get(), KoboldRenderer::new);
         

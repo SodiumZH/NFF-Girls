@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.entities.handlers.hmag;
 
 import com.github.mechalopa.hmag.registry.ModItems;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.sodiumstudio.befriendmobs.util.math.RandomSelection;
@@ -10,6 +11,12 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class HandlerWitherSkeletonGirl extends HandlerZombieGirl
 {	
+	@Override
+	public boolean isItemAcceptable(Item item)
+	{
+		return super.isItemAcceptable(item) || item == Items.NETHER_STAR;
+	}
+	
 	@Override
 	protected double getProcValueToAdd(ItemStack item) {
 		if (item.is(DwmgItems.SOUL_CAKE_SLICE.get()))

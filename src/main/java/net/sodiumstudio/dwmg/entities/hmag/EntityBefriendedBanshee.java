@@ -60,8 +60,10 @@ import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomMoveGoal;
 import net.sodiumstudio.dwmg.entities.DwmgBMStatics;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFlyingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.HmagFlyingGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
@@ -118,8 +120,8 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 			this.goalSelector.addGoal(0, new FloatGoal(this));
 			this.goalSelector.addGoal(4, new HmagFlyingGoal.ChargeAttackGoal(this, 0.5D, 1.5F, 6));
 			//this.goalSelector.addGoal(4, new BefriendedMeleeAttackGoal(this, 1d, false));
-			this.goalSelector.addGoal(6, new HmagFlyingGoal.FollowOwnerGoal(this));
-			this.goalSelector.addGoal(8, new HmagFlyingGoal.MoveRandomGoal(this).heightLimit(10));
+			this.goalSelector.addGoal(6, new DwmgBefriendedFlyingFollowOwnerGoal(this));
+			this.goalSelector.addGoal(8, new BefriendedFlyingRandomMoveGoal(this).heightLimit(10));
 			this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
 			this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
 			this.goalSelector.addGoal(11, new RandomLookAroundGoal(this));
@@ -127,7 +129,7 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 			targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 			targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
 		}
-		
+
 		/* Interaction */
 
 		// Map items that can heal the mob and healing values here.
