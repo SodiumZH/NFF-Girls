@@ -17,11 +17,11 @@ public class DwmgBefriendedCreeperFollowOwnerGoal extends DwmgBefriendedFollowOw
 	}
 
 	@Override
-	public boolean canUse()
+	public boolean checkCanUse()
 	{
 		if (creeper.getSwellDir() > 0)
 			return false;
-		return super.canUse();
+		return super.checkCanUse();
 	}
 	
 	

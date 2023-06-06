@@ -16,8 +16,8 @@ public class BefriendedDrownedTridentAttackGoal extends BefriendedRangedAttackGo
 	 * necessary for execution in this method as well.
 	 */
 	@Override
-	public boolean canUse() {
-		return super.canUse() && this.mob.asMob().getMainHandItem().is(Items.TRIDENT);
+	public boolean checkCanUse() {
+		return super.checkCanUse() && this.mob.asMob().getMainHandItem().is(Items.TRIDENT);
 	}
 
 	/**

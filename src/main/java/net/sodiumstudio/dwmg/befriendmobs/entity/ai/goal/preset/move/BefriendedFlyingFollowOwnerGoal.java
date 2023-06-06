@@ -5,143 +5,65 @@ import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.util.LevelHelper;
+import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 
-public class BefriendedFlyingFollowOwnerGoal extends BefriendedFlyingMoveGoal
+public class BefriendedFlyingFollowOwnerGoal extends BefriendedFlyingMoveGoal implements IBefriendedFollowOwner
 {
-	
-	public float maxStepLength = 8f;
 	public double teleportDistance = 12d;
+	public double noFollowOnCombatDistance = 6d;
+	public double minStartDistance = 4d;
 	
-    public BefriendedFlyingFollowOwnerGoal(IBefriendedMob mob) {
-    	super(mob);
-       this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-       this.allowState(WANDER);
-    }
-
-    /**
-     * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-     * method as well.
-     */
-    @Override
-	public boolean canUse() {
-    	if (isDisabled())
-    		return false;
-       MoveControl movecontrol = this.mob.asMob().getMoveControl();
-       if (!movecontrol.hasWanted()) {
-          return true;
-       } else {
-          double d0 = movecontrol.getWantedX() - this.mob.asMob().getX();
-          double d1 = movecontrol.getWantedY() - this.mob.asMob().getY();
-          double d2 = movecontrol.getWantedZ() - this.mob.asMob().getZ();
-          double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-          return d3 < 1.0D || d3 > 3600.0D;
-       }
-    }
-
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
-    @Override
-	public boolean canContinueToUse() {
-       return false;
-    }
-
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
-    @Override
-	public void start() {
-    	// Sometimes it happens to invoke on initialization
-    	if (mob.getOwner() == null)
-    		return;
-    	if (this.mob.asMob().distanceToSqr(mob.getOwner()) >= teleportDistance * teleportDistance)
-    	{
-    		teleportToOwner();
-    	}
-    	else
-    	{
-    		moveToOwner();
-    	}
-    }
-    
-	protected void teleportToOwner() {
-		
-		
-		BlockPos blockpos = mob.getOwner().blockPosition();
-
-		for (int i = 0; i < 20; ++i) {
-			int j = this.randomIntInclusive(-3, 3);
-			int k = this.randomIntInclusive(-1, 1);
-			int l = this.randomIntInclusive(-3, 3);
-			BlockPos wanted = new BlockPos(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
-			// Don't teleport to positions under sun if avoiding
-			if (shouldAvoidSun.test(mob) && LevelHelper.isUnderSun(wanted, mob.asMob()))
-				continue;
-			boolean flag = this.tryTeleportTo(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
-			if (flag) {
-				return;
-			}
-		}
-	}
-
-	protected void moveToOwner() {
-		if (!mob.isOwnerPresent())
-			return;
-		BlockPos blockpos = mob.getOwner().blockPosition();
-
-		int j = 0;
-		int k = 0;
-		int l = 0;
-		boolean flag = false;
-		
-		for (int i = 0; i < 20; ++i) {
-			j = this.randomIntInclusive(-3, 3);
-			k = this.randomIntInclusive(-1, 1);
-			l = this.randomIntInclusive(-3, 3);
-			BlockPos wanted = new BlockPos(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
-			// Don't move to positions under sun if avoiding
-			if (shouldAvoidSun.test(mob) && LevelHelper.isUnderSun(wanted, mob.asMob()) && !LevelHelper.isAboveWater(wanted, mob.asMob()))
-				continue;
-			else
-			{
-				flag = true;
-				break;
-			}
-		}
-		if (flag)
-			this.mob.asMob().getMoveControl().setWantedPosition(j, k, l, 1.0D);
-	}
-	
-	protected boolean tryTeleportTo(int pX, int pY, int pZ) {
-		if (mob.isOwnerPresent())
-			return false;
-		if (Math.abs((double) pX - mob.getOwner().getX()) < 2.0D
-				&& Math.abs((double) pZ - mob.getOwner().getZ()) < 2.0D) {
-			return false;
-		} else if (!this.canTeleportTo(new BlockPos(pX, pY, pZ))) {
-			return false;
-		} else {
-			mob.asMob().moveTo((double) pX + 0.5D, (double) pY, (double) pZ + 0.5D, mob.asMob().getYRot(),
-					mob.asMob().getXRot());
-			return true;
-		}
-	}
-
-	protected boolean canTeleportTo(BlockPos pos) {
-		if (!allowTeleport())
-			return false;		
-		BlockPos blockpos = pos.subtract(mob.asMob().blockPosition());
-		return this.mob.asMob().level.noCollision(mob.asMob(), mob.asMob().getBoundingBox().move(blockpos));
-	}
-
-	protected boolean allowTeleport()
+	public BefriendedFlyingFollowOwnerGoal(IBefriendedMob mob, double moveSpeed, int width, int height)
 	{
-		return true;
+		super(mob);
+		this.disallowAllStates();
+		this.allowState(BefriendedAIState.FOLLOW);
+	}
+
+	public BefriendedFlyingFollowOwnerGoal(IBefriendedMob mob, double moveSpeed)
+	{
+		this(mob, moveSpeed, 3, 2);
+	}
+
+	public BefriendedFlyingFollowOwnerGoal(IBefriendedMob mob)
+	{
+		this(mob, 0.25D);
 	}
 	
-	protected int randomIntInclusive(int pMin, int pMax) {
-		return mob.asMob().getRandom().nextInt(pMax - pMin + 1) + pMin;
+	@Override
+	public boolean checkCanUse()
+	{
+		if (mob.asMob().getMoveControl().hasWanted())
+			return false;
+		if (!mob.isOwnerPresent())
+			return false;
+		if (mob.asMob().getTarget() != null && mob.asMob().distanceToSqr(mob.getOwner()) < noFollowOnCombatDistance * noFollowOnCombatDistance)
+			return false;
+		if (mob.asMob().distanceToSqr(mob.getOwner()) < minStartDistance * minStartDistance)
+			return false;
+		else return true;
+	}
+	
+	@Override
+	public void tick() {
+		if (!mob.isOwnerPresent())
+			return;	// Prevent potential nullptr crash
+		goToOwnerPreset(getActualSpeed());
+	}	
+	
+	@Override
+	public void moveToOwner(double param)
+	{
+		if (!asGoal().getMob().isOwnerPresent())
+			return;
+		Mob mob = asGoal().getMob().asMob();
+		Player owner = asGoal().getMob().getOwner();
+		Vec3 pos = owner.getEyePosition();
+		mob.getMoveControl().setWantedPosition(pos.x, pos.y, pos.z, param);
 	}
 }

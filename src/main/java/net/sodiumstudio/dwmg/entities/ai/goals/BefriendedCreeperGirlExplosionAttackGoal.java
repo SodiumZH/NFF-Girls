@@ -11,7 +11,7 @@ public class BefriendedCreeperGirlExplosionAttackGoal extends BefriendedMeleeAtt
 	EntityBefriendedCreeperGirl creeper;
 
 	@Override
-	public boolean canUse()
+	public boolean checkCanUse()
 	{
 		if (!creeper.canAutoBlowEnemy)
 			return false;
@@ -25,7 +25,7 @@ public class BefriendedCreeperGirlExplosionAttackGoal extends BefriendedMeleeAtt
 			return false;
 		if (creeper.getOwner() != null && creeper.explodeSafeDistance * creeper.explodeSafeDistance > creeper.getTarget().distanceToSqr(creeper.getOwner()))
 			return false;
-		return super.canUse();
+		return super.checkCanUse();
 	}
 	
 	public BefriendedCreeperGirlExplosionAttackGoal(IBefriendedMob mob, double speedModifier, boolean followingTargetEvenIfNotSeen)

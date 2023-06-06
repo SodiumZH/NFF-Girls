@@ -51,12 +51,12 @@ public class BefriendedInWaterFollowOwnerGoal extends BefriendedFollowOwnerGoal 
 	 * necessary for execution in this handler as well.
 	 */
 	@Override
-	public boolean canUse() {
+	public boolean checkCanUse() {
 		if (isDisabled())
 			return false;
 		if (!mob.asMob().isInWater() && !mob.getOwner().isInWater())
 			return false;
-		return super.canUse();
+		return super.checkCanUse();
 		}
 	
 

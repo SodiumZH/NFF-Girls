@@ -19,10 +19,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -35,27 +35,22 @@ import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.util.ReflectHelper;
-import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingFollowOwnerGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomFloatGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomMoveGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.IBefriendedFollowOwner;
 import net.sodiumstudio.dwmg.entities.DwmgBMStatics;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
-import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFlyingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.HmagFlyingGoal;
+import net.sodiumstudio.dwmg.entities.ai.movecontrol.BefriendedFlyingMoveControl;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuGhastlySeeker;
-import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
 
 /**
  * NOT IMPLEMENTED YET
@@ -96,6 +91,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
 		Arrays.fill(this.handDropChances, 0);
+		this.moveControl = new BefriendedFlyingMoveControl(this);
 	}
 
 	public static Builder createAttributes() {
@@ -115,15 +111,23 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 
 	@Override
 	protected void registerGoals() {				
-		this.goalSelector.addGoal(6, new BefriendedFlyingFollowOwnerGoal(this));
+		this.goalSelector.addGoal(6, new EntityBefriendedGhastlySeeker.FollowOwnerGoal(this));
 		this.goalSelector.addGoal(7, new FireballAttackGoal(this));
-		this.goalSelector.addGoal(8, new BefriendedFlyingRandomFloatGoal(this));
+		this.goalSelector.addGoal(8, new BefriendedFlyingRandomMoveGoal(this));
 		this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
 		this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
 		this.goalSelector.addGoal(11, new RandomLookAroundGoal(this));
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
+	}
+		
+	@Override
+	public void aiStep()
+	{
+		if (!level.isClientSide)
+			super.aiStep();
+		else super.aiStep();
 	}
 	
 	/* Interaction */
@@ -303,14 +307,14 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 		}
 
 		@Override
-		public boolean canUse()
+		public boolean checkCanUse()
 		{
 			// It consumes fire charges
 			return this.parent.getTarget() != null && mob.getAdditionalInventory().getItem(4).is(Items.FIRE_CHARGE);
 		}
 
 		@Override
-		public boolean canContinueToUse()
+		public boolean checkCanContinueToUse()
 		{
 			return canUse();
 		}
@@ -346,19 +350,22 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 
 				if (this.attackTimer == 20)
 				{
-					double d1 = 4.0D;
+					double speed = 4.0D;
 					Vec3 vec3 = this.parent.getViewVector(1.0F);
-					double d2 = target.getX() - (this.parent.getX() + vec3.x * d1);
-					double d3 = target.getY() + target.getEyeHeight() * 0.5D - this.parent.getY(0.5D) + 0.25D;
-					double d4 = target.getZ() - (this.parent.getZ() + vec3.z * d1);
-
+					//double d2 = target.getX() - (this.parent.getX() + vec3.x * d1);
+					//double d3 = target.getY() + target.getEyeHeight() * 0.5D - this.parent.getY(0.5D) + 0.25D;
+					//double d4 = target.getZ() - (this.parent.getZ() + vec3.z * d1);
 					if (!this.parent.isSilent())
 					{
 						world.levelEvent((Player)null, 1016, this.parent.blockPosition(), 0);
 					}
-
-					LargeFireball largefireball = new LargeFireball(world, this.parent, d2, d3, d4, this.parent.getExplosionPower());
-					largefireball.setPos(this.parent.getX() + vec3.x * 0.5D, this.parent.getY(0.5D) + 0.25D, largefireball.getZ() + vec3.z * 0.5D);
+					
+					Vec3 pos = new Vec3(this.parent.getX() + vec3.x * 0.5D, this.parent.getY(0.5D) + 0.25D, this.parent.getZ() + vec3.z * 0.5D);
+					Vec3 velocity = target.getBoundingBox().getCenter().subtract(parent.position()).normalize().scale(speed);
+					
+					
+					LargeFireball largefireball = new LargeFireball(world, this.parent, velocity.x, velocity.y, velocity.z, this.parent.getExplosionPower());					
+					largefireball.setPos(pos);
 					// Check again to prevent firing without ammo
 					if (mob.getAdditionalInventory().getItem(4).is(Items.FIRE_CHARGE))
 					{
@@ -377,5 +384,28 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 		}
 	}
 
-	
+	public static class FollowOwnerGoal extends DwmgBefriendedFlyingFollowOwnerGoal implements IBefriendedFollowOwner
+	{
+
+		public FollowOwnerGoal(IBefriendedMob mob)
+		{
+			super(mob);
+		}
+		
+		@Override
+		public Vec3 teleportOffset()
+		{
+			return IBefriendedFollowOwner.super.teleportOffset().add(0, 3, 0);
+		}
+		
+		
+		@Override
+		public void tick() {
+			if (!mob.isOwnerPresent())
+				return;
+			this.teleportToOwner();
+			this.moveToOwner(getActualSpeed(), new Vec3(0, 3, 0));		
+		}	
+		
+	}
 }

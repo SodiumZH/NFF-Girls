@@ -127,18 +127,18 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 		goalSelector.addGoal(4, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false)
 		{
 			@Override
-			public boolean canUse()
+			public boolean checkCanUse()
 			{
-				return super.canUse() && ((EntityBefriendedNecroticReaper)mob).controllable();
+				return super.checkCanUse() && ((EntityBefriendedNecroticReaper)mob).controllable();
 			}
 		}
 				.avoidSunCondition(mob -> !((IBefriendedUndeadMob)mob).isSunImmune()));
 		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d)
 		{
 			@Override
-			public boolean canUse()
+			public boolean checkCanUse()
 			{
-				return super.canUse() 
+				return super.checkCanUse() 
 						&& !(((EntityBefriendedNecroticReaper)mob).controllable() && mob.getAIState() == BefriendedAIState.FOLLOW);
 			}
 		}
@@ -150,18 +150,18 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 		targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this)
 		{
 			@Override
-			public boolean canUse()
+			public boolean checkCanUse()
 			{
-				return super.canUse() && ((EntityBefriendedNecroticReaper)mob).controllable();
+				return super.checkCanUse() && ((EntityBefriendedNecroticReaper)mob).controllable();
 			}
 		});
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this)
 		{
 			@Override
-			public boolean canUse()
+			public boolean checkCanUse()
 			{
-				return super.canUse() && ((EntityBefriendedNecroticReaper)mob).controllable();
+				return super.checkCanUse() && ((EntityBefriendedNecroticReaper)mob).controllable();
 			}
 		});
 	}

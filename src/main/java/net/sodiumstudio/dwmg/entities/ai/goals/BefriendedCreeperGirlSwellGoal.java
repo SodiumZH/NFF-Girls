@@ -16,7 +16,7 @@ public class BefriendedCreeperGirlSwellGoal extends BefriendedCreeperSwellGoal
 	}
 	
 	@Override
-	public boolean canUse()
+	public boolean checkCanUse()
 	{
 		if (isDisabled())
 			return false;

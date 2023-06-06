@@ -140,7 +140,7 @@ public class DwmgEntityTypes {
 			.setShouldReceiveVelocityUpdates(false)
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_necrotic_reaper").toString()));
-	/*public static final RegistryObject<EntityType<EntityBefriendedGhastlySeeker>> HMAG_GHASTLY_SEEKER = 
+	public static final RegistryObject<EntityType<EntityBefriendedGhastlySeeker>> HMAG_GHASTLY_SEEKER = 
 			ENTITY_TYPES.register("hmag_ghastly_seeker", () -> EntityType.Builder
 			.of(EntityBefriendedGhastlySeeker::new, MobCategory.CREATURE)
 			.fireImmune()
@@ -150,7 +150,6 @@ public class DwmgEntityTypes {
 			.setShouldReceiveVelocityUpdates(false)
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_ghastly_seeker").toString()));
-	*/
 	public static final RegistryObject<EntityType<EntityBefriendedBanshee>> HMAG_BANSHEE = 
 			ENTITY_TYPES.register("hmag_banshee", () -> EntityType.Builder
 			.of(EntityBefriendedBanshee::new, MobCategory.CREATURE)
@@ -159,8 +158,7 @@ public class DwmgEntityTypes {
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
 			.noSummon()
-			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_banshee").toString()));
-	
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_banshee").toString()));	
 	public static final RegistryObject<EntityType<EntityBefriendedKobold>> HMAG_KOBOLD =
 			ENTITY_TYPES.register("hmag_kobold", () -> EntityType.Builder
 			.of(EntityBefriendedKobold::new, MobCategory.CREATURE)
@@ -183,7 +181,7 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.HMAG_WITHER_SKELETON_GIRL.get(), EntityBefriendedWitherSkeletonGirl.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_HORNET.get(), EntityBefriendedHornet.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_NECROTIC_REAPER.get(), EntityBefriendedNecroticReaper.createAttributes().build());
-        //event.put(DwmgEntityTypes.HMAG_GHASTLY_SEEKER.get(), EntityBefriendedGhastlySeeker.createAttributes().build());
+        event.put(DwmgEntityTypes.HMAG_GHASTLY_SEEKER.get(), EntityBefriendedGhastlySeeker.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_BANSHEE.get(), EntityBefriendedBanshee.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_KOBOLD.get(), EntityBefriendedKobold.createAttributes().build());
 	}
