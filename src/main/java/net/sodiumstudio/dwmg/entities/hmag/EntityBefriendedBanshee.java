@@ -60,6 +60,7 @@ import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingLandGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomMoveGoal;
 import net.sodiumstudio.dwmg.entities.DwmgBMStatics;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
@@ -118,6 +119,7 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 		@Override
 		protected void registerGoals() {
 			this.goalSelector.addGoal(0, new FloatGoal(this));
+			this.goalSelector.addGoal(5, new BefriendedFlyingLandGoal(this));
 			this.goalSelector.addGoal(4, new HmagFlyingGoal.ChargeAttackGoal(this, 0.5D, 1.5F, 6));
 			//this.goalSelector.addGoal(4, new BefriendedMeleeAttackGoal(this, 1d, false));
 			this.goalSelector.addGoal(6, new DwmgBefriendedFlyingFollowOwnerGoal(this));

@@ -42,6 +42,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.util.ReflectHelper;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingLandGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomMoveGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.IBefriendedFollowOwner;
 import net.sodiumstudio.dwmg.entities.DwmgBMStatics;
@@ -111,9 +112,10 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 
 	@Override
 	protected void registerGoals() {				
+		this.goalSelector.addGoal(5, new BefriendedFlyingLandGoal(this));
 		this.goalSelector.addGoal(6, new EntityBefriendedGhastlySeeker.FollowOwnerGoal(this));
 		this.goalSelector.addGoal(7, new FireballAttackGoal(this));
-		this.goalSelector.addGoal(8, new BefriendedFlyingRandomMoveGoal(this));
+		this.goalSelector.addGoal(8, new BefriendedFlyingRandomMoveGoal(this, 0.25d, 20, 8, 2));
 		this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
 		this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
 		this.goalSelector.addGoal(11, new RandomLookAroundGoal(this));
@@ -298,6 +300,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 	{
 		private final EntityBefriendedGhastlySeeker parent;
 		public int attackTimer;
+		private LivingEntity currentTarget = null;
 
 		public FireballAttackGoal(EntityBefriendedGhastlySeeker mob)
 		{
@@ -316,20 +319,21 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 		@Override
 		public boolean checkCanContinueToUse()
 		{
-			return canUse();
+			return checkCanUse();
 		}
 		
 		@Override
 		public void start()
 		{
 			this.attackTimer = 0;
+			currentTarget = this.parent.getTarget();
 		}
 
 		@Override
 		public void stop()
 		{
 			ReflectHelper.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", 
-					Integer.class, -1);
+					int.class, -1);
 		}
 
 		@Override
@@ -379,8 +383,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 			{
 				--this.attackTimer;
 			}
-			ReflectHelper.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", 
-					Integer.class, this.attackTimer < 0 ? -1 : this.attackTimer);
+			ReflectHelper.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", int.class, this.attackTimer < 0 ? -1 : this.attackTimer);
 		}
 	}
 
@@ -390,12 +393,13 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 		public FollowOwnerGoal(IBefriendedMob mob)
 		{
 			super(mob);
+			speed = 0.25d;
 		}
 		
 		@Override
 		public Vec3 teleportOffset()
 		{
-			return IBefriendedFollowOwner.super.teleportOffset().add(0, 3, 0);
+			return IBefriendedFollowOwner.super.teleportOffset().add(0, 1, 0);
 		}
 		
 		

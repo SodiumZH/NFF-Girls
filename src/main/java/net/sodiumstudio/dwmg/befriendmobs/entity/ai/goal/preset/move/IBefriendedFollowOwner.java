@@ -9,6 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedMoveGoal;
 import net.sodiumstudio.befriendmobs.util.LevelHelper;
 import net.sodiumstudio.befriendmobs.util.annotation.DontCallManually;
+import net.sodiumstudio.befriendmobs.util.annotation.DontOverride;
 import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.AiMaths;
 
@@ -67,7 +68,9 @@ public interface IBefriendedFollowOwner
 		}
 		else if (mob instanceof FlyingMob fm)
 		{
-			fm.getMoveControl().setWantedPosition(pos.x + offset.x, pos.y + offset.y, pos.z + offset.z, param);
+			Vec3 offset1 = owner.position().subtract(fm.position());
+			offset1 = new Vec3(offset1.x, 0, offset1.z).normalize().reverse().scale(0.5);	// keep a little distance to player
+			fm.getMoveControl().setWantedPosition(pos.x + offset.x + offset1.x, pos.y + offset.y, pos.z + offset.z + offset1.z, param);
 		}
 		else 
 		{
@@ -79,6 +82,7 @@ public interface IBefriendedFollowOwner
 	 * Do normal movement to owner
 	 * @param param For PathfinderMob it's speed modifier rate; For FlyingMob it's movement speed.
 	 */
+	@DontOverride
 	public default void moveToOwner(double param)
 	{
 		moveToOwner(param, Vec3.ZERO);
@@ -133,6 +137,7 @@ public interface IBefriendedFollowOwner
 		}
 	}
 
+	@DontOverride
 	public default boolean posNoCollision(Vec3 pos) {
 		Mob mob = asGoal().getMob().asMob();
 		Vec3 deltaVec = pos.subtract(mob.position());
