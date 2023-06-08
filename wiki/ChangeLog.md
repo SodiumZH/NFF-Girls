@@ -2,6 +2,14 @@
 
 ## 1.19.2
 
+### 0.1.6
+
+Fixed Wither Skeleton Girls not accepting Nether Stars.
+
+Fixed Soul Carpet not dropping on broken.
+
+Fixed armor losing durability on taking bypass-armor damages on befriended mobs.
+
 ### 0.1.5.1
 
 Removed verbose debug output.
@@ -56,7 +64,7 @@ Skeletons and derivatives (not girls) attacks Zombie/Husk/Drowned Girls.
 
 Versions above won't use "alpha" postfix anymore. All versions with prefix 0 are alpha.
 
-Saves of snapshot versions are no longer supported since this version. To port legacy data to new versions, open it in 0.0.2-alpha, interact with all your mobs and save.
+Saves of snapshot versions are no longer supported since this version. To port legacy data to new versions, open it in 0.1.2-alpha, interact with all your mobs and save.
 
 Added Favorability System.
 

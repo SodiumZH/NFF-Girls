@@ -25,12 +25,12 @@ public class BefriendedFlyingRandomMoveGoal extends BefriendedFlyingMoveGoal
 
 	public BefriendedFlyingRandomMoveGoal(IBefriendedMob mob, double moveSpeed)
 	{
-		this(mob, moveSpeed, 6, 3, 2);
+		this(mob, moveSpeed, 6);
 	}
 
 	public BefriendedFlyingRandomMoveGoal(IBefriendedMob mob, double moveSpeed, int chance)
 	{
-		this(mob, moveSpeed, 6, 3, 2);
+		this(mob, moveSpeed, chance, 3, 2);
 	}
 	
 	public BefriendedFlyingRandomMoveGoal(IBefriendedMob mob, double moveSpeed, int chance, int width, int height)

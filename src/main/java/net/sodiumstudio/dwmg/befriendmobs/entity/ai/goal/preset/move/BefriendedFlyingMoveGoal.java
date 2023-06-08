@@ -1,9 +1,5 @@
 package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.world.entity.FlyingMob;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.phys.Vec3;

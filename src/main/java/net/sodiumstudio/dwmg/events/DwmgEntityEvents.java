@@ -391,6 +391,8 @@ public class DwmgEntityEvents
 		// Ignore effect of /kill
 		if (damageSource.getMsgId().equals(DamageSource.OUT_OF_WORLD.getMsgId()) && damage > 1000)
 			return;
+		if (damageSource.isBypassArmor())
+			return;
 		if (!(damage <= 0.0F))
 		{
 			damage /= 4.0F;
