@@ -1,7 +1,6 @@
 package net.sodiumstudio.dwmg.entities.item.baublesystem.handlers;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.function.Predicate;
 
 import net.minecraft.world.item.Item;

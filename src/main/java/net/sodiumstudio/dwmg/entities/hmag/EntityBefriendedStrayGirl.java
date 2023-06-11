@@ -2,14 +2,12 @@ package net.sodiumstudio.dwmg.entities.hmag;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.StrayGirlEntity;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -23,8 +21,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -43,29 +39,23 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
+import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.befriendmobs.util.debug.Debug;
+import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSunAvoidingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
@@ -73,6 +63,7 @@ import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
@@ -101,7 +92,7 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
+		entityData.define(DATA_AISTATE, 1);
 	}
 
 	@Override
@@ -171,6 +162,7 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
 			super.aiStep();
 			this.setItemSlot(EquipmentSlot.HEAD, headItem);
+			this.setInventoryFromMob();
 		}
 		else 
 		{
@@ -180,27 +172,12 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 		/* Handle combat AI */
 		if (justShot)
 		{
-			if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, this.getAdditionalInventory().getItem(4)) > 0)
+			if (this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0)
 				this.getAdditionalInventory().consumeItem(8);
 			justShot = false;
 		}
 		
 		if (this.getTarget() != null) {
-			
-			// Handle sun sensitivity
-			if (this.isSunImmune())
-			{
-				ItemStack headItem = this.getItemBySlot(EquipmentSlot.HEAD);
-				this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
-				super.aiStep();
-				this.setItemSlot(EquipmentSlot.HEAD, headItem);
-			}
-			else 
-			{
-				super.aiStep();
-			}
-			
-			/* Handle combat AI */			
 			// When too close, switch to melee mode if possible
 			if (this.distanceTo(this.getTarget()) < 2.5) {
 				if (additionalInventory.getItem(4).is(Items.BOW) && additionalInventory.getItem(7).getItem() instanceof TieredItem) {
@@ -233,8 +210,7 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 			{
 				additionalInventory.swapItem(4, 7);
 				updateFromInventory();
-			}
-			
+			}			
 		}
 	}
 	
@@ -252,45 +228,50 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 	}
 	
 	@Override
-	public boolean onInteraction(Player player, InteractionHand hand) {
-		// Porting solution end
-		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
-			{
-				if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL) && isFromSkeleton)
+	public InteractionResult mobInteract(Player player, InteractionHand hand)
+	{
+		if (!player.isShiftKeyDown())
+		{
+			if (player.getUUID().equals(getOwnerUUID())) {
+				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
-					// Use flint&steel
-					this.level.playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE,
-							this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
-					if (!this.level.isClientSide)
+					if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL) && isFromSkeleton)
 					{
-						player.getItemInHand(hand).hurtAndBreak(1, player, (p) ->
+						// Use flint&steel
+						this.level.playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE,
+								this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
+						if (!this.level.isClientSide)
 						{
-							p.broadcastBreakEvent(hand);
-						});
-					}
-					// and convert
-					this.convertToSkeleton();
-					return true;
-				} 
-				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-				{}
-				else
-					switchAIState();
+							player.getItemInHand(hand).hurtAndBreak(1, player, (p) ->
+							{
+								p.broadcastBreakEvent(hand);
+							});
+						}
+						// and convert
+						this.convertToSkeleton();
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					} 
+					else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+					{}
+					else if (hand == InteractionHand.MAIN_HAND
+							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
+						switchAIState();
+				}
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
-			return true;
+			return InteractionResult.PASS;
 		}
-		return false;
-
-	}
-
-	@Override
-	public boolean onInteractionShift(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID())) {		
-			BefriendedHelper.openBefriendedInventory(player, this);
-			return true;
+		else
+		{
+			if (player.getUUID().equals(getOwnerUUID())) {		
+				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				{
+					BefriendedHelper.openBefriendedInventory(player, this);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
+				}
+			}
+			return InteractionResult.PASS;
 		}
-		return false;
 	}
 
 	/* Inventory */

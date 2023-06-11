@@ -1,12 +1,5 @@
 package net.sodiumstudio.dwmg.registries;
 
-import com.github.mechalopa.hmag.HMaG;
-import com.github.mechalopa.hmag.world.entity.BansheeEntity;
-import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
-import com.github.mechalopa.hmag.world.entity.KoboldEntity;
-import com.github.mechalopa.hmag.world.entity.NecroticReaperEntity;
-import com.github.mechalopa.hmag.world.entity.projectile.MagicBulletEntity;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -18,7 +11,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedNecroticReaper;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedBanshee;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedDrownedGirl;
@@ -27,10 +19,12 @@ import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedGhastlySeeker;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHornet;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHuskGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedKobold;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedNecroticReaper;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedStrayGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedWitherSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedZombieGirl;
+import net.sodiumstudio.dwmg.entities.projectile.BefriendedGhastFireball;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -198,5 +192,12 @@ public class DwmgEntityTypes {
 			.setCustomClientFactory(NecromancerMagicBulletEntity::new)
 			.build(new ResourceLocation(Dwmg.MOD_ID, "necromancer_magic_bullet").toString()));
 	
-	
+	public static final RegistryObject<EntityType<BefriendedGhastFireball>> BEFRIENDED_GHAST_FIREBALL = 
+			ENTITY_TYPES.register("befriended_ghast_fireball", () -> EntityType.Builder
+			.<BefriendedGhastFireball>of(BefriendedGhastFireball::new, MobCategory.MISC)
+			.sized(1.0F, 1.0F)
+			.clientTrackingRange(4)
+			.updateInterval(10)
+			.build(new ResourceLocation(Dwmg.MOD_ID, "befriended_ghast_fireball").toString()));
+
 }

@@ -32,10 +32,10 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -48,7 +48,6 @@ import net.minecraft.world.phys.AABB;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
@@ -58,7 +57,6 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
-import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingLandGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomMoveGoal;
@@ -69,6 +67,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.HmagFlyingGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
@@ -83,7 +82,7 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 		protected void defineSynchedData() {
 			super.defineSynchedData();
 			entityData.define(DATA_OWNERUUID, Optional.empty());
-			entityData.define(DATA_AISTATE, 0);
+			entityData.define(DATA_AISTATE, 1);
 		}
 		
 		@Override
@@ -154,7 +153,7 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 		
 		@Override
 		public InteractionResult mobInteract(Player player, InteractionHand hand)
-		{
+		{	
 			if (player.getUUID().equals(getOwnerUUID())) {
 				// For normal interaction
 				if (!player.isShiftKeyDown())
@@ -169,7 +168,8 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 						else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 							return InteractionResult.sidedSuccess(player.level.isClientSide);
 						// The function above returns PASS when the items are not correct. So when not PASS it should stop here
-						else if (hand == InteractionHand.MAIN_HAND)
+						else if (hand == InteractionHand.MAIN_HAND 
+								&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 						{
 							switchAIState();
 						}
@@ -183,8 +183,11 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 				else
 				{
 					// Open inventory and GUI
-					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+					{
+						BefriendedHelper.openBefriendedInventory(player, this);
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					}
 				}
 			} 
 			// Always pass when not owning this mob
@@ -315,6 +318,7 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 				this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
 				super.aiStep();
 				this.setItemSlot(EquipmentSlot.HEAD, head);
+				this.setInventoryFromMob();
 			}
 			else
 			{

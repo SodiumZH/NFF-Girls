@@ -39,23 +39,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
-import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
+import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
+import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
@@ -64,6 +57,8 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 
 public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity implements IDwmgBefriendedMob, IBaubleHolder
@@ -92,7 +87,7 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
+		entityData.define(DATA_AISTATE, 1);
 	}
 
 	@Override
@@ -157,11 +152,12 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
 		super.aiStep();
 		this.setItemSlot(EquipmentSlot.HEAD, headItem);
+		this.setInventoryFromMob();
 		
 		/* Handle combat AI */		
 		if (justShot)
 		{
-			if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, this.getAdditionalInventory().getItem(4)) > 0)
+			if (this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0)
 				this.getAdditionalInventory().consumeItem(8);
 			justShot = false;
 		}
@@ -199,10 +195,7 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 			{
 				additionalInventory.swapItem(4, 7);
 				updateFromInventory();
-			}
-			
-			/* Combat AI end */
-			
+			}			
 		}
 	}
 	
@@ -218,35 +211,38 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 		map.put(ModItems.SOUL_APPLE.get(), 15.0f);
 		return map;
 	}
-	/*
-	@Override
-	public InteractionResult mobInteract(Player Player player, InteractionHand hand)
-	{}*/
 	
 	@Override
-	public boolean onInteraction(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
-			{
-				if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-				{}
-				else if (hand == InteractionHand.MAIN_HAND)
+	public InteractionResult mobInteract(Player player, InteractionHand hand)
+	{
+		if (player.isShiftKeyDown())
+		{
+			if (player.getUUID().equals(getOwnerUUID())) {
+				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
-					switchAIState();
-				}	
-			}		
-			return true;
+					if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+					{}
+					else if (hand == InteractionHand.MAIN_HAND
+							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
+					{
+						switchAIState();
+					}	
+				}		
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
+			}
+			return InteractionResult.PASS;
 		}
-		return false;
-	}
-
-	@Override
-	public boolean onInteractionShift(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID())) {		
-			BefriendedHelper.openBefriendedInventory(player, this);
-			return true;
+		else
+		{
+			if (player.getUUID().equals(getOwnerUUID())) {		
+				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				{
+					BefriendedHelper.openBefriendedInventory(player, this);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
+				}
+			}
+			return InteractionResult.PASS;
 		}
-		return false;
 	}
 
 	/* Inventory */
@@ -291,13 +287,13 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
+		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
-		BefriendedHelper.readBefriendedCommonSaveData(this, nbt, Dwmg.MOD_ID);
+		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
 		setInit();
 	}
 

@@ -1,15 +1,9 @@
 package net.sodiumstudio.dwmg.entities.item.baublesystem.handlers;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.function.Predicate;
 
-import com.github.mechalopa.hmag.registry.ModItems;
-
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHornet;
 import net.sodiumstudio.dwmg.registries.DwmgItems;

@@ -23,7 +23,6 @@ import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.befriendmobs.util.NbtHelper;
-import net.sodiumstudio.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.befriendmobs.util.math.RndUtil;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 

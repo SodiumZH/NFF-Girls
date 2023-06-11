@@ -2,14 +2,12 @@ package net.sodiumstudio.dwmg.entities.hmag;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.SkeletonGirlEntity;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -21,8 +19,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -42,23 +38,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
+import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
+import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
@@ -69,6 +60,7 @@ import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
@@ -97,7 +89,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
+		entityData.define(DATA_AISTATE, 1);
 	}
 
 	@Override
@@ -167,6 +159,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
 			super.aiStep();
 			this.setItemSlot(EquipmentSlot.HEAD, headItem);
+			this.setInventoryFromMob();
 		}
 		else 
 		{
@@ -176,7 +169,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		/* Handle combat AI */
 		if (justShot)
 		{
-			if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, this.getAdditionalInventory().getItem(4)) > 0)
+			if (this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0)
 				this.getAdditionalInventory().consumeItem(8);
 			justShot = false;
 		}
@@ -232,33 +225,37 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		return map;
 	}
 	
-	@Deprecated
 	@Override
-	public boolean onInteraction(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
-			{
-				if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-				{}
-				else if (hand == InteractionHand.MAIN_HAND)
+	public InteractionResult mobInteract(Player player, InteractionHand hand)
+	{
+		if (!player.isShiftKeyDown())
+		{
+			if (player.getUUID().equals(getOwnerUUID())) {
+				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
-					switchAIState();
-				}		
+					if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+					{}
+					else if (hand == InteractionHand.MAIN_HAND
+							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
+					{
+						switchAIState();
+					}		
+				}
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
-			return true;
+			return InteractionResult.PASS;
 		}
-		return false;
-
-	}
-
-	@Deprecated
-	@Override
-	public boolean onInteractionShift(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID())) {		
-			BefriendedHelper.openBefriendedInventory(player, this);
-			return true;
+		else
+		{
+			if (player.getUUID().equals(getOwnerUUID())) {		
+				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				{
+					BefriendedHelper.openBefriendedInventory(player, this);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
+				}
+			}
+			return InteractionResult.PASS;
 		}
-		return false;
 	}
 
 	/* Inventory */

@@ -358,10 +358,10 @@ public interface HmagFlyingGoal
 		@Override
 		public void moveToOwner(double param)
 		{
-			if (!asGoal().getMob().isOwnerPresent())
+			if (!goal().getMob().isOwnerPresent())
 				return;
-			Mob mob = asGoal().getMob().asMob();
-			Player owner = asGoal().getMob().getOwner();
+			Mob mob = goal().getMob().asMob();
+			Player owner = goal().getMob().getOwner();
 			Vec3 pos = owner.getEyePosition();
 			mob.getMoveControl().setWantedPosition(pos.x, pos.y, pos.z, param);
 		}

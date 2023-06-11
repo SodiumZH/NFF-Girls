@@ -4,6 +4,7 @@ import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
@@ -54,5 +55,8 @@ public class DwmgEntityHelper
 		return true;
 	}
 	
-	
+	public static boolean isOnEitherHand(LivingEntity living, Item item)
+	{
+		return living.getMainHandItem().is(item) || living.getOffhandItem().is(item);
+	}
 }

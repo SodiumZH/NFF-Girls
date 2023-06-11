@@ -2,16 +2,10 @@ package net.sodiumstudio.dwmg.client.gui.screens;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.math.IntVec2;
-import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 
 // Gui for mobs with bow shooting attack + secondary weapon + one bouble
 public class GuiBowSecWeaponOneBauble extends GuiPreset0 {

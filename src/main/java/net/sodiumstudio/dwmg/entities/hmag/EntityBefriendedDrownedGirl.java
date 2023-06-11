@@ -44,20 +44,15 @@ import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedAmphibiousGoals;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRandomSwimGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.util.ItemHelper;
-import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedDrownedTridentAttackGoal;
@@ -68,6 +63,7 @@ import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob, IBefriendedAmphibious
 {
@@ -98,7 +94,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements ID
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
+		entityData.define(DATA_AISTATE, 1);
 	}
 
 	@Override
@@ -191,7 +187,8 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements ID
 					{
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					}
-					else if (hand == InteractionHand.MAIN_HAND)
+					else if (hand == InteractionHand.MAIN_HAND
+							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 					{
 						switchAIState();
 					}	
@@ -202,51 +199,15 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements ID
 		}
 		else
 		{
-			if (player.getUUID().equals(getOwnerUUID()))
-			{
-				if (!player.level.isClientSide)
+			if (player.getUUID().equals(getOwnerUUID())) {		
+				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
-			} 
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
+				}
+			}
 			return InteractionResult.PASS;
 		}
-	}
-	
-	@Override
-	public boolean onInteraction(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
-			{
-				// If this zombie is converted from a husk,
-				// it can be converted back by using a sponge to it
-				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromZombie) {
-					ItemHelper.consumeOne(player.getItemInHand(hand));
-					this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
-					EntityBefriendedZombieGirl z = this.convertToZombie();
-					z.isFromHusk = this.isFromHusk;
-				} 
-				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-				{}
-				else if (hand == InteractionHand.MAIN_HAND)
-				{
-					switchAIState();
-				}	
-			}
-			return true;
-		} 
-		return false;
-	}
-
-	@Override
-	public boolean onInteractionShift(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID()))
-		{
-
-			BefriendedHelper.openBefriendedInventory(player, this);
-
-			return true;
-		} 
-		return false;
 	}
 
 	/* Inventory */

@@ -9,14 +9,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.PlayMessages;
@@ -26,7 +24,6 @@ import net.sodiumstudio.befriendmobs.util.ReflectHelper;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNecroticReaper;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedNecroticReaper;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
-import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class NecromancerMagicBulletEntity extends MagicBulletEntity
 {
