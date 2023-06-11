@@ -21,45 +21,35 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
-import net.sodiumstudio.befriendmobs.template.TemplateBefriendedMobPreset;
 import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
-import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
@@ -68,6 +58,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTar
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 public class EntityBefriendedNecroticReaper extends NecroticReaperEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
@@ -83,7 +74,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
+		entityData.define(DATA_AISTATE, 1);
 	}
 	
 	@Override
@@ -175,6 +166,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
 			super.aiStep();
 			this.setItemSlot(EquipmentSlot.HEAD, head);
+			this.setInventoryFromMob();
 		}
 		else
 		{
@@ -238,7 +230,8 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 					else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
-					else if (hand == InteractionHand.MAIN_HAND)
+					else if (hand == InteractionHand.MAIN_HAND
+							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.NECROMANCER_WAND.get()))
 					{
 						if (this.controllable())
 						{
@@ -246,7 +239,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 						}
 						else
 						{
-						MiscUtil.printToScreen(InfoHelper.createTrans("info.dwmg.necrotic_reaper_not_controllable"), getOwner());
+							MiscUtil.printToScreen(InfoHelper.createTrans("info.dwmg.necrotic_reaper_not_controllable"), getOwner());
 						}
 					}
 					// Here it's main hand but no interaction. Return pass to enable off hand interaction.
@@ -258,15 +251,12 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 			// For interaction with shift key down
 			else
 			{
-				// Open inventory and GUI
-				if (this.controllable())
-				{
-					BefriendedHelper.openBefriendedInventory(player, this);					
-				}
-				else
-				{
-					if (!player.level.isClientSide)
-						MiscUtil.printToScreen(InfoHelper.createTrans("info.dwmg.necrotic_reaper_not_controllable_inventory"), player);
+				if (player.getUUID().equals(getOwnerUUID())) {		
+					if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+					{
+						BefriendedHelper.openBefriendedInventory(player, this);
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					}
 				}
 				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}

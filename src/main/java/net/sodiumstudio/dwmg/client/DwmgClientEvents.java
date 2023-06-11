@@ -13,6 +13,7 @@ import com.github.mechalopa.hmag.client.renderer.StrayGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.WitherSkeletonGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.ZombieGirlRenderer;
 
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -65,6 +66,7 @@ public class DwmgClientEvents
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_KOBOLD.get(), KoboldRenderer::new);
         
         event.registerEntityRenderer(DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get(), MagicBulletRenderer::new); 
+        event.registerEntityRenderer(DwmgEntityTypes.BEFRIENDED_GHAST_FIREBALL.get(), c -> new ThrownItemRenderer<>(c, 3.0F, true));
     }
 
 	@SubscribeEvent

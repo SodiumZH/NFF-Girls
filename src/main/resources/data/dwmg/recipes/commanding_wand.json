@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"E",
+	"S",
+	"S"	
+	],
+	
+	"key":{ 
+	
+		"S":{
+		"item": "minecraft:stick"
+		},
+		
+		"E":{ 
+		"item": "hmag:evil_crystal"
+		}		
+	},
+	
+	"result":{ 
+		"item": "dwmg:commanding_wand",
+		"count": 1
+	}
+}

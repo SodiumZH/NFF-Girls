@@ -14,7 +14,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Container;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -52,6 +51,7 @@ import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob {
 
@@ -120,40 +120,42 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IDwm
 	}
 	
 	@Override
-	public boolean onInteraction(Player player, InteractionHand hand) {
-		// Porting solution end
-		
-		if (player.getUUID().equals(getOwnerUUID())) {
-			if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
-			{
-				if (player.getItemInHand(hand).is(Items.SPONGE) && isFromHusk) {
-					ItemHelper.consumeOne(player.getItemInHand(hand));
-					this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
-					this.convertToHusk();
-					return true;
-				} 
-				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) 
-				{}
-				else if (hand == InteractionHand.MAIN_HAND)
+	public InteractionResult mobInteract(Player player, InteractionHand hand)
+	{
+		if (!player.isShiftKeyDown())
+		{
+			if (player.getUUID().equals(getOwnerUUID())) {
+				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
-					switchAIState();
+					if (player.getItemInHand(hand).is(Items.SPONGE) && isFromHusk) {
+						ItemHelper.consumeOne(player.getItemInHand(hand));
+						this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
+						this.convertToHusk();
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					} 
+					else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) 
+					{}
+					else if (hand == InteractionHand.MAIN_HAND
+							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
+					{
+						switchAIState();
+					}
+				}
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
+			} 
+			return InteractionResult.PASS;
+		}
+		else
+		{
+			if (player.getUUID().equals(getOwnerUUID())) {		
+				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				{
+					BefriendedHelper.openBefriendedInventory(player, this);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
 				}
 			}
-			return true;
-		} 
-		return false;
-	}
-
-	@Override
-	public boolean onInteractionShift(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID())) {
-
-			BefriendedHelper.openBefriendedInventory(player, this);
-
-			return true;
-		} //else
-			//Debug.printToScreen("Owner UUID: " + getOwnerUUID(), player, this);
-		return false;
+			return InteractionResult.PASS;
+		}
 	}
 
 	/* Inventory */
@@ -262,7 +264,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IDwm
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
+		entityData.define(DATA_AISTATE, 1);
 	}
 
 	@Override

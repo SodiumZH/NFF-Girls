@@ -2,7 +2,6 @@ package net.sodiumstudio.dwmg.registries;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.ChorusFruitItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -13,6 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.DwmgTab;
+import net.sodiumstudio.dwmg.item.ItemCommandWand;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.item.ItemNecromancerWand;
 
@@ -68,7 +68,7 @@ public class DwmgItems {
 			new Item.Properties().tab(TAB)));
 	public static final RegistryObject<Item> NECROMANCER_WAND = ITEMS.register("necromancer_wand", () -> new ItemNecromancerWand(
 			new Item.Properties().tab(TAB).durability(64).rarity(Rarity.UNCOMMON)));
-	
+	public static final RegistryObject<Item> COMMANDING_WAND = ITEMS.register("commanding_wand", () -> new ItemCommandWand(new Item.Properties().tab(TAB).stacksTo(1)));
 	/*
 	public static final RegistryObject<Item> INSOMNIA_HELMET = ITEMS.register("insomnia_helmet", () -> new ArmorItem(
 			ArmorMaterials.LEATHER,
