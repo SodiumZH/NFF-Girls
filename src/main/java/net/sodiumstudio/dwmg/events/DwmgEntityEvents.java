@@ -113,7 +113,6 @@ public class DwmgEntityEvents
 	private static final EquipmentSlot[] ARMOR_AND_HANDS =
 		{EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 
-
 	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
