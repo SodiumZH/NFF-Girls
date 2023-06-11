@@ -2,15 +2,8 @@ package net.sodiumstudio.dwmg.entities.handlers.hmag;
 
 import com.github.mechalopa.hmag.registry.ModItems;
 
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
-import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.befriendmobs.util.math.RndUtil;
-import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class HandlerDrownedGirl extends HandlerZombieGirl

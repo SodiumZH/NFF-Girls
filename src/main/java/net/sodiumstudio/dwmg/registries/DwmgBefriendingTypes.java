@@ -13,10 +13,10 @@ import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerEnderExecutor;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerGhastlySeeker;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHornet;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHuskGirl;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNecroticReaper;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerWitherSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerZombieGirl;
-import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNecroticReaper;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgBefriendingTypes {

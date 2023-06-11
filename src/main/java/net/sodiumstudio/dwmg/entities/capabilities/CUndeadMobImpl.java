@@ -1,18 +1,12 @@
 package net.sodiumstudio.dwmg.entities.capabilities;
 
-import java.util.UUID;
 import java.util.HashSet;
+import java.util.UUID;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.IntTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.sodiumstudio.befriendmobs.util.NbtHelper;
-import net.sodiumstudio.befriendmobs.util.MiscUtil;
 
 public class CUndeadMobImpl implements CUndeadMob {
 

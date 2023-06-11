@@ -2,7 +2,6 @@ package net.sodiumstudio.dwmg.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -11,7 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.dwmg.registries.DwmgBlocks;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 /**
  * Soul Carpet is a carpet which provides mobs Death Affinity effect on it

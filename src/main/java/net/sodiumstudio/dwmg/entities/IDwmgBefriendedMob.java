@@ -1,7 +1,6 @@
 package net.sodiumstudio.dwmg.entities;
 
 
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;

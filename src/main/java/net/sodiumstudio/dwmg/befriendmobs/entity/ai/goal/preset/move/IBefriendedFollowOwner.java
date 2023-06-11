@@ -8,7 +8,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedMoveGoal;
 import net.sodiumstudio.befriendmobs.util.LevelHelper;
-import net.sodiumstudio.befriendmobs.util.annotation.DontCallManually;
 import net.sodiumstudio.befriendmobs.util.annotation.DontOverride;
 import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.AiMaths;
@@ -30,7 +29,7 @@ public interface IBefriendedFollowOwner
 	/**
 	 * Cast from interface to goal
 	 */
-	public default BefriendedMoveGoal asGoal()
+	public default BefriendedMoveGoal goal()
 	{
 		if (this instanceof BefriendedMoveGoal bg)
 			return bg;
@@ -43,7 +42,7 @@ public interface IBefriendedFollowOwner
 	 */
 	public default void goToOwnerPreset(double speedModifier)
 	{
-		if (!asGoal().getMob().isOwnerPresent())
+		if (!goal().getMob().isOwnerPresent())
 			return;
 		//Mob mob = asGoal().getMob().asMob();
 		teleportToOwner();	// Distance check is inside
@@ -57,10 +56,10 @@ public interface IBefriendedFollowOwner
 	 */
 	public default void moveToOwner(double param, Vec3 offset)
 	{
-		if (!asGoal().getMob().isOwnerPresent())
+		if (!goal().getMob().isOwnerPresent())
 			return;
-		Mob mob = asGoal().getMob().asMob();
-		Player owner = asGoal().getMob().getOwner();
+		Mob mob = goal().getMob().asMob();
+		Player owner = goal().getMob().getOwner();
 		Vec3 pos = owner.getEyePosition();
 		if (mob instanceof PathfinderMob pm)
 		{
@@ -94,17 +93,17 @@ public interface IBefriendedFollowOwner
 	public default void teleportToOwner() {
 		if (!allowTeleport())
 			return;	
-		if (!asGoal().getMob().isOwnerPresent())
+		if (!goal().getMob().isOwnerPresent())
 			return;
-		Mob mob = asGoal().getMob().asMob();
-		Player owner = asGoal().getMob().getOwner();
+		Mob mob = goal().getMob().asMob();
+		Player owner = goal().getMob().getOwner();
 		Vec3 ownerPos = owner.getEyePosition();
 		if (mob.distanceToSqr(owner) < getTeleportDistance() * getTeleportDistance())
 			return;
 			
 		for (int i = 0; i < 20; ++i) {
 			Vec3 pos = ownerPos.add(teleportOffset());
-			if (asGoal().shouldAvoidSun.test(asGoal().getMob()) && LevelHelper.isUnderSun(new BlockPos(pos), mob))
+			if (goal().shouldAvoidSun.test(goal().getMob()) && LevelHelper.isUnderSun(new BlockPos(pos), mob))
 				continue;
 			if (tryTeleportToOwner())
 				return;
@@ -113,7 +112,13 @@ public interface IBefriendedFollowOwner
 	
 	public default Vec3 teleportOffset()
 	{
-		return AiMaths.randomOvalVector(3, 1, 3).scale(asGoal().getMob().asMob().getRandom().nextDouble());
+		return teleportOffsetDefault();
+	}
+	
+	@DontOverride
+	public default Vec3 teleportOffsetDefault()
+	{
+		return AiMaths.randomOvalVector(3, 1, 3).scale(goal().getMob().asMob().getRandom().nextDouble());
 	}
 	
 	/**
@@ -122,14 +127,14 @@ public interface IBefriendedFollowOwner
 	 * @return Whether succeeded.
 	 */
 	public default boolean tryTeleportToOwner() {
-		if (!asGoal().getMob().isOwnerPresent())
+		if (!goal().getMob().isOwnerPresent())
 			return false;
-		Mob mob = asGoal().getMob().asMob();
-		Player owner = asGoal().getMob().getOwner();
+		Mob mob = goal().getMob().asMob();
+		Player owner = goal().getMob().getOwner();
 		Vec3 targetPos = owner.position().add(new Vec3(0, 1, 0)).add(teleportOffset());
 		if (!this.posNoCollision(targetPos))
 			return false;
-		if (asGoal().shouldAvoidSun.test(asGoal().getMob()) && LevelHelper.isUnderSun(new BlockPos(targetPos), mob))
+		if (goal().shouldAvoidSun.test(goal().getMob()) && LevelHelper.isUnderSun(new BlockPos(targetPos), mob))
 			return false;
 		else {
 			mob.moveTo(targetPos);
@@ -139,7 +144,7 @@ public interface IBefriendedFollowOwner
 
 	@DontOverride
 	public default boolean posNoCollision(Vec3 pos) {
-		Mob mob = asGoal().getMob().asMob();
+		Mob mob = goal().getMob().asMob();
 		Vec3 deltaVec = pos.subtract(mob.position());
 		return mob.level.noCollision(mob, mob.getBoundingBox().move(deltaVec));
 	}

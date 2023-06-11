@@ -43,7 +43,6 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingLandGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomMoveGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
@@ -54,6 +53,8 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTar
 import net.sodiumstudio.dwmg.entities.ai.movecontrol.BefriendedFlyingMoveControl;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefriendedMob
 {
 	public EntityBefriendedHornet(EntityType<? extends HornetEntity> pEntityType, Level pLevel) {
@@ -178,7 +179,8 @@ public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefrien
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					}
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
-					else if (hand == InteractionHand.MAIN_HAND)
+					else if (hand == InteractionHand.MAIN_HAND
+							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 					{
 						switchAIState();
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
@@ -194,10 +196,12 @@ public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefrien
 		
 		else
 		{
-			if (player.getUUID().equals(getOwnerUUID())) {
-				// Open inventory and GUI
-				BefriendedHelper.openBefriendedInventory(player, this);
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+			if (player.getUUID().equals(getOwnerUUID())) {		
+				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				{
+					BefriendedHelper.openBefriendedInventory(player, this);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
+				}
 			}
 			return InteractionResult.PASS;
 		}
@@ -283,7 +287,7 @@ public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefrien
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
+		entityData.define(DATA_AISTATE, 1);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package net.sodiumstudio.dwmg.entities.item.baublesystem;
 
 import net.minecraftforge.fml.common.Mod;
-
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.handlers.BaubleHandlerDrowned;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.handlers.BaubleHandlerEmpty;

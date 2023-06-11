@@ -5,9 +5,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
-import net.sodiumstudio.befriendmobs.client.gui.screens.BefriendedGuiScreen;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.client.gui.screens.GuiNecroticReaper;
 
 public class InventoryMenuNecroticReaper extends InventoryMenuHandItemsFourBaubles
 {

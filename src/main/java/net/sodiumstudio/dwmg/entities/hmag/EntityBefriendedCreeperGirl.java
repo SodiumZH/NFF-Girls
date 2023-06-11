@@ -40,26 +40,22 @@ import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedBlockActionGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.vanillapreset.creeper.AbstractBefriendedCreeper;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.util.ItemHelper;
-import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperGirlExplosionAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperGirlMeleeAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedCreeperFollowOwnerGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedCreeperFollowOwnerGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperGirlExplosionAttackGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperGirlMeleeAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuCreeper;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 // Rewritten from HMaG CreeperGirlEntity
 public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper implements IDwmgBefriendedMob
@@ -211,54 +207,61 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper imple
 	}
 	
 	@Override
-	public boolean onInteraction(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID()))
+	public InteractionResult mobInteract(Player player, InteractionHand hand)
+	{
+		if (!player.isShiftKeyDown())
 		{
-			if (!this.level.isClientSide && hand == InteractionHand.MAIN_HAND)
+			if (player.getUUID().equals(getOwnerUUID()))
 			{
-				// Power with a lightning particle
-				if (player.getItemInHand(hand).is(ModItems.LIGHTNING_PARTICLE.get()) && !this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
+				if (!this.level.isClientSide && hand == InteractionHand.MAIN_HAND)
 				{
-					this.setPowered(true);
-					ItemHelper.consumeOne(player.getItemInHand(hand));
-					return true;
+					// Power with a lightning particle
+					if (player.getItemInHand(hand).is(ModItems.LIGHTNING_PARTICLE.get()) && !this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
+					{
+						this.setPowered(true);
+						ItemHelper.consumeOne(player.getItemInHand(hand));
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					}
+					// Unpower with empty hand )and get a lightning particle
+					/*else if (player.getItemInHand(hand).isEmpty() && this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
+					{
+						this.setPowered(false);
+						this.spawnAtLocation(new ItemStack(ModItems.LIGHTNING_PARTICLE.get(), 1));
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					} */
+					else if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)
+							&& this.canIgnite
+							&& (!this.isPowered() || this.getAdditionalInventory().getItem(6).getCount() >= 2)
+							&& this.getSwell() == 0)
+					{
+		
+						this.playerIgniteDefault(player, hand);
+						isPlayerIgnited = true;
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					} 
+					else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					else if (hand == InteractionHand.MAIN_HAND
+							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
+					{
+						switchAIState();
+					}	
 				}
-				// Unpower with empty hand )and get a lightning particle
-				else if (player.getItemInHand(hand).isEmpty() && this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
-				{
-					this.setPowered(false);
-					this.spawnAtLocation(new ItemStack(ModItems.LIGHTNING_PARTICLE.get(), 1));
-					return true;
-				} 
-				else if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)
-						&& this.canIgnite
-						&& (!this.isPowered() || this.getAdditionalInventory().getItem(6).getCount() >= 2)
-						&& this.getSwell() == 0)
-				{
-	
-					this.playerIgniteDefault(player, hand);
-					isPlayerIgnited = true;
-					return true;
-				} 
-				else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-					return true;
-				else if (hand == InteractionHand.MAIN_HAND)
-				{
-					switchAIState();
-				}	
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
-			return true;
+			return InteractionResult.PASS;
 		}
-		return false;
-	}
-	
-	@Override
-	public boolean onInteractionShift(Player player, InteractionHand hand) {
-		if (player.getUUID().equals(getOwnerUUID())) {		
-			BefriendedHelper.openBefriendedInventory(player, this);
-			return true;
+		else
+		{
+			if (player.getUUID().equals(getOwnerUUID())) {		
+				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				{
+					BefriendedHelper.openBefriendedInventory(player, this);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
+				}
+			}
+			return InteractionResult.PASS;
 		}
-		return false;
 	}
 	
 	// Inventory

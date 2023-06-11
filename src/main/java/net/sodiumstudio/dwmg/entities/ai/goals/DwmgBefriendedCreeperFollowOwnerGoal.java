@@ -3,7 +3,6 @@ package net.sodiumstudio.dwmg.entities.ai.goals;
 import javax.annotation.Nonnull;
 
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
 import net.sodiumstudio.befriendmobs.entity.vanillapreset.creeper.AbstractBefriendedCreeper;
 
 /* Adjusted from vanilla FollowOwnerGoal for TameableAnimal */

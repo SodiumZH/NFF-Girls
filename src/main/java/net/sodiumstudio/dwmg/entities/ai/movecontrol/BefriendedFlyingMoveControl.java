@@ -1,7 +1,6 @@
 package net.sodiumstudio.dwmg.entities.ai.movecontrol;
 
 import com.github.mechalopa.hmag.util.ModUtils;
-import com.github.mechalopa.hmag.world.entity.AbstractFlyingMonsterEntity;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;

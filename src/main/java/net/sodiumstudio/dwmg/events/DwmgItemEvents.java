@@ -19,10 +19,8 @@ import net.sodiumstudio.befriendmobs.item.MobRespawnerInstance;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerStartRespawnEvent;
 import net.sodiumstudio.befriendmobs.item.RespawnerConstructEvent;
 import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
-import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.NbtHelper;
-import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
 
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -51,7 +51,11 @@ import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFlyingFollowOwnerGo
 import net.sodiumstudio.dwmg.entities.ai.goals.HmagFlyingGoal;
 import net.sodiumstudio.dwmg.entities.ai.movecontrol.BefriendedFlyingMoveControl;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.entities.projectile.BefriendedGhastFireball;
+import net.sodiumstudio.dwmg.events.DwmgEntityEvents;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuGhastlySeeker;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 /**
  * NOT IMPLEMENTED YET
@@ -59,8 +63,12 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuGhastlySeeker;
 
 public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implements IDwmgBefriendedMob
 {
-
-
+	
+	/** Handled in {@link DwmgEntityEvents#onLivingSetAttackTarget} */
+	public LivingEntity lastTarget = null;
+	public int shootCooldown = 70;
+	
+	
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
@@ -72,7 +80,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
+		entityData.define(DATA_AISTATE, 1);
 	}
 	
 	@Override
@@ -99,7 +107,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 		return Monster.createMonsterAttributes()
 				.add(Attributes.MAX_HEALTH, 60.0D)
 				.add(Attributes.ARMOR, 2.0D)
-				.add(Attributes.ATTACK_DAMAGE, 0d)
+				.add(Attributes.ATTACK_DAMAGE, 0)
 				.add(Attributes.FOLLOW_RANGE, 64.0D);
 	}
 
@@ -169,7 +177,8 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 					else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
-					else if (hand == InteractionHand.MAIN_HAND)
+					else if (hand == InteractionHand.MAIN_HAND
+							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 					{
 						switchAIState();
 					}
@@ -181,10 +190,12 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 			}
 			// For interaction with shift key down
 			else
-			{
-				// Open inventory and GUI
-				BefriendedHelper.openBefriendedInventory(player, this);
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+			{	
+				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				{
+					BefriendedHelper.openBefriendedInventory(player, this);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
+				}
 			}
 		} 
 		// Always pass when not owning this mob
@@ -260,7 +271,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.NECROTIC_REAPER;
+		return DwmgBaubleHandlers.UNDEAD;
 	}
 
 	
@@ -270,6 +281,15 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 	@Override
 	public String getModId() {
 		return "dwmg";
+	}
+
+	public float calculateExplosionPower()
+	{
+		if (getAdditionalInventory().getItem(4).is(Items.FIRE_CHARGE))			
+			return (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) / 10f) + 1f;
+		else if (getAdditionalInventory().getItem(4).is(ModItems.BLASTING_BOTTLE.get()))
+			return (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5f / 10f) + 1.5f;
+		else return 0f;
 	}
 	
 	// ==================================================================== //
@@ -300,8 +320,6 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 	{
 		private final EntityBefriendedGhastlySeeker parent;
 		public int attackTimer;
-		private LivingEntity currentTarget = null;
-
 		public FireballAttackGoal(EntityBefriendedGhastlySeeker mob)
 		{
 			super(mob);
@@ -313,7 +331,9 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 		public boolean checkCanUse()
 		{
 			// It consumes fire charges
-			return this.parent.getTarget() != null && mob.getAdditionalInventory().getItem(4).is(Items.FIRE_CHARGE);
+			return this.parent.getTarget() != null 
+					&& (mob.getAdditionalInventory().getItem(4).is(Items.FIRE_CHARGE) 
+							|| mob.getAdditionalInventory().getItem(4).is(ModItems.BLASTING_BOTTLE.get()));
 		}
 
 		@Override
@@ -326,7 +346,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 		public void start()
 		{
 			this.attackTimer = 0;
-			currentTarget = this.parent.getTarget();
+			this.parent.getTarget();
 		}
 
 		@Override
@@ -344,11 +364,16 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 
 			if ((target.distanceToSqr(this.parent) < d0 * d0 || this.attackTimer > 10) && this.parent.hasLineOfSight(target))
 			{
+				
+				if (mob.getAdditionalInventory().getItem(4).isEmpty())
+					return;
+				
 				Level world = this.parent.level;
 				++this.attackTimer;
 
 				if (this.attackTimer == 10 && !this.parent.isSilent())
 				{
+					mob.asMob().getLookControl().setLookAt(mob.asMob().getTarget());
 					world.levelEvent((Player)null, 1015, this.parent.blockPosition(), 0);
 				}
 
@@ -365,15 +390,20 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 					}
 					
 					Vec3 pos = new Vec3(this.parent.getX() + vec3.x * 0.5D, this.parent.getY(0.5D) + 0.25D, this.parent.getZ() + vec3.z * 0.5D);
-					Vec3 velocity = target.getBoundingBox().getCenter().subtract(parent.position()).normalize().scale(speed);
+					Vec3 velocity = target.getBoundingBox().getCenter().subtract(pos).normalize().scale(speed);
 					
 					
-					LargeFireball largefireball = new LargeFireball(world, this.parent, velocity.x, velocity.y, velocity.z, this.parent.getExplosionPower());					
-					largefireball.setPos(pos);
-					// Check again to prevent firing without ammo
+					BefriendedGhastFireball fireball = new BefriendedGhastFireball(world, this.parent, velocity.x, velocity.y, velocity.z, this.parent.calculateExplosionPower());					
+					fireball.setPos(pos);
 					if (mob.getAdditionalInventory().getItem(4).is(Items.FIRE_CHARGE))
+						fireball.breakBlocks = false;
+						
+					// Check again to prevent firing without ammo
+					if (mob.getAdditionalInventory().getItem(4).is(Items.FIRE_CHARGE)
+							|| mob.getAdditionalInventory().getItem(4).is(ModItems.BLASTING_BOTTLE.get()))
 					{
-						world.addFreshEntity(largefireball);
+						mob.asMob().getLookControl().setLookAt(mob.asMob().getTarget());
+						world.addFreshEntity(fireball);
 						mob.getAdditionalInventory().getItem(4).shrink(1);
 					}
 					this.attackTimer = -50;
@@ -399,7 +429,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 		@Override
 		public Vec3 teleportOffset()
 		{
-			return IBefriendedFollowOwner.super.teleportOffset().add(0, 1, 0);
+			return teleportOffsetDefault().add(0, 1, 0);
 		}
 		
 		
@@ -409,7 +439,6 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 				return;
 			this.teleportToOwner();
 			this.moveToOwner(getActualSpeed(), new Vec3(0, 3, 0));		
-		}	
-		
+		}		
 	}
 }

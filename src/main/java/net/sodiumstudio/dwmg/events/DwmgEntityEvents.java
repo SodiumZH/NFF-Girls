@@ -8,6 +8,7 @@ import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.CreeperGirlEntity;
 import com.github.mechalopa.hmag.world.entity.DyssomniaEntity;
 import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
+import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,12 +23,15 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.monster.Zoglin;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.monster.hoglin.Hoglin;
@@ -52,11 +56,13 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedChangeAiStateEvent;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
@@ -76,6 +82,7 @@ import net.sodiumstudio.befriendmobs.util.Wrapped;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.effects.EffectNecromancerWither;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.ai.goals.GhastlySeekerRandomFlyGoalDwmgAdjusted;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedDrownedGirl;
@@ -106,6 +113,7 @@ public class DwmgEntityEvents
 	private static final EquipmentSlot[] ARMOR_AND_HANDS =
 		{EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
@@ -151,6 +159,24 @@ public class DwmgEntityEvents
 				mob.setTarget(null);
 	        }
 	        
+	        // Handle Ghastly Seeker
+	        if (mob instanceof EntityBefriendedGhastlySeeker gs)
+	        {
+	        	// If last target is still attackable, prevent removing target
+	        	if (target == null 
+	        		&& gs.lastTarget != null 
+	        		&& gs.lastTarget.isAlive() 
+	        		&& gs.lastTarget.distanceToSqr(gs) <= gs.getAttributeValue(Attributes.FOLLOW_RANGE) * gs.getAttributeValue(Attributes.FOLLOW_RANGE)
+	        		&& gs.hasLineOfSight(gs.lastTarget))
+	        	{
+	        		gs.setTarget(gs.lastTarget);
+	        	}
+	        	if (gs.getLastHurtByMob() != gs.getTarget() && gs.getAIState() == BefriendedAIState.WAIT)
+	        	{
+	        		gs.setTarget(null);
+	        	}
+	        	gs.lastTarget = gs.getTarget();
+	        }    
 		}
 		// Handle befriended mobs //
 
@@ -567,10 +593,16 @@ public class DwmgEntityEvents
 			/** Handle necromancer wither effect */
 			if (event.getEntity().hasEffect(DwmgEffects.NECROMANCER_WITHER.get()))
 			{
-				int ampl = event.getEntity().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
-				if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
+				// Wither skeletons are immune to this effect
+				if (event.getEntity() instanceof WitherSkeleton)
+					event.getEntity().removeEffect(DwmgEffects.NECROMANCER_WITHER.get());
+				else
 				{
-					event.getEntity().hurt(DwmgDamageSources.NECROMANCER_WITHER, 1);
+					int ampl = event.getEntity().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
+					if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
+					{
+						event.getEntity().hurt(DwmgDamageSources.NECROMANCER_WITHER, 1);
+					}
 				}
 			}
 
@@ -633,6 +665,22 @@ public class DwmgEntityEvents
 		}
 	}
 	
+	/**
+	 * Actions before checking if mob is killed by player
+	 */
+	@SubscribeEvent
+	public static void onGetLootLevel(LootingLevelEvent event)
+	{
+		if (event.getDamageSource().getEntity() != null
+			&& event.getDamageSource().getEntity() instanceof IDwmgBefriendedMob bm)
+		{
+			/** After this, vanilla will use LivingEntity#lastHurtByPlayerTime to check if it's killed by player
+			 * so force set this to make it drop player-kill loot */
+			ReflectHelper.forceSet(event.getEntity(), LivingEntity.class, "lastHurtByPlayerTime",  1);
+		}
+	}
+	
+	
 	@SubscribeEvent
 	public static void onDropExp(LivingExperienceDropEvent event)
 	{
@@ -687,6 +735,7 @@ public class DwmgEntityEvents
 						bm.setInventoryFromMob();
 					return 0;
 				}
+				
 			}
 		}
 		// Sync inventory
@@ -743,6 +792,7 @@ public class DwmgEntityEvents
 	{
 		if (event.getEntity() instanceof Mob mob && AiHelper.isMobHostileToPlayer(mob) && !(event.getEntity() instanceof IBefriendedMob))
 		{
+			/** Handle mob hostility */
 			Predicate<LivingEntity> none = (l) -> true;
 			Predicate<LivingEntity> isNotWaiting = DwmgEntityHelper::isNotWaiting;
 			Predicate<LivingEntity> isNotWearingGold = DwmgEntityHelper::isNotWearingGold;
@@ -808,7 +858,26 @@ public class DwmgEntityEvents
 			{
 				setHostileToAllBefriendedMobs(mob, (living) -> (living.getMobType() != MobType.ARTHROPOD));
 			}
-
+			/** Mob hostility end */
+			
+			/** Existing mob adjustment */
+			if (mob instanceof GhastlySeekerEntity gs)
+			{
+				WrappedGoal oldMoveGoal = null;
+				for (WrappedGoal wg : gs.goalSelector.getAvailableGoals())
+				{
+					if (wg.getPriority() == 1 /* Priority 1 is only random fly goal */)
+					{
+						oldMoveGoal = wg;
+						break;
+					}
+				}
+				if (oldMoveGoal != null)
+				{
+					gs.goalSelector.getAvailableGoals().remove(oldMoveGoal);//.getAvailableGoals().remove(oldMoveGoal);
+					gs.goalSelector.addGoal(1, new GhastlySeekerRandomFlyGoalDwmgAdjusted(gs));
+				}
+			}
 		}
 	}
 	
