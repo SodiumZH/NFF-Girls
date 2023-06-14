@@ -152,7 +152,7 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 			else
 			{
 		
-				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
 					return InteractionResult.sidedSuccess(player.level.isClientSide);

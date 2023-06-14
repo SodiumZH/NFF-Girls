@@ -188,7 +188,6 @@ public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefrien
 						switchAIState();
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					}
-					// Here it's main hand but no interaction. Return pass to enable off hand interaction.
 					else return InteractionResult.PASS;
 				}
 				// Interacted
@@ -200,7 +199,7 @@ public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefrien
 		else
 		{
 			if (player.getUUID().equals(getOwnerUUID())) {		
-				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
 					return InteractionResult.sidedSuccess(player.level.isClientSide);

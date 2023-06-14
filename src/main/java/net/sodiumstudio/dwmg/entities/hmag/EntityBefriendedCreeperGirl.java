@@ -230,12 +230,12 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper imple
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					}
 					// Unpower with empty hand )and get a lightning particle
-					/*else if (player.getItemInHand(hand).isEmpty() && this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
+					else if (player.getItemInHand(hand).isEmpty() && this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
 					{
 						this.setPowered(false);
 						this.spawnAtLocation(new ItemStack(ModItems.LIGHTNING_PARTICLE.get(), 1));
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
-					} */
+					} 
 					else if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)
 							&& this.canIgnite
 							&& (!this.isPowered() || this.getAdditionalInventory().getItem(6).getCount() >= 2)
@@ -253,6 +253,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper imple
 					{
 						switchAIState();
 					}	
+					else return InteractionResult.PASS;
 				}
 				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
@@ -261,7 +262,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper imple
 		else
 		{
 			if (player.getUUID().equals(getOwnerUUID())) {		
-				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
 					return InteractionResult.sidedSuccess(player.level.isClientSide);

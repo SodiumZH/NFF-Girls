@@ -239,6 +239,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 					{
 						switchAIState();
 					}		
+					else return InteractionResult.PASS;
 				}
 				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
@@ -247,7 +248,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		else
 		{
 			if (player.getUUID().equals(getOwnerUUID())) {		
-				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
 					return InteractionResult.sidedSuccess(player.level.isClientSide);

@@ -10,15 +10,15 @@ Added Commanding Wand.
 
 Adjusted mob interaction method:
 
- --To switch mob's AI state, player must have Commanding Wand on either hand. For Necrotic Reapers, use Necromancer's Wand instead.
+ --To switch mob's AI state, player must have Commanding Wand on either hand, and right click the mob.
 
- --To open mob's inventory GUI, player must be empty on the main hand, and press shift+right click. Necrotic Reapers' inventory GUI no longer requires necromancer item.
+ --To open mob's inventory GUI, player must have Commanding Wand on either hand, and press shift+right click. Necrotic Reapers' inventory GUI no longer requires necromancer item.
 
- --Creeper Girl can no longer be uncharged to drop the Lightning Particle. Now charging is irreversible until it makes an explosion.
+ --For Necrotic Reapers, use Necromancer's Wand instead.
 
 Optimized the AI of flying befriended mobs.
 
-Adjusted the AI of Ghastly Seeker (non-befriended, HMaG) out of the Nether. Now if it's not in Nether, it will fly at most 32 blocks high from the ground. Also it will move too far from players. This change makes effect only if DWMG is loaded. 
+Adjusted the AI of Ghastly Seeker (non-befriended, HMaG) out of the Nether. Now if it's not in Nether, it will fly at the height no more than 32 blocks above the ground. Also it won't move too far from players. This change makes effect only if DWMG is loaded. 
 
 Now Wither Skeleton Girls will not catch Curse of Necromancy effect.
 
@@ -37,6 +37,8 @@ Fixed Stray Girl server crash.
 Fixed Soul Carpet not dropping on broken.
 
 Fixed armor losing durability on taking bypass-armor damages on befriended mobs.
+
+Fixed GUI persisting when mob is removed from level or moving too far away.
 
 Removed and fixed some deprecated methods in code.
 
