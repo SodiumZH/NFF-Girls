@@ -135,6 +135,7 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IDwmgBef
 					{
 						switchAIState();
 					}			
+					else return InteractionResult.PASS;
 				}
 				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
@@ -143,7 +144,7 @@ public class EntityBefriendedHuskGirl extends HuskGirlEntity implements IDwmgBef
 		else
 		{
 			if (player.getUUID().equals(getOwnerUUID())) {		
-				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
 					return InteractionResult.sidedSuccess(player.level.isClientSide);

@@ -182,7 +182,6 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 					{
 						switchAIState();
 					}
-					// Here it's main hand but no interaction. Return pass to enable off hand interaction.
 					else return InteractionResult.PASS;
 				}
 				// Interacted
@@ -191,7 +190,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 			// For interaction with shift key down
 			else
 			{	
-				if (hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty())
+				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
 					return InteractionResult.sidedSuccess(player.level.isClientSide);

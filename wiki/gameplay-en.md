@@ -40,7 +40,11 @@ Hornet
 
 Necrotic Reaper
 
-Banshee
+Banshee (0.0.5 / 0.1.5)
+
+Ghastly Seeker (0.0.6 / 0.1.6)
+
+
 
 
 
@@ -121,6 +125,8 @@ Each time an item is successfully given, glint particles will appear. Each time 
 Once you provoked them and/or lost the Undead Affinity effect, the process will be interrupted.
 
 ##### Interaction
+
+To interact, player must have a Commanding Wand on either hand. (0.0.6 / 0.1.6)
 
 Right click to switch the AI state among Wait, Follow and Wander. 
 
