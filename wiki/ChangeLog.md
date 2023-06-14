@@ -40,6 +40,8 @@ Fixed armor losing durability on taking bypass-armor damages on befriended mobs.
 
 Fixed GUI persisting when mob is removed from level or moving too far away.
 
+Reduced random stroll radius from 64 to 16.
+
 Removed and fixed some deprecated methods in code.
 
 ### 0.1.5.1

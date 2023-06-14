@@ -348,7 +348,9 @@ If you get >32 blocks away from it, the process will be interrupted.
 
 ##### Interaction
 
-To interact with it, you must either wear a Necromancer's Hat or hold a Necromancer's Wand on either hand. Otherwise you'll not be able to switch its AI state or open the inventory GUI, and it will refuse to follow you or attack your targets. The requirements are removed if its favorability reaches 90.
+To interact with it, you must either wear a Necromancer's Hat or hold a Necromancer's Wand on either hand. Otherwise ~~you'll not be able to switch its AI state or open the inventory GUI, and~~ it will refuse to follow you or attack your targets. The requirements are removed if its favorability reaches 90.
+
+Necromancer's Wand is required instead of Commanding Wand to switch AI state and open the GUI.
 
 You can customize its hand items. The main hand only accept hoes as weapon. (Non-weapon items are also acceptable, but not taking any effect.)  The offhand slot doesn't accept anything so far. (Will be added in the future.)
 
@@ -497,6 +499,14 @@ It's durability is identical to Iron Helmet, and other properties are identical 
 
 
 ### Weapons & Tools
+
+#### Commanding Wand
+
+Hold on either hand to switch mobs' AI state and open the GUI.
+
+Use this item to (right click) an Evil Crystal Block to set all mobs' AI state to Follow in the 32x32x32 area centered by the block, and simultaneously move all respawners in the area onto the block.
+
+
 
 #### Necromancer's Wand
 

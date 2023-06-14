@@ -57,6 +57,12 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleHolder
 		MinecraftForge.EVENT_BUS.post(new OverlapEntityEvent(this, other));
 	}
 	
+	@Override
+	public default double getAnchoredStrollRadius()  
+	{
+		return 16.0d;
+	}
+	
 	/**
 	 * Fired EVERY TICK when a befriended mob overlaps an entity.
 	 */
@@ -70,5 +76,5 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleHolder
 			this.touchedEntity = touchedEntity;
 		}
 	}
-	
+
 }
