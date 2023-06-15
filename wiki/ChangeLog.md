@@ -36,6 +36,8 @@ Fixed crash and helmet becoming Dummy Item on skeletons killing mobs.
 
 Fixed Stray Girl server crash.
 
+Fixed Sunhat not preventing Skeleton/Stray Girl from avoiding the sun.
+
 Fixed Soul Carpet not dropping on broken.
 
 Fixed armor losing durability on taking bypass-armor damages on befriended mobs.
