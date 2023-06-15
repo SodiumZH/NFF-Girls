@@ -699,8 +699,7 @@ public class DwmgEntityEvents
 	
 	/** Handle equipment fixing from Mending enchantment for mobs, and return the exp remains
 	 * 
-	 * @param noUpdateInventory if true, the mob additional inventory will not be updated from equipment, and it should be manually synced. 
-	 * It should be true when sometimes updating inventory may cause AI goal change which lead to ConcurrentModificationException 
+	 * @param noUpdateInventory if true, the mob additional inventory will not be updated from equipment, and it should be manually synced.
 	 * @return Exp remained after mending.
 	 */
 	protected static long handleMending(long expBefore, Mob mob, boolean noUpdateInventory)
