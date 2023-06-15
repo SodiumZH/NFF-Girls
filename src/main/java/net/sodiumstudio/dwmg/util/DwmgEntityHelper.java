@@ -2,17 +2,21 @@ package net.sodiumstudio.dwmg.util;
 
 import com.github.mechalopa.hmag.registry.ModItems;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.Tiers;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.befriendmobs.util.ReflectHelper;
 
 public class DwmgEntityHelper
 {
@@ -58,5 +62,24 @@ public class DwmgEntityHelper
 	public static boolean isOnEitherHand(LivingEntity living, Item item)
 	{
 		return living.getMainHandItem().is(item) || living.getOffhandItem().is(item);
+	}
+	
+	/**
+	 * Force set equipment item without any other operation.
+	 */
+	@SuppressWarnings("unchecked")
+	public static void setMobEquipmentWithoutSideEffect(Mob mob, EquipmentSlot slot, ItemStack item)
+	{
+		NonNullList<ItemStack> slotList = null;
+		switch (slot.getType())
+		{
+		case HAND:
+			slotList = (NonNullList<ItemStack>) ReflectHelper.forceGet(mob, Mob.class, "handItems");
+			break;
+		case ARMOR:
+			slotList = (NonNullList<ItemStack>) ReflectHelper.forceGet(mob, Mob.class, "armorItems");
+		}
+		if (slotList != null)
+			slotList.set(slot.getIndex(), item);
 	}
 }

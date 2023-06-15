@@ -26,6 +26,8 @@ Now mob will drop player-kill loot and affected by Looting enchantment if killed
 
 Now befriended mob's AI state will be Following instead of Waiting right after befriended.
 
+Fixed monster not being hostile to befriended mobs.
+
 Fixed Wither Skeleton Girls not accepting Nether Stars.
 
 Fixed Skeletons not consuming arrow on shooting.

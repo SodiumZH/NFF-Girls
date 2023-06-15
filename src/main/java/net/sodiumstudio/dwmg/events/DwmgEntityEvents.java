@@ -79,6 +79,7 @@ import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.befriendmobs.util.ReflectHelper;
 import net.sodiumstudio.befriendmobs.util.TagHelper;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
+import net.sodiumstudio.befriendmobs.util.debug.Debug;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.effects.EffectNecromancerWither;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
@@ -664,8 +665,13 @@ public class DwmgEntityEvents
 	}
 	
 	
-	// Handle equipment fixing from Mending enchantment for mobs, and return the exp remains
-	protected static long handleMending(long expBefore, Mob mob)
+	/** Handle equipment fixing from Mending enchantment for mobs, and return the exp remains
+	 * 
+	 * @param noUpdateInventory if true, the mob additional inventory will not be updated from equipment, and it should be manually synced. 
+	 * It should be true when sometimes updating inventory may cause AI goal change which lead to ConcurrentModificationException 
+	 * @return Exp remained after mending.
+	 */
+	protected static long handleMending(long expBefore, Mob mob, boolean noUpdateInventory)
 	{
 		if (expBefore >= (long) Integer.MAX_VALUE)
 		{
@@ -673,23 +679,36 @@ public class DwmgEntityEvents
 		}
 		
 		int remained = (int)expBefore;
+		ItemStack[] items = new ItemStack[7];
 		for (int i = 0; i < 6; ++i)
 		{
-			if (mob.getItemBySlot(ARMOR_AND_HANDS[i]).isDamageableItem() 
-					&& mob.getItemBySlot(ARMOR_AND_HANDS[i]).getDamageValue() > 0
-					&& EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, mob.getItemBySlot(ARMOR_AND_HANDS[i])) > 0)
+			items[i > 1 ? i + 1 : i] = mob.getItemBySlot(ARMOR_AND_HANDS[i]);
+		}
+		// Sometimes head item is moved to the temp objects for handling sun immunity, so insert it in front of head items
+		if (mob instanceof IBefriendedMob bm && bm.getTempData().values().tempObjects.containsKey("head_item"))
+		{
+			items[2] = (ItemStack) bm.getTempData().values().tempObjects.get("head_item");
+		}
+		else items[2] = ItemStack.EMPTY;
+		
+		for (int i = 0; i < 7; ++i)
+		{
+			if (!items[i].isEmpty()
+					&& items[i].isDamageableItem() 
+					&& items[i].getDamageValue() > 0
+					&& items[i].getEnchantmentLevel(Enchantments.MENDING) > 0)
 			{
 				// If cannot fix up
-				if (mob.getItemBySlot(ARMOR_AND_HANDS[i]).getDamageValue() > remained * 2)
+				if (items[i].getDamageValue() > remained * 2)
 				{
-					mob.getItemBySlot(ARMOR_AND_HANDS[i]).setDamageValue(
-							(int) (mob.getItemBySlot(ARMOR_AND_HANDS[i]).getDamageValue() - 2 * remained));
+					items[i].setDamageValue(
+							(int) (items[i].getDamageValue() - 2 * remained));
 					remained = 0;
 				}
 				else
 				{
-					int needed = (mob.getItemBySlot(ARMOR_AND_HANDS[i]).getDamageValue() + 1) / 2;
-					mob.getItemBySlot(ARMOR_AND_HANDS[i]).setDamageValue(0);
+					int needed = (items[i].getDamageValue() + 1) / 2;
+					items[i].setDamageValue(0);
 					remained -= needed;
 				}
 				if (remained < 0)
@@ -698,18 +717,20 @@ public class DwmgEntityEvents
 				}
 				else if (remained == 0)
 				{
-					// Sync inventory
-					if (mob instanceof IBefriendedMob bm)
+					if (mob instanceof IBefriendedMob bm && !noUpdateInventory)
 						bm.setInventoryFromMob();
 					return 0;
-				}
-				
+				}				
 			}
 		}
-		// Sync inventory
-		if (mob instanceof IBefriendedMob bm)
+		if (mob instanceof IBefriendedMob bm && !noUpdateInventory)
 			bm.setInventoryFromMob();
 		return (long)remained;
+	}
+
+	protected static long handleMending(long expBefore, Mob mob)
+	{
+		return handleMending(expBefore, mob, false);
 	}
 	
 	@SubscribeEvent
@@ -758,92 +779,105 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onEntityJoinLevel(EntityJoinWorldEvent event)
 	{
-		if (event.getEntity() instanceof Mob mob && AiHelper.isMobHostileToPlayer(mob) && !(event.getEntity() instanceof IBefriendedMob))
+		if (!event.getLevel().isClientSide)
 		{
-			/** Handle mob hostility */
-			Predicate<LivingEntity> none = (l) -> true;
-			Predicate<LivingEntity> isNotWaiting = DwmgEntityHelper::isNotWaiting;
-			Predicate<LivingEntity> isNotWearingGold = DwmgEntityHelper::isNotWearingGold;
-			Predicate<LivingEntity> isUndead = (living -> living.getMobType() == MobType.UNDEAD);
-			
-			// Illagers and witches attack all mobs
-			if (mob.getMobType() == MobType.ILLAGER)
+			Player player = event.getLevel().players().size() > 0 ? event.getLevel().players().get(0) : null;
+			/*Debug.printToScreen("Entity Join Level event handling start.", player);
+			if (event.getEntity() instanceof Mob mob)
+				Debug.printToScreen(Boolean.toString(AiHelper.isMobHostileToPlayer(mob)), player);*/
+			if (event.getEntity() instanceof Mob mob && !(event.getEntity() instanceof IBefriendedMob))
 			{
-				setHostileToAllBefriendedMobs(mob, isNotWaiting);
-			}
-			// Phantom/dyssomnia hostile to all mobs
-			else if (mob instanceof Phantom || mob.getClass() == DyssomniaEntity.class)
-			{
-				setHostileToAllBefriendedMobs(mob);
-			}
-			// Skeletons hostile to zombies & creepers
-			else if (mob instanceof AbstractSkeleton 
-				&& !(EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID))	// Exclude HMAG mob girls
-				&& AiHelper.isMobHostileToPlayer(mob))	// For hostile mobs only
-			{
-				AiHelper.setHostileTo(mob, EntityBefriendedZombieGirl.class);
-				AiHelper.setHostileTo(mob, EntityBefriendedHuskGirl.class);
-				AiHelper.setHostileTo(mob, EntityBefriendedDrownedGirl.class);
-				AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class);
-			}
-			// Zombies (including Zombified Piglins and Zoglins) hostile to skeletons & creepers
-			if ((mob instanceof Zombie || mob instanceof Zoglin)
-					&& !(EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID)))	// Exclude HMAG mob girls
-			{
-				AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class);
-				AiHelper.setHostileTo(mob, EntityBefriendedStrayGirl.class);
-				AiHelper.setHostileTo(mob, EntityBefriendedWitherSkeletonGirl.class);
-				AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class);
-			}
-			// Piglins hostile to all mobs not wearing gold
-			if (mob instanceof Piglin)
-			{
-				setHostileToAllBefriendedMobs(mob, isNotWearingGold);
-			}
-			// Piglin brutes, Hoglins hostile to all mobs
-			if (mob instanceof PiglinBrute || mob instanceof Hoglin)
-			{
-				setHostileToAllBefriendedMobs(mob);
-			}
-			// Ghasts attack non-undead mobs
-			if (mob instanceof Ghast)
-			{
-				setHostileToAllBefriendedMobs(mob, isUndead.negate());
-			}
-			// Slimes (including magical) and magma cubes attack all mobs
-			if (mob instanceof Slime)
-			{
-				setHostileToAllBefriendedMobs(mob);
-			}
-			// Blaze attacks all flying mobs and skeletons (excluding wither)
-			if (mob instanceof Blaze)
-			{
-				AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class);
-				AiHelper.setHostileTo(mob, EntityBefriendedStrayGirl.class);
-				AiHelper.setHostileTo(mob, EntityBefriendedHornet.class);
-			}
-			if (mob instanceof Spider)
-			{
-				setHostileToAllBefriendedMobs(mob, (living) -> (living.getMobType() != MobType.ARTHROPOD));
-			}
-			/** Mob hostility end */
-			
-			/** Existing mob adjustment */
-			if (mob instanceof GhastlySeekerEntity gs)
-			{
-				WrappedGoal oldMoveGoal = null;
-				for (WrappedGoal wg : gs.goalSelector.getAvailableGoals())
+				/** Handle mob hostility */
+				Predicate<LivingEntity> none = (l) -> true;
+				Predicate<LivingEntity> isNotWaiting = DwmgEntityHelper::isNotWaiting;
+				Predicate<LivingEntity> isNotWearingGold = DwmgEntityHelper::isNotWearingGold;
+				Predicate<LivingEntity> isUndead = (living -> living.getMobType() == MobType.UNDEAD);
+				
+				// Illagers and witches attack all mobs
+				if (mob.getMobType() == MobType.ILLAGER)
 				{
-					if (wg.getPriority() == 1 /* Priority 1 is only random fly goal */)
-					{
-						oldMoveGoal = wg;
-						break;
-					}
+					setHostileToAllBefriendedMobs(mob, isNotWaiting);
 				}
-				if (oldMoveGoal != null)
+				// Phantom/dyssomnia hostile to all mobs
+				else if (mob instanceof Phantom || mob.getClass() == DyssomniaEntity.class)
 				{
-					gs.goalSelector.getAvailableGoals().remove(oldMoveGoal);//.getAvailableGoals().remove(oldMoveGoal);
-					gs.goalSelector.addGoal(1, new GhastlySeekerRandomFlyGoalDwmgAdjusted(gs));
+					setHostileToAllBefriendedMobs(mob);
+				}
+				// Skeletons hostile to zombies & creepers
+				else if (mob instanceof AbstractSkeleton 
+					&& !(EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID))	// Exclude HMAG mob girls
+					&& AiHelper.isMobHostileToPlayer(mob))	// For hostile mobs only
+				{
+					AiHelper.setHostileTo(mob, EntityBefriendedZombieGirl.class);
+					AiHelper.setHostileTo(mob, EntityBefriendedHuskGirl.class);
+					AiHelper.setHostileTo(mob, EntityBefriendedDrownedGirl.class);
+					AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class);
+				}
+				// Zombies (including Zombified Piglins and Zoglins) hostile to skeletons & creepers
+				if ((mob instanceof Zombie || mob instanceof Zoglin)
+						&& !(EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID)))	// Exclude HMAG mob girls
+				{
+					//Debug.printToScreen("Zombie add hostility", player);
+					AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class);
+					AiHelper.setHostileTo(mob, EntityBefriendedStrayGirl.class);
+					AiHelper.setHostileTo(mob, EntityBefriendedWitherSkeletonGirl.class);
+					AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class);
+					/*Debug.printToScreen("Zombie add hostility end", player);
+					for (WrappedGoal wg: mob.goalSelector.getAvailableGoals())
+					{
+						Debug.printToScreen(wg.getGoal().getClass().getTypeName(), player);
+					}*/
+				}
+				// Piglins hostile to all mobs not wearing gold
+				if (mob instanceof Piglin)
+				{
+					setHostileToAllBefriendedMobs(mob, isNotWearingGold);
+				}
+				// Piglin brutes, Hoglins hostile to all mobs
+				if (mob instanceof PiglinBrute || mob instanceof Hoglin)
+				{
+					setHostileToAllBefriendedMobs(mob);
+				}
+				// Ghasts attack non-undead mobs
+				if (mob instanceof Ghast)
+				{
+					setHostileToAllBefriendedMobs(mob, isUndead.negate());
+				}
+				// Slimes (including magical) and magma cubes attack all mobs
+				if (mob instanceof Slime)
+				{
+					setHostileToAllBefriendedMobs(mob);
+				}
+				// Blaze attacks all flying mobs and skeletons (excluding wither)
+				if (mob instanceof Blaze)
+				{
+					AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class);
+					AiHelper.setHostileTo(mob, EntityBefriendedStrayGirl.class);
+					AiHelper.setHostileTo(mob, EntityBefriendedHornet.class);
+				}
+				if (mob instanceof Spider)
+				{
+					setHostileToAllBefriendedMobs(mob, (living) -> (living.getMobType() != MobType.ARTHROPOD));
+				}
+				/** Mob hostility end */
+				
+				/** Existing mob adjustment */
+				if (mob instanceof GhastlySeekerEntity gs)
+				{
+					WrappedGoal oldMoveGoal = null;
+					for (WrappedGoal wg : gs.goalSelector.getAvailableGoals())
+					{
+						if (wg.getPriority() == 1 /* Priority 1 is only random fly goal */)
+						{
+							oldMoveGoal = wg;
+							break;
+						}
+					}
+					if (oldMoveGoal != null)
+					{
+						gs.goalSelector.getAvailableGoals().remove(oldMoveGoal);//.getAvailableGoals().remove(oldMoveGoal);
+						gs.goalSelector.addGoal(1, new GhastlySeekerRandomFlyGoalDwmgAdjusted(gs));
+					}
 				}
 			}
 		}
