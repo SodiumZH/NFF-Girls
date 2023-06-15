@@ -213,6 +213,50 @@ Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.18.2
 
+### 0.0.6
+
+Added Ghastly Seeker support.
+
+Added Commanding Wand.
+
+Adjusted mob interaction method:
+
+ --To switch mob's AI state, player must have Commanding Wand on either hand, and right click the mob.
+
+ --To open mob's inventory GUI, player must have Commanding Wand on either hand, and press shift+right click. Necrotic Reapers' inventory GUI no longer requires necromancer item.
+
+ --For Necrotic Reapers, use Necromancer's Wand instead.
+
+Optimized the AI of flying befriended mobs.
+
+Adjusted the AI of Ghastly Seeker (non-befriended, HMaG) out of the Nether. Now if it's not in Nether, it will fly at the height no more than 32 blocks above the ground. Also it won't move too far from players. This change makes effect only if DWMG is loaded. 
+
+Now Wither Skeleton Girls will not catch Curse of Necromancy effect.
+
+Now mob will drop player-kill loot and affected by Looting enchantment if killed by befriended mobs.  
+
+Now befriended mob's AI state will be Following instead of Waiting right after befriended.
+
+Fixed monster not being hostile to befriended mobs.
+
+Fixed Wither Skeleton Girls not accepting Nether Stars.
+
+Fixed Skeletons not consuming arrow on shooting.
+
+Fixed crash and helmet becoming Dummy Item on skeletons killing mobs.
+
+Fixed Stray Girl server crash.
+
+Fixed Soul Carpet not dropping on broken.
+
+Fixed armor losing durability on taking bypass-armor damages on befriended mobs.
+
+Fixed GUI persisting when mob is removed from level or moving too far away.
+
+Reduced random stroll radius from 64 to 16.
+
+Removed and fixed some deprecated methods in code.
+
 ### 0.0.5.1
 
 Removed verbose debug output.
