@@ -4,9 +4,9 @@
 
 ### Current version: 
 
-#### 0.0.5 (1.18.2)
+#### 0.0.6 (1.18.2)
 
-#### 0.1.5 (1.19.2)
+#### 0.1.6 (1.19.2)
 
 
 
@@ -387,6 +387,24 @@ When it's off-hand is holding a flower, it will apply effects of the Suspicious 
 It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as vanilla undead mob girls.)
 
 It has 3 bauble slots.
+
+
+
+#### Ghastly Seeker (HMaG) (0.0.6 / 0.1.6)
+
+##### Befriending
+
+Using item-giving process. Accepted items are identical to Skeleton Girls.
+
+Ghastly Seekers are befriendable only when they're in the Overworld and can see sky.
+
+##### Interaction
+
+It has 4 bauble slots.
+
+It requires ammo to fire. The ammo slot (explosive icon) accepts either Fire Charges or Blasting Bottles (HMaG). When using Fire Charges, the explosions of the fireballs have normal power and don't break blocks. When using Blasting Bottles, the explosions have 1.5x normal power and break blocks.
+
+The base explosion power is 1. Each ATK point adds extra 0.1 to the power. 
 
 
 
