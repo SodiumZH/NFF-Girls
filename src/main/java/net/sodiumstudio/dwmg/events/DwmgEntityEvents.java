@@ -563,11 +563,11 @@ public class DwmgEntityEvents
 			if (event.getEntityLiving().hasEffect(DwmgEffects.NECROMANCER_WITHER.get()))
 			{
 				// Wither skeletons are immune to this effect
-				if (event.getEntity() instanceof WitherSkeleton)
-					event.getEntity().removeEffect(DwmgEffects.NECROMANCER_WITHER.get());
+				if (event.getEntityLiving() instanceof WitherSkeleton)
+					event.getEntityLiving().removeEffect(DwmgEffects.NECROMANCER_WITHER.get());
 				else
 				{
-					int ampl = event.getEntity().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
+					int ampl = event.getEntityLiving().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
 					if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
 					{
 						event.getEntity().hurt(DwmgDamageSources.NECROMANCER_WITHER, 1);
@@ -696,7 +696,7 @@ public class DwmgEntityEvents
 			if (!items[i].isEmpty()
 					&& items[i].isDamageableItem() 
 					&& items[i].getDamageValue() > 0
-					&& items[i].getEnchantmentLevel(Enchantments.MENDING) > 0)
+					&& EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING,  items[i]) > 0)
 			{
 				// If cannot fix up
 				if (items[i].getDamageValue() > remained * 2)
@@ -776,12 +776,13 @@ public class DwmgEntityEvents
 	}
 
 	
+	@SuppressWarnings("resource")
 	@SubscribeEvent
 	public static void onEntityJoinLevel(EntityJoinWorldEvent event)
 	{
-		if (!event.getLevel().isClientSide)
+		if (!event.getWorld().isClientSide)
 		{
-			Player player = event.getLevel().players().size() > 0 ? event.getLevel().players().get(0) : null;
+			Player player = event.getWorld().players().size() > 0 ? event.getWorld().players().get(0) : null;
 			/*Debug.printToScreen("Entity Join Level event handling start.", player);
 			if (event.getEntity() instanceof Mob mob)
 				Debug.printToScreen(Boolean.toString(AiHelper.isMobHostileToPlayer(mob)), player);*/

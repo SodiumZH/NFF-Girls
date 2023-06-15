@@ -1,11 +1,11 @@
 package net.sodiumstudio.dwmg.entities.ai.goals;
 
 import java.util.EnumSet;
+import java.util.Random;
 
 import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -63,7 +63,7 @@ public class GhastlySeekerRandomFlyGoalDwmgAdjusted extends Goal
 		// Don't move if no player nearby
 		if (!gs.level.dimension().equals(Level.NETHER) && !hasPlayerNearby())
 			return;
-		RandomSource random = this.gs.getRandom();
+		Random random = this.gs.getRandom();
 		boolean flag = false;
 		Vec3 newWanted = null;
 		if (this.gs.getTarget() != null)
