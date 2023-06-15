@@ -149,6 +149,7 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
 		super.aiStep();
 		this.setItemSlot(EquipmentSlot.HEAD, (ItemStack)this.getTempData().values().tempObjects.get("head_item"));
+		this.getTempData().values().tempObjects.remove("head_item");
 		this.setInventoryFromMob();
 		
 		/* Handle combat AI */		
