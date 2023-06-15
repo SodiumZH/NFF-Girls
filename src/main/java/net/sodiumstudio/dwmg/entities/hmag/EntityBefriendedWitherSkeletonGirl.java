@@ -145,10 +145,10 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 	public void aiStep() {
 
 		// Wither skeletons don't burn under sun but still damage helmet, so cancel it
-		ItemStack headItem = this.getItemBySlot(EquipmentSlot.HEAD);
+		this.getTempData().values().tempObjects.put("head_item", this.getItemBySlot(EquipmentSlot.HEAD));
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
 		super.aiStep();
-		this.setItemSlot(EquipmentSlot.HEAD, headItem);
+		this.setItemSlot(EquipmentSlot.HEAD, (ItemStack)this.getTempData().values().tempObjects.get("head_item"));
 		this.setInventoryFromMob();
 		
 		/* Handle combat AI */		
@@ -196,6 +196,11 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 		}
 	}
 	
+	// It's not needed here
+	@Override
+	public void reassessWeaponGoal() 
+	{}
+	
 	/* Bow shooting end */
 	
 	/* Interaction */
@@ -212,7 +217,7 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{
-		if (player.isShiftKeyDown())
+		if (!player.isShiftKeyDown())
 		{
 			if (player.getUUID().equals(getOwnerUUID())) {
 				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 

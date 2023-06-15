@@ -153,10 +153,10 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 		// Handle sun sensitivity
 		if (this.isSunImmune())
 		{
-			ItemStack headItem = this.getItemBySlot(EquipmentSlot.HEAD);
+			this.getTempData().values().tempObjects.put("head_item", this.getItemBySlot(EquipmentSlot.HEAD));
 			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
 			super.aiStep();
-			this.setItemSlot(EquipmentSlot.HEAD, headItem);
+			this.setItemSlot(EquipmentSlot.HEAD, (ItemStack)this.getTempData().values().tempObjects.get("head_item"));
 			this.setInventoryFromMob();
 		}
 		else 
@@ -208,6 +208,11 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 			}			
 		}
 	}
+	
+	// It's not needed here
+	@Override
+	public void reassessWeaponGoal() 
+	{}
 	
 	/* Bow shooting end */
 	
