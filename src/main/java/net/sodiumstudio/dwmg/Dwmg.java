@@ -51,7 +51,7 @@ public class Dwmg
         MinecraftForge.EVENT_BUS.register(this);
         
         
-		BefriendMobs.setDebugMode(true);
+		//BefriendMobs.setDebugMode(true);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

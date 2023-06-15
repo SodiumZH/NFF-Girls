@@ -782,10 +782,12 @@ public class DwmgEntityEvents
 	{
 		if (!event.getWorld().isClientSide)
 		{
-			Player player = event.getWorld().players().size() > 0 ? event.getWorld().players().get(0) : null;
-			/*Debug.printToScreen("Entity Join Level event handling start.", player);
+			/*Player player = event.getLevel().players().size() > 0 ? event.getLevel().players().get(0) : null;
 			if (event.getEntity() instanceof Mob mob)
-				Debug.printToScreen(Boolean.toString(AiHelper.isMobHostileToPlayer(mob)), player);*/
+			{
+				Debug.printToScreen(EntityType.getKey(mob.getType()).getNamespace(), player);
+				Debug.printToScreen(Boolean.toString((EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID))), player);
+			}*/
 			if (event.getEntity() instanceof Mob mob && !(event.getEntity() instanceof IBefriendedMob))
 			{
 				/** Handle mob hostility */
@@ -807,7 +809,7 @@ public class DwmgEntityEvents
 				// Skeletons hostile to zombies & creepers
 				else if (mob instanceof AbstractSkeleton 
 					&& !(EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID))	// Exclude HMAG mob girls
-					&& AiHelper.isMobHostileToPlayer(mob))	// For hostile mobs only
+					/*&& AiHelper.isMobHostileToPlayer(mob)*/)	// For hostile mobs only // Something is wrong with AiHelper#isMobHostileToPlayer
 				{
 					AiHelper.setHostileTo(mob, EntityBefriendedZombieGirl.class);
 					AiHelper.setHostileTo(mob, EntityBefriendedHuskGirl.class);
