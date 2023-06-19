@@ -154,6 +154,11 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		// Handle sun sensitivity
 		if (this.isSunImmune())
 		{
+			
+			if (this.getTempData().values().tempObjects.containsKey("head_item"))
+			{
+				this.getTempData().values().tempObjects.get("head_item");
+			}
 			this.getTempData().values().tempObjects.put("head_item", this.getItemBySlot(EquipmentSlot.HEAD));
 			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
 			super.aiStep();

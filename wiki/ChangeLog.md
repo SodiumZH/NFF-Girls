@@ -12,7 +12,7 @@ Adjusted mob interaction method:
 
  --To switch mob's AI state, player must have Commanding Wand on either hand, and right click the mob.
 
- --To open mob's inventory GUI, player must have Commanding Wand on either hand, and press shift+right click. Necrotic Reapers' inventory GUI no longer requires necromancer item.
+ --To open mob's inventory GUI, player must have Commanding Wand on either hand, and press shift+right click.
 
  --For Necrotic Reapers, use Necromancer's Wand instead.
 
@@ -225,7 +225,7 @@ Adjusted mob interaction method:
 
  --To switch mob's AI state, player must have Commanding Wand on either hand, and right click the mob.
 
- --To open mob's inventory GUI, player must have Commanding Wand on either hand, and press shift+right click. Necrotic Reapers' inventory GUI no longer requires necromancer item.
+ --To open mob's inventory GUI, player must have Commanding Wand on either hand, and press shift+right click.
 
  --For Necrotic Reapers, use Necromancer's Wand instead.
 
