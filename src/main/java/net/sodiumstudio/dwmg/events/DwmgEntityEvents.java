@@ -795,21 +795,6 @@ public class DwmgEntityEvents
 	}
 	
 	@SubscribeEvent
-	public static void onEntityTickEnd(ServerEntityTickEvent.PostWorldTick event)
-	{
-		if (event instanceof IDwmgBefriendedMob bm)
-		{
-			// For unknown reason, it was observed that a Dummy Item remaining on the mob's head, so clear after tick
-			if (bm.asMob().getItemBySlot(EquipmentSlot.HEAD).is(BefMobItems.DUMMY_ITEM.get()))
-			{
-				bm.asMob().setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
-				bm.setInventoryFromMob();
-			}
-		}
-	}
-
-	
-	@SubscribeEvent
 	public static void onEntityJoinLevel(EntityJoinLevelEvent event)
 	{
 		if (!event.getLevel().isClientSide)
