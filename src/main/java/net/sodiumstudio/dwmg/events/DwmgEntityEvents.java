@@ -776,6 +776,7 @@ public class DwmgEntityEvents
 				if (source instanceof Player player 
 						&& mob.getTarget() != null
 						&& mob.getTarget() instanceof IDwmgBefriendedMob bm
+						&& bm.asMob().isAlive()
 						&& bm.getOwner() == player)
 				{
 					bm.getFavorability().addFavorability(event.getAmount() / 50f);
@@ -784,6 +785,7 @@ public class DwmgEntityEvents
 				if (source instanceof IDwmgBefriendedMob bm
 						&& mob.getTarget() != null
 						&& mob.getTarget() instanceof Player player
+						&& bm.asMob().isAlive()
 						&& bm.getOwner() == player)
 				{
 					bm.getFavorability().addFavorability(event.getAmount() / 100f);
