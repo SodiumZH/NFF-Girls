@@ -71,6 +71,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 		super.defineSynchedData();
 		entityData.define(ATTACKING_TIME, -20);
 		entityData.define(ATTACK_TARGET, 0);
+		this.entityData.set(DATA_AISTATE, 1);
 	}
 	
 	public EntityBefriendedEnderExecutor(EntityType<? extends EntityBefriendedEnderExecutor> type, Level worldIn)
