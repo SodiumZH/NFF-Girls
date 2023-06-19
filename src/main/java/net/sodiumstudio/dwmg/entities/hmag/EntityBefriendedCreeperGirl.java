@@ -75,6 +75,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper imple
 	{
 		super.defineSynchedData();
 		this.entityData.define(DATA_VARIANT_ID, 0);
+		this.entityData.set(DATA_AISTATE, 1);
 	}
 	
 	// Initialization
