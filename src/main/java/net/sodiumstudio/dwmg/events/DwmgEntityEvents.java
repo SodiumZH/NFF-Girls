@@ -762,7 +762,7 @@ public class DwmgEntityEvents
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("resource")
 	@SubscribeEvent
 	public static void onEntityJoinLevel(EntityJoinWorldEvent event)
