@@ -2,6 +2,12 @@
 
 ## 1.19.2
 
+### 0.1.7
+
+Fixed Creeper Girl not being interactable.
+
+Fixed Creeper Girl and Ender Executor still be waiting instead of following right after befriending.
+
 ### 0.1.6
 
 Added Ghastly Seeker support.
@@ -214,6 +220,12 @@ Rollbacked HMaG dependency to 6.1.0.
 Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.18.2
+
+### 0.0.7
+
+Fixed Creeper Girl not being interactable.
+
+Fixed Creeper Girl and Ender Executor still be waiting instead of following right after befriending.
 
 ### 0.0.6
 
