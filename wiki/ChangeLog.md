@@ -18,13 +18,13 @@ Adjusted Necromancer's Wand:
 
  -- Changed bullet speed from 4 to 16.
 
- -- Reduced 
+ -- Reduced usage cooldown from 5 s to 2.5 s.
 
  -- Now the bullet will blast on hit something, and give previous effects to all living entities in the  3x3x3 area around. If a living entity is directly hit, a stronger effect will be given to it, either negative or positive.
 
- -- The duration of Wither effect increased from 5 s to 10 s.
+ -- Increased Wither effect duration from 5 s to 10 s.
 
- -- The duration of Strength effect increased from 5 s to 10 s.
+ -- Increased  Strength effect duration from 5 s to 10 s.
 
  -- If directly hit: the level of Wither will increase by 1; the duration of Strength will be 15 s; healing amount will be doubled. 
 

@@ -121,6 +121,9 @@ public class DwmgItems {
 	public static final RegistryObject<Item> COMMANDING_WAND = ITEMS.register("commanding_wand", () -> new ItemCommandWand(new Item.Properties().tab(TAB).stacksTo(1)));
 	public static final RegistryObject<Item> EVIL_MAGNET = ITEMS.register("evil_magnet", () -> new ItemEvilMagnet(new Item.Properties().tab(TAB).stacksTo(1)));
 			
+	// Misc
+	public static final RegistryObject<Item> TAB_ICON = ITEMS.register("tab_icon", ()->new Item(new Item.Properties()));
+	
 	/* Item register end */
 	
 	public static void register(IEventBus eventBus){
