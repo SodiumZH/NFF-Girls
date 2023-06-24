@@ -12,7 +12,7 @@ public class DwmgTab extends CreativeModeTab{
 
     @Override
     public ItemStack makeIcon() {
-        return new ItemStack(DwmgItems.DEATH_CRYSTAL.get());
+        return new ItemStack(DwmgItems.TAB_ICON.get());
     }
     
 	public static final CreativeModeTab TAB = new DwmgTab(CreativeModeTab.TABS.length, "dwmg_tab");
