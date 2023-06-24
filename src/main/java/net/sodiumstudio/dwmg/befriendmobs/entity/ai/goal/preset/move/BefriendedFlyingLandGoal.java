@@ -29,6 +29,8 @@ public class BefriendedFlyingLandGoal extends BefriendedFlyingMoveGoal
 			return false;
 		if (LevelHelper.isAboveVoid(mob.asMob().blockPosition(), mob.asMob()))
 			return false;
+		if (mob.asMob().getTarget() != null)
+			return false;
 		else return true;		
 	}
 

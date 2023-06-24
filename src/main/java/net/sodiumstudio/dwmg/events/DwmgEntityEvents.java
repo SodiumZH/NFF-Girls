@@ -238,14 +238,16 @@ public class DwmgEntityEvents
 		}
 
 		/** Favorability & Level */
-		if (event.getMob() instanceof IDwmgBefriendedMob bm)
+		if (event.getMob() instanceof IDwmgBefriendedMob bm && bm.isOwnerPresent())
 		{
 			// Favorability loss on death
 			if (event.getDamageSource().getEntity() != null
 					&& event.getDamageSource().getEntity() == bm.getOwner()
 					&& event.getDamageSource() != DamageSource.OUT_OF_WORLD)
 				bm.getFavorability().setFavorability(0);
-			else if (bm.asMob().distanceToSqr(bm.getOwner()) < 64d && event.getDamageSource() != DamageSource.OUT_OF_WORLD)
+			else if (bm.asMob().distanceToSqr(bm.getOwner()) < 64d 
+					&& bm.asMob().hasLineOfSight(bm.getOwner())
+					&& event.getDamageSource() != DamageSource.OUT_OF_WORLD)
 				bm.getFavorability().addFavorability(-20);
 			// EXP loses by a half on death
 			// As respawner construction (in befriendmobs) is after posting BefriendedDeathEvent, it can be set here

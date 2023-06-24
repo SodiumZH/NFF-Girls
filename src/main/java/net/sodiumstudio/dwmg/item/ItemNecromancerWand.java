@@ -32,7 +32,7 @@ public class ItemNecromancerWand extends Item
 		else
 		{
 			// Movement velocity vector
-			Vec3 velocity = player.getLookAngle().scale(4d);
+			Vec3 velocity = player.getLookAngle().scale(16d);
 			Vec3 offset = player.getLookAngle().scale(0.2d);
 			NecromancerMagicBulletEntity bullet = new NecromancerMagicBulletEntity(level, player, velocity.x, velocity.y, velocity.z);
 			bullet.setPos(player.getX() + offset.x , player.getY() + 0.8d + offset.y, player.getZ() + offset.z);
@@ -42,7 +42,7 @@ public class ItemNecromancerWand extends Item
 			level.addFreshEntity(bullet);
 			stack.hurtAndBreak(1, player, (m) -> {throw new RuntimeException("Necromancer's Wand should not be broken and should leave 1 durability.");});
 			player.hurt(DamageSource.MAGIC, 2);
-			player.getCooldowns().addCooldown(DwmgItems.NECROMANCER_WAND.get(), 100);
+			player.getCooldowns().addCooldown(DwmgItems.NECROMANCER_WAND.get(), 50);
 			return InteractionResultHolder.success(stack);
 		}
 	}

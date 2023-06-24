@@ -12,11 +12,11 @@
 	
 
 		"C":{ 
-		"item": "hmag:evil_crystal"
+		"item": "minecraft:soul_torch"
 		},
 		
 		"D":{ 
-		"item": "dwmg:death_crystal"
+		"item": "hmag:evil_crystal"
 		},
 		
 		"S":{ 

@@ -24,7 +24,7 @@ public class InventoryMenuEquipmentTwoBaubles extends InventoryMenuPreset0{
 		this.addGeneralSlot(4, rightRowPos().slotBelow(3), null);
 		this.addGeneralSlot(5, rightRowPos().slotBelow(2), null);
 		this.addBaubleSlot(6, rightRowPos(), "0");
-		this.addBaubleSlot(7, rightRowPos(), "1");
+		this.addBaubleSlot(7, rightRowPos().slotBelow(), "1");
 	}
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {

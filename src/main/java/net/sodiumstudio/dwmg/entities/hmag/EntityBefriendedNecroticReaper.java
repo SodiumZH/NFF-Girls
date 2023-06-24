@@ -47,10 +47,12 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
+import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
@@ -155,6 +157,13 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 				return super.checkCanUse() && ((EntityBefriendedNecroticReaper)mob).controllable();
 			}
 		});
+		this.targetSelector.addGoal(5, new BefriendedNearestUnfriendlyMobTargetGoal(this, true, true).stateConditions(bm ->
+		{
+			if (bm instanceof IBaubleHolder bh)
+				return bh.hasBaubleItem(DwmgItems.COURAGE_AMULET.get()) || bh.hasBaubleItem(DwmgItems.COURAGE_AMULET_II.get());
+			else
+				return false;
+		}).allowAllStatesExceptWait().asGoal());
 	}
 	
 	@Override
@@ -222,12 +231,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 					{
 						throw new RuntimeException("Mob \"" + this.getName().getString() + "\" missing owner.");
 					}
-					/* Put checks before healing item check */
-					/* if (....)
-					 {
-					 	....
-					 }
-					else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+					if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 					else if (hand == InteractionHand.MAIN_HAND

@@ -42,9 +42,11 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
+import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingLandGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomMoveGoal;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFlyingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.HmagFlyingGoal;
@@ -89,6 +91,13 @@ public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefrien
 		this.targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		this.targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
+		this.targetSelector.addGoal(5, new BefriendedNearestUnfriendlyMobTargetGoal(this, true, true).stateConditions(bm ->
+		{
+			if (bm instanceof IBaubleHolder bh)
+				return bh.hasBaubleItem(DwmgItems.COURAGE_AMULET.get()) || bh.hasBaubleItem(DwmgItems.COURAGE_AMULET_II.get());
+			else
+				return false;
+		}).allowAllStatesExceptWait().asGoal());
 	}
 	
 	/* Combat */

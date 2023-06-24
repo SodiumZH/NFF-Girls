@@ -1,0 +1,35 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"NHN",
+	"HSH",
+	"EHE"	
+	],
+	
+	"key":{ 
+	
+		"H":{
+		"item": "hmag:ogre_horn"
+		},
+		
+		"N":{
+		"tag": "forge:ingots/netherite"
+		},
+		
+		"E":{ 
+		"item": "hmag:evil_crystal"
+		},
+		
+		"S":{ 
+		"item": "minecraft:nether_star"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "dwmg:courage_amulet",
+		"count": 1
+	}
+}

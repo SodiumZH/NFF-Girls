@@ -13,8 +13,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.PlayMessages;
@@ -64,62 +66,123 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 
 		if (!this.level.isClientSide)
 		{
-			boolean isHitNecroticReaper = false;
-			if (entity != null && entity instanceof LivingEntity living)
+			if (entity instanceof LivingEntity le && !(entity instanceof ArmorStand) && entity != this.getOwner())
 			{
-				if (!(living instanceof ArmorStand))
-				{
-					boolean shouldAddWither = true;
-					if (result.getEntity().getClass().equals(NecroticReaperEntity.class) && this.getOwner() instanceof Player player)
-					{
-						NecroticReaperEntity nr = (NecroticReaperEntity)(result.getEntity());
-						HandlerNecroticReaper handler = 
-								(HandlerNecroticReaper) BefriendingTypeRegistry.getHandler(ModEntityTypes.NECROTIC_REAPER.get());
-						shouldAddWither = !handler.onHit(player, nr);
-					}
-					
-					// Befriended Necrotic Reapers are immune to this magic bullet;
-					// If it's shot by the owner, it will heal the mob and optionally add strength effect if having a Necromancer's Hat.
-					else if (result.getEntity() instanceof EntityBefriendedNecroticReaper nr)
-					{
-						if (this.getOwner() instanceof Player player && nr.getOwnerUUID().equals(player.getUUID()))
-						{
-							if (hasNecromancerHat)
-							{
-								nr.heal(3);
-								EntityHelper.addEffectSafe(nr, MobEffects.DAMAGE_BOOST, 100, 1);
-							}
-							else
-							{
-								nr.heal(2);
-							}
-							EntityHelper.sendGlintParticlesToLivingDefault(nr);
-							isHitNecroticReaper = true;
-						}
-						shouldAddWither = false;
-					}
-					if (shouldAddWither)
-					{
-						EntityHelper.addEffectSafe(living, MobEffects.WITHER, 100, hasNecromancerHat ? 3 : 2);
-						if (this.getOwner() instanceof LivingEntity ownerLiving)
-						{
-							living.setLastHurtByMob(ownerLiving);
-						}
-					}
-				}
+				applyDirectEffect(le);
 			}
-			if (!isHitNecroticReaper)
-				EntityHelper.sendParticlesToEntity(this, ParticleTypes.EXPLOSION, 0.5, 1, 1, 0);
+			this.blast(entity);
 			this.level.broadcastEntityEvent(this, (byte)3);
-		}
-		
+		}		
 	}
 	
 	@Override
 	protected void onHitBlock(BlockHitResult result)
 	{
 		if (!this.level.isClientSide)
-			EntityHelper.sendParticlesToEntity(this, ParticleTypes.EXPLOSION, 0.5, 1, 1, 0);
+			this.blast(null);
+	}
+	
+	protected void blast(Entity ignore)
+	{
+		AABB area = new AABB(this.position().subtract(new Vec3(1.5, 1.5, 1.5)), this.position().add(new Vec3(1.5, 1.5, 1.5)));
+		this.level.getEntities(this, area).stream().filter((Entity e) -> 
+		(e instanceof LivingEntity && !(e instanceof ArmorStand) && e != this.getOwner() && e != ignore))
+		.forEach((Entity e) -> applyEffect(e));
+		EntityHelper.sendParticlesToEntity(this, ParticleTypes.EXPLOSION, 0, 0, 2, 0);
+	}
+	
+	protected void applyDirectEffect(Entity target)
+	{
+		if (target instanceof LivingEntity living)
+		{
+			if (!(living instanceof ArmorStand))
+			{
+				boolean shouldAddWither = true;
+				if (living.getClass().equals(NecroticReaperEntity.class)
+						&& this.getOwner() instanceof Player player)
+				{
+					NecroticReaperEntity nr = (NecroticReaperEntity) living;
+					HandlerNecroticReaper handler = (HandlerNecroticReaper) BefriendingTypeRegistry
+							.getHandler(ModEntityTypes.NECROTIC_REAPER.get());
+					shouldAddWither = !handler.onHit(player, nr);
+				}
+	
+				// Befriended Necrotic Reapers are immune to this magic bullet;
+				// If it's shot by the owner, it will heal the mob and optionally add strength
+				// effect if having a Necromancer's Hat.
+				else if (living instanceof EntityBefriendedNecroticReaper nr)
+				{
+					if (this.getOwner() instanceof Player player && nr.getOwnerUUID().equals(player.getUUID()))
+					{
+						if (hasNecromancerHat)
+						{
+							nr.heal(6);
+							EntityHelper.addEffectSafe(nr, MobEffects.DAMAGE_BOOST, 300, 1);
+						} else
+						{
+							nr.heal(4);
+						}
+						EntityHelper.sendGlintParticlesToLivingDefault(nr);
+					}
+					shouldAddWither = false;
+				}
+				if (shouldAddWither)
+				{
+					EntityHelper.addEffectSafe(living, MobEffects.WITHER, 200, hasNecromancerHat ? 4 : 3);
+					if (this.getOwner() instanceof LivingEntity ownerLiving)
+					{
+						living.setLastHurtByMob(ownerLiving);
+					}
+				}
+			}
+		}
+	}
+	
+	protected void applyEffect(Entity target)
+	{
+		if (target instanceof LivingEntity living)
+		{
+			if (!(living instanceof ArmorStand))
+			{
+				boolean shouldAddWither = true;
+				if (living.getClass().equals(NecroticReaperEntity.class)
+						&& this.getOwner() instanceof Player player)
+				{
+					NecroticReaperEntity nr = (NecroticReaperEntity) living;
+					HandlerNecroticReaper handler = (HandlerNecroticReaper) BefriendingTypeRegistry
+							.getHandler(ModEntityTypes.NECROTIC_REAPER.get());
+					shouldAddWither = !handler.onHit(player, nr);
+				}
+	
+				// Befriended Necrotic Reapers are immune to this magic bullet;
+				// If it's shot by the owner, it will heal the mob and optionally add strength
+				// effect if having a Necromancer's Hat.
+				else if (living instanceof EntityBefriendedNecroticReaper nr)
+				{
+					if (this.getOwner() instanceof Player player && nr.getOwnerUUID().equals(player.getUUID()))
+					{
+						if (hasNecromancerHat)
+						{
+							nr.heal(3);
+							EntityHelper.addEffectSafe(nr, MobEffects.DAMAGE_BOOST, 200, 1);
+						} else
+						{
+							nr.heal(2);
+						}
+						EntityHelper.sendGlintParticlesToLivingDefault(nr);
+					}
+					shouldAddWither = false;
+				}
+				if (shouldAddWither)
+				{
+					EntityHelper.addEffectSafe(living, MobEffects.WITHER, 200, hasNecromancerHat ? 3 : 2);
+					if (this.getOwner() instanceof LivingEntity ownerLiving)
+					{
+						living.setLastHurtByMob(ownerLiving);
+					}
+				}
+			}
+		}
 	}
 	
 	@Override
