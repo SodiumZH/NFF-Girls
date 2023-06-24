@@ -52,8 +52,10 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
+import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.util.ItemHelper;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedDrownedTridentAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
@@ -111,7 +113,6 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements ID
 
 	@Override
 	protected void registerGoals() {
-
 		goalSelector.addGoal(1, new BefriendedAmphibiousGoals.GoToWaterGoal(this, 1.0D));
 		goalSelector.addGoal(1, new BefriendedRestrictSunGoal(this));
 		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
@@ -129,6 +130,13 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements ID
 		targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
+		this.targetSelector.addGoal(5, new BefriendedNearestUnfriendlyMobTargetGoal(this, true, true).stateConditions(bm ->
+		{
+			if (bm instanceof IBaubleHolder bh)
+				return bh.hasBaubleItem(DwmgItems.COURAGE_AMULET.get()) || bh.hasBaubleItem(DwmgItems.COURAGE_AMULET_II.get());
+			else
+				return false;
+		}).allowAllStatesExceptWait().asGoal());
 
 	}
 	

@@ -20,15 +20,22 @@ public class BaubleHandlerGeneral extends BaubleHandler
 	public HashMap<Item, Predicate<IBaubleHolder>> getItemsAccepted(String key, IBaubleHolder mob) {
 		HashMap<Item, Predicate<IBaubleHolder>> map = new HashMap<Item, Predicate<IBaubleHolder>>();
 		map.put(DwmgItems.RESISTANCE_AMULET.get(), null);
+		map.put(DwmgItems.RESISTANCE_AMULET_II.get(), null);
 		map.put(ModItems.INSOMNIA_FRUIT.get(), null);
 		map.put(DwmgItems.HEALING_JADE.get(), null);
+		map.put(DwmgItems.LIFE_JADE.get(), null);
+		map.put(DwmgItems.LIFE_JADE_II.get(), null);
+		map.put(DwmgItems.COURAGE_AMULET.get(), null);
+		map.put(DwmgItems.COURAGE_AMULET_II.get(), null);
 		return map;
 	}
 	
 	@Override
 	public boolean shouldAlwaysRefresh(String slotKey, IBaubleHolder holder)
 	{
-		return holder.getBaubleSlots().get(slotKey).is(DwmgItems.HEALING_JADE.get());
+		return holder.getBaubleSlots().get(slotKey).is(DwmgItems.HEALING_JADE.get())
+				|| holder.getBaubleSlots().get(slotKey).is(DwmgItems.LIFE_JADE.get())
+				|| holder.getBaubleSlots().get(slotKey).is(DwmgItems.LIFE_JADE_II.get());
 	} 
 	
 	@Override
@@ -38,9 +45,34 @@ public class BaubleHandlerGeneral extends BaubleHandler
 			owner.addBaubleModifier(slotKey, "ra_armor", Attributes.ARMOR, 4.0d, Operation.ADDITION);
 			owner.addBaubleModifier(slotKey, "ra_speed_slow",Attributes.MOVEMENT_SPEED, -0.1d, Operation.MULTIPLY_BASE);
 		}
+		else if (bauble.is(DwmgItems.RESISTANCE_AMULET_II.get()))
+		{
+			owner.addBaubleModifier(slotKey, "ra2_armor", Attributes.ARMOR, 6.0d, Operation.ADDITION);
+			owner.addBaubleModifier(slotKey, "ra2_speed_slow",Attributes.MOVEMENT_SPEED, -0.1d, Operation.MULTIPLY_BASE);
+		}
 		else if (bauble.is(DwmgItems.HEALING_JADE.get()))
 		{
 			owner.getLiving().heal(0.005f);// 0.1 per second
+		}
+		else if (bauble.is(DwmgItems.LIFE_JADE.get()))
+		{
+			owner.addBaubleModifier(slotKey, "lj_hpmax", Attributes.MAX_HEALTH, 5.0d, Operation.ADDITION);	
+			owner.getLiving().heal(0.0075f);// 0.15 per second
+		}
+		else if (bauble.is(DwmgItems.LIFE_JADE_II.get()))
+		{
+			owner.addBaubleModifier(slotKey, "lj2_hpmax", Attributes.MAX_HEALTH, 10.0d, Operation.ADDITION);
+			owner.getLiving().heal(0.01f);// 0.2 per second
+		}
+		else if (bauble.is(DwmgItems.COURAGE_AMULET.get()))
+		{
+			owner.addBaubleModifier(slotKey, "ca_atk", Attributes.ATTACK_DAMAGE, 4.0d, Operation.ADDITION);
+			owner.addBaubleModifier(slotKey, "ca_speed_up", Attributes.MOVEMENT_SPEED, 0.2d, Operation.MULTIPLY_BASE);
+		}
+		else if (bauble.is(DwmgItems.COURAGE_AMULET_II.get()))
+		{
+			owner.addBaubleModifier(slotKey, "ca2_atk", Attributes.ATTACK_DAMAGE, 6.0d, Operation.ADDITION);
+			owner.addBaubleModifier(slotKey, "ca2_speed_up", Attributes.MOVEMENT_SPEED, 0.3d, Operation.MULTIPLY_BASE);
 		}
 	}
 	

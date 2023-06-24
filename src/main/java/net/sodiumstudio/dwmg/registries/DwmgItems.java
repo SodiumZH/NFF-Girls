@@ -1,18 +1,25 @@
 package net.sodiumstudio.dwmg.registries;
 
+import java.util.function.Supplier;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ChorusFruitItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.SimpleFoiledItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleItem;
+import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.DwmgTab;
 import net.sodiumstudio.dwmg.item.ItemCommandWand;
+import net.sodiumstudio.dwmg.item.ItemEvilMagnet;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.item.ItemNecromancerWand;
 
@@ -34,7 +41,12 @@ public class DwmgItems {
 	{
 		return regItem(name, new Item.Properties());
 	}
-
+	
+	public static BaubleItem newBauble(Item.Properties prop)
+	{
+		return new BaubleItem(prop.tab(TAB))
+				.description(InfoHelper.createTrans("info.dwmg.bauble"));
+	}
 	
 	/************************************/
 	/* Item Registering, with constants */ 
@@ -52,12 +64,50 @@ public class DwmgItems {
 	public static final RegistryObject<Item> ENDERBERRY = ITEMS.register("enderberry", () -> new ChorusFruitItem(new Item.Properties().tab(TAB).food(DwmgFoodProperties.ENDERBERRY).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> ENDER_PIE = ITEMS.register("ender_pie", () -> new Item(new Item.Properties().tab(TAB).food(DwmgFoodProperties.ENDER_PIE).rarity(Rarity.RARE)));
 	// Baubles
-	public static final RegistryObject<Item> SOUL_AMULET = regItem("soul_amulet", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
-	public static final RegistryObject<Item> RESISTANCE_AMULET = regItem("resistance_amulet", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
-	public static final RegistryObject<Item> HEALING_JADE = regItem("healing_jade", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
-	public static final RegistryObject<Item> AQUA_JADE = regItem("aqua_jade", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
-	public static final RegistryObject<Item> POISONOUS_THORN = regItem("poisonous_thorn", new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
-	// Equipment
+	public static final RegistryObject<Item> SOUL_AMULET = ITEMS.register("soul_amulet", () -> newBauble(new Item.Properties().rarity(Rarity.UNCOMMON))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.soul_amulet").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.hpmax", "+10").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.atk", "+3").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)));
+	public static final RegistryObject<Item> SOUL_AMULET_II = ITEMS.register("soul_amulet_ii", () -> newBauble(new Item.Properties().rarity(Rarity.RARE)).foil()
+			.description(InfoHelper.createTrans("info.dwmg.bauble.soul_amulet").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.hpmax", "+15").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.atk", "+5").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)));
+	public static final RegistryObject<Item> COURAGE_AMULET = ITEMS.register("courage_amulet", () -> newBauble(new Item.Properties().rarity(Rarity.UNCOMMON))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.proactive_attack").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.atk", "+4").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.speed", "+20%").withStyle(ChatFormatting.GRAY)));
+	public static final RegistryObject<Item> COURAGE_AMULET_II = ITEMS.register("courage_amulet_ii", () -> newBauble(new Item.Properties().rarity(Rarity.RARE)).foil()
+			.description(InfoHelper.createTrans("info.dwmg.bauble.proactive_attack").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.atk", "+6").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.speed", "+30%").withStyle(ChatFormatting.GRAY)));
+	public static final RegistryObject<Item> RESISTANCE_AMULET = ITEMS.register("resistance_amulet", () -> newBauble(new Item.Properties().rarity(Rarity.UNCOMMON))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.armor", "+4").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.speed", "-10%").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)));
+	public static final RegistryObject<Item> RESISTANCE_AMULET_II = ITEMS.register("resistance_amulet_ii", () -> newBauble(new Item.Properties().rarity(Rarity.RARE)).foil()
+			.description(InfoHelper.createTrans("info.dwmg.bauble.armor", "+6").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.speed", "-10%").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)));
+	public static final RegistryObject<Item> HEALING_JADE = ITEMS.register("healing_jade", () -> newBauble(new Item.Properties().rarity(Rarity.UNCOMMON))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.healing_per_second", "0.1").withStyle(ChatFormatting.GRAY)));
+	public static final RegistryObject<Item> LIFE_JADE = ITEMS.register("life_jade", () -> newBauble(new Item.Properties().rarity(Rarity.UNCOMMON))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.healing_per_second", "0.15").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.hpmax", "+5").withStyle(ChatFormatting.GRAY)));
+	public static final RegistryObject<Item> LIFE_JADE_II = ITEMS.register("life_jade_ii", () -> newBauble(new Item.Properties().rarity(Rarity.RARE)).foil()
+			.description(InfoHelper.createTrans("info.dwmg.bauble.healing_per_second", "0.2").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.hpmax", "+10").withStyle(ChatFormatting.GRAY)));
+	public static final RegistryObject<Item> AQUA_JADE = ITEMS.register("aqua_jade", () -> newBauble(new Item.Properties().rarity(Rarity.RARE))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.aqua_jade").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.speed_in_water", "4x").withStyle(ChatFormatting.GRAY)));
+	public static final RegistryObject<Item> POISONOUS_THORN = ITEMS.register("poisonous_thorn", () -> newBauble(new Item.Properties().rarity(Rarity.UNCOMMON))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.poisonous_thorn").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTrans("info.dwmg.bauble.poisonous_thorn_1").withStyle(ChatFormatting.GRAY)));
+
+
+	
+	// Equipment & tools
 	public static final RegistryObject<Item> NECROMANCER_HAT = ITEMS.register("necromancer_hat", () -> new ItemNecromancerArmor(
 			DwmgArmorMaterials.NECROMANCER,
 			EquipmentSlot.HEAD,
@@ -69,24 +119,7 @@ public class DwmgItems {
 	public static final RegistryObject<Item> NECROMANCER_WAND = ITEMS.register("necromancer_wand", () -> new ItemNecromancerWand(
 			new Item.Properties().tab(TAB).durability(64).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> COMMANDING_WAND = ITEMS.register("commanding_wand", () -> new ItemCommandWand(new Item.Properties().tab(TAB).stacksTo(1)));
-	/*
-	public static final RegistryObject<Item> INSOMNIA_HELMET = ITEMS.register("insomnia_helmet", () -> new ArmorItem(
-			ArmorMaterials.LEATHER,
-			EquipmentSlot.HEAD,
-			new Item.Properties().tab(TAB).rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> INSOMNIA_CHESTPLATE = ITEMS.register("insomnia_chestplate", () -> new ArmorItem(
-			ArmorMaterials.LEATHER,
-			EquipmentSlot.CHEST,
-			new Item.Properties().tab(TAB).rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> INSOMNIA_LEGGINGS = ITEMS.register("insomnia_leggings", () -> new ArmorItem(
-			ArmorMaterials.LEATHER,
-			EquipmentSlot.LEGS,
-			new Item.Properties().tab(TAB).rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> INSOMNIA_BOOTS = ITEMS.register("insomnia_boots", () -> new ArmorItem(
-			ArmorMaterials.LEATHER,
-			EquipmentSlot.FEET,
-			new Item.Properties().tab(TAB).rarity(Rarity.UNCOMMON)));*/
-	//
+	public static final RegistryObject<Item> EVIL_MAGNET = ITEMS.register("evil_magnet", () -> new ItemEvilMagnet(new Item.Properties().tab(TAB).stacksTo(1)));
 			
 	/* Item register end */
 	

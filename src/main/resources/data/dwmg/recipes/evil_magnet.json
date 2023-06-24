@@ -1,0 +1,30 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"E E",
+	"E E",
+	"INI"	
+	],
+	
+	"key":{ 
+	
+		"I":{
+		"tag": "forge:ingots/iron"
+		},
+		
+		"N":{ 
+		"tag": "forge:ingots/netherite"
+		},
+		
+		"E":{ 
+		"item": "hmag:evil_crystal"
+		}		
+	},
+	
+	"result":{ 
+		"item": "dwmg:evil_magnet",
+		"count": 1
+	}
+}

@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 import com.github.mechalopa.hmag.registry.ModItems;
 
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 
 public class DwmgBMStatics
@@ -18,4 +21,12 @@ public class DwmgBMStatics
 		UNDEAD_DEFAULT_HEALING_ITEMS.put(ModItems.SOUL_APPLE.get(), 15.0f);
 	}
 	
+	/*public static InteractionResult commonInteract(IDwmgBefriendedMob mob, Player player, InteractionHand hand)
+	{
+		if (player.level.isClientSide)
+			return InteractionResult.PASS;
+		if (!mob.isOwnerPresent() || mob.getOwner() != player)
+			return InteractionResult.PASS;
+		
+	}*/
 }

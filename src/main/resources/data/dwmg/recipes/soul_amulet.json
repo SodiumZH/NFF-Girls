@@ -15,7 +15,7 @@
 		},
 		
 		"S":{ 
-		"tag": "forge:ingots/netherite"
+		"item": "minecraft:netherite_scrap"
 		},
 		
 		"F":{ 

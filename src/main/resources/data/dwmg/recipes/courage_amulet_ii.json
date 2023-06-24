@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "dwmg:courage_amulet"
+  },
+  "addition": {
+    "item": "hmag:nether_star_block"
+  },
+  "result": {
+    "item": "dwmg:courage_amulet_ii"
+  }
+}

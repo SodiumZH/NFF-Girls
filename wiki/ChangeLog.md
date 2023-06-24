@@ -2,6 +2,34 @@
 
 ## 1.19.2
 
+### 0.1.8
+
+Added Baubles: Amulet of Courage, Life Jade
+
+Added upgrade to some Baubles: Soul Amulet, Amulet of Resistance, Amulet of Courage, Life Jade. 
+
+Added Bauble effect description.
+
+Added Evil Magnet, a tool for finding respawners in the level.
+
+Reduced the cost of some recipes.
+
+Adjusted Necromancer's Wand: 
+
+ -- Changed bullet speed from 4 to 16.
+
+ -- Reduced 
+
+ -- Now the bullet will blast on hit something, and give previous effects to all living entities in the  3x3x3 area around. If a living entity is directly hit, a stronger effect will be given to it, either negative or positive.
+
+ -- The duration of Wither effect increased from 5 s to 10 s.
+
+ -- The duration of Strength effect increased from 5 s to 10 s.
+
+ -- If directly hit: the level of Wither will increase by 1; the duration of Strength will be 15 s; healing amount will be doubled. 
+
+Fixed Zombies and variants GUI Bauble slot display error.
+
 ### 0.1.7
 
 Fixed Creeper Girl not being interactable.

@@ -51,7 +51,7 @@ public class ItemCommandWand extends Item
 							MobRespawnerInstance mr = MobRespawnerInstance.create(ie.getItem());
 							if (mr != null && BefriendedHelper.getOwnerUUIDFromNbt(mr.getMobNbt()).equals(context.getPlayer().getUUID()))
 							{
-								ie.moveTo(blockpos.getX() + 0.5 + RndUtil.rndRangedDouble(-0.2,  0.2), blockpos.getY()+ 1.2, blockpos.getZ() + 0.5 + RndUtil.rndRangedDouble(-0.2,  0.2));
+								ie.moveTo(blockpos.getX() + 0.5 + RndUtil.rndRangedDouble(-0.2,  0.2), blockpos.getY()+ 1.5, blockpos.getZ() + 0.5 + RndUtil.rndRangedDouble(-0.2,  0.2));
 							}
 						}
 					}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "dwmg:resistance_amulet"
+  },
+  "addition": {
+    "item": "hmag:nether_star_block"
+  },
+  "result": {
+    "item": "dwmg:resistance_amulet_ii"
+  }
+}

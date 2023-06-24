@@ -2,6 +2,8 @@ package net.sodiumstudio.dwmg.events;
 
 import java.util.UUID;
 
+import com.github.mechalopa.hmag.registry.ModItems;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -24,6 +26,7 @@ import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
 import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.item.ItemEvilMagnet;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -121,6 +124,18 @@ public class DwmgItemEvents
 			event.setCost(1);
 			event.setMaterialCost(1);
 			out.setDamageValue(event.getLeft().getDamageValue() - 16);
+			event.setOutput(out);
+
+		}
+		// Evil Magnet fixing
+		if (event.getLeft().is(DwmgItems.EVIL_MAGNET.get())
+				&& ItemEvilMagnet.getMagnetDuration(event.getLeft()) == 0
+				&& event.getRight().is(ModItems.EVIL_CRYSTAL.get()))
+		{
+			ItemStack out = event.getLeft().copy();
+			event.setCost(1);
+			event.setMaterialCost(1);
+			ItemEvilMagnet.repair(out);
 			event.setOutput(out);
 		}
 	}

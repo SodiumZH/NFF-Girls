@@ -530,8 +530,6 @@ Use this item to (right click) an Evil Crystal Block to set all mobs' AI state t
 
 On usage it can shoot a magic ball which adds Wither III for 5s on hitting living entity. If the user is wearing a Necromancer's Hat, it will add Wither IV instead of III. 
 
-The target will NOT regard the effect of Necromancer's Wand as your attack, so it will not cause your target's hatred.
-
 Each time used, the user will take a damage of 2.
 
 Durability: 64 (accepting Unbreaking enchantment)
