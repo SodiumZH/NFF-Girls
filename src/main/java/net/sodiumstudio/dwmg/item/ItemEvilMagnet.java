@@ -1,18 +1,16 @@
 package net.sodiumstudio.dwmg.item;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.Nullable;
-
-import org.apache.commons.compress.utils.Lists;
 
 import com.github.mechalopa.hmag.registry.ModBlocks;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -88,7 +86,7 @@ public class ItemEvilMagnet extends Item
 			{
 				BlockPos blockpos = context.getClickedPos();
 				Iterable<Entity> entities = sl.getAllEntities();
-				List<ItemEntity> respawners = Lists.newArrayList();
+				List<ItemEntity> respawners = new ArrayList<>();
 				for (Entity e: entities)
 				{
 					if (e instanceof ItemEntity ie)

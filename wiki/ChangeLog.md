@@ -28,6 +28,10 @@ Adjusted Necromancer's Wand:
 
  -- If directly hit: the level of Wither will increase by 1; the duration of Strength will be 15 s; healing amount will be doubled. 
 
+Reduced the forgiving time of undead mobs for Undead Affinity effect from 15 min to 5 min.
+
+Changed the hatred duration of most befriendable mob. Now the hatred durations are listed in `wiki/hatred-durations.txt` in the repo.
+
 Fixed Zombies and variants GUI Bauble slot display error.
 
 Fixed crash caused by null damage source on mob death, described in issue #7
