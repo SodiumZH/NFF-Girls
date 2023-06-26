@@ -674,7 +674,8 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onGetLootLevel(LootingLevelEvent event)
 	{
-		if (event.getDamageSource().getEntity() != null
+		if (event.getDamageSource() != null
+			&& event.getDamageSource().getEntity() != null
 			&& event.getDamageSource().getEntity() instanceof IDwmgBefriendedMob bm)
 		{
 			/** After this, vanilla will use LivingEntity#lastHurtByPlayerTime to check if it's killed by player
