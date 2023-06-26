@@ -204,18 +204,22 @@ public class HandlerNecroticReaper extends BefriendingHandler
 	public void serverTick(Mob mob)
 	{
 		CBefriendableMob cap = CBefriendableMob.getCap(mob);
+		boolean isAlwaysHostile = false;
 		if (	// Is in player process
 			cap.getNbt().contains("ongoing_player_uuid", NbtHelper.TAG_INT_ARRAY_ID)
 			&& cap.getNbt().getUUID("ongoing_player_uuid") != null
 			&& mob.level.getPlayerByUUID(cap.getNbt().getUUID("ongoing_player_uuid")) != null)
 		{
 			Player player = mob.level.getPlayerByUUID(cap.getNbt().getUUID("ongoing_player_uuid"));
-			mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((capUM) ->
+			/*mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((capUM) ->
 			{
-				capUM.addHatred(player);	// This blocks the effect of undead affinity
-			});
+				capUM.addHatred(player, 300 * 20);	// This blocks the effect of undead affinity
+			});*/
 			if (!player.isCreative())
-				mob.setTarget(player);
+			{
+				isAlwaysHostile = true;
+				cap.setAlwaysHostileTo(player);
+			}
 			// Amount of particles emitting each frame
 			int amountPerTick = 0;
 			
@@ -287,9 +291,11 @@ public class HandlerNecroticReaper extends BefriendingHandler
 			}			
 			if (amountPerTick > 0)
 				EntityHelper.sendParticlesToEntity(
-					mob, ParticleTypes.SMOKE, mob.getBbHeight() - 0.2d, 0.5d, amountPerTick, 0d);
-
-			
+					mob, ParticleTypes.SMOKE, mob.getBbHeight() - 0.2d, 0.5d, amountPerTick, 0d);			
+		}
+		if (!isAlwaysHostile)
+		{
+			cap.setAlwaysHostileTo(null);
 		}
 		
 	}

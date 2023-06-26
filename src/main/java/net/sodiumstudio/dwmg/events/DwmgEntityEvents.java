@@ -195,7 +195,7 @@ public class DwmgEntityEvents
 				LivingEntity target = mob.getTarget();
 				if (target != null)
 				{
-					l.addHatred(target);
+					l.addHatred(target, 300 * 20);
 				}		
 			});	        
 		}

@@ -119,6 +119,7 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 						}
 					}
 				// In process
+				boolean isAlwaysHostile = false;
 				if (l.getNbt().contains("player_uuid_on_befriending", 11))
 				{
 					Player player = ee.level.getPlayerByUUID(l.getNbt().getUUID("player_uuid_on_befriending"));
@@ -140,6 +141,7 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 						else
 						{
 							mob.setTarget(player);
+							isAlwaysHostile = true;
 						}
 					}
 					// Update no attack timer
@@ -168,7 +170,8 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 						}
 					}
 				}
-				
+				if (!isAlwaysHostile)
+					l.setAlwaysHostileTo(null);
 			});
 		}
 	}

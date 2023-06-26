@@ -71,6 +71,36 @@ public class HandlerZombieGirl extends HandlerItemGivingProgress
 		set.add(BefriendableAddHatredReason.ATTACKED);
 		set.add(BefriendableAddHatredReason.ATTACKING);
 		set.add(BefriendableAddHatredReason.SET_TARGET);
+		set.add(BefriendableAddHatredReason.HIT);
 		return set;
+	}
+	
+	@Override
+	public int getHatredDurationTicks(BefriendableAddHatredReason reason)
+	{
+		switch(reason)
+		{
+		case ATTACKED:
+		{
+			return 300 * 20;
+		}
+		case ATTACKING:
+		{
+			return 60 * 20;
+		}
+		case SET_TARGET:
+		{
+			return 30 * 20;
+		}
+		case HIT:
+		{
+			return 30 * 20;
+		}
+		default:
+		{
+			throw new RuntimeException("Illegal add hatred reason");
+		}
+		}
+		
 	}
 }

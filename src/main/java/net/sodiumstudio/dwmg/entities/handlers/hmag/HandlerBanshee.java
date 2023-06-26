@@ -29,6 +29,7 @@ public class HandlerBanshee extends HandlerSkeletonGirl
 		HashSet<BefriendableAddHatredReason> set = new HashSet<BefriendableAddHatredReason>();
 		set.add(BefriendableAddHatredReason.ATTACKED);
 		set.add(BefriendableAddHatredReason.ATTACKING);
+		set.add(BefriendableAddHatredReason.HIT);
 		return set;
 	}
 		
@@ -38,9 +39,12 @@ public class HandlerBanshee extends HandlerSkeletonGirl
 		switch (reason)
 		{
 		case ATTACKED:
-			return 18000;
+			return 300 * 20;
 		case ATTACKING:
-			return 1200; 
+			return 30 * 20; 
+		case HIT:
+			return 30 * 20;
+		
 		default:
 			return 0;				
 		}

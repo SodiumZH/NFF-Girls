@@ -13,10 +13,10 @@ public interface CUndeadMob extends INBTSerializable<CompoundTag>{
 	public HashSet<UUID> getHatred();
 	
 	// Add a living entity to the hatred list
-	// Forgive after 15 min by default
+	// Forgive after 5 min by default
 	public default void addHatred(LivingEntity entity)
 	{
-		addHatred(entity, 18000);
+		addHatred(entity, 300 * 20);
 	}
 	
 	/**
