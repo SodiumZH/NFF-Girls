@@ -17,7 +17,7 @@ import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedTargetGoal;
 
 /**
- * Makes the mob to attack the nearest mob targeting it.
+ * Makes the mob to attack the nearest mob targeting a given LivingEntity.
  */
 public class BefriendedNearestUnfriendlyMobTargetGoal extends BefriendedTargetGoal
 {
@@ -25,6 +25,9 @@ public class BefriendedNearestUnfriendlyMobTargetGoal extends BefriendedTargetGo
 	protected final int randomInterval;
 	@Nullable
 	protected LivingEntity target;
+	// The condition that a mob's target should fulfill for this mob to be selected by this goal.
+	// By default it's the owner mob itself
+	protected Predicate<LivingEntity> targetOfTargetCondition = l -> true;
 	/**
 	 * This filter is applied to the Entity search. Only matching entities will be
 	 * targeted.
@@ -58,11 +61,21 @@ public class BefriendedNearestUnfriendlyMobTargetGoal extends BefriendedTargetGo
 		this.targetConditions = TargetingConditions.forCombat().range(this.getFollowDistance())
 				.selector(targetPredicate);
 		this.allowAllStatesExceptWait();
+		this.targetOfTargetCondition = m -> (m == mob.asMob());
 	}
 
 	public BefriendedNearestUnfriendlyMobTargetGoal stateConditions(Predicate<IBefriendedMob> condition)
 	{
 		stateConditions = condition;
+		return this;
+	}
+	
+	/**
+	 * Condition that the mob's target should fulfill to allow the mob to be selected in this goal.
+	 */
+	public BefriendedNearestUnfriendlyMobTargetGoal targetOfTargetCondition(Predicate<LivingEntity> cond)
+	{
+		targetOfTargetCondition = cond;
 		return this;
 	}
 	
@@ -91,7 +104,7 @@ public class BefriendedNearestUnfriendlyMobTargetGoal extends BefriendedTargetGo
 	      {
 	    	  if (e instanceof Mob m)
 	    	  {
-	    		  return m.getTarget() == mob.asMob() 
+	    		  return targetOfTargetCondition.test(m)
 	    			&& mob.asMob().hasLineOfSight(m)
 	    			&& mob.asMob().distanceToSqr(m) <= followDist * followDist
 	    			&& targetConditions.test(mob.asMob(), m);

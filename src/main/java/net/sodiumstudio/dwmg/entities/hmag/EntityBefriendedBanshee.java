@@ -66,6 +66,8 @@ import net.sodiumstudio.dwmg.entities.DwmgBMStatics;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFlyingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.HmagFlyingGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -131,14 +133,8 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 			targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 			targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 			targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
-			this.targetSelector.addGoal(5,
-				new BefriendedNearestUnfriendlyMobTargetGoal(this, true, true).stateConditions(bm ->
-				{
-					if (bm instanceof IBaubleHolder bh)
-						return bh.hasBaubleItem(DwmgItems.COURAGE_AMULET.get()) || bh.hasBaubleItem(DwmgItems.COURAGE_AMULET_II.get());
-					else
-						return false;
-				}).allowAllStatesExceptWait().asGoal());
+			targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
+			targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 		}
 
 		/* Interaction */
