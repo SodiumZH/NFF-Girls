@@ -476,11 +476,17 @@ The dropped respawner item entities are invulnerable (except to creative player 
 
 #### Soul Amulet
 
-Max HP +10, ATK +3, sun immunity (Wearable only for undead mobs)
+(Wearable only for undead mobs)
+
+Lv. 1: Max HP +10, ATK +3, sun immunity 
+
+Lv. 2: Max HP +15, ATK +5, sun immunity
 
 #### Amulet of Resistance
 
-Armor +4, Speed -10%, sun immunity for undead mobs
+Lv. 1: Armor +4, Speed -10%, sun immunity for undead mobs
+
+Lv. 2: Armor +6, Speed -10%, sun immunity for undead mobs
 
 #### Fruit of Insomnia (HMaG)
 
@@ -489,6 +495,12 @@ Max HP +60, ATK +8 (Only working at night, applying only once)
 #### Healing Jade
 
 Persistently healing 0.1 HP per second.
+
+#### Life Jade
+
+Lv. 1: Max HP +5, persistently healing 0.15 HP per second
+
+Lv. 2: Max HP +10, persistently healing 0.2 HP per second
 
 #### Aqua Jade
 
@@ -526,13 +538,27 @@ Use this item to (right click) an Evil Crystal Block to set all mobs' AI state t
 
 
 
+#### Evil Magnet
+
+Use this item to an Evil Crystal Block to move all respawner in the world onto the block.
+
+It has 8 durability and can be repaired on anvil with Evil Crystal. Moving each Respawner costs 1 durability.
+
+
+
 #### Necromancer's Wand
 
-On usage it can shoot a magic ball which adds Wither III for 5s on hitting living entity. If the user is wearing a Necromancer's Hat, it will add Wither IV instead of III. 
+~~On usage it can shoot a magic ball which adds Wither III for 5s on hitting living entity. If the user is wearing a Necromancer's Hat, it will add Wither IV instead of III. (Changed: 0.1.8 / 0.0.8)~~  
+
+On usage it shoots a magic ball which blasts on hitting blocks or entities, and give Wither III effect for 10 s to living entities within 1.5 blocks away. If the shooter is wearing Necromancer's Hat, it will apply Wither IV.
+
+If the magic ball hits a living entity directly, the Wither level will increase by 1.
+
+For owning befriended Necrotic Reapers, it doesn't give Wither but positive effects. The mob will be healed by 2 or 4 (directly hit). If shooter is wearing Necromancer's Hat, it will be healed by 3 or 6 (directly hit) and get Strength II effect for 10s or 15s (directly hit).
 
 Each time used, the user will take a damage of 2.
 
-Durability: 64 (accepting Unbreaking enchantment)
+Durability: 64 (accepting Unbreaking and Mending enchantment)
 
 It will be unable to use if leaving only 1 durability, preventing it from breaking. 
 

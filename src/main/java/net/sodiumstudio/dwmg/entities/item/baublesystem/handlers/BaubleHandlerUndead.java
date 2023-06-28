@@ -29,16 +29,10 @@ public class BaubleHandlerUndead extends BaubleHandlerGeneral
 			owner.addBaubleModifier(slotKey, "sa_health", Attributes.MAX_HEALTH, 10.0d, Operation.ADDITION);
 			owner.addBaubleModifier(slotKey, "sa_atk", Attributes.ATTACK_DAMAGE, 3.0d, Operation.ADDITION);
 		}
+		if (bauble.is(DwmgItems.SOUL_AMULET_II.get()))
+		{
+			owner.addBaubleModifier(slotKey, "sa_health", Attributes.MAX_HEALTH, 15.0d, Operation.ADDITION);
+			owner.addBaubleModifier(slotKey, "sa_atk", Attributes.ATTACK_DAMAGE, 5.0d, Operation.ADDITION);
+		}
 	}
-	
-	/**
-	 * Condition that the mob should be sun-immune (for {@code IBefriendedUndeadMob})
-	 */
-	protected boolean shouldBeSunImmune(IBaubleHolder mob)
-	{
-		return (mob.hasBaubleItem(DwmgItems.SOUL_AMULET.get()) 
-				|| mob.hasBaubleItem(DwmgItems.RESISTANCE_AMULET.get())
-				|| mob.getLiving().getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
-	}
-	
 }
