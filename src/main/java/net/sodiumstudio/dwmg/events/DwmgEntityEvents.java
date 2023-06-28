@@ -653,8 +653,8 @@ public class DwmgEntityEvents
 			/** For Necrotic Reapers, Fortune enchantment is applied in place of Looting */
 			if (bm instanceof EntityBefriendedNecroticReaper nr && !nr.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
 			{
-				event.setLootingLevel(Math.max(nr.getItemBySlot(EquipmentSlot.MAINHAND).getEnchantmentLevel(Enchantments.BLOCK_FORTUNE), 
-						nr.getItemBySlot(EquipmentSlot.MAINHAND).getEnchantmentLevel(Enchantments.MOB_LOOTING)));
+				event.setLootingLevel(Math.max(EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, nr.getItemBySlot(EquipmentSlot.MAINHAND)), 
+						EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, nr.getItemBySlot(EquipmentSlot.MAINHAND))));
 			}
 		}
 	}
