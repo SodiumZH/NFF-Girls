@@ -85,6 +85,7 @@ import net.sodiumstudio.dwmg.effects.EffectNecromancerWither;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.GhastlySeekerRandomFlyGoalDwmgAdjusted;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedBanshee;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedDrownedGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedEnderExecutor;
@@ -649,6 +650,12 @@ public class DwmgEntityEvents
 			/** After this, vanilla will use LivingEntity#lastHurtByPlayerTime to check if it's killed by player
 			 * so force set this to make it drop player-kill loot */
 			ReflectHelper.forceSet(event.getEntity(), LivingEntity.class, "lastHurtByPlayerTime",  1);
+			/** For Necrotic Reapers, Fortune enchantment is applied in place of Looting */
+			if (bm instanceof EntityBefriendedNecroticReaper nr && !nr.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
+			{
+				event.setLootingLevel(Math.max(nr.getItemBySlot(EquipmentSlot.MAINHAND).getEnchantmentLevel(Enchantments.BLOCK_FORTUNE), 
+						nr.getItemBySlot(EquipmentSlot.MAINHAND).getEnchantmentLevel(Enchantments.MOB_LOOTING)));
+			}
 		}
 	}
 	
@@ -881,7 +888,8 @@ public class DwmgEntityEvents
 	 */
 	public static void setHostileToAllBefriendedMobs(Mob mob, Predicate<LivingEntity> condition)
 	{
-		AiHelper.setHostileTo(mob, EntityBefriendedZombieGirl.class, condition);
+		AiHelper.setHostileTo(mob, Mob.class, condition.and(m -> m instanceof IDwmgBefriendedMob));
+		/*AiHelper.setHostileTo(mob, EntityBefriendedZombieGirl.class, condition);
 		AiHelper.setHostileTo(mob, EntityBefriendedHuskGirl.class, condition);
 		AiHelper.setHostileTo(mob, EntityBefriendedDrownedGirl.class, condition);
 		AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class, condition);
@@ -889,8 +897,10 @@ public class DwmgEntityEvents
 		AiHelper.setHostileTo(mob, EntityBefriendedWitherSkeletonGirl.class, condition);
 		AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class, condition);
 		AiHelper.setHostileTo(mob, EntityBefriendedEnderExecutor.class, condition);
-		AiHelper.setHostileTo(mob, EntityBefriendedNecroticReaper.class, condition);
 		AiHelper.setHostileTo(mob, EntityBefriendedHornet.class, condition);
+		AiHelper.setHostileTo(mob, EntityBefriendedNecroticReaper.class, condition);
+		AiHelper.setHostileTo(mob, EntityBefriendedBanshee.class, condition);
+		AiHelper.setHostileTo(mob, EntityBefriendedGhastlySeeker.class, condition);*/
 		// Extending...
 	}
 

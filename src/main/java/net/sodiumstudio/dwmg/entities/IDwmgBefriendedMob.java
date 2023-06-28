@@ -9,6 +9,7 @@ import net.minecraft.world.item.Item;
 
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
@@ -18,6 +19,7 @@ import net.sodiumstudio.befriendmobs.util.annotation.DontCallManually;
 import net.sodiumstudio.befriendmobs.util.annotation.DontOverride;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
+import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleItem;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
 public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleHolder
@@ -77,4 +79,41 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleHolder
 		}
 	}
 
+	/* Bauble related */
+	public default boolean hasDwmgBauble(String typeName)
+	{
+		for (ItemStack stack: this.getBaubleSlots().values())
+		{
+			if (!stack.isEmpty() && stack.getItem() instanceof DwmgBaubleItem bauble && bauble.is(typeName))
+				return true;
+		}
+		return false;
+	}
+	
+	public default boolean hasDwmgBaubleWithLevel(String typeName, int level)
+	{
+		for (ItemStack stack: this.getBaubleSlots().values())
+		{
+			if (!stack.isEmpty() && stack.getItem() instanceof DwmgBaubleItem bauble && bauble.is(typeName, level))
+				return true;
+		}
+		return false;
+	}
+	
+	public default boolean hasDwmgBaubleWithMinLevel(String typeName, int minLevel)
+	{
+		for (ItemStack stack: this.getBaubleSlots().values())
+		{
+			if (!stack.isEmpty() 
+				&& stack.getItem() instanceof DwmgBaubleItem bauble 
+				&& bauble.is(typeName)
+				&& bauble.getLevel() >= minLevel)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 }

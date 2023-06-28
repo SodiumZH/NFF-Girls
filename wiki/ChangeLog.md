@@ -30,6 +30,12 @@ Adjusted Necromancer's Wand:
 
 Fixed Zombies and variants GUI Bauble slot display error.
 
+Fixed crash caused by null damage source on mob death, described in issue #7
+
+Fixed some items in other mods may make Ender Executor and Necrotic Reaper non-hostile even during befriending process.
+
+Fixed Mob Respawner item entities vanishing in fire and lava.
+
 ### 0.1.7
 
 Fixed Creeper Girl not being interactable.
