@@ -354,9 +354,19 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 	
 	@Override
 	public void setupSunImmunityRules() {
-		this.sunImmuneConditions().put("sunhat", () -> this.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
-		this.sunImmuneConditions().put("soul_amulet", () -> this.hasBaubleItem(DwmgItems.SOUL_AMULET.get()));
-		this.sunImmuneConditions().put("resis_amulet", () -> this.hasBaubleItem(DwmgItems.RESISTANCE_AMULET.get()));
+		this.sunImmuneConditions().put("sunhat", () -> {			
+			if (this.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()))
+				return true;
+			// In AI steps it may be 
+			else if (this.getTempData().values().tempObjects.containsKey("head_item")
+					&& this.getTempData().values().tempObjects.get("head_item") != null
+					&& this.getTempData().values().tempObjects.get("head_item") instanceof ItemStack is
+					&& is.is(DwmgItems.SUNHAT.get()))
+				return true;
+			else return false;
+		});
+		this.sunImmuneConditions().put("soul_amulet", () -> this.hasDwmgBauble("soul_amulet"));
+		this.sunImmuneConditions().put("resis_amulet", () -> this.hasDwmgBauble("resistance_amulet"));
 	}
 	
 	/* IBaubleHolder interface */

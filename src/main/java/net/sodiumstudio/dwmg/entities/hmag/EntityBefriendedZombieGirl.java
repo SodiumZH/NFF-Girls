@@ -292,8 +292,8 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IDwm
 	@Override
 	public void setupSunImmunityRules() {
 		this.sunImmuneConditions().put("sunhat", () -> this.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
-		this.sunImmuneConditions().put("soul_amulet", () -> this.hasBaubleItem(DwmgItems.SOUL_AMULET.get()));
-		this.sunImmuneConditions().put("resis_amulet", () -> this.hasBaubleItem(DwmgItems.RESISTANCE_AMULET.get()));
+		this.sunImmuneConditions().put("soul_amulet", () -> this.hasDwmgBauble("soul_amulet"));
+		this.sunImmuneConditions().put("resis_amulet", () -> this.hasDwmgBauble("resistance_amulet"));
 	}
 
 	@Override
