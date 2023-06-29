@@ -76,6 +76,7 @@ import net.sodiumstudio.befriendmobs.util.AiHelper;
 import net.sodiumstudio.befriendmobs.util.EntityHelper;
 import net.sodiumstudio.befriendmobs.util.InfoHelper;
 import net.sodiumstudio.befriendmobs.util.MiscUtil;
+import net.sodiumstudio.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.befriendmobs.util.ReflectHelper;
 import net.sodiumstudio.befriendmobs.util.TagHelper;
 import net.sodiumstudio.befriendmobs.util.Wrapped;
@@ -726,9 +727,9 @@ public class DwmgEntityEvents
 			items[i > 1 ? i + 1 : i] = mob.getItemBySlot(ARMOR_AND_HANDS[i]);
 		}
 		// Sometimes head item is moved to the temp objects for handling sun immunity, so insert it in front of head items
-		if (mob instanceof IBefriendedMob bm && bm.getTempData().values().tempObjects.containsKey("head_item"))
+		if (mob instanceof IBefriendedMob bm && bm.getTempData().values().tag.contains("head_item"))
 		{
-			items[2] = (ItemStack) bm.getTempData().values().tempObjects.get("head_item");
+			items[2] = NbtHelper.readItemStack(bm.getTempData().values().tag, "head_item");
 		}
 		else items[2] = ItemStack.EMPTY;
 		

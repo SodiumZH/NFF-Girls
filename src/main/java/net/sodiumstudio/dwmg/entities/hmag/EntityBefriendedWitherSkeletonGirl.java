@@ -45,6 +45,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
+import net.sodiumstudio.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
@@ -150,11 +151,11 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 	public void aiStep() {
 
 		// Wither skeletons don't burn under sun but still damage helmet, so cancel it
-		this.getTempData().values().tempObjects.put("head_item", this.getItemBySlot(EquipmentSlot.HEAD));
+		NbtHelper.saveItemStack(this.getItemBySlot(EquipmentSlot.HEAD), this.getTempData().values().tag, "head_item");
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
 		super.aiStep();
-		this.setItemSlot(EquipmentSlot.HEAD, (ItemStack)this.getTempData().values().tempObjects.get("head_item"));
-		this.getTempData().values().tempObjects.remove("head_item");
+		this.setItemSlot(EquipmentSlot.HEAD, NbtHelper.readItemStack(this.getTempData().values().tag, "head_item"));
+		this.getTempData().values().tag.remove("head_item");
 		this.setInventoryFromMob();
 		
 		/* Handle combat AI */		
