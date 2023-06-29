@@ -4,7 +4,7 @@
     "item": "dwmg:courage_amulet"
   },
   "addition": {
-    "item": "hmag:nether_star_block"
+    "item": "minecraft:trident"
   },
   "result": {
     "item": "dwmg:courage_amulet_ii"
