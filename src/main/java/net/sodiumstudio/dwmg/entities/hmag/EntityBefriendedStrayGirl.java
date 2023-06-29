@@ -50,6 +50,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
+import net.sodiumstudio.befriendmobs.util.NbtHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
@@ -161,10 +162,11 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 		// Handle sun sensitivity
 		if (this.isSunImmune())
 		{
-			this.getTempData().values().tempObjects.put("head_item", this.getItemBySlot(EquipmentSlot.HEAD));
+			NbtHelper.saveItemStack(this.getItemBySlot(EquipmentSlot.HEAD), this.getTempData().values().tag, "head_item");
 			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
 			super.aiStep();
-			this.setItemSlot(EquipmentSlot.HEAD, (ItemStack)this.getTempData().values().tempObjects.get("head_item"));
+			this.setItemSlot(EquipmentSlot.HEAD, NbtHelper.readItemStack(this.getTempData().values().tag, "head_item"));
+			this.getTempData().values().tag.remove("head_item");
 			this.setInventoryFromMob();
 		}
 		else 
@@ -358,10 +360,8 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 			if (this.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()))
 				return true;
 			// In AI steps it may be 
-			else if (this.getTempData().values().tempObjects.containsKey("head_item")
-					&& this.getTempData().values().tempObjects.get("head_item") != null
-					&& this.getTempData().values().tempObjects.get("head_item") instanceof ItemStack is
-					&& is.is(DwmgItems.SUNHAT.get()))
+			else if (this.getTempData().values().tag.contains("head_item", NbtHelper.TAG_COMPOUND_ID)
+					&& NbtHelper.readItemStack(this.getTempData().values().tag, "head_item").is(DwmgItems.SUNHAT.get()))
 				return true;
 			else return false;
 		});
