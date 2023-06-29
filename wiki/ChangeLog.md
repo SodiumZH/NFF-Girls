@@ -2,6 +2,14 @@
 
 ## 1.19.2
 
+### 0.1.8.1
+
+Reduced the cost of some Baubles.
+
+Fixed Soul Amulet II not working.
+
+Fixed Amulet of Resistance II not providing sun immunity.
+
 ### 0.1.8
 
 Added Baubles: Amulet of Courage, Life Jade
@@ -258,6 +266,46 @@ Rollbacked HMaG dependency to 6.1.0.
 Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.18.2
+
+### 0.0.8
+
+Added Baubles: Amulet of Courage, Life Jade
+
+Added upgrade to some Baubles: Soul Amulet, Amulet of Resistance, Amulet of Courage, Life Jade. 
+
+Added Bauble effect description.
+
+Added Evil Magnet, a tool for finding respawners in the level.
+
+Reduced the cost of some recipes.
+
+Adjusted Necromancer's Wand: 
+
+ -- Changed bullet speed from 4 to 16.
+
+ -- Reduced usage cooldown from 5 s to 2.5 s.
+
+ -- Now the bullet will blast on hit something, and give previous effects to all living entities in the  3x3x3 area around. If a living entity is directly hit, a stronger effect will be given to it, either negative or positive.
+
+ -- Increased Wither effect duration from 5 s to 10 s.
+
+ -- Increased  Strength effect duration from 5 s to 10 s.
+
+ -- If directly hit: the level of Wither will increase by 1; the duration of Strength will be 15 s; healing amount will be doubled. 
+
+Reduced the forgiving time of undead mobs for Undead Affinity effect from 15 min to 5 min.
+
+Changed the hatred duration of most befriendable mob. Now the hatred durations are listed in `wiki/hatred-durations.txt` in the repo.
+
+Fixed Zombies and variants GUI Bauble slot display error.
+
+Fixed crash caused by null damage source on mob death, described in issue #7
+
+Fixed some items in other mods may make Ender Executor and Necrotic Reaper non-hostile even during befriending process.
+
+Fixed Mob Respawner item entities vanishing in fire and lava.
+
+Fixed Sunhat not working for Skeleton and Stray Girls.
 
 ### 0.0.7
 
