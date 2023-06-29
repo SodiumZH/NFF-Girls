@@ -4,7 +4,7 @@
     "item": "dwmg:resistance_amulet"
   },
   "addition": {
-    "item": "hmag:nether_star_block"
+    "item": "minecraft:netherite_chestplate"
   },
   "result": {
     "item": "dwmg:resistance_amulet_ii"
