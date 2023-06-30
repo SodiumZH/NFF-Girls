@@ -400,7 +400,7 @@ It has 3 bauble slots.
 
 Using item-giving process. Accepted items are identical to Skeleton Girls.
 
-Ghastly Seekers are befriendable only when they're in the Overworld and can see sky.
+Ghastly Seekers are befriendable only when they're in the Overworld and can see sky (no opaque blocks above).
 
 ##### Interaction
 
@@ -454,7 +454,7 @@ It can be obtained by eating Ender Pie.
 
 ### Curse of Necromancy
 
-The harmful effect of Necromancer's Hat. This effect is same as Wither, but not causing the health bar turning black. Wither Skeletons are not immune to this effect.
+The harmful effect of Necromancer's Hat. This effect is same as Wither, but not causing the health bar turning black. ~~Wither Skeletons are not immune to this effect. (0.x.7)~~ Wither Skeletons are immune to this effect. (0.x.7)
 
 
 
