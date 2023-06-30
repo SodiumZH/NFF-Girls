@@ -116,7 +116,7 @@
 
 灵魂粉尘: 0.02 ~ 0.04
 
-玩家全程需要保持带有“亡灵亲和”状态效果，这使亡灵生物对玩家中立。另外玩家不能曾经激怒过该生物，无论是通过攻击还是在没有“亡灵亲和”效果时接近。一旦其被激怒，则需要经过15分钟后原谅玩家（重新能够友好化）。
+玩家全程需要保持带有“亡灵亲和”状态效果，这使亡灵生物对玩家中立。另外玩家不能曾经激怒过该生物，无论是通过攻击还是在没有“亡灵亲和”效果时接近。一旦其被激怒，则需要经过~~15~~ 5分钟后原谅玩家（重新能够友好化）。
 
 一旦激怒或失去“亡灵亲和”效果，此过程将中断。
 
@@ -330,13 +330,55 @@ TNT：0.03 ~ 0.06.
 
 *提示：如果其他mod有比下界合金更高级的锄，那将是一个强力武器。下界合金以上等级的锄攻击力依次为：13，21，34（最大）。
 
+如果锄上带有时运附魔，在杀怪的时候会掉落更多物品，就像拥有抢夺附魔一样。
+
 死灵收割者有4个饰品槽。
 
 它可以用灵魂粉尘（5）或灵魂之果（15）治疗。
 
-如果被拥有者的死灵巫师之杖击中，其将会回复2生命。如果拥有者佩戴死灵巫师的帽子，则会回复3生命并获得5秒力量II效果。
+~~如果被拥有者的死灵巫师之杖击中，其将会回复2生命。如果拥有者佩戴死灵巫师的帽子，则会回复3生命并获得5秒力量II效果。~~
+
+当被拥有者的死灵巫师之杖魔法球击中，死灵收割者会恢复2生命（爆炸溅射）或4生命（直接击中）。如果拥有者佩戴死灵巫师的帽子，则会恢复3生命（爆炸溅射）或6生命（直接击中），并获得力量II效果10秒（爆炸溅射）或15秒（直接击中）。
 
 如果玩家佩戴死灵巫师的帽子，其所拥有的死灵收割者在周围（8格以内）会付与玩家再生效果，等级取决于周围的总数量（最高等级III）。
+
+
+
+#### 报丧女妖
+
+##### 友好化
+
+道具给予流程，接受的道具与骷髅娘相同。
+
+给予道具时，玩家必须拥有凋零效果（不是死灵巫师帽子的诅咒效果），且生物周围15x15x15的区域中必须有至少8个凋灵玫瑰（方块）。一旦少于8个，每秒将会降低0.1的进度。如果玩家被生物攻击，将会有60秒冷却时间，其间无法给予道具，但不会打断（进度不会下降）。
+
+##### Interaction
+
+You can customize its hand items. The item on off-hand can only stack to 1 no matter it's originally stackable.
+
+When it's off-hand is holding a flower, it will apply effects of the Suspicious Stew of the corresponding flower. If the effect is positive, it will be applied to the allies in 8 blocks each 15 s, including the owner, the owner's other befriended mobs and tamed animals. If the effect is negative, it will be applied to the target on attacking. 
+
+It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as vanilla undead mob girls.)
+
+It has 3 bauble slots.
+
+
+
+#### Ghastly Seeker (HMaG) (0.0.6 / 0.1.6)
+
+##### Befriending
+
+Using item-giving process. Accepted items are identical to Skeleton Girls.
+
+Ghastly Seekers are befriendable only when they're in the Overworld and can see sky.
+
+##### Interaction
+
+It has 4 bauble slots.
+
+It requires ammo to fire. The ammo slot (explosive icon) accepts either Fire Charges or Blasting Bottles (HMaG). When using Fire Charges, the explosions of the fireballs have normal power and don't break blocks. When using Blasting Bottles, the explosions have 1.5x normal power and break blocks.
+
+The base explosion power is 1. Each ATK point adds extra 0.1 to the power. 
 
 
 

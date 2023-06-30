@@ -4,9 +4,9 @@
 
 ### Current version: 
 
-#### 0.0.6 (1.18.2)
+#### 0.0.8 (1.18.2)
 
-#### 0.1.6 (1.19.2)
+#### 0.1.8.1 (1.19.2)
 
 
 
@@ -118,7 +118,7 @@ Accepted items and corresponding progress increase:
 
 *Soul Powder*: 0.02 ~ 0.04
 
-During the process, you must keep an "Undead Affinity" effect, which makes undead mobs be neutral to you. Also, you must haven't provoked them, either because of attacking them or getting close to them without Undead Affinity effect. Once you provoked them, it will spend 15 minutes for them to forgive you.
+During the process, you must keep an "Undead Affinity" effect, which makes undead mobs be neutral to you. Also, you must haven't provoked them, either because of attacking them or getting close to them without Undead Affinity effect. Once you provoked them, it will spend ~~15~~ 5 minutes for them to forgive you.
 
 Each time an item is successfully given, glint particles will appear. Each time the favorability increases by 0.2, a heart particle will appear on the mob.
 
@@ -360,11 +360,15 @@ Hoe attack (only for Necrotic Reapers):  Wood/Gold = 1, Stone = 2, Iron = 3, Dia
 
 *Tip: if other mods provide hoes with higher tier than Netherite, it will be a strong weapon. Tiers above Netherite hoes (without Efficiency) will be subsequently: 13, 21, 34(max).
 
+If the hoe has Fortune enchantment, more items will drop on killing mobs as if it has Looting enchantment. (0.x.8)
+
 It has 4 Bauble slots.
 
 It can be healed with Soul Powder (5) and Soul Apple (15).
 
-It will be healed by 2 if hit by its owner's *Necromancer's Wand* magic ball. If the owner is wearing a *Necromancer's Hat*, it will be healed by 3 and get 5s Strength II effect.
+~~It will be healed by 2 if hit by its owner's *Necromancer's Wand* magic ball. If the owner is wearing a *Necromancer's Hat*, it will be healed by 3 and get 5s Strength II effect. (0.x.8)~~
+
+When it's affected by owner's *Necromancer's Wand* magic ball, it will be healed by 2 (blasted) or 4 (directly hit). If owner is wearing *Necromancer's Hat*, it will be healed by 3 (blasted) or 6 (directly hit), and get Strength effect for 10s (blasted) or 15s (directly hit). (0.x.8)
 
 When the player is wearing a *Necromancer's Hat*, the owning Necrotic Reapers nearby (< 8 blocks) will provide Regeneration effect. The effect level depends on how many Necrotic Reapers there are around. (Regeneration III at most.)
 
@@ -376,7 +380,7 @@ When the player is wearing a *Necromancer's Hat*, the owning Necrotic Reapers ne
 
 Using item-giving process. Accepted items are identical to Skeleton Girls.
 
-To befriend, the player must have Wither effect (not the effect of Necromancer's Hat), and there are must >=8 wither roses (blocks) in the 15x15x15 area centered by the mob. Once there're <8, the progress will drop by 0.1 each second. If it damaged you, there will be 60s cooldown during which you cannot give item, but no interruption.
+To give items, the player must have Wither effect (not the effect of Necromancer's Hat), and there are must >=8 wither roses (blocks) in the 15x15x15 area centered by the mob. Once there're <8, the progress will drop by 0.1 each second. If it damaged you, there will be 60s cooldown during which you cannot give item, but no interruption (no losing progress).
 
 ##### Interaction
 
