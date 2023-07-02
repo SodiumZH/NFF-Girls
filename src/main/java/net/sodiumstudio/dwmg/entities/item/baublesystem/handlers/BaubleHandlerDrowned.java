@@ -1,11 +1,10 @@
 package net.sodiumstudio.dwmg.entities.item.baublesystem.handlers;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
@@ -13,9 +12,9 @@ public class BaubleHandlerDrowned extends BaubleHandlerUndead
 {
 
 	@Override
-	public HashMap<Item, Predicate<IBaubleHolder>> getItemsAccepted(String key, IBaubleHolder mob) {
-		HashMap<Item, Predicate<IBaubleHolder>> map = super.getItemsAccepted(key, mob);
-		map.put(DwmgItems.AQUA_JADE.get(), null);
+	public Map<String, Predicate<IBaubleHolder>> getItemKeysAccepted(String key, IBaubleHolder mob) {
+		Map<String, Predicate<IBaubleHolder>> map = super.getItemKeysAccepted(key, mob);
+		map.put("dwmg:aqua_jade", null);
 		return map;
 	}
 

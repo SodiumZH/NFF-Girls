@@ -1,6 +1,7 @@
 package net.sodiumstudio.dwmg.entities.item.baublesystem.handlers;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import net.minecraft.world.item.Item;
@@ -26,9 +27,9 @@ public class BaubleHandlerEmpty extends BaubleHandler
 	{}
 
 	@Override
-	public HashMap<Item, Predicate<IBaubleHolder>> getItemsAccepted(String key, IBaubleHolder mob) {
+	public Map<String, Predicate<IBaubleHolder>> getItemKeysAccepted(String slotKey, IBaubleHolder mob) {
 		// TODO Auto-generated method stub
-		return null;
+		return Map.of();
 	}
 	
 }

@@ -1,33 +1,34 @@
 package net.sodiumstudio.dwmg.entities.item.baublesystem.handlers;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
+import net.sodiumstudio.befriendmobs.util.ContainerHelper;
+import net.sodiumstudio.befriendmobs.util.containers.MapPair;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class BaubleHandlerGeneral extends BaubleHandler
 {
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public HashMap<Item, Predicate<IBaubleHolder>> getItemsAccepted(String key, IBaubleHolder mob) {
-		HashMap<Item, Predicate<IBaubleHolder>> map = new HashMap<Item, Predicate<IBaubleHolder>>();
-		map.put(DwmgItems.RESISTANCE_AMULET.get(), null);
-		map.put(DwmgItems.RESISTANCE_AMULET_II.get(), null);
-		map.put(ModItems.INSOMNIA_FRUIT.get(), null);
-		map.put(DwmgItems.HEALING_JADE.get(), null);
-		map.put(DwmgItems.LIFE_JADE.get(), null);
-		map.put(DwmgItems.LIFE_JADE_II.get(), null);
-		map.put(DwmgItems.COURAGE_AMULET.get(), null);
-		map.put(DwmgItems.COURAGE_AMULET_II.get(), null);
-		return map;
+	public Map<String, Predicate<IBaubleHolder>> getItemKeysAccepted(String key, IBaubleHolder mob) {
+		return ContainerHelper.mapOf(
+				MapPair.of("dwmg:resistance_amulet", null),
+				MapPair.of("dwmg:resistance_amulet_ii", null),
+				MapPair.of("hmag:insomnia_fruit", null),
+				MapPair.of("dwmg:healing_jade", null),
+				MapPair.of("dwmg:life_jade", null),
+				MapPair.of("dwmg:life_jade_ii", null),
+				MapPair.of("dwmg:courage_amulet", null),
+				MapPair.of("dwmg:courage_amulet_ii", null));
 	}
 	
 	@Override
