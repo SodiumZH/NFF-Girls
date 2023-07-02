@@ -1,12 +1,10 @@
 package net.sodiumstudio.dwmg.entities.item.baublesystem.handlers;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Predicate;
 
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -15,9 +13,10 @@ public class BaubleHandlerUndead extends BaubleHandlerGeneral
 {
 	
 	@Override
-	public HashMap<Item, Predicate<IBaubleHolder>> getItemsAccepted(String key, IBaubleHolder mob) {
-		HashMap<Item, Predicate<IBaubleHolder>> map = super.getItemsAccepted(key, mob);
-		map.put(DwmgItems.SOUL_AMULET.get(), null);
+	public Map<String, Predicate<IBaubleHolder>> getItemKeysAccepted(String key, IBaubleHolder mob) {
+		Map<String, Predicate<IBaubleHolder>> map = super.getItemKeysAccepted(key, mob);
+		map.put("dwmg:soul_amulet", null);
+		map.put("dwmg:soul_amulet_ii", null);
 		return map;
 	}
 

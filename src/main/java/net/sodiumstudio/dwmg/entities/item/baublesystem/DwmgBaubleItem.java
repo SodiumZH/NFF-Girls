@@ -6,6 +6,7 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleItem;
 public class DwmgBaubleItem extends BaubleItem
 {
 
+	// TODO: migrate to BM
 	protected String typeName = "dwmg_bauble_item";
 	protected int level = 1;
 	
