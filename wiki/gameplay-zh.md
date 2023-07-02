@@ -4,9 +4,9 @@
 
 ### 当前版本： 
 
-#### 0.0.3 (1.18.2)
+#### 0.0.8 (1.18.2)
 
-#### 0.1.3 (1.19.2)
+#### 0.1.8.1 (1.19.2)
 
 
 
@@ -40,7 +40,9 @@
 
 死灵收割者
 
+报丧女妖（0.x.5）
 
+恶魂探索者（0.x.6）
 
 ## 常用的友好化方法
 
@@ -354,31 +356,31 @@ TNT：0.03 ~ 0.06.
 
 ##### Interaction
 
-You can customize its hand items. The item on off-hand can only stack to 1 no matter it's originally stackable.
+报丧女妖手上的道具可以定制。副手上的道具只能堆叠到1，无论其本身是否可堆叠。
 
-When it's off-hand is holding a flower, it will apply effects of the Suspicious Stew of the corresponding flower. If the effect is positive, it will be applied to the allies in 8 blocks each 15 s, including the owner, the owner's other befriended mobs and tamed animals. If the effect is negative, it will be applied to the target on attacking. 
+如果副手上的道具是花，它将会附加相应的谜之炖菜状态效果。如果是正面效果，则每15秒付与8格内的同伴一次，包括其拥有者、拥有者的其他友好生物或驯服的动物。如果是负面效果，则在攻击时付与目标。
 
-It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as vanilla undead mob girls.)
+报丧女妖可以用灵魂粉尘（+5）和灵魂之果（+15）治疗。（与原版不死生物娘相同。）
 
-It has 3 bauble slots.
+报丧女妖拥有3个饰品栏。
 
 
 
-#### Ghastly Seeker (HMaG) (0.0.6 / 0.1.6)
+#### 恶魂探索者 (HMaG) (0.0.6 / 0.1.6)
 
-##### Befriending
+##### 友好化
 
-Using item-giving process. Accepted items are identical to Skeleton Girls.
+道具给予流程，接受的道具与骷髅娘相同。
 
-Ghastly Seekers are befriendable only when they're in the Overworld and can see sky.
+恶魂探索者只有位于主世界且上方无不透明方块遮挡时可以给予道具。
 
 ##### Interaction
 
-It has 4 bauble slots.
+恶魂探索者拥有4个饰品栏。
 
-It requires ammo to fire. The ammo slot (explosive icon) accepts either Fire Charges or Blasting Bottles (HMaG). When using Fire Charges, the explosions of the fireballs have normal power and don't break blocks. When using Blasting Bottles, the explosions have 1.5x normal power and break blocks.
+其射击需要弹药。弹药栏（炸药图标）可以放入火焰弹或瓶装爆焰（HMaG）。使用火焰弹时，火球爆炸为正常威力，不破坏方块；使用瓶装爆焰时，爆炸为1.5倍威力，破坏方块。
 
-The base explosion power is 1. Each ATK point adds extra 0.1 to the power. 
+基础爆炸威力为1。每点攻击力提高0.1爆炸威力。
 
 
 
@@ -422,6 +424,10 @@ The base explosion power is 1. Each ATK point adds extra 0.1 to the power.
 
 该效果可通过吃末影派获得。
 
+### 死灵诅咒
+
+死灵巫师帽子的负面效果。该效果与凋零效果相同，但不会导致生命值条变黑。凋灵骷髅对该效果免疫（仅0.x.7后）。
+
 
 
 ## 方块
@@ -446,11 +452,17 @@ The base explosion power is 1. Each ATK point adds extra 0.1 to the power.
 
 #### 灵魂护符
 
-最大HP +10, 攻击力 +3，免疫日光（仅不死生物）
+仅不死生物可携带。
+
+Lv. 1: 最大HP +10, 攻击力 +3, 免疫阳光
+
+Lv. 2: 最大HP +15, 攻击力 +5, 免疫阳光
 
 #### 抵抗护符
 
-护甲 +4，移动速度 -10%，不死生物免疫日光
+Lv. 1: 护甲 +4，移动速度 -10%，不死生物免疫日光
+
+Lv. 2: 护甲 +6，移动速度 -10%，不死生物免疫日光
 
 #### 失眠果实 (HMaG)
 
@@ -459,6 +471,12 @@ The base explosion power is 1. Each ATK point adds extra 0.1 to the power.
 #### 治愈勾玉
 
 持续每秒回复0.1 HP。
+
+#### 生命勾玉
+
+Lv. 1: 最大HP +5, 持续每秒回复0.15 HP
+
+Lv. 2: 最大HP +10, 持续每秒回复0.2 HP
 
 #### 水之勾玉
 
@@ -480,7 +498,7 @@ The base explosion power is 1. Each ATK point adds extra 0.1 to the power.
 
 #### 死灵巫师的帽子
 
-该帽子能够付与穿戴者力量II、急迫II、亡灵亲和以及**凋零I**。如果穿戴者站在灵魂地毯上，将不会获得凋零效果。
+该帽子能够付与穿戴者力量II、急迫II、亡灵亲和以及**~~凋零I~~ 死灵诅咒**。如果穿戴者站在灵魂地毯上，将不会获得~~凋零~~诅咒效果。
 
 其耐久与铁头盔相同，其他属性与皮革头盔相同。
 
@@ -488,9 +506,31 @@ The base explosion power is 1. Each ATK point adds extra 0.1 to the power.
 
 ## 武器/工具
 
+#### 指挥杖
+
+任意手上持有该道具时可以切换生物的AI状态及打开GUI。
+
+持有该道具右键邪恶水晶块可以将周围32x32x32格范围内的所有生物的AI切换为跟随，同时将范围内的所有重生刷怪蛋移动到该方块上。
+
+
+
+#### 邪恶磁铁
+
+持有该道具右键邪恶水晶块可以将世界中所有重生刷怪蛋移动到该方块上。
+
+其拥有8点耐久，每移动一个重生刷怪蛋消耗1点，可以在铁砧上用邪恶水晶修复。
+
+
+
 #### 死灵巫师之杖
 
-使用时发射一个魔法球，被魔法球击中的生物/玩家会获得5秒凋零III效果。如果使用者佩戴死灵巫师的帽子，将会付与凋零IV而非III。
+~~使用时发射一个魔法球，被魔法球击中的生物/玩家会获得5秒凋零III效果。如果使用者佩戴死灵巫师的帽子，将会付与凋零IV而非III。(修改：0.x.8)~~
+
+使用时发射一个魔法球，在击中道具或实体时会爆炸并付与1.5格距离内的所有生物/玩家凋零III效果10秒。如果发射者佩戴死灵巫师的帽子，则付与凋零IV。
+
+如果魔法球直接击中玩家/生物，凋零效果等级会再增加1。
+
+对于自己所拥有的死灵收割者，则不会付与凋零，而是付与正面效果：恢复2（爆炸溅射）或4（直接击中）生命；如果发射者佩戴死灵巫师的帽子，则恢复3（爆炸溅射）或6（直接击中）生命，并付与力量II效果10秒（爆炸溅射）或15秒（直接击中）。
 
 每次使用时，使用者会受到2点伤害。
 
