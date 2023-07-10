@@ -25,9 +25,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerInstance;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
-import net.sodiumstudio.befriendmobs.util.InfoHelper;
-import net.sodiumstudio.befriendmobs.util.NbtHelper;
-import net.sodiumstudio.befriendmobs.util.math.RndUtil;
+import net.sodiumstudio.nautils.InfoHelper;
+import net.sodiumstudio.nautils.NbtHelper;
+import net.sodiumstudio.nautils.math.RndUtil;
 import net.sodiumstudio.dwmg.Dwmg;
 
 public class ItemEvilMagnet extends Item

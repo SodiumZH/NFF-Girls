@@ -13,6 +13,8 @@ import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerEnderExecutor;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerGhastlySeeker;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHornet;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHuskGirl;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerImp;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerKobold;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNecroticReaper;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerWitherSkeletonGirl;
@@ -73,6 +75,14 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.BANSHEE.get(),
 				DwmgEntityTypes.HMAG_BANSHEE.get(),
 				new HandlerBanshee());
+		BefriendingTypeRegistry.register(
+				ModEntityTypes.KOBOLD.get(),
+				DwmgEntityTypes.HMAG_KOBOLD.get(),
+				new HandlerKobold());
+		BefriendingTypeRegistry.register(
+				ModEntityTypes.IMP.get(),
+				DwmgEntityTypes.HMAG_IMP.get(),
+				new HandlerImp());
 	}
 	
 }

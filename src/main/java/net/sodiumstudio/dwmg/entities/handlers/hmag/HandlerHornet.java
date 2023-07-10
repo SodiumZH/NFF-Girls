@@ -17,8 +17,8 @@ import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredRea
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractArguments;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
-import net.sodiumstudio.befriendmobs.util.EntityHelper;
-import net.sodiumstudio.befriendmobs.util.math.RndUtil;
+import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.math.RndUtil;
 
 public class HandlerHornet extends HandlerItemGivingProgress
 {

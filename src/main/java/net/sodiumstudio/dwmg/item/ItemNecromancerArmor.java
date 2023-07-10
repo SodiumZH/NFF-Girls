@@ -8,7 +8,7 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
-import net.sodiumstudio.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.dwmg.blocks.BlockSoulCarpet;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedNecroticReaper;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;

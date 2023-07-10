@@ -15,7 +15,7 @@ import net.sodiumstudio.befriendmobs.BefriendMobs;
 import net.sodiumstudio.befriendmobs.client.gui.screens.BefriendedGuiScreen;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.befriendmobs.util.math.IntVec2;
+import net.sodiumstudio.nautils.math.IntVec2;
 import net.sodiumstudio.dwmg.dwmgcontent.Dwmg;
 
 @OnlyIn(Dist.CLIENT)

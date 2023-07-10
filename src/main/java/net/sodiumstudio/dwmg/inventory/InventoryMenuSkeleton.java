@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.util.math.IntVec2;
+import net.sodiumstudio.nautils.math.IntVec2;
 
 public class InventoryMenuSkeleton extends InventoryMenuPreset0
 {

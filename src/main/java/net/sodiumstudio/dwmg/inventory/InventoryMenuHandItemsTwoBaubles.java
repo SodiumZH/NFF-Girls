@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.util.math.IntVec2;
+import net.sodiumstudio.nautils.math.IntVec2;
 
 public class InventoryMenuHandItemsTwoBaubles extends InventoryMenuPreset0
 {

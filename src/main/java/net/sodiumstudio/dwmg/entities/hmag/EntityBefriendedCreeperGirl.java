@@ -44,10 +44,8 @@ import net.sodiumstudio.befriendmobs.entity.vanillapreset.creeper.AbstractBefrie
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
-import net.sodiumstudio.befriendmobs.util.ItemHelper;
+import net.sodiumstudio.nautils.ItemHelper;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperGirlExplosionAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperGirlMeleeAttackGoal;
@@ -222,7 +220,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper imple
 					if (player.getItemInHand(hand).is(ModItems.LIGHTNING_PARTICLE.get()) && !this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
 					{
 						this.setPowered(true);
-						ItemHelper.consumeOne(player.getItemInHand(hand));
+						player.getItemInHand(hand).shrink(1);
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					}
 					// Unpower with empty hand )and get a lightning particle
@@ -310,10 +308,10 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper imple
 				this.resetExplosionProcess();
 				return;
 			}
-			ItemHelper.consumeOne(this.getAdditionalInventory().getItem(6));
+			this.getAdditionalInventory().getItem(6).shrink(1);;
 			if (this.isPowered())
 			{
-				ItemHelper.consumeOne(this.getAdditionalInventory().getItem(6));
+				this.getAdditionalInventory().getItem(6).shrink(1);
 				this.setPowered(false);
 			}
 			super.explodeCreeper();

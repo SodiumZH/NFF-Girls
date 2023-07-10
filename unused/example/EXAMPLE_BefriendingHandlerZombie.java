@@ -9,7 +9,7 @@ import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractA
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
-import net.sodiumstudio.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.nautils.EntityHelper;
 
 // We set that using an item "EXAMPLE Zombie Befriending Item" befriends the zombie
 public class EXAMPLE_BefriendingHandlerZombie extends AbstractBefriendingHandler

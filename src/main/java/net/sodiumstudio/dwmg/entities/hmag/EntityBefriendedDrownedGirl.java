@@ -50,7 +50,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
-import net.sodiumstudio.befriendmobs.util.ItemHelper;
+import net.sodiumstudio.nautils.ItemHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
@@ -180,7 +180,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements ID
 					// If this zombie is converted from a husk,
 					// it can be converted back by using a sponge to it
 					if (player.getItemInHand(hand).is(Items.SPONGE) && isFromZombie) {
-						ItemHelper.consumeOne(player.getItemInHand(hand));
+						player.getItemInHand(hand).shrink(1);
 						this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
 						EntityBefriendedZombieGirl z = this.convertToZombie();
 						z.isFromHusk = this.isFromHusk;
