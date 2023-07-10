@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.CakeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import net.sodiumstudio.befriendmobs.util.EntityHelper;
+import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 
 public class BlockSoulCake extends CakeBlock

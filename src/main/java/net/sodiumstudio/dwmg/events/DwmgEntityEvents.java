@@ -9,6 +9,8 @@ import com.github.mechalopa.hmag.world.entity.CreeperGirlEntity;
 import com.github.mechalopa.hmag.world.entity.DyssomniaEntity;
 import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
+import com.github.mechalopa.hmag.world.entity.ImpEntity;
+import com.github.mechalopa.hmag.world.entity.KoboldEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,6 +27,7 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.Ghast;
@@ -67,23 +70,26 @@ import net.sodiumstudio.befriendmobs.entity.ai.BefriendedChangeAiStateEvent;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.befriendmobs.entity.capability.CAttributeMonitor;
+import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
 import net.sodiumstudio.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
 import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
-import net.sodiumstudio.befriendmobs.util.AiHelper;
-import net.sodiumstudio.befriendmobs.util.EntityHelper;
-import net.sodiumstudio.befriendmobs.util.InfoHelper;
-import net.sodiumstudio.befriendmobs.util.MiscUtil;
-import net.sodiumstudio.befriendmobs.util.NbtHelper;
-import net.sodiumstudio.befriendmobs.util.ReflectHelper;
-import net.sodiumstudio.befriendmobs.util.TagHelper;
-import net.sodiumstudio.befriendmobs.util.Wrapped;
-import net.sodiumstudio.befriendmobs.util.debug.Debug;
+import net.sodiumstudio.nautils.AiHelper;
+import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.InfoHelper;
+import net.sodiumstudio.nautils.MiscUtil;
+import net.sodiumstudio.nautils.NbtHelper;
+import net.sodiumstudio.nautils.ReflectHelper;
+import net.sodiumstudio.nautils.TagHelper;
+import net.sodiumstudio.nautils.Wrapped;
+import net.sodiumstudio.nautils.debug.Debug;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.effects.EffectNecromancerWither;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.ai.goals.BefriendablePickItemGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.BefriendableWatchHandItemGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.GhastlySeekerRandomFlyGoalDwmgAdjusted;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedBanshee;
@@ -190,7 +196,7 @@ public class DwmgEntityEvents
 	{
 		if (event.getEntity() instanceof Mob mob)
 		{
-			// Undead mob add hatred here to prevent compat issues with other mods that can make undead mobs non-hostile
+			// Undead mob add neutral here to prevent compat issues with other mods that can make undead mobs non-hostile
 			event.getEntity().getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) ->
 			{
 				LivingEntity target = mob.getTarget();
@@ -480,7 +486,7 @@ public class DwmgEntityEvents
 	{
 		if (BefriendingTypeRegistry.contains(event.mob))
 		{
-			// Cancel add hatred if undead mob trying targeting to a player with undead affinity
+			// Cancel add neutral if undead mob trying targeting to a player with undead affinity
 			// Setting target will also be canceled in BefriendMobs-EntityEvents
 			if (event.mob.getMobType() == MobType.UNDEAD
 				&& event.toAdd.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get())
@@ -780,12 +786,6 @@ public class DwmgEntityEvents
 	{
 		if (!event.getWorld().isClientSide)
 		{
-			/*Player player = event.getLevel().players().size() > 0 ? event.getLevel().players().get(0) : null;
-			if (event.getEntity() instanceof Mob mob)
-			{
-				Debug.printToScreen(EntityType.getKey(mob.getType()).getNamespace(), player);
-				Debug.printToScreen(Boolean.toString((EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID))), player);
-			}*/
 			if (event.getEntity() instanceof Mob mob && !(event.getEntity() instanceof IBefriendedMob))
 			{
 				/** Handle mob hostility */
@@ -862,22 +862,41 @@ public class DwmgEntityEvents
 				}
 				/** Mob hostility end */
 				
-				/** Existing mob adjustment */
-				if (mob instanceof GhastlySeekerEntity gs)
+				/** Existing befriendable mob adjustment */
+				if (BefriendingTypeRegistry.contains(mob))
 				{
-					WrappedGoal oldMoveGoal = null;
-					for (WrappedGoal wg : gs.goalSelector.getAvailableGoals())
+					if (mob instanceof GhastlySeekerEntity gs)
 					{
-						if (wg.getPriority() == 1 /* Priority 1 is only random fly goal */)
+						WrappedGoal oldMoveGoal = null;
+						for (WrappedGoal wg : gs.goalSelector.getAvailableGoals())
 						{
-							oldMoveGoal = wg;
-							break;
+							if (wg.getPriority() == 1 /* Priority 1 is only random fly goal */)
+							{
+								oldMoveGoal = wg;
+								break;
+							}
+						}
+						if (oldMoveGoal != null)
+						{
+							gs.goalSelector.getAvailableGoals().remove(oldMoveGoal);//.getAvailableGoals().remove(oldMoveGoal);
+							gs.goalSelector.addGoal(1, new GhastlySeekerRandomFlyGoalDwmgAdjusted(gs));
 						}
 					}
-					if (oldMoveGoal != null)
+					// Kobolds and Imps picking up and being neutral
+					if (mob instanceof KoboldEntity || mob instanceof ImpEntity)
 					{
-						gs.goalSelector.getAvailableGoals().remove(oldMoveGoal);//.getAvailableGoals().remove(oldMoveGoal);
-						gs.goalSelector.addGoal(1, new GhastlySeekerRandomFlyGoalDwmgAdjusted(gs));
+						for (WrappedGoal wg: mob.targetSelector.getAvailableGoals())
+						{
+							// Neutral to players with progress > 0.7
+							if (wg.getGoal() instanceof NearestAttackableTargetGoal<?> tg)
+							{
+								AiHelper.addAndTargetingCondition(tg, (le) -> 
+									!(CBefriendableMob.getCapNbt(mob).getCompound("ongoing_players").contains(le.getStringUUID(), NbtHelper.TAG_DOUBLE_ID)
+									&& CBefriendableMob.getCapNbt(mob).getCompound("ongoing_players").getDouble(le.getStringUUID()) > 0.7d));
+							}
+						}
+						mob.goalSelector.addGoal(2, new BefriendableWatchHandItemGoal(mob));
+						mob.goalSelector.addGoal(4, new BefriendablePickItemGoal(mob));
 					}
 				}
 			}

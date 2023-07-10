@@ -19,7 +19,7 @@ import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.network.PacketDistributor;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.util.Wrapped;
+import net.sodiumstudio.nautils.Wrapped;
 import net.sodiumstudio.dwmg.network.ClientGamePacketHandler;
 import net.sodiumstudio.dwmg.network.DwmgChannels;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;

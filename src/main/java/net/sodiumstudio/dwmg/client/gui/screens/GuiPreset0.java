@@ -12,8 +12,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.befriendmobs.client.gui.screens.BefriendedGuiScreen;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.befriendmobs.util.InfoHelper;
-import net.sodiumstudio.befriendmobs.util.math.IntVec2;
+import net.sodiumstudio.nautils.InfoHelper;
+import net.sodiumstudio.nautils.math.IntVec2;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 

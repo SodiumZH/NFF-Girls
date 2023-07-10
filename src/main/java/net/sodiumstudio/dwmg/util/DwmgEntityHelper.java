@@ -16,7 +16,7 @@ import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.Tiers;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
-import net.sodiumstudio.befriendmobs.util.ReflectHelper;
+import net.sodiumstudio.nautils.ReflectHelper;
 
 public class DwmgEntityHelper
 {

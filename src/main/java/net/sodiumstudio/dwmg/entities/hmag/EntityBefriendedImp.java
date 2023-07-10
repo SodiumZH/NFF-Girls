@@ -3,11 +3,12 @@ package net.sodiumstudio.dwmg.entities.hmag;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import com.github.mechalopa.hmag.registry.ModItems;
-import com.github.mechalopa.hmag.world.entity.KoboldEntity;
+import com.github.mechalopa.hmag.world.entity.ImpEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -17,8 +18,8 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -32,33 +33,27 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwne
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
+import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
-import net.sodiumstudio.dwmg.registries.DwmgItems;
-import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
 
-public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefriendedMob
-{
+public class EntityBefriendedImp extends ImpEntity implements IDwmgBefriendedMob {
 
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EntityBefriendedKobold.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(EntityBefriendedImp.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedKobold.class, EntityDataSerializers.INT);
+			.defineId(EntityBefriendedImp.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 1);
+		entityData.define(DATA_AISTATE, 0);
 	}
 	
 	@Override
@@ -73,7 +68,7 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 
 	/* Initialization */
 
-	public EntityBefriendedKobold(EntityType<? extends EntityBefriendedKobold> pEntityType, Level pLevel) {
+	public EntityBefriendedImp(EntityType<? extends EntityBefriendedImp> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
@@ -83,11 +78,10 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 	public static Builder createAttributes() {
 		return Monster.createMonsterAttributes()
 				.add(Attributes.MAX_HEALTH, 40.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.3D)
-				.add(Attributes.ATTACK_DAMAGE, 6.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.265D)
+				.add(Attributes.ATTACK_DAMAGE, 7.0D)
 				.add(Attributes.ARMOR, 2.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 0.25D)
-				.add(Attributes.FOLLOW_RANGE, 20.0D);
+				.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
 	}
 
 	/* AI */
@@ -99,8 +93,6 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
-		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
-		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
 	
 	/* Interaction */
@@ -109,14 +101,13 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 	// Leave it empty if you don't need healing features.
 	@SuppressWarnings("unchecked")
 	@Override
-	public HashMap<Item, Float> getHealingItems()
+	public Map<Item, Float> getHealingItems()
 	{
-		return ContainerHelper.<Item, Float>mapOf(//HashMap<Item, Float> map = new HashMap<Item, Float>();
-		MapPair.of(Items.APPLE, 5f),
-		MapPair.of(Items.COOKIE, 5f),
-		MapPair.of(Items.PUMPKIN_PIE, 15f),
-		MapPair.of(ModItems.LEMON.get(), 10f),
-		MapPair.of(ModItems.LEMON_PIE.get(), 20f));
+		// map.put(YOUR_ITEM_TYPE, HEALING_HEALTH_VALUE);
+		return ContainerHelper.<Item, Float>mapOf(
+				MapPair.of(Items.APPLE, 5f),
+				MapPair.of(ModItems.LEMON.get(), 10f),
+				MapPair.of(Items.GOLDEN_APPLE, (float)getAttributeValue(Attributes.MAX_HEALTH)));
 	}
 	
 	// Set of items that can heal the mob WITHOUT CONSUMING.
@@ -146,8 +137,7 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 					else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
-					else if (hand == InteractionHand.MAIN_HAND
-							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
+					else if (hand == InteractionHand.MAIN_HAND)
 					{
 						switchAIState();
 					}
@@ -160,13 +150,9 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 			// For interaction with shift key down
 			else
 			{
-		
-				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
-				{
-					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
-				}
-				
+				// Open inventory and GUI
+				BefriendedHelper.openBefriendedInventory(player, this);
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
 		} 
 		// Always pass when not owning this mob
@@ -177,7 +163,7 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 
 	// This enables mob armor and hand items by default.
 	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithHandItems additionalInventory = new BefriendedInventoryWithHandItems(getInventorySize(), this);
+	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
 
 	@Override
 	public BefriendedInventory getAdditionalInventory()
@@ -188,7 +174,7 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 	@Override
 	public int getInventorySize()
 	{
-		return 4;
+		return 8;
 	}
 
 	@Override
@@ -232,21 +218,16 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 		setInit();
 	}
 
-	/* IBaubleHandler interface */
-
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
-		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
-		map.put("0", this.getAdditionalInventory().getItem(2));
-		map.put("1", this.getAdditionalInventory().getItem(3));
-		map.put("main_hand", this.getAdditionalInventory().getItem(0));
-		return map;
+		/* Set here */
+		return null;
 	}
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		// TODO Auto-generated method stub
-		return DwmgBaubleHandlers.GENERAL;
+		/* Set here */
+		return null;
 	}
 	
 	// Misc
@@ -280,3 +261,4 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 	// ======================================================================== //
 
 }
+

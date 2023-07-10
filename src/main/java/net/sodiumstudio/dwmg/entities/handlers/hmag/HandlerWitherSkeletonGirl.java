@@ -5,8 +5,8 @@ import com.github.mechalopa.hmag.registry.ModItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.sodiumstudio.befriendmobs.util.math.RandomSelection;
-import net.sodiumstudio.befriendmobs.util.math.RndUtil;
+import net.sodiumstudio.nautils.math.RandomSelection;
+import net.sodiumstudio.nautils.math.RndUtil;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class HandlerWitherSkeletonGirl extends HandlerZombieGirl

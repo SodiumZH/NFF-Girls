@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.events;
 
 import java.util.UUID;
 
+
 import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.nbt.CompoundTag;
@@ -11,6 +12,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -18,16 +20,18 @@ import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
 import net.sodiumstudio.befriendmobs.item.ItemMobRespawner;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerInstance;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerStartRespawnEvent;
 import net.sodiumstudio.befriendmobs.item.RespawnerConstructEvent;
 import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
-import net.sodiumstudio.befriendmobs.util.InfoHelper;
-import net.sodiumstudio.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.nautils.InfoHelper;
+import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.item.ItemEvilMagnet;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgItemEvents
@@ -82,6 +86,11 @@ public class DwmgItemEvents
 				{
 					event.setCanceled(true);
 				}
+		}
+		// Clear already picked mobs when player picking up
+		if (event.getItem().getItem().getTag() != null && event.getItem().getItem().getTag().contains("already_picked_befriendable_mobs"))
+		{
+			event.getItem().getItem().removeTagKey("already_picked_befriendable_mobs");
 		}
 	}
 	
@@ -139,6 +148,28 @@ public class DwmgItemEvents
 			event.setOutput(out);
 		}
 	}
-	
-	
+
+	@SubscribeEvent
+	public static void onServerItemEntityTick(ServerEntityTickEvent.PreWorldTick event)
+	{
+		if (event.getEntity() instanceof ItemEntity ie)
+		{
+			if (ie.getItem().getTag() != null 
+					&& ie.getItem().getTag().contains("already_picked_befriendable_mobs", NbtHelper.TAG_COMPOUND_ID))
+			{
+				for (String key: ie.getItem().getTag().getCompound("already_picked_befriendable_mobs").getAllKeys())
+				{
+					if (ie.getItem().getTag().getCompound("already_picked_befriendable_mobs").getInt(key) > 0)
+					{
+						ie.getItem().getTag().getCompound("already_picked_befriendable_mobs").putInt(key, 
+								ie.getItem().getTag().getCompound("already_picked_befriendable_mobs").getInt(key) - 1);
+					}
+					if (ie.getItem().getTag().getCompound("already_picked_befriendable_mobs").getInt(key) == 0)
+					{
+						ie.getItem().getTag().getCompound("already_picked_befriendable_mobs").remove(key);
+					}
+				}
+			}
+		}
+	}
 }

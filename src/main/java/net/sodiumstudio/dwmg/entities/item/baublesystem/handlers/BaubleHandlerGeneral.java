@@ -10,8 +10,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
-import net.sodiumstudio.befriendmobs.util.ContainerHelper;
-import net.sodiumstudio.befriendmobs.util.containers.MapPair;
+import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.containers.MapPair;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class BaubleHandlerGeneral extends BaubleHandler

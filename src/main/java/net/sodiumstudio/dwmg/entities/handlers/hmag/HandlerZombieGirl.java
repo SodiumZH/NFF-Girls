@@ -11,8 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
-import net.sodiumstudio.befriendmobs.util.MiscUtil;
-import net.sodiumstudio.befriendmobs.util.math.RndUtil;
+import net.sodiumstudio.nautils.MiscUtil;
+import net.sodiumstudio.nautils.math.RndUtil;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
@@ -98,7 +98,7 @@ public class HandlerZombieGirl extends HandlerItemGivingProgress
 		}
 		default:
 		{
-			throw new RuntimeException("Illegal add hatred reason");
+			throw new RuntimeException("Illegal add neutral reason");
 		}
 		}
 		

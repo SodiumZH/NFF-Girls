@@ -1,5 +1,8 @@
 package net.sodiumstudio.dwmg.registries;
 
+import com.github.mechalopa.hmag.HMaG;
+import com.github.mechalopa.hmag.world.entity.ImpEntity;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -18,6 +21,7 @@ import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedEnderExecutor;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedGhastlySeeker;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHornet;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHuskGirl;
+import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedImp;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedKobold;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedNecroticReaper;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedSkeletonGirl;
@@ -134,6 +138,7 @@ public class DwmgEntityTypes {
 			.setShouldReceiveVelocityUpdates(false)
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_necrotic_reaper").toString()));
+	
 	public static final RegistryObject<EntityType<EntityBefriendedGhastlySeeker>> HMAG_GHASTLY_SEEKER = 
 			ENTITY_TYPES.register("hmag_ghastly_seeker", () -> EntityType.Builder
 			.of(EntityBefriendedGhastlySeeker::new, MobCategory.CREATURE)
@@ -144,6 +149,7 @@ public class DwmgEntityTypes {
 			.setShouldReceiveVelocityUpdates(false)
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_ghastly_seeker").toString()));
+	
 	public static final RegistryObject<EntityType<EntityBefriendedBanshee>> HMAG_BANSHEE = 
 			ENTITY_TYPES.register("hmag_banshee", () -> EntityType.Builder
 			.of(EntityBefriendedBanshee::new, MobCategory.CREATURE)
@@ -152,7 +158,8 @@ public class DwmgEntityTypes {
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
 			.noSummon()
-			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_banshee").toString()));	
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_banshee").toString()));
+	
 	public static final RegistryObject<EntityType<EntityBefriendedKobold>> HMAG_KOBOLD =
 			ENTITY_TYPES.register("hmag_kobold", () -> EntityType.Builder
 			.of(EntityBefriendedKobold::new, MobCategory.CREATURE)
@@ -162,6 +169,17 @@ public class DwmgEntityTypes {
 			.setShouldReceiveVelocityUpdates(false)
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_kobold").toString()));
+	
+	public static final RegistryObject<EntityType<EntityBefriendedImp>> HMAG_IMP =
+			ENTITY_TYPES.register("hmag_imp", () -> EntityType.Builder
+			.of(EntityBefriendedImp::new, MobCategory.CREATURE)
+			.fireImmune()
+			.sized(0.6F, 1.7F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_imp").toString()));
 	
 	@SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
@@ -178,6 +196,7 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.HMAG_GHASTLY_SEEKER.get(), EntityBefriendedGhastlySeeker.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_BANSHEE.get(), EntityBefriendedBanshee.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_KOBOLD.get(), EntityBefriendedKobold.createAttributes().build());
+        event.put(DwmgEntityTypes.HMAG_IMP.get(), EntityBefriendedImp.createAttributes().build());
 	}
 	
 	// Projectiles

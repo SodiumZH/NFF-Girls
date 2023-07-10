@@ -3,7 +3,7 @@ package net.sodiumstudio.dwmg.entities.handlers.hmag;
 import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.world.item.ItemStack;
-import net.sodiumstudio.befriendmobs.util.math.RndUtil;
+import net.sodiumstudio.nautils.math.RndUtil;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class HandlerHuskGirl extends HandlerZombieGirl

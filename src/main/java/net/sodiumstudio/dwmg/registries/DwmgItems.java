@@ -11,7 +11,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.sodiumstudio.befriendmobs.util.InfoHelper;
+import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.DwmgTab;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleItem;

@@ -21,9 +21,9 @@ import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredRea
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
 import net.sodiumstudio.befriendmobs.events.BefriendableTimerUpEvent;
 import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
-import net.sodiumstudio.befriendmobs.util.EntityHelper;
-import net.sodiumstudio.befriendmobs.util.Wrapped;
-import net.sodiumstudio.befriendmobs.util.math.RndUtil;
+import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.Wrapped;
+import net.sodiumstudio.nautils.math.RndUtil;
 import net.sodiumstudio.dwmg.Dwmg;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -234,7 +234,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 		this.finalExplosionFailed((CreeperGirlEntity) mob, player, isQuiet);
 	}
 
-	// Duration of hatred added
+	// Duration of neutral added
 	// -1 means permanent
 	@Override
 	public int getHatredDurationTicks(BefriendableAddHatredReason reason)

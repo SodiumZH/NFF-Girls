@@ -3,7 +3,7 @@ package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.util.LevelHelper;
+import net.sodiumstudio.nautils.LevelHelper;
 
 public class BefriendedFlyingLandGoal extends BefriendedFlyingMoveGoal
 {

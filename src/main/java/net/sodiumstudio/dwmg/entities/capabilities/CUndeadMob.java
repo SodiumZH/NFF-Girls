@@ -9,10 +9,10 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public interface CUndeadMob extends INBTSerializable<CompoundTag>{
 
-	// Get this mob's hatred list
+	// Get this mob's neutral list
 	public HashSet<UUID> getHatred();
 	
-	// Add a living entity to the hatred list
+	// Add a living entity to the neutral list
 	// Forgive after 5 min by default
 	public default void addHatred(LivingEntity entity)
 	{
@@ -20,7 +20,7 @@ public interface CUndeadMob extends INBTSerializable<CompoundTag>{
 	}
 	
 	/**
-	 *  Add a living entity to the hatred list
+	 *  Add a living entity to the neutral list
 	 * Param forgiveTime in tick, -1 means never forgive
 	 * */
 	public void addHatred(LivingEntity entity, int forgiveTime);

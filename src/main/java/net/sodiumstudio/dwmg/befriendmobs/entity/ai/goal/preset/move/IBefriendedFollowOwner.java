@@ -7,9 +7,9 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedMoveGoal;
-import net.sodiumstudio.befriendmobs.util.LevelHelper;
-import net.sodiumstudio.befriendmobs.util.annotation.DontOverride;
-import net.sodiumstudio.befriendmobs.util.exceptions.UnimplementedException;
+import net.sodiumstudio.nautils.LevelHelper;
+import net.sodiumstudio.nautils.annotation.DontOverride;
+import net.sodiumstudio.nautils.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.AiMaths;
 
 /**

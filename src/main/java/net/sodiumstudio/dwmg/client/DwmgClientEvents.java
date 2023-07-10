@@ -18,6 +18,7 @@ public class DwmgClientEvents
 		
 		if (event.side == LogicalSide.CLIENT)
 		{
+			@SuppressWarnings("resource")
 			Minecraft mc = Minecraft.getInstance();
 			if (mc.screen != null && mc.screen instanceof BefriendedGuiScreen bgs)
 			{

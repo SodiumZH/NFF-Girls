@@ -6,7 +6,7 @@ import java.util.UUID;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.world.entity.LivingEntity;
-import net.sodiumstudio.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.nautils.NbtHelper;
 
 public class CUndeadMobImpl implements CUndeadMob {
 
@@ -41,14 +41,14 @@ public class CUndeadMobImpl implements CUndeadMob {
 	public CompoundTag serializeNBT() 
 	{
 		CompoundTag tag = new CompoundTag();
-		NbtHelper.serializeUUIDSet(tag, hatred, "hatred");
+		NbtHelper.serializeUUIDSet(tag, hatred, "neutral");
 		tag.put("forgiving_timers", forgivingTimers);
 		return tag;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
-		hatred = NbtHelper.deserializeUUIDSet(nbt, "hatred");
+		hatred = NbtHelper.deserializeUUIDSet(nbt, "neutral");
 		forgivingTimers = nbt.getCompound("forgiving_timers");
 	}
 	

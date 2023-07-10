@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
-import net.sodiumstudio.befriendmobs.util.EntityHelper;
-import net.sodiumstudio.befriendmobs.util.NbtHelper;
+import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.NbtHelper;
 
 public class HandlerBanshee extends HandlerSkeletonGirl
 {
