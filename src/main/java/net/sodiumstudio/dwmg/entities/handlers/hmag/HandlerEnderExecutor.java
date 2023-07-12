@@ -99,12 +99,14 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 		if (mob instanceof EnderExecutorEntity ee)
 		{
 			ee.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> {
-				// If not in befriending process, find if it's looked at, and enter the process
-				// The tag is also an indicator for if this mob is on befriending process
-				// Because Ender Executors have an extra state in which the "proc_value" is still 0 but the process has started
-				// i.e. the mob is looked at but nothing has been given
-				// On interruption it's removed
+				/** If not in befriending process, find if it's looked at, and enter the process
+				* The tag is also an indicator for if this mob is on befriending process
+				* Because Ender Executors have an extra state in which the "proc_value" is still 0 but the process has started
+				* i.e. the mob is looked at but nothing has been given
+				* On interruption it's removed
+				* */
 				if (!l.getNbt().contains("player_uuid_on_befriending", 11))
+				{
 					for (Player player: mob.level.players()) 
 					{
 						if (mob.distanceToSqr(player) <= 256.0d)
@@ -113,65 +115,69 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 							{
 								l.getNbt().putUUID("player_uuid_on_befriending", player.getUUID());
 								// If this time reaches 0, it will be interrupted
-								l.getNbt().putInt("no_attack_expire_time", 200);
+								l.getNbt().putInt("no_attack_expire_time", 30 * 20);
+								l.setAlwaysHostileTo(player);
 								break;
 							}
 						}
 					}
-				// In process
-				boolean isAlwaysHostile = false;
+				}
+				/**
+				 * Now the mob is in process
+				 */
 				if (l.getNbt().contains("player_uuid_on_befriending", 11))
 				{
 					Player player = ee.level.getPlayerByUUID(l.getNbt().getUUID("player_uuid_on_befriending"));
+					/**  When player is present in the same level */
 					if (player != null)
 					{
-						// Once entered 7 blocks away, disable teleporting
-						// So that the mob will not get over 4 blocks away by itself
-						// This tag blocks teleporting in DwmgEntityEvents class
-						if (ee.distanceToSqr(player) <= 49.0d && (!l.getNbt().getBoolean("cannot_teleport")))
-						{
-							l.getNbt().putBoolean("cannot_teleport", true);
-						}
-						// If player is further than 8 blocks, interrupt
-						else if (l.getNbt().getBoolean("cannot_teleport") && ee.distanceToSqr(player) > 64.0d)
+						/** If player is further than 12 blocks, interrupt */
+						if (ee.distanceToSqr(player) > 144d)
 						{
 							this.interrupt(player, mob, false);
 						}
-						// Otherwise the process continues, set always hostile
-						else
+						/** Now the player is in range */
+						else 
 						{
-							mob.setTarget(player);
-							isAlwaysHostile = true;
-						}
-					}
-					// Update no attack timer
-					// This timer will be reset in EntityEvent LivingHurtEvent listener
-					if (l.getNbt().contains("no_attack_expire_time") && l.getNbt().getInt("no_attack_expire_time") > 0 && !player.isCreative())
-					{
-						l.getNbt().putInt("no_attack_expire_time", l.getNbt().getInt("no_attack_expire_time") - 1);
-						if (l.getNbt().getInt("no_attack_expire_time") == 0)
-						{
-							// When 10s no attack expired, process loses 0.2
-							DoubleTag currentValueTag = (DoubleTag) NbtHelper.getPlayerData(l.getPlayerDataNbt(), player, "proc_value");
-							double procValue = currentValueTag == null ? 0 : currentValueTag.getAsDouble();
-							procValue -= 0.2d;
-							// If it drops 0, interrupt
-							if (procValue <= 0)
+							/** Once entered 7 blocks away, disable teleporting
+							* So that the mob will not get over 12 blocks away by itself
+							* This tag blocks teleporting in DwmgEntityEvents class
+							*/
+							if (ee.distanceToSqr(player) <= 49.0d && (!l.getNbt().getBoolean("cannot_teleport")))
 							{
-								interrupt(player, mob, false);
+								l.getNbt().putBoolean("cannot_teleport", true);
 							}
-							// Otherwise put the value back, send some particles and reset timer
-							else 
+							/** Update no attack timer
+							* This timer will be reset in EntityEvent LivingHurtEvent listener
+							*/
+							if (l.getNbt().contains("no_attack_expire_time") && l.getNbt().getInt("no_attack_expire_time") > 0 && !player.isCreative())
 							{
-								NbtHelper.putPlayerData(DoubleTag.valueOf(procValue), l.getPlayerDataNbt(), player, "proc_value");
-								EntityHelper.sendParticlesToEntity(mob, ParticleTypes.ANGRY_VILLAGER, mob.getBbHeight() - 0.2, 0.3d, 2, 1d);
-								l.getNbt().putInt("no_attack_expire_time", 200);
+								l.getNbt().putInt("no_attack_expire_time", l.getNbt().getInt("no_attack_expire_time") - 1);
+								if (l.getNbt().getInt("no_attack_expire_time") == 0)
+								{
+									// When 10s no attack expired, process loses 0.2
+									DoubleTag currentValueTag = (DoubleTag) NbtHelper.getPlayerData(l.getPlayerDataNbt(), player, "proc_value");
+									double procValue = currentValueTag == null ? 0 : currentValueTag.getAsDouble();
+									procValue -= 0.2d;
+									// If it drops 0, interrupt
+									if (procValue <= 0)
+									{
+										interrupt(player, mob, false);
+									}
+									// Otherwise put the value back, send some particles and reset timer
+									else 
+									{
+										NbtHelper.putPlayerData(DoubleTag.valueOf(procValue), l.getPlayerDataNbt(), player, "proc_value");
+										EntityHelper.sendParticlesToEntity(mob, ParticleTypes.ANGRY_VILLAGER, mob.getBbHeight() - 0.2, 0.3d, 1, 1d);
+										l.getNbt().putInt("no_attack_expire_time", 30 * 20);
+									}
+								}
 							}
+							/** Keep hostile to the player */
+							CBefriendableMob.getCap(mob).setAlwaysHostileTo(player);
 						}
 					}
 				}
-				if (!isAlwaysHostile)
-					l.setAlwaysHostileTo(null);
 			});
 		}
 	}
@@ -184,7 +190,7 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 		nbt.remove("player_uuid_on_befriending");
 		nbt.remove("no_attack_expire_time");
 		nbt.putBoolean("cannot_teleport", false);	
-		mob.setTarget(null);
+		CBefriendableMob.getCap(mob).setAlwaysHostileTo(null);
 	}
 	
 	@Override
@@ -209,7 +215,7 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 			ee.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> {
 				if (cap.getNbt().contains("no_attack_expire_time"))
 				{
-					cap.getNbt().putInt("no_attack_expire_time", 200);
+					cap.getNbt().putInt("no_attack_expire_time", 30 * 20);
 				}
 						
 			});

@@ -1,6 +1,7 @@
 package net.sodiumstudio.dwmg.entities.hmag;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
@@ -18,6 +19,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
@@ -26,7 +30,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
@@ -36,15 +46,20 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedLocateBlockGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.IBlockLocator;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuKobold;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.TagHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
 
-public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefriendedMob
+public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefriendedMob, IBlockLocator
 {
 
 	/* Data sync */
@@ -94,8 +109,13 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 
 	@Override
 	protected void registerGoals() {
-		// Add goals here
-		// Generally target goals can be preset below. Change if it needs to modify.
+		goalSelector.addGoal(1, new FloatGoal(this));
+		goalSelector.addGoal(3, new BefriendedMeleeAttackGoal(this, 1.0d, true));
+		goalSelector.addGoal(3, new BefriendedLocateBlockGoal(this, 6d));
+		goalSelector.addGoal(4, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
+		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
+		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
@@ -188,13 +208,12 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 	@Override
 	public int getInventorySize()
 	{
-		return 4;
+		return 4;	// 0 - mainhand, 1 - offhand, 23 - baubles
 	}
 
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 			additionalInventory.setMobEquipment(this);
 		}
 	}
@@ -203,7 +222,6 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 	public void setInventoryFromMob()
 	{
 		if (!this.level.isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 			additionalInventory.getFromMob(this);
 		}
 		return;
@@ -211,8 +229,7 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return null; // new YourInventoryMenuClass(containerId, playerInventory, container, this);
-		// You can keep it null, but in this case never call openBefriendedInventory() or it will crash.
+		return new InventoryMenuKobold(containerId, playerInventory, container, this);
 	}
 
 	/* Save and Load */
@@ -221,14 +238,12 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		// Add other data to save here
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		// Add other data reading here
 		setInit();
 	}
 
@@ -239,14 +254,47 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
 		map.put("0", this.getAdditionalInventory().getItem(2));
 		map.put("1", this.getAdditionalInventory().getItem(3));
-		map.put("main_hand", this.getAdditionalInventory().getItem(0));
 		return map;
 	}
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		// TODO Auto-generated method stub
 		return DwmgBaubleHandlers.GENERAL;
+	}
+	
+	// IBlockLocator interface
+
+	@Override
+	public Collection<Block> getLocatingBlocks() {
+		Item offhand = this.getOffhandItem().getItem();
+		if (TagHelper.hasTag(offhand, "forge:nuggets/diamond"))
+			return TagHelper.getAllBlocksUnderTag("forge:ores/diamond");
+		if (TagHelper.hasTag(offhand, "forge:nuggets/emerald"))
+			return TagHelper.getAllBlocksUnderTag("forge:ores/emerald");
+		if (TagHelper.hasTag(offhand, "forge:nuggets/gold"))
+			return TagHelper.getAllBlocksUnderTag("forge:ores/gold");
+		if (offhand == Items.LAPIS_LAZULI)
+			return TagHelper.getAllBlocksUnderTag("forge:ores/lapis");
+		if (TagHelper.hasTag(offhand, "forge:nuggets/iron"))
+			return TagHelper.getAllBlocksUnderTag("forge:ores/iron");
+		if (TagHelper.hasTag(offhand, "forge:nuggets/copper"))
+			return TagHelper.getAllBlocksUnderTag("forge:ores/copper");
+		if (offhand == Items.COAL)
+			return TagHelper.getAllBlocksUnderTag("forge:ores/coal");
+		return ContainerHelper.listOf();
+	}
+
+	@Override
+	public int getFrequency()
+	{
+		return /*5 * 20;*/1;
+	}
+	
+	@Override
+	public void onStartLocating()
+	{
+		this.getAdditionalInventory().getItem(1).shrink(1);
+		this.updateFromInventory();
 	}
 	
 	// Misc

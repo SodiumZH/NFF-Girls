@@ -1,5 +1,8 @@
 package net.sodiumstudio.dwmg.registries;
 
+import com.github.mechalopa.hmag.HMaG;
+import com.github.mechalopa.hmag.world.item.ModSwordItem;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
@@ -7,6 +10,7 @@ import net.minecraft.world.item.ChorusFruitItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.Tiers;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -124,6 +128,7 @@ public class DwmgItems {
 			DwmgArmorMaterials.SUNHAT,
 			EquipmentSlot.HEAD,
 			new Item.Properties().tab(TAB)));
+	public static final RegistryObject<Item> NETHERITE_FORK = ITEMS.register("netherite_fork", () -> new ModSwordItem(Tiers.NETHERITE, 2.0F, -2.4F, new Item.Properties().tab(DwmgTab.TAB).fireResistant()));
 	public static final RegistryObject<Item> NECROMANCER_WAND = ITEMS.register("necromancer_wand", () -> new ItemNecromancerWand(
 			new Item.Properties().tab(TAB).durability(64).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> COMMANDING_WAND = ITEMS.register("commanding_wand", () -> new ItemCommandWand(new Item.Properties().tab(TAB).stacksTo(1)));

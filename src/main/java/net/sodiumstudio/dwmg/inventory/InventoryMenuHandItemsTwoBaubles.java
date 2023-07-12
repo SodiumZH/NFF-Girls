@@ -1,5 +1,7 @@
 package net.sodiumstudio.dwmg.inventory;
 
+import java.util.function.Predicate;
+
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -12,62 +14,18 @@ import net.sodiumstudio.nautils.math.IntVec2;
 
 public class InventoryMenuHandItemsTwoBaubles extends InventoryMenuPreset0
 {
-
 	public InventoryMenuHandItemsTwoBaubles(int containerId, Inventory playerInventory, Container container,
 			IBefriendedMob mob) {
 		super(containerId, playerInventory, container, mob);
 	}
 
-
 	@Override
 	protected void addMenuSlots()
 	{
-		// main hand
-		IntVec2 v = new IntVec2(8, 18);
-		v.addY(10);
-		addSlot(new Slot(container, 0, v.x, v.y) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return !EnchantmentHelper.hasBindingCurse(stack)
-						&& !this.hasItem();
-			}
-		});
-		
-		// off hand
-		v.slotBelow().addY(10);
-		addSlot(new Slot(container, 1, v.x, v.y) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return !EnchantmentHelper.hasBindingCurse(stack)
-						&& !this.hasItem();
-			}
-		});
-
-		// baubles
-		v.set(80, 18);
-		v.addY(10);
-		addSlot(new Slot(container, 2, v.x, v.y) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return BaubleHandler.shouldBaubleSlotAccept(stack, this, mob);
-			}
-			@Override
-			public int getMaxStackSize() {
-	            return 1;
-	        }	
-		});
-		
-		v.slotBelow().addY(10);
-		addSlot(new Slot(container, 3, v.x, v.y) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return BaubleHandler.shouldBaubleSlotAccept(stack, this, mob);
-			}
-			@Override
-			public int getMaxStackSize() {
-	            return 1;
-	        }	
-		});
+		this.addGeneralSlot(0, leftRowPos().addY(10), getMainHandCondition());
+		this.addGeneralSlot(1, leftRowPos().slotBelow().addY(20), null);
+		this.addBaubleSlot(2, rightRowPos().addY(10), "0");
+		this.addBaubleSlot(3, rightRowPos().slotBelow().addY(20), "1");
 	}
 	
 	@Override
@@ -82,4 +40,9 @@ public class InventoryMenuHandItemsTwoBaubles extends InventoryMenuPreset0
 		return IntVec2.valueOf(32, 101);
 	}
 
+	protected Predicate<ItemStack> getMainHandCondition()
+	{
+		return null;
+	}
+	
 }

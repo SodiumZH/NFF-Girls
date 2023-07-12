@@ -1,5 +1,7 @@
 package net.sodiumstudio.dwmg.entities.ai.goals;
 
+import java.util.EnumSet;
+
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
@@ -23,10 +25,19 @@ public class BefriendableWatchHandItemGoal extends Goal
 		else throw new UnsupportedOperationException("This goal supports only mobs with CBefriendableMob capability.");
 		if (!(BefriendingTypeRegistry.getHandler(mob) instanceof HandlerItemDropping))
 			throw new UnsupportedOperationException("This goal supports befriendable mobs only with HandlerItemDropping as befriending handler.");
+		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
 	}
 	
 	@Override
 	public boolean canUse() {
 		return cap.hasTimer("hold_item_time");
+	}
+	
+	@Override
+	public void tick()
+	{
+		mob.getNavigation().stop();
+		Vec3 v = mob.position();
+		mob.getMoveControl().setWantedPosition(v.x, v.y, v.z, 1);
 	}
 }
