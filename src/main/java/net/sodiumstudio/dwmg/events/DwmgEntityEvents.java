@@ -327,7 +327,7 @@ public class DwmgEntityEvents
 				else if (!event.getSource().equals(DamageSource.IN_FIRE)
 						&& !event.getSource().equals(DamageSource.STARVE))
 				{
-					EntityHelper.sendParticlesToEntity(living, null, 0, living.getBbHeight()/2, 0, 0.5, living.getBbHeight()/2, 0.5, 2, 1);
+					EntityHelper.sendParticlesToEntity(living, ParticleTypes.PORTAL, 0, living.getBbHeight()/2, 0, 0.5, living.getBbHeight()/2, 0.5, 2, 1);
 					/*living.level.addParticle(ParticleTypes.PORTAL, 
 							living.getRandomX(0.5D), 
 							living.getRandomY() - 0.25D,

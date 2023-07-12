@@ -2,6 +2,20 @@
 
 ## 1.19.2
 
+### 0.1.9
+
+Added Kobold and Imp support.
+
+Added weapon: Netherite Fork
+
+
+
+Fixed Soul Amulet II not working.
+
+Fixed server crash on player taking damage with Ender Protection effect.
+
+Fixed Ender Executors stop attacking unexpectedly.
+
 ### 0.1.8.1
 
 Reduced the cost of some Baubles.

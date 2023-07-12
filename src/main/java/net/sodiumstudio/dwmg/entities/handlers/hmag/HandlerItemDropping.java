@@ -26,6 +26,7 @@ import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.ItemHelper;
 import net.sodiumstudio.nautils.NbtHelper;
+import net.sodiumstudio.nautils.debug.Debug;
 import net.sodiumstudio.dwmg.events.DwmgItemEvents;
 
 public abstract class HandlerItemDropping extends BefriendingHandler
@@ -47,6 +48,7 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 	{
 		CBefriendableMob.getCapNbt(mob).getCompound("ongoing_players").remove(player.getStringUUID());
 		mob.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+		Debug.printToScreen("Interrupted", player);
 		if (!isQuiet)
 			EntityHelper.sendAngryParticlesToLivingDefault(mob);
 	}
@@ -96,6 +98,9 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 			return false;
 		// If item not thrown by player, pass
 		if (itemEntity.getThrower() == null || mob.level.getPlayerByUUID(itemEntity.getThrower()) == null)
+			return false;
+		// If in hatred, pass
+		if (CBefriendableMob.getCap(mob).getHatred().contains(itemEntity.getThrower()))
 			return false;
 		// If the item is still in picking cooldown for the mob, pass
 		if (itemEntity.getItem().getOrCreateTagElement("already_picked_befriendable_mobs").contains(mob.getStringUUID(), NbtHelper.TAG_INT_ID)
@@ -198,10 +203,10 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 					CBefriendableMob.getCapNbt(mob).getCompound("ongoing_players").putDouble(strUUID, newProc);
 					CBefriendableMob.getCap(mob).setTimer("picking_cooldown", getMobPickingCooldown());
 				}
+				Debug.printToScreen("Proc: " + Double.toString(newProc), player);
 			}
 			else
 			{
-				/***/
 				mob.getItemInHand(InteractionHand.OFF_HAND).removeTagKey("befriendable_picked_from_player");
 				EntityHelper.sendSmokeParticlesToLivingDefault(mob);
 				mob.spawnAtLocation(mob.getItemInHand(InteractionHand.OFF_HAND));
@@ -211,7 +216,7 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 		// Check pick-up
 		else if (!CBefriendableMob.getCap(mob).hasTimer("hold_item_time"))
 		{
-			// Overlapping or on same block position
+			// Overlapping or on neighboring block position
 			Predicate<ItemEntity> pickCondition = (ItemEntity ie) -> ie.getBoundingBox().intersects(mob.getBoundingBox()) 
 					|| (Math.abs(ie.getBlockX() - mob.getBlockX()) <= 1 && Math.abs(ie.getBlockZ() - mob.getBlockZ()) <= 1 && ie.getBlockY() == mob.getBlockY());
 			List<ItemEntity> overlappingItems = 

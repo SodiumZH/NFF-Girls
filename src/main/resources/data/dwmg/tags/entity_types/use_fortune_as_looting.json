@@ -1,0 +1,8 @@
+{
+  "desc" : "Mobs that will increase looting table when killing something with tools having fortune enchantment.",
+  "replace" : false,
+  "values" : [ 
+  	"dwmg:hmag_necrotic_reaper",
+  	"dwmg:hmag_kobold"
+	]
+}
