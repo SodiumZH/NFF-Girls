@@ -18,8 +18,8 @@ public class GuiHandItemsTwoBaubles extends GuiPreset0 {
 	protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {			
 		super.renderBg(pPoseStack, pPartialTick, pMouseX, pMouseY);
 		this.addMainScreen(pPoseStack);
-		this.addSlotBg(pPoseStack, 0, leftRowPos().addY(10), 1, 1);
-		this.addSlotBg(pPoseStack, 1, leftRowPos().slotBelow(1).addY(20), 1, 0);
+		this.addSlotBg(pPoseStack, 0, leftRowPos().addY(10), getMainHandIconPos().x, getMainHandIconPos().y);
+		this.addSlotBg(pPoseStack, 1, leftRowPos().slotBelow(1).addY(20), getOffHandIconPos().x, getOffHandIconPos().y);
 		this.addBaubleSlotBg(pPoseStack, 2, rightRowPos().addY(10));
 		this.addBaubleSlotBg(pPoseStack, 3, rightRowPos().slotBelow().addY(20));
 		this.addMobRenderBox(pPoseStack, 2);
@@ -40,4 +40,14 @@ public class GuiHandItemsTwoBaubles extends GuiPreset0 {
 		return 18;
 	}
 
+	public IntVec2 getMainHandIconPos()
+	{
+		return IntVec2.valueOf(1, 1);
+	}
+	
+	public IntVec2 getOffHandIconPos()
+	{
+		return IntVec2.valueOf(1, 0);
+	}
+	
 }

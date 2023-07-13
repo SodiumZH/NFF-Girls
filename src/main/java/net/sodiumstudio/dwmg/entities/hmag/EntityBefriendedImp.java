@@ -50,6 +50,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.IBlockLocator;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuImp;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.TagHelper;
@@ -216,7 +217,7 @@ public class EntityBefriendedImp extends ImpEntity implements IDwmgBefriendedMob
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuHandItemsTwoBaubles(containerId, playerInventory, container, this);
+		return new InventoryMenuImp(containerId, playerInventory, container, this);
 	}
 
 	// IBlockLocator interface

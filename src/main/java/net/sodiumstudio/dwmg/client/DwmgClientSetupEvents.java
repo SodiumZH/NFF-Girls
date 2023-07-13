@@ -29,6 +29,8 @@ import net.sodiumstudio.dwmg.client.gui.screens.GuiEnderExecutor;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiGhastlySeeker;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiHandItemsTwoBaubles;
+import net.sodiumstudio.dwmg.client.gui.screens.GuiImp;
+import net.sodiumstudio.dwmg.client.gui.screens.GuiKobold;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiNecroticReaper;
 import net.sodiumstudio.dwmg.client.renderer.BefriendedCreeperGirlRenderer;
 import net.sodiumstudio.dwmg.client.renderer.BefriendedEnderExecutorRenderer;
@@ -38,6 +40,7 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuEnderExecutor;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuGhastlySeeker;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuImp;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuKobold;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
@@ -83,7 +86,8 @@ public class DwmgClientSetupEvents
 		BefriendedGuiScreenMaker.put(InventoryMenuNecroticReaper.class, (menu) -> new GuiNecroticReaper(menu, menu.playerInventory, menu.mob));
 		BefriendedGuiScreenMaker.put(InventoryMenuSkeleton.class, (menu) -> new GuiBowSecWeaponOneBauble(menu, menu.playerInventory, menu.mob));
 		BefriendedGuiScreenMaker.put(InventoryMenuBanshee.class, (menu) -> new GuiBanshee(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuKobold.class, (menu) -> new GuiHandItemsTwoBaubles(menu, menu.playerInventory, menu.mob));
+		BefriendedGuiScreenMaker.put(InventoryMenuKobold.class, (menu) -> new GuiKobold(menu, menu.playerInventory, menu.mob));
+		BefriendedGuiScreenMaker.put(InventoryMenuImp.class, (menu) -> new GuiImp(menu, menu.playerInventory, menu.mob));
 	}
 	
 }
