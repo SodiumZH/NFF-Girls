@@ -279,6 +279,8 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 			return TagHelper.getAllBlocksUnderTag("forge:ores/iron");
 		if (TagHelper.hasTag(offhand, "forge:nuggets/copper"))
 			return TagHelper.getAllBlocksUnderTag("forge:ores/copper");
+		if (offhand == Items.REDSTONE)
+			return TagHelper.getAllBlocksUnderTag("forge:ores/redstone");
 		if (offhand == Items.COAL)
 			return TagHelper.getAllBlocksUnderTag("forge:ores/coal");
 		return ContainerHelper.listOf();
@@ -287,7 +289,7 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 	@Override
 	public int getFrequency()
 	{
-		return /*5 * 20;*/1;
+		return 5 * 20;
 	}
 	
 	@Override
