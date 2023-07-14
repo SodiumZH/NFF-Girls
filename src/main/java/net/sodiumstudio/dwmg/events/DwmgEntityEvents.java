@@ -63,6 +63,7 @@ import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
@@ -953,5 +954,27 @@ public class DwmgEntityEvents
 				throw new IllegalStateException("Mob \"" + bm.asMob().getName().getString() + 
 						"\" missing owner. This is probably a bug. Please contact the author for help: https://github.com/SodiumZH/Days-with-Monster-Girls/issues");
 		}
+	}
+	
+	@SubscribeEvent
+	public static void onEntityInteract(EntityInteract event)
+	{
+		if (event.getTarget() instanceof IDwmgBefriendedMob bm && event.getSide() == LogicalSide.SERVER)
+		{
+			// Send msg if trying to interact other people's mob
+			if (!event.getEntity().getUUID().equals(bm.getOwnerUUID())) 
+			{
+				if (bm.isOwnerPresent()) 
+				{
+					MiscUtil.printToScreen(
+							InfoHelper.createTrans("info.dwmg.interact_not_owning", bm.getOwner().getName()), event.getEntity());
+				} 
+				else 
+				{
+					MiscUtil.printToScreen(InfoHelper.createTrans("info.dwmg.interact_not_owning_unpresent"), event.getEntity());
+				}
+			}			
+		}
+			
 	}
 }

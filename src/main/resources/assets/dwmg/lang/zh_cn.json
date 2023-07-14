@@ -48,6 +48,8 @@
   "entity.dwmg.hmag_ghastly_seeker": "恶魂探索者",
   "info.dwmg.necrotic_reaper_not_controllable": "你需要拥有死灵巫师的帽子或死灵巫师之杖以指挥死灵收割者。",
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "你需要拥有死灵巫师的帽子或死灵巫师之杖以打开死灵收割者的道具栏。",
+  "info.dwmg.interact_not_owning": "这个生物属于%1$s，你无法与之互动。",
+  "info.dwmg.interact_not_owning_unpresent": "这个生物属于其他人，你无法与之互动。（拥有者目前不在世界中）",
   "info.dwmg.gui_level": "等级",
   "info.dwmg.gui_exp": "经验",
   "info.dwmg.gui_favorability": "好感度",

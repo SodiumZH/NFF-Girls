@@ -29,6 +29,7 @@ import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
 import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.item.IWithDuration;
 import net.sodiumstudio.dwmg.item.ItemEvilMagnet;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
@@ -124,28 +125,30 @@ public class DwmgItemEvents
 	@SubscribeEvent
 	public static void onAnvilChange(AnvilUpdateEvent event)
 	{
-		// Necromancer's Wand fixing
-		if (event.getLeft().is(DwmgItems.NECROMANCER_WAND.get()) 
-				&& event.getRight().is(DwmgItems.DEATH_CRYSTAL_POWDER.get())
-				&& event.getLeft().getDamageValue() > 0)
+		if (event.getLeft().getItem() instanceof IWithDuration wd)
 		{
-			ItemStack out = event.getLeft().copy();
-			event.setCost(1);
-			event.setMaterialCost(1);
-			out.setDamageValue(event.getLeft().getDamageValue() - 16);
-			event.setOutput(out);
-
-		}
-		// Evil Magnet fixing
-		if (event.getLeft().is(DwmgItems.EVIL_MAGNET.get())
-				&& ItemEvilMagnet.getMagnetDuration(event.getLeft()) == 0
-				&& event.getRight().is(ModItems.EVIL_CRYSTAL.get()))
-		{
-			ItemStack out = event.getLeft().copy();
-			event.setCost(1);
-			event.setMaterialCost(1);
-			ItemEvilMagnet.repair(out);
-			event.setOutput(out);
+			// Necromancer's Wand
+			if (event.getLeft().is(DwmgItems.NECROMANCER_WAND.get()) 
+					&& event.getRight().is(DwmgItems.DEATH_CRYSTAL_POWDER.get())
+					&& wd.canRepair(event.getLeft()))
+			{
+				ItemStack out = event.getLeft().copy();
+				event.setCost(1);
+				event.setMaterialCost(1);
+				wd.repair(out, 32);
+				event.setOutput(out);
+			}
+			// Evil Magnet fixing
+			if (event.getLeft().is(DwmgItems.EVIL_MAGNET.get())
+					&& wd.canRepair(event.getLeft())
+					&& event.getRight().is(ModItems.EVIL_CRYSTAL.get()))
+			{
+				ItemStack out = event.getLeft().copy();
+				event.setCost(1);
+				event.setMaterialCost(1);
+				wd.repair(out, 8);
+				event.setOutput(out);
+			}
 		}
 	}
 
