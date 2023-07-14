@@ -46,8 +46,11 @@
   "entity.dwmg.hmag_necrotic_reaper": "Necrotic Reaper",
   "entity.dwmg.hmag_banshee": "Banshee",
   "entity.dwmg.hmag_ghastly_seeker": "Ghastly Seeker",
+  
   "info.dwmg.necrotic_reaper_not_controllable": "To give command to the Necrotic Reaper, you must have a Necromancer's Hat or Necromancer's Wand.",
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "To open Necrotic Reaper's inventory, you must have a Necromancer's Hat or Necromancer's Wand.",
+  "info.dwmg.interact_not_owning": "This mob belongs to %1$s and you can't interact with it.",
+  "info.dwmg.interact_not_owning_unpresent": "This mob belongs to someone else and you can't interact with it. (Its owner isn't in the world now.)",
   "info.dwmg.gui_level": "Level",
   "info.dwmg.gui_exp": "Exp",
   "info.dwmg.gui_favorability": "Favorability",

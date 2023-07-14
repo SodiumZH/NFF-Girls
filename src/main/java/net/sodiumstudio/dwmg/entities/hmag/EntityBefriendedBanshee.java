@@ -58,6 +58,8 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BefMobItems;
 import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.InfoHelper;
+import net.sodiumstudio.nautils.MiscUtil;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingLandGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomMoveGoal;
@@ -196,6 +198,7 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 					}
 				}
 			} 
+
 			// Always pass when not owning this mob
 			return InteractionResult.PASS;
 		}

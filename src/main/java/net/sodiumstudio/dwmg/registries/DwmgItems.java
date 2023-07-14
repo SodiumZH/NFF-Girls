@@ -130,7 +130,7 @@ public class DwmgItems {
 			new Item.Properties().tab(TAB)));
 	public static final RegistryObject<Item> NETHERITE_FORK = ITEMS.register("netherite_fork", () -> new ModSwordItem(Tiers.NETHERITE, 2.0F, -2.4F, new Item.Properties().tab(DwmgTab.TAB).fireResistant()));
 	public static final RegistryObject<Item> NECROMANCER_WAND = ITEMS.register("necromancer_wand", () -> new ItemNecromancerWand(
-			new Item.Properties().tab(TAB).durability(64).rarity(Rarity.UNCOMMON)));
+			new Item.Properties().tab(TAB).rarity(Rarity.UNCOMMON).stacksTo(1)));
 	public static final RegistryObject<Item> COMMANDING_WAND = ITEMS.register("commanding_wand", () -> new ItemCommandWand(new Item.Properties().tab(TAB).stacksTo(1)));
 	public static final RegistryObject<Item> EVIL_MAGNET = ITEMS.register("evil_magnet", () -> new ItemEvilMagnet(new Item.Properties().tab(TAB).stacksTo(1)));
 			
