@@ -446,17 +446,55 @@ When the progress is over 0.7, it will become neutral.
 
 ##### Interaction
 
-It has 2 bauble slots.
+It has 2 Bauble slots.
 
 Its main hand can only hold pickaxes. Like for Necrotic Reapers, Fortune enchantment will act as Looting on killing mobs.
 
-If it's holding mineral nuggets on the off hand, it will help locate surrounding corresponding ores, even if not seen. When it found the ore, it will try moving towards it, and generate massive glint (green star) particles.
+If it's holding mineral nuggets on the off hand, it will help locate surrounding corresponding ores, even if not seen. When it found the ore, it will consume a nugget, try moving towards the ore and generate massive glint (green star) particles.
 
 Supported minerals: Copper, Iron, Gold, Emerald, Diamond, Coal, Lapis Lazuli, Redstone.
 
-For Coal, Lapis Lazuli and Redstone, the mineral itself is required instead of nuggets.
+For Coal, Lapis Lazuli and Redstone, the mineral itself is required instead of the nugget.
 
 It will try locating ores only under Follow mode.
+
+It can be healed with Apple (5), Cookie (5), Pumpkin Pie (5), Lemon (10), Lemon Pie (20) and Golden Apple (to max).
+
+
+
+#### Imp (HMaG) (0.x.9)
+
+##### Befriending
+
+Similar to Kobold.
+
+Accepted items:
+
+*Apple*: 0.02 - 0.04
+
+*Warped Fungus* and *Crimson Fungus*: 0.03 - 0.05
+
+*Golden Apple*: 0.12 - 0.24
+
+*Lemon*: 0.03 - 0.05
+
+*Golden Tropical Fish*: 0.08 - 0.16
+
+*Gilded Blackstone*: 0.04 - 0.07
+
+*Enchanted Golden Apple*: 0.80 - 1.40
+
+##### Interaction
+
+It has 2 Bauble slots.
+
+Like Kobold, it can locate Ancient Debris. It required the mob to hold a Netherite Fork on the main hand and have Netherite Scrap nuggets on the off hand.
+
+It can be healed with Apple (5), Cookie (5), Pumpkin Pie (5), Lemon (10), Lemon Pie (20) and Golden Apple (to max).
+
+
+
+
 
 ## Foods
 
