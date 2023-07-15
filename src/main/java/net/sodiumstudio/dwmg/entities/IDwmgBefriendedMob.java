@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.item.ItemMobRespawner;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.nautils.Wrapped;
 import net.sodiumstudio.nautils.annotation.DontCallManually;
@@ -14,6 +15,7 @@ import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleItem;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleHolder
 {
@@ -107,5 +109,10 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleHolder
 		return false;
 	}
 	
-	
+	// === IBefriendedMob interface
+	@Override
+	public default ItemMobRespawner getRespawnerType()
+	{
+		return DwmgItems.MOB_RESPAWNER.get();
+	}
 }

@@ -24,11 +24,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerInstance;
-import net.sodiumstudio.befriendmobs.registry.BefMobItems;
+import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.math.RndUtil;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class ItemEvilMagnet extends Item implements IWithDuration
 {
@@ -54,7 +55,7 @@ public class ItemEvilMagnet extends Item implements IWithDuration
 				{
 					if (e instanceof ItemEntity ie)
 					{
-						if (ie.getItem().is(BefMobItems.MOB_RESPAWNER.get()))
+						if (ie.getItem().is(DwmgItems.MOB_RESPAWNER.get()))
 						{
 							MobRespawnerInstance mr = MobRespawnerInstance.create(ie.getItem());
 							if (mr != null 

@@ -23,17 +23,22 @@
   "item.dwmg.life_jade_ii": "生命勾玉 II",
   "item.dwmg.courage_amulet": "勇气护符",
   "item.dwmg.courage_amulet_ii": "勇气护符 II",
-   "item.dwmg.soul_amulet": "灵魂护符",
+  "item.dwmg.soul_amulet": "灵魂护符",
   "item.dwmg.soul_amulet_ii": "灵魂护符 II",
   "item.dwmg.resistance_amulet": "抵抗护符",
   "item.dwmg.resistance_amulet_ii": "抵抗护符 II",
   
+  "item.dwmg.mob_respawner": "重生刷怪蛋",
+  
   "block.dwmg.soul_cake" : "灵魂蛋糕",
   "block.dwmg.soul_carpet" : "灵魂地毯",
+  
   "effect.dwmg.undead_affinity": "亡灵亲和",
   "effect.dwmg.ender_protection": "末影之护",
   "effect.dwmg.necromancer_wither": "死灵诅咒",
+  
   "itemGroup.dwmg_tab" : "与怪物娘的日常",
+  
   "entity.dwmg.hmag_zombie_girl" : "僵尸娘",
   "entity.dwmg.hmag_skeleton_girl" : "骷髅娘",
   "entity.dwmg.hmag_husk_girl" : "尸壳娘",
@@ -46,6 +51,9 @@
   "entity.dwmg.hmag_necrotic_reaper": "死灵收割者",
   "entity.dwmg.hmag_banshee": "报丧女妖",
   "entity.dwmg.hmag_ghastly_seeker": "恶魂探索者",
+  "entity.dwmg.hmag_kobold": "狗头人",
+  "entity.dwmg.hmag_imp": "小恶魔",
+  
   "info.dwmg.necrotic_reaper_not_controllable": "你需要拥有死灵巫师的帽子或死灵巫师之杖以指挥死灵收割者。",
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "你需要拥有死灵巫师的帽子或死灵巫师之杖以打开死灵收割者的道具栏。",
   "info.dwmg.interact_not_owning": "这个生物属于%1$s，你无法与之互动。",

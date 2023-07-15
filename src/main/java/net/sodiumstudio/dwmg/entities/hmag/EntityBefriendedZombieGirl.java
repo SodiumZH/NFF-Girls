@@ -41,7 +41,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
-import net.sodiumstudio.befriendmobs.registry.BefMobItems;
+import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.nautils.ItemHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
@@ -101,10 +101,10 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IDwm
 		// Occupy the main hand to block the ignition action in super.doHurtTarget
 		// See Zombie class
 		if (this.getMainHandItem().isEmpty())
-			this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(BefMobItems.DUMMY_ITEM.get(), 1));
+			this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(BMItems.DUMMY_ITEM.get(), 1));
 		boolean res = super.doHurtTarget(target);
 		// Remove dummy item
-		if (!this.getMainHandItem().isEmpty() && this.getMainHandItem().is(BefMobItems.DUMMY_ITEM.get()))
+		if (!this.getMainHandItem().isEmpty() && this.getMainHandItem().is(BMItems.DUMMY_ITEM.get()))
 			this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);		
 		// Overwrite ignition here
 		if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < 0.8f)

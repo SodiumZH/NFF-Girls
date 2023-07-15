@@ -28,12 +28,17 @@
   "item.dwmg.life_jade_ii": "Life Jade II",
   "item.dwmg.aqua_jade": "Aqua Jade",
   
+  "item.dwmg.mob_respawner": "Mob Respawner",
+  
   "block.dwmg.soul_cake" : "Soul Cake",
   "block.dwmg.soul_carpet" : "Soul Carpet",
+  
   "effect.dwmg.undead_affinity": "Undead Affinity",
   "effect.dwmg.ender_protection": "Protection of the End",
   "effect.dwmg.necromancer_wither": "Curse of Necromancy",
+  
   "itemGroup.dwmg_tab" : "Days with Monster Girls",
+  
   "entity.dwmg.hmag_zombie_girl" : "Zombie Girl",
   "entity.dwmg.hmag_skeleton_girl" : "Skeleton Girl",
   "entity.dwmg.hmag_husk_girl" : "Husk Girl",
@@ -46,6 +51,8 @@
   "entity.dwmg.hmag_necrotic_reaper": "Necrotic Reaper",
   "entity.dwmg.hmag_banshee": "Banshee",
   "entity.dwmg.hmag_ghastly_seeker": "Ghastly Seeker",
+  "entity.dwmg.hmag_kobold": "Kobold",
+  "entity.dwmg.hmag_imp": "Imp",
   
   "info.dwmg.necrotic_reaper_not_controllable": "To give command to the Necrotic Reaper, you must have a Necromancer's Hat or Necromancer's Wand.",
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "To open Necrotic Reaper's inventory, you must have a Necromancer's Hat or Necromancer's Wand.",

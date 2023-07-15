@@ -75,8 +75,8 @@ import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
 import net.sodiumstudio.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
-import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
-import net.sodiumstudio.befriendmobs.registry.BefMobItems;
+import net.sodiumstudio.befriendmobs.registry.BMCaps;
+import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.nautils.AiHelper;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.InfoHelper;
@@ -214,9 +214,9 @@ public class DwmgEntityEvents
 	{
 		if (event.getDamageSource().getEntity() != null)
 		{
-			if (event.getDamageSource().getEntity().getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
+			if (event.getDamageSource().getEntity().getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).isPresent())
 			{
-				event.getDamageSource().getEntity().getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> 
+				event.getDamageSource().getEntity().getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> 
 				{
 					if (event.getDamageSource().getEntity() instanceof CreeperGirlEntity cg)
 					{
@@ -500,7 +500,7 @@ public class DwmgEntityEvents
 	{
 		if (event.getEntityLiving() instanceof EnderExecutorEntity ee)
 		{
-			ee.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> 
+			ee.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> 
 			{
 				if (l.getNbt().getBoolean("cannot_teleport"))
 				{
@@ -529,7 +529,7 @@ public class DwmgEntityEvents
 				
 			{
 				Wrapped<Boolean> inHatred = new Wrapped<Boolean>(false);
-				event.mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> 
+				event.mob.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> 
 				{
 					inHatred.set(cap.isInHatred(event.toAdd));
 				});
@@ -690,11 +690,11 @@ public class DwmgEntityEvents
 			/** After this, vanilla will use LivingEntity#lastHurtByPlayerTime to check if it's killed by player
 			 * so force set this to make it drop player-kill loot */
 			ReflectHelper.forceSet(event.getEntity(), LivingEntity.class, "lastHurtByPlayerTime",  1);
-			/** For Necrotic Reapers, Fortune enchantment is applied in place of Looting */
-			if (bm instanceof EntityBefriendedNecroticReaper nr && !nr.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
+			/** For mobs with tag "use_fortune_as_looting", Fortune enchantment is applied in place of Looting */
+			if (TagHelper.hasTag(bm.asMob(), "dwmg:use_fortune_as_looting") && !bm.asMob().getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
 			{
-				event.setLootingLevel(Math.max(nr.getItemBySlot(EquipmentSlot.MAINHAND).getEnchantmentLevel(Enchantments.BLOCK_FORTUNE), 
-						nr.getItemBySlot(EquipmentSlot.MAINHAND).getEnchantmentLevel(Enchantments.MOB_LOOTING)));
+				event.setLootingLevel(Math.max(bm.asMob().getItemBySlot(EquipmentSlot.MAINHAND).getEnchantmentLevel(Enchantments.BLOCK_FORTUNE), 
+						bm.asMob().getItemBySlot(EquipmentSlot.MAINHAND).getEnchantmentLevel(Enchantments.MOB_LOOTING)));
 			}
 		}
 	}

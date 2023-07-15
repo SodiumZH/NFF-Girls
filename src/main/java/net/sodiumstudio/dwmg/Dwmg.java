@@ -40,9 +40,6 @@ public class Dwmg
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        // Register the commonSetup handler for mod loading
-        modEventBus.addListener(this::commonSetup);
-
         // Set up registries
         DwmgEffects.EFFECTS.register(modEventBus);
         DwmgBlocks.BLOCKS.register(modEventBus);
@@ -53,20 +50,15 @@ public class Dwmg
         MinecraftForge.EVENT_BUS.register(this);
         
         
-		BefriendMobs.setDebugMode(true);
+		//BefriendMobs.setDebugMode(true);
     }
-
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
-   
-    }
-
+    
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
         // Do something when the server starts
-        LOGGER.info("DwMG: Server started.");
+        LOGGER.info("DWMG: Server started.");
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
