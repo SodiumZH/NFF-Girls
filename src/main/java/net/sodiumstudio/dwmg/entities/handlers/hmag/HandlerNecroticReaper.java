@@ -57,7 +57,7 @@ public class HandlerNecroticReaper extends BefriendingHandler
 		{
 			cap.getNbt().putInt("already_hits", 0);
 		}
-		updateModifier(cap);
+		//updateModifier(cap);
 	}	
 	
 	/**

@@ -193,6 +193,7 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 				EntityHelper.sendGlintParticlesToLivingDefault(mob);
 				if (newProc >= 1.0d)
 				{
+					mob.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
 					befriend(player, mob);
 					return;
 				}
