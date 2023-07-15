@@ -132,11 +132,12 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 	public HashMap<Item, Float> getHealingItems()
 	{
 		return ContainerHelper.<Item, Float>mapOf(//HashMap<Item, Float> map = new HashMap<Item, Float>();
-		MapPair.of(Items.APPLE, 5f),
-		MapPair.of(Items.COOKIE, 5f),
-		MapPair.of(Items.PUMPKIN_PIE, 15f),
-		MapPair.of(ModItems.LEMON.get(), 10f),
-		MapPair.of(ModItems.LEMON_PIE.get(), 20f));
+				MapPair.of(Items.APPLE, 5f),
+				MapPair.of(Items.COOKIE, 5f),
+				MapPair.of(Items.PUMPKIN_PIE, 15f),
+				MapPair.of(ModItems.LEMON.get(), 10f),
+				MapPair.of(ModItems.LEMON_PIE.get(), 20f),
+				MapPair.of(Items.GOLDEN_APPLE, (float)getAttributeValue(Attributes.MAX_HEALTH)));
 	}
 	
 	// Set of items that can heal the mob WITHOUT CONSUMING.

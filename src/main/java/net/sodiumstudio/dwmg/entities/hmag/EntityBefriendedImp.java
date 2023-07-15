@@ -128,7 +128,10 @@ public class EntityBefriendedImp extends ImpEntity implements IDwmgBefriendedMob
 		// map.put(YOUR_ITEM_TYPE, HEALING_HEALTH_VALUE);
 		return ContainerHelper.<Item, Float>mapOf(
 				MapPair.of(Items.APPLE, 5f),
+				MapPair.of(Items.COOKIE, 5f),
+				MapPair.of(Items.PUMPKIN_PIE, 15f),
 				MapPair.of(ModItems.LEMON.get(), 10f),
+				MapPair.of(ModItems.LEMON_PIE.get(), 20f),
 				MapPair.of(Items.GOLDEN_APPLE, (float)getAttributeValue(Attributes.MAX_HEALTH)));
 	}
 	
