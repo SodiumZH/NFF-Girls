@@ -214,18 +214,6 @@ public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefrien
 			return InteractionResult.PASS;
 		}
 	}
-	
-	@Deprecated
-	@Override
-	public boolean onInteraction(Player player, InteractionHand hand) {
-		return false;
-	}
-
-	@Deprecated
-	@Override
-	public boolean onInteractionShift(Player player, InteractionHand hand) {
-		return false;
-	}
 
 	/* Inventory */
 

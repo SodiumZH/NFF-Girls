@@ -8,7 +8,8 @@ import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.annotation.DontOverride;
 
 /**
- * Interface of items with a duration but not using the vanilla item damage system.
+ * Interface of items with a duration but not using the vanilla item damage system, thus cannot be repaired with Mending or regarded as damageable items.
+ * The item will not vanish when duration runs out.
  */
 public interface IWithDuration {
 	

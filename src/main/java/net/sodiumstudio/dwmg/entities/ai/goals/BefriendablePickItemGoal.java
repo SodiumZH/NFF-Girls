@@ -14,7 +14,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
-import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
+import net.sodiumstudio.befriendmobs.registry.BMCaps;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerItemDropping;
 
@@ -38,7 +38,7 @@ public class BefriendablePickItemGoal extends Goal
 	public BefriendablePickItemGoal(Mob mob)
 	{
 		this.mob = mob;
-		if (mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
+		if (mob.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).isPresent())
 		{
 			cap = CBefriendableMob.getCap(mob);
 		}

@@ -4,15 +4,15 @@
 
 ### 0.1.9
 
+WARNING: Due to item change, Mob Respawners in earlier versions may be incompatible to this version and above. They will possibly **VANISH** on updating to this version! Please make sure to have released all mobs from Respawners before updating!!
+
 Added Kobold and Imp support.
 
-Added weapon: Netherite Fork
-
-
+Added weapon: Netherite Fork.
 
 Fixed Soul Amulet II not working.
 
-Fixed server crash on player taking damage with Ender Protection effect.
+Fixed server crash on player taking damage when having Ender Protection effect.
 
 Fixed Ender Executors stop attacking unexpectedly.
 

@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
-import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
+import net.sodiumstudio.befriendmobs.registry.BMCaps;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerItemDropping;
 
 public class BefriendableWatchHandItemGoal extends Goal
@@ -18,7 +18,7 @@ public class BefriendableWatchHandItemGoal extends Goal
 	public BefriendableWatchHandItemGoal(Mob mobBefriendable)
 	{
 		this.mob = mobBefriendable;
-		if (mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).isPresent())
+		if (mob.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).isPresent())
 		{
 			cap = CBefriendableMob.getCap(mob);
 		}

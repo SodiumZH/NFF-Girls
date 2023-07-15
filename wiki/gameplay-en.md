@@ -412,6 +412,52 @@ The base explosion power is 1. Each ATK point adds extra 0.1 to the power.
 
 
 
+#### Kobold (HMaG) (0.0.9 / 0.1.9)
+
+**Befriending**
+
+Drop required items on the ground and it will try picking it up like Piglins. It will hold the item for a few seconds, consume it and increase the progress. The progress value is similar to item-giving process.
+
+Accepted items:
+
+*Iron Ingot* : 0.02 - 0.04
+
+*Gold Ingot*: 0.03 - 0.05
+
+*Emerald*: 0.03 - 0.05
+
+*Diamond*: 0.05 - 0.10
+
+*Netherite Scrap*: 0.15 - 0.25
+
+*Netherite Ingot*: 0.30 - 0.50
+
+*Iron Pickaxe*: 0.05 - 0.07
+
+*Gold Pickaxe*: 0.07 - 0.10
+
+*Diamond Pickaxe*: 0.12 - 0.18
+
+*Netherite Pickaxe*: 0.50 - 1.00
+
+(Pickaxes cannot be recovered after successfully befriending.)
+
+When the progress is over 0.7, it will become neutral.
+
+##### Interaction
+
+It has 2 bauble slots.
+
+Its main hand can only hold pickaxes. Like for Necrotic Reapers, Fortune enchantment will act as Looting on killing mobs.
+
+If it's holding mineral nuggets on the off hand, it will help locate surrounding corresponding ores, even if not seen. When it found the ore, it will try moving towards it, and generate massive glint (green star) particles.
+
+Supported minerals: Copper, Iron, Gold, Emerald, Diamond, Coal, Lapis Lazuli, Redstone.
+
+For Coal, Lapis Lazuli and Redstone, the mineral itself is required instead of nuggets.
+
+It will try locating ores only under Follow mode.
+
 ## Foods
 
 ### Soul Cake
@@ -562,8 +608,15 @@ For owning befriended Necrotic Reapers, it doesn't give Wither but positive effe
 
 Each time used, the user will take a damage of 2.
 
-Durability: 64 (accepting Unbreaking and Mending enchantment)
+Durability: 64 ~~(accepting Unbreaking and Mending enchantment)(0.x.9)~~ Not accepting any enchantments.
 
 It will be unable to use if leaving only 1 durability, preventing it from breaking. 
 
-It can be repaired with Death Crystal Powder on Anvil. Each item repairs 16 durability.
+It can be repaired with Death Crystal Powder on Anvil. Each item repairs ~~16(0.x.9)~~ 32 durability.
+
+
+
+#### Netherite Fork (0.x.9)
+
+An upgrade of Golden Fork (HMaG). Aside of general properties, Imps requires this item for locating Ancient Debris blocks.
+

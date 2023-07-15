@@ -19,7 +19,7 @@ import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractA
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
 import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
-import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
+import net.sodiumstudio.befriendmobs.registry.BMCaps;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.MiscUtil;
 import net.sodiumstudio.nautils.NbtHelper;
@@ -98,7 +98,7 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 	{
 		if (mob instanceof EnderExecutorEntity ee)
 		{
-			ee.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> {
+			ee.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).ifPresent((l) -> {
 				/** If not in befriending process, find if it's looked at, and enter the process
 				* The tag is also an indicator for if this mob is on befriending process
 				* Because Ender Executors have an extra state in which the "proc_value" is still 0 but the process has started
@@ -212,7 +212,7 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 	{
 		if (mob instanceof EnderExecutorEntity ee)
 		{
-			ee.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> {
+			ee.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> {
 				if (cap.getNbt().contains("no_attack_expire_time"))
 				{
 					cap.getNbt().putInt("no_attack_expire_time", 30 * 20);

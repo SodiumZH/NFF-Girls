@@ -16,7 +16,7 @@ import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractA
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendingHandler;
 import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
-import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
+import net.sodiumstudio.befriendmobs.registry.BMCaps;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.dwmg.blocks.BlockSoulCarpet;
@@ -305,7 +305,7 @@ public class HandlerNecroticReaper extends BefriendingHandler
 	{
 		if (mob instanceof NecroticReaperEntity ee)
 		{
-			ee.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> {
+			ee.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> {
 				if (cap.getNbt().contains("no_attack_expire_time"))
 				{
 					cap.getNbt().putInt("no_attack_expire_time", 200);

@@ -44,7 +44,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
-import net.sodiumstudio.befriendmobs.registry.BefMobItems;
+import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
@@ -152,7 +152,7 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 
 		// Wither skeletons don't burn under sun but still damage helmet, so cancel it
 		NbtHelper.saveItemStack(this.getItemBySlot(EquipmentSlot.HEAD), this.getTempData().values().tag, "head_item");
-		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
+		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BMItems.DUMMY_ITEM.get()));
 		super.aiStep();
 		this.setItemSlot(EquipmentSlot.HEAD, NbtHelper.readItemStack(this.getTempData().values().tag, "head_item"));
 		this.getTempData().values().tag.remove("head_item");

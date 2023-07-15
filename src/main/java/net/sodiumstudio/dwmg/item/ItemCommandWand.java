@@ -17,9 +17,10 @@ import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.item.ItemMobRespawner;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerInstance;
-import net.sodiumstudio.befriendmobs.registry.BefMobItems;
+import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.nautils.math.RndUtil;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class ItemCommandWand extends Item
 {
@@ -46,7 +47,7 @@ public class ItemCommandWand extends Item
 						((IDwmgBefriendedMob)e).setAIState(BefriendedAIState.FOLLOW, true);
 					else if (e instanceof ItemEntity ie)
 					{
-						if (ie.getItem().is(BefMobItems.MOB_RESPAWNER.get()))
+						if (ie.getItem().is(DwmgItems.MOB_RESPAWNER.get()))
 						{
 							MobRespawnerInstance mr = MobRespawnerInstance.create(ie.getItem());
 							if (mr != null && BefriendedHelper.getOwnerUUIDFromNbt(mr.getMobNbt()).equals(context.getPlayer().getUUID()))

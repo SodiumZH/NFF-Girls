@@ -48,7 +48,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
-import net.sodiumstudio.befriendmobs.registry.BefMobItems;
+import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.MiscUtil;
 import net.sodiumstudio.dwmg.Dwmg;
@@ -169,7 +169,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 		if (isSunImmune())
 		{
 			ItemStack head = this.getItemBySlot(EquipmentSlot.HEAD);
-			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BefMobItems.DUMMY_ITEM.get()));
+			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BMItems.DUMMY_ITEM.get()));
 			super.aiStep();
 			this.setItemSlot(EquipmentSlot.HEAD, head);
 			this.setInventoryFromMob();

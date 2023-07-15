@@ -20,7 +20,7 @@ import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
 import net.sodiumstudio.befriendmobs.events.BefriendableTimerUpEvent;
-import net.sodiumstudio.befriendmobs.registry.BefMobCapabilities;
+import net.sodiumstudio.befriendmobs.registry.BMCaps;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.Wrapped;
 import net.sodiumstudio.nautils.math.RndUtil;
@@ -41,7 +41,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 	public boolean additionalConditions(Player player, Mob mob)
 	{
 		Wrapped<Boolean> res = new Wrapped<Boolean>(false);
-		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> 
+		mob.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> 
 		{
 			res.set(!cap.hasTimer("final_explosion_fail_cooldown"));
 		});
@@ -52,7 +52,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 	public void serverTick(Mob mob)
 	{
 		CreeperGirlEntity cg = (CreeperGirlEntity)mob;
-		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+		mob.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 		{
 			if (l.getNbt().contains("final_explosion_player", 11)) 
 			{
@@ -102,7 +102,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 	
 	protected void finalExplosionStart(CreeperGirlEntity mob, Player player)
 	{
-		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+		mob.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 		{
 			l.getNbt().putUUID("final_explosion_player", player.getUUID());
 			l.getNbt().putInt("final_explosion_ticks_before", 80);
@@ -116,7 +116,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 	
 	protected void finalExplosionFailed(CreeperGirlEntity mob, Player player, boolean isQuiet)
 	{
-		mob.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+		mob.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 		{
 			if (l.getNbt().contains("final_explosion_player", 11) && l.getNbt().getUUID("final_explosion_player").equals(player.getUUID()))
 			{
@@ -150,7 +150,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 		{
 			if (event.getEntity() instanceof Player player)
 			{
-				cg.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+				cg.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 				{
 					if (l.getNbt().contains("final_explosion_player", 11)
 							&& cg.level.getPlayerByUUID(l.getNbt().getUUID("final_explosion_player")) == player)
@@ -162,7 +162,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 			}
 			else if (event.getEntity() instanceof IBefriendedMob bef)
 			{
-				cg.getCapability(BefMobCapabilities.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
+				cg.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).ifPresent((l) ->
 				{
 					if (l.getNbt().contains("final_explosion_player", 11) && bef.getOwner() != null
 							&& cg.level.getPlayerByUUID(l.getNbt().getUUID("final_explosion_player")) == bef.getOwner())
