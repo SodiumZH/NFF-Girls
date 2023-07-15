@@ -416,7 +416,7 @@ The base explosion power is 1. Each ATK point adds extra 0.1 to the power.
 
 **Befriending**
 
-Drop required items on the ground and it will try picking it up like Piglins. It will hold the item for a few seconds, consume it and increase the progress. The progress value is similar to item-giving process.
+Drop required items on the ground and it will try picking it up like Piglins. It will hold the item for a few seconds, consume it and increase the progress. The progress value mechanism is similar to item-giving process.
 
 Accepted items:
 
