@@ -2,6 +2,10 @@
 
 ## 1.19.2
 
+### 0.1.10
+
+Fixed Ender Executor generating angry particles on being attacked even if not in befriending process.
+
 ### 0.1.9
 
 WARNING: Due to item change, Mob Respawners in earlier versions may be incompatible to this version and above. They will possibly **VANISH** on updating to this version! Please make sure to have released all mobs from Respawners before updating!!

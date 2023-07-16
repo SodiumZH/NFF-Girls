@@ -185,7 +185,9 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 	@Override
 	public void interrupt(Player player, Mob mob, boolean isQuiet)
 	{
-		super.interrupt(player, mob, isQuiet);
+		if (this.getProgressValue(mob, player) < 0.001d)
+			super.interrupt(player, mob, true);
+		else super.interrupt(player, mob, isQuiet);
 		CompoundTag nbt = CBefriendableMob.getCapNbt(mob);
 		nbt.remove("player_uuid_on_befriending");
 		nbt.remove("no_attack_expire_time");
@@ -221,5 +223,4 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 			});
 		}
 	}
-	
 }
