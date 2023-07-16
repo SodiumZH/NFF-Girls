@@ -967,11 +967,11 @@ public class DwmgEntityEvents
 				if (bm.isOwnerPresent()) 
 				{
 					MiscUtil.printToScreen(
-							InfoHelper.createTrans("info.dwmg.interact_not_owning", bm.getOwner().getName()), event.getEntity());
+							InfoHelper.createTrans("info.dwmg.interact_not_owning", bm.getOwner().getName()), event.getPlayer());
 				} 
 				else 
 				{
-					MiscUtil.printToScreen(InfoHelper.createTrans("info.dwmg.interact_not_owning_unpresent"), event.getEntity());
+					MiscUtil.printToScreen(InfoHelper.createTrans("info.dwmg.interact_not_owning_unpresent"), event.getPlayer());
 				}
 			}			
 		}
