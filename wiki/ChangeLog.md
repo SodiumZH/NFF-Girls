@@ -4,6 +4,8 @@
 
 ### 0.1.10
 
+Added Mob Storage Pod.
+
 Fixed Ender Executor generating angry particles on being attacked even if not in befriending process.
 
 ### 0.1.9

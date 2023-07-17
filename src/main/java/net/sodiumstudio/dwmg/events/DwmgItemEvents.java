@@ -20,6 +20,7 @@ import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
 import net.sodiumstudio.befriendmobs.item.ItemMobRespawner;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerInstance;
@@ -47,31 +48,39 @@ public class DwmgItemEvents
 	{
 		CompoundTag mobNbt = event.getRespawner().getMobNbt();
 		
-		// Remove fire
-		mobNbt.putShort("Fire", (short) 0);
-		
-		// Update item name from mob name
-		if (mobNbt.contains("CustomName", NbtHelper.TAG_STRING_ID)
-				&& mobNbt.contains("dwmg:befriended_owner"))
+		// Only modify dwmg respawner types
+		String itemKey = null;
+		if (event.getRespawner().get().is(DwmgItems.MOB_RESPAWNER.get()))
+			itemKey = "item.dwmg.mob_respawner";
+		else if (event.getRespawner().get().is(DwmgItems.MOB_STORAGE_POD.get()))
+			itemKey = "item.dwmg.mob_storage_pod";
+		if (itemKey != null)
 		{
-			String name = Component.Serializer.fromJson(mobNbt.getString("CustomName")).getString();
-			MutableComponent nameComp = new TextComponent(name);
-			nameComp.setStyle(nameComp.getStyle().withItalic(true));
-			MutableComponent comp = 
-					new TranslatableComponent("item.befriendmobs.mob_respawner")
-					.append(" - ");
-			comp.setStyle(comp.getStyle().withItalic(false));
-			comp.append(nameComp);
-			event.getRespawner().get().setHoverName(comp);
-		}
-		else 
-		{
-			MutableComponent comp = 
-					new TranslatableComponent("item.befriendmobs.mob_respawner")
-					.append(" - ")
-					.append(event.getRespawner().getType().getDescription());
-			comp.setStyle(comp.getStyle().withItalic(false));
-			event.getRespawner().get().setHoverName(comp);
+			// Remove fire
+			mobNbt.putShort("Fire", (short) 0);
+			// Update item name from mob name
+			if (mobNbt.contains("CustomName", NbtHelper.TAG_STRING_ID)
+					&& mobNbt.contains("dwmg:befriended_owner"))
+			{
+				String name = Component.Serializer.fromJson(mobNbt.getString("CustomName")).getString();
+				MutableComponent nameComp = InfoHelper.createText(name);
+				nameComp.setStyle(nameComp.getStyle().withItalic(true));
+				MutableComponent comp = 
+						InfoHelper.createTrans(itemKey)
+						.append(" - ");
+				comp.setStyle(comp.getStyle().withItalic(false));
+				comp.append(nameComp);
+				event.getRespawner().get().setHoverName(comp);
+			}
+			else 
+			{
+				MutableComponent comp = 
+						InfoHelper.createTrans(itemKey)
+						.append(" - ")
+						.append(event.getRespawner().getType().getDescription());
+				comp.setStyle(comp.getStyle().withItalic(false));
+				event.getRespawner().get().setHoverName(comp);
+			}
 		}
 	}
 	
