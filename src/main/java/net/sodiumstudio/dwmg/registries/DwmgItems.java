@@ -16,6 +16,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.nautils.InfoHelper;
+import net.sodiumstudio.befriendmobs.item.ItemMobCatcher;
 import net.sodiumstudio.befriendmobs.item.ItemMobRespawner;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.DwmgTab;
@@ -136,7 +137,9 @@ public class DwmgItems {
 	public static final RegistryObject<Item> EVIL_MAGNET = ITEMS.register("evil_magnet", () -> new ItemEvilMagnet(new Item.Properties().tab(TAB).stacksTo(1)));
 			
 	// Misc
-	public static final RegistryObject<ItemMobRespawner> MOB_RESPAWNER = ITEMS.register("mob_respawner", () -> new ItemMobRespawner(new Item.Properties().tab(TAB)));
+	public static final RegistryObject<ItemMobRespawner> MOB_RESPAWNER = ITEMS.register("mob_respawner", () -> new ItemMobRespawner(new Item.Properties()).setRetainBefriendedMobInventory(false));
+	public static final RegistryObject<ItemMobRespawner> MOB_STORAGE_POD = ITEMS.register("mob_storage_pod", () -> new ItemMobRespawner(new Item.Properties()));
+	public static final RegistryObject<ItemMobCatcher> EMPTY_MOB_STORAGE_POD = ITEMS.register("empty_mob_storage_pod", () -> new ItemMobCatcher(new Item.Properties().tab(TAB), MOB_STORAGE_POD.get())); 
 	public static final RegistryObject<Item> TAB_ICON = ITEMS.register("tab_icon", ()->new Item(new Item.Properties()));
 	
 	/* Item register end */

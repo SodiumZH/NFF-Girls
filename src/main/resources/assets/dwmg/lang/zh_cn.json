@@ -29,6 +29,8 @@
   "item.dwmg.resistance_amulet_ii": "抵抗护符 II",
   
   "item.dwmg.mob_respawner": "重生刷怪蛋",
+  "item.dwmg.empty_mob_storage_pod": "生物收纳舱（空）",
+  "item.dwmg.mob_storage_pod": "生物收纳舱",
   
   "block.dwmg.soul_cake" : "灵魂蛋糕",
   "block.dwmg.soul_carpet" : "灵魂地毯",
@@ -58,6 +60,7 @@
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "你需要拥有死灵巫师的帽子或死灵巫师之杖以打开死灵收割者的道具栏。",
   "info.dwmg.interact_not_owning": "这个生物属于%1$s，你无法与之互动。",
   "info.dwmg.interact_not_owning_unpresent": "这个生物属于其他人，你无法与之互动。（拥有者目前不在世界中）",
+  "info.dwmg.necrotic_reaper_using_commanding_wand": "使用死灵巫师之杖以与死灵收割者互动。",
   "info.dwmg.gui_level": "等级",
   "info.dwmg.gui_exp": "经验",
   "info.dwmg.gui_favorability": "好感度",
