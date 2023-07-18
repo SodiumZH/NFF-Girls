@@ -194,6 +194,7 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 				if (newProc >= 1.0d)
 				{
 					mob.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+					EntityHelper.sendHeartParticlesToLivingDefault(mob);
 					befriend(player, mob);
 					return;
 				}

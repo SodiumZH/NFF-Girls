@@ -48,7 +48,8 @@ public class CompatEventHandlers
 			}
 		}
 	}
-	
+	/*	It apprears that this is no longer needed after commanding wand is added
+	@SuppressWarnings("unchecked")
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onEntityInteract_PriorityHigh(EntityInteract event)
 	{
@@ -61,7 +62,7 @@ public class CompatEventHandlers
 			if (isUsingFAAQuantumCatcherOnOwningMob(player, entity, hand))
 			{
 				Item qcItem = player.getItemInHand(hand).getItem();	// Here the item should be QuantumCatcherItem
-				InteractionResult result = (InteractionResult) ReflectHelper.forceInvokeRetVal(qcItem, qcItem.getClass() /* QuantumCatcherItem.class here */, "onEntityInteract", 
+				InteractionResult result = (InteractionResult) ReflectHelper.forceInvokeRetVal(qcItem, (Class<Item>) qcItem.getClass(), "onEntityInteract", 
 						ItemStack.class, Player.class, LivingEntity.class, InteractionHand.class, player.getItemInHand(hand), player, entity, hand);
 				if (result.consumesAction())
 				{
@@ -70,10 +71,9 @@ public class CompatEventHandlers
 			}		
 		}
 	}
-	
-	/**
-	 * Check if an interaction is player trying to use FAA quantum catcher to catch the owning BM
-	 */
+
+	// Check if an interaction is player trying to use FAA quantum catcher to catch the owning BM
+
 	public static boolean isUsingFAAQuantumCatcherOnOwningMob(Player player, Entity entity, InteractionHand hand)
 	{
 		return ForgeRegistries.ITEMS.getKey(player.getItemInHand(hand).getItem())
@@ -83,5 +83,5 @@ public class CompatEventHandlers
 				&& bm.getOwner() == player;
 	}
 	
-	
+	*/
 }
