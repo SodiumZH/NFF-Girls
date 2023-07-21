@@ -6,7 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.item.ItemMobRespawner;
+import net.sodiumstudio.befriendmobs.item.MobRespawnerItem;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.nautils.Wrapped;
 import net.sodiumstudio.nautils.annotation.DontCallManually;
@@ -111,7 +111,7 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleHolder
 	
 	// === IBefriendedMob interface
 	@Override
-	public default ItemMobRespawner getRespawnerType()
+	public default MobRespawnerItem getRespawnerType()
 	{
 		return DwmgItems.MOB_RESPAWNER.get();
 	}

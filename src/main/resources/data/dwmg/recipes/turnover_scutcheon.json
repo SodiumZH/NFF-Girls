@@ -1,0 +1,27 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	" E ",
+	"ENE",
+	" E "	
+	],
+	
+	"key":{ 
+	
+		"E":{
+		"item": "hmag:evil_crystal_fragment"
+		},
+		
+		"N":{ 
+		"item": "minecraft:name_tag"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "dwmg:turnover_scutcheon",
+		"count": 1
+	}
+}

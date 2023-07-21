@@ -2,7 +2,6 @@ package net.sodiumstudio.dwmg.events;
 
 import java.util.UUID;
 
-
 import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.nbt.CompoundTag;
@@ -18,19 +17,17 @@ import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
-import net.sodiumstudio.befriendmobs.item.ItemMobRespawner;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerInstance;
-import net.sodiumstudio.befriendmobs.item.MobRespawnerStartRespawnEvent;
-import net.sodiumstudio.befriendmobs.item.RespawnerConstructEvent;
+import net.sodiumstudio.befriendmobs.item.MobRespawnerItem;
 import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
-import net.sodiumstudio.nautils.InfoHelper;
-import net.sodiumstudio.nautils.NbtHelper;
+import net.sodiumstudio.befriendmobs.item.event.MobRespawnerStartRespawnEvent;
+import net.sodiumstudio.befriendmobs.item.event.RespawnerConstructEvent;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.item.IWithDuration;
-import net.sodiumstudio.dwmg.item.ItemEvilMagnet;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.nautils.InfoHelper;
+import net.sodiumstudio.nautils.NbtHelper;
 
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -86,7 +83,7 @@ public class DwmgItemEvents
 	@SubscribeEvent
 	public static void onItemEntityPickUp(EntityItemPickupEvent event)
 	{
-		if (event.getItem().getItem().getItem() instanceof ItemMobRespawner)
+		if (event.getItem().getItem().getItem() instanceof MobRespawnerItem)
 		{
 			MobRespawnerInstance ins = MobRespawnerInstance.create(event.getItem().getItem());
 				// If the mob isn't a dwmg befriended mob, it should not have this uuid
