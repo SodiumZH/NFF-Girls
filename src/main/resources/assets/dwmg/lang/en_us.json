@@ -31,6 +31,7 @@
   "item.dwmg.mob_respawner": "Mob Respawner",
   "item.dwmg.empty_mob_storage_pod": "Mob Storage Pod (Empty)",
   "item.dwmg.mob_storage_pod": "Mob Storage Pod",
+  "item.dwmg.turnover_scutcheon": "Turn-Over Scutcheon",
   
   "block.dwmg.soul_cake" : "Soul Cake",
   "block.dwmg.soul_carpet" : "Soul Carpet",
@@ -65,6 +66,9 @@
   "info.dwmg.gui_exp": "Exp",
   "info.dwmg.gui_favorability": "Favorability",
   "info.dwmg.item.duration": "Duration: %1$s / %2$s",
+  "info.dwmg.item.turnover_scutcheon_mob": "Mob: %1$s",
+  "info.dwmg.item.turnover_scutcheon_owner": "Previous Owner: %1$s",
+  "info.dwmg.item.turnover_scutcheon_locked": "Locked",
   "info.dwmg.bauble": "Bauble", 
   "info.dwmg.bauble.hpmax": "Max HP %1$s", 
   "info.dwmg.bauble.atk": "ATK %1$s",
