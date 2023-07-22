@@ -658,3 +658,8 @@ It can be repaired with Death Crystal Powder on Anvil. Each item repairs ~~16(0.
 
 An upgrade of Golden Fork (HMaG). Aside of general properties, Imps requires this item for locating Ancient Debris blocks.
 
+
+
+#### Mob Storage Pod (0.x.10)
+
+Right click the mob with this item to store the mob inside. This item is single-use.

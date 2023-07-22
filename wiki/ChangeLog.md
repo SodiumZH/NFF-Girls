@@ -6,7 +6,11 @@
 
 Added Mob Storage Pod.
 
+Fixed some AI adjustment not working.
+
 Fixed Ender Executor generating angry particles on being attacked even if not in befriending process.
+
+Fixed Kobold and Imp not generating heart particles on befriending.
 
 ### 0.1.9
 
