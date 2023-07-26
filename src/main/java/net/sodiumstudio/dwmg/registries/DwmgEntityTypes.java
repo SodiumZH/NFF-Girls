@@ -1,7 +1,9 @@
 package net.sodiumstudio.dwmg.registries;
 
 import com.github.mechalopa.hmag.HMaG;
+import com.github.mechalopa.hmag.world.entity.HarpyEntity;
 import com.github.mechalopa.hmag.world.entity.ImpEntity;
+import com.github.mechalopa.hmag.world.entity.SnowCanineEntity;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -14,6 +16,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.hmag.BefriendedHarpyEntity;
+import net.sodiumstudio.dwmg.entities.hmag.BefriendedSnowCanineEntity;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedBanshee;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedDrownedGirl;
@@ -181,6 +185,25 @@ public class DwmgEntityTypes {
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_imp").toString()));
 	
+	public static final RegistryObject<EntityType<BefriendedHarpyEntity>> HMAG_HARPY = 
+			ENTITY_TYPES.register("hmag_harpy", () -> EntityType.Builder
+			.of(BefriendedHarpyEntity::new, MobCategory.CREATURE)
+			.sized(0.6F, 1.95F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_harpy").toString()));
+	
+	public static final RegistryObject<EntityType<BefriendedSnowCanineEntity>> HMAG_SNOW_CANINE = 
+			ENTITY_TYPES.register("hmag_snow_canine", () -> EntityType.Builder
+			.of(BefriendedSnowCanineEntity::new, MobCategory.MONSTER)
+			.sized(0.6F, 1.95F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_snow_canine").toString()));
+	
 	@SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
         event.put(DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get(), EntityBefriendedZombieGirl.createAttributes().build());
@@ -197,6 +220,8 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.HMAG_BANSHEE.get(), EntityBefriendedBanshee.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_KOBOLD.get(), EntityBefriendedKobold.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_IMP.get(), EntityBefriendedImp.createAttributes().build());
+        event.put(DwmgEntityTypes.HMAG_HARPY.get(), BefriendedHarpyEntity.createAttributes().build());
+        event.put(DwmgEntityTypes.HMAG_SNOW_CANINE.get(), BefriendedSnowCanineEntity.createAttributes().build());
 	}
 	
 	// Projectiles

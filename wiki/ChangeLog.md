@@ -2,6 +2,16 @@
 
 ## 1.19.2
 
+### 0.1.11
+
+Added Transferring Tag. 
+
+Now befriended mobs are immune to sweeping attack of the owner.
+
+Fixed Mob Storage Pod being able to store all mobs. Now Mob Storage Pod can only store the user's own befriended mobs.
+
+Fixed Imp switching AI without Commanding Wand.
+
 ### 0.1.10
 
 Added Mob Storage Pod.
@@ -290,6 +300,30 @@ Rollbacked HMaG dependency to 6.1.0.
 Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.18.2
+
+### 0.0.10
+
+Added Mob Storage Pod.
+
+Fixed some AI adjustment not working.
+
+Fixed Ender Executor generating angry particles on being attacked even if not in befriending process.
+
+Fixed Kobold and Imp not generating heart particles on befriending.
+
+### 0.0.9
+
+WARNING: Due to item change, Mob Respawners in earlier versions may be incompatible to this version and above. They will possibly **VANISH** on updating to this version! Please make sure to have released all mobs from Respawners before updating!!
+
+Added Kobold and Imp support.
+
+Added weapon: Netherite Fork.
+
+Fixed Soul Amulet II not working.
+
+Fixed server crash on player taking damage when having Ender Protection effect.
+
+Fixed Ender Executors stop attacking unexpectedly.
 
 ### 0.0.8
 

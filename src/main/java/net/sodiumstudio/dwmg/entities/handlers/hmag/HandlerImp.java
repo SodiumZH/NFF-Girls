@@ -21,7 +21,7 @@ public class HandlerImp extends HandlerItemDropping
 			MapPair.of("hmag:lemon", () -> RndUtil.rndRangedDouble(0.03, 0.05)),
 			MapPair.of("hmag:golden_tropical_fish", () -> RndUtil.rndRangedDouble(0.08, 0.16)),			
 			MapPair.of("minecraft:gilded_blackstone", () -> RndUtil.rndRangedDouble(0.04, 0.07)),
-			MapPair.of("minecraft:enchanted_golden_apple", () -> RndUtil.rndRangedDouble(0.80, 1.40)));
+			MapPair.of("minecraft:enchanted_golden_apple", () -> RndUtil.rndRangedDouble(0.50, 1.00)));
 	}
 
 	@Override

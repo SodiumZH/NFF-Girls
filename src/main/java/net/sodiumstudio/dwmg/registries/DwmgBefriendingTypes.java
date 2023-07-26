@@ -11,12 +11,14 @@ import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerBanshee;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerCreeperGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerEnderExecutor;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerGhastlySeeker;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHarpy;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHornet;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHuskGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerImp;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerKobold;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNecroticReaper;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSkeletonGirl;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSnowCanine;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerWitherSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerZombieGirl;
 
@@ -83,6 +85,13 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.IMP.get(),
 				DwmgEntityTypes.HMAG_IMP.get(),
 				new HandlerImp());
+		/*BefriendingTypeRegistry.register(
+				ModEntityTypes.HARPY.get(),
+				DwmgEntityTypes.HMAG_HARPY.get(),
+				new HandlerHarpy());
+		BefriendingTypeRegistry.register(
+				ModEntityTypes.SNOW_CANINE.get(),
+				DwmgEntityTypes.HMAG_SNOW_CANINE.get(),
+				new HandlerSnowCanine());*/
 	}
-	
 }

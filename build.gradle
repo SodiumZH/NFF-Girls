@@ -26,7 +26,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 }*/
 
 
-version = '0.1.10'
+version = '0.1.11'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'dwmg-1.19.2'
 
@@ -208,7 +208,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:tf-227639:4389567")
 	//implementation fg.deobf("curse.maven:citadel-331936:4556677")
 	//implementation fg.deobf("curse.maven:am-426558:4159154")	
-	
+	//implementation fg.deobf("curse.maven:patchouli-306770:4031402")
 	
 }
 

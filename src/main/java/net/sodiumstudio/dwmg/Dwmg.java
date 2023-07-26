@@ -28,8 +28,8 @@ public class Dwmg
     private static final Logger LOGGER = LogUtils.getLogger();
     // Temporary BefriendMobAPI instance.
     // Will be removed after isolating BefriendMobAPI out as a library.
-    @SuppressWarnings("unused")
-	private static BefriendMobs TEMP_BM = new BefriendMobs();
+    //@SuppressWarnings("unused")
+	//private static BefriendMobs TEMP_BM = new BefriendMobs();
     
     public static void logInfo(String info)
     {
@@ -50,7 +50,7 @@ public class Dwmg
         MinecraftForge.EVENT_BUS.register(this);
         
         
-		//BefriendMobs.setDebugMode(true);
+		BefriendMobs.setDebugMode(true);
     }
     
     // You can use SubscribeEvent and let the Event Bus discover methods to call

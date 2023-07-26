@@ -133,7 +133,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IDwm
 				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
 					if (player.getItemInHand(hand).is(Items.SPONGE) && isFromHusk) {
-						ItemHelper.consumeOne(player.getItemInHand(hand));
+						player.getItemInHand(hand).shrink(1);
 						this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
 						this.convertToHusk();
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
