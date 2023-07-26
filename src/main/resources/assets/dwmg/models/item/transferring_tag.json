@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/generated",
 	"textures": {
-		"layer0": "dwmg:item/turnover_scutcheon"
+		"layer0": "dwmg:item/transferring_tag"
 	}
 }

@@ -25,7 +25,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
@@ -45,7 +44,6 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
@@ -60,6 +58,7 @@ import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -76,16 +75,6 @@ import net.sodiumstudio.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
 import net.sodiumstudio.befriendmobs.registry.BMCaps;
-import net.sodiumstudio.befriendmobs.registry.BMItems;
-import net.sodiumstudio.nautils.AiHelper;
-import net.sodiumstudio.nautils.EntityHelper;
-import net.sodiumstudio.nautils.InfoHelper;
-import net.sodiumstudio.nautils.MiscUtil;
-import net.sodiumstudio.nautils.NbtHelper;
-import net.sodiumstudio.nautils.ReflectHelper;
-import net.sodiumstudio.nautils.TagHelper;
-import net.sodiumstudio.nautils.Wrapped;
-import net.sodiumstudio.nautils.debug.Debug;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.effects.EffectNecromancerWither;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
@@ -93,14 +82,11 @@ import net.sodiumstudio.dwmg.entities.ai.goals.BefriendablePickItemGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendableWatchHandItemGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.GhastlySeekerRandomFlyGoalDwmgAdjusted;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedBanshee;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedDrownedGirl;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedEnderExecutor;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedGhastlySeeker;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHornet;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHuskGirl;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedNecroticReaper;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedStrayGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedWitherSkeletonGirl;
@@ -111,6 +97,14 @@ import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgDamageSources;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
+import net.sodiumstudio.nautils.AiHelper;
+import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.InfoHelper;
+import net.sodiumstudio.nautils.MiscUtil;
+import net.sodiumstudio.nautils.NbtHelper;
+import net.sodiumstudio.nautils.ReflectHelper;
+import net.sodiumstudio.nautils.TagHelper;
+import net.sodiumstudio.nautils.Wrapped;
 
 @SuppressWarnings("removal")
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -127,6 +121,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
+		@SuppressWarnings("deprecation")
 		LivingEntity target = event.getTarget();		
 		LivingEntity lastHurtBy = event.getEntityLiving().getLastHurtByMob();
 		Wrapped<Boolean> isCancelledByEffect = new Wrapped<Boolean>(Boolean.FALSE);
@@ -266,6 +261,16 @@ public class DwmgEntityEvents
 	}
 	
 	
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public static void onPlayerAttack_PriorityHighest(AttackEntityEvent event)
+	{
+		if (!event.getEntity().level.isClientSide)
+		{
+			event.getEntity().getCapability(BMCaps.CAP_BM_PLAYER).ifPresent(c -> {
+				c.getNbt().putUUID("directly_attacking", event.getTarget().getUUID());
+			});
+		}
+	}
 	
 	@SubscribeEvent
 	public static void onLivingHurt(LivingHurtEvent event) {
@@ -284,7 +289,28 @@ public class DwmgEntityEvents
 			if (event.getSource().getDirectEntity() != null && event.getSource().getDirectEntity() instanceof NecromancerMagicBulletEntity)
 			{
 				event.setCanceled(true);
+				return;
 			}
+			
+			// Cancel indirect player attack from owner e.g. sweeping
+			if (event.getEntity() instanceof IDwmgBefriendedMob bm
+					&& event.getSource().msgId.equals("player")
+					&& event.getSource().getEntity() != null
+					&& event.getSource().getEntity() instanceof Player player
+					&& bm.isOwnerPresent()
+					&& bm.getOwner() == player)
+			{
+				player.getCapability(BMCaps.CAP_BM_PLAYER).ifPresent(cap -> 
+				{
+					if (cap.getNbt().hasUUID("directly_attacking") 
+							&& !cap.getNbt().getUUID("directly_attacking").equals(bm.asMob().getUUID()))
+					{
+						event.setCanceled(true);
+						return;
+					}
+				});
+			}
+			
 			
 			/** Ender Protection Effect */
 			if (living.hasEffect(DwmgEffects.ENDER_PROTECTION.get()))
@@ -314,7 +340,8 @@ public class DwmgEntityEvents
 							if (living instanceof Player p)
 							{
 								MiscUtil.printToScreen(
-										"You're lifted from the void because of the Ender Protection, but...", p);
+										InfoHelper.createTrans("info.dwmg.ender_protection_lift_teleport_failed")
+										/*"You're lifted from the void because of the Ender Protection, but..."*/, p);
 							}
 							living.setDeltaMovement(new Vec3(0, 0, 0)); // Velocity
 							living.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200));
@@ -324,7 +351,8 @@ public class DwmgEntityEvents
 							// succeeded
 							if (living instanceof Player p)
 							{
-								MiscUtil.printToScreen("You're saved from the void because of the Ender Protection!", p);
+								MiscUtil.printToScreen(/*""*/
+										InfoHelper.createTrans("info.dwmg.ender_protection_lift"), p);
 							}
 						}
 					}
@@ -790,7 +818,7 @@ public class DwmgEntityEvents
 			if (event.getEntity() instanceof Mob mob && !(event.getEntity() instanceof IBefriendedMob))
 			{
 				/** Handle mob hostility */
-				Predicate<LivingEntity> none = (l) -> true;
+				//Predicate<LivingEntity> none = (l) -> true;
 				Predicate<LivingEntity> isNotWaiting = DwmgEntityHelper::isNotWaiting;
 				Predicate<LivingEntity> isNotWearingGold = DwmgEntityHelper::isNotWearingGold;
 				Predicate<LivingEntity> isUndead = (living -> living.getMobType() == MobType.UNDEAD);
@@ -976,5 +1004,16 @@ public class DwmgEntityEvents
 			}			
 		}
 			
+	}
+	
+	@SubscribeEvent
+	public static void onServerEntityFinalizeTick(ServerEntityTickEvent.PostWorldTick event)
+	{
+		if (event.getEntity() instanceof Player player)
+		{
+			player.getCapability(BMCaps.CAP_BM_PLAYER).ifPresent(c -> {
+				c.getNbt().remove("directly_attacking");
+			});
+		}
 	}
 }

@@ -177,6 +177,8 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 	@Override
 	public void serverTick(Mob mob)
 	{
+		if (CBefriendableMob.getCap(mob) == null)
+			return;
 		// Remove off-hand item when timer up, and update proc
 		if (!mob.getItemInHand(InteractionHand.OFF_HAND).isEmpty()
 				&& mob.getItemInHand(InteractionHand.OFF_HAND).getTag() != null
@@ -191,6 +193,7 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 						CBefriendableMob.getCapNbt(mob).getCompound("ongoing_players").getDouble(strUUID) : 0d;
 				double newProc = oldProc + getItemDeltaProc().get(mob.getItemInHand(InteractionHand.OFF_HAND).getItem()).get();
 				EntityHelper.sendGlintParticlesToLivingDefault(mob);
+				onConsumeItem(mob, mob.getItemInHand(InteractionHand.OFF_HAND), newProc - oldProc);
 				if (newProc >= 1.0d)
 				{
 					mob.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
@@ -238,10 +241,18 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 				}
 				if (toPick != null)
 				{
+					onPickUpItem(mob, toPick);
 					pickUpItem(mob, toPick);
 				}
 			}
 		}
 		CBefriendableMob.getCap(mob).setForcePersistent(!CBefriendableMob.getCapNbt(mob).getCompound("ongoing_players").isEmpty());
 	}
+	
+	/** Actions executed on mob picking up item. */
+	protected void onPickUpItem(Mob mob, ItemEntity item) {}
+	
+	/** Actions executed on mob consume an item. */
+	protected void onConsumeItem(Mob mob, ItemStack item, double deltaProc) {}
+	
  }

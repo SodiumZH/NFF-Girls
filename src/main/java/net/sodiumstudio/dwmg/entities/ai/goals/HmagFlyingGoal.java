@@ -349,7 +349,6 @@ public interface HmagFlyingGoal
 		
 		@Override
 		public void tick() {
-			AbstractFlyingMonsterEntity flyingentity = getFlying();
 			if (!mob.isOwnerPresent())
 				return;	// Prevent potential nullptr crash
 			goToOwnerPreset(moveSpeed);

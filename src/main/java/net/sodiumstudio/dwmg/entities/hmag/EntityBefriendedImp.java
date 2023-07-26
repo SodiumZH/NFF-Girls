@@ -52,6 +52,7 @@ import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuImp;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.TagHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
@@ -162,7 +163,7 @@ public class EntityBefriendedImp extends ImpEntity implements IDwmgBefriendedMob
 					else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
-					else if (hand == InteractionHand.MAIN_HAND)
+					else if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 					{
 						switchAIState();
 					}

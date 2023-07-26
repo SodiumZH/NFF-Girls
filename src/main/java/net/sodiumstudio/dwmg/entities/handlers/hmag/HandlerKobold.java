@@ -24,7 +24,7 @@ public class HandlerKobold extends HandlerItemDropping
 				MapPair.of("minecraft:iron_pickaxe", () -> RndUtil.rndRangedDouble(0.05, 0.07)),
 				MapPair.of("minecraft:gold_pickaxe", () -> RndUtil.rndRangedDouble(0.07, 0.10)),
 				MapPair.of("minecraft:diamond_pickaxe", () -> RndUtil.rndRangedDouble(0.12, 0.18)),
-				MapPair.of("minecraft:netherite_pickaxe", () -> RndUtil.rndRangedDouble(0.50, 1.01))
+				MapPair.of("minecraft:netherite_pickaxe", () -> RndUtil.rndRangedDouble(0.50, 1.00))
 				);
 	}
 

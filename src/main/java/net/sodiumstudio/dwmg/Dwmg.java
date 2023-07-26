@@ -26,8 +26,6 @@ public class Dwmg
     public static final String MOD_ID = "dwmg";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
-    // Temporary BefriendMobAPI instance.
-    // Will be removed after isolating BefriendMobAPI out as a library.
     
     public static void logInfo(String info)
     {
@@ -48,7 +46,7 @@ public class Dwmg
         MinecraftForge.EVENT_BUS.register(this);
         
         
-		//BefriendMobs.setDebugMode(true);
+		BefriendMobs.setDebugMode(true);
     }
     
     // You can use SubscribeEvent and let the Event Bus discover methods to call

@@ -35,8 +35,8 @@ public class BefriendedCreeperGirlExplosionAttackGoal extends BefriendedMeleeAtt
 	}
 
 	@Override
-	protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
-		if (distToEnemySqr < 9.0d && creeper.blowEnemyCooldown == 0)
+	protected void checkAndPerformAttack(LivingEntity enemy) {
+		if (mob.asMob().distanceToSqr(enemy) < 9.0d && creeper.blowEnemyCooldown == 0)
 		{
 			this.resetAttackCooldown();
 			creeper.setSwellDir(1);
