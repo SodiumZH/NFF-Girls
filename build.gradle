@@ -72,7 +72,7 @@ minecraft {
                 }
             }
         }
-
+		
         server {
             workingDirectory project.file('run')
 
@@ -190,6 +190,7 @@ dependencies {
 
 	implementation fg.deobf("net.sodiumstudio.befriendmobs:befriendmobs:${mc_version}-${bm_version}")
     implementation fg.deobf("curse.maven:hmag-537613:4526196")
+	implementation fg.deobf("curse.maven:gog4-228948:4525159")
 	implementation fg.deobf("curse.maven:gog4-228948:4525159")
 	implementation fg.deobf("curse.maven:tf-227639:4337390")
 	
