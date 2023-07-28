@@ -98,7 +98,7 @@ public class HandlerZombieGirl extends HandlerItemGivingProgress
 		}
 		default:
 		{
-			throw new RuntimeException("Illegal add neutral reason");
+			return 0;
 		}
 		}
 		
