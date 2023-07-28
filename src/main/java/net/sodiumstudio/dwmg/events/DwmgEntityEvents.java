@@ -15,6 +15,7 @@ import com.github.mechalopa.hmag.world.entity.KoboldEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -74,6 +75,7 @@ import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
 import net.sodiumstudio.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
+import net.sodiumstudio.befriendmobs.item.MobOwnershipTransfererItem;
 import net.sodiumstudio.befriendmobs.registry.BMCaps;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.effects.EffectNecromancerWither;
@@ -1018,7 +1020,9 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onEntityInteract(EntityInteract event)
 	{
-		if (event.getTarget() instanceof IDwmgBefriendedMob bm && event.getSide() == LogicalSide.SERVER)
+		if (event.getTarget() instanceof IDwmgBefriendedMob bm && event.getSide() == LogicalSide.SERVER 
+				&& event.getHand() == InteractionHand.MAIN_HAND && !event.getEntity().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()
+				&& !(event.getEntity().getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof MobOwnershipTransfererItem))
 		{
 			// Send msg if trying to interact other people's mob
 			if (!event.getEntity().getUUID().equals(bm.getOwnerUUID())) 

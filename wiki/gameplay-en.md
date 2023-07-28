@@ -665,3 +665,14 @@ An upgrade of Golden Fork (HMaG). Aside of general properties, Imps requires thi
 #### Mob Storage Pod (0.x.10)
 
 Right click the mob with this item to store the mob inside. This item is single-use.
+
+
+
+#### Transferring Tag (0.x.11)
+
+A single-use tool to transfer the mob's ownership. 
+
+For unwritten tag, right click to your own mob to write the tag. The written tag will display an enchanted label, and is locked by default. Right click to lock/unlock it. The locked tag cannot be applied or unlocked by other players so that you can store it safely.
+
+Give the unlocked written tag to the player you want transfer the ownership to, and the player can apply the tag again to the same mob to finally own it.
+

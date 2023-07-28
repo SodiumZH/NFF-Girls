@@ -73,7 +73,6 @@ minecraft {
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'dwmg'
-
            // property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
             
             /** For Alex support */
@@ -85,7 +84,7 @@ minecraft {
                 }
             }
         }
-
+		
         server {
             workingDirectory project.file('run')
 
