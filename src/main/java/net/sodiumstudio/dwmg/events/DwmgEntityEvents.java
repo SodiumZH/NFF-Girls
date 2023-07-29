@@ -45,6 +45,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
@@ -990,8 +991,8 @@ public class DwmgEntityEvents
 	public static void onEntityInteract(EntityInteract event)
 	{
 		if (event.getTarget() instanceof IDwmgBefriendedMob bm && event.getSide() == LogicalSide.SERVER 
-				&& event.getHand() == InteractionHand.MAIN_HAND && !event.getEntity().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()
-				&& !(event.getEntity().getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof MobOwnershipTransfererItem))
+				&& event.getHand() == InteractionHand.MAIN_HAND && !event.getEntityLiving().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()
+				&& !(event.getEntityLiving().getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof MobOwnershipTransfererItem))
 		{
 			// Send msg if trying to interact other people's mob
 			if (!event.getEntity().getUUID().equals(bm.getOwnerUUID())) 
