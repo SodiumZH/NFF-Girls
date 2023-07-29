@@ -17,6 +17,7 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedMoveGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedTargetGoal;
 import net.sodiumstudio.nautils.LevelHelper;
+import net.sodiumstudio.nautils.math.GeometryUtil;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.IBefriendedFollowOwner;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 
@@ -120,8 +121,8 @@ public interface HmagFlyingGoal
 
 			this.attackTime = Math.max(this.attackTime - 1, 0);
 			attacker.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
-			double d0 = attacker.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
-			double d1 = this.getAttackReachSqr(livingentity);
+			double d0 = GeometryUtil.getBoxSurfaceDistSqr(attacker.getBoundingBox(), livingentity.getBoundingBox());
+			double d1 = this.getAttackMaxSurfaceDistSqr(livingentity);
 
 			if (d0 <= d1 && this.attackTime <= 0)
 			{
@@ -155,9 +156,15 @@ public interface HmagFlyingGoal
 			}
 		}
 
+		@Deprecated
 		protected double getAttackReachSqr(LivingEntity attackTarget)
 		{
 			return getFlying().getBbWidth() * 2.0F * getFlying().getBbWidth() * 2.0F + attackTarget.getBbWidth();
+		}
+		
+		protected double getAttackMaxSurfaceDistSqr(LivingEntity target)
+		{
+			return 0.25d;
 		}
 	}
 
