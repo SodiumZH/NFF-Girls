@@ -85,13 +85,13 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.IMP.get(),
 				DwmgEntityTypes.HMAG_IMP.get(),
 				new HandlerImp());
-		/*BefriendingTypeRegistry.register(
+		BefriendingTypeRegistry.register(
 				ModEntityTypes.HARPY.get(),
 				DwmgEntityTypes.HMAG_HARPY.get(),
 				new HandlerHarpy());
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.SNOW_CANINE.get(),
 				DwmgEntityTypes.HMAG_SNOW_CANINE.get(),
-				new HandlerSnowCanine());*/
+				new HandlerSnowCanine());
 	}
 }

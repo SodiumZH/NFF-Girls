@@ -2,6 +2,12 @@
 
 ## 1.19.2
 
+### 0.1.11.1
+
+Added Harpy and Snow Canine support.
+
+Fixed flying mobs (like Hornets) cannot effectively hit targets.
+
 ### 0.1.11
 
 Added Transferring Tag. 
@@ -11,6 +17,8 @@ Now befriended mobs are immune to sweeping attack of the owner.
 Fixed Mob Storage Pod being able to store all mobs. Now Mob Storage Pod can only store the user's own befriended mobs.
 
 Fixed Imp switching AI without Commanding Wand.
+
+Fixed ground mobs like Zombie Girls cannot effectively hit flying mobs like Phantoms.
 
 ### 0.1.10
 
@@ -300,6 +308,10 @@ Rollbacked HMaG dependency to 6.1.0.
 Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.18.2
+
+### 0.0.11
+
+Identical to 1.19.2-0.1.11.
 
 ### 0.0.10
 

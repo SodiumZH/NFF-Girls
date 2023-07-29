@@ -4,9 +4,9 @@
 
 ### Current version: 
 
-#### 0.0.10 (1.18.2)
+#### 0.0.11 (1.18.2)
 
-#### 0.1.10 (1.19.2)
+#### 0.1.11.1 (1.19.2)
 
 
 
@@ -418,7 +418,7 @@ The base explosion power is 1. Each ATK point adds extra 0.1 to the power.
 
 **Befriending**
 
-Drop required items on the ground and it will try picking it up like Piglins. It will hold the item for a few seconds, consume it and increase the progress. The progress value mechanism is similar to item-giving process.
+Using Item-Dropping progress. Drop required items on the ground and it will try picking it up like Piglins. It will hold the item for a few seconds, consume it and increase the progress. The progress value mechanism is similar to item-giving process.
 
 Accepted items:
 
@@ -484,7 +484,7 @@ Accepted items:
 
 *Gilded Blackstone*: 0.04 - 0.07
 
-*Enchanted Golden Apple*: 0.80 - 1.40
+*Enchanted Golden Apple*: ~~0.80 - 1.40~~ 0.50-1.00 (0.x.11)
 
 ##### Interaction
 
@@ -495,6 +495,44 @@ Like Kobold, it can locate Ancient Debris. It required the mob to hold a Netheri
 It can be healed with Apple (5), Cookie (5), Pumpkin Pie (5), Lemon (10), Lemon Pie (20) and Golden Apple (to max).
 
 
+
+#### Harpy (HMaG) (0.x.11.1)
+
+##### Befriending
+
+Similar to Kobold.
+
+Accepted items:
+
+*Cooked Chicken/Rabbit/Mutton* : 0.04 - 0.06
+
+*Cooked Pork/Beef*: 0.05 - 0.07
+
+*Golden Tropical Fish*: 0.07 - 0.10
+
+*Cooked Ravager Meat* (1.19.2+ only) : 0.8 - 0.12
+
+*Golden Apple*: 0.12 - 0.16
+
+*Enchanted Golden Apple*: 0.40 - 0.70
+
+##### Interaction
+
+It has 4 baubles.
+
+It can be healed with Cookie (5), Cooked Chicken/Rabbit/Mutton (8), Cooked Beef/Porkchop (10) and Golden Apple (to max).
+
+
+
+#### Snow Canine (0.x.11.1)
+
+##### Befriending
+
+Identical to Harpy.
+
+##### Interaction
+
+Identical to Harpy.
 
 
 

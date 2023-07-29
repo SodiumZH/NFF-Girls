@@ -20,5 +20,20 @@ public class BefriendedLeapAtTargetGoal extends BefriendedLeapAtGoal
 		this.setTargetPos(target);
 		return super.checkCanUse();
 	}
+	
+	@Override
+	public void start()
+	{
+		
+		super.start();
+		this.leap();
+		this.mob.asMob().setAggressive(true);
+	}
 
+	@Override
+	public void stop()
+	{
+		super.stop();
+		this.mob.asMob().setAggressive(false);
+	}
 }
