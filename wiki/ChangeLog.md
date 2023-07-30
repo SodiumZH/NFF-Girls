@@ -2,11 +2,17 @@
 
 ## 1.19.2
 
-### 0.1.11.1
+### 0.1.12
 
 Added Harpy and Snow Canine support.
 
 Fixed flying mobs (like Hornets) cannot effectively hit targets.
+
+Fixed Slimes not damaging befriended mobs.
+
+Fixed player looting not working on befriended mobs.
+
+
 
 ### 0.1.11
 
