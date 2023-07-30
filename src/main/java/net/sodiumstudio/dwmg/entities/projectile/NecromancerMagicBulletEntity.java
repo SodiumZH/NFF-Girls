@@ -41,7 +41,7 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 	public NecromancerMagicBulletEntity(Level worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ)
 	{
 		super(worldIn, shooter, accelX, accelY, accelZ);
-		ReflectHelper.forceSet(this, Entity.class, "type", DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get());
+		ReflectHelper.forceSet(this, Entity.class, "f_19847_", DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get());	// Entity.type
 		this.setVariant(1);
 	}
 
@@ -49,7 +49,7 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 	public NecromancerMagicBulletEntity(Level worldIn, double x, double y, double z, double accelX, double accelY, double accelZ)
 	{
 		super(worldIn, x, y, z, accelX, accelY, accelZ);
-		ReflectHelper.forceSet(this, Entity.class, "type", DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get());
+		ReflectHelper.forceSet(this, Entity.class, "f_19847_", DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get());	// Entity.type
 		this.setVariant(1);
 	}
 

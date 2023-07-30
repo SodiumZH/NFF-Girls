@@ -74,10 +74,10 @@ public class DwmgEntityHelper
 		switch (slot.getType())
 		{
 		case HAND:
-			slotList = (NonNullList<ItemStack>) ReflectHelper.forceGet(mob, Mob.class, "handItems");
+			slotList = (NonNullList<ItemStack>) ReflectHelper.forceGet(mob, Mob.class, "f_21350_");	// Mob.handItems
 			break;
 		case ARMOR:
-			slotList = (NonNullList<ItemStack>) ReflectHelper.forceGet(mob, Mob.class, "armorItems");
+			slotList = (NonNullList<ItemStack>) ReflectHelper.forceGet(mob, Mob.class, "f_21351_");	// Mob.armorItems
 		}
 		if (slotList != null)
 			slotList.set(slot.getIndex(), item);

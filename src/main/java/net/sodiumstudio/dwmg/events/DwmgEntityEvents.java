@@ -659,7 +659,7 @@ public class DwmgEntityEvents
 		{
 		      if (!slime.isTiny() && slime.isEffectiveAi() && slime.getTarget() == event.thisMob.asMob()) 
 		      {
-		    	  ReflectHelper.forceInvoke(slime, Slime.class, "dealDamage", 
+		    	  ReflectHelper.forceInvoke(slime, Slime.class, "m_33637_", 	// Slime#dealDamage()
 		    			  LivingEntity.class, event.thisMob.asMob());
 		      }
 		}
@@ -719,7 +719,7 @@ public class DwmgEntityEvents
 		{
 			/** After this, vanilla will use LivingEntity#lastHurtByPlayerTime to check if it's killed by player
 			 * so force set this to make it drop player-kill loot */
-			ReflectHelper.forceSet(event.getEntity(), LivingEntity.class, "lastHurtByPlayerTime",  1);
+			ReflectHelper.forceSet(event.getEntity(), LivingEntity.class, "f_20889_",  1);	// LivingEntity.lastHurtByPlayerTime
 			/** For mobs with tag "use_fortune_as_looting", Fortune enchantment is applied in place of Looting */
 			if (TagHelper.hasTag(bm.asMob(), "dwmg:use_fortune_as_looting") && !bm.asMob().getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
 			{
