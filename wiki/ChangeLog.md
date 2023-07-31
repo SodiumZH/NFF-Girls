@@ -10,8 +10,6 @@ Fixed flying mobs (like Hornets) cannot effectively hit targets.
 
 Fixed Slimes not damaging befriended mobs.
 
-
-
 ### 0.1.11
 
 Added Transferring Tag. 
