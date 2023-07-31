@@ -10,8 +10,6 @@ Fixed flying mobs (like Hornets) cannot effectively hit targets.
 
 Fixed Slimes not damaging befriended mobs.
 
-Fixed player looting not working on befriended mobs.
-
 
 
 ### 0.1.11

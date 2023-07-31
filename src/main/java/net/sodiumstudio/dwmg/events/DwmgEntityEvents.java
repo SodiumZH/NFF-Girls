@@ -84,6 +84,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.BefriendablePickItemGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendableWatchHandItemGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.GhastlySeekerRandomFlyGoalDwmgAdjusted;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerItemDropping;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedDrownedGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedGhastlySeeker;
@@ -945,20 +946,23 @@ public class DwmgEntityEvents
 						}
 					}
 					// Kobolds and Imps picking up and being neutral
-					if (mob instanceof KoboldEntity || mob instanceof ImpEntity)
+					if (BefriendingTypeRegistry.getHandler(mob) instanceof HandlerItemDropping)
 					{
-						for (WrappedGoal wg: mob.targetSelector.getAvailableGoals())
+						if (mob instanceof KoboldEntity || mob instanceof ImpEntity)
 						{
-							// Neutral to players with progress > 0.7
-							if (wg.getGoal() instanceof NearestAttackableTargetGoal<?> tg)
+							for (WrappedGoal wg: mob.targetSelector.getAvailableGoals())
 							{
-								AiHelper.addAndTargetingCondition(tg, (le) -> 
-									!(CBefriendableMob.getCapNbt(mob).getCompound("ongoing_players").contains(le.getStringUUID(), NbtHelper.TAG_DOUBLE_ID)
-									&& CBefriendableMob.getCapNbt(mob).getCompound("ongoing_players").getDouble(le.getStringUUID()) > 0.7d));
+								// Neutral to players with progress > 0.7
+								if (wg.getGoal() instanceof NearestAttackableTargetGoal<?> tg)
+								{
+									AiHelper.addAndTargetingCondition(tg, (le) -> 
+										!(CBefriendableMob.getCapNbt(mob).getCompound("ongoing_players").contains(le.getStringUUID(), NbtHelper.TAG_DOUBLE_ID)
+										&& CBefriendableMob.getCapNbt(mob).getCompound("ongoing_players").getDouble(le.getStringUUID()) > 0.7d));
+								}
 							}
+							mob.goalSelector.addGoal(2, new BefriendableWatchHandItemGoal(mob));
+							mob.goalSelector.addGoal(4, new BefriendablePickItemGoal(mob));
 						}
-						mob.goalSelector.addGoal(2, new BefriendableWatchHandItemGoal(mob));
-						mob.goalSelector.addGoal(4, new BefriendablePickItemGoal(mob));
 					}
 				}
 			}

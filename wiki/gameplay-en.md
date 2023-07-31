@@ -496,11 +496,11 @@ It can be healed with Apple (5), Cookie (5), Pumpkin Pie (5), Lemon (10), Lemon 
 
 
 
-#### Harpy (HMaG) (0.x.11.1)
+#### Harpy (HMaG) (0.x.12)
 
 ##### Befriending
 
-Similar to Kobold.
+Similar to Kobold. While it accepts items, it will get Strength effect and the effect level increases by 1 each time it gets the progress value of 0.2.
 
 Accepted items:
 
@@ -510,7 +510,7 @@ Accepted items:
 
 *Golden Tropical Fish*: 0.07 - 0.10
 
-*Cooked Ravager Meat* (1.19.2+ only) : 0.8 - 0.12
+*Cooked Ravager Meat* (1.19.2+ only) : 0.08 - 0.12
 
 *Golden Apple*: 0.12 - 0.16
 
@@ -524,7 +524,7 @@ It can be healed with Cookie (5), Cooked Chicken/Rabbit/Mutton (8), Cooked Beef/
 
 
 
-#### Snow Canine (0.x.11.1)
+#### Snow Canine (0.x.12)
 
 ##### Befriending
 
