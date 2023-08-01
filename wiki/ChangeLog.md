@@ -311,6 +311,10 @@ Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.18.2
 
+### 0.0.12
+
+Identical to 1.19.2-0.1.12.
+
 ### 0.0.11
 
 Identical to 1.19.2-0.1.11.
