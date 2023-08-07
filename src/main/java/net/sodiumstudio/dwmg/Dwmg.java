@@ -18,6 +18,8 @@ import net.sodiumstudio.dwmg.registries.DwmgBlocks;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.registries.DwmgParticleTypes;
+import net.sodiumstudio.dwmg.registries.DwmgRecipes;
 
 @Mod(Dwmg.MOD_ID)
 public class Dwmg
@@ -45,12 +47,14 @@ public class Dwmg
         DwmgBlocks.BLOCKS.register(modEventBus);
         DwmgItems.ITEMS.register(modEventBus);
         DwmgEntityTypes.ENTITY_TYPES.register(modEventBus);
+        DwmgRecipes.RECIPES.register(modEventBus);
+        DwmgParticleTypes.PARTICLE_TYPES.register(modEventBus);
         
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         
         
-		//BefriendMobs.setDebugMode(true);
+		BefriendMobs.setDebugMode(true);
     }
     
     // You can use SubscribeEvent and let the Event Bus discover methods to call

@@ -25,7 +25,7 @@ public class HandlerHornet extends HandlerItemGivingProgress
 
 
 	@Override
-	protected double getProcValueToAdd(ItemStack item) {
+	protected double getProcValueToAdd(ItemStack item, Player player, Mob mob, double lastProc) {
 		if (item.is(Items.HONEY_BOTTLE))
 			return RndUtil.rndRangedDouble(0.04d, 0.08d);
 		else if (item.is(Items.HONEY_BLOCK))
@@ -34,9 +34,9 @@ public class HandlerHornet extends HandlerItemGivingProgress
 	}
 
 	@Override
-	public boolean isItemAcceptable(Item item) {
-		return item.equals(Items.HONEY_BOTTLE)
-				|| item.equals(Items.HONEY_BLOCK);
+	public boolean isItemAcceptable(ItemStack item) {
+		return item.is(Items.HONEY_BOTTLE)
+				|| item.is(Items.HONEY_BLOCK);
 	}
 
 	@Override

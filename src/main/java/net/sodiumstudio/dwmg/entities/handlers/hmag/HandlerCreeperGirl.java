@@ -197,7 +197,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 
 
 	@Override
-	protected double getProcValueToAdd(ItemStack item) {
+	protected double getProcValueToAdd(ItemStack item, Player player, Mob mob, double lastProc) {
 		double rnd = this.rnd.nextDouble();
 		if (item.is(ModItems.LIGHTNING_PARTICLE.get()))
 			return rnd < 0.1 ? 0.50 : (rnd < 0.4 ? 0.25 : 0.125);
@@ -214,10 +214,10 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 	}
 
 	@Override
-	public boolean isItemAcceptable(Item item) {
-		return item.equals(Items.GUNPOWDER)
-				|| item.equals(Items.TNT)
-				|| item.equals(ModItems.LIGHTNING_PARTICLE.get());
+	public boolean isItemAcceptable(ItemStack item) {
+		return item.is(Items.GUNPOWDER)
+				|| item.is(Items.TNT)
+				|| item.is(ModItems.LIGHTNING_PARTICLE.get());
 	}
 
 	@Override

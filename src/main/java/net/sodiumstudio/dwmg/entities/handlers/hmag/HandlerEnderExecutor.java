@@ -52,7 +52,7 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 	}
 	
 	@Override
-	protected double getProcValueToAdd(ItemStack item) {
+	protected double getProcValueToAdd(ItemStack item, Player player, Mob mob, double lastProc) {
 		if (item.is(Items.ENDER_EYE))
 			return RndUtil.rndRangedDouble(0.005d, 0.01d);
 		else if (item.is(ModItems.ENDER_PLASM.get()))
@@ -70,13 +70,10 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 	}
 
 	@Override
-	public boolean isItemAcceptable(Item item) {
-		Item[] items = {
-			Items.ENDER_EYE,
-			ModItems.ENDER_PLASM.get(),
-			DwmgItems.ENDER_PIE.get()
-		};
-		return MiscUtil.isIn(item, items, Items.AIR);
+	public boolean isItemAcceptable(ItemStack item) {
+		return item.is(Items.ENDER_EYE)
+			|| item.is(ModItems.ENDER_PLASM.get())
+			|| item.is(DwmgItems.ENDER_PIE.get());
 	}
 
 	@Override

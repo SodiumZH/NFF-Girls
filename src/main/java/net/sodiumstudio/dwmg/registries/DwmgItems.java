@@ -23,10 +23,14 @@ import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.DwmgTab;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleItem;
+import net.sodiumstudio.dwmg.item.DwmgRespawnerItem;
+import net.sodiumstudio.dwmg.item.EmptyMagicalGelBottleItem;
 import net.sodiumstudio.dwmg.item.ItemCommandWand;
 import net.sodiumstudio.dwmg.item.ItemEvilMagnet;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.item.ItemNecromancerWand;
+import net.sodiumstudio.dwmg.item.MagicalGelBallItem;
+import net.sodiumstudio.dwmg.item.MagicalGelBottleItem;
 import net.sodiumstudio.dwmg.item.TransferringTagItem;
 
 public class DwmgItems {
@@ -140,11 +144,14 @@ public class DwmgItems {
 	public static final RegistryObject<Item> EVIL_MAGNET = ITEMS.register("evil_magnet", () -> new ItemEvilMagnet(new Item.Properties().tab(TAB).stacksTo(1)));
 			
 	// Misc
-	public static final RegistryObject<MobRespawnerItem> MOB_RESPAWNER = ITEMS.register("mob_respawner", () -> new MobRespawnerItem(new Item.Properties()).setRetainBefriendedMobInventory(false));
-	public static final RegistryObject<MobRespawnerItem> MOB_STORAGE_POD = ITEMS.register("mob_storage_pod", () -> new MobRespawnerItem(new Item.Properties()));
+	public static final RegistryObject<MobRespawnerItem> MOB_RESPAWNER = ITEMS.register("mob_respawner", () -> new DwmgRespawnerItem(new Item.Properties()).setRetainBefriendedMobInventory(false));
+	public static final RegistryObject<MobRespawnerItem> MOB_STORAGE_POD = ITEMS.register("mob_storage_pod", () -> new DwmgRespawnerItem(new Item.Properties()));
 	public static final RegistryObject<MobCatcherItem> EMPTY_MOB_STORAGE_POD = ITEMS.register("empty_mob_storage_pod", () -> new MobCatcherItem(new Item.Properties().tab(TAB), MOB_STORAGE_POD.get()).canCatchCondition(
 			((m, p) -> (m instanceof IDwmgBefriendedMob bm && bm.getOwnerUUID().equals(p.getUUID())))));
 	public static final RegistryObject<TransferringTagItem> TRANSFERRING_TAG = ITEMS.register("transferring_tag", () -> new TransferringTagItem(new Item.Properties().tab(TAB)));
+	public static final RegistryObject<EmptyMagicalGelBottleItem> EMPTY_MAGICAL_GEL_BOTTLE = ITEMS.register("empty_magical_gel_bottle", () -> new EmptyMagicalGelBottleItem(new Item.Properties().tab(TAB)));
+	public static final RegistryObject<MagicalGelBottleItem> MAGICAL_GEL_BOTTLE = ITEMS.register("magical_gel_bottle", () -> new MagicalGelBottleItem(new Item.Properties()));
+	public static final RegistryObject<MagicalGelBallItem> MAGICAL_GEL_BALL = ITEMS.register("magical_gel_ball", () -> new MagicalGelBallItem(new Item.Properties().tab(TAB)));
 	public static final RegistryObject<Item> TAB_ICON = ITEMS.register("tab_icon", ()->new Item(new Item.Properties()));
 	
 	/* Item register end */

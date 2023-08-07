@@ -2,6 +2,22 @@
 
 ## 1.19.2
 
+### 0.1.13
+
+Added Slime Girl support.
+
+Added Magical Gel Bottle and Magical Gel Ball.
+
+Now befriending process will not be interrupted (progress returning zero) if player is attacked by the mob, or making a non-damaging attack (e.g. Snowball hit).
+
+Fixed Imp, Harpy and Snow Canine opening GUI without Commanding Wand.
+
+Fixed Snow Canine summonable.
+
+Fixed Harpy and Snow Canine missing translation.
+
+Fixed crash on Harpy and Snow Canine befriended.
+
 ### 0.1.12
 
 Added Harpy and Snow Canine support.

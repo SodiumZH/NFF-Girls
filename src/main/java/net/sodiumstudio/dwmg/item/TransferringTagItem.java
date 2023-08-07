@@ -20,14 +20,9 @@ public class TransferringTagItem extends MobOwnershipTransfererItem
 	public TransferringTagItem(Properties pProperties)
 	{
 		super(pProperties);
+		this.foilCondition(s -> this.isWritten(s));
 	}
 
-	@Override
-	public final boolean isFoil(ItemStack stack)
-	{
-		return this.isWritten(stack);
-	}
-	
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag)

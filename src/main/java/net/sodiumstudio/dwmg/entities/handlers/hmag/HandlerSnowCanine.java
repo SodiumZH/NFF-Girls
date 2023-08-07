@@ -51,6 +51,8 @@ public class HandlerSnowCanine extends HandlerItemDropping
 		if (CBefriendableMob.getCap(mob) == null)
 			return;
 		super.serverTick(mob);
+		if (CBefriendableMob.getCapNbt(mob) == null)
+			return;
 		if (CBefriendableMob.getCapNbt(mob).getDouble("strength") >= 1e-5d)
 			EntityHelper.addEffectSafe(mob, new MobEffectInstance(MobEffects.DAMAGE_BOOST, 10, (int)(CBefriendableMob.getCapNbt(mob).getDouble("strength") / 0.2)));
 		CBefriendableMob.getCapNbt(mob).put("strength", DoubleTag.valueOf(Math.max(CBefriendableMob.getCapNbt(mob).getDouble("strength") - 5e-5d, 0d)));	// decrease by 0.001 per second

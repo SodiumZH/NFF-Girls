@@ -2,6 +2,8 @@ package net.sodiumstudio.dwmg.entities.handlers.hmag;
 
 import com.github.mechalopa.hmag.registry.ModItems;
 
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.nautils.math.RndUtil;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -9,7 +11,7 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 public class HandlerHuskGirl extends HandlerZombieGirl
 {
 	@Override
-	protected double getProcValueToAdd(ItemStack item) {
+	protected double getProcValueToAdd(ItemStack item, Player player, Mob mob, double lastProc) {
 		double rnd = this.rnd.nextDouble();
 		if (item.is(DwmgItems.SOUL_CAKE_SLICE.get()))
 			return rnd < 0.01 ? 1.00d : (rnd < 0.05d ? 0.75d : (rnd < 0.2d ? 0.50d : 0.25d));

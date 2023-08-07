@@ -56,15 +56,15 @@ import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
 
-public class BefriendedSnowCanineEntity extends SnowCanineEntity implements IDwmgBefriendedMob
+public class HmagSnowCanineEntity extends SnowCanineEntity implements IDwmgBefriendedMob
 {
 
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(BefriendedSnowCanineEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagSnowCanineEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(BefriendedSnowCanineEntity.class, EntityDataSerializers.INT);
+			.defineId(HmagSnowCanineEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
@@ -85,7 +85,7 @@ public class BefriendedSnowCanineEntity extends SnowCanineEntity implements IDwm
 
 	/* Initialization */
 
-	public BefriendedSnowCanineEntity(EntityType<? extends BefriendedSnowCanineEntity> pEntityType, Level pLevel) {
+	public HmagSnowCanineEntity(EntityType<? extends HmagSnowCanineEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
@@ -181,8 +181,11 @@ public class BefriendedSnowCanineEntity extends SnowCanineEntity implements IDwm
 			else
 			{
 				// Open inventory and GUI
-				BefriendedHelper.openBefriendedInventory(player, this);
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
+				{
+					BefriendedHelper.openBefriendedInventory(player, this);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
+				}
 			}
 		} 
 		// Always pass when not owning this mob

@@ -181,7 +181,6 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 			// For interaction with shift key down
 			else
 			{
-		
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
