@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.SlimeGirlEntity;
 
 import net.minecraft.nbt.CompoundTag;
@@ -29,6 +30,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -143,7 +145,9 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 	public HashMap<Item, Float> getHealingItems()
 	{
 		HashMap<Item, Float> map = new HashMap<Item, Float>();
-		// map.put(YOUR_ITEM_TYPE, HEALING_HEALTH_VALUE);
+		map.put(Items.SLIME_BALL, 5f);
+		map.put(DwmgItems.MAGICAL_GEL_BALL.get(), 15f);
+		map.put(ModItems.CUBIC_NUCLEUS.get(), this.getMaxHealth());
 		return map;
 	}
 	

@@ -41,11 +41,11 @@ public class DwmgSubsystemEvents
 	}
 	
 	@SubscribeEvent
-	public static void onApplyHealingItem(CHealingHandler.ApplyHealingItemEvent event)
+	public static void onHealingItemSucceed(CHealingHandler.HealingSucceededEvent event)
 	{
 		if (event.living instanceof IDwmgBefriendedMob bm)
 		{
-			bm.getFavorability().addFavorability(event.healValue / 50);
+			bm.getFavorability().addFavorability(event.healedValue / 50);
 		}
 	}
 	

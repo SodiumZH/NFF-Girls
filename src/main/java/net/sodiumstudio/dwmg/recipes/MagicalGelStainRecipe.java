@@ -59,23 +59,22 @@ public class MagicalGelStainRecipe extends SimpleModificationRecipe
 	{
 		// 16 minecraft standard colors
 		// Vanilla / forge common items
-		putStandardColorStain("hmag:sharp_fang",  StandardColor.WHITE, 0.1);
-		putStandardColorStain("hmag:ogre_horn",  StandardColor.LIGHT_GRAY, 0.2);
-		putStandardColorStain("hmag:evil_crystal_fragment", StandardColor.GRAY, 0.1);
-		putStandardColorStain("hmag:evil_crystal", StandardColor.GRAY, 1);
-		putStandardColorStain("hmag:ancient_stone", StandardColor.BLACK, 0.1);
-		putStandardColorStain("hmag:crimson_cuticula", StandardColor.RED, 0.2);
-		putStandardColorStain("hmag:cureberry", StandardColor.RED, 0.1);
-		putStandardColorStain("hmag:kobold_leather", StandardColor.BLUE, 0.1);
-		putStandardColorStain("hmag:dyssomnia_skin", StandardColor.BLUE, 0.25);
-		putStandardColorStain("hmag:randomberry", StandardColor.PURPLE, 0.1);
-		putStandardColorStain("hmag:necrofiber", StandardColor.PURPLE, 0.1);
-		putStandardColorStain("hmag:lich_cloth", StandardColor.BROWN, 0.2);
-		putStandardColorStain("hmag:soul_apple", StandardColor.LIGHT_BLUE, 0.1);
-		putStandardColorStain("hmag:mysterious_petal", StandardColor.PINK, 0.1);
-		putStandardColorStain("hmag:cubic_nucleus", StandardColor.PINK, 0.1);
-		putStandardColorStain("hmag:ender_plasm", StandardColor.MAGENTA, 0.1);
-		putStandardColorStain("hmag:exp_berry", StandardColor.LIME, 0.1);
+		putStandardColorStain("hmag:sharp_fang",  StandardColor.WHITE, 0.5);
+		putStandardColorStain("hmag:ogre_horn",  StandardColor.LIGHT_GRAY, 1.0);
+		putStandardColorStain("hmag:evil_crystal_fragment", StandardColor.GRAY, 0.5);
+		putStandardColorStain("hmag:ancient_stone", StandardColor.BLACK, 0.5);
+		putStandardColorStain("hmag:crimson_cuticula", StandardColor.RED, 1.0);
+		putStandardColorStain("hmag:cureberry", StandardColor.RED, 1.0);
+		putStandardColorStain("hmag:kobold_leather", StandardColor.BLUE, 0.5);
+		putStandardColorStain("hmag:dyssomnia_skin", StandardColor.BLUE, 1.2);
+		putStandardColorStain("hmag:randomberry", StandardColor.PURPLE, 1.0);
+		putStandardColorStain("hmag:necrofiber", StandardColor.PURPLE, 0.5);
+		putStandardColorStain("hmag:lich_cloth", StandardColor.BROWN, 1.0);
+		putStandardColorStain("hmag:soul_apple", StandardColor.LIGHT_BLUE, 0.5);
+		putStandardColorStain("hmag:mysterious_petal", StandardColor.PINK, 0.5);
+		putStandardColorStain("hmag:cubic_nucleus", StandardColor.PINK, 0.5);
+		putStandardColorStain("hmag:ender_plasm", StandardColor.MAGENTA, 0.5);
+		putStandardColorStain("hmag:exp_berry", StandardColor.LIME, 1.0);
 		putStandardColorStain("hmag:burning_core", StandardColor.ORANGE, 0.5);
 	}
 	

@@ -10,6 +10,8 @@ Added Magical Gel Bottle and Magical Gel Ball.
 
 Now befriending process will not be interrupted (progress returning zero) if player is attacked by the mob, or making a non-damaging attack (e.g. Snowball hit).
 
+Now the favorability change on applying healing item depends on the actual healing amount instead of the expected amount.
+
 Fixed Imp, Harpy and Snow Canine opening GUI without Commanding Wand.
 
 Fixed Snow Canine summonable.
