@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
 import net.sodiumstudio.dwmg.item.MagicalGelColorUtils;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -88,12 +89,9 @@ public class MagicalGelBallEntity extends ThrowableItemProjectile
 			// Generate a tiny magical slime when hit a large vanilla slime or a slime girl
 			if (((living.getType() == EntityType.SLIME && ((Slime)living).getSize() >= 3)
 					|| living instanceof SlimeGirlEntity)
-					&& living.getRandom().nextDouble() < 0.2d)
+					&& living.getRandom().nextDouble() < 0.25d)
 			{
 	            MagicalSlimeEntity slime = ModEntityTypes.MAGICAL_SLIME.get().create(this.level);
-	            if (((Mob)living).isPersistenceRequired()) {
-	               slime.setPersistenceRequired();
-	            }
 	            slime.setSize(1, true);
 	            
 	            // For vanilla slime, the color is random
@@ -104,7 +102,15 @@ public class MagicalGelBallEntity extends ThrowableItemProjectile
 	            // For slime girl, the color is the complementary
 	            else if (living instanceof SlimeGirlEntity sg)
 	            {
-	            	LinearColor sgColorCompl = MagicalGelColorUtils.getSlimeColor(sg).getComplementary();
+	            	LinearColor sgColorCompl;
+	            	if (sg instanceof HmagSlimeGirlEntity bsg)
+	            	{
+	            		sgColorCompl = bsg.getColorLinear().getComplementary();
+	            	}
+	            	else
+	            	{
+	            		sgColorCompl = MagicalGelColorUtils.getSlimeColor(sg).getComplementary();
+	            	}
 	            	SlimeGirlEntity.ColorVariant v = MagicalGelColorUtils.closestVariant(sgColorCompl);
 	            	slime.setVariant(v.getId());
 	            }

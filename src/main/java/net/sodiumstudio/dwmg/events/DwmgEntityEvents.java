@@ -1022,6 +1022,7 @@ public class DwmgEntityEvents
 		{
 			player.getCapability(BMCaps.CAP_BM_PLAYER).ifPresent(c -> {
 				c.getNbt().remove("directly_attacking");
+				c.getNbt().remove("magical_gel_ball_no_use");
 			});
 		}
 	}

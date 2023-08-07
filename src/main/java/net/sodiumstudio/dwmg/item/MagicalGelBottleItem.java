@@ -222,7 +222,7 @@ public class MagicalGelBottleItem extends Item
 				}
 			}
 			// Blend vanilla slime
-			else if (living instanceof Slime sl && living.getType() == EntityType.SLIME)
+			/*else if (living instanceof Slime sl && living.getType() == EntityType.SLIME)
 			{
 				if (sl.isTiny())
 				{
@@ -240,12 +240,12 @@ public class MagicalGelBottleItem extends Item
 					mc.discard();
 					action = 1;
 				}
-			} 
+			} */
 			// Stain slime girl
 			else if (living instanceof HmagSlimeGirlEntity sg && sg.isOwnerPresent() && sg.getOwner() == player)
 			{
 				sg.stain(this.getColor(stack));
-				if (sg.getRandom().nextDouble() < 0.2d)
+				if (sg.getRandom().nextDouble() < 0.25d)
 					sg.spawnAtLocation(DwmgItems.MAGICAL_GEL_BALL.get());
 				action = 2;
 			}

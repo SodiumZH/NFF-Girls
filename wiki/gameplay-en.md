@@ -4,9 +4,9 @@
 
 ### Current version: 
 
-#### 0.0.11 (1.18.2)
+#### 0.0.12 (1.18.2)
 
-#### 0.1.11.1 (1.19.2)
+#### 0.1.13 (1.19.2)
 
 
 
@@ -40,15 +40,15 @@ Hornet
 
 Necrotic Reaper
 
-Banshee (0.0.5 / 0.1.5)
+Banshee
 
-Ghastly Seeker (0.0.6 / 0.1.6)
+Ghastly Seeker
 
-Kobold (0.0.9 / 0.1.9)
+Kobold (0.x.9)
 
-Imp (0.0.9 / 0.1.9)
+Imp (0.x.9)
 
-
+Harpy (0.x.12)
 
 ## General befriending methods
 
@@ -536,6 +536,30 @@ Identical to Harpy.
 
 
 
+#### Slime Girl (0.x.13)
+
+##### Befriending
+
+Give it magical gel using Magical Gel Bottles, or Magical Gel Balls.
+
+Less difference between Magical Gel Bottle color and Slime Girl color will provide more progress value each unit. For the definition of color difference, see Magical Gel Bottle. If the difference is less than 0.5, the progress will increase, otherwise it will decrease (not dropping below 0).
+
+When the progress increases, it will generate glint (green star) particles; when the progress decreases, it will generate angry particles. The particle amount depends on the absolute progress change, 1 - 40 for stars (difference 0.5 to 0) or 1 - 5 for angry particles (difference 0.5 to 1). 
+
+Tips: To estimate the color of a Slime Girl, you can hit it firstly with Magical Gel Balls to generate a tiny Magical Slime with the complementary color, and collect it with an Empty Magical Gel Bottle to visualize.
+
+For Magical Gel Balls, the progress addition is 0.02 ~ 0.05, and it has 25% chance to spawn a complementary-colored tiny Magical Slime as if hit by a thrown Magical Gel Ball.
+
+##### Interaction
+
+Use Magical Gel Bottle to change its color. For details see description of Magical Gel Bottle item.
+
+It has 4 Baubles.
+
+It can be healed with Slimeball(5), Magical Gel Ball (15, not spawning Magical Slime) and Cubic Nucleus(to max) .
+
+ 
+
 ## Foods
 
 ### Soul Cake
@@ -616,6 +640,12 @@ Lv. 1: Armor +4, Speed -10%, sun immunity for undead mobs
 
 Lv. 2: Armor +6, Speed -10%, sun immunity for undead mobs
 
+#### Amulet of Courage
+
+Lv. 1: ATK +4, Speed +20%, Proactively attacking hostile mobs
+
+Lv. 2: ATK +6, Speed +30%, Proactively attacking hostile mobs
+
 #### Fruit of Insomnia (HMaG)
 
 Max HP +60, ATK +8 (Only working at night, applying only once)
@@ -688,7 +718,7 @@ Each time used, the user will take a damage of 2.
 
 Durability: 64 ~~(accepting Unbreaking and Mending enchantment)(0.x.9)~~ Not accepting any enchantments.
 
-It will be unable to use if leaving only 1 durability, preventing it from breaking. 
+It will be unable to use if leaving 0 durability, preventing it from breaking. 
 
 It can be repaired with Death Crystal Powder on Anvil. Each item repairs ~~16(0.x.9)~~ 32 durability.
 
@@ -696,7 +726,7 @@ It can be repaired with Death Crystal Powder on Anvil. Each item repairs ~~16(0.
 
 #### Netherite Fork (0.x.9)
 
-An upgrade of Golden Fork (HMaG). Aside of general properties, Imps requires this item for locating Ancient Debris blocks.
+An upgrade of Golden Fork (HMaG). Aside of general properties, Imps require this item for locating Ancient Debris blocks.
 
 
 
@@ -713,4 +743,93 @@ A single-use tool to transfer the mob's ownership.
 For unwritten tag, right click to your own mob to write the tag. The written tag will display an enchanted label, and is locked by default. Right click to lock/unlock it. The locked tag cannot be applied or unlocked by other players so that you can store it safely.
 
 Give the unlocked written tag to the player you want transfer the ownership to, and the player can apply the tag again to the same mob to finally own it.
+
+
+
+#### Magical Gel Ball (0.x.13)
+
+A throwable item.
+
+If a thrown Magical Gel Ball hits a large Vanilla Slime, it has a chance of 25% to generate a tiny Magical Slime with random color.
+
+If it hits a Slime Girl (HMaG, befriended or not), it has a chance of 25% to generate a tiny Magical Slime with the Slime Girl's complementary color. For example, a red Slime Girl will generate a cyan Magical Slime. (Since Magical Slimes and non-befriended Slime Girls has only 32 fixed colors, the real color is probably not absolutely identical to the calculated complementary color.)
+
+If it hits non-slime mobs, it will make a non-damaging knockback like the Snow Ball, and give Slowness II effect of 30 s.
+
+
+
+#### Magical Gel Bottle (0.x.13)
+
+An item for befriending Slime Girls and change befriended Slime Girls' colors.
+
+##### Collecting
+
+Right click tiny Magical Slimes with it to collect it as Magical Gel. After collecting, the content of the bottle will increase by 1, and the color of the Magical Slime will be blended into the previous color. 
+
+The maximum content of each bottle is 6. If you're collecting with a full bottle, the extra gel unit will drop as a Magical Gel Ball after blending. 
+
+##### Coloring
+
+Besides blending more Magical Slimes, you can also change the gel color by crafting with HMaG ingredients. In this case, the bottle content will not change. (For accepted ingredients as dyes, see table below.)
+
+##### Usage
+
+Right click your befriended Slime Girl to change its color. Each unit of Magical Gel used, the gel color will be blended with previous color with the proportion ratio of 1 : 4, and it has a chance of 25% to drop an extra Magical Gel Ball.
+
+Craft with a Slimeball to transfer it to Magical Gel Ball, consuming 1 unit of bottle content.
+
+Craft with an Empty Magical Gel Bottle to separate the content into 2 bottles.
+
+##### Numerical Formulas
+
+Collecting Magical Slime:
+$$
+newColor = (oldColor * content + slimeColor)/(content + 1)
+$$
+Staining with items on Crafting Table:
+$$
+newColor = (oldColor * content + dyeColor * strength)/(content + strength)
+$$
+Color difference is defined as the normalized straight-line distance in the RGB space:
+$$
+difference = sqrt[(R1-R2)^2+(G1-G2)^2+(B1-B2)^2] /sqrt(3*255^2)
+$$
+
+##### Dye Properties
+
+Item						Color					Strength
+
+Sharp Fang			White					0.5
+
+Ogre Horn			  Light Gray			1.0
+
+Evil Crystal Fragment	Gray 			0.5
+
+Ancient Stone		Black					 0.5
+
+Crimson Cuticula	Red					 1.0
+
+Cureberry				Red					  1.0
+
+Kobold Leather		Blue					0.5
+
+Dyssomnia Skin		Blue					1.2
+
+Randomberry			Purple				1.0
+
+Necrofiber				Purple				 0.5
+
+Lich Cloth					Brown			  1.0
+
+Soul Apple				Light Blue			0.5
+
+Mysterious Petal		Pink					0.5
+
+Cubic Nucleus			Pink					0.5
+
+Ender Plasm				Magenta			0.5
+
+Exp Berry					Lime					1.0
+
+Burning Core			Orange				0.5
 

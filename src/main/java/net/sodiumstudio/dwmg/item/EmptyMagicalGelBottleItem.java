@@ -40,7 +40,7 @@ public class EmptyMagicalGelBottleItem extends Item
 					ms.discard();
 				}
 			}
-			else if (living instanceof Slime sl && living.getType() == EntityType.SLIME)
+		/*	else if (living instanceof Slime sl && living.getType() == EntityType.SLIME)
 			{
 				if (sl.isTiny())
 				{
@@ -55,7 +55,7 @@ public class EmptyMagicalGelBottleItem extends Item
 					color = Optional.of(MagicalGelBottleItem.MAGMA_CUBE_COLOR);
 					mc.discard();
 				}
-			} 			
+			} 			*/
 			if (color.isPresent())
 			{
 				stack.shrink(1);
