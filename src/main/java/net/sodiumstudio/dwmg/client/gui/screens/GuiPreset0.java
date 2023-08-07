@@ -76,24 +76,48 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	
 	public void addFavorabilityAndLevelInfo(PoseStack poseStack, IntVec2 position, int color, int textRowWidth)
 	{
+		font.draw(poseStack, getDefaultLevelInfo(), position.x, position.y, color);
+		position.addY(textRowWidth);
+		font.draw(poseStack, getDefaultExpInfo(), position.x, position.y, color);
+		position.addY(textRowWidth);
+		font.draw(poseStack, getDefaultFavInfo(), position.x, position.y, color);
+	}
+	
+	protected MutableComponent getDefaultLevelAndExpInfo()
+	{
 		IDwmgBefriendedMob bm = (IDwmgBefriendedMob)mob;		
 		String lv = Integer.toString(bm.getLevelHandler().getExpectedLevel());
 		String exp = Long.toString(bm.getLevelHandler().getExpInThisLevel());
 		String expup = Long.toString(bm.getLevelHandler().getRequiredExpInThisLevel());
+		return InfoHelper.builder().putTrans("info.dwmg.gui_level_and_exp")
+				.putText(": " + lv + " (" + exp + " / " + expup + ")").build();
+	}
+	
+	protected MutableComponent getDefaultLevelInfo()
+	{
+		IDwmgBefriendedMob bm = (IDwmgBefriendedMob)mob;		
+		String lv = Integer.toString(bm.getLevelHandler().getExpectedLevel());
+		return InfoHelper.createTrans("info.dwmg.gui_level")
+				.append(InfoHelper.createText(": " + lv));	
+	}
+	
+	protected MutableComponent getDefaultExpInfo()
+	{
+		IDwmgBefriendedMob bm = (IDwmgBefriendedMob)mob;
+		String exp = Long.toString(bm.getLevelHandler().getExpInThisLevel());
+		String expup = Long.toString(bm.getLevelHandler().getRequiredExpInThisLevel());
+		return InfoHelper.createTrans("info.dwmg.gui_exp")
+				.append(InfoHelper.createText(": " + exp + " / " + expup));
+		
+	}
+	
+	protected MutableComponent getDefaultFavInfo()
+	{
+		IDwmgBefriendedMob bm = (IDwmgBefriendedMob)mob;	
 		String fav = Integer.toString(Mth.floor(bm.getFavorability().getFavorability()));
 		String favmax = Integer.toString(Mth.floor(bm.getFavorability().getMaxFavorability()));
-		
-		MutableComponent lvcomp = InfoHelper.createTrans("info.dwmg.gui_level")
-				.append(InfoHelper.createText(": " + lv));	
-		MutableComponent expcomp = InfoHelper.createTrans("info.dwmg.gui_exp")
-				.append(InfoHelper.createText(": " + exp + " / " + expup));
-		MutableComponent favcomp = InfoHelper.createTrans("info.dwmg.gui_favorability")
+		return InfoHelper.createTrans("info.dwmg.gui_favorability")
 				.append(InfoHelper.createText(": " + fav + " / " + favmax));
-		font.draw(poseStack, lvcomp, position.x, position.y, color);
-		position.addY(textRowWidth);
-		font.draw(poseStack, expcomp, position.x, position.y, color);
-		position.addY(textRowWidth);
-		font.draw(poseStack, favcomp, position.x, position.y, color);
 	}
 	
 	@Override

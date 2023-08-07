@@ -4,9 +4,13 @@ import java.util.List;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.world.SleepFinishedTimeEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent.LevelTickEvent;
+import net.minecraftforge.event.level.SleepFinishedTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.dwmg.Dwmg;
@@ -39,5 +43,16 @@ public class DwmgLevelEvents
 		}
 	}
 	
-
+	@SubscribeEvent
+	public static void onLevelEndTick(LevelTickEvent event)
+	{
+	/*	if (event.phase == TickEvent.Phase.END && event.level instanceof ServerLevel sl)
+		{
+			for (Entity e: sl.getAllEntities())
+			{
+				if (e instanceof Mob mob && mob.isDeadOrDying())
+					e.discard();
+			}
+		}*/
+	}
 }

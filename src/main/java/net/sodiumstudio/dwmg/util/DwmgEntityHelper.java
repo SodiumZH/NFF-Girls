@@ -17,6 +17,7 @@ import net.minecraft.world.item.Tiers;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.nautils.ReflectHelper;
+import net.sodiumstudio.nautils.TagHelper;
 
 public class DwmgEntityHelper
 {
@@ -36,27 +37,19 @@ public class DwmgEntityHelper
 	 */
 	public static boolean isNotWearingGold(LivingEntity living)
 	{
-		Item[] golds = {Items.GOLD_BLOCK, Items.GOLD_INGOT, Items.GOLD_NUGGET, ModItems.GOLDEN_FORK.get()};
 		for (EquipmentSlot slot: EquipmentSlot.values())
 		{
-			Item item = living.getItemBySlot(slot).getItem();
-			if (item instanceof ArmorItem armor)
+			if (TagHelper.hasTag(living.getItemBySlot(slot).getItem(), "minecraft:piglin_loved"))
 			{
-				if (armor.getMaterial().equals(ArmorMaterials.GOLD))
-					return false;
-			}
-			else if (item instanceof TieredItem tiered)
-			{
-				if (tiered.getTier() == Tiers.GOLD)
-					return false;
-			}
-			else for (int i = 0; i < golds.length; ++i)
-			{
-				if (item == golds[i])
-					return false;
+				return false;
 			}
 		}
 		return true;
+	}
+	
+	public static boolean isWearingGold(LivingEntity living)
+	{
+		return !isNotWearingGold(living);
 	}
 	
 	public static boolean isOnEitherHand(LivingEntity living, Item item)

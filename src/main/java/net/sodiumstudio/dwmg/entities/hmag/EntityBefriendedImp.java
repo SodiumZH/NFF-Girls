@@ -177,8 +177,11 @@ public class EntityBefriendedImp extends ImpEntity implements IDwmgBefriendedMob
 			else
 			{
 				// Open inventory and GUI
-				BefriendedHelper.openBefriendedInventory(player, this);
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
+				{
+					BefriendedHelper.openBefriendedInventory(player, this);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
+				}
 			}
 		} 
 		// Always pass when not owning this mob

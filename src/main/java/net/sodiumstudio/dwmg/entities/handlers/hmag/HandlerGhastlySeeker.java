@@ -29,7 +29,7 @@ public class HandlerGhastlySeeker extends HandlerSkeletonGirl
 	}
 	
 	@Override
-	protected double getProcValueToAdd(ItemStack item) {
+	protected double getProcValueToAdd(ItemStack item, Player player, Mob mob, double lastProc) {
 		double rnd = this.rnd.nextDouble();
 		if (item.is(DwmgItems.SOUL_CAKE_SLICE.get()))
 			return rnd < 0.01 ? 1.d : (rnd < 0.05d ? 0.75d : (rnd < 0.2d ? 0.50d : 0.25d));

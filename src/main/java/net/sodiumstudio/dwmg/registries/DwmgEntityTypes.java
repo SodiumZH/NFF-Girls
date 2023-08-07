@@ -3,6 +3,7 @@ package net.sodiumstudio.dwmg.registries;
 import com.github.mechalopa.hmag.HMaG;
 import com.github.mechalopa.hmag.world.entity.HarpyEntity;
 import com.github.mechalopa.hmag.world.entity.ImpEntity;
+import com.github.mechalopa.hmag.world.entity.SlimeGirlEntity;
 import com.github.mechalopa.hmag.world.entity.SnowCanineEntity;
 
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +18,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.hmag.BefriendedHarpyEntity;
-import net.sodiumstudio.dwmg.entities.hmag.BefriendedSnowCanineEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagSnowCanineEntity;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedBanshee;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedDrownedGirl;
@@ -33,6 +35,7 @@ import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedStrayGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedWitherSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedZombieGirl;
 import net.sodiumstudio.dwmg.entities.projectile.BefriendedGhastFireball;
+import net.sodiumstudio.dwmg.entities.projectile.MagicalGelBallEntity;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -195,14 +198,25 @@ public class DwmgEntityTypes {
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_harpy").toString()));
 	
-	public static final RegistryObject<EntityType<BefriendedSnowCanineEntity>> HMAG_SNOW_CANINE = 
+	public static final RegistryObject<EntityType<HmagSnowCanineEntity>> HMAG_SNOW_CANINE = 
 			ENTITY_TYPES.register("hmag_snow_canine", () -> EntityType.Builder
-			.of(BefriendedSnowCanineEntity::new, MobCategory.MONSTER)
+			.of(HmagSnowCanineEntity::new, MobCategory.CREATURE)
 			.sized(0.6F, 1.95F)
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_snow_canine").toString()));
+	
+	public static final RegistryObject<EntityType<HmagSlimeGirlEntity>> HMAG_SLIME_GIRL = 
+			ENTITY_TYPES.register("hmag_slime_girl", () -> EntityType.Builder
+			.of(HmagSlimeGirlEntity::new, MobCategory.CREATURE)
+			.sized(0.6F, 1.95F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_slime_girl").toString()));
 	
 	@SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
@@ -221,7 +235,8 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.HMAG_KOBOLD.get(), EntityBefriendedKobold.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_IMP.get(), EntityBefriendedImp.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_HARPY.get(), BefriendedHarpyEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_SNOW_CANINE.get(), BefriendedSnowCanineEntity.createAttributes().build());
+        event.put(DwmgEntityTypes.HMAG_SNOW_CANINE.get(), HmagSnowCanineEntity.createAttributes().build());
+        event.put(DwmgEntityTypes.HMAG_SLIME_GIRL.get(), HmagSlimeGirlEntity.createAttributes().build());
 	}
 	
 	// Projectiles
@@ -244,4 +259,12 @@ public class DwmgEntityTypes {
 			.updateInterval(10)
 			.build(new ResourceLocation(Dwmg.MOD_ID, "befriended_ghast_fireball").toString()));
 
+	public static final RegistryObject<EntityType<MagicalGelBallEntity>> MAGICAL_GEL_BALL = 
+			ENTITY_TYPES.register("magical_gel_ball", () -> EntityType.Builder
+			.<MagicalGelBallEntity>of(MagicalGelBallEntity::new, MobCategory.MISC)
+			.sized(0.25F, 0.25F)		
+			.clientTrackingRange(4)
+			.updateInterval(10)
+			.build(new ResourceLocation(Dwmg.MOD_ID, "magical_gel_ball").toString()));
+	
 }

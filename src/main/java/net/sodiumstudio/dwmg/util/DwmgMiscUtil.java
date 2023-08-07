@@ -2,6 +2,8 @@ package net.sodiumstudio.dwmg.util;
 
 import java.util.function.Supplier;
 
+import net.sodiumstudio.nautils.ReflectHelper;
+
 public class DwmgMiscUtil
 {
 	/** Try an action with boolean result for given times. Once the action returns true, it will break and return true. 
@@ -18,5 +20,6 @@ public class DwmgMiscUtil
 		}
 		return false;
 	}
+
 	
 }

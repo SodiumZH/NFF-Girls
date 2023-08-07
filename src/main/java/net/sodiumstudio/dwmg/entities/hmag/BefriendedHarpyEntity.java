@@ -16,6 +16,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -30,6 +31,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
@@ -99,6 +101,15 @@ public class BefriendedHarpyEntity extends HarpyEntity implements IDwmgBefriende
 				.add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.5D);				
 	}
 
+	@Override
+	public void onInit(UUID playerUUID, Mob from)
+	{
+		if (from instanceof HarpyEntity he)
+		{
+			this.setVariant(he.getVariant());
+		}
+	}
+	
 	/* AI */
 
 	@Override
@@ -178,8 +189,11 @@ public class BefriendedHarpyEntity extends HarpyEntity implements IDwmgBefriende
 			else
 			{
 				// Open inventory and GUI
-				BefriendedHelper.openBefriendedInventory(player, this);
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
+				{
+					BefriendedHelper.openBefriendedInventory(player, this);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
+				}
 			}
 		} 
 		// Always pass when not owning this mob

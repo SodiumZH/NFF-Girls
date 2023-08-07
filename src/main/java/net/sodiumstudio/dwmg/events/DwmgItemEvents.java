@@ -53,31 +53,7 @@ public class DwmgItemEvents
 			itemKey = "item.dwmg.mob_storage_pod";
 		if (itemKey != null)
 		{
-			// Remove fire
 			mobNbt.putShort("Fire", (short) 0);
-			// Update item name from mob name
-			if (mobNbt.contains("CustomName", NbtHelper.TAG_STRING_ID)
-					&& mobNbt.contains("dwmg:befriended_owner"))
-			{
-				String name = Component.Serializer.fromJson(mobNbt.getString("CustomName")).getString();
-				MutableComponent nameComp = InfoHelper.createText(name);
-				nameComp.setStyle(nameComp.getStyle().withItalic(true));
-				MutableComponent comp = 
-						InfoHelper.createTrans(itemKey)
-						.append(" - ");
-				comp.setStyle(comp.getStyle().withItalic(false));
-				comp.append(nameComp);
-				event.getRespawner().get().setHoverName(comp);
-			}
-			else 
-			{
-				MutableComponent comp = 
-						InfoHelper.createTrans(itemKey)
-						.append(" - ")
-						.append(event.getRespawner().getType().getDescription());
-				comp.setStyle(comp.getStyle().withItalic(false));
-				event.getRespawner().get().setHoverName(comp);
-			}
 		}
 	}
 	

@@ -20,7 +20,7 @@ public class HandlerZombieGirl extends HandlerItemGivingProgress
 {
 
 	@Override
-	protected double getProcValueToAdd(ItemStack item) {
+	protected double getProcValueToAdd(ItemStack item, Player player, Mob mob, double lastProc) {
 		double rnd = this.rnd.nextDouble();
 		if (item.is(DwmgItems.SOUL_CAKE_SLICE.get()))
 			return rnd < 0.05 ? 1.0d : (rnd < 0.2d ? 0.666667d : 0.333334d);
@@ -38,31 +38,28 @@ public class HandlerZombieGirl extends HandlerItemGivingProgress
 	}
 
 	@Override
-	public boolean isItemAcceptable(Item item) {
-		Item[] items = {
-				DwmgItems.SOUL_CAKE_SLICE.get(),
-				ModItems.SOUL_POWDER.get(),
-				ModItems.SOUL_APPLE.get()
-				};
-		return MiscUtil.isIn(item, items, Items.AIR);
+	public boolean isItemAcceptable(ItemStack item) {
+		return item.is(DwmgItems.SOUL_CAKE_SLICE.get())
+				|| item.is(ModItems.SOUL_POWDER.get())
+				|| item.is(ModItems.SOUL_APPLE.get());
 	}
 
 	@Override
 	public int getItemGivingCooldownTicks() {
-		// TODO Auto-generated method stub
 		return 200;
 	}
 	
 	@Override
 	public void onAttackProcessingPlayer(Mob mob, Player player, boolean damageGiven)
 	{
-		interrupt(player, mob, false);
+		//interrupt(player, mob, false);
 	}
 	
 	@Override
 	public void onAttackedByProcessingPlayer(Mob mob, Player player, boolean damageGiven)
 	{
-		interrupt(player, mob, false);		
+		if (damageGiven)
+			interrupt(player, mob, false);		
 	}
 
 	@Override
@@ -70,7 +67,6 @@ public class HandlerZombieGirl extends HandlerItemGivingProgress
 		HashSet<BefriendableAddHatredReason> set = new HashSet<BefriendableAddHatredReason>();
 		set.add(BefriendableAddHatredReason.ATTACKED);
 		set.add(BefriendableAddHatredReason.ATTACKING);
-		set.add(BefriendableAddHatredReason.SET_TARGET);
 		set.add(BefriendableAddHatredReason.HIT);
 		return set;
 	}
@@ -87,10 +83,6 @@ public class HandlerZombieGirl extends HandlerItemGivingProgress
 		case ATTACKING:
 		{
 			return 60 * 20;
-		}
-		case SET_TARGET:
-		{
-			return 30 * 20;
 		}
 		case HIT:
 		{
