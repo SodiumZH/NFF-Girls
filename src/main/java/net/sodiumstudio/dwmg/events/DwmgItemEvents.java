@@ -96,6 +96,7 @@ public class DwmgItemEvents
 	public static void onBefriendedMainHandItemChange(CItemStackMonitor.ChangeEvent event)
 	{
 		event.living.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(SHARPNESS_MODIFIER_UUID);
+		@SuppressWarnings("deprecation")
 		int lv = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, event.to);
 		if (lv > 0)
 		{

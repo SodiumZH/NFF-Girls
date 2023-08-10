@@ -200,6 +200,18 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 	}
 
 	@Override
+	public double getProgressValue(Mob mob, Player player)
+	{
+		if (!isInProcess(player, mob))
+			return -1;
+		else if (NbtHelper.getPlayerData(CBefriendableMob.getCap(mob).getPlayerDataNbt(), player, "proc_value") == null)
+		{
+			return 0;
+		}
+		else return ((DoubleTag) (NbtHelper.getPlayerData(CBefriendableMob.getCap(mob).getPlayerDataNbt(), player, "proc_value"))).getAsDouble();
+	}
+	
+	@Override
 	public HashSet<BefriendableAddHatredReason> getAddHatredReasons() {
 		HashSet<BefriendableAddHatredReason> set = new HashSet<BefriendableAddHatredReason>();
 		set.add(BefriendableAddHatredReason.ATTACKED);
