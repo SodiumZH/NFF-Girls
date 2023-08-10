@@ -11,6 +11,7 @@ import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
 import com.github.mechalopa.hmag.world.entity.ImpEntity;
 import com.github.mechalopa.hmag.world.entity.KoboldEntity;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -96,9 +97,11 @@ import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedWitherSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedZombieGirl;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
+import net.sodiumstudio.dwmg.item.TransferringTagItem;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgDamageSources;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.AiHelper;
 import net.sodiumstudio.nautils.EntityHelper;
@@ -1013,11 +1016,19 @@ public class DwmgEntityEvents
 	public static void onEntityInteract_PriorityHighest(EntityInteract event)
 	{
 		// Detect missing-owner cases
-		if (event.getTarget() instanceof IDwmgBefriendedMob bm)
+		if (event.getTarget() instanceof IDwmgBefriendedMob bm && !event.getEntity().level.isClientSide)
 		{
 			if (bm.getOwnerUUID() == null)
-				throw new IllegalStateException("Mob \"" + bm.asMob().getName().getString() + 
+			{
+				if (event.getItemStack().is(DwmgItems.TRANSFERRING_TAG.get()) && !DwmgItems.TRANSFERRING_TAG.get().isWritten(event.getItemStack()))
+				{
+					LogUtils.getLogger().error("Mob \"" + bm.asMob().getName().getString() + 
 						"\" missing owner. This is probably a bug. Please contact the author for help: https://github.com/SodiumZH/Days-with-Monster-Girls/issues");
+					bm.setOwner(event.getEntity());
+				}
+				else throw new IllegalStateException("Mob \"" + bm.asMob().getName().getString() + 
+						"\" missing owner. This is probably a bug. Please contact the author for help: https://github.com/SodiumZH/Days-with-Monster-Girls/issues");
+			}
 		}
 	}
 	

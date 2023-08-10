@@ -12,6 +12,8 @@ Now befriending process will not be interrupted (progress returning zero) if pla
 
 Now the favorability change on applying healing item depends on the actual healing amount instead of the expected amount.
 
+Now if a "mob missing owner" crash occurs, you can interact with an unwritten Transferring Tag to own it (not consuming the item) without crash.
+
 Fixed Imp, Harpy and Snow Canine opening GUI without Commanding Wand.
 
 Fixed Snow Canine summonable.
@@ -19,6 +21,8 @@ Fixed Snow Canine summonable.
 Fixed Harpy and Snow Canine missing translation.
 
 Fixed crash on Harpy and Snow Canine befriended.
+
+Fixed crash on Ender Executor attacked.
 
 ### 0.1.12
 
