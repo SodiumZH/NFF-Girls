@@ -12,6 +12,10 @@ Now befriending process will not be interrupted (progress returning zero) if pla
 
 Now the favorability change on applying healing item depends on the actual healing amount instead of the expected amount.
 
+Now Skeleton, Stray and Wither Skeleton Girls' shooting damages will increase on their ATK increase.
+
+Now undead mobs will not try avoiding the sun when having Fire Resistance effect.
+
 Now if a "mob missing owner" crash occurs, you can interact with an unwritten Transferring Tag to own it (not consuming the item) without crash.
 
 Fixed Imp, Harpy and Snow Canine opening GUI without Commanding Wand.
@@ -23,6 +27,10 @@ Fixed Harpy and Snow Canine missing translation.
 Fixed crash on Harpy and Snow Canine befriended.
 
 Fixed crash on Ender Executor attacked.
+
+Fixed Skeleton, Stray and Wither Skeleton Girls making repeated armor sound when wearing a helmet and being sun-immune.
+
+Fixed invalid respawners (usually generated with /give) crashing on mouse hovering. Now mouse hovering on it doesn't cause crash, but trying using it still does. Please do NEVER use /give for Mob Respawners (including non-empty Mob Storage Pods)!
 
 ### 0.1.12
 

@@ -51,7 +51,8 @@ public class Dwmg
         MinecraftForge.EVENT_BUS.register(this);
         
         
-		BefriendMobs.setDebugMode(true);
+		
+		//BefriendMobs.setDebugMode(true);
     }
     
     // You can use SubscribeEvent and let the Event Bus discover methods to call

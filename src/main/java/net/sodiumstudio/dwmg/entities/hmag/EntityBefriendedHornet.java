@@ -62,6 +62,7 @@ import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
+import net.sodiumstudio.nautils.ItemHelper;
 public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefriendedMob
 {
 	public EntityBefriendedHornet(EntityType<? extends HornetEntity> pEntityType, Level pLevel) {
@@ -183,8 +184,7 @@ public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefrien
 					if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) 
 					{
 						if (isHoneyBottle)
-							if (!player.addItem(new ItemStack(Items.GLASS_BOTTLE, 1)))
-								player.spawnAtLocation(new ItemStack(Items.GLASS_BOTTLE, 1));
+							ItemHelper.giveOrDropDefault(player, Items.GLASS_BOTTLE);
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					}
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here

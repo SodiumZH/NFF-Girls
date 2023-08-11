@@ -49,6 +49,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BMItems;
+import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.MiscUtil;
 import net.sodiumstudio.dwmg.Dwmg;
@@ -127,7 +128,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 				return super.checkCanUse() && ((EntityBefriendedNecroticReaper)mob).controllable();
 			}
 		}
-				.avoidSunCondition(mob -> !((IBefriendedUndeadMob)mob).isSunImmune()));
+				.avoidSunCondition(DwmgEntityHelper::isSunSensitive));
 		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d)
 		{
 			@Override
@@ -166,18 +167,8 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 	@Override
 	public void aiStep()
 	{
-		if (isSunImmune())
-		{
-			ItemStack head = this.getItemBySlot(EquipmentSlot.HEAD);
-			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BMItems.DUMMY_ITEM.get()));
-			super.aiStep();
-			this.setItemSlot(EquipmentSlot.HEAD, head);
-			this.setInventoryFromMob();
-		}
-		else
-		{
-			super.aiStep();
-		}
+		DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
+		super.aiStep();
 	}
 	
 	/* Combat */
