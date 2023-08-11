@@ -48,6 +48,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BMItems;
+import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
@@ -114,7 +115,7 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 		goalSelector.addGoal(3, new BefriendedSkeletonRangedBowAttackGoal(this, 1.0D, 20, 15.0F));
 		goalSelector.addGoal(4, new BefriendedSkeletonMeleeAttackGoal(this, 1.2d, true));
 		goalSelector.addGoal(5, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false)
-				.avoidSunCondition(mob -> {return !((IBefriendedUndeadMob)mob).isSunImmune();}));
+				.avoidSunCondition(DwmgEntityHelper::isSunSensitive));
 		goalSelector.addGoal(6, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -147,6 +148,7 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 		double d1 = pTarget.getY(0.3333333333333333D) - abstractarrow.getY();
 		double d2 = pTarget.getZ() - this.getZ();
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+		abstractarrow.setBaseDamage(abstractarrow.getBaseDamage() * this.getAttributeValue(Attributes.ATTACK_DAMAGE) / this.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
 		abstractarrow.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);
 		this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 		this.level.addFreshEntity(abstractarrow);
@@ -160,10 +162,15 @@ public class EntityBefriendedStrayGirl extends StrayGirlEntity implements IDwmgB
 		// Handle sun sensitivity
 		if (this.isSunImmune())
 		{
+			// Save no matter what, empty or not
 			NbtHelper.saveItemStack(this.getItemBySlot(EquipmentSlot.HEAD), this.getTempData().values().tag, "head_item");
-			this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BMItems.DUMMY_ITEM.get()));
+			// Block if not wearing anything on head
+			if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty())
+				DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, new ItemStack(BMItems.DUMMY_ITEM.get()));
 			super.aiStep();
-			this.setItemSlot(EquipmentSlot.HEAD, NbtHelper.readItemStack(this.getTempData().values().tag, "head_item"));
+			// Set back
+			// Use reflect force set since normal set will cause repeat sound
+			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, NbtHelper.readItemStack(this.getTempData().values().tag, "head_item"));
 			this.getTempData().values().tag.remove("head_item");
 			this.setInventoryFromMob();
 		}

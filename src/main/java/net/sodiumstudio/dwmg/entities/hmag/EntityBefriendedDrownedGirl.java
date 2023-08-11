@@ -118,7 +118,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements ID
 		goalSelector.addGoal(3, new BefriendedDrownedTridentAttackGoal(this, 1.0D, 40, 10.0F));
 		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0D, false));
 		goalSelector.addGoal(4, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false).amphibious()
-				.avoidSunCondition(mob -> {return ((EntityBefriendedDrownedGirl)mob).isSunSensitive();}));
+				.avoidSunCondition(DwmgEntityHelper::isSunSensitive));
 		//goalSelector.addGoal(4, new BefriendedInWaterFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f));
 		goalSelector.addGoal(5, new BefriendedAmphibiousGoals.GoToBeachGoal(this, 1.0D));
 		goalSelector.addGoal(6, new BefriendedAmphibiousGoals.SwimUpGoal(this, 1.0D, this.level.getSeaLevel()));

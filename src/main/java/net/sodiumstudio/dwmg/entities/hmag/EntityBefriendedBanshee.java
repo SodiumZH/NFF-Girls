@@ -321,18 +321,8 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 		
 		@Override
 		public void aiStep() {
-			if (isSunImmune())
-			{
-				ItemStack head = this.getItemBySlot(EquipmentSlot.HEAD);
-				this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(BMItems.DUMMY_ITEM.get()));
-				super.aiStep();
-				this.setItemSlot(EquipmentSlot.HEAD, head);
-				this.setInventoryFromMob();
-			}
-			else
-			{
-				super.aiStep();
-			}
+			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
+			super.aiStep();
 			applyAllyEffect();
 			if (!this.level.isClientSide)
 			{

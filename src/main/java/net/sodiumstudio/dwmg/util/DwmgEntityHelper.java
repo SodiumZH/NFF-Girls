@@ -1,21 +1,17 @@
 package net.sodiumstudio.dwmg.util;
 
-import com.github.mechalopa.hmag.registry.ModItems;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.item.Tiers;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.TagHelper;
 
@@ -75,4 +71,24 @@ public class DwmgEntityHelper
 		if (slotList != null)
 			slotList.set(slot.getIndex(), item);
 	}
+	
+	/**
+	 * Check if a befriended undead mob will burn under sun.
+	 * @param mobUndead Mob to test.
+	 * @return Whether this mob is sun-sensitive, or always true if it doesn't implement {@link IBefriendedUndeadMob}/
+	 */
+	public static boolean isSunSensitive(IBefriendedMob mobUndead)
+	{
+		if (mobUndead instanceof IBefriendedUndeadMob u)
+		{
+			return !u.isSunImmune() && !mobUndead.asMob().hasEffect(MobEffects.FIRE_RESISTANCE);
+		}
+		else
+		{
+			LogUtils.getLogger().error("DwmgEntityHelper#isSunSafe: mob to test must implement IBefriendedUndeadMob.");
+			return false;
+		}
+	}
+
+	
 }

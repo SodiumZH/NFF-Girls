@@ -81,7 +81,7 @@ public class EntityBefriendedZombieGirl extends ZombieGirlEntity implements IDwm
 		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
 		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0d, true));
 		goalSelector.addGoal(4, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false)
-				.avoidSunCondition(mob -> {return ((EntityBefriendedZombieGirl)mob).isSunSensitive();}));
+				.avoidSunCondition(DwmgEntityHelper::isSunSensitive));
 		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
