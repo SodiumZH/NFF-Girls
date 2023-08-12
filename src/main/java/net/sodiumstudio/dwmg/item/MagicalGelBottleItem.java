@@ -199,13 +199,6 @@ public class MagicalGelBottleItem extends Item
 		return extract(stack, MagicalGelColorUtils.closestVariant(getColor(stack)), amount);
 	}
 	
-	public void shrinkAmount(ItemStack stack)
-	{
-		if (getAmount(stack) <= 1)
-			throw new IllegalArgumentException("Amount is 1 and cannot shrink. Check and handle this case before calling.");
-		else setAmount(stack, getAmount(stack) - 1);
-	}
-	
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity living, InteractionHand usedHand)
 	{
@@ -215,22 +208,39 @@ public class MagicalGelBottleItem extends Item
 			{
 				stack.shrink(1);
 				ItemHelper.giveOrDropDefault(player, DwmgItems.EMPTY_MAGICAL_GEL_BOTTLE.get());
-				LogUtils.getLogger().error("MagicalGelBottle: non-positive amount detected. Transformed to empty bottle.");
-				return InteractionResult.PASS;
 			}
 			// Action type: 0 => no action; 1 => collecting; 2 => staining
 			int action = 0;
-			ItemStack newStack = stack.copy();
 			// Blend magical slime
 			if (living instanceof MagicalSlimeEntity ms && living.getType() == ModEntityTypes.MAGICAL_SLIME.get())
 			{
 				if (ms.isTiny())
 				{
-					this.blend(newStack, MagicalGelColorUtils.getSlimeColor(ms), 1);
+					this.blend(stack, MagicalGelColorUtils.getSlimeColor(ms), 1);
 					ms.discard();
 					action = 1;
 				}
 			}
+			// Blend vanilla slime
+			/*else if (living instanceof Slime sl && living.getType() == EntityType.SLIME)
+			{
+				if (sl.isTiny())
+				{
+					this.blend(stack, VANILLA_SLIME_COLOR, 1);
+					sl.discard();
+					action = 1;
+				}
+			}
+			// Blend vanilla magma cube
+			else if (living instanceof MagmaCube mc && living.getType() == EntityType.MAGMA_CUBE)
+			{
+				if (mc.isTiny())
+				{
+					this.blend(stack, MAGMA_CUBE_COLOR, 1);
+					mc.discard();
+					action = 1;
+				}
+			} */
 			// Stain slime girl
 			else if (living instanceof HmagSlimeGirlEntity sg && sg.isOwnerPresent() && sg.getOwner() == player)
 			{
@@ -244,13 +254,16 @@ public class MagicalGelBottleItem extends Item
 			if (action == 1)
 			{
 				// The max volume is 6; if trying adding more, drop a magical gel ball after blending
-				while (getAmount(newStack) > 6)
+				while (getAmount(stack) > 6)
 				{
-					shrinkAmount(newStack);
-					ItemHelper.giveOrDropDefault(player, DwmgItems.MAGICAL_GEL_BALL.get());
+					setAmount(stack, getAmount(stack) - 1);
+					ItemStack stack1 = new ItemStack(DwmgItems.MAGICAL_GEL_BALL.get());
+					if (!player.addItem(stack1))
+						player.spawnAtLocation(stack1);
 				}
+				ItemStack stack1 = stack.copy();
 				stack.shrink(1);
-				ItemHelper.giveOrDrop(player, newStack);
+				player.spawnAtLocation(stack1, 1).setNoPickUpDelay();
 				return InteractionResult.sidedSuccess(living.level.isClientSide);
 			}
 			else if (action == 2)
@@ -264,8 +277,9 @@ public class MagicalGelBottleItem extends Item
 					}
 					else
 					{
-						shrinkAmount(newStack);
-						ItemHelper.giveOrDrop(player, newStack);
+						ItemStack stack1 = stack.copy();
+						this.setAmount(stack1, this.getAmount(stack1) - 1);
+						ItemHelper.giveOrDrop(player, stack);
 					}
 				}
 				return InteractionResult.sidedSuccess(living.level.isClientSide);
