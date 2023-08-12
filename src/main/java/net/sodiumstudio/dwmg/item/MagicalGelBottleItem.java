@@ -268,6 +268,7 @@ public class MagicalGelBottleItem extends Item
 						ItemHelper.giveOrDrop(player, newStack);
 					}
 				}
+				return InteractionResult.sidedSuccess(living.level.isClientSide);
 			}
 			
 		}
