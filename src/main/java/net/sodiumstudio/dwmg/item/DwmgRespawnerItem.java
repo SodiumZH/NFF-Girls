@@ -24,14 +24,18 @@ public class DwmgRespawnerItem extends MobRespawnerItem
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag)
 	{
+		super.appendHoverText(stack, level, list, tooltipFlag);
 		if (stack.getTag() != null)
 		{
 			MobRespawnerInstance inst = MobRespawnerInstance.create(stack);
 			MutableComponent name = inst.getName();
 			MutableComponent type = (MutableComponent) inst.getType().getDescription();
 			
-			list.add(InfoHelper.createTrans("item.dwmg.respawner.name").append(name));
-			list.add(InfoHelper.createTrans("item.dwmg.respawner.type").append(type));
+			if (name != null && type != null)
+			{
+				list.add(InfoHelper.createTrans("item.dwmg.respawner.name").append(name));
+				list.add(InfoHelper.createTrans("item.dwmg.respawner.type").append(type));
+			}
 		}
 	}
 }
