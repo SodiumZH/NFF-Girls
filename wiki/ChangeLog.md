@@ -2,6 +2,12 @@
 
 ## 1.19.2
 
+### 0.1.13.1
+
+Now on being attacked by owner, befriended mobs will drop damage depending on the actual taken damage instead of the initial damage before absorption by armor, enchantment, etc.
+
+Fixed befriended mobs still dropping favorability on sweeping-attacked by the owner, although not taking damage. 
+
 ### 0.1.13
 
 Added Slime Girl support.
