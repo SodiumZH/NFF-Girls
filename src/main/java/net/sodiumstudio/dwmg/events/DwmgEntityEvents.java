@@ -445,6 +445,7 @@ public class DwmgEntityEvents
 			}
 			
 			/** Favorability end */
+
 			
 			// Label player on bef mob attacking target, just like for TamableAnimal, so that it can drop player's loot table
 			if (event.getEntity() instanceof Mob mob
@@ -789,7 +790,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onLivingDamage(LivingDamageEvent event)
 	{
-		if (!event.getEntity().level.isClientSide && event.getEntity() instanceof Mob mob)
+		if (!event.getEntity().level.isClientSide && event.getEntity() instanceof Mob mob && !event.isCanceled())
 		{
 			if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof LivingEntity source)
 			{
@@ -811,6 +812,30 @@ public class DwmgEntityEvents
 						&& bm.getOwner() == player)
 				{
 					bm.getFavorability().addFavorability(event.getAmount() / 100f);
+				}
+				// If owner attacked friendly mob, lose favorability depending on damage; no lost if < 0.5
+				if (event.getEntity() instanceof IDwmgBefriendedMob bm 
+						&& bm.getModId().equals(Dwmg.MOD_ID)
+						&& event.getSource().getEntity() != null
+						&& event.getSource().getEntity() instanceof Player player
+						&& bm.getOwnerUUID().equals(player.getUUID())
+						&& !event.getSource().equals(DamageSource.OUT_OF_WORLD)
+						&& !event.getSource().isCreativePlayer())
+				{
+					if (event.getAmount() >= 0.5f)
+					{
+						event.getEntity().getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).ifPresent((cap) -> 
+						{
+							float loseValue = event.getAmount() / 2f;
+							if (loseValue > 10f)
+								loseValue = 10f;
+							cap.addFavorability(-loseValue);
+							if (loseValue < 1.0f)
+								EntityHelper.sendSmokeParticlesToLivingDefault(bm.asMob());
+							else
+								EntityHelper.sendAngryParticlesToLivingDefault(bm.asMob());
+						});
+					}
 				}
 			}
 		}
