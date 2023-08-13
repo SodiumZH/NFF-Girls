@@ -11,6 +11,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
@@ -22,6 +23,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
 import net.sodiumstudio.dwmg.item.MagicalGelColorUtils;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.math.LinearColor;
 import net.sodiumstudio.nautils.math.RndUtil;
 
@@ -145,7 +147,15 @@ public class SlimeGirlBefriendingHandler extends HandlerItemGivingProgress
 			if (mob.getType() == ModEntityTypes.SLIME_GIRL.get() && mob instanceof SlimeGirlEntity sg && rnd.nextDouble() < 0.25d)
             {
 	            MagicalSlimeEntity slime = ModEntityTypes.MAGICAL_SLIME.get().create(mob.level);
-	            slime.setSize(1, true);
+	            try
+	            {
+	            	ReflectHelper.forceInvoke(slime, MagicalSlimeEntity.class, "setSize", 1);
+	            }
+	            catch (Exception e)
+	            {
+	            	e.printStackTrace();
+	            	ReflectHelper.forceInvoke(slime, Slime.class, "m_7839_", 1);//setSize
+	            }
             	LinearColor sgColorCompl = MagicalGelColorUtils.getSlimeColor(sg).getComplementary();
             	SlimeGirlEntity.ColorVariant v = MagicalGelColorUtils.closestVariant(sgColorCompl);
             	slime.setVariant(v.getId());

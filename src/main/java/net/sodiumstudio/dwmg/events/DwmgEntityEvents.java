@@ -989,7 +989,7 @@ public class DwmgEntityEvents
 				{
 					LogUtils.getLogger().error("Mob \"" + bm.asMob().getName().getString() + 
 						"\" missing owner. This is probably a bug. Please contact the author for help: https://github.com/SodiumZH/Days-with-Monster-Girls/issues");
-					bm.setOwner(event.getEntity());
+					bm.setOwner(event.getPlayer());
 				}
 				else throw new IllegalStateException("Mob \"" + bm.asMob().getName().getString() + 
 						"\" missing owner. This is probably a bug. Please contact the author for help: https://github.com/SodiumZH/Days-with-Monster-Girls/issues");

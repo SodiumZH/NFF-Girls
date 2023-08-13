@@ -98,8 +98,10 @@ public abstract class SimpleModificationRecipe extends CustomRecipe
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
+		// TODO: use super.getRemainingItems to initialize NonNullList
 		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
 		SubjectAndModifier ingredients = getIngredients(container).get();
 		for (int i = 0; i < nonnulllist.size(); ++i)
@@ -108,8 +110,8 @@ public abstract class SimpleModificationRecipe extends CustomRecipe
 			if (item.equals(ingredients.subject))
 				if (getSubjectRemaining(ingredients.subject, ingredients.modifier) != null && !getSubjectRemaining(ingredients.subject, ingredients.modifier).isEmpty())
 					nonnulllist.set(i, getSubjectRemaining(ingredients.subject, ingredients.modifier));
-			else if (item.hasCraftingRemainingItem())
-				nonnulllist.set(i, item.getCraftingRemainingItem());
+			else if (item.getItem().hasCraftingRemainingItem())
+				nonnulllist.set(i, item.getItem().getCraftingRemainingItem().getDefaultInstance());
 		}
 		return nonnulllist;
 	}

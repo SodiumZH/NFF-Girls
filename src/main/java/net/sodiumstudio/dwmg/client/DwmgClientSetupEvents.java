@@ -17,10 +17,11 @@ import com.github.mechalopa.hmag.client.renderer.StrayGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.WitherSkeletonGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.ZombieGirlRenderer;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -89,9 +90,11 @@ public class DwmgClientSetupEvents
         event.registerEntityRenderer(DwmgEntityTypes.MAGICAL_GEL_BALL.get(), ThrownItemRenderer::new);
     }
 
-    public static void onRegisterParticleProvider(RegisterParticleProvidersEvent event)
+    public static void onRegisterParticleProvider(ParticleFactoryRegisterEvent event)
     {
-    	event.register(DwmgParticleTypes.MAGICAL_GEL_BALL.get(), new MagicalGelBallParticle.Provider());
+    	@SuppressWarnings("resource")
+		Minecraft mc = Minecraft.getInstance();    	
+    	mc.particleEngine.register(DwmgParticleTypes.MAGICAL_GEL_BALL.get(), new MagicalGelBallParticle.Provider());
     }
     
 	@SubscribeEvent
