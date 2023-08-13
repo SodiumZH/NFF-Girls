@@ -347,6 +347,10 @@ Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.18.2
 
+### 0.0.13
+
+Identical to 1.19.2-0.1.13 and 0.1.13.1.
+
 ### 0.0.12
 
 Identical to 1.19.2-0.1.12.
@@ -418,6 +422,8 @@ Fixed some items in other mods may make Ender Executor and Necrotic Reaper non-h
 Fixed Mob Respawner item entities vanishing in fire and lava.
 
 Fixed Sunhat not working for Skeleton and Stray Girls.
+
+Fixed crash related to sun immunity of befriended Skeleton and related mobs.
 
 ### 0.0.7
 
