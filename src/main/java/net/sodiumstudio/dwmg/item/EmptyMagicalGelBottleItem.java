@@ -60,8 +60,7 @@ public class EmptyMagicalGelBottleItem extends Item
 			{
 				stack.shrink(1);
 				ItemStack stack1 = MagicalGelBottleItem.create(DwmgItems.MAGICAL_GEL_BOTTLE.get(), color.get());
-				if (!player.addItem(stack1))
-					player.spawnAtLocation(stack1);
+				player.spawnAtLocation(stack1).setNoPickUpDelay();
 				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
 		}

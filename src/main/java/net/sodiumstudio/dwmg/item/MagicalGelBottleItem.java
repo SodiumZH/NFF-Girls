@@ -207,7 +207,7 @@ public class MagicalGelBottleItem extends Item
 			if (this.getAmount(stack) <= 0)
 			{
 				stack.shrink(1);
-				ItemHelper.giveOrDropDefault(player, DwmgItems.EMPTY_MAGICAL_GEL_BOTTLE.get());
+				player.spawnAtLocation(DwmgItems.EMPTY_MAGICAL_GEL_BOTTLE.get().getDefaultInstance()).setNoPickUpDelay();//ItemHelper.giveOrDropDefault(player, DwmgItems.EMPTY_MAGICAL_GEL_BOTTLE.get());
 			}
 			// Action type: 0 => no action; 1 => collecting; 2 => staining
 			int action = 0;
@@ -257,13 +257,13 @@ public class MagicalGelBottleItem extends Item
 				while (getAmount(stack) > 6)
 				{
 					setAmount(stack, getAmount(stack) - 1);
-					ItemStack stack1 = new ItemStack(DwmgItems.MAGICAL_GEL_BALL.get());
-					if (!player.addItem(stack1))
-						player.spawnAtLocation(stack1);
+					ItemStack ball = new ItemStack(DwmgItems.MAGICAL_GEL_BALL.get());
+					if (!player.addItem(ball))
+						player.spawnAtLocation(ball);
 				}
 				ItemStack stack1 = stack.copy();
 				stack.shrink(1);
-				player.spawnAtLocation(stack1, 1).setNoPickUpDelay();
+				player.spawnAtLocation(stack1, 1f).setNoPickUpDelay();
 				return InteractionResult.sidedSuccess(living.level.isClientSide);
 			}
 			else if (action == 2)
@@ -273,13 +273,15 @@ public class MagicalGelBottleItem extends Item
 					if (getAmount(stack) == 1)
 					{
 						stack.shrink(1);
-						ItemHelper.giveOrDropDefault(player, DwmgItems.EMPTY_MAGICAL_GEL_BOTTLE.get());
+						ItemStack stack1 = DwmgItems.EMPTY_MAGICAL_GEL_BOTTLE.get().getDefaultInstance();
+						player.spawnAtLocation(stack1, 1f).setNoPickUpDelay();
 					}
 					else
 					{
 						ItemStack stack1 = stack.copy();
 						this.setAmount(stack1, this.getAmount(stack1) - 1);
-						ItemHelper.giveOrDrop(player, stack);
+						stack.shrink(1);
+						player.spawnAtLocation(stack1, 1f).setNoPickUpDelay();
 					}
 				}
 				return InteractionResult.sidedSuccess(living.level.isClientSide);
