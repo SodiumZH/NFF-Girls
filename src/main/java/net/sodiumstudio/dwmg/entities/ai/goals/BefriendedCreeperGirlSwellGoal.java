@@ -1,17 +1,17 @@
 package net.sodiumstudio.dwmg.entities.ai.goals;
 
 import net.sodiumstudio.befriendmobs.entity.vanillapreset.creeper.BefriendedCreeperSwellGoal;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
+import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
 
 public class BefriendedCreeperGirlSwellGoal extends BefriendedCreeperSwellGoal
 {
 	
-	protected EntityBefriendedCreeperGirl cg;
+	protected HmagCreeperGirlEntity cg;
 	
-	public BefriendedCreeperGirlSwellGoal(EntityBefriendedCreeperGirl creeper)
+	public BefriendedCreeperGirlSwellGoal(HmagCreeperGirlEntity creeper)
 	{
 		super(creeper);
-		this.cg = (EntityBefriendedCreeperGirl)creeper;
+		this.cg = (HmagCreeperGirlEntity)creeper;
 		targetedSwelling = false;
 	}
 	

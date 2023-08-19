@@ -27,11 +27,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.dwmg.client.model.BefriendedEnderExecutorModel;
 import net.sodiumstudio.dwmg.client.renderer.layers.BefriendedEnderExecutorCarriedBlockLayer;
 import net.sodiumstudio.dwmg.client.renderer.layers.BefriendedEnderExecutorEyesLayer;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedEnderExecutor;
+import net.sodiumstudio.dwmg.entities.hmag.HmagEnderExecutorEntity;
 
 // Ported from hmag
 @OnlyIn(Dist.CLIENT)
-public class BefriendedEnderExecutorRenderer extends MobRenderer<EntityBefriendedEnderExecutor, BefriendedEnderExecutorModel<EntityBefriendedEnderExecutor>>
+public class BefriendedEnderExecutorRenderer extends MobRenderer<HmagEnderExecutorEntity, BefriendedEnderExecutorModel<HmagEnderExecutorEntity>>
 {
 	private static final ResourceLocation TEX = new ResourceLocation(HMaG.MODID, "textures/entity/ender_executor/ender_executor.png");
 	private static final ResourceLocation BEAM_TEX = new ResourceLocation(HMaG.MODID, "textures/entity/ender_executor/ender_executor_beam.png");
@@ -47,7 +47,7 @@ public class BefriendedEnderExecutorRenderer extends MobRenderer<EntityBefriende
 	}
 
 	@Override
-	public boolean shouldRender(EntityBefriendedEnderExecutor entity, Frustum camera, double camX, double camY, double camZ)
+	public boolean shouldRender(HmagEnderExecutorEntity entity, Frustum camera, double camX, double camY, double camZ)
 	{
 		if (super.shouldRender(entity, camera, camX, camY, camZ))
 		{
@@ -60,10 +60,10 @@ public class BefriendedEnderExecutorRenderer extends MobRenderer<EntityBefriende
 	}
 
 	@Override
-	public void render(EntityBefriendedEnderExecutor entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight)
+	public void render(HmagEnderExecutorEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight)
 	{
 		BlockState blockstate = entity.getCarriedBlock();
-		BefriendedEnderExecutorModel<EntityBefriendedEnderExecutor> endermanmodel = this.getModel();
+		BefriendedEnderExecutorModel<HmagEnderExecutorEntity> endermanmodel = this.getModel();
 		endermanmodel.carrying = blockstate != null;
 		endermanmodel.creepy = entity.isCreepy();
 		LivingEntity target = entity.getActiveAttackTarget();
@@ -125,7 +125,7 @@ public class BefriendedEnderExecutorRenderer extends MobRenderer<EntityBefriende
 	}
 
 	@Override
-	public Vec3 getRenderOffset(EntityBefriendedEnderExecutor entity, float partialTicks)
+	public Vec3 getRenderOffset(HmagEnderExecutorEntity entity, float partialTicks)
 	{
 		if (entity.isCreepy())
 		{
@@ -138,7 +138,7 @@ public class BefriendedEnderExecutorRenderer extends MobRenderer<EntityBefriende
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityBefriendedEnderExecutor entity)
+	public ResourceLocation getTextureLocation(HmagEnderExecutorEntity entity)
 	{
 		return TEX;
 	}

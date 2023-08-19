@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHornet;
+import net.sodiumstudio.dwmg.entities.hmag.HmagHornetEntity;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class BaubleHandlerHornet extends BaubleHandlerGeneral
@@ -21,7 +21,7 @@ public class BaubleHandlerHornet extends BaubleHandlerGeneral
 	public void postTick(IBaubleHolder owner)
 	{
 		super.postTick(owner);
-		if (owner instanceof EntityBefriendedHornet b)
+		if (owner instanceof HmagHornetEntity b)
 		{
 			if (owner.hasBaubleItem(DwmgItems.POISONOUS_THORN.get()))
 			{

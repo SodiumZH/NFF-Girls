@@ -3,12 +3,12 @@ package net.sodiumstudio.dwmg.entities.ai.goals;
 import net.minecraft.world.entity.LivingEntity;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
+import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
 
 public class BefriendedCreeperGirlExplosionAttackGoal extends BefriendedMeleeAttackGoal
 {
 
-	EntityBefriendedCreeperGirl creeper;
+	HmagCreeperGirlEntity creeper;
 
 	@Override
 	public boolean checkCanUse()
@@ -31,7 +31,7 @@ public class BefriendedCreeperGirlExplosionAttackGoal extends BefriendedMeleeAtt
 	public BefriendedCreeperGirlExplosionAttackGoal(IBefriendedMob mob, double speedModifier, boolean followingTargetEvenIfNotSeen)
 	{
 		super(mob, speedModifier, followingTargetEvenIfNotSeen);
-		this.creeper = (EntityBefriendedCreeperGirl)mob;
+		this.creeper = (HmagCreeperGirlEntity)mob;
 	}
 
 	@Override

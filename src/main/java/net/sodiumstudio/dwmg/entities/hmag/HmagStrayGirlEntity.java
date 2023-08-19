@@ -6,8 +6,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.github.mechalopa.hmag.registry.ModItems;
-import com.github.mechalopa.hmag.world.entity.WitherSkeletonGirlEntity;
+import com.github.mechalopa.hmag.world.entity.StrayGirlEntity;
 
+import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -28,7 +29,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -37,6 +37,9 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
@@ -45,6 +48,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BMItems;
+import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
@@ -58,14 +62,15 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
+import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
-
-public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity implements IDwmgBefriendedMob, IBaubleHolder
+public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
+
 	
-	public EntityBefriendedWitherSkeletonGirl(EntityType<? extends EntityBefriendedWitherSkeletonGirl> pEntityType, Level pLevel) {
+	public HmagStrayGirlEntity(EntityType<? extends HmagStrayGirlEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
@@ -74,15 +79,15 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 
 	public static Builder createAttributes() 
 	{
-		return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 36.0D).add(Attributes.MOVEMENT_SPEED, 0.26D).add(Attributes.ATTACK_DAMAGE, 4.5D).add(Attributes.ARMOR, 4.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.25D);
+		 return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ATTACK_DAMAGE, 3.25D).add(Attributes.ARMOR, 1.0D);
 	}
 
 	// ------------------ Data sync ------------------ //
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EntityBefriendedWitherSkeletonGirl.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagStrayGirlEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedWitherSkeletonGirl.class, EntityDataSerializers.INT);
+			.defineId(HmagStrayGirlEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
@@ -100,14 +105,17 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 	public EntityDataAccessor<Integer> getAIStateData() {
 		return DATA_AISTATE;
 	}
-
+	
 	/* AI */
 
 	@Override
 	protected void registerGoals() {
+		goalSelector.addGoal(1, new BefriendedRestrictSunGoal(this));
+		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
 		goalSelector.addGoal(3, new BefriendedSkeletonRangedBowAttackGoal(this, 1.0D, 20, 15.0F));
 		goalSelector.addGoal(4, new BefriendedSkeletonMeleeAttackGoal(this, 1.2d, true));
-		goalSelector.addGoal(5, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
+		goalSelector.addGoal(5, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false)
+				.avoidSunCondition(DwmgEntityHelper::isSunSensitive));
 		goalSelector.addGoal(6, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -116,7 +124,7 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 		targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
 		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
 		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
-	}	
+	}
 	
 	/* Bow shooting related */
 	
@@ -131,7 +139,7 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 		
 		// Copied from vanilla skeleton, removed difficulty factor
 		ItemStack itemstack = this.getProjectile(this.getItemInHand(
-				ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof BowItem)));
+				ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof net.minecraft.world.item.BowItem)));
 		AbstractArrow abstractarrow = this.getArrow(itemstack, pVelocity);
 		if (this.getMainHandItem().getItem() instanceof net.minecraft.world.item.BowItem)
 			abstractarrow = ((net.minecraft.world.item.BowItem) this.getMainHandItem().getItem())
@@ -151,21 +159,27 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 	@Override
 	public void aiStep() {
 
-		// Wither skeletons don't burn under sun but still damage helmet, so cancel it
-		// Save no matter what, empty or not
-		NbtHelper.saveItemStack(this.getItemBySlot(EquipmentSlot.HEAD), this.getTempData().values().tag, "head_item");
-		// Block if not wearing anything on head
-		if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty())
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, new ItemStack(BMItems.DUMMY_ITEM.get()));
-		else DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.getItemBySlot(EquipmentSlot.HEAD).copy());
-		super.aiStep();
-		// Set back
-		// Use reflect force set since normal set will cause repeat sound
-		DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, NbtHelper.readItemStack(this.getTempData().values().tag, "head_item"));
-		this.getTempData().values().tag.remove("head_item");
-		this.setInventoryFromMob();
+		// Handle sun sensitivity
+		if (this.isSunImmune())
+		{
+			// Save no matter what, empty or not
+			NbtHelper.saveItemStack(this.getItemBySlot(EquipmentSlot.HEAD), this.getTempData().values().tag, "head_item");
+			// Block if not wearing anything on head
+			if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty())
+				DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, new ItemStack(BMItems.DUMMY_ITEM.get()));
+			super.aiStep();
+			// Set back
+			// Use reflect force set since normal set will cause repeat sound
+			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, NbtHelper.readItemStack(this.getTempData().values().tag, "head_item"));
+			this.getTempData().values().tag.remove("head_item");
+			this.setInventoryFromMob();
+		}
+		else 
+		{
+			super.aiStep();
+		}
 		
-		/* Handle combat AI */		
+		/* Handle combat AI */
 		if (justShot)
 		{
 			if (this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0)
@@ -236,14 +250,31 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 			if (player.getUUID().equals(getOwnerUUID())) {
 				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
-					if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+					if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL) && isFromSkeleton)
+					{
+						// Use flint&steel
+						this.level.playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE,
+								this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
+						if (!this.level.isClientSide)
+						{
+							player.getItemInHand(hand).hurtAndBreak(1, player, (p) ->
+							{
+								p.broadcastBreakEvent(hand);
+							});
+						}
+						// and convert
+						this.convertToSkeleton();
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					} 
+					else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 					{}
 					else if (hand == InteractionHand.MAIN_HAND
 							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 					{
 						switchAIState();
-					}	
-				}		
+					}
+					else return InteractionResult.PASS;
+				}
 				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
 			return InteractionResult.PASS;
@@ -304,17 +335,47 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
+		nbt.put("is_from_skeleton", ByteTag.valueOf(isFromSkeleton));
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
+		isFromSkeleton = nbt.getBoolean("is_from_skeleton");
 		setInit();
 	}
-
-	/* IBaubleHolder interface */
 	
+	/* Conversion */
+	
+	public boolean isFromSkeleton = false;	
+
+	public HmagSkeletonGirlEntity convertToSkeleton()
+	{
+		HmagSkeletonGirlEntity newMob = (HmagSkeletonGirlEntity)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.HMAG_SKELETON_GIRL.get());
+		newMob.setInit();
+		return newMob;
+	}
+	
+	/* IBefriendedUndeadMob interface */
+	
+	@Override
+	public void setupSunImmunityRules() {
+		this.sunImmuneConditions().put("sunhat", () -> {			
+			if (this.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()))
+				return true;
+			// In AI steps it may be 
+			else if (this.getTempData().values().tag.contains("head_item", NbtHelper.TAG_COMPOUND_ID)
+					&& NbtHelper.readItemStack(this.getTempData().values().tag, "head_item").is(DwmgItems.SUNHAT.get()))
+				return true;
+			else return false;
+		});
+		this.sunImmuneConditions().put("soul_amulet", () -> this.hasDwmgBauble("soul_amulet"));
+		this.sunImmuneConditions().put("resis_amulet", () -> this.hasDwmgBauble("resistance_amulet"));
+	}
+	
+	/* IBaubleHolder interface */
+
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
 		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
@@ -327,12 +388,13 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 		return DwmgBaubleHandlers.UNDEAD;
 	}
 
-	/* Misc */
+	// ------------------ Misc ------------------ //
 	
 	@Override
 	public String getModId() {
 		return Dwmg.MOD_ID;
 	}
+	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //

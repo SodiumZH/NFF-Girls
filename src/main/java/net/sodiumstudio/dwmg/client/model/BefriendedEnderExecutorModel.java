@@ -12,11 +12,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedEnderExecutor;
+import net.sodiumstudio.dwmg.entities.hmag.HmagEnderExecutorEntity;
 
 // Ported from hmag Ender Executor Model
 @OnlyIn(Dist.CLIENT)
-public class BefriendedEnderExecutorModel<T extends EntityBefriendedEnderExecutor> extends AbstractGirlModel<T>
+public class BefriendedEnderExecutorModel<T extends HmagEnderExecutorEntity> extends AbstractGirlModel<T>
 {
 //		private ModelPart rightArmPart1;
 //		private ModelPart leftArmPart1;

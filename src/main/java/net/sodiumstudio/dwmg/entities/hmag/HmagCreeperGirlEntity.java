@@ -58,11 +58,11 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 // Rewritten from HMaG CreeperGirlEntity
-public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper implements IDwmgBefriendedMob
+public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements IDwmgBefriendedMob
 {
 
 	protected static final EntityDataAccessor<Integer> DATA_VARIANT_ID = 
-			SynchedEntityData.defineId(EntityBefriendedCreeperGirl.class, EntityDataSerializers.INT);
+			SynchedEntityData.defineId(HmagCreeperGirlEntity.class, EntityDataSerializers.INT);
 	
 	public boolean canAutoBlowEnemy = true;
 	public int blowEnemyCooldown = 0;
@@ -80,7 +80,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper imple
 	
 	// Initialization
 	
-	public EntityBefriendedCreeperGirl(EntityType<? extends EntityBefriendedCreeperGirl> pEntityType, Level pLevel) {
+	public HmagCreeperGirlEntity(EntityType<? extends HmagCreeperGirlEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);	
 		befriendedInventory = new BefriendedInventoryWithEquipment(7);
 	}
@@ -92,7 +92,7 @@ public class EntityBefriendedCreeperGirl extends AbstractBefriendedCreeper imple
 				{
 					@Override
 					public boolean blockCondition()
-					{return ((EntityBefriendedCreeperGirl)mob).getSwell() > 0;}
+					{return ((HmagCreeperGirlEntity)mob).getSwell() > 0;}
 				});
 		this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Ocelot.class, 6.0F, 1.0D, 1.2D));
 		this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Cat.class, 6.0F, 1.0D, 1.2D));

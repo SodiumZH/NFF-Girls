@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.github.mechalopa.hmag.world.entity.HarpyEntity;
+import com.github.mechalopa.hmag.world.entity.JiangshiEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -16,54 +16,34 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeMod;
 import net.sodiumstudio.befriendmobs.entity.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
+import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedLeapAtOwnerGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedLeapAtTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
-import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedLocateBlockGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
-import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
-import net.sodiumstudio.nautils.ContainerHelper;
-import net.sodiumstudio.nautils.ReflectHelper;
-import net.sodiumstudio.nautils.containers.MapPair;
 
-public class BefriendedHarpyEntity extends HarpyEntity implements IDwmgBefriendedMob {
+public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriendedMob {
 
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(BefriendedHarpyEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagJiangshiEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(BefriendedHarpyEntity.class, EntityDataSerializers.INT);
+			.defineId(HmagJiangshiEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
@@ -84,7 +64,7 @@ public class BefriendedHarpyEntity extends HarpyEntity implements IDwmgBefriende
 
 	/* Initialization */
 
-	public BefriendedHarpyEntity(EntityType<? extends BefriendedHarpyEntity> pEntityType, Level pLevel) {
+	public HmagJiangshiEntity(EntityType<? extends HmagJiangshiEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
@@ -92,59 +72,30 @@ public class BefriendedHarpyEntity extends HarpyEntity implements IDwmgBefriende
 	}
 
 	public static Builder createAttributes() {
-		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 40.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.295D)
-				.add(Attributes.ATTACK_DAMAGE, 7.0D)
-				.add(Attributes.ATTACK_KNOCKBACK, 0.5D)
-				.add(Attributes.FOLLOW_RANGE, 20.0D)
-				.add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.5D);				
+		return Monster.createMonsterAttributes()/*.add(...)*/;
 	}
 
-	@Override
-	public void onInit(UUID playerUUID, Mob from)
-	{
-		if (from instanceof HarpyEntity he)
-		{
-			this.setVariant(he.getVariant());
-		}
-	}
-	
 	/* AI */
 
 	@Override
 	protected void registerGoals() {
-		goalSelector.addGoal(1, new FloatGoal(this));
-		goalSelector.addGoal(2, new BefriendedLeapAtTargetGoal(this, 0.39F, 0.45F, 7.0F, 24));
-		goalSelector.addGoal(3, new BefriendedMeleeAttackGoal(this, 1.0d, true));
-		goalSelector.addGoal(4, new BefriendedLeapAtOwnerGoal(this, 0.39F, 0.45F, 7.0F, 24));
-		goalSelector.addGoal(5, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
-		goalSelector.addGoal(6, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
-		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+		// Add goals here
+		// Generally target goals can be preset below. Change if it needs to modify.
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
-		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
-		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
 	
 	/* Interaction */
 
 	// Map items that can heal the mob and healing values here.
 	// Leave it empty if you don't need healing features.
-	@SuppressWarnings("unchecked")
 	@Override
 	public HashMap<Item, Float> getHealingItems()
 	{
-		return ContainerHelper.<Item, Float>mapOf(
-				MapPair.of(Items.COOKIE, 5f),
-				MapPair.of(Items.COOKED_CHICKEN, 8f),
-				MapPair.of(Items.COOKED_RABBIT, 8f),
-				MapPair.of(Items.COOKED_MUTTON, 8f),
-				MapPair.of(Items.COOKED_BEEF, 10f),
-				MapPair.of(Items.COOKED_PORKCHOP, 10f),
-				MapPair.of(Items.GOLDEN_APPLE, (float)getAttributeValue(Attributes.MAX_HEALTH)));
+		HashMap<Item, Float> map = new HashMap<Item, Float>();
+		// map.put(YOUR_ITEM_TYPE, HEALING_HEALTH_VALUE);
+		return map;
 	}
 	
 	// Set of items that can heal the mob WITHOUT CONSUMING.
@@ -204,7 +155,7 @@ public class BefriendedHarpyEntity extends HarpyEntity implements IDwmgBefriende
 
 	// This enables mob armor and hand items by default.
 	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventory additionalInventory = new BefriendedInventory(getInventorySize(), this);
+	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
 
 	@Override
 	public BefriendedInventory getAdditionalInventory()
@@ -215,12 +166,14 @@ public class BefriendedHarpyEntity extends HarpyEntity implements IDwmgBefriende
 	@Override
 	public int getInventorySize()
 	{
-		return 4;
+		return 8;
 	}
 
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
+			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
+			additionalInventory.setMobEquipment(this);
 		}
 	}
 
@@ -228,13 +181,16 @@ public class BefriendedHarpyEntity extends HarpyEntity implements IDwmgBefriende
 	public void setInventoryFromMob()
 	{
 		if (!this.level.isClientSide) {
+			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
+			additionalInventory.getFromMob(this);
 		}
 		return;
 	}
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuFourBaubles(containerId, playerInventory, container, this);
+		return null; // new YourInventoryMenuClass(containerId, playerInventory, container, this);
+		// You can keep it null, but in this case never call openBefriendedInventory() or it will crash.
 	}
 
 	/* Save and Load */
@@ -254,19 +210,16 @@ public class BefriendedHarpyEntity extends HarpyEntity implements IDwmgBefriende
 		setInit();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
-		return ContainerHelper.mapOf(
-				MapPair.of("0", this.getAdditionalInventory().getItem(0)),
-				MapPair.of("1", this.getAdditionalInventory().getItem(1)),
-				MapPair.of("2", this.getAdditionalInventory().getItem(2)),
-				MapPair.of("3", this.getAdditionalInventory().getItem(3)));
+		/* Set here */
+		return null;
 	}
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.GENERAL;
+		/* Set here */
+		return null;
 	}
 	
 	// Misc
@@ -299,11 +252,5 @@ public class BefriendedHarpyEntity extends HarpyEntity implements IDwmgBefriende
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 
-	
-	// misc //
-	public void setVariant(int type)
-	{
-		ReflectHelper.forceInvoke(this, HarpyEntity.class, "setVariant", int.class, type);
-	}
-	
 }
+

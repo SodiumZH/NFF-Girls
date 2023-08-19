@@ -5,17 +5,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.TieredItem;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
+import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
 
 public class BefriendedCreeperGirlMeleeAttackGoal extends BefriendedMeleeAttackGoal
 {
 
-	protected EntityBefriendedCreeperGirl creeper;
+	protected HmagCreeperGirlEntity creeper;
 	
 	public BefriendedCreeperGirlMeleeAttackGoal(IBefriendedMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen)
 	{
 		super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
-		creeper = (EntityBefriendedCreeperGirl)pMob;
+		creeper = (HmagCreeperGirlEntity)pMob;
 	}
 
 	@Override

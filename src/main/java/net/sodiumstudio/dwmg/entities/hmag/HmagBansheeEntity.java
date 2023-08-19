@@ -75,14 +75,14 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
-public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
+public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
 		/* Data sync */
 
 		protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-				.defineId(EntityBefriendedBanshee.class, EntityDataSerializers.OPTIONAL_UUID);
+				.defineId(HmagBansheeEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 		protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-				.defineId(EntityBefriendedBanshee.class, EntityDataSerializers.INT);
+				.defineId(HmagBansheeEntity.class, EntityDataSerializers.INT);
 
 		@Override
 		protected void defineSynchedData() {
@@ -103,7 +103,7 @@ public class EntityBefriendedBanshee extends BansheeEntity implements IDwmgBefri
 
 		/* Initialization */
 
-		public EntityBefriendedBanshee(EntityType<? extends EntityBefriendedBanshee> pEntityType, Level pLevel) {
+		public HmagBansheeEntity(EntityType<? extends HmagBansheeEntity> pEntityType, Level pLevel) {
 			super(pEntityType, pLevel);
 			this.xpReward = 0;
 			Arrays.fill(this.armorDropChances, 0);

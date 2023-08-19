@@ -11,16 +11,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.dwmg.client.model.BefriendedCreeperGirlArmorModel;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
+import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
 
 // Ported from HMaG CreeperGirlPowerLayer
 @OnlyIn(Dist.CLIENT)
-public class BefriendedCreeperGirlPowerLayer extends EnergySwirlLayer<EntityBefriendedCreeperGirl, AbstractGirlModel<EntityBefriendedCreeperGirl>>
+public class BefriendedCreeperGirlPowerLayer extends EnergySwirlLayer<HmagCreeperGirlEntity, AbstractGirlModel<HmagCreeperGirlEntity>>
 {
 	private static final ResourceLocation TEX = new ResourceLocation("textures/entity/creeper/creeper_armor.png");
-	private final BefriendedCreeperGirlArmorModel<EntityBefriendedCreeperGirl> model;
+	private final BefriendedCreeperGirlArmorModel<HmagCreeperGirlEntity> model;
 
-	public BefriendedCreeperGirlPowerLayer(RenderLayerParent<EntityBefriendedCreeperGirl, AbstractGirlModel<EntityBefriendedCreeperGirl>> renderLayerParent, EntityModelSet modelSet)
+	public BefriendedCreeperGirlPowerLayer(RenderLayerParent<HmagCreeperGirlEntity, AbstractGirlModel<HmagCreeperGirlEntity>> renderLayerParent, EntityModelSet modelSet)
 	{
 		super(renderLayerParent);
 		this.model = new BefriendedCreeperGirlArmorModel<>(modelSet.bakeLayer(ModModelLayers.CREEPER_GIRL_POWER_ARMOR));
@@ -39,7 +39,7 @@ public class BefriendedCreeperGirlPowerLayer extends EnergySwirlLayer<EntityBefr
 	}
 
 	@Override
-	protected EntityModel<EntityBefriendedCreeperGirl> model()
+	protected EntityModel<HmagCreeperGirlEntity> model()
 	{
 		return this.model;
 	}

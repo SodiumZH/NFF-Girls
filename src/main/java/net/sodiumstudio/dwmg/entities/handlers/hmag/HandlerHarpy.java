@@ -5,7 +5,7 @@ import com.github.mechalopa.hmag.world.entity.HarpyEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
-import net.sodiumstudio.dwmg.entities.hmag.BefriendedHarpyEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagHarpyEntity;
 
 public class HandlerHarpy extends HandlerSnowCanine
 {
@@ -19,7 +19,7 @@ public class HandlerHarpy extends HandlerSnowCanine
 			variant = h.getVariant();
 		}
 		IBefriendedMob mob = super.befriend(player, target);
-		if (mob instanceof BefriendedHarpyEntity h && variant >= 0)
+		if (mob instanceof HmagHarpyEntity h && variant >= 0)
 		{
 			h.setVariant(variant);
 		}

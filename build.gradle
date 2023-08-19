@@ -205,7 +205,7 @@ dependencies {
 
     implementation fg.deobf("curse.maven:hmag-537613:4526251")
 	implementation fg.deobf("curse.maven:tf-227639:4389567")
-	implementation fg.deobf("curse.maven:gog4-228948:4662801")
+	implementation fg.deobf("curse.maven:gog4-228948:4683679")
 	//implementation fg.deobf("curse.maven:citadel-331936:4556677")
 	//implementation fg.deobf("curse.maven:am-426558:4159154")	
 	//implementation fg.deobf("curse.maven:patchouli-306770:4031402")

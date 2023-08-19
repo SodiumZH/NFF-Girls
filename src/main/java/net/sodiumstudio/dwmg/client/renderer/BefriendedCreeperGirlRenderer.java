@@ -13,10 +13,10 @@ import net.minecraft.util.Mth;
 import net.sodiumstudio.dwmg.client.model.BefriendedCreeperGirlArmorModel;
 import net.sodiumstudio.dwmg.client.model.BefriendedCreeperGirlModel;
 import net.sodiumstudio.dwmg.client.renderer.layers.BefriendedCreeperGirlPowerLayer;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
+import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
 
 // Ported from HMaG CreeperGirlRenderer
-public class BefriendedCreeperGirlRenderer extends AbstractGirlRenderer<EntityBefriendedCreeperGirl, AbstractGirlModel<EntityBefriendedCreeperGirl>>
+public class BefriendedCreeperGirlRenderer extends AbstractGirlRenderer<HmagCreeperGirlEntity, AbstractGirlModel<HmagCreeperGirlEntity>>
 {
 	private static final ResourceLocation TEX0 = new ResourceLocation(HMaG.MODID, "textures/entity/creeper_girl/creeper_girl_0.png");
 	private static final ResourceLocation TEX1 = new ResourceLocation(HMaG.MODID, "textures/entity/creeper_girl/creeper_girl_1.png");
@@ -29,7 +29,7 @@ public class BefriendedCreeperGirlRenderer extends AbstractGirlRenderer<EntityBe
 				new BefriendedCreeperGirlArmorModel<>(context.bakeLayer(ModModelLayers.CREEPER_GIRL_OUTER_ARMOR)));
 	}
 
-	public BefriendedCreeperGirlRenderer(EntityRendererProvider.Context context, BefriendedCreeperGirlModel<EntityBefriendedCreeperGirl> model, AbstractGirlModel<EntityBefriendedCreeperGirl> model1, AbstractGirlModel<EntityBefriendedCreeperGirl> model2)
+	public BefriendedCreeperGirlRenderer(EntityRendererProvider.Context context, BefriendedCreeperGirlModel<HmagCreeperGirlEntity> model, AbstractGirlModel<HmagCreeperGirlEntity> model1, AbstractGirlModel<HmagCreeperGirlEntity> model2)
 	{
 		super(context, model, 0.5F);
 		this.addLayer(new HumanoidArmorLayer<>(this, model1, model2));
@@ -37,7 +37,7 @@ public class BefriendedCreeperGirlRenderer extends AbstractGirlRenderer<EntityBe
 	}
 
 	@Override
-	protected void scale(EntityBefriendedCreeperGirl entity, PoseStack poseStack, float partialTickTime)
+	protected void scale(HmagCreeperGirlEntity entity, PoseStack poseStack, float partialTickTime)
 	{
 		float f = entity.getSwelling(partialTickTime);
 		float f1 = 1.0F + Mth.sin(f * 100.0F) * f * 0.01F;
@@ -50,14 +50,14 @@ public class BefriendedCreeperGirlRenderer extends AbstractGirlRenderer<EntityBe
 	}
 
 	@Override
-	protected float getWhiteOverlayProgress(EntityBefriendedCreeperGirl entity, float partialTicks)
+	protected float getWhiteOverlayProgress(HmagCreeperGirlEntity entity, float partialTicks)
 	{
 		float f = entity.getSwelling(partialTicks);
 		return (int)(f * 10.0F) % 2 == 0 ? 0.0F : Mth.clamp(f, 0.5F, 1.0F);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityBefriendedCreeperGirl entity)
+	public ResourceLocation getTextureLocation(HmagCreeperGirlEntity entity)
 	{
 		switch (entity.getVariant())
 		{
