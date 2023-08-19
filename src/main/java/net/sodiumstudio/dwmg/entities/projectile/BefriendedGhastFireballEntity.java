@@ -12,19 +12,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
-public class BefriendedGhastFireball extends Fireball
+public class BefriendedGhastFireballEntity extends Fireball
 {
 	public float explosionPower = 1f;
 	public boolean breakBlocks = true;
 	public boolean isFromMob = true;
 
-	public BefriendedGhastFireball(EntityType<? extends BefriendedGhastFireball> pEntityType,
+	public BefriendedGhastFireballEntity(EntityType<? extends BefriendedGhastFireballEntity> pEntityType,
 			Level pLevel)
 	{
 		super(pEntityType, pLevel);
 	}
 
-	public BefriendedGhastFireball(Level pLevel, LivingEntity pShooter, double pOffsetX, double pOffsetY,
+	public BefriendedGhastFireballEntity(Level pLevel, LivingEntity pShooter, double pOffsetX, double pOffsetY,
 			double pOffsetZ, float pExplosionPower)
 	{
 		super(EntityType.FIREBALL, pShooter, pOffsetX, pOffsetY, pOffsetZ, pLevel);

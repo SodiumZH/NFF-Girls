@@ -12,11 +12,11 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
+import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
 
 // Ported from HMaG CreeperGirlModel
 @OnlyIn(Dist.CLIENT)
-public class BefriendedCreeperGirlModel<T extends EntityBefriendedCreeperGirl> extends AbstractAdvancedGirlModel<T>
+public class BefriendedCreeperGirlModel<T extends HmagCreeperGirlEntity> extends AbstractAdvancedGirlModel<T>
 {
 	public BefriendedCreeperGirlModel(ModelPart modelPart)
 	{
@@ -48,7 +48,7 @@ public class BefriendedCreeperGirlModel<T extends EntityBefriendedCreeperGirl> e
 		doAnim(entityIn, ageInTicks, this.attackTime, this);
 	}
 
-	public static void doAnim(EntityBefriendedCreeperGirl entityIn, float ageInTicks, float attackTime, AbstractGirlModel<?> model)
+	public static void doAnim(HmagCreeperGirlEntity entityIn, float ageInTicks, float attackTime, AbstractGirlModel<?> model)
 	{
 		float f = Mth.sin(attackTime * (float)Math.PI);
 		float f1 = Mth.sin((1.0F - (1.0F - attackTime) * (1.0F - attackTime)) * (float)Math.PI);

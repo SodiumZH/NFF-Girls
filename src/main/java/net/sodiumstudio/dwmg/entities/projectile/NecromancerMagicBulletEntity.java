@@ -24,7 +24,7 @@ import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingType
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNecroticReaper;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedNecroticReaper;
+import net.sodiumstudio.dwmg.entities.hmag.HmagNecroticReaperEntity;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 
 public class NecromancerMagicBulletEntity extends MagicBulletEntity
@@ -110,7 +110,7 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 				// Befriended Necrotic Reapers are immune to this magic bullet;
 				// If it's shot by the owner, it will heal the mob and optionally add strength
 				// effect if having a Necromancer's Hat.
-				else if (living instanceof EntityBefriendedNecroticReaper nr)
+				else if (living instanceof HmagNecroticReaperEntity nr)
 				{
 					if (this.getOwner() instanceof Player player && nr.getOwnerUUID().equals(player.getUUID()))
 					{
@@ -157,7 +157,7 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 				// Befriended Necrotic Reapers are immune to this magic bullet;
 				// If it's shot by the owner, it will heal the mob and optionally add strength
 				// effect if having a Necromancer's Hat.
-				else if (living instanceof EntityBefriendedNecroticReaper nr)
+				else if (living instanceof HmagNecroticReaperEntity nr)
 				{
 					if (this.getOwner() instanceof Player player && nr.getOwnerUUID().equals(player.getUUID()))
 					{

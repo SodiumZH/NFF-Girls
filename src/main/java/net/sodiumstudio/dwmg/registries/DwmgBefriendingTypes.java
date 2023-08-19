@@ -21,7 +21,7 @@ import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSnowCanine;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerWitherSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerZombieGirl;
-import net.sodiumstudio.dwmg.entities.handlers.hmag.SlimeGirlBefriendingHandler;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSlimeGirl;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgBefriendingTypes {
@@ -97,6 +97,6 @@ public class DwmgBefriendingTypes {
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.SLIME_GIRL.get(),
 				DwmgEntityTypes.HMAG_SLIME_GIRL.get(),
-				new SlimeGirlBefriendingHandler());	// to be changed
+				new HandlerSlimeGirl());	// to be changed
 	}
 }

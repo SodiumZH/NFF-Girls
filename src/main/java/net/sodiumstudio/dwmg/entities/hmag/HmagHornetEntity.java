@@ -63,9 +63,9 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ItemHelper;
-public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefriendedMob
+public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 {
-	public EntityBefriendedHornet(EntityType<? extends HornetEntity> pEntityType, Level pLevel) {
+	public HmagHornetEntity(EntityType<? extends HornetEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
@@ -275,9 +275,9 @@ public class EntityBefriendedHornet extends HornetEntity implements IDwmgBefrien
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EntityBefriendedHornet.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagHornetEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedHornet.class, EntityDataSerializers.INT);
+			.defineId(HmagHornetEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {

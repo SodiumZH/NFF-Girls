@@ -16,6 +16,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -87,16 +88,17 @@ import net.sodiumstudio.dwmg.entities.ai.goals.BefriendableWatchHandItemGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.GhastlySeekerRandomFlyGoalDwmgAdjusted;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerItemDropping;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedDrownedGirl;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedGhastlySeeker;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHornet;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedHuskGirl;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedSkeletonGirl;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedStrayGirl;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedWitherSkeletonGirl;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedZombieGirl;
+import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagDrownedGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagGhastlySeekerEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagHornetEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagHuskGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagSkeletonGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagStrayGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagWitherSkeletonGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagZombieGirlEntity;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
+import net.sodiumstudio.dwmg.events.hooks.DwmgHooks;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.item.TransferringTagItem;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
@@ -172,7 +174,7 @@ public class DwmgEntityEvents
 	        }
 	        
 	        // Handle Ghastly Seeker
-	        if (mob instanceof EntityBefriendedGhastlySeeker gs)
+	        if (mob instanceof HmagGhastlySeekerEntity gs)
 	        {
 	        	// If last target is still attackable, prevent removing target
 	        	if (target == null 
@@ -242,7 +244,7 @@ public class DwmgEntityEvents
 				return;
 		}
 		
-		if (event.getMob() instanceof EntityBefriendedCreeperGirl cg)
+		if (event.getMob() instanceof HmagCreeperGirlEntity cg)
 		{
 			if (cg.isPowered())
 				cg.spawnAtLocation(new ItemStack(ModItems.LIGHTNING_PARTICLE.get(), 1));
@@ -764,6 +766,26 @@ public class DwmgEntityEvents
 		{
 			if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof LivingEntity source)
 			{
+				// Handle Peach-Wood Sword
+				if (mob.getMobType() == MobType.UNDEAD 
+						&& source instanceof Player player 
+						&& player.getItemInHand(InteractionHand.MAIN_HAND).is(DwmgItems.PEACH_WOOD_SWORD.get()))
+				{
+					// For undead mobs, it will force hurt a half, at most 50
+					float newDmg = (float) Math.min(50d, mob.getAttributeValue(Attributes.MAX_HEALTH) / 2d);
+					if (event.getAmount() < newDmg)
+					{
+						float oldDmg = event.getAmount();
+						DwmgHooks.PeachWoodSwordForceHurtEvent dmgEvent = new DwmgHooks.PeachWoodSwordForceHurtEvent(player, mob, oldDmg, newDmg);
+						if (!MinecraftForge.EVENT_BUS.post(dmgEvent))
+						{
+							event.setAmount(dmgEvent.newDamage);
+							player.getItemInHand(InteractionHand.MAIN_HAND).hurtAndBreak(Math.round(5f * oldDmg / newDmg), player, 
+									l -> l.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+						}
+					}
+				}
+				
 				// Favorbility change
 				// On player attack a mob attacking the BM
 				if (source instanceof Player player 
@@ -840,20 +862,20 @@ public class DwmgEntityEvents
 					&& !(EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID))	// Exclude HMAG mob girls
 					/*&& AiHelper.isMobHostileToPlayer(mob)*/)	// For hostile mobs only // Something is wrong with AiHelper#isMobHostileToPlayer
 				{
-					AiHelper.setHostileTo(mob, EntityBefriendedZombieGirl.class);
-					AiHelper.setHostileTo(mob, EntityBefriendedHuskGirl.class);
-					AiHelper.setHostileTo(mob, EntityBefriendedDrownedGirl.class);
-					AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class);
+					AiHelper.setHostileTo(mob, HmagZombieGirlEntity.class);
+					AiHelper.setHostileTo(mob, HmagHuskGirlEntity.class);
+					AiHelper.setHostileTo(mob, HmagDrownedGirlEntity.class);
+					AiHelper.setHostileTo(mob, HmagCreeperGirlEntity.class);
 				}
 				// Zombies (including Zombified Piglins and Zoglins) hostile to skeletons & creepers
 				if ((mob instanceof Zombie || mob instanceof Zoglin)
 						&& !(EntityType.getKey(mob.getType()).getNamespace().equals(HMaG.MODID)))	// Exclude HMAG mob girls
 				{
 					//Debug.printToScreen("Zombie add hostility", player);
-					AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class);
-					AiHelper.setHostileTo(mob, EntityBefriendedStrayGirl.class);
-					AiHelper.setHostileTo(mob, EntityBefriendedWitherSkeletonGirl.class);
-					AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class);
+					AiHelper.setHostileTo(mob, HmagSkeletonGirlEntity.class);
+					AiHelper.setHostileTo(mob, HmagStrayGirlEntity.class);
+					AiHelper.setHostileTo(mob, HmagWitherSkeletonGirlEntity.class);
+					AiHelper.setHostileTo(mob, HmagCreeperGirlEntity.class);
 					/*Debug.printToScreen("Zombie add hostility end", player);
 					for (WrappedGoal wg: mob.goalSelector.getAvailableGoals())
 					{
@@ -883,9 +905,9 @@ public class DwmgEntityEvents
 				// Blaze attacks all flying mobs and skeletons (excluding wither)
 				if (mob instanceof Blaze)
 				{
-					AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class);
-					AiHelper.setHostileTo(mob, EntityBefriendedStrayGirl.class);
-					AiHelper.setHostileTo(mob, EntityBefriendedHornet.class);
+					AiHelper.setHostileTo(mob, HmagSkeletonGirlEntity.class);
+					AiHelper.setHostileTo(mob, HmagStrayGirlEntity.class);
+					AiHelper.setHostileTo(mob, HmagHornetEntity.class);
 				}
 				if (mob instanceof Spider)
 				{
@@ -943,18 +965,18 @@ public class DwmgEntityEvents
 	public static void setHostileToAllBefriendedMobs(Mob mob, Predicate<LivingEntity> condition)
 	{
 		AiHelper.setHostileTo(mob, Mob.class, condition.and(m -> m instanceof IDwmgBefriendedMob));
-		/*AiHelper.setHostileTo(mob, EntityBefriendedZombieGirl.class, condition);
-		AiHelper.setHostileTo(mob, EntityBefriendedHuskGirl.class, condition);
-		AiHelper.setHostileTo(mob, EntityBefriendedDrownedGirl.class, condition);
-		AiHelper.setHostileTo(mob, EntityBefriendedSkeletonGirl.class, condition);
-		AiHelper.setHostileTo(mob, EntityBefriendedStrayGirl.class, condition);
-		AiHelper.setHostileTo(mob, EntityBefriendedWitherSkeletonGirl.class, condition);
-		AiHelper.setHostileTo(mob, EntityBefriendedCreeperGirl.class, condition);
-		AiHelper.setHostileTo(mob, EntityBefriendedEnderExecutor.class, condition);
-		AiHelper.setHostileTo(mob, EntityBefriendedHornet.class, condition);
-		AiHelper.setHostileTo(mob, EntityBefriendedNecroticReaper.class, condition);
-		AiHelper.setHostileTo(mob, EntityBefriendedBanshee.class, condition);
-		AiHelper.setHostileTo(mob, EntityBefriendedGhastlySeeker.class, condition);*/
+		/*AiHelper.setHostileTo(mob, HmagZombieGirlEntity.class, condition);
+		AiHelper.setHostileTo(mob, HmagHuskGirlEntity.class, condition);
+		AiHelper.setHostileTo(mob, HmagDrownedGirlEntity.class, condition);
+		AiHelper.setHostileTo(mob, HmagSkeletonGirlEntity.class, condition);
+		AiHelper.setHostileTo(mob, HmagStrayGirlEntity.class, condition);
+		AiHelper.setHostileTo(mob, HmagWitherSkeletonGirlEntity.class, condition);
+		AiHelper.setHostileTo(mob, HmagCreeperGirlEntity.class, condition);
+		AiHelper.setHostileTo(mob, HmagEnderExecutorEntity.class, condition);
+		AiHelper.setHostileTo(mob, HmagHornetEntity.class, condition);
+		AiHelper.setHostileTo(mob, HmagNecroticReaperEntity.class, condition);
+		AiHelper.setHostileTo(mob, HmagBansheeEntity.class, condition);
+		AiHelper.setHostileTo(mob, HmagGhastlySeekerEntity.class, condition);*/
 		// Extending...
 	}
 
@@ -972,7 +994,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onMobGriefing(EntityMobGriefingEvent event)
 	{
-		if (event.getEntity() instanceof EntityBefriendedGhastlySeeker gs)
+		if (event.getEntity() instanceof HmagGhastlySeekerEntity gs)
 		{
 		}
 	}

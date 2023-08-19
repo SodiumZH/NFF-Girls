@@ -61,11 +61,11 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 // Adjusted from EnderExcutor in HMaG
-public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan implements IBeamAttackMob, IDwmgBefriendedMob
+public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implements IBeamAttackMob, IDwmgBefriendedMob
 {
 
-	protected static final EntityDataAccessor<Integer> ATTACKING_TIME = SynchedEntityData.defineId(EntityBefriendedEnderExecutor.class, EntityDataSerializers.INT);
-	protected static final EntityDataAccessor<Integer> ATTACK_TARGET = SynchedEntityData.defineId(EntityBefriendedEnderExecutor.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> ATTACKING_TIME = SynchedEntityData.defineId(HmagEnderExecutorEntity.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> ATTACK_TARGET = SynchedEntityData.defineId(HmagEnderExecutorEntity.class, EntityDataSerializers.INT);
 	protected LivingEntity targetedEntity;
 	protected int clientAttackTime;
 	public boolean reduceDamage = true;
@@ -78,7 +78,7 @@ public class EntityBefriendedEnderExecutor extends AbstractBefriendedEnderMan im
 		this.entityData.set(DATA_AISTATE, 1);
 	}
 	
-	public EntityBefriendedEnderExecutor(EntityType<? extends EntityBefriendedEnderExecutor> type, Level worldIn)
+	public HmagEnderExecutorEntity(EntityType<? extends HmagEnderExecutorEntity> type, Level worldIn)
 	{
 		super(type, worldIn);
 		this.xpReward = 0;

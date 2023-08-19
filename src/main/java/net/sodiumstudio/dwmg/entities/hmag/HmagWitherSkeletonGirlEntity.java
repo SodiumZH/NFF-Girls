@@ -62,10 +62,10 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 
-public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity implements IDwmgBefriendedMob, IBaubleHolder
+public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity implements IDwmgBefriendedMob, IBaubleHolder
 {
 	
-	public EntityBefriendedWitherSkeletonGirl(EntityType<? extends EntityBefriendedWitherSkeletonGirl> pEntityType, Level pLevel) {
+	public HmagWitherSkeletonGirlEntity(EntityType<? extends HmagWitherSkeletonGirlEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
@@ -80,9 +80,9 @@ public class EntityBefriendedWitherSkeletonGirl extends WitherSkeletonGirlEntity
 	// ------------------ Data sync ------------------ //
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EntityBefriendedWitherSkeletonGirl.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagWitherSkeletonGirlEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedWitherSkeletonGirl.class, EntityDataSerializers.INT);
+			.defineId(HmagWitherSkeletonGirlEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {

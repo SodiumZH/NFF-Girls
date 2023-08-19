@@ -55,7 +55,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.movecontrol.BefriendedFlyingMoveControl;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
-import net.sodiumstudio.dwmg.entities.projectile.BefriendedGhastFireball;
+import net.sodiumstudio.dwmg.entities.projectile.BefriendedGhastFireballEntity;
 import net.sodiumstudio.dwmg.events.DwmgEntityEvents;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuGhastlySeeker;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -65,7 +65,7 @@ import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
  * NOT IMPLEMENTED YET
  */
 
-public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implements IDwmgBefriendedMob
+public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwmgBefriendedMob
 {
 	
 	/** Handled in {@link DwmgEntityEvents#onLivingSetAttackTarget} */
@@ -76,9 +76,9 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EntityBefriendedGhastlySeeker.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagGhastlySeekerEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedGhastlySeeker.class, EntityDataSerializers.INT);
+			.defineId(HmagGhastlySeekerEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
@@ -99,7 +99,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 
 	/* Initialization */
 
-	public EntityBefriendedGhastlySeeker(EntityType<? extends EntityBefriendedGhastlySeeker> pEntityType, Level pLevel) {
+	public HmagGhastlySeekerEntity(EntityType<? extends HmagGhastlySeekerEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
@@ -125,7 +125,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 	@Override
 	protected void registerGoals() {				
 		this.goalSelector.addGoal(5, new BefriendedFlyingLandGoal(this));
-		this.goalSelector.addGoal(6, new EntityBefriendedGhastlySeeker.FollowOwnerGoal(this));
+		this.goalSelector.addGoal(6, new HmagGhastlySeekerEntity.FollowOwnerGoal(this));
 		this.goalSelector.addGoal(7, new FireballAttackGoal(this));
 		this.goalSelector.addGoal(8, new BefriendedFlyingRandomMoveGoal(this, 0.25d, 20, 8, 2));
 		this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
@@ -323,9 +323,9 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 	
 	public static class FireballAttackGoal extends BefriendedGoal implements HmagFlyingGoal
 	{
-		private final EntityBefriendedGhastlySeeker parent;
+		private final HmagGhastlySeekerEntity parent;
 		public int attackTimer;
-		public FireballAttackGoal(EntityBefriendedGhastlySeeker mob)
+		public FireballAttackGoal(HmagGhastlySeekerEntity mob)
 		{
 			super(mob);
 			this.parent = mob;
@@ -398,7 +398,7 @@ public class EntityBefriendedGhastlySeeker extends GhastlySeekerEntity implement
 					Vec3 velocity = target.getBoundingBox().getCenter().subtract(pos).normalize().scale(speed);
 					
 					
-					BefriendedGhastFireball fireball = new BefriendedGhastFireball(world, this.parent, velocity.x, velocity.y, velocity.z, this.parent.calculateExplosionPower());					
+					BefriendedGhastFireballEntity fireball = new BefriendedGhastFireballEntity(world, this.parent, velocity.x, velocity.y, velocity.z, this.parent.calculateExplosionPower());					
 					fireball.setPos(pos);
 					if (mob.getAdditionalInventory().getItem(4).is(Items.FIRE_CHARGE))
 						fireball.breakBlocks = false;

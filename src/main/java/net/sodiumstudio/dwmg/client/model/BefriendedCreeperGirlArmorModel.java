@@ -10,11 +10,11 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedCreeperGirl;
+import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
 
 // Ported from HMaG CreeperGirlArmorModel
 @OnlyIn(Dist.CLIENT)
-public class BefriendedCreeperGirlArmorModel<T extends EntityBefriendedCreeperGirl> extends GirlArmorModel<T>
+public class BefriendedCreeperGirlArmorModel<T extends HmagCreeperGirlEntity> extends GirlArmorModel<T>
 {
 	public BefriendedCreeperGirlArmorModel(ModelPart modelPart)
 	{

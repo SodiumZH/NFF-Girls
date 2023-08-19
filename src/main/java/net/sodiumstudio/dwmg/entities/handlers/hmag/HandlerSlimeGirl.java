@@ -27,7 +27,7 @@ import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.math.LinearColor;
 import net.sodiumstudio.nautils.math.RndUtil;
 
-public class SlimeGirlBefriendingHandler extends HandlerItemGivingProgress
+public class HandlerSlimeGirl extends HandlerItemGivingProgress
 {
 
 	protected static Random rnd = new Random();

@@ -10,7 +10,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.dwmg.blocks.BlockSoulCarpet;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedNecroticReaper;
+import net.sodiumstudio.dwmg.entities.hmag.HmagNecroticReaperEntity;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
@@ -38,7 +38,7 @@ public class ItemNecromancerArmor extends ArmorItem
 			if (living instanceof Player p)
 			{
 				// Nearby Necrotic Reapers add regeneration
-				int regLvl = EntityBefriendedNecroticReaper.countNearby(p) - 1;
+				int regLvl = HmagNecroticReaperEntity.countNearby(p) - 1;
 				// Max level 3
 				if (regLvl > 2)
 					regLvl = 2;

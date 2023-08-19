@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.dwmg.client.model.BefriendedEnderExecutorModel;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedEnderExecutor;
+import net.sodiumstudio.dwmg.entities.hmag.HmagEnderExecutorEntity;
 
 @OnlyIn(Dist.CLIENT)
 public class BefriendedEnderExecutorEyesLayer<T extends EntityBefriendedEnderExecutor, M extends BefriendedEnderExecutorModel<T>> extends EyesLayer2<T, M>

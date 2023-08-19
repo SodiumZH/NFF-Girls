@@ -59,15 +59,15 @@ import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.TagHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
 
-public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefriendedMob, IBlockLocator
+public class HmagKoboldEntity extends KoboldEntity implements IDwmgBefriendedMob, IBlockLocator
 {
 
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EntityBefriendedKobold.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagKoboldEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedKobold.class, EntityDataSerializers.INT);
+			.defineId(HmagKoboldEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
@@ -88,7 +88,7 @@ public class EntityBefriendedKobold extends KoboldEntity implements IDwmgBefrien
 
 	/* Initialization */
 
-	public EntityBefriendedKobold(EntityType<? extends EntityBefriendedKobold> pEntityType, Level pLevel) {
+	public HmagKoboldEntity(EntityType<? extends HmagKoboldEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);

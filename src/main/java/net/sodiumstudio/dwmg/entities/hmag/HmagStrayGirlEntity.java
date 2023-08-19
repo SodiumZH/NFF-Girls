@@ -6,8 +6,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.github.mechalopa.hmag.registry.ModItems;
-import com.github.mechalopa.hmag.world.entity.SkeletonGirlEntity;
+import com.github.mechalopa.hmag.world.entity.StrayGirlEntity;
 
+import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -49,6 +50,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.befriendmobs.registry.BMItems;
+import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
@@ -66,11 +68,11 @@ import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
-public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
+public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
 
 	
-	public EntityBefriendedSkeletonGirl(EntityType<? extends EntityBefriendedSkeletonGirl> pEntityType, Level pLevel) {
+	public HmagStrayGirlEntity(EntityType<? extends HmagStrayGirlEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
@@ -79,15 +81,15 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 
 	public static Builder createAttributes() 
 	{
-		return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ATTACK_DAMAGE, 3.25D).add(Attributes.ARMOR, 1.0D);
+		 return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ATTACK_DAMAGE, 3.25D).add(Attributes.ARMOR, 1.0D);
 	}
-	
+
 	// ------------------ Data sync ------------------ //
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EntityBefriendedSkeletonGirl.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagStrayGirlEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedSkeletonGirl.class, EntityDataSerializers.INT);
+			.defineId(HmagStrayGirlEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
@@ -124,7 +126,6 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
 		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
 		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
-		
 	}
 	
 	/* Bow shooting related */
@@ -221,8 +222,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 			{
 				additionalInventory.swapItem(4, 7);
 				updateFromInventory();
-			}
-			
+			}			
 		}
 	}
 	
@@ -232,8 +232,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	{}
 	
 	/* Bow shooting end */
-
-
+	
 	/* Interaction */
 
 	@Override
@@ -253,13 +252,29 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 			if (player.getUUID().equals(getOwnerUUID())) {
 				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
-					if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+					if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL) && isFromSkeleton)
+					{
+						// Use flint&steel
+						this.level.playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE,
+								this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
+						if (!this.level.isClientSide)
+						{
+							player.getItemInHand(hand).hurtAndBreak(1, player, (p) ->
+							{
+								p.broadcastBreakEvent(hand);
+							});
+						}
+						// and convert
+						this.convertToSkeleton();
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					} 
+					else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 					{}
 					else if (hand == InteractionHand.MAIN_HAND
 							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 					{
 						switchAIState();
-					}		
+					}
 					else return InteractionResult.PASS;
 				}
 				return InteractionResult.sidedSuccess(player.level.isClientSide);
@@ -322,44 +337,30 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
+		nbt.put("is_from_skeleton", ByteTag.valueOf(isFromSkeleton));
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
+		isFromSkeleton = nbt.getBoolean("is_from_skeleton");
 		setInit();
 	}
 	
 	/* Conversion */
 	
-	
-	@Override
-	protected void doFreezeConversion() {
-		this.convertToStray();
-		if (!this.isSilent())
-		{
-			this.level.levelEvent((Player) null, 1041, this.blockPosition(), 0);
-		}
-	}	
-	
-	public void forceFreezeConversion()
+	public boolean isFromSkeleton = false;	
+
+	public HmagSkeletonGirlEntity convertToSkeleton()
 	{
-		this.doFreezeConversion();
-	}
-	
-	// Called when convert to stray
-	protected EntityBefriendedStrayGirl convertToStray()
-	{
-		EntityBefriendedStrayGirl newMob = (EntityBefriendedStrayGirl)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.HMAG_STRAY_GIRL.get());
-		newMob.isFromSkeleton = true;
+		HmagSkeletonGirlEntity newMob = (HmagSkeletonGirlEntity)BefriendedHelper.convertToOtherBefriendedType(this, DwmgEntityTypes.HMAG_SKELETON_GIRL.get());
 		newMob.setInit();
 		return newMob;
 	}
-
+	
 	/* IBefriendedUndeadMob interface */
-
-	// Implementation is in aiStep()
+	
 	@Override
 	public void setupSunImmunityRules() {
 		this.sunImmuneConditions().put("sunhat", () -> {			
@@ -375,7 +376,6 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		this.sunImmuneConditions().put("resis_amulet", () -> this.hasDwmgBauble("resistance_amulet"));
 	}
 	
-	
 	/* IBaubleHolder interface */
 
 	@Override
@@ -384,6 +384,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 		map.put("0", this.getAdditionalInventory().getItem(6));
 		return map;
 	}
+	
 	@Override
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.UNDEAD;
@@ -400,6 +401,7 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
 
+	
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
@@ -417,7 +419,6 @@ public class EntityBefriendedSkeletonGirl extends SkeletonGirlEntity implements 
 
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
-	
 	
 	
 }

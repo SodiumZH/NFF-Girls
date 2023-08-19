@@ -15,19 +15,19 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.sodiumstudio.dwmg.client.model.BefriendedEnderExecutorModel;
-import net.sodiumstudio.dwmg.entities.hmag.EntityBefriendedEnderExecutor;
+import net.sodiumstudio.dwmg.entities.hmag.HmagEnderExecutorEntity;
 
 @OnlyIn(Dist.CLIENT)
-public class BefriendedEnderExecutorCarriedBlockLayer extends RenderLayer<EntityBefriendedEnderExecutor, BefriendedEnderExecutorModel<EntityBefriendedEnderExecutor>>
+public class BefriendedEnderExecutorCarriedBlockLayer extends RenderLayer<HmagEnderExecutorEntity, BefriendedEnderExecutorModel<HmagEnderExecutorEntity>>
 {
-	public BefriendedEnderExecutorCarriedBlockLayer(RenderLayerParent<EntityBefriendedEnderExecutor, BefriendedEnderExecutorModel<EntityBefriendedEnderExecutor>> renderLayerParent)
+	public BefriendedEnderExecutorCarriedBlockLayer(RenderLayerParent<HmagEnderExecutorEntity, BefriendedEnderExecutorModel<HmagEnderExecutorEntity>> renderLayerParent)
 	{
 		super(renderLayerParent);
 	}
 
 	@SuppressWarnings("resource")
 	@Override
-	public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, EntityBefriendedEnderExecutor entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch)
+	public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, HmagEnderExecutorEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		BlockState blockstate = entity.getCarriedBlock();
 

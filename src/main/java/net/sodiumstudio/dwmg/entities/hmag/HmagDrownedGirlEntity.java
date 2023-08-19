@@ -69,12 +69,12 @@ import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
-public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob, IBefriendedAmphibious
+public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob, IBefriendedAmphibious
 {
 
 	/* Initialization */
 
-	public EntityBefriendedDrownedGirl(EntityType<? extends EntityBefriendedDrownedGirl> pEntityType, Level pLevel)
+	public HmagDrownedGirlEntity(EntityType<? extends HmagDrownedGirlEntity> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
@@ -90,9 +90,9 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements ID
 	// ------------------ Data sync ------------------ //
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EntityBefriendedDrownedGirl.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagDrownedGirlEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedDrownedGirl.class, EntityDataSerializers.INT);
+			.defineId(HmagDrownedGirlEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
@@ -185,7 +185,7 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements ID
 					if (player.getItemInHand(hand).is(Items.SPONGE) && isFromZombie) {
 						player.getItemInHand(hand).shrink(1);
 						this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
-						EntityBefriendedZombieGirl z = this.convertToZombie();
+						HmagZombieGirlEntity z = this.convertToZombie();
 						z.isFromHusk = this.isFromHusk;
 					} 
 					else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
@@ -277,8 +277,8 @@ public class EntityBefriendedDrownedGirl extends DrownedGirlEntity implements ID
 	public boolean isFromHusk = false;
 	public boolean isFromZombie = false;
 
-	public EntityBefriendedZombieGirl convertToZombie() {
-		EntityBefriendedZombieGirl newMob = (EntityBefriendedZombieGirl) BefriendedHelper
+	public HmagZombieGirlEntity convertToZombie() {
+		HmagZombieGirlEntity newMob = (HmagZombieGirlEntity) BefriendedHelper
 				.convertToOtherBefriendedType(this, DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get());
 		newMob.isFromHusk = isFromHusk;
 		newMob.setInit();

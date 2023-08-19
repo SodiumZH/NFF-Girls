@@ -65,15 +65,15 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
-public class EntityBefriendedNecroticReaper extends NecroticReaperEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
+public class HmagNecroticReaperEntity extends NecroticReaperEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
 {
 
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(EntityBefriendedNecroticReaper.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagNecroticReaperEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(EntityBefriendedNecroticReaper.class, EntityDataSerializers.INT);
+			.defineId(HmagNecroticReaperEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
@@ -94,7 +94,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 
 	/* Initialization */
 
-	public EntityBefriendedNecroticReaper(EntityType<? extends EntityBefriendedNecroticReaper> pEntityType, Level pLevel) {
+	public HmagNecroticReaperEntity(EntityType<? extends HmagNecroticReaperEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
@@ -125,7 +125,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 			@Override
 			public boolean checkCanUse()
 			{
-				return super.checkCanUse() && ((EntityBefriendedNecroticReaper)mob).controllable();
+				return super.checkCanUse() && ((HmagNecroticReaperEntity)mob).controllable();
 			}
 		}
 				.avoidSunCondition(DwmgEntityHelper::isSunSensitive));
@@ -135,7 +135,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 			public boolean checkCanUse()
 			{
 				return super.checkCanUse() 
-						&& !(((EntityBefriendedNecroticReaper)mob).controllable() && mob.getAIState() == BefriendedAIState.FOLLOW);
+						&& !(((HmagNecroticReaperEntity)mob).controllable() && mob.getAIState() == BefriendedAIState.FOLLOW);
 			}
 		}
 		.allowState(BefriendedAIState.FOLLOW));		
@@ -148,7 +148,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 			@Override
 			public boolean checkCanUse()
 			{
-				return super.checkCanUse() && ((EntityBefriendedNecroticReaper)mob).controllable();
+				return super.checkCanUse() && ((HmagNecroticReaperEntity)mob).controllable();
 			}
 		});
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
@@ -157,7 +157,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 			@Override
 			public boolean checkCanUse()
 			{
-				return super.checkCanUse() && ((EntityBefriendedNecroticReaper)mob).controllable();
+				return super.checkCanUse() && ((HmagNecroticReaperEntity)mob).controllable();
 			}
 		});
 		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
@@ -175,7 +175,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 	@SubscribeEvent
 	public static void onAttack(LivingHurtEvent event)
 	{/*
-		if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityBefriendedNecroticReaper nr)
+		if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof HmagNecroticReaperEntity nr)
 		{
 			if (!nr.getAdditionalInventory().getItem(0).isEmpty() && nr.getAdditionalInventory().getItem(0).getItem() instanceof HoeItem hoe)
 			{
@@ -391,7 +391,7 @@ public class EntityBefriendedNecroticReaper extends NecroticReaperEntity impleme
 		int count = 0;
 		for (Entity e: entityList)
 		{
-			if (e instanceof EntityBefriendedNecroticReaper nr
+			if (e instanceof HmagNecroticReaperEntity nr
 					&& nr.getOwnerUUID() != null // On Necrotic Reaper befriended, a nullptr exception occured here
 					&& nr.getOwnerUUID().equals(player.getUUID())
 					&& nr.distanceToSqr(player) <= 64d)
