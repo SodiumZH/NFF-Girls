@@ -16,6 +16,7 @@
   "item.dwmg.commanding_wand": "指挥杖",
   "item.dwmg.evil_magnet": "邪恶磁铁",
   "item.dwmg.netherite_fork": "下界合金叉",
+  "item.dwmg.peach_wood_sword": "桃木剑",
 
   "item.dwmg.poisonous_thorn": "剧毒棘刺",
   "item.dwmg.healing_jade": "治愈勾玉",
@@ -41,6 +42,7 @@
   "item.dwmg.magical_gel_bottle.color": "颜色：",
   "item.dwmg.magical_gel_bottle.color_unknown": "颜色：未知",
   "item.dwmg.magical_gel_bottle.check_color": "右键使用以确认颜色",
+  "item.dwmg.taoist_talisman": "道符",
   
   "block.dwmg.soul_cake" : "灵魂蛋糕",
   "block.dwmg.soul_carpet" : "灵魂地毯",

@@ -3,6 +3,7 @@ package net.sodiumstudio.dwmg.util;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
+import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.TagHelper;
 
@@ -90,4 +92,9 @@ public class DwmgEntityHelper
 		}
 	}
 
+	public static void sendCriticalParticlesToLivingDefault(LivingEntity entity, float heightOffset, int amount)
+	{
+		EntityHelper.sendParticlesToEntity(entity, ParticleTypes.CRIT, entity.getBbHeight() - 0.2 + heightOffset, 0.5d, amount, 0.1d);
+	}
+	
 }

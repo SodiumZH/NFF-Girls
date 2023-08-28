@@ -6,6 +6,7 @@ import com.github.mechalopa.hmag.world.entity.projectile.MagicBulletEntity;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -89,6 +90,7 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 		(e instanceof LivingEntity && !(e instanceof ArmorStand) && e != this.getOwner() && e != ignore))
 		.forEach((Entity e) -> applyEffect(e));
 		EntityHelper.sendParticlesToEntity(this, ParticleTypes.EXPLOSION, 0, 0, 2, 0);
+		this.level.playSound(null, this, SoundEvents.GENERIC_EXPLODE, getSoundSource(), 3.0f, 0.7f);
 	}
 	
 	protected void applyDirectEffect(Entity target)

@@ -1,11 +1,7 @@
 package net.sodiumstudio.dwmg.registries;
 
 import com.github.mechalopa.hmag.HMaG;
-import com.github.mechalopa.hmag.world.entity.HarpyEntity;
-import com.github.mechalopa.hmag.world.entity.ImpEntity;
-import com.github.mechalopa.hmag.world.entity.JiangshiEntity;
-import com.github.mechalopa.hmag.world.entity.SlimeGirlEntity;
-import com.github.mechalopa.hmag.world.entity.SnowCanineEntity;
+import com.github.mechalopa.hmag.world.entity.DodomekiEntity;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -18,24 +14,26 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.entities.hmag.HmagHarpyEntity;
-import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
-import net.sodiumstudio.dwmg.entities.hmag.HmagSnowCanineEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagBansheeEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagDodomekiEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagDrownedGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagDullahanEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagEnderExecutorEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagGhastlySeekerEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagHarpyEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHornetEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHuskGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagImpEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagJiangshiEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagKoboldEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagNecroticReaperEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSkeletonGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagSnowCanineEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagStrayGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagWitherSkeletonGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagZombieGirlEntity;
-import net.sodiumstudio.dwmg.entities.hmag.HmagJiangshiEntity;
 import net.sodiumstudio.dwmg.entities.projectile.BefriendedGhastFireballEntity;
 import net.sodiumstudio.dwmg.entities.projectile.MagicalGelBallEntity;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
@@ -230,6 +228,26 @@ public class DwmgEntityTypes {
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_jiangshi").toString()));
 	
+	public static final RegistryObject<EntityType<HmagDullahanEntity>> HMAG_DULLAHAN = 
+			ENTITY_TYPES.register("hmag_dullahan", () -> EntityType.Builder
+			.of(HmagDullahanEntity::new, MobCategory.CREATURE)
+			.sized(0.6F, 1.75F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_dullahan").toString()));
+	
+	public static final RegistryObject<EntityType<HmagDodomekiEntity>> HMAG_DODOMEKI = 
+			ENTITY_TYPES.register("hmag_dodomeki", () -> EntityType.Builder
+			.of(HmagDodomekiEntity::new, MobCategory.CREATURE)
+			.sized(0.6F, 1.95F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_dodomeki").toString()));
+	
 	@SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
         event.put(DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get(), HmagZombieGirlEntity.createAttributes().build());
@@ -249,6 +267,9 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.HMAG_HARPY.get(), HmagHarpyEntity.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_SNOW_CANINE.get(), HmagSnowCanineEntity.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_SLIME_GIRL.get(), HmagSlimeGirlEntity.createAttributes().build());
+        event.put(DwmgEntityTypes.HMAG_JIANGSHI.get(), DwmgAttributes.HMAG_JIANGSHI_ATTRIBUTES.get().build());
+        event.put(DwmgEntityTypes.HMAG_DULLAHAN.get(), DwmgAttributes.HMAG_DULLAHAN_ATTRIBUTES.get().build());
+        event.put(DwmgEntityTypes.HMAG_DODOMEKI.get(), DwmgAttributes.HMAG_DODOMEKI_ATTRIBUTES.get().build());
 	}
 	
 	// Projectiles

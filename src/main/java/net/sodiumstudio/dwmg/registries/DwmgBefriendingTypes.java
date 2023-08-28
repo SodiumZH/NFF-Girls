@@ -15,6 +15,7 @@ import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHarpy;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHornet;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHuskGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerImp;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerJiangshi;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerKobold;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNecroticReaper;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSkeletonGirl;
@@ -97,6 +98,18 @@ public class DwmgBefriendingTypes {
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.SLIME_GIRL.get(),
 				DwmgEntityTypes.HMAG_SLIME_GIRL.get(),
-				new HandlerSlimeGirl());	// to be changed
+				new HandlerSlimeGirl());
+		BefriendingTypeRegistry.register(
+				ModEntityTypes.JIANGSHI.get(),
+				DwmgEntityTypes.HMAG_JIANGSHI.get(),
+				new HandlerJiangshi());
+		BefriendingTypeRegistry.register(
+				ModEntityTypes.DULLAHAN.get(),
+				DwmgEntityTypes.HMAG_DULLAHAN.get(),
+				new HandlerSkeletonGirl());
+		BefriendingTypeRegistry.register(
+				ModEntityTypes.DODOMEKI.get(),
+				DwmgEntityTypes.HMAG_DODOMEKI.get(),
+				new HandlerSkeletonGirl());
 	}
 }

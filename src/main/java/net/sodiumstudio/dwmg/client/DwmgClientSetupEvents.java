@@ -1,12 +1,15 @@
 package net.sodiumstudio.dwmg.client;
 
 import com.github.mechalopa.hmag.client.renderer.BansheeRenderer;
+import com.github.mechalopa.hmag.client.renderer.DodomekiRenderer;
 import com.github.mechalopa.hmag.client.renderer.DrownedGirlRenderer;
+import com.github.mechalopa.hmag.client.renderer.DullahanRenderer;
 import com.github.mechalopa.hmag.client.renderer.GhastlySeekerRenderer;
 import com.github.mechalopa.hmag.client.renderer.HarpyRenderer;
 import com.github.mechalopa.hmag.client.renderer.HornetRenderer;
 import com.github.mechalopa.hmag.client.renderer.HuskGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.ImpRenderer;
+import com.github.mechalopa.hmag.client.renderer.JiangshiRenderer;
 import com.github.mechalopa.hmag.client.renderer.KoboldRenderer;
 import com.github.mechalopa.hmag.client.renderer.MagicBulletRenderer;
 import com.github.mechalopa.hmag.client.renderer.NecroticReaperRenderer;
@@ -30,6 +33,8 @@ import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiBanshee;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiBowSecWeaponOneBauble;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiCreeperGirl;
+import net.sodiumstudio.dwmg.client.gui.screens.GuiDodomeki;
+import net.sodiumstudio.dwmg.client.gui.screens.GuiDullahan;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiEnderExecutor;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiFourBaubles;
@@ -44,6 +49,8 @@ import net.sodiumstudio.dwmg.client.renderer.BefriendedCreeperGirlRenderer;
 import net.sodiumstudio.dwmg.client.renderer.BefriendedEnderExecutorRenderer;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuCreeper;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuDodomeki;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuDullahan;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEnderExecutor;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
@@ -84,6 +91,9 @@ public class DwmgClientSetupEvents
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_HARPY.get(), HarpyRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_SNOW_CANINE.get(), SnowCanineRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_SLIME_GIRL.get(), SlimeGirlRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_JIANGSHI.get(), JiangshiRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_DULLAHAN.get(), DullahanRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_DODOMEKI.get(), DodomekiRenderer::new);
         
         event.registerEntityRenderer(DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get(), MagicBulletRenderer::new); 
         event.registerEntityRenderer(DwmgEntityTypes.BEFRIENDED_GHAST_FIREBALL.get(), c -> new ThrownItemRenderer<>(c, 3.0F, true));
@@ -112,6 +122,8 @@ public class DwmgClientSetupEvents
 		BefriendedGuiScreenMaker.put(InventoryMenuImp.class, (menu) -> new GuiImp(menu, menu.playerInventory, menu.mob));
 		BefriendedGuiScreenMaker.put(InventoryMenuFourBaubles.class, (menu) -> new GuiFourBaubles(menu, menu.playerInventory, menu.mob));
 		BefriendedGuiScreenMaker.put(InventoryMenuSlimeGirl.class, (menu) -> new GuiSlimeGirl(menu, menu.playerInventory, menu.mob));
+		BefriendedGuiScreenMaker.put(InventoryMenuDullahan.class, (menu) -> new GuiDullahan(menu, menu.playerInventory, menu.mob));
+		BefriendedGuiScreenMaker.put(InventoryMenuDodomeki.class, (menu) -> new GuiDodomeki(menu, menu.playerInventory, menu.mob));
 	}
 	
 }
