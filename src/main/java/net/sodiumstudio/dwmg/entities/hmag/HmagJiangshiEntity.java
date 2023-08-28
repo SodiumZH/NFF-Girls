@@ -274,6 +274,7 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 		EntityHelper.addEffectSafe(this, new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 60 * 20, 2));
 		EntityHelper.addEffectSafe(this, new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60 * 20, 1));
 		EntityHelper.addEffectSafe(this, new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 60 * 20));
+		this.getLevelHandler().addExp(20);
 	}
 	
 	@Override
