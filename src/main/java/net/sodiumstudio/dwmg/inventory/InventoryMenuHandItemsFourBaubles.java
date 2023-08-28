@@ -10,7 +10,6 @@ import net.sodiumstudio.nautils.math.IntVec2;
 public abstract class InventoryMenuHandItemsFourBaubles extends InventoryMenuPreset0
 {
 
-
 	protected InventoryMenuHandItemsFourBaubles(int containerId, Inventory playerInventory, Container container,
 			IBefriendedMob mob)
 	{

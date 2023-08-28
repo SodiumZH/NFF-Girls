@@ -32,6 +32,7 @@ import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.item.ItemNecromancerWand;
 import net.sodiumstudio.dwmg.item.MagicalGelBallItem;
 import net.sodiumstudio.dwmg.item.MagicalGelBottleItem;
+import net.sodiumstudio.dwmg.item.TaoistTalismanItem;
 import net.sodiumstudio.dwmg.item.TransferringTagItem;
 import net.sodiumstudio.dwmg.item.UnsweepableSwordItem;
 
@@ -152,7 +153,7 @@ public class DwmgItems {
 	public static final RegistryObject<EmptyMagicalGelBottleItem> EMPTY_MAGICAL_GEL_BOTTLE = ITEMS.register("empty_magical_gel_bottle", () -> new EmptyMagicalGelBottleItem(new Item.Properties().tab(TAB)));
 	public static final RegistryObject<MagicalGelBottleItem> MAGICAL_GEL_BOTTLE = ITEMS.register("magical_gel_bottle", () -> new MagicalGelBottleItem(new Item.Properties()));
 	public static final RegistryObject<MagicalGelBallItem> MAGICAL_GEL_BALL = ITEMS.register("magical_gel_ball", () -> new MagicalGelBallItem(new Item.Properties().tab(TAB)));
-	public static final RegistryObject<Item> TAOIST_TALISMAN = regItemDefault("taoist_talisman");
+	public static final RegistryObject<Item> TAOIST_TALISMAN = ITEMS.register("taoist_talisman", () -> new TaoistTalismanItem(new Item.Properties().tab(TAB)));
 	
 	// Misc
 	public static final RegistryObject<MobRespawnerItem> MOB_RESPAWNER = ITEMS.register("mob_respawner", () -> new DwmgRespawnerItem(new Item.Properties()).setRetainBefriendedMobInventory(false));

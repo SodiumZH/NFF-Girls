@@ -26,7 +26,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 }*/
 
 
-version = '0.1.13.2'
+version = '0.1.14'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'dwmg-1.19.2'
 
@@ -167,9 +167,8 @@ repositories {
     }
   
     maven {
-    // location of the maven that hosts JEI files
-  		  name = "Progwml6 maven"
-  		  url = "https://dvs1.progwml6.com/files/maven/"
+  		name = "Jared Maven"
+  		url = "https://maven.blamejared.com/"
   			}
  	 maven {
   		  // location of a maven mirror for JEI files, as a fallback

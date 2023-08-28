@@ -76,11 +76,7 @@ public class DwmgMobTemplate extends Monster implements IDwmgBefriendedMob {
 		Arrays.fill(this.armorDropChances, 0);
 		Arrays.fill(this.handDropChances, 0);
 	}
-
-	public static Builder createAttributes() {
-		return Monster.createMonsterAttributes()/*.add(...)*/;
-	}
-
+	
 	/* AI */
 
 	@Override

@@ -2,6 +2,10 @@
 
 ## 1.19.2
 
+### 0.1.13.2
+
+Temporarily fixed magical gel bottle vanishing on usage. Now the bottle will always drop on usage, usually being picked up immediately, but if player is overlapping with other item entities it may drop as entity.
+
 ### 0.1.13.1
 
 Now on being attacked by owner, befriended mobs will drop damage depending on the actual taken damage instead of the initial damage before absorption by armor, enchantment, etc.
