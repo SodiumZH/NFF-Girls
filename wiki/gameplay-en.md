@@ -418,6 +418,8 @@ It has 4 bauble slots.
 
 It requires ammo to fire. The ammo slot (explosive icon) accepts either Fire Charges or Blasting Bottles (HMaG). When using Fire Charges, the explosions of the fireballs have normal power and don't break blocks. When using Blasting Bottles, the explosions have 1.5x normal power and break blocks.
 
+It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as vanilla undead mob girls.)
+
 The base explosion power is 1. Each ATK point adds extra 0.1 to the power. 
 
 
@@ -567,6 +569,58 @@ It has 4 Baubles.
 It can be healed with Slimeball(5), Magical Gel Ball (15, not spawning Magical Slime) and Cubic Nucleus(to max) .
 
  
+
+#### Dullahan (0.x.14)
+
+##### Befriending
+
+Identical to Skeleton Girl. (May change in the future)
+
+##### Interaction
+
+Its hand items can be customized. It has 4 bauble slots.
+
+It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as vanilla undead mob girls.)
+
+(More features will be added in the future)
+
+
+
+#### Dodomeki (0.x.14)
+
+##### Befriending
+
+Identical to Skeleton Girl. (May change in the future)
+
+##### Interaction
+
+It has 4 bauble slots.
+
+It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as vanilla undead mob girls.)
+
+(More features will be added in the future)
+
+
+
+#### Jiangshi (0.1.14) (1.19.2 only)
+
+##### Befriending
+
+Firstly, right click to use a Taoist Talisman to freeze it. (Each action can freeze it for 10 s.)
+
+When it's frozen, attack with Peach-Wood Sword to increase the progress (similar to Necrotic Reaper). Each time hit, it will generate more smoke particles and become stronger. The hit will immediately remove the freezing effect.
+
+After 3 hits, a thunder strike will happen and the mob will become much stronger and have ultra long knockback distance. After 6 hits overall, another thunder strike happens and it's done.
+
+##### Interaction
+
+It has 4 baubles.
+
+If it's struck by thunder, it won't take damage but will get strong positive effects (Including Strength III, Resistance III, Speed II and Fire Resistance for 1 min), and get 20 experience.
+
+It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as vanilla undead mob girls.)
+
+
 
 ## Foods
 
@@ -841,3 +895,24 @@ Exp Berry					Lime					1.0
 
 Burning Core			Orange				0.5
 
+
+
+#### Taoist Talisman (0.1.14) (1.19.2 only)
+
+An item that can freeze Jiangshi for 10 seconds.
+
+When applied, the Jiangshi will stop moving and get extra 20 armor. After the 10 seconds, the Talisman will have 2/3 chance to be recovered (dropped). Attack with Peach-Wood Sword can immediately unfreeze it and increase befriending progress (also may recover the Talisman).
+
+
+
+#### Peach-Wood Sword (0.1.14) (1.19.2 only)
+
+A weapon especially effective to undead mobs. It cannot sweep.
+
+When attacking undead mobs (except "wild" Jiangshi, but including befriended ones), it will make the damage half of the mob's max health, bypassing all vanilla damage-reduction mechanisms (armor, enchantment, effect), at most 50. Dealing extra damage will cause extra durability cost. (It has only durability of wooden sword!)
+
+When attacking Jiangshi, it will push the befriending progress if the mob is frozen by Talisman, otherwise give Weakness II effect for 20 s.
+
+For non-undead mobs, it's same as a normal Wooden Sword. 
+
+It can be repaired with Purification Cloth.
