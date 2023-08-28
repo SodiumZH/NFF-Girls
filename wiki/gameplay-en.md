@@ -4,9 +4,9 @@
 
 ### Current version: 
 
-#### 0.0.12 (1.18.2)
+#### 0.0.13.1 (1.18.2)
 
-#### 0.1.13 (1.19.2)
+#### 0.1.14 (1.19.2)
 
 
 
@@ -49,6 +49,14 @@ Kobold (0.x.9)
 Imp (0.x.9)
 
 Harpy (0.x.12)
+
+Slime Girl (0.x.13)
+
+Jiangshi (0.1.14) (1.19.2 only)
+
+Dullahan (0.x.14)
+
+Dodomeki (0.x.14)
 
 ## General befriending methods
 

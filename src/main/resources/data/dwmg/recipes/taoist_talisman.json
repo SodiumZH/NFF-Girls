@@ -1,0 +1,34 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"PLP",
+	"CEC",
+	"PLP"	
+	],
+	
+	"key":{ 
+	
+		"P":{
+		"item": "minecraft:paper"
+		},
+		
+		"C":{
+		"item": "hmag:purification_cloth"
+		},
+		
+		"L":{ 
+		"item": "hmag:lightning_particle"
+		},
+		
+		"E":{ 
+		"item": "hmag:ender_plasm"
+		}		
+	},
+	
+	"result":{ 
+		"item": "dwmg:taoist_talisman",
+		"count": 2
+	}
+}
