@@ -2,6 +2,12 @@
 
 ## 1.19.2
 
+### 0.1.14
+
+Added Jiangshi, Dullahan and Dodomeki support.
+
+Added Taoist Talisman and Peach-Wood Sword.
+
 ### 0.1.13.2
 
 Temporarily fixed magical gel bottle vanishing on usage. Now the bottle will always drop on usage, usually being picked up immediately, but if player is overlapping with other item entities it may drop as entity.
