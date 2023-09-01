@@ -70,6 +70,9 @@
   "entity.dwmg.hmag_harpy": "Harpy",
   "entity.dwmg.hmag_snow_canine": "Snow Canine",
   "entity.dwmg.hmag_slime_girl": "Slime Girl",
+  "entity.dwmg.hmag_jiangshi": "Jiangshi",
+  "entity.dwmg.hmag_dullahan": "Dullahan",
+  "entity.dwmg.hmag_dodomeki": "Dodomeki",
   
   "info.dwmg.necrotic_reaper_not_controllable": "To give command to the Necrotic Reaper, you must have a Necromancer's Hat or Necromancer's Wand.",
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "To open Necrotic Reaper's inventory, you must have a Necromancer's Hat or Necromancer's Wand.",
