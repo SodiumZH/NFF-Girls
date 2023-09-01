@@ -9,7 +9,6 @@ import com.github.mechalopa.hmag.client.renderer.HarpyRenderer;
 import com.github.mechalopa.hmag.client.renderer.HornetRenderer;
 import com.github.mechalopa.hmag.client.renderer.HuskGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.ImpRenderer;
-import com.github.mechalopa.hmag.client.renderer.JiangshiRenderer;
 import com.github.mechalopa.hmag.client.renderer.KoboldRenderer;
 import com.github.mechalopa.hmag.client.renderer.MagicBulletRenderer;
 import com.github.mechalopa.hmag.client.renderer.NecroticReaperRenderer;
@@ -91,7 +90,7 @@ public class DwmgClientSetupEvents
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_HARPY.get(), HarpyRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_SNOW_CANINE.get(), SnowCanineRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_SLIME_GIRL.get(), SlimeGirlRenderer::new);
-        event.registerEntityRenderer(DwmgEntityTypes.HMAG_JIANGSHI.get(), JiangshiRenderer::new);
+        //event.registerEntityRenderer(DwmgEntityTypes.HMAG_JIANGSHI.get(), JiangshiRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_DULLAHAN.get(), DullahanRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_DODOMEKI.get(), DodomekiRenderer::new);
         

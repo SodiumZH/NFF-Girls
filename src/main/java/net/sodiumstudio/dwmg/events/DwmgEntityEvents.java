@@ -4,21 +4,18 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import com.github.mechalopa.hmag.HMaG;
-import com.github.mechalopa.hmag.registry.ModEntityTypes;
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.CreeperGirlEntity;
 import com.github.mechalopa.hmag.world.entity.DyssomniaEntity;
 import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
 import com.github.mechalopa.hmag.world.entity.ImpEntity;
-import com.github.mechalopa.hmag.world.entity.JiangshiEntity;
 import com.github.mechalopa.hmag.world.entity.KoboldEntity;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -84,34 +81,27 @@ import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
 import net.sodiumstudio.befriendmobs.item.MobOwnershipTransfererItem;
 import net.sodiumstudio.befriendmobs.registry.BMCaps;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.FreezeGoal;
 import net.sodiumstudio.dwmg.effects.EffectNecromancerWither;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendablePickItemGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendableWatchHandItemGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.GhastlySeekerRandomFlyGoalDwmgAdjusted;
-import net.sodiumstudio.dwmg.entities.ai.goals.JiangshiMutableLeapGoal;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerItemDropping;
-import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerJiangshi;
 import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagDrownedGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagGhastlySeekerEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHornetEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHuskGirlEntity;
-import net.sodiumstudio.dwmg.entities.hmag.HmagJiangshiEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSkeletonGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagStrayGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagWitherSkeletonGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagZombieGirlEntity;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
-import net.sodiumstudio.dwmg.events.hooks.DwmgHooks;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
-import net.sodiumstudio.dwmg.item.TransferringTagItem;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgDamageSources;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
-import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.AiHelper;
@@ -775,38 +765,30 @@ public class DwmgEntityEvents
 			if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof LivingEntity source)
 			{
 				// Handle Peach-Wood Sword
-				if (mob.getMobType() == MobType.UNDEAD 
+			/*	if (mob.getMobType() == MobType.UNDEAD 
 						&& source instanceof Player player 
 						&& player.getItemInHand(InteractionHand.MAIN_HAND).is(DwmgItems.PEACH_WOOD_SWORD.get()))
 				{
-					// For Jiangshi, processed in befriending handler
-					if (mob.getType() == ModEntityTypes.JIANGSHI.get())
+					
+					float newDmg = (float) Math.min(50d, mob.getAttributeValue(Attributes.MAX_HEALTH) / 2d);
+					if (event.getAmount() < newDmg)
 					{
-						if (BefriendingTypeRegistry.getHandler(mob) instanceof HandlerJiangshi handler)
+						float oldDmg = event.getAmount();
+						DwmgHooks.PeachWoodSwordForceHurtEvent dmgEvent = new DwmgHooks.PeachWoodSwordForceHurtEvent(
+								player, mob, oldDmg, newDmg);
+						if (!MinecraftForge.EVENT_BUS.post(dmgEvent))
 						{
-							handler.onPeachSwordHit(mob, player);
-						}
-					}
-					// For other undead mobs, it will force hurt a half, at most 50
-					else
-					{
-						float newDmg = (float) Math.min(50d, mob.getAttributeValue(Attributes.MAX_HEALTH) / 2d);
-						if (event.getAmount() < newDmg)
-						{
-							float oldDmg = event.getAmount();
-							DwmgHooks.PeachWoodSwordForceHurtEvent dmgEvent = new DwmgHooks.PeachWoodSwordForceHurtEvent(player, mob, oldDmg, newDmg);
-							if (!MinecraftForge.EVENT_BUS.post(dmgEvent))
+							event.setAmount(dmgEvent.newDamage);
+							if (oldDmg < newDmg)
 							{
-								event.setAmount(dmgEvent.newDamage);
-								if (oldDmg < newDmg)
-								{
-									player.getItemInHand(InteractionHand.MAIN_HAND).hurtAndBreak(Math.round((newDmg - oldDmg) / 5f), player, 
-											l -> l.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-								}
+								player.getItemInHand(InteractionHand.MAIN_HAND).hurtAndBreak(
+										Math.round((newDmg - oldDmg) / 5f), player,
+										l -> l.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 							}
 						}
 					}
-				}
+					
+				}*/
 				
 				// Favorbility change
 				// On player attack a mob attacking the BM
@@ -978,7 +960,7 @@ public class DwmgEntityEvents
 						}
 					}
 					// Jiangshi
-					if (mob instanceof JiangshiEntity js)
+				/*	if (mob instanceof JiangshiEntity js)
 					{
 						// Frozen by talisman
 						js.goalSelector.addGoal(1, new FreezeGoal(js, HandlerJiangshi::isFrozen));
@@ -986,7 +968,7 @@ public class DwmgEntityEvents
 						WrappedGoal oldLeapGoal = null;
 						for (WrappedGoal wg : js.goalSelector.getAvailableGoals())
 						{
-							if (wg.getPriority() == 2 /* Priority 2 is only for leap goal */)
+							if (wg.getPriority() == 2) // Priority 2 is only for leap goal
 							{
 								oldLeapGoal = wg;
 								break;
@@ -997,7 +979,7 @@ public class DwmgEntityEvents
 							js.goalSelector.getAvailableGoals().remove(oldLeapGoal);//.getAvailableGoals().remove(oldMoveGoal);
 							js.goalSelector.addGoal(2, new JiangshiMutableLeapGoal(js));
 						}
-					}
+					}*/
 					
 				}
 			}
@@ -1103,11 +1085,11 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onThunderHit(EntityStruckByLightningEvent event)
 	{
-		if (event.getEntity().getType() == DwmgEntityTypes.HMAG_JIANGSHI.get())
+	/*	if (event.getEntity().getType() == DwmgEntityTypes.HMAG_JIANGSHI.get())
 		{
 			((HmagJiangshiEntity)(event.getEntity())).onThunderHit();
 			event.setCanceled(true);
 			return;
-		}
+		}*/
 	}
 }

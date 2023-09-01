@@ -1,6 +1,5 @@
 package net.sodiumstudio.dwmg.registries;
 
-import com.github.mechalopa.hmag.HMaG;
 import com.github.mechalopa.hmag.world.item.ModSwordItem;
 
 import net.minecraft.ChatFormatting;
@@ -10,15 +9,12 @@ import net.minecraft.world.item.ChorusFruitItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.befriendmobs.item.MobCatcherItem;
-import net.sodiumstudio.befriendmobs.item.MobOwnershipTransfererItem;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerItem;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.DwmgTab;
@@ -32,10 +28,8 @@ import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.item.ItemNecromancerWand;
 import net.sodiumstudio.dwmg.item.MagicalGelBallItem;
 import net.sodiumstudio.dwmg.item.MagicalGelBottleItem;
-import net.sodiumstudio.dwmg.item.PeachWoodSwordItem;
-import net.sodiumstudio.dwmg.item.TaoistTalismanItem;
 import net.sodiumstudio.dwmg.item.TransferringTagItem;
-import net.sodiumstudio.dwmg.item.UnsweepableSwordItem;
+import net.sodiumstudio.nautils.InfoHelper;
 
 public class DwmgItems {
 	
@@ -147,14 +141,14 @@ public class DwmgItems {
 			new Item.Properties().tab(TAB).rarity(Rarity.UNCOMMON).stacksTo(1)));
 	public static final RegistryObject<Item> COMMANDING_WAND = ITEMS.register("commanding_wand", () -> new ItemCommandWand(new Item.Properties().tab(TAB).stacksTo(1)));
 	public static final RegistryObject<Item> EVIL_MAGNET = ITEMS.register("evil_magnet", () -> new ItemEvilMagnet(new Item.Properties().tab(TAB).stacksTo(1)));
-	public static final RegistryObject<SwordItem> PEACH_WOOD_SWORD = ITEMS.register("peach_wood_sword", () -> new PeachWoodSwordItem(Tiers.WOOD, 3, -2.4F, (new Item.Properties()).tab(TAB)));
+	//public static final RegistryObject<SwordItem> PEACH_WOOD_SWORD = ITEMS.register("peach_wood_sword", () -> new PeachWoodSwordItem(Tiers.WOOD, 3, -2.4F, (new Item.Properties()).tab(TAB)));
 	
 	// Utility items
 	public static final RegistryObject<TransferringTagItem> TRANSFERRING_TAG = ITEMS.register("transferring_tag", () -> new TransferringTagItem(new Item.Properties().tab(TAB)));
 	public static final RegistryObject<EmptyMagicalGelBottleItem> EMPTY_MAGICAL_GEL_BOTTLE = ITEMS.register("empty_magical_gel_bottle", () -> new EmptyMagicalGelBottleItem(new Item.Properties().tab(TAB)));
 	public static final RegistryObject<MagicalGelBottleItem> MAGICAL_GEL_BOTTLE = ITEMS.register("magical_gel_bottle", () -> new MagicalGelBottleItem(new Item.Properties()));
 	public static final RegistryObject<MagicalGelBallItem> MAGICAL_GEL_BALL = ITEMS.register("magical_gel_ball", () -> new MagicalGelBallItem(new Item.Properties().tab(TAB)));
-	public static final RegistryObject<Item> TAOIST_TALISMAN = ITEMS.register("taoist_talisman", () -> new TaoistTalismanItem(new Item.Properties().tab(TAB)));
+	//public static final RegistryObject<Item> TAOIST_TALISMAN = ITEMS.register("taoist_talisman", () -> new TaoistTalismanItem(new Item.Properties().tab(TAB)));
 	
 	// Misc
 	public static final RegistryObject<MobRespawnerItem> MOB_RESPAWNER = ITEMS.register("mob_respawner", () -> new DwmgRespawnerItem(new Item.Properties()).setRetainBefriendedMobInventory(false));

@@ -1,8 +1,5 @@
 package net.sodiumstudio.dwmg.registries;
 
-import com.github.mechalopa.hmag.HMaG;
-import com.github.mechalopa.hmag.world.entity.DodomekiEntity;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -25,7 +22,6 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagHarpyEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHornetEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHuskGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagImpEntity;
-import net.sodiumstudio.dwmg.entities.hmag.HmagJiangshiEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagKoboldEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagNecroticReaperEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSkeletonGirlEntity;
@@ -218,7 +214,7 @@ public class DwmgEntityTypes {
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_slime_girl").toString()));
 	
-	public static final RegistryObject<EntityType<HmagJiangshiEntity>> HMAG_JIANGSHI = 
+/*	public static final RegistryObject<EntityType<HmagJiangshiEntity>> HMAG_JIANGSHI = 
 			ENTITY_TYPES.register("hmag_jiangshi", () -> EntityType.Builder
 			.of(HmagJiangshiEntity::new, MobCategory.CREATURE)
 			.sized(0.6F, 1.95F)
@@ -226,7 +222,7 @@ public class DwmgEntityTypes {
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
 			.noSummon()
-			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_jiangshi").toString()));
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_jiangshi").toString()));*/
 	
 	public static final RegistryObject<EntityType<HmagDullahanEntity>> HMAG_DULLAHAN = 
 			ENTITY_TYPES.register("hmag_dullahan", () -> EntityType.Builder
@@ -267,7 +263,7 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.HMAG_HARPY.get(), HmagHarpyEntity.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_SNOW_CANINE.get(), HmagSnowCanineEntity.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_SLIME_GIRL.get(), HmagSlimeGirlEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_JIANGSHI.get(), DwmgAttributes.HMAG_JIANGSHI_ATTRIBUTES.get().build());
+     //   event.put(DwmgEntityTypes.HMAG_JIANGSHI.get(), DwmgAttributes.HMAG_JIANGSHI_ATTRIBUTES.get().build());
         event.put(DwmgEntityTypes.HMAG_DULLAHAN.get(), DwmgAttributes.HMAG_DULLAHAN_ATTRIBUTES.get().build());
         event.put(DwmgEntityTypes.HMAG_DODOMEKI.get(), DwmgAttributes.HMAG_DODOMEKI_ATTRIBUTES.get().build());
 	}

@@ -5,8 +5,8 @@ import com.github.mechalopa.hmag.registry.ModEntityTypes;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
+import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerBanshee;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerCreeperGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerEnderExecutor;
@@ -15,14 +15,13 @@ import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHarpy;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHornet;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHuskGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerImp;
-import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerJiangshi;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerKobold;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNecroticReaper;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSkeletonGirl;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSlimeGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSnowCanine;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerWitherSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerZombieGirl;
-import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSlimeGirl;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgBefriendingTypes {
@@ -99,10 +98,10 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.SLIME_GIRL.get(),
 				DwmgEntityTypes.HMAG_SLIME_GIRL.get(),
 				new HandlerSlimeGirl());
-		BefriendingTypeRegistry.register(
+	/*	BefriendingTypeRegistry.register(
 				ModEntityTypes.JIANGSHI.get(),
 				DwmgEntityTypes.HMAG_JIANGSHI.get(),
-				new HandlerJiangshi());
+				new HandlerJiangshi());*/
 		BefriendingTypeRegistry.register(
 				ModEntityTypes.DULLAHAN.get(),
 				DwmgEntityTypes.HMAG_DULLAHAN.get(),
