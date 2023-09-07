@@ -1,5 +1,11 @@
 package net.sodiumstudio.dwmg.registries;
 
+
+import com.github.mechalopa.hmag.HMaG;
+import com.github.mechalopa.hmag.world.entity.AlrauneEntity;
+import com.github.mechalopa.hmag.world.entity.DodomekiEntity;
+import com.github.mechalopa.hmag.world.entity.projectile.PoisonSeedEntity;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -11,6 +17,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.hmag.HmagAlrauneEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagBansheeEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagDodomekiEntity;
@@ -30,6 +37,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagSnowCanineEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagStrayGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagWitherSkeletonGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagZombieGirlEntity;
+import net.sodiumstudio.dwmg.entities.projectile.BefriendedAlrauneSeedEntity;
 import net.sodiumstudio.dwmg.entities.projectile.BefriendedGhastFireballEntity;
 import net.sodiumstudio.dwmg.entities.projectile.MagicalGelBallEntity;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
@@ -244,6 +252,15 @@ public class DwmgEntityTypes {
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_dodomeki").toString()));
 	
+	public static final RegistryObject<EntityType<HmagAlrauneEntity>> HMAG_ALRAUNE = 
+			ENTITY_TYPES.register("hmag_alraune", () -> EntityType.Builder
+			.of(HmagAlrauneEntity::new, MobCategory.CREATURE)
+			.sized(0.6F, 1.95F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_alraune").toString()));
+	
 	@SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
         event.put(DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get(), HmagZombieGirlEntity.createAttributes().build());
@@ -266,6 +283,7 @@ public class DwmgEntityTypes {
      //   event.put(DwmgEntityTypes.HMAG_JIANGSHI.get(), DwmgAttributes.HMAG_JIANGSHI_ATTRIBUTES.get().build());
         event.put(DwmgEntityTypes.HMAG_DULLAHAN.get(), DwmgAttributes.HMAG_DULLAHAN_ATTRIBUTES.get().build());
         event.put(DwmgEntityTypes.HMAG_DODOMEKI.get(), DwmgAttributes.HMAG_DODOMEKI_ATTRIBUTES.get().build());
+        event.put(DwmgEntityTypes.HMAG_ALRAUNE.get(), DwmgAttributes.HMAG_ALRAUNE_ATTRIBUTES.get().build());
 	}
 	
 	// Projectiles
@@ -296,4 +314,23 @@ public class DwmgEntityTypes {
 			.updateInterval(10)
 			.build(new ResourceLocation(Dwmg.MOD_ID, "magical_gel_ball").toString()));
 	
+	public static final RegistryObject<EntityType<BefriendedAlrauneSeedEntity.PoisonSeed>> ALRAUNE_POISON_SEED = 
+			ENTITY_TYPES.register("hmag_alraune_poison_seed", () -> EntityType.Builder
+			.<BefriendedAlrauneSeedEntity.PoisonSeed>of(BefriendedAlrauneSeedEntity.PoisonSeed::new, MobCategory.MISC)
+			.sized(0.25F, 0.25F)
+			.setTrackingRange(4)
+			.setUpdateInterval(10)
+			.setShouldReceiveVelocityUpdates(true)
+			.setCustomClientFactory(BefriendedAlrauneSeedEntity.PoisonSeed::new)
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_alraune_poison_seed").toString()));
+	
+	public static final RegistryObject<EntityType<BefriendedAlrauneSeedEntity.HealingSeed>> ALRAUNE_HEALING_SEED = 
+			ENTITY_TYPES.register("hmag_alraune_healing_seed", () -> EntityType.Builder
+			.<BefriendedAlrauneSeedEntity.HealingSeed>of(BefriendedAlrauneSeedEntity.HealingSeed::new, MobCategory.MISC)
+			.sized(0.25F, 0.25F)
+			.setTrackingRange(4)
+			.setUpdateInterval(10)
+			.setShouldReceiveVelocityUpdates(true)
+			.setCustomClientFactory(BefriendedAlrauneSeedEntity.HealingSeed::new)
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_alraune_healing_seed").toString()));
 }

@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerAlraune;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerBanshee;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerCreeperGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerEnderExecutor;
@@ -110,5 +111,9 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.DODOMEKI.get(),
 				DwmgEntityTypes.HMAG_DODOMEKI.get(),
 				new HandlerSkeletonGirl());
+		BefriendingTypeRegistry.register(
+				ModEntityTypes.ALRAUNE.get(),
+				DwmgEntityTypes.HMAG_ALRAUNE.get(),
+				new HandlerAlraune());
 	}
 }

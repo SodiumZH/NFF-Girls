@@ -2,6 +2,24 @@
 
 ## 1.19.2
 
+### 0.1.15
+
+Added Alraune and Glaryad support.
+
+Added Reinforced Fishing Rod.
+
+Now Soul Cake can be made with Golden Apple.
+
+Now Death Crystal can be recovered from powder.
+
+Now the mob's custom name will be removed on befriended.
+
+### 0.1.14.1
+
+Fixed Jiangshi, Dullahan and Dodomeki missing translation.
+
+Fixed wrong version display in the mod list.
+
 ### 0.1.14
 
 Added Jiangshi, Dullahan and Dodomeki support.
@@ -356,6 +374,14 @@ Rollbacked HMaG dependency to 6.1.0.
 Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.18.2
+
+### 0.0.14
+
+Added Dullahan and Dodomeki support.
+
+### 0.0.13.1
+
+Identical to 1.19.2-0.1.13.2.
 
 ### 0.0.13
 

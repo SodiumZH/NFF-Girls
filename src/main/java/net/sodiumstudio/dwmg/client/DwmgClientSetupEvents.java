@@ -1,5 +1,6 @@
 package net.sodiumstudio.dwmg.client;
 
+import com.github.mechalopa.hmag.client.renderer.AlrauneRenderer;
 import com.github.mechalopa.hmag.client.renderer.BansheeRenderer;
 import com.github.mechalopa.hmag.client.renderer.DodomekiRenderer;
 import com.github.mechalopa.hmag.client.renderer.DrownedGirlRenderer;
@@ -11,6 +12,7 @@ import com.github.mechalopa.hmag.client.renderer.HuskGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.ImpRenderer;
 import com.github.mechalopa.hmag.client.renderer.KoboldRenderer;
 import com.github.mechalopa.hmag.client.renderer.MagicBulletRenderer;
+import com.github.mechalopa.hmag.client.renderer.ModThrownItemRenderer;
 import com.github.mechalopa.hmag.client.renderer.NecroticReaperRenderer;
 import com.github.mechalopa.hmag.client.renderer.SkeletonGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.SlimeGirlRenderer;
@@ -43,6 +45,7 @@ import net.sodiumstudio.dwmg.client.gui.screens.GuiImp;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiKobold;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiNecroticReaper;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiSlimeGirl;
+import net.sodiumstudio.dwmg.client.gui.screens.GuiThreeBaubles;
 import net.sodiumstudio.dwmg.client.particles.MagicalGelBallParticle;
 import net.sodiumstudio.dwmg.client.renderer.BefriendedCreeperGirlRenderer;
 import net.sodiumstudio.dwmg.client.renderer.BefriendedEnderExecutorRenderer;
@@ -60,6 +63,7 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuKobold;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSlimeGirl;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuThreeBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgParticleTypes;
 
@@ -93,10 +97,13 @@ public class DwmgClientSetupEvents
         //event.registerEntityRenderer(DwmgEntityTypes.HMAG_JIANGSHI.get(), JiangshiRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_DULLAHAN.get(), DullahanRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_DODOMEKI.get(), DodomekiRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_ALRAUNE.get(), AlrauneRenderer::new);
         
         event.registerEntityRenderer(DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get(), MagicBulletRenderer::new); 
         event.registerEntityRenderer(DwmgEntityTypes.BEFRIENDED_GHAST_FIREBALL.get(), c -> new ThrownItemRenderer<>(c, 3.0F, true));
         event.registerEntityRenderer(DwmgEntityTypes.MAGICAL_GEL_BALL.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.ALRAUNE_POISON_SEED.get(), ModThrownItemRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.ALRAUNE_HEALING_SEED.get(), ModThrownItemRenderer::new);
     }
 
     public static void onRegisterParticleProvider(ParticleFactoryRegisterEvent event)
@@ -123,6 +130,7 @@ public class DwmgClientSetupEvents
 		BefriendedGuiScreenMaker.put(InventoryMenuSlimeGirl.class, (menu) -> new GuiSlimeGirl(menu, menu.playerInventory, menu.mob));
 		BefriendedGuiScreenMaker.put(InventoryMenuDullahan.class, (menu) -> new GuiDullahan(menu, menu.playerInventory, menu.mob));
 		BefriendedGuiScreenMaker.put(InventoryMenuDodomeki.class, (menu) -> new GuiDodomeki(menu, menu.playerInventory, menu.mob));
+		BefriendedGuiScreenMaker.put(InventoryMenuThreeBaubles.class, (menu) -> new GuiThreeBaubles(menu, menu.playerInventory, menu.mob));
 	}
 	
 }
