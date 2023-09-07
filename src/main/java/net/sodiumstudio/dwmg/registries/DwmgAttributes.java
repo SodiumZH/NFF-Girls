@@ -37,5 +37,11 @@ public class DwmgAttributes
 		add(Attributes.KNOCKBACK_RESISTANCE, 0.5D).
 		add(Attributes.FOLLOW_RANGE, 20.0D);
 		
-		
+	public static final Supplier<AttributeSupplier.Builder> HMAG_ALRAUNE_ATTRIBUTES = () ->
+		Monster.createMonsterAttributes()
+		.add(Attributes.MAX_HEALTH, 60.0D)
+		.add(Attributes.MOVEMENT_SPEED, 0.12D)
+		.add(Attributes.ATTACK_DAMAGE, 6.0D)
+		.add(Attributes.ARMOR, 5.0D)
+		.add(Attributes.KNOCKBACK_RESISTANCE, 0.98D);
 }

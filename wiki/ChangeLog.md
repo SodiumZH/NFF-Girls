@@ -6,6 +6,8 @@
 
 Fixed Jiangshi, Dullahan and Dodomeki missing translation.
 
+Fixed wrong version display in the mod list.
+
 ### 0.1.14
 
 Added Jiangshi, Dullahan and Dodomeki support.
