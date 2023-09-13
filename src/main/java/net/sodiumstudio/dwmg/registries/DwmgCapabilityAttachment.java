@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.capability.CAttributeMonitor;
 import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
 import net.sodiumstudio.nautils.TagHelper;

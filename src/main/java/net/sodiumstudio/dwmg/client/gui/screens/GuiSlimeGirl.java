@@ -6,7 +6,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.player.Inventory;
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;

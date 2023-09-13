@@ -3,7 +3,7 @@ package net.sodiumstudio.dwmg.client.gui.screens;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.world.entity.player.Inventory;
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 
 public class GuiCreeperGirl extends GuiPreset0

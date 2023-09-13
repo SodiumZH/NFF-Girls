@@ -1,6 +1,6 @@
 package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move;
 
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 
 public class BefriendedLeapAtOwnerGoal extends BefriendedLeapAtGoal implements IBefriendedFollowOwner
