@@ -1,7 +1,7 @@
 package net.sodiumstudio.dwmg.entities.ai.goals;
 
 import net.minecraft.world.entity.EquipmentSlot;
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
 
 public class BefriendedAvoidSunOnSleepGoal extends BefriendedFleeSunGoal

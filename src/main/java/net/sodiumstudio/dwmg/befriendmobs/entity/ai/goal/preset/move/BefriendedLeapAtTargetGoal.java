@@ -1,7 +1,7 @@
 package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 
 public class BefriendedLeapAtTargetGoal extends BefriendedLeapAtGoal
 {

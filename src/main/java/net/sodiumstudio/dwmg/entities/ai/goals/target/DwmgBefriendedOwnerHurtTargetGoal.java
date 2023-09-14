@@ -1,6 +1,6 @@
 package net.sodiumstudio.dwmg.entities.ai.goals.target;
 
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 
 public class DwmgBefriendedOwnerHurtTargetGoal extends BefriendedOwnerHurtTargetGoal

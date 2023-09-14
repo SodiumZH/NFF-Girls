@@ -3,7 +3,7 @@ package net.sodiumstudio.dwmg.entities.item.baublesystem;
 import java.util.HashMap;
 
 import net.minecraft.world.item.ItemStack;
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.nautils.ContainerHelper;
 
 public class DwmgBaubleSlotGetter
