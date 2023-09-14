@@ -1,6 +1,6 @@
 package net.sodiumstudio.dwmg.entities.ai.goals;
 
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 

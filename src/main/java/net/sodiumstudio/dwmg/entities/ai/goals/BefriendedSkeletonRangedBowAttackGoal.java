@@ -1,7 +1,7 @@
 package net.sodiumstudio.dwmg.entities.ai.goals;
 
 import net.minecraft.world.item.Items;
-import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedRangedBowAttackGoal;
 
 // Only for skeleton, stray and wither skeleton
