@@ -2,7 +2,7 @@ package net.sodiumstudio.dwmg.entities.ai.goals;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Items;
-import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedRangedAttackGoal;
 
 public class BefriendedDrownedTridentAttackGoal extends BefriendedRangedAttackGoal {

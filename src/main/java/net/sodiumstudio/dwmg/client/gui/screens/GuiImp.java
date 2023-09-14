@@ -1,7 +1,7 @@
 package net.sodiumstudio.dwmg.client.gui.screens;
 
 import net.minecraft.world.entity.player.Inventory;
-import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.nautils.math.IntVec2;
 

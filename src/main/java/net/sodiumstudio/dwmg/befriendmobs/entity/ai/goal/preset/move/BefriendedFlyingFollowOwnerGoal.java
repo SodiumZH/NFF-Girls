@@ -3,8 +3,8 @@ package net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
-import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 
 public class BefriendedFlyingFollowOwnerGoal extends BefriendedFlyingMoveGoal implements IBefriendedFollowOwner
 {

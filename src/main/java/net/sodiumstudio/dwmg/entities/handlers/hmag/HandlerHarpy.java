@@ -4,7 +4,7 @@ import com.github.mechalopa.hmag.world.entity.HarpyEntity;
 
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.IBefriendedMob;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHarpyEntity;
 
 public class HandlerHarpy extends HandlerSnowCanine
