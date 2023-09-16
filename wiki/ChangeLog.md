@@ -6,7 +6,11 @@
 
 Added Alraune and Glaryad support.
 
+Added Reinforced Fishing Rod.
+
 Optimized the mob AI.
+
+Adjusted some recipes to reduce Evil Crystal cost.
 
 ### 0.1.14.1
 

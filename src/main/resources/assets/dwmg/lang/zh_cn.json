@@ -17,6 +17,7 @@
   "item.dwmg.evil_magnet": "邪恶磁铁",
   "item.dwmg.netherite_fork": "下界合金叉",
   "item.dwmg.peach_wood_sword": "桃木剑",
+  "item.dwmg.reinforced_fishing_rod": "强化鱼竿",
 
   "item.dwmg.poisonous_thorn": "剧毒棘刺",
   "item.dwmg.healing_jade": "治愈勾玉",
@@ -73,6 +74,8 @@
   "entity.dwmg.hmag_jiangshi": "跳尸",
   "entity.dwmg.hmag_dullahan": "无头骑士娘",
   "entity.dwmg.hmag_dodomeki": "百目鬼",
+  "entity.dwmg.hmag_alraune": "花精灵",
+  "entity.dwmg.hmag_glaryad": "苔藓树妖",
   
   "info.dwmg.necrotic_reaper_not_controllable": "你需要拥有死灵巫师的帽子或死灵巫师之杖以指挥死灵收割者。",
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "你需要拥有死灵巫师的帽子或死灵巫师之杖以打开死灵收割者的道具栏。",

@@ -33,6 +33,7 @@ import net.sodiumstudio.dwmg.item.ItemNecromancerWand;
 import net.sodiumstudio.dwmg.item.MagicalGelBallItem;
 import net.sodiumstudio.dwmg.item.MagicalGelBottleItem;
 import net.sodiumstudio.dwmg.item.PeachWoodSwordItem;
+import net.sodiumstudio.dwmg.item.ReinforcedFishingRodItem;
 import net.sodiumstudio.dwmg.item.TaoistTalismanItem;
 import net.sodiumstudio.dwmg.item.TransferringTagItem;
 import net.sodiumstudio.dwmg.item.UnsweepableSwordItem;
@@ -148,6 +149,7 @@ public class DwmgItems {
 	public static final RegistryObject<Item> COMMANDING_WAND = ITEMS.register("commanding_wand", () -> new ItemCommandWand(new Item.Properties().tab(TAB).stacksTo(1)));
 	public static final RegistryObject<Item> EVIL_MAGNET = ITEMS.register("evil_magnet", () -> new ItemEvilMagnet(new Item.Properties().tab(TAB).stacksTo(1)));
 	public static final RegistryObject<SwordItem> PEACH_WOOD_SWORD = ITEMS.register("peach_wood_sword", () -> new PeachWoodSwordItem(Tiers.WOOD, 3, -2.4F, (new Item.Properties()).tab(TAB)));
+	public static final RegistryObject<ReinforcedFishingRodItem> REINFORCED_FISHING_ROD = ITEMS.register("reinforced_fishing_rod", () -> new ReinforcedFishingRodItem(new Item.Properties().durability(256).tab(TAB)));
 	
 	// Utility items
 	public static final RegistryObject<TransferringTagItem> TRANSFERRING_TAG = ITEMS.register("transferring_tag", () -> new TransferringTagItem(new Item.Properties().tab(TAB)));

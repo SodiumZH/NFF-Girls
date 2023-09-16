@@ -920,3 +920,13 @@ When attacking Jiangshi, it will push the befriending progress if the mob is fro
 For non-undead mobs, it's same as a normal Wooden Sword. 
 
 It can be repaired with Purification Cloth.
+
+
+
+#### Reinforced Fishing Rod (0.1.15)
+
+A fishing rod with higher durability (4x vanilla Fishing Rod).
+
+When the fishing hook hits an entity, right click to pull the entity without retrieving the hook. Each pulling action consumes only 1 durability. The pulling force is 3 times to vanilla Fishing Rod (4x for item entities). Shift + right click to retrieve the hook.
+
+ It can be repaired on the Anvil with Reinforcing Chain.

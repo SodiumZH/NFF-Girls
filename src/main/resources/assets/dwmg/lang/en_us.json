@@ -16,6 +16,7 @@
   "item.dwmg.evil_magnet": "Evil Magnet",
   "item.dwmg.netherite_fork": "Netherite Fork",
   "item.dwmg.peach_wood_sword": "Peach-Wood Sword",
+  "item.dwmg.reinforced_fishing_rod": "Reinforced Fishing Rod",
   
   "item.dwmg.poisonous_thorn": "Poisonous Thorn",
   "item.dwmg.soul_amulet": "Soul Amulet",
@@ -73,6 +74,8 @@
   "entity.dwmg.hmag_jiangshi": "Jiangshi",
   "entity.dwmg.hmag_dullahan": "Dullahan",
   "entity.dwmg.hmag_dodomeki": "Dodomeki",
+  "entity.dwmg.hmag_alraune": "Alraune",
+  "entity.dwmg.hmag_glaryad": "Glaryad",
   
   "info.dwmg.necrotic_reaper_not_controllable": "To give command to the Necrotic Reaper, you must have a Necromancer's Hat or Necromancer's Wand.",
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "To open Necrotic Reaper's inventory, you must have a Necromancer's Hat or Necromancer's Wand.",
