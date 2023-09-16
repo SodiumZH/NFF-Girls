@@ -14,6 +14,8 @@ Now Death Crystal can be recovered from powder.
 
 Now the mob's custom name will be removed on befriended.
 
+Adjusted some recipes to reduce Evil Crystal cost.
+
 ### 0.1.14.1
 
 Fixed Jiangshi, Dullahan and Dodomeki missing translation.

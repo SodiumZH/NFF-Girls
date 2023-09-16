@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	" RI",
+	"RIR",
+	"I R"	
+	],
+	
+	"key":{ 
+	
+		"R":{
+		"item": "hmag:reinforcing_chain"
+		},
+		
+		"I":{
+		"tag": "forge:ingots/iron"
+		}
+	},
+	
+	"result":{ 
+		"item": "dwmg:reinforced_fishing_rod",
+		"count": 1
+	}
+}

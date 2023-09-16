@@ -1,0 +1,39 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"CDC",
+	"SES",
+	"WWW"	
+	],
+	
+	"key":{ 
+	
+
+		"C":{ 
+		"item": "minecraft:soul_torch"
+		},
+		
+		"D":{ 
+		"item": "minecraft:golden_apple"
+		},
+		
+		"S":{ 
+		"item": "minecraft:sugar"
+		},
+		
+		"E":{ 
+		"tag": "forge:eggs"
+		},
+		
+		"W":{ 
+		"item": "dwmg:soul_flour"
+		}
+	},
+	
+	"result":{ 
+		"item": "dwmg:soul_cake",
+		"count": 1
+	}
+}

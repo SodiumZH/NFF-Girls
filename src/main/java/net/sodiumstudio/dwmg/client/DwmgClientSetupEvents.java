@@ -22,8 +22,10 @@ import com.github.mechalopa.hmag.client.renderer.StrayGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.WitherSkeletonGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.ZombieGirlRenderer;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.FishingHookRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
@@ -65,7 +67,9 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSlimeGirl;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuThreeBaubles;
+import net.sodiumstudio.dwmg.item.ReinforcedFishingRodItem;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.registries.DwmgParticleTypes;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -106,6 +110,7 @@ public class DwmgClientSetupEvents
         event.registerEntityRenderer(DwmgEntityTypes.MAGICAL_GEL_BALL.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.ALRAUNE_POISON_SEED.get(), ModThrownItemRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.ALRAUNE_HEALING_SEED.get(), ModThrownItemRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.REINFORCED_FISHING_HOOK.get(), FishingHookRenderer::new);
     }
 
     public static void onRegisterParticleProvider(ParticleFactoryRegisterEvent event)
@@ -115,24 +120,31 @@ public class DwmgClientSetupEvents
     	mc.particleEngine.register(DwmgParticleTypes.MAGICAL_GEL_BALL.get(), new MagicalGelBallParticle.Provider());
     }
     
-	@SubscribeEvent
-	public static void addGuiScreens(FMLClientSetupEvent event)
-	{
-		BefriendedGuiScreenMaker.put(InventoryMenuCreeper.class, (menu) -> new GuiCreeperGirl(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuEnderExecutor.class, (menu) -> new GuiEnderExecutor(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuEquipmentTwoBaubles.class, (menu) -> new GuiEquipmentTwoBaubles(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuGhastlySeeker.class, (menu) -> new GuiGhastlySeeker(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuHandItemsTwoBaubles.class, (menu) -> new GuiHandItemsTwoBaubles(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuNecroticReaper.class, (menu) -> new GuiNecroticReaper(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuSkeleton.class, (menu) -> new GuiBowSecWeaponOneBauble(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuBanshee.class, (menu) -> new GuiBanshee(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuKobold.class, (menu) -> new GuiKobold(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuImp.class, (menu) -> new GuiImp(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuFourBaubles.class, (menu) -> new GuiFourBaubles(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuSlimeGirl.class, (menu) -> new GuiSlimeGirl(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuDullahan.class, (menu) -> new GuiDullahan(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuDodomeki.class, (menu) -> new GuiDodomeki(menu, menu.playerInventory, menu.mob));
-		BefriendedGuiScreenMaker.put(InventoryMenuThreeBaubles.class, (menu) -> new GuiThreeBaubles(menu, menu.playerInventory, menu.mob));
-	}
-	
+    @SubscribeEvent
+    public static void onClientSetup(FMLClientSetupEvent event)
+    {
+    	event.enqueueWork(() -> 
+    	{
+    		// Item properties
+    		ItemProperties.register(DwmgItems.REINFORCED_FISHING_ROD.get(), new ResourceLocation("cast"), ReinforcedFishingRodItem::isCastClient);
+    		
+    		// GUI screens
+    		BefriendedGuiScreenMaker.put(InventoryMenuCreeper.class, (menu) -> new GuiCreeperGirl(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuEnderExecutor.class, (menu) -> new GuiEnderExecutor(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuEquipmentTwoBaubles.class, (menu) -> new GuiEquipmentTwoBaubles(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuGhastlySeeker.class, (menu) -> new GuiGhastlySeeker(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuHandItemsTwoBaubles.class, (menu) -> new GuiHandItemsTwoBaubles(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuNecroticReaper.class, (menu) -> new GuiNecroticReaper(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuSkeleton.class, (menu) -> new GuiBowSecWeaponOneBauble(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuBanshee.class, (menu) -> new GuiBanshee(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuKobold.class, (menu) -> new GuiKobold(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuImp.class, (menu) -> new GuiImp(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuFourBaubles.class, (menu) -> new GuiFourBaubles(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuSlimeGirl.class, (menu) -> new GuiSlimeGirl(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuDullahan.class, (menu) -> new GuiDullahan(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuDodomeki.class, (menu) -> new GuiDodomeki(menu, menu.playerInventory, menu.mob));
+    		BefriendedGuiScreenMaker.put(InventoryMenuThreeBaubles.class, (menu) -> new GuiThreeBaubles(menu, menu.playerInventory, menu.mob));
+    	});
+    }
+
 }

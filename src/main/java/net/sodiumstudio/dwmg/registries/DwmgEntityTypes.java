@@ -43,6 +43,7 @@ import net.sodiumstudio.dwmg.entities.projectile.BefriendedAlrauneSeedEntity;
 import net.sodiumstudio.dwmg.entities.projectile.BefriendedGhastFireballEntity;
 import net.sodiumstudio.dwmg.entities.projectile.MagicalGelBallEntity;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
+import net.sodiumstudio.dwmg.entities.projectile.ReinforcedFishingHookEntity;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgEntityTypes {
@@ -346,4 +347,14 @@ public class DwmgEntityTypes {
 			.setShouldReceiveVelocityUpdates(true)
 			.setCustomClientFactory(BefriendedAlrauneSeedEntity.HealingSeed::new)
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_alraune_healing_seed").toString()));
+	
+	public static final RegistryObject<EntityType<ReinforcedFishingHookEntity>> REINFORCED_FISHING_HOOK = 
+			ENTITY_TYPES.register("reinforced_fishing_hook", () -> EntityType.Builder
+			.<ReinforcedFishingHookEntity>of(ReinforcedFishingHookEntity::new, MobCategory.MISC)
+			.noSave()
+			.noSummon()
+			.sized(0.25F, 0.25F)
+			.clientTrackingRange(4)
+			.updateInterval(5)
+			.build(new ResourceLocation(Dwmg.MOD_ID, "reinforced_fishing_hook").toString()));
 }
