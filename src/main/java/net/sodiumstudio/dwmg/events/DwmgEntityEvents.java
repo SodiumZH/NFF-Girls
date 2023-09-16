@@ -68,6 +68,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+import net.sodiumstudio.befriendmobs.bmevents.entity.MobBefriendedEvent;
 import net.sodiumstudio.befriendmobs.bmevents.entity.ai.BefriendedChangeAiStateEvent;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
@@ -1092,4 +1093,11 @@ public class DwmgEntityEvents
 			return;
 		}*/
 	}
+	
+	@SubscribeEvent
+	public static void onBefriended(MobBefriendedEvent event)
+	{
+		event.mobBefriended.asMob().setCustomName(null);
+	}
+	
 }
