@@ -2,6 +2,12 @@
 
 ## 1.19.2
 
+### 0.1.15
+
+Added Alraune and Glaryad support.
+
+Optimized the mob AI.
+
 ### 0.1.14.1
 
 Fixed Jiangshi, Dullahan and Dodomeki missing translation.

@@ -37,7 +37,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
@@ -66,7 +66,7 @@ import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
-public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
+public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
 {
 
 	
@@ -357,7 +357,7 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 		return newMob;
 	}
 	
-	/* IBefriendedUndeadMob interface */
+	/* IBefriendedSunSensitiveMob interface */
 	
 	@Override
 	public void setupSunImmunityRules() {

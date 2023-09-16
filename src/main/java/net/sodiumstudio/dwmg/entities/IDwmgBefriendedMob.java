@@ -115,4 +115,10 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleHolder
 	{
 		return DwmgItems.MOB_RESPAWNER.get();
 	}
+	
+	@Override
+	public default DeathRespawnerGenerationType getDeathRespawnerGenerationType()
+	{
+		return DeathRespawnerGenerationType.GIVE;
+	}
 }

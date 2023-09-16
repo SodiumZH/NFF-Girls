@@ -7,9 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.github.mechalopa.hmag.registry.ModItems;
-import com.github.mechalopa.hmag.registry.ModSoundEvents;
-import com.github.mechalopa.hmag.world.entity.JiangshiEntity;
-import com.github.mechalopa.hmag.world.entity.ai.goal.LeapAtTargetGoal2;
+import com.github.mechalopa.hmag.world.entity.GlaryadEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -18,11 +16,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -31,46 +26,46 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
-import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedLeapAtGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedLeapAtOwnerGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedLeapAtTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
-import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuThreeBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
-import net.sodiumstudio.dwmg.registries.DwmgMiscReg;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
-import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
 
-public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
+public class HmagGlaryadEntity extends GlaryadEntity implements IDwmgBefriendedMob 
 {
 
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagJiangshiEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagGlaryadEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagJiangshiEntity.class, EntityDataSerializers.INT);
+			.defineId(HmagGlaryadEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
@@ -91,34 +86,35 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 
 	/* Initialization */
 
-	public HmagJiangshiEntity(EntityType<? extends HmagJiangshiEntity> pEntityType, Level pLevel) {
+	public HmagGlaryadEntity(EntityType<? extends HmagGlaryadEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
 		Arrays.fill(this.handDropChances, 0);
 	}
-
+	
 	/* AI */
 
 	@Override
 	protected void registerGoals() {
-		goalSelector.addGoal(2, new HmagJiangshiEntity.LeapAtTargetGoal(this));
-		goalSelector.addGoal(3, new BefriendedMeleeAttackGoal(this, 1.0d, true));
-		goalSelector.addGoal(4, new HmagJiangshiEntity.LeapAtOwnerGoal(this));
+		goalSelector.addGoal(1, new FloatGoal(this));
+		goalSelector.addGoal(4, new BefriendedMeleeAttackGoal(this, 1.0d, true));
 		goalSelector.addGoal(5, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 		goalSelector.addGoal(6, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
+		targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
-		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
+		targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
 		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
 		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
 	
 	@Override
-	public void aiStep() {
-		DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
+	public void aiStep()
+	{
+		// This blocks alerting others
+		ReflectHelper.forceSet(this, GlaryadEntity.class, "ticksUntilNextAlert", 999);
 		super.aiStep();
 	}
 	
@@ -129,7 +125,11 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 	@Override
 	public HashMap<Item, Float> getHealingItems()
 	{
-		return DwmgMiscReg.HEALING_ITEMS_UNDEAD;
+		return ContainerHelper.mapOf(
+				MapPair.of(Items.WHEAT_SEEDS, 2.0f),
+				MapPair.of(Items.BONE_MEAL, 5.0f),
+				MapPair.of(Items.SPORE_BLOSSOM, 15f),
+				MapPair.of(ModItems.MYSTERIOUS_PETAL.get(), (float)this.getAttributeValue(Attributes.MAX_HEALTH)));
 	}
 	
 	// Set of items that can heal the mob WITHOUT CONSUMING.
@@ -166,11 +166,9 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 					}
 					// Here it's main hand but no interaction. Return pass to enable off hand interaction.
 					else return InteractionResult.PASS;
-					// Interacted
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
 				}
-				else return InteractionResult.PASS;
-				
+				// Interacted
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
 			// For interaction with shift key down
 			else
@@ -191,7 +189,7 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 
 	// This enables mob armor and hand items by default.
 	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithHandItems additionalInventory = new BefriendedInventoryWithHandItems(getInventorySize(), this);
+	protected BefriendedInventory additionalInventory = new BefriendedInventory(getInventorySize(), this);
 
 	@Override
 	public BefriendedInventory getAdditionalInventory()
@@ -202,15 +200,14 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 	@Override
 	public int getInventorySize()
 	{
-		// 0, 1-main/offhand (not added); 2-talisman(controlling, not added) 3-6 baubles
-		return 7;
+		return 3;
 	}
 
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.setMobEquipment(this);
+			//additionalInventory.setMobEquipment(this);
 		}
 	}
 
@@ -219,14 +216,14 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 	{
 		if (!this.level.isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.getFromMob(this);
+			//additionalInventory.getFromMob(this);
 		}
 		return;
 	}
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuFourBaubles(containerId, playerInventory, container, this);
+		return new InventoryMenuThreeBaubles(containerId, playerInventory, container, this);
 	}
 
 	/* Save and Load */
@@ -249,44 +246,30 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
 		return ContainerHelper.mapOf(
-				MapPair.of("0", this.getAdditionalInventory().getItem(3)),
-				MapPair.of("1", this.getAdditionalInventory().getItem(4)),
-				MapPair.of("2", this.getAdditionalInventory().getItem(5)),
-				MapPair.of("3", this.getAdditionalInventory().getItem(6)));
+				MapPair.of("0", this.getAdditionalInventory().getItem(0)),
+				MapPair.of("1", this.getAdditionalInventory().getItem(1)),
+				MapPair.of("2", this.getAdditionalInventory().getItem(2)));
 	}
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.UNDEAD;
+		return DwmgBaubleHandlers.GENERAL;
 	}
 	
 	// Misc
-	
-	// TODO: Removing the talisman on its head will make it mad and attack everything
-	public boolean isMad()
-	{
-		return false;
-	}
-	
-	public void onThunderHit()
-	{
-		EntityHelper.addEffectSafe(this, new MobEffectInstance(MobEffects.DAMAGE_BOOST, 60 * 20, 2));
-		EntityHelper.addEffectSafe(this, new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 60 * 20, 2));
-		EntityHelper.addEffectSafe(this, new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60 * 20, 1));
-		EntityHelper.addEffectSafe(this, new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 60 * 20));
-		this.getLevelHandler().addExp(20);
-	}
-	
-	@Override
-	public void setupSunImmunityRules() {
-		this.sunImmuneConditions().put("soul_amulet", () -> this.hasDwmgBauble("soul_amulet"));
-		this.sunImmuneConditions().put("resis_amulet", () -> this.hasDwmgBauble("resistance_amulet"));
-	}
 	
 	// Indicates which mod this mob belongs to
 	@Override
 	public String getModId() {
 		return Dwmg.MOD_ID;
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public void handleEntityEvent(byte id)
+	{
+		if (id != 13)
+			super.handleEntityEvent(id);
 	}
 	
 	// ==================================================================== //
@@ -311,85 +294,4 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 
-	
-	
-	// =============== AI ================== //
-	
-	protected static class LeapAtTargetGoal extends BefriendedLeapAtTargetGoal
-	{
-
-		protected HmagJiangshiEntity jiangshi;
-		
-		public LeapAtTargetGoal(HmagJiangshiEntity mob)
-		{
-			super(mob, 0.4F, 0.2F, 8.0F, 12);
-			this.mob = mob;
-			jiangshi = (HmagJiangshiEntity)mob;
-		}
-
-		@Override
-		public boolean checkCanUse()
-		{
-			return super.canUse() && this.mob.asMob().hasLineOfSight(this.mob.asMob().getTarget());
-		}
-
-		@Override
-		public void start()
-		{
-			super.start();
-			this.mob.asMob().playSound(ModSoundEvents.JIANGSHI_JUMP.get(), 0.8F, 1.0F);
-		}
-
-		@Override
-		public float getMaxAttackDistance()
-		{
-			return super.getMaxAttackDistance() - 3.0F * ((float)jiangshi.getSpeedBonus() / (float)JiangshiEntity.SPEED_BONUS_MAX);
-		}
-
-		@Override
-		public double getXZSpeed()
-		{
-			return super.getXZSpeed() + 0.3D * ((double)jiangshi.getSpeedBonus() / (double)JiangshiEntity.SPEED_BONUS_MAX);
-		}
-	}
-	
-	protected static class LeapAtOwnerGoal extends BefriendedLeapAtOwnerGoal
-	{
-
-		protected HmagJiangshiEntity jiangshi;
-		
-		public LeapAtOwnerGoal(HmagJiangshiEntity mob)
-		{
-			super(mob, 0.4F, 0.2F, 8.0F, 12);
-			this.mob = mob;
-			jiangshi = (HmagJiangshiEntity)mob;
-		}
-
-		@Override
-		public boolean checkCanUse()
-		{
-			return super.checkCanUse() && this.mob.asMob().getTarget() != null && this.mob.asMob().hasLineOfSight(this.mob.asMob().getTarget());
-		}
-
-		@Override
-		public void start()
-		{
-			super.start();
-			this.mob.asMob().playSound(ModSoundEvents.JIANGSHI_JUMP.get(), 0.8F, 1.0F);
-		}
-
-		@Override
-		public float getMaxAttackDistance()
-		{
-			return super.getMaxAttackDistance() - 3.0F * ((float)jiangshi.getSpeedBonus() / (float)JiangshiEntity.SPEED_BONUS_MAX);
-		}
-
-		@Override
-		public double getXZSpeed()
-		{
-			return super.getXZSpeed() + 0.3D * ((double)jiangshi.getSpeedBonus() / (double)JiangshiEntity.SPEED_BONUS_MAX);
-		}
-	}
-	
 }
-

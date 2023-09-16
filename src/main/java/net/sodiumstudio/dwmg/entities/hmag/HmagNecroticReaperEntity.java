@@ -37,7 +37,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
-import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
@@ -65,7 +65,7 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
-public class HmagNecroticReaperEntity extends NecroticReaperEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
+public class HmagNecroticReaperEntity extends NecroticReaperEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
 {
 
 	/* Data sync */
@@ -335,7 +335,7 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 		return DwmgBaubleHandlers.NECROTIC_REAPER;
 	}
 	
-	// IBefriendedUndeadMob interface
+	// IBefriendedSunSensitiveMob interface
 	
 	@Override
 	public void setupSunImmunityRules() {
