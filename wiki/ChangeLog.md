@@ -8,9 +8,9 @@ Added Alraune and Glaryad support.
 
 Added Reinforced Fishing Rod.
 
-Optimized the mob AI.
-
 Adjusted some recipes to reduce Evil Crystal cost.
+
+Now the mob's custom name will be removed on befriended.
 
 ### 0.1.14.1
 
