@@ -31,7 +31,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
@@ -58,7 +58,7 @@ import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
-public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob {
+public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob {
 
 	/* Initialization */
 
@@ -287,7 +287,7 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 		return DATA_AISTATE;
 	}
 
-	/* IBefriendedUndeadMob interface */
+	/* IBefriendedSunSensitiveMob interface */
 
 	@Override
 	public void setupSunImmunityRules() {

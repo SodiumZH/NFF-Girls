@@ -47,6 +47,8 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.entities.projectile.BefriendedAlrauneSeedEntity;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuThreeBaubles;
@@ -99,8 +101,8 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 	protected void registerGoals() {
 		goalSelector.addGoal(1, new FloatGoal(this));
 		goalSelector.addGoal(3, meleeAttackGoal = new BefriendedMeleeAttackGoal(this, 1.2d, true));
-		goalSelector.addGoal(4, new BefriendedRangedAttackGoal(this, 1.0D, 20, 15.0F));
-		goalSelector.addGoal(4, new HmagAlrauneEntity.ShootHealingGoal(this, 1.0D, 10 * 20, 15.0F));
+		goalSelector.addGoal(4, new BefriendedRangedAttackGoal(this, 1.0D, 3 * 20, 15.0F).setSkipChance(0.5));
+		goalSelector.addGoal(4, new HmagAlrauneEntity.ShootHealingGoal(this, 1.0D, 10 * 20, 15.0F).setSkipChance(0.8));
 		goalSelector.addGoal(5, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 		goalSelector.addGoal(6, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -108,6 +110,8 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
+		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
+		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
 	
 	@Override
@@ -334,6 +338,14 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 			super(mob, pSpeedModifier, pAttackIntervalMin, pAttackIntervalMax, pAttackRadius);
 		}
 
+		@Override
+		public boolean checkCanUse()
+		{
+			if (!super.checkCanUse())
+				return false;
+			return this.target.getHealth() < this.target.getMaxHealth() / 2;
+		}
+		
 		@Override
 		protected void performShooting(LivingEntity target, float velocity) 
 		{

@@ -6,6 +6,7 @@ import com.github.mechalopa.hmag.client.renderer.DodomekiRenderer;
 import com.github.mechalopa.hmag.client.renderer.DrownedGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.DullahanRenderer;
 import com.github.mechalopa.hmag.client.renderer.GhastlySeekerRenderer;
+import com.github.mechalopa.hmag.client.renderer.GlaryadRenderer;
 import com.github.mechalopa.hmag.client.renderer.HarpyRenderer;
 import com.github.mechalopa.hmag.client.renderer.HornetRenderer;
 import com.github.mechalopa.hmag.client.renderer.HuskGirlRenderer;
@@ -98,6 +99,7 @@ public class DwmgClientSetupEvents
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_DULLAHAN.get(), DullahanRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_DODOMEKI.get(), DodomekiRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_ALRAUNE.get(), AlrauneRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_GLARYAD.get(), GlaryadRenderer::new);
         
         event.registerEntityRenderer(DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get(), MagicBulletRenderer::new); 
         event.registerEntityRenderer(DwmgEntityTypes.BEFRIENDED_GHAST_FIREBALL.get(), c -> new ThrownItemRenderer<>(c, 3.0F, true));

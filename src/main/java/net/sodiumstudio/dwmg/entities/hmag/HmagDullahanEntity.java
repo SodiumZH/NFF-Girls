@@ -28,7 +28,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
@@ -62,7 +62,7 @@ import net.sodiumstudio.nautils.containers.MapPair;
 /**
  * This is a template with more preset
  */
-public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
+public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
 {
 
 	/* Data sync */

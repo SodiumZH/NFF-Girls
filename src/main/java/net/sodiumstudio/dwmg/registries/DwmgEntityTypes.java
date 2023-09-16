@@ -4,6 +4,7 @@ package net.sodiumstudio.dwmg.registries;
 import com.github.mechalopa.hmag.HMaG;
 import com.github.mechalopa.hmag.world.entity.AlrauneEntity;
 import com.github.mechalopa.hmag.world.entity.DodomekiEntity;
+import com.github.mechalopa.hmag.world.entity.GlaryadEntity;
 import com.github.mechalopa.hmag.world.entity.projectile.PoisonSeedEntity;
 
 import net.minecraft.resources.ResourceLocation;
@@ -25,6 +26,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagDrownedGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagDullahanEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagEnderExecutorEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagGhastlySeekerEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagGlaryadEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHarpyEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHornetEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHuskGirlEntity;
@@ -261,6 +263,16 @@ public class DwmgEntityTypes {
 			.setShouldReceiveVelocityUpdates(false)
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_alraune").toString()));
 	
+	public static final RegistryObject<EntityType<HmagGlaryadEntity>> HMAG_GLARYAD = 
+			ENTITY_TYPES.register("hmag_glaryad", () -> EntityType.Builder
+			.of(HmagGlaryadEntity::new, MobCategory.CREATURE)
+			.sized(0.6F, 1.95F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_glaryad").toString()));
+
+	
 	@SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
         event.put(DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get(), HmagZombieGirlEntity.createAttributes().build());
@@ -284,6 +296,7 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.HMAG_DULLAHAN.get(), DwmgAttributes.HMAG_DULLAHAN_ATTRIBUTES.get().build());
         event.put(DwmgEntityTypes.HMAG_DODOMEKI.get(), DwmgAttributes.HMAG_DODOMEKI_ATTRIBUTES.get().build());
         event.put(DwmgEntityTypes.HMAG_ALRAUNE.get(), DwmgAttributes.HMAG_ALRAUNE_ATTRIBUTES.get().build());
+        event.put(DwmgEntityTypes.HMAG_GLARYAD.get(), DwmgAttributes.HMAG_GLARYAD_ATTRIBUTES.get().build());
 	}
 	
 	// Projectiles

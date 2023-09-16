@@ -35,9 +35,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedAmphibious;
-import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedAmphibiousGoals;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
@@ -45,14 +42,14 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRandom
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRandomSwimGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedAmphibious;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
-import net.sodiumstudio.nautils.ItemHelper;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedDrownedTridentAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
@@ -66,7 +63,7 @@ import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
-public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob, IBefriendedAmphibious
+public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob, IBefriendedAmphibious
 {
 
 	/* Initialization */
@@ -282,7 +279,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 		return newMob;
 	}
 	
-	/* IBefriendedUndeadMob interface */
+	/* IBefriendedSunSensitiveMob interface */
 
 	@Override
 	public void setupSunImmunityRules() {

@@ -47,7 +47,7 @@ import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.phys.AABB;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.entity.ai.IBefriendedUndeadMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
@@ -75,7 +75,7 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
-public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedMob, IBefriendedUndeadMob
+public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
 {
 		/* Data sync */
 

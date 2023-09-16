@@ -6,7 +6,7 @@
 
 #### 0.0.14 (1.18.2)
 
-#### 0.1.14 (1.19.2)
+#### 0.1.15 (1.19.2)
 
 
 
@@ -44,9 +44,9 @@ Banshee
 
 Ghastly Seeker
 
-Kobold (0.x.9)
+Kobold
 
-Imp (0.x.9)
+Imp
 
 Harpy (0.x.12)
 
@@ -57,6 +57,10 @@ Jiangshi (0.1.14) (1.19.2 only)
 Dullahan (0.x.14)
 
 Dodomeki (0.x.14)
+
+Alraune (0.x.15)
+
+Glaryad (0.x.15)
 
 ## General befriending methods
 

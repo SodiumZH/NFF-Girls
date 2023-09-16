@@ -261,6 +261,7 @@ public abstract class BefriendedAlrauneSeedEntity extends ModProjectileItemEntit
 		
 		@Override
 		protected void applyEffects(LivingEntity target, int ticks) {
+			target.heal(1);
 			EntityHelper.addEffectSafe(target, new MobEffectInstance(MobEffects.REGENERATION, ticks, 0));
 		}
 

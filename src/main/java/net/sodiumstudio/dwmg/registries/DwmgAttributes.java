@@ -44,4 +44,13 @@ public class DwmgAttributes
 		.add(Attributes.ATTACK_DAMAGE, 6.0D)
 		.add(Attributes.ARMOR, 5.0D)
 		.add(Attributes.KNOCKBACK_RESISTANCE, 0.98D);
+		
+	public static final Supplier<AttributeSupplier.Builder> HMAG_GLARYAD_ATTRIBUTES = () ->
+		Monster.createMonsterAttributes()
+		.add(Attributes.MAX_HEALTH, 40.0D)
+		.add(Attributes.MOVEMENT_SPEED, 0.23D)
+		.add(Attributes.ATTACK_DAMAGE, 7.0D)
+		.add(Attributes.ARMOR, 2.0D)
+		.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
+		
 }
