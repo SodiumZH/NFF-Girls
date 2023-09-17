@@ -1,0 +1,37 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	
+  	"ingredients": [
+	    {
+	      "item": "dwmg:death_crystal_powder"
+	    },
+	    {
+	      "item": "dwmg:death_crystal_powder"
+	    },
+	    {
+	      "item": "dwmg:death_crystal_powder"
+	    },
+	    {
+	      "item": "dwmg:death_crystal_powder"
+	    },
+	    {
+	      "item": "dwmg:death_crystal_powder"
+	    },
+	    {
+	      "item": "dwmg:death_crystal_powder"
+	    },
+	    {
+	      "item": "dwmg:death_crystal_powder"
+	    },
+	    {
+	      "item": "dwmg:death_crystal_powder"
+	    },
+	    {
+	      "item": "dwmg:death_crystal_powder"
+	    }
+  	],
+  	"result": {
+	    "item": "dwmg:death_crystal",
+	    "count": 1
+  }
+}
