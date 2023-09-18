@@ -181,7 +181,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 		/* Handle combat AI */
 		if (justShot)
 		{
-			if (this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0)
+			if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, this.getAdditionalInventory().getItem(4)) <= 0)
 				this.getAdditionalInventory().consumeItem(8);
 			justShot = false;
 		}

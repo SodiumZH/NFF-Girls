@@ -74,7 +74,7 @@ public class ReinforcedFishingRodItem extends FishingRodItem
 					BMErrorHandler.exception("Entity type mismatch: ReinforcedFishingRodItem can only use ReinforcedFishingHookEntity as hook.");
 				}
 			}
-			player.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
+			player.gameEvent(GameEvent.FISHING_ROD_REEL_IN);
 		} 
 		// Throwing same as vanilla
 		else
@@ -90,7 +90,7 @@ public class ReinforcedFishingRodItem extends FishingRodItem
 			}
 
 			player.awardStat(Stats.ITEM_USED.get(this));
-			player.gameEvent(GameEvent.ITEM_INTERACT_START);
+			player.gameEvent(GameEvent.FISHING_ROD_CAST);
 		}
 
 		return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());

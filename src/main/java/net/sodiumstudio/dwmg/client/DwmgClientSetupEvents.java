@@ -22,10 +22,12 @@ import com.github.mechalopa.hmag.client.renderer.StrayGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.WitherSkeletonGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.ZombieGirlRenderer;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.FishingHookRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
@@ -110,7 +112,7 @@ public class DwmgClientSetupEvents
         event.registerEntityRenderer(DwmgEntityTypes.MAGICAL_GEL_BALL.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.ALRAUNE_POISON_SEED.get(), ModThrownItemRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.ALRAUNE_HEALING_SEED.get(), ModThrownItemRenderer::new);
-        event.registerEntityRenderer(DwmgEntityTypes.REINFORCED_FISHING_HOOK.get(), FishingHookRenderer::new);
+        event.<FishingHook>registerEntityRenderer(DwmgEntityTypes.REINFORCED_FISHING_HOOK.get(), FishingHookRenderer::new);
     }
 
     public static void onRegisterParticleProvider(ParticleFactoryRegisterEvent event)

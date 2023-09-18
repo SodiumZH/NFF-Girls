@@ -5,11 +5,14 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
+import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.nautils.entity.projectile.AbstractFishingHookEntity;
 
-public class ReinforcedFishingHookEntity extends FishingHook
+public class ReinforcedFishingHookEntity extends AbstractFishingHookEntity
 {
 
 	protected double strengthItem = 0.4d;
@@ -47,11 +50,6 @@ public class ReinforcedFishingHookEntity extends FishingHook
 		}
 	}
 	
-	public boolean isInPullingCooldown()
-	{
-		return pullingCooldownTimer > 0;
-	}
-	
 	@Override
 	public int retrieve(ItemStack pStack) 
 	{
@@ -72,5 +70,15 @@ public class ReinforcedFishingHookEntity extends FishingHook
 			this.pullingCooldownTimer = 0;
 		super.tick();
 	}
-	
+
+	public boolean isInPullingCooldown()
+	{
+		return pullingCooldownTimer > 0;
+	}
+
+	@Override
+	protected FishingRodItem getFishingRodType() {
+		return DwmgItems.REINFORCED_FISHING_ROD.get();
+	}
+
 }
