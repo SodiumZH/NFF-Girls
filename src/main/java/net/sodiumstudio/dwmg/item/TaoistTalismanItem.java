@@ -27,7 +27,7 @@ public class TaoistTalismanItem extends Item
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity living, InteractionHand usedHand)
 	{
-		if (!player.level.isClientSide && living.getType() == ModEntityTypes.JIANGSHI.get() && living instanceof JiangshiEntity js)
+		if (!player.level().isClientSide && living.getType() == ModEntityTypes.JIANGSHI.get() && living instanceof JiangshiEntity js)
 		{
 			Wrapped<Boolean> interacted = new Wrapped<>(false);
 			if (BefriendingTypeRegistry.getHandler(js) != null && BefriendingTypeRegistry.getHandler(js) instanceof HandlerJiangshi handler)
@@ -38,13 +38,13 @@ public class TaoistTalismanItem extends Item
 					{
 						stack.shrink(1);
 						interacted.set(true);
-						living.level.playSound(null, living, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundSource.BLOCKS, 2.0f, 1.0f);
+						living.level().playSound(null, living, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundSource.BLOCKS, 2.0f, 1.0f);
 					}
 				});
 				
 			}
 			if (interacted.get())
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 		}
 		return InteractionResult.PASS;
 	}

@@ -37,7 +37,7 @@ public class BefriendedSunAvoidingFollowOwnerGoal extends BefriendedFollowOwnerG
 				}
 				if (getPathfinder().distanceToSqr(mob.getOwner()) >= 144.0D) {
 					// Do not teleport when player is under sun
-					if (!getPathfinder().level.isDay() 
+					if (!getPathfinder().level().isDay() 
 							|| !level.canSeeSky(mob.getOwner().blockPosition()) 
 							|| (!ignoreHelmet && !getPathfinder().getItemBySlot(EquipmentSlot.HEAD).isEmpty())
 							|| mob.getOwner().isInWater())

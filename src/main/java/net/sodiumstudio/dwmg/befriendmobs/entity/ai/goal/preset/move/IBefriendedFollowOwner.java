@@ -10,6 +10,7 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedMoveGoal;
 import net.sodiumstudio.nautils.LevelHelper;
 import net.sodiumstudio.nautils.annotation.DontOverride;
 import net.sodiumstudio.nautils.exceptions.UnimplementedException;
+import net.sodiumstudio.nautils.math.MathUtil;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.AiMaths;
 
 /**
@@ -103,7 +104,7 @@ public interface IBefriendedFollowOwner
 			
 		for (int i = 0; i < 20; ++i) {
 			Vec3 pos = ownerPos.add(teleportOffset());
-			if (goal().shouldAvoidSun.test(goal().getMob()) && LevelHelper.isUnderSun(new BlockPos(pos), mob))
+			if (goal().shouldAvoidSun.test(goal().getMob()) && LevelHelper.isUnderSun(MathUtil.getBlockPos(pos), mob))
 				continue;
 			if (tryTeleportToOwner())
 				return;
@@ -134,7 +135,7 @@ public interface IBefriendedFollowOwner
 		Vec3 targetPos = owner.position().add(new Vec3(0, 1, 0)).add(teleportOffset());
 		if (!this.posNoCollision(targetPos))
 			return false;
-		if (goal().shouldAvoidSun.test(goal().getMob()) && LevelHelper.isUnderSun(new BlockPos(targetPos), mob))
+		if (goal().shouldAvoidSun.test(goal().getMob()) && LevelHelper.isUnderSun(MathUtil.getBlockPos(targetPos), mob))
 			return false;
 		else {
 			mob.moveTo(targetPos);
@@ -146,7 +147,7 @@ public interface IBefriendedFollowOwner
 	public default boolean posNoCollision(Vec3 pos) {
 		Mob mob = goal().getMob().asMob();
 		Vec3 deltaVec = pos.subtract(mob.position());
-		return mob.level.noCollision(mob, mob.getBoundingBox().move(deltaVec));
+		return mob.level().noCollision(mob, mob.getBoundingBox().move(deltaVec));
 	}
 
 	public default boolean allowTeleport()

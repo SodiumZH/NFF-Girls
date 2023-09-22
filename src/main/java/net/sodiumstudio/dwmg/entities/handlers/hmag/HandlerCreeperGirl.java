@@ -66,7 +66,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 					cg.setSwellDir(-1);
 				}
 				
-				Player player = mob.level.getPlayerByUUID(l.getNbt().getUUID("final_explosion_player"));
+				Player player = mob.level().getPlayerByUUID(l.getNbt().getUUID("final_explosion_player"));
 				// Fix reloading crash after quit after player die 
 				if (player == null)
 					return;
@@ -137,9 +137,9 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 	protected void doFinalExplosion(CreeperGirlEntity mob, Player player)
 	{
 		mob.invulnerableTime += 2;
-		Explosion.BlockInteraction explosion$blockinteraction = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(mob.level, mob)
+		Explosion.BlockInteraction explosion$blockinteraction = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(mob.level(), mob)
 				? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
-		mob.level.explode(mob, mob.getX(), mob.getY(), mob.getZ(), 12.0f, explosion$blockinteraction);
+		mob.level().explode(mob, mob.getX(), mob.getY(), mob.getZ(), 12.0f, explosion$blockinteraction);
 		spawnLingeringCloud(mob);
 	}
 	/*
@@ -178,7 +178,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 		Collection<MobEffectInstance> collection = mob.getActiveEffects();
 		if (!collection.isEmpty())
 		{
-			AreaEffectCloud areaeffectcloud = new AreaEffectCloud(mob.level, mob.getX(), mob.getY(), mob.getZ());
+			AreaEffectCloud areaeffectcloud = new AreaEffectCloud(mob.level(), mob.getX(), mob.getY(), mob.getZ());
 			areaeffectcloud.setRadius(10F);	// 4x creeper explosion here
 			areaeffectcloud.setRadiusOnUse(-0.5F);
 			areaeffectcloud.setWaitTime(10);
@@ -190,7 +190,7 @@ public class HandlerCreeperGirl extends HandlerItemGivingProgress
 				areaeffectcloud.addEffect(new MobEffectInstance(mobeffectinstance));
 			}
 
-			mob.level.addFreshEntity(areaeffectcloud);
+			mob.level().addFreshEntity(areaeffectcloud);
 		}
 
 	}

@@ -75,11 +75,11 @@ public class BefriendedLocateBlockGoal extends BefriendedGoal
 		AABB range = EntityHelper.getNeighboringArea(mob.asMob(), searchRange);
 		Wrapped<ArrayList<BlockPos>> acceptedPosWrapper = new Wrapped<>(new ArrayList<BlockPos>(50));		
 		BlockPos.betweenClosedStream(range).forEach((BlockPos pos) -> {
-			if (loc.getLocatingBlocks().contains(mob.asMob().level.getBlockState(pos).getBlock()))
+			if (loc.getLocatingBlocks().contains(mob.asMob().level().getBlockState(pos).getBlock()))
 				acceptedPosWrapper.get().add(new BlockPos(pos.getX(), pos.getY(), pos.getZ()));
 			});
 		List<BlockPos> acceptedPos = acceptedPosWrapper.get().stream()
-			.filter((BlockPos bp) -> blocks.contains(mob.asMob().level.getBlockState(bp).getBlock()))
+			.filter((BlockPos bp) -> blocks.contains(mob.asMob().level().getBlockState(bp).getBlock()))
 			.filter((BlockPos bp) -> !sphericalSearchRange || bp.distSqr(mob.asMob().blockPosition()) <= (searchRange * searchRange))
 			.sorted(Comparator.comparingDouble((BlockPos bp) -> bp.distSqr(mob.asMob().blockPosition())))
 			.toList();
@@ -111,7 +111,7 @@ public class BefriendedLocateBlockGoal extends BefriendedGoal
 	@Override
 	public void tick()
 	{
-		if (targetPos != null && loc.getLocatingBlocks().contains(mob.asMob().level.getBlockState(targetPos).getBlock()))
+		if (targetPos != null && loc.getLocatingBlocks().contains(mob.asMob().level().getBlockState(targetPos).getBlock()))
 		{
 			mob.asMob().getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1);
 			mob.asMob().getMoveControl().setWantedPosition(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1);

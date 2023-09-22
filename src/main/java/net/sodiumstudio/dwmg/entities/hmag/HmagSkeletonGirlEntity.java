@@ -150,7 +150,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 		abstractarrow.setBaseDamage(abstractarrow.getBaseDamage() * this.getAttributeValue(Attributes.ATTACK_DAMAGE) / this.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
 		abstractarrow.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);
 		this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-		this.level.addFreshEntity(abstractarrow);
+		this.level().addFreshEntity(abstractarrow);
 		
 		justShot = true;
 	}
@@ -249,7 +249,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 		if (!player.isShiftKeyDown())
 		{
 			if (player.getUUID().equals(getOwnerUUID())) {
-				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
+				if (!player.level().isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
 					if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 					{}
@@ -260,7 +260,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 					}		
 					else return InteractionResult.PASS;
 				}
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			}
 			return InteractionResult.PASS;
 		}
@@ -270,7 +270,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
 			}
 			return InteractionResult.PASS;
@@ -297,14 +297,14 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			additionalInventory.setMobEquipment(this);
 		}
 	}
 
 	@Override
 	public void setInventoryFromMob() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			additionalInventory.getFromMob(this);
 		}
 	}
@@ -337,7 +337,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 		this.convertToStray();
 		if (!this.isSilent())
 		{
-			this.level.levelEvent((Player) null, 1041, this.blockPosition(), 0);
+			this.level().levelEvent((Player) null, 1041, this.blockPosition(), 0);
 		}
 	}	
 	

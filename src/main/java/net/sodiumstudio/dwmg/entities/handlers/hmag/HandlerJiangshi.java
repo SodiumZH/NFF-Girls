@@ -173,7 +173,7 @@ public class HandlerJiangshi extends BefriendingHandler
 				thunderEffect(mob);
 			}
 			updateModifiers(mob);
-			mob.level.playSound(null, mob, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 2f, 0.7f);
+			mob.level().playSound(null, mob, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 2f, 0.7f);
 		}
 		else
 		{
@@ -254,7 +254,7 @@ public class HandlerJiangshi extends BefriendingHandler
 	public int getAngerPhase(Mob mob)
 	{
 		int res = 0;
-		for (Player player: mob.level.players())
+		for (Player player: mob.level().players())
 		{
 			if (isInProcess(player, mob) && getProgressLevel(mob, player) > res)
 				res = getProgressLevel(mob, player);
@@ -286,10 +286,10 @@ public class HandlerJiangshi extends BefriendingHandler
 	
 	public void thunderEffect(Mob mob)
 	{
-		LightningBolt lb = EntityType.LIGHTNING_BOLT.create(mob.level);
+		LightningBolt lb = EntityType.LIGHTNING_BOLT.create(mob.level());
 		lb.moveTo(Vec3.atBottomCenterOf(mob.blockPosition()));
 		lb.setDamage(0);
-		mob.level.addFreshEntity(lb);
+		mob.level().addFreshEntity(lb);
 		mob.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 30 * 20));
 		CBefriendableMob.getCap(mob).setTimer("clear_fire", 10 * 20);
 	}

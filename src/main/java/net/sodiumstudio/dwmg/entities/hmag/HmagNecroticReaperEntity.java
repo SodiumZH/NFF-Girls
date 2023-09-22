@@ -179,7 +179,7 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 		{
 			if (!nr.getAdditionalInventory().getItem(0).isEmpty() && nr.getAdditionalInventory().getItem(0).getItem() instanceof HoeItem hoe)
 			{
-				if (nr.level.random.nextDouble() < 1d / EnchantmentHelper.getItemEnchantmentLevel(Enchantments., null))
+				if (nr.level().random.nextDouble() < 1d / EnchantmentHelper.getItemEnchantmentLevel(Enchantments., null))
 			}
 		}*/
 	}
@@ -213,14 +213,14 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 			// For normal interaction
 			if (!player.isShiftKeyDown())
 			{
-				if (!player.level.isClientSide()) 
+				if (!player.level().isClientSide()) 
 				{
 					if (getOwner() == null)
 					{
 						throw new RuntimeException("Mob \"" + this.getName().getString() + "\" missing owner.");
 					}
 					if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 					// Print a notice info when trying to use commanding wand
 					else if (hand == InteractionHand.MAIN_HAND
@@ -244,7 +244,7 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 					else return InteractionResult.PASS;
 				}
 				// Interacted
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			}
 			// For interaction with shift key down
 			else
@@ -253,7 +253,7 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 					if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.NECROMANCER_WAND.get()))
 					{
 						BefriendedHelper.openBefriendedInventory(player, this);
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					}
 				}
 			}
@@ -282,7 +282,7 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			additionalInventory.setMobEquipment(this);
 		}
 	}
@@ -290,7 +290,7 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 	@Override
 	public void setInventoryFromMob()
 	{
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			additionalInventory.getFromMob(this);
 		}
 		return;
@@ -387,7 +387,7 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 	{
 		Vec3 center = player.position();
 		AABB area = new AABB(center.x - 8d, center.y - 8d, center.z - 8d, center.x + 8d, center.y + 8d, center.z + 8d);
-		List<Entity> entityList = player.level.getEntities(player, area);
+		List<Entity> entityList = player.level().getEntities(player, area);
 		int count = 0;
 		for (Entity e: entityList)
 		{

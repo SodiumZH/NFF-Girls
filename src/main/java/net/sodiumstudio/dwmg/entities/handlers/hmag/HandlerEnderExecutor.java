@@ -104,7 +104,7 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 				* */
 				if (!l.getNbt().contains("player_uuid_on_befriending", 11))
 				{
-					for (Player player: mob.level.players()) 
+					for (Player player: mob.level().players()) 
 					{
 						if (mob.distanceToSqr(player) <= 256.0d)
 						{
@@ -124,7 +124,7 @@ public class HandlerEnderExecutor extends HandlerItemGivingProgress
 				 */
 				if (l.getNbt().contains("player_uuid_on_befriending", 11))
 				{
-					Player player = ee.level.getPlayerByUUID(l.getNbt().getUUID("player_uuid_on_befriending"));
+					Player player = ee.level().getPlayerByUUID(l.getNbt().getUUID("player_uuid_on_befriending"));
 					/**  When player is present in the same level */
 					if (player != null)
 					{

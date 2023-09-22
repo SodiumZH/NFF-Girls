@@ -115,15 +115,15 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 			MobEffectInstance instance = living.getActiveEffectsMap().get(MobEffects.POISON);
 			// The expected duration of poison added in super class
 			int superExpectedDuration =	 
-					level.getDifficulty() == Difficulty.NORMAL ? 100 : (
-					level.getDifficulty() == Difficulty.HARD ? 200 : 0);	
+					level().getDifficulty() == Difficulty.NORMAL ? 100 : (
+					level().getDifficulty() == Difficulty.HARD ? 200 : 0);	
 			// If the poison is no stronger than the super class given effect, remove it
 			if (instance != null && instance.getAmplifier() <= 1 && instance.getDuration() <= superExpectedDuration)
 			{
 				living.getActiveEffectsMap().remove(MobEffects.POISON);
 				instance = null;
 			}
-			// Add when don't have poison effect, or have lower level than this mob's adding level, or have the same level but with a shorter duration time 
+			// Add when don't have poison effect, or have lower level() than this mob's adding level(), or have the same level() but with a shorter duration time 
 			if (instance == null 
 					|| instance.getAmplifier() == addPoisonLevel && instance.getDuration() < addPoisonTicks
 					|| instance.getAmplifier() < addPoisonLevel)
@@ -169,7 +169,7 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 		if (!player.isShiftKeyDown())
 		{
 			if (player.getUUID().equals(getOwnerUUID())) {
-				if (!player.level.isClientSide()) 
+				if (!player.level().isClientSide()) 
 				{
 					/* Put checks before healing item check */
 					/* if (....)
@@ -182,19 +182,19 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 					{
 						if (isHoneyBottle)
 							ItemHelper.giveOrDropDefault(player, Items.GLASS_BOTTLE);
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					}
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 					else if (hand == InteractionHand.MAIN_HAND
 							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 					{
 						switchAIState();
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					}
 					else return InteractionResult.PASS;
 				}
 				// Interacted
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			} 
 			else return InteractionResult.PASS;
 		}
@@ -205,7 +205,7 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
 			}
 			return InteractionResult.PASS;
@@ -233,7 +233,7 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			additionalInventory.setMobEquipment(this);
 		}
 	}
@@ -241,7 +241,7 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 	@Override
 	public void setInventoryFromMob()
 	{
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			additionalInventory.getFromMob(this);
 		}
 		return;

@@ -141,7 +141,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 	@Override
 	public void aiStep()
 	{
-		if (!level.isClientSide)
+		if (!level().isClientSide)
 			super.aiStep();
 		else super.aiStep();
 	}
@@ -173,7 +173,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 			// For normal interaction
 			if (!player.isShiftKeyDown())
 			{
-				if (!player.level.isClientSide()) 
+				if (!player.level().isClientSide()) 
 				{
 					/* Put checks before healing item check */
 					/* if (....)
@@ -181,7 +181,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 					 	....
 					 }
 					else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 					else if (hand == InteractionHand.MAIN_HAND
 							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
@@ -191,7 +191,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 					else return InteractionResult.PASS;
 				}
 				// Interacted
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			}
 			// For interaction with shift key down
 			else
@@ -199,7 +199,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
 			}
 		} 
@@ -226,7 +226,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			
 		}
 	}
@@ -234,7 +234,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 	@Override
 	public void setInventoryFromMob()
 	{
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			
 		}
 		return;
@@ -373,7 +373,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 				if (mob.getAdditionalInventory().getItem(4).isEmpty())
 					return;
 				
-				Level world = this.parent.level;
+				Level world = this.parent.level();
 				++this.attackTimer;
 
 				if (this.attackTimer == 10 && !this.parent.isSilent())

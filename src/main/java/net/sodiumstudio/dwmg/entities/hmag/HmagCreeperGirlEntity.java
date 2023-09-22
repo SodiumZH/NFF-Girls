@@ -155,7 +155,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 	@Override
 	public void aiStep()
 	{
-		if (!level.isClientSide)
+		if (!level().isClientSide)
 		{
 			// Update explosion radius by ammo type
 			if (befriendedInventory.getItem(6).is(Items.GUNPOWDER))
@@ -188,7 +188,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 	public void tick()
 	{
 		super.tick();
-		if (!level.isClientSide)
+		if (!level().isClientSide)
 		{
 			if (this.getSwell() == 0)
 				isPlayerIgnited = false;
@@ -214,21 +214,21 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 		{
 			if (player.getUUID().equals(getOwnerUUID()))
 			{
-				if (!this.level.isClientSide && hand == InteractionHand.MAIN_HAND)
+				if (!this.level().isClientSide && hand == InteractionHand.MAIN_HAND)
 				{
 					// Power with a lightning particle
 					if (player.getItemInHand(hand).is(ModItems.LIGHTNING_PARTICLE.get()) && !this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
 					{
 						this.setPowered(true);
 						player.getItemInHand(hand).shrink(1);
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					}
 					// Unpower with empty hand )and get a lightning particle
 					else if (player.getItemInHand(hand).isEmpty() && this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
 					{
 						this.setPowered(false);
 						this.spawnAtLocation(new ItemStack(ModItems.LIGHTNING_PARTICLE.get(), 1));
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					} 
 					else if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)
 							&& this.canIgnite
@@ -238,10 +238,10 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 		
 						this.playerIgniteDefault(player, hand);
 						isPlayerIgnited = true;
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					} 
 					else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					else if (hand == InteractionHand.MAIN_HAND
 							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 					{
@@ -249,7 +249,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 					}	
 					else return InteractionResult.PASS;
 				}
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			}
 			return InteractionResult.PASS;
 		}
@@ -259,7 +259,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
 			}
 			return InteractionResult.PASS;
@@ -276,7 +276,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 	
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			((BefriendedInventoryWithEquipment)getAdditionalInventory()).setMobEquipment(this);
 		}
 	}
@@ -284,7 +284,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 	@Override
 	public void setInventoryFromMob()
 	{
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			((BefriendedInventoryWithEquipment)getAdditionalInventory()).getFromMob(this);
 		}
 		return;
@@ -301,7 +301,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 	@Override
 	protected void explodeCreeper()
 	{
-		if (!level.isClientSide)
+		if (!level().isClientSide)
 		{
 			if (!hasEnoughAmmoToExplode())
 			{

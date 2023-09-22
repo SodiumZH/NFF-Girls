@@ -132,7 +132,7 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 		{
 			if (player.getUUID().equals(getOwnerUUID())) 
 			{
-				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
+				if (!player.level().isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
 					if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 					{}
@@ -143,7 +143,7 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 					}			
 					else return InteractionResult.PASS;
 				}
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			}
 			return InteractionResult.PASS;
 		}
@@ -153,7 +153,7 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
 			}
 			return InteractionResult.PASS;
@@ -178,7 +178,7 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			additionalInventory.setMobEquipment(this);
 		}
 	}
@@ -186,7 +186,7 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 	@Override
 	public void setInventoryFromMob()
 	{
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			additionalInventory.getFromMob(this);
 		}
 	}
@@ -218,7 +218,7 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 		this.convertToZombie();
 		if (!this.isSilent())
 		{
-			this.level.levelEvent((Player) null, 1041, this.blockPosition(), 0);
+			this.level().levelEvent((Player) null, 1041, this.blockPosition(), 0);
 		}
 	}	
 	

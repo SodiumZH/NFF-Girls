@@ -172,7 +172,7 @@ public class HandlerNecroticReaper extends BefriendingHandler
 			// At this time nobody is in process, so there shouldn't be a valid uuid
 			if (cap.getNbt().contains("ongoing_player_uuid", NbtHelper.TAG_INT_ARRAY_ID)
 					&& cap.getNbt().getUUID("ongoing_player_uuid") != null
-					&& mob.level.getPlayerByUUID(cap.getNbt().getUUID("ongoing_player_uuid")) != null)
+					&& mob.level().getPlayerByUUID(cap.getNbt().getUUID("ongoing_player_uuid")) != null)
 			{
 				throw new IllegalStateException("Player detected but hit count is 0. Player UUID information should be removed when hit count is cleared.");
 			}
@@ -208,9 +208,9 @@ public class HandlerNecroticReaper extends BefriendingHandler
 		if (	// Is in player process
 			cap.getNbt().contains("ongoing_player_uuid", NbtHelper.TAG_INT_ARRAY_ID)
 			&& cap.getNbt().getUUID("ongoing_player_uuid") != null
-			&& mob.level.getPlayerByUUID(cap.getNbt().getUUID("ongoing_player_uuid")) != null)
+			&& mob.level().getPlayerByUUID(cap.getNbt().getUUID("ongoing_player_uuid")) != null)
 		{
-			Player player = mob.level.getPlayerByUUID(cap.getNbt().getUUID("ongoing_player_uuid"));
+			Player player = mob.level().getPlayerByUUID(cap.getNbt().getUUID("ongoing_player_uuid"));
 			/*mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((capUM) ->
 			{
 				capUM.addHatred(player, 300 * 20);	// This blocks the effect of undead affinity

@@ -89,7 +89,7 @@ public class HandlerBanshee extends HandlerSkeletonGirl
 	{
 		BlockPos pos = mob.blockPosition();
 		AABB area = new AABB(pos.offset(-7, -7, -7), pos.offset(7, 7, 7));
-		return mob.level.getBlockStates(area).filter((b) -> b.is(Blocks.WITHER_ROSE)).count() >= 8;
+		return mob.level().getBlockStates(area).filter((b) -> b.is(Blocks.WITHER_ROSE)).count() >= 8;
 	}
 	
 	@Override
@@ -103,7 +103,7 @@ public class HandlerBanshee extends HandlerSkeletonGirl
 	{
 		CBefriendableMob cap = CBefriendableMob.getCap(mob);
 		if (cap.getNbt().contains("last_item_giver", NbtHelper.TAG_INT_ARRAY_ID))
-			return mob.level.getPlayerByUUID(cap.getNbt().getUUID("last_item_giver"));
+			return mob.level().getPlayerByUUID(cap.getNbt().getUUID("last_item_giver"));
 		else return null;
 	}
 		

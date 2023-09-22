@@ -131,7 +131,7 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor)
 	{
-		this.shootSeed(target, () -> new BefriendedAlrauneSeedEntity.PoisonSeed(level, this), distanceFactor);
+		this.shootSeed(target, () -> new BefriendedAlrauneSeedEntity.PoisonSeed(level()(), this), distanceFactor);
 	}
 	
 	public void shootSeed(LivingEntity target, Supplier<? extends BefriendedAlrauneSeedEntity> shotSupplier, float distanceFactor)
@@ -148,7 +148,7 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 			double d4 = Math.sqrt(d1 * d1 + d3 * d3) * 0.15D;
 			shot.shoot(d1, d2 + d4, d3, 1.5F, 10.0F);
 			shot.setDamage(4.0F);
-			this.level.addFreshEntity(shot);
+			this.level()().addFreshEntity(shot);
 		}
 
 		this.playSound(SoundEvents.LLAMA_SPIT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -186,7 +186,7 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 			// For normal interaction
 			if (!player.isShiftKeyDown())
 			{
-				if (!player.level.isClientSide()) 
+				if (!player.level()().isClientSide()) 
 				{
 					/* Put checks before healing item check */
 					/* if (....)
@@ -194,7 +194,7 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 					 	....
 					 }
 					else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level()().isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 					else if (hand == InteractionHand.MAIN_HAND
 							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
@@ -205,7 +205,7 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 					else return InteractionResult.PASS;
 				}
 				// Interacted
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level()().isClientSide);
 			}
 			// For interaction with shift key down
 			else
@@ -214,7 +214,7 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level()().isClientSide);
 				}
 			}
 		} 
@@ -242,7 +242,7 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level()().isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 			//additionalInventory.setMobEquipment(this);
 		}
@@ -251,7 +251,7 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 	@Override
 	public void setInventoryFromMob()
 	{
-		if (!this.level.isClientSide) {
+		if (!this.level()().isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 			//additionalInventory.getFromMob(this);
 		}
@@ -349,13 +349,13 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 		@Override
 		protected void performShooting(LivingEntity target, float velocity) 
 		{
-			((HmagAlrauneEntity)mob).shootSeed(target, () -> new BefriendedAlrauneSeedEntity.HealingSeed(mob.asMob().level, mob), velocity);
+			((HmagAlrauneEntity)mob).shootSeed(target, () -> new BefriendedAlrauneSeedEntity.HealingSeed(mob.asMob().level()(), mob), velocity);
 		}
 
 		@Override
 		protected LivingEntity updateTarget() {
 			List<LivingEntity> visible = 
-					mob.asMob().level.getEntitiesOfClass(LivingEntity.class, EntityHelper.getNeighboringArea(mob.asMob(), 8d))
+					mob.asMob().level()().getEntitiesOfClass(LivingEntity.class, EntityHelper.getNeighboringArea(mob.asMob(), 8d))
 					.stream().filter((LivingEntity living) -> mob.asMob().hasLineOfSight(living)).toList();
 					
 			List<LivingEntity> owner = visible.stream().filter((LivingEntity living) -> living.getUUID().equals(mob.getOwnerUUID())).toList();			

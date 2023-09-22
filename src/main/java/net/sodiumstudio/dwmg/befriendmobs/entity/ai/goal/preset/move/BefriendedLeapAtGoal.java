@@ -94,7 +94,7 @@ public abstract class BefriendedLeapAtGoal extends BefriendedMoveGoal
 			{
 				if (canLeap())
 				{
-					if (!this.mob.asMob().isOnGround())
+					if (!this.mob.asMob().onGround())
 					{
 						return false;
 					}
@@ -114,7 +114,7 @@ public abstract class BefriendedLeapAtGoal extends BefriendedMoveGoal
 	@Override
 	public boolean checkCanContinueToUse()
 	{
-		return !this.mob.asMob().isOnGround();
+		return !this.mob.asMob().onGround();
 	}
 
 	@Override

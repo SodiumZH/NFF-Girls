@@ -30,7 +30,7 @@ public class BefriendedInWaterFollowOwnerGoal extends BefriendedFollowOwnerGoal 
 			float pStopDistance) {
 		super(inMob, pSpeedModifier, pStartDistance, pStartDistance, false);
 		mob = inMob;
-		this.level = mob.asMob().level;
+		this.level = mob.asMob().level();
 		this.speedModifier = pSpeedModifier;
 		this.navigation = getPathfinder().getNavigation();
 		this.startDistance = pStartDistance;

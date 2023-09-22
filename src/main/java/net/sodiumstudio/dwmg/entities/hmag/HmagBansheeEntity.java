@@ -166,7 +166,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 				// For normal interaction
 				if (!player.isShiftKeyDown())
 				{
-					if (!player.level.isClientSide()) 
+					if (!player.level()().isClientSide()) 
 					{
 						/* Put checks before healing item check */
 						/* if (....)
@@ -174,7 +174,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 						 	....
 						 }
 						else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-							return InteractionResult.sidedSuccess(player.level.isClientSide);
+							return InteractionResult.sidedSuccess(player.level()().isClientSide);
 						// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 						else if (hand == InteractionHand.MAIN_HAND 
 								&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
@@ -185,7 +185,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 						else return InteractionResult.PASS;
 					}
 					// Interacted
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level()().isClientSide);
 				}
 				// For interaction with shift key down
 				else
@@ -194,7 +194,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 					if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 					{
 						BefriendedHelper.openBefriendedInventory(player, this);
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level()().isClientSide);
 					}
 				}
 			} 
@@ -222,7 +222,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 		
 		protected void applyEnemyEffect(LivingEntity target)
 		{
-			if (!this.level.isClientSide)
+			if (!this.level()().isClientSide)
 			{
 				FlowerBlock flower = getFlowerOnOffhand();
 				if (flower == null)
@@ -246,7 +246,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 		
 		protected void applyAllyEffect()
 		{
-			if (!this.level.isClientSide)
+			if (!this.level()().isClientSide)
 			{
 				// Add effect each 15s
 				if (this.tickCount % 300 != addEffectTimePoint)
@@ -261,7 +261,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 					return;
 								
 				// Applie on owner and owner's other befriended mobs/tamed animals
-				List<Entity> entities = this.level.getEntities(this, new AABB(this.position().add(-8, -8, -8), this.position().add(8, 8, 8)));
+				List<Entity> entities = this.level()().getEntities(this, new AABB(this.position().add(-8, -8, -8), this.position().add(8, 8, 8)));
 				entities = entities.stream().filter(e -> 
 				{
 					if (e instanceof Player player && player == this.getOwner())
@@ -294,8 +294,8 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 		
 		public void removeDefaultEffects(LivingEntity target)
 		{
-			int time = this.level.getDifficulty() == Difficulty.NORMAL ? 7 * 20 : (
-					this.level.getDifficulty() == Difficulty.HARD ? 15 * 20 : 0) ;
+			int time = this.level()().getDifficulty() == Difficulty.NORMAL ? 7 * 20 : (
+					this.level()().getDifficulty() == Difficulty.HARD ? 15 * 20 : 0) ;
 			if (target.getEffect(MobEffects.HUNGER) == null || 
 					target.getEffect(MobEffects.HUNGER).getDuration() <= time && target.getEffect(MobEffects.HUNGER).getAmplifier() == 0)
 				target.removeEffect(MobEffects.HUNGER);
@@ -324,7 +324,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
 			super.aiStep();
 			applyAllyEffect();
-			if (!this.level.isClientSide)
+			if (!this.level()().isClientSide)
 			{
 				FlowerBlock flower = this.getFlowerOnOffhand();
 				if (flower != null && flower != lastFlower)
@@ -356,7 +356,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 
 		@Override
 		public void updateFromInventory() {
-			if (!this.level.isClientSide) {
+			if (!this.level()().isClientSide) {
 				// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 				additionalInventory.setMobEquipment(this);
 			}
@@ -365,7 +365,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 		@Override
 		public void setInventoryFromMob()
 		{
-			if (!this.level.isClientSide) {
+			if (!this.level()().isClientSide) {
 				// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 				additionalInventory.getFromMob(this);
 			}

@@ -57,12 +57,12 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
+import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
@@ -135,10 +135,10 @@ public class DwmgEntityEvents
 
 	@SuppressWarnings("unused")
 	@SubscribeEvent
-	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
+	public static void onLivingSetAttackTarget(LivingChangeTargetEvent event)
 	{
 		@SuppressWarnings("deprecation")
-		LivingEntity target = event.getTarget();		
+		LivingEntity target = event.getNewTarget();		
 		LivingEntity lastHurtBy = event.getEntity().getLastHurtByMob();
 		Wrapped<Boolean> isCancelledByEffect = new Wrapped<Boolean>(Boolean.FALSE);
 		
@@ -204,7 +204,7 @@ public class DwmgEntityEvents
 		// Handle mobs end //
 	}
 	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public static void onLivingSetAttackTarget_PriorityLowest(LivingSetAttackTargetEvent event)
+	public static void onLivingSetAttackTarget_PriorityLowest(LivingChangeTargetEvent event)
 	{
 		if (event.getEntity() instanceof Mob mob)
 		{
@@ -263,11 +263,11 @@ public class DwmgEntityEvents
 			// Favorability loss on death
 			if (event.getDamageSource().getEntity() != null
 					&& event.getDamageSource().getEntity() == bm.getOwner()
-					&& event.getDamageSource() != DamageSource.OUT_OF_WORLD)
+					&& event.getDamageSource() != event.getMob().asMob().level().damageSources().fellOutOfWorld())
 				bm.getFavorability().setFavorability(0);
 			else if (bm.asMob().distanceToSqr(bm.getOwner()) < 64d 
 					&& bm.asMob().hasLineOfSight(bm.getOwner())
-					&& event.getDamageSource() != DamageSource.OUT_OF_WORLD)
+					&& event.getDamageSource() != event.getMob().asMob().level().damageSources().fellOutOfWorld())
 				bm.getFavorability().addFavorability(-20);
 			// EXP loses by a half on death
 			// As respawner construction (in befriendmobs) is after posting BefriendedDeathEvent, it can be set here
@@ -280,7 +280,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onPlayerAttack_PriorityHighest(AttackEntityEvent event)
 	{
-		if (!event.getEntity().level.isClientSide)
+		if (!event.getEntity().level().isClientSide)
 		{
 			event.getEntity().getCapability(BMCaps.CAP_BM_PLAYER).ifPresent(c -> {
 				c.getNbt().putUUID("directly_attacking", event.getTarget().getUUID());
@@ -295,7 +295,7 @@ public class DwmgEntityEvents
 			return;
 			
 		LivingEntity living = event.getEntity();
-		if (!living.level.isClientSide)
+		if (!living.level().isClientSide)
 		{
 			// Cancel necromancer magic bullet normal attack
 			if (event.getSource().getDirectEntity() != null && event.getSource().getDirectEntity() instanceof NecromancerMagicBulletEntity)
@@ -306,7 +306,7 @@ public class DwmgEntityEvents
 			
 			// Cancel indirect player attack from owner e.g. sweeping
 			if (event.getEntity() instanceof IDwmgBefriendedMob bm
-					&& event.getSource().msgId.equals("player")
+					&& event.getSource().getMsgId().equals("player")
 					&& event.getSource().getEntity() != null
 					&& event.getSource().getEntity() instanceof Player player
 					&& bm.isOwnerPresent()
@@ -328,7 +328,7 @@ public class DwmgEntityEvents
 			if (living.hasEffect(DwmgEffects.ENDER_PROTECTION.get()))
 			{
 				// If the player drops into the void, try pull up
-				if (event.getSource().equals(DamageSource.OUT_OF_WORLD))
+				if (event.getSource().equals(event.getEntity().level().damageSources().fellOutOfWorld()))
 				{
 					// Ignore damage by /kill
 					if (living.getY() < -64.0d)
@@ -337,7 +337,7 @@ public class DwmgEntityEvents
 						living.setPosRaw(living.getX(), 64.0d, living.getZ());
 						// and find a standable block
 						EntityHelper.chorusLikeTeleport(living);
-						living.level.addParticle(ParticleTypes.PORTAL, living.getRandomX(0.5D),
+						living.level().addParticle(ParticleTypes.PORTAL, living.getRandomX(0.5D),
 								living.getRandomY() - 0.25D, living.getRandomZ(0.5D),
 								(living.getRandom().nextDouble() - 0.5D) * 2.0D, -living.getRandom().nextDouble(),
 								(living.getRandom().nextDouble() - 0.5D) * 2.0D);
@@ -346,7 +346,7 @@ public class DwmgEntityEvents
 						// whether player is standing on a solid block
 						BlockPos standingOn = new BlockPos(living.blockPosition().getX(),
 								living.blockPosition().getY() - 1, living.blockPosition().getZ());
-						if (living.level.getBlockState(standingOn).is(Blocks.AIR))
+						if (living.level().getBlockState(standingOn).is(Blocks.AIR))
 						{
 							// failed, add slow falling
 							if (living instanceof Player p)
@@ -369,8 +369,8 @@ public class DwmgEntityEvents
 						}
 					}
 				}
-				else if (!event.getSource().equals(DamageSource.IN_FIRE)
-						&& !event.getSource().equals(DamageSource.STARVE))
+				else if (!event.getSource().equals(event.getEntity().damageSources().inFire())
+						&& !event.getSource().equals(event.getEntity().damageSources().starve()))
 				{
 					EntityHelper.sendParticlesToEntity(living, ParticleTypes.PORTAL, 0, living.getBbHeight()/2, 0, 0.5, living.getBbHeight()/2, 0.5, 2, 1);
 					/*living.level.addParticle(ParticleTypes.PORTAL, 
@@ -417,7 +417,7 @@ public class DwmgEntityEvents
 						hurtHelmet(bm.asMob(), event.getSource(), event.getAmount());
 					}
 					hurtArmor(bm.asMob(), event.getSource(), event.getAmount());
-				}				
+				}
 			}
 			
 			/** Durability end */
@@ -444,7 +444,7 @@ public class DwmgEntityEvents
 	protected static void hurtArmor(Mob mob, DamageSource damageSource, float damage, EquipmentSlot[] slots)
 	{
 		// Ignore effect of /kill
-		if (damageSource.getMsgId().equals(DamageSource.OUT_OF_WORLD.getMsgId()) && damage > 1000)
+		if (damageSource.getMsgId().equals(mob.level().damageSources().fellOutOfWorld().getMsgId()) && damage > 1000)
 			return;
 		if (damageSource.isBypassArmor())
 			return;
@@ -540,7 +540,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onLivingTick(LivingTickEvent event)
 	{
-		if (!event.getEntity().level.isClientSide)
+		if (!event.getEntity().level().isClientSide)
 		{
 			ItemNecromancerArmor.necromancerArmorUpdate(event.getEntity());
 			
@@ -552,7 +552,7 @@ public class DwmgEntityEvents
 					((CUndeadMobImpl)l).updateForgivingTimers();
 				});
 				// Sync favorability and level
-				for (Player player: mob.level.players())
+				for (Player player: mob.level().players())
 				{
 					if (player instanceof ServerPlayer sp)
 					{
@@ -578,7 +578,7 @@ public class DwmgEntityEvents
 			            aabb = bm.asMob().getBoundingBox().inflate(1.0D, 0.5D, 1.0D);
 			         }
 
-			         List<Entity> list = bm.asMob().level.getEntities(bm.asMob(), aabb);
+			         List<Entity> list = bm.asMob().level().getEntities(bm.asMob(), aabb);
 
 			         for(int i = 0; i < list.size(); ++i) {
 			            Entity entity = list.get(i);
@@ -624,7 +624,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onBefriendedSwitchAiState(BefriendedChangeAiStateEvent event)
 	{
-		if (event.getMob().getModId().equals(Dwmg.MOD_ID) && !event.getMob().asMob().level.isClientSide)
+		if (event.getMob().getModId().equals(Dwmg.MOD_ID) && !event.getMob().asMob().level().isClientSide)
 		{
 			MiscUtil.printToScreen(InfoHelper.createText("")
 					.append(event.getMob().asMob().getName())
@@ -636,7 +636,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onNonBefriendedDie(LivingDeathEvent event)
 	{
-		if (!event.getEntity().level.isClientSide)
+		if (!event.getEntity().level().isClientSide)
 		{
 			// This function only handle non-befriended
 			if (event.getEntity() instanceof IBefriendedMob)
@@ -771,7 +771,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onLivingDamage(LivingDamageEvent event)
 	{
-		if (!event.getEntity().level.isClientSide && event.getEntity() instanceof Mob mob && !event.isCanceled())
+		if (!event.getEntity().level().isClientSide && event.getEntity() instanceof Mob mob && !event.isCanceled())
 		{
 			if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof LivingEntity source)
 			{
@@ -834,7 +834,7 @@ public class DwmgEntityEvents
 						&& event.getSource().getEntity() != null
 						&& event.getSource().getEntity() instanceof Player player
 						&& bm.getOwnerUUID().equals(player.getUUID())
-						&& !event.getSource().equals(DamageSource.OUT_OF_WORLD)
+						&& !event.getSource().equals(event.getEntity().level().damageSources().fellOutOfWorld())
 						&& !event.getSource().isCreativePlayer())
 				{
 					if (event.getAmount() >= 0.5f)
@@ -1049,7 +1049,7 @@ public class DwmgEntityEvents
 	public static void onEntityInteract_PriorityHighest(EntityInteract event)
 	{
 		// Detect missing-owner cases
-		if (event.getTarget() instanceof IDwmgBefriendedMob bm && !event.getEntity().level.isClientSide)
+		if (event.getTarget() instanceof IDwmgBefriendedMob bm && !event.getEntity().level().isClientSide)
 		{
 			if (bm.getOwnerUUID() == null)
 			{

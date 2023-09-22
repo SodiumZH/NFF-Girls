@@ -1,7 +1,6 @@
 package net.sodiumstudio.dwmg.client.gui.screens;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -12,10 +11,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.befriendmobs.client.gui.screens.BefriendedGuiScreen;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.nautils.InfoHelper;
-import net.sodiumstudio.nautils.math.IntVec2;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.nautils.InfoHelper;
+import net.sodiumstudio.nautils.math.IntVec2;
 
 /** GUI template for all vanilla-undead-mob-like befriended mobs.
 */
@@ -59,8 +58,8 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	}
 	
 	@Override
-	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-		super.render(poseStack, mouseX, mouseY, partialTick);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+		super.render(graphics, mouseX, mouseY, partialTick);
 	}
 
 	public void renderItemSlots()
@@ -69,18 +68,18 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	}
 	
 	// Add hp, atk and armor only
-	public void addBasicAttributeInfo(PoseStack poseStack, IntVec2 position, int color, int textRowWidth)
+	public void addBasicAttributeInfo(GuiGraphics graphics, IntVec2 position, int color, int textRowWidth)
 	{
-		super.addAttributeInfo(poseStack, position, color, textRowWidth);
+		super.addAttributeInfo(graphics, position, color, textRowWidth);
 	}
 	
-	public void addFavorabilityAndLevelInfo(PoseStack poseStack, IntVec2 position, int color, int textRowWidth)
+	public void addFavorabilityAndLevelInfo(GuiGraphics graphics, IntVec2 position, int color, int textRowWidth)
 	{
-		font.draw(poseStack, getDefaultLevelInfo(), position.x, position.y, color);
+		graphics.drawString(font, getDefaultLevelInfo(), position.x, position.y, color);
 		position.addY(textRowWidth);
-		font.draw(poseStack, getDefaultExpInfo(), position.x, position.y, color);
+		graphics.drawString(font, getDefaultExpInfo(), position.x, position.y, color);
 		position.addY(textRowWidth);
-		font.draw(poseStack, getDefaultFavInfo(), position.x, position.y, color);
+		graphics.drawString(font, getDefaultFavInfo(), position.x, position.y, color);
 	}
 	
 	protected MutableComponent getDefaultLevelAndExpInfo()
@@ -121,17 +120,17 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	}
 	
 	@Override
-	public void addAttributeInfo(PoseStack poseStack, IntVec2 position, int color, int textRowWidth)
+	public void addAttributeInfo(GuiGraphics graphics, IntVec2 position, int color, int textRowWidth)
 	{
-		this.addBasicAttributeInfo(poseStack, position, color, textRowWidth);
+		this.addBasicAttributeInfo(graphics, position, color, textRowWidth);
 		position.addY(textRowWidth * 3);
-		this.addFavorabilityAndLevelInfo(poseStack, position, color, textRowWidth);
+		this.addFavorabilityAndLevelInfo(graphics, position, color, textRowWidth);
 	}
 
 	@Override
-	public void addAttributeInfo(PoseStack poseStack, IntVec2 position)
+	public void addAttributeInfo(GuiGraphics graphics, IntVec2 position)
 	{
-		addAttributeInfo(poseStack, position, 0x404040, 11);
+		addAttributeInfo(graphics, position, 0x404040, 11);
 	}
 	
 	/** Below are texture-specific, must using gui_preset_0.png */
@@ -169,29 +168,29 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 		return absPos(79, 17);
 	}
 	
-	protected void addMainScreen(PoseStack poseStack)
+	protected void addMainScreen(GuiGraphics graphics)
 	{
-		this.blit(poseStack, basePos(), IntVec2.zero(), screenSize());
+		this.drawSprite(graphics, basePos(), IntVec2.zero(), screenSize());
 	}
 	
-	protected void addSlotBg(PoseStack poseStack, int slotIndex, IntVec2 pos, int slotIndexX, int slotIndexY)
+	protected void addSlotBg(GuiGraphics graphics, int slotIndex, IntVec2 pos, int slotIndexX, int slotIndexY)
 	{
-		this.addSlotBg(poseStack, slotIndex, pos, IntVec2.valueOf(256, 0).coord(slotIndexX, slotIndexY), IntVec2.valueOf(256, 0));
+		this.addSlotBg(graphics, slotIndex, pos, IntVec2.valueOf(256, 0).coord(slotIndexX, slotIndexY), IntVec2.valueOf(256, 0));
 	}
 
-	protected void addBaubleSlotBg(PoseStack poseStack, int slotIndex, IntVec2 pos)
+	protected void addBaubleSlotBg(GuiGraphics graphics, int slotIndex, IntVec2 pos)
 	{
-		this.addSlotBg(poseStack, slotIndex, pos, 1, 2);
+		this.addSlotBg(graphics, slotIndex, pos, 1, 2);
 	}
 	
-	public void addMobRenderBox(PoseStack poseStack, int variation)
+	public void addMobRenderBox(GuiGraphics graphics, int variation)
 	{
-		this.blit(poseStack, absPos(27, 17), IntVec2.valueOf(120 + variation * 50, 183), IntVec2.valueOf(50, 72));
+		this.drawSprite(graphics, absPos(27, 17), IntVec2.valueOf(120 + variation * 50, 183), IntVec2.valueOf(50, 72));
 	}
 	
-	public void addInfoBox(PoseStack poseStack)
+	public void addInfoBox(GuiGraphics graphics)
 	{
-		this.blit(poseStack, absPos(99, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(120, 72));
+		this.drawSprite(graphics, absPos(99, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(120, 72));
 	}
 	
 	public IntVec2 infoPos()
@@ -199,16 +198,16 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 		return absPos(103, 21);
 	}
 	
-	public void renderMob(IntVec2 offset)
+	public void renderMob(GuiGraphics graphics, IntVec2 offset)
 	{
 		IntVec2 pos = absPos(getEntityRenderPosition().add(offset));
-		InventoryScreen.renderEntityInInventory(pos.x, pos.y, getMobRenderScale(), 
+		InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, pos.x, pos.y, getMobRenderScale(), 
 				(float) pos.x - this.xMouse, (float) (pos.y - 50) - this.yMouse, mob.asMob());
 	}
 	
-	public void renderMob()
+	public void renderMob(GuiGraphics graphics)
 	{
-		renderMob(IntVec2.valueOf(0));
+		renderMob(graphics, IntVec2.valueOf(0));
 	}
 }
 

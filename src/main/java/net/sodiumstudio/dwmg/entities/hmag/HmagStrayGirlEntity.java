@@ -151,7 +151,7 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 		abstractarrow.setBaseDamage(abstractarrow.getBaseDamage() * this.getAttributeValue(Attributes.ATTACK_DAMAGE) / this.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
 		abstractarrow.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);
 		this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-		this.level.addFreshEntity(abstractarrow);
+		this.level().addFreshEntity(abstractarrow);
 		
 		justShot = true;
 	}
@@ -248,14 +248,14 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 		if (!player.isShiftKeyDown())
 		{
 			if (player.getUUID().equals(getOwnerUUID())) {
-				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
+				if (!player.level().isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
 					if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL) && isFromSkeleton)
 					{
 						// Use flint&steel
-						this.level.playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE,
+						this.level().playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE,
 								this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
-						if (!this.level.isClientSide)
+						if (!this.level().isClientSide)
 						{
 							player.getItemInHand(hand).hurtAndBreak(1, player, (p) ->
 							{
@@ -264,7 +264,7 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 						}
 						// and convert
 						this.convertToSkeleton();
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					} 
 					else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 					{}
@@ -275,7 +275,7 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 					}
 					else return InteractionResult.PASS;
 				}
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			}
 			return InteractionResult.PASS;
 		}
@@ -285,7 +285,7 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
 			}
 			return InteractionResult.PASS;
@@ -312,14 +312,14 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			additionalInventory.setMobEquipment(this);
 		}
 	}
 
 	@Override
 	public void setInventoryFromMob() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			additionalInventory.getFromMob(this);
 		}
 	}

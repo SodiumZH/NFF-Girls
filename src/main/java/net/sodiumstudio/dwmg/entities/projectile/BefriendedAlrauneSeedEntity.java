@@ -69,7 +69,7 @@ public abstract class BefriendedAlrauneSeedEntity extends ModProjectileItemEntit
 		{
 			for (int i = 0; i < 8; ++i)
 			{
-				this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItem()), this.getX(), this.getY(), this.getZ(), (this.random.nextFloat() - 0.5D) * 0.08D, (this.random.nextFloat() - 0.5D) * 0.08D, (this.random.nextFloat() - 0.5D) * 0.08D);
+				this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItem()), this.getX(), this.getY(), this.getZ(), (this.random.nextFloat() - 0.5D) * 0.08D, (this.random.nextFloat() - 0.5D) * 0.08D, (this.random.nextFloat() - 0.5D) * 0.08D);
 			}
 		}
 	}
@@ -78,7 +78,7 @@ public abstract class BefriendedAlrauneSeedEntity extends ModProjectileItemEntit
 	protected void onHitServer(HitResult result)
 	{
 		AABB aabb = this.getBoundingBox().inflate(4.0D, 2.0D, 4.0D);
-		List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, aabb);
+		List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, aabb);
 
 		if (!list.isEmpty())
 		{
@@ -102,8 +102,8 @@ public abstract class BefriendedAlrauneSeedEntity extends ModProjectileItemEntit
 			}
 		}
 
-		this.level.levelEvent(2002, this.blockPosition(), getPotionColor());
-		this.level.broadcastEntityEvent(this, (byte)3);
+		this.level().levelEvent(2002, this.blockPosition(), getPotionColor());
+		this.level().broadcastEntityEvent(this, (byte)3);
 		super.onHitServer(result);
 	}
 
@@ -131,7 +131,7 @@ public abstract class BefriendedAlrauneSeedEntity extends ModProjectileItemEntit
 	{
 		super.onHitEntity(result);
 		if (hasDamage())
-			result.getEntity().hurt(DamageSource.thrown(this, this.getOwner()), this.getDamage());
+			result.getEntity().hurt(level().damageSources().thrown(this.getOwner(), this), this.getDamage());
 	}
 	
 	protected boolean hasDamage()

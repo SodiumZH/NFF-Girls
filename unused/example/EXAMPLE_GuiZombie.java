@@ -41,7 +41,7 @@ public class EXAMPLE_GuiZombie extends BefriendedGuiScreen {
 	}
 
 	@Override
-	protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
+	protected void renderBg(GuiGraphics graphics, float pPartialTick, int pMouseX, int pMouseY) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.setShaderTexture(0, getTextureLocation());
@@ -50,14 +50,14 @@ public class EXAMPLE_GuiZombie extends BefriendedGuiScreen {
 		IntVec2 v = IntVec2.of(i, j);
 		// Main window
 		
-		this.blit(pPoseStack, v.x, v.y, 0, 0, imageWidth, imageHeight);	
+		this.blit(graphics, v.x, v.y, 0, 0, imageWidth, imageHeight);	
 		// Armor slots
 		v.add(7, 17);
 		IntVec2 ve = IntVec2.of(imageWidth, 0);	// for empty
 		IntVec2 vf = IntVec2.of(imageWidth + 36, 0);	//for filled
 		for (int k = 0; k < 4; ++k)
 		{
-			this.addSlotBg(pPoseStack, k, v, ve, vf);
+			this.addSlotBg(graphics, k, v, ve, vf);
 			v.slotBelow();
 			ve.slotBelow();
 		}
@@ -68,21 +68,21 @@ public class EXAMPLE_GuiZombie extends BefriendedGuiScreen {
 		int[] si = {6, 7, 5, 4};
 		for(int k = 0; k < 4; ++k)
 		{
-			this.addSlotBg(pPoseStack, si[k], v, ve, vf);
+			this.addSlotBg(graphics, si[k], v, ve, vf);
 			v.slotBelow();
 			ve.slotBelow();
 		}
 		
 		// Info box
-		this.blit(pPoseStack, i + 99, j + 17, 0, imageHeight, 96, 72);
-		addHealthInfo(pPoseStack, IntVec2.of(i + 102, j + 20));
+		this.blit(graphics, i + 99, j + 17, 0, imageHeight, 96, 72);
+		addHealthInfo(graphics, IntVec2.of(i + 102, j + 20));
 		InventoryScreen.renderEntityInInventory(i + 52, j + 70, 25, (float) (i + 52) - this.xMouse,
 				(float) (j + 75 - 50) - this.yMouse, (LivingEntity)mob);		
 	}
 
 	@Override
-	public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-	   super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+	public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTick) {
+	   super.render(graphics, pMouseX, pMouseY, pPartialTick);
 	}
 
 }

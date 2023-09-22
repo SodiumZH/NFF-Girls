@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.client.gui.screens;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Inventory;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
@@ -15,17 +16,17 @@ public class GuiHandItemsTwoBaubles extends GuiPreset0 {
 	}
 
 	@Override
-	protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {			
-		super.renderBg(pPoseStack, pPartialTick, pMouseX, pMouseY);
-		this.addMainScreen(pPoseStack);
-		this.addSlotBg(pPoseStack, 0, leftRowPos().addY(10), getMainHandIconPos().x, getMainHandIconPos().y);
-		this.addSlotBg(pPoseStack, 1, leftRowPos().slotBelow(1).addY(20), getOffHandIconPos().x, getOffHandIconPos().y);
-		this.addBaubleSlotBg(pPoseStack, 2, rightRowPos().addY(10));
-		this.addBaubleSlotBg(pPoseStack, 3, rightRowPos().slotBelow().addY(20));
-		this.addMobRenderBox(pPoseStack, 2);
-		this.addInfoBox(pPoseStack);
-		this.addAttributeInfo(pPoseStack, infoPos());
-		this.renderMob();
+	protected void renderBg(GuiGraphics graphics, float pPartialTick, int pMouseX, int pMouseY) {			
+		super.renderBg(graphics, pPartialTick, pMouseX, pMouseY);
+		this.addMainScreen(graphics);
+		this.addSlotBg(graphics, 0, leftRowPos().addY(10), getMainHandIconPos().x, getMainHandIconPos().y);
+		this.addSlotBg(graphics, 1, leftRowPos().slotBelow(1).addY(20), getOffHandIconPos().x, getOffHandIconPos().y);
+		this.addBaubleSlotBg(graphics, 2, rightRowPos().addY(10));
+		this.addBaubleSlotBg(graphics, 3, rightRowPos().slotBelow().addY(20));
+		this.addMobRenderBox(graphics, 2);
+		this.addInfoBox(graphics);
+		this.addAttributeInfo(graphics, infoPos());
+		this.renderMob(graphics);
 	}
 	
 	@Override

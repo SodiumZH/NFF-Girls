@@ -300,7 +300,7 @@ public interface HmagFlyingGoal
 				if (shouldAvoidSun.test(mob) && LevelHelper.isUnderSun(blockpos1, mob.asMob()))
 					continue;
 				
-				if (flyingentity.level.isEmptyBlock(blockpos1))
+				if (flyingentity.level().isEmptyBlock(blockpos1))
 				{
 					flyingentity.getMoveControl().setWantedPosition(blockpos1.getX() + 0.5D, blockpos1.getY() + 0.5D, blockpos1.getZ() + 0.5D, this.moveSpeed);
 

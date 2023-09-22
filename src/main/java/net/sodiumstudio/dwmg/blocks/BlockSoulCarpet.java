@@ -43,7 +43,7 @@ public class BlockSoulCarpet extends CarpetBlock
 	public static boolean isEntityInside(LivingEntity living)
 	{
 
-		return living.level.getBlockState(living.blockPosition()).is(DwmgBlocks.SOUL_CARPET.get());
+		return living.level().getBlockState(living.blockPosition()).is(DwmgBlocks.SOUL_CARPET.get());
 	}
 	
 }

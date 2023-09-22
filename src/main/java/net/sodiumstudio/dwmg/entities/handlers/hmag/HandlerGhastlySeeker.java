@@ -18,7 +18,7 @@ public class HandlerGhastlySeeker extends HandlerSkeletonGirl
 	@Override
 	public boolean additionalConditions(Player player, Mob mob)
 	{
-		return mob.level.dimension().equals(Level.OVERWORLD) && mob.level.canSeeSky(mob.blockPosition());
+		return mob.level().dimension().equals(Level.OVERWORLD) && mob.level().canSeeSky(mob.blockPosition());
 	}
 	
 	@Override

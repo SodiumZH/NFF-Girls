@@ -22,7 +22,7 @@ public class BefriendedFlyingLandGoal extends BefriendedFlyingMoveGoal
 	
 	@Override
 	public boolean checkCanUse() {
-		Level level = mob.asMob().level;
+		Level level = mob.asMob().level();
 		if (mob.asMob().getMoveControl().hasWanted())
 			return false;
 		if (!level.getBlockState(mob.asMob().blockPosition().below()).isAir())
@@ -44,7 +44,7 @@ public class BefriendedFlyingLandGoal extends BefriendedFlyingMoveGoal
 		if (LevelHelper.isAboveVoid(mob.asMob().blockPosition(), mob.asMob()))
 			return;
 		BlockPos pos = mob.asMob().blockPosition();
-		while (mob.asMob().level.getBlockState(pos).isAir() && pos.getY() >= mob.asMob().level.getMinBuildHeight())
+		while (mob.asMob().level().getBlockState(pos).isAir() && pos.getY() >= mob.asMob().level().getMinBuildHeight())
 			pos = pos.below();
 		pos = pos.above();
 		mob.asMob().getMoveControl().setWantedPosition(pos.getX(), pos.getY(), pos.getZ(), speed);

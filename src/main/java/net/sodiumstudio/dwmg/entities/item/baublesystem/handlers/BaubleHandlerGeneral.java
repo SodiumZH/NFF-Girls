@@ -84,7 +84,7 @@ public class BaubleHandlerGeneral extends BaubleHandler
 		super.postTick(owner);
 		
 		owner.removeBaubleModifiers("if");
-		if (owner.hasBaubleItem(ModItems.INSOMNIA_FRUIT.get()) && owner.getLiving().level.isNight())
+		if (owner.hasBaubleItem(ModItems.INSOMNIA_FRUIT.get()) && owner.getLiving().level().isNight())
 		{
 			owner.addBaubleModifier("if", "if_health", Attributes.MAX_HEALTH, 60d, Operation.ADDITION);
 			owner.addBaubleModifier("if", "if_atk", Attributes.ATTACK_DAMAGE, 8d, Operation.ADDITION);		

@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.client.gui.screens;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -27,27 +28,27 @@ public class GuiSlimeGirl extends GuiPreset0
 	}
 
 	@Override
-	protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {			
-		super.renderBg(pPoseStack, pPartialTick, pMouseX, pMouseY);
-		this.addMainScreen(pPoseStack);
-		this.addBaubleSlotBg(pPoseStack, 0, leftRowPos());
-		this.addBaubleSlotBg(pPoseStack, 1, leftRowPos().slotBelow(1));
-		this.addBaubleSlotBg(pPoseStack, 2, leftRowPos().slotBelow(2));
-		this.addBaubleSlotBg(pPoseStack, 3, leftRowPos().slotBelow(3));
-		this.addMobRenderBox(pPoseStack, 2);
-		this.addInfoBox(pPoseStack);
-		this.addAttributeInfo(pPoseStack, infoPos());
-		this.renderMob();
+	protected void renderBg(GuiGraphics graphics, float pPartialTick, int pMouseX, int pMouseY) {			
+		super.renderBg(graphics, pPartialTick, pMouseX, pMouseY);
+		this.addMainScreen(graphics);
+		this.addBaubleSlotBg(graphics, 0, leftRowPos());
+		this.addBaubleSlotBg(graphics, 1, leftRowPos().slotBelow(1));
+		this.addBaubleSlotBg(graphics, 2, leftRowPos().slotBelow(2));
+		this.addBaubleSlotBg(graphics, 3, leftRowPos().slotBelow(3));
+		this.addMobRenderBox(graphics, 2);
+		this.addInfoBox(graphics);
+		this.addAttributeInfo(graphics, infoPos());
+		this.renderMob(graphics);
 	}
 	
 	// All inventory slots are on the left, and expand the info box
 	@Override
-	public void addInfoBox(PoseStack poseStack)
+	public void addInfoBox(GuiGraphics graphics)
 	{
-		//this.blit(poseStack, absPos(99, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(120, 72));
-		this.blit(poseStack, absPos(81, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(2, 72));
-		this.blit(poseStack, absPos(83, 17), IntVec2.valueOf(2, 183), IntVec2.valueOf(18, 72));
-		this.blit(poseStack, absPos(101, 17), IntVec2.valueOf(2, 183), IntVec2.valueOf(118, 72));
+		//this.blit(graphics, absPos(99, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(120, 72));
+		this.drawSprite(graphics, absPos(81, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(2, 72));
+		this.drawSprite(graphics, absPos(83, 17), IntVec2.valueOf(2, 183), IntVec2.valueOf(18, 72));
+		this.drawSprite(graphics, absPos(101, 17), IntVec2.valueOf(2, 183), IntVec2.valueOf(118, 72));
 	}
 	
 	public MutableComponent getDefaultColorInfo()
@@ -61,13 +62,13 @@ public class GuiSlimeGirl extends GuiPreset0
 	}
 	
 	@Override
-	public void addFavorabilityAndLevelInfo(PoseStack poseStack, IntVec2 position, int color, int textRowWidth)
+	public void addFavorabilityAndLevelInfo(GuiGraphics graphics, IntVec2 position, int color, int textRowWidth)
 	{
-		font.draw(poseStack, getDefaultLevelAndExpInfo(), position.x, position.y, color);
+		graphics.drawString(font, getDefaultLevelAndExpInfo(), position.x, position.y, color);
 		position.addY(textRowWidth);
-		font.draw(poseStack, getDefaultFavInfo(), position.x, position.y, color);
+		graphics.drawString(font, getDefaultFavInfo(), position.x, position.y, color);
 		position.addY(textRowWidth);
-		font.draw(poseStack, getDefaultColorInfo(), position.x, position.y, color);
+		graphics.drawString(font, getDefaultColorInfo(), position.x, position.y, color);
 	}
 
 	@Override

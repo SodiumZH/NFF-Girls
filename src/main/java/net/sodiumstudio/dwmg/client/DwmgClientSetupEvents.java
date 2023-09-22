@@ -116,7 +116,7 @@ public class DwmgClientSetupEvents
 
     public static void onRegisterParticleProvider(RegisterParticleProvidersEvent event)
     {
-    	event.register(DwmgParticleTypes.MAGICAL_GEL_BALL.get(), new MagicalGelBallParticle.Provider());
+    	event.registerSpecial(DwmgParticleTypes.MAGICAL_GEL_BALL.get(), new MagicalGelBallParticle.Provider());
     }
     
     @SubscribeEvent

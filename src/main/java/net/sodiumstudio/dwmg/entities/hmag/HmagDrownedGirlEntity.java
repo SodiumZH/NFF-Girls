@@ -118,7 +118,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 				.avoidSunCondition(DwmgEntityHelper::isSunSensitive));
 		//goalSelector.addGoal(4, new BefriendedInWaterFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f));
 		goalSelector.addGoal(5, new BefriendedAmphibiousGoals.GoToBeachGoal(this, 1.0D));
-		goalSelector.addGoal(6, new BefriendedAmphibiousGoals.SwimUpGoal(this, 1.0D, this.level.getSeaLevel()));
+		goalSelector.addGoal(6, new BefriendedAmphibiousGoals.SwimUpGoal(this, 1.0D, this.level().getSeaLevel()));
 		goalSelector.addGoal(7, new BefriendedRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(7, new BefriendedRandomSwimGoal(this, 1.0d, 120));
 		goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -145,14 +145,14 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 
 	@Override
 	public void performRangedAttack(LivingEntity pTarget, float pDistanceFactor) {
-		ThrownTrident throwntrident = new ThrownTrident(this.level, this, new ItemStack(Items.TRIDENT));
+		ThrownTrident throwntrident = new ThrownTrident(this.level(), this, new ItemStack(Items.TRIDENT));
 		double d0 = pTarget.getX() - this.getX();
 		double d1 = pTarget.getY(0.3333333333333333D) - throwntrident.getY();
 		double d2 = pTarget.getZ() - this.getZ();
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
 		throwntrident.shoot(d0, d1 + d3 * 0.2F, d2, 1.6F, 2.0F);	// Inaccuracy is fixed at hard mode (i.e. 2.0)
 		this.playSound(SoundEvents.DROWNED_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-		this.level.addFreshEntity(throwntrident);
+		this.level().addFreshEntity(throwntrident);
 	}
 	
 	/* Interaction */
@@ -172,7 +172,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 		if (!player.isShiftKeyDown())
 		{
 			if (player.getUUID().equals(getOwnerUUID())) {
-				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
+				if (!player.level().isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
 					// If this zombie is converted from a husk,
 					// it can be converted back by using a sponge to it
@@ -184,7 +184,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 					} 
 					else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 					{
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					}
 					else if (hand == InteractionHand.MAIN_HAND
 							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
@@ -193,7 +193,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 					}	
 					else return InteractionResult.PASS;
 				}
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			} 
 			return InteractionResult.PASS;
 		}
@@ -203,7 +203,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
 			}
 			return InteractionResult.PASS;
@@ -227,7 +227,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 		{
 			additionalInventory.setMobEquipment(this);
 		}
@@ -235,7 +235,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 
 	@Override
 	public void setInventoryFromMob() {
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 		{
 			additionalInventory.getFromMob(this);
 		}

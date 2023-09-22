@@ -26,7 +26,7 @@ public class CompatEventHandlers
 		// Fix TF Seeker Arrow targeting BM
 		// Now it's impossible to prevent the arrow from targeting BM w/o mixin, so now only damage can be removed
 		// TODO: fully fix this after TF inserts event
-		if (!event.getEntity().level.isClientSide && event.getEntity() instanceof IDwmgBefriendedMob bm)
+		if (!event.getEntity().level().isClientSide && event.getEntity() instanceof IDwmgBefriendedMob bm)
 		{
 			if (event.getSource().getDirectEntity() != null
 					&& EntityType.getKey(event.getSource().getDirectEntity().getType())

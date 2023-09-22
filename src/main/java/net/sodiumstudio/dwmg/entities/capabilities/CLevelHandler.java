@@ -120,7 +120,7 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 				throw new IllegalArgumentException("Dwmg Level System: Negative exp value to add. If reducing exp is needed, use setExp().");
 			if (deltaVal == 0)
 				return;
-			if (mob.level.isClientSide)
+			if (mob.level().isClientSide)
 			{
 				throw new UnsupportedOperationException("Dwmg Level System: addExp() runs only on server. For client, use setExp().");
 			}

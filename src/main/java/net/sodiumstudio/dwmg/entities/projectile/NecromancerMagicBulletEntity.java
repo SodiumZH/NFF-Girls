@@ -65,32 +65,32 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 	{
 		Entity entity = result.getEntity();
 
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 		{
 			if (entity instanceof LivingEntity le && !(entity instanceof ArmorStand) && entity != this.getOwner())
 			{
 				applyDirectEffect(le);
 			}
 			this.blast(entity);
-			this.level.broadcastEntityEvent(this, (byte)3);
+			this.level().broadcastEntityEvent(this, (byte)3);
 		}		
 	}
 	
 	@Override
 	protected void onHitBlock(BlockHitResult result)
 	{
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 			this.blast(null);
 	}
 	
 	protected void blast(Entity ignore)
 	{
 		AABB area = new AABB(this.position().subtract(new Vec3(1.5, 1.5, 1.5)), this.position().add(new Vec3(1.5, 1.5, 1.5)));
-		this.level.getEntities(this, area).stream().filter((Entity e) -> 
+		this.level().getEntities(this, area).stream().filter((Entity e) -> 
 		(e instanceof LivingEntity && !(e instanceof ArmorStand) && e != this.getOwner() && e != ignore))
 		.forEach((Entity e) -> applyEffect(e));
 		EntityHelper.sendParticlesToEntity(this, ParticleTypes.EXPLOSION, 0, 0, 2, 0);
-		this.level.playSound(null, this, SoundEvents.GENERIC_EXPLODE, getSoundSource(), 3.0f, 0.7f);
+		this.level().playSound(null, this, SoundEvents.GENERIC_EXPLODE, getSoundSource(), 3.0f, 0.7f);
 	}
 	
 	protected void applyDirectEffect(Entity target)

@@ -142,7 +142,7 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 			// For normal interaction
 			if (!player.isShiftKeyDown())
 			{
-				if (!player.level.isClientSide()) 
+				if (!player.level().isClientSide()) 
 				{
 					/* Put checks before healing item check */
 					/* if (....)
@@ -150,7 +150,7 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 					 	....
 					 }
 					else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 					else if (hand == InteractionHand.MAIN_HAND
 							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
@@ -161,7 +161,7 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 					else return InteractionResult.PASS;
 				}
 				// Interacted
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			}
 			// For interaction with shift key down
 			else
@@ -170,7 +170,7 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
 			}
 		} 
@@ -199,7 +199,7 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 			additionalInventory.setMobEquipment(this);
 		}
@@ -208,7 +208,7 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 	@Override
 	public void setInventoryFromMob()
 	{
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 			additionalInventory.getFromMob(this);
 		}

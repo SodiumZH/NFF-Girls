@@ -17,9 +17,16 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 public class ItemNecromancerArmor extends ArmorItem
 {
 
-	public ItemNecromancerArmor(ArmorMaterial pMaterial, EquipmentSlot pSlot, Properties pProperties)
+	public ItemNecromancerArmor(ArmorMaterial pMaterial, ArmorItem.Type type, Properties pProperties)
 	{
-		super(pMaterial, pSlot, pProperties);
+		super(pMaterial, type, pProperties);
+	}
+	
+	public ItemNecromancerArmor(ArmorMaterial pMaterial, EquipmentSlot slot, Properties pProperties)
+	{
+		this(pMaterial, slot == EquipmentSlot.CHEST ? ArmorItem.Type.CHESTPLATE : 
+			(slot == EquipmentSlot.LEGS ? ArmorItem.Type.LEGGINGS : 
+			(slot == EquipmentSlot.FEET ? ArmorItem.Type.BOOTS : ArmorItem.Type.HELMET)), pProperties);
 	}
 	
 	// Called only in LivingUpdateEvent listener

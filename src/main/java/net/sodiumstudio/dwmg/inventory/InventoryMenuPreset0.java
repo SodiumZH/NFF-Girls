@@ -78,7 +78,7 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return (stack.getItem() instanceof ArmorItem)
-						&& ((ArmorItem) stack.getItem()).getSlot() == ArmorType
+						&& ((ArmorItem) stack.getItem()).getEquipmentSlot() == ArmorType
 						&& !EnchantmentHelper.hasBindingCurse(stack)
 						&& !this.hasItem()
 						&& (additionalCondition == null || additionalCondition.test(stack));

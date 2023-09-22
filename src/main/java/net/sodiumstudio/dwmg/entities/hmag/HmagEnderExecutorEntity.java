@@ -127,7 +127,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 		if (!player.isShiftKeyDown())
 		{
 			if (player.getUUID().equals(getOwnerUUID())) {
-				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
+				if (!player.level().isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
 					if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 					{}
@@ -138,7 +138,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 					}	
 					else return InteractionResult.PASS;
 				}
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			}
 			return InteractionResult.PASS;
 		}
@@ -148,7 +148,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
 			}
 			/* Other actions... */
@@ -169,7 +169,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	@Override
 	public void updateFromInventory() {
 		super.updateFromInventory();
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			setItemSlot(EquipmentSlot.MAINHAND, getAdditionalInventory().getItem(0));
 			setItemSlot(EquipmentSlot.OFFHAND, getAdditionalInventory().getItem(1));
 			
@@ -194,7 +194,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	public void setInventoryFromMob() {
 
 		super.setInventoryFromMob();
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			getAdditionalInventory().setItem(0, getItemBySlot(EquipmentSlot.MAINHAND));
 			getAdditionalInventory().setItem(1, getItemBySlot(EquipmentSlot.OFFHAND));
 			if (getCarriedBlock() != null && !getCarriedBlock().getBlock().equals(Blocks.AIR))
@@ -217,9 +217,9 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	
 	public void enderExecutorAiStep()
 	{
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 		{
-			if (this.isAlive() && !this.isNoAi() && this.level.getDifficulty().getId() > 1 && ModConfigs.cachedServer.ENDER_EXECUTOR_BEAM_ATTACK /* Added */ && doBeamAttack)
+			if (this.isAlive() && !this.isNoAi() && this.level().getDifficulty().getId() > 1 && ModConfigs.cachedServer.ENDER_EXECUTOR_BEAM_ATTACK /* Added */ && doBeamAttack)
 			{
 				LivingEntity target = this.getTarget();
 
@@ -406,7 +406,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	{
 		if (!this.isSilent())
 		{
-			this.level.playSound((Player)null, target.getX(), target.getY(), target.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.2F + 0.9F);
+			this.level().playSound((Player)null, target.getX(), target.getY(), target.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.2F + 0.9F);
 		}
 
 		float f = damage;			
@@ -433,7 +433,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 		{
 			return null;
 		}
-		else if (this.level.isClientSide)
+		else if (this.level().isClientSide)
 		{
 			if (this.targetedEntity != null)
 			{
@@ -441,7 +441,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 			}
 			else
 			{
-				Entity entity = this.level.getEntity(this.entityData.get(ATTACK_TARGET));
+				Entity entity = this.level().getEntity(this.entityData.get(ATTACK_TARGET));
 
 				if (entity instanceof LivingEntity)
 				{
@@ -473,7 +473,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 			for (int i = 0; i < tryTimes; ++i)
 			{
 				if (this.teleportTowards(this.getOwner())
-					&& !this.level.canSeeSky(this.blockPosition()))
+					&& !this.level().canSeeSky(this.blockPosition()))
 					return true;
 			}
 		}

@@ -139,7 +139,7 @@ public class BefriendedFlyingRandomMoveGoal extends BefriendedFlyingMoveGoal
 			if (shouldAvoidSun.test(mob) && LevelHelper.isUnderSun(blockpos1, mob.asMob()))
 				continue;
 			
-			if (mob.asMob().level.isEmptyBlock(blockpos1))
+			if (mob.asMob().level().isEmptyBlock(blockpos1))
 			{
 				mob.asMob().getMoveControl().setWantedPosition(blockpos1.getX() + 0.5D, blockpos1.getY() + 0.5D, blockpos1.getZ() + 0.5D, getActualSpeed());
 

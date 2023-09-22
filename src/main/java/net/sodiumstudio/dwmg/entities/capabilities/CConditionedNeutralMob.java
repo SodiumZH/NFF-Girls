@@ -175,7 +175,7 @@ public interface CConditionedNeutralMob extends INBTSerializable<CompoundTag>
 		{
 			super(LivingEntity::getStringUUID, IntTag::valueOf,
 					str -> {
-						Entity e = EntityHelper.getEntityByUUID(levelContext.level, UUID.fromString(str));
+						Entity e = EntityHelper.getEntityByUUID(levelContext.level(), UUID.fromString(str));
 						return (e != null && e instanceof LivingEntity) ? (LivingEntity)e : null;
 					},
 					(Tag tag) -> ((IntTag)tag).getAsInt());

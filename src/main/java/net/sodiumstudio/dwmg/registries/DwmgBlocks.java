@@ -6,8 +6,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -16,6 +15,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.blocks.BlockSoulCake;
 import net.sodiumstudio.dwmg.blocks.BlockSoulCarpet;
+import net.sodiumstudio.dwmg.util.BlockMaterial;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgBlocks {
@@ -38,13 +38,11 @@ public class DwmgBlocks {
 	/* Blocks */
 	
 	public static final RegistryObject<Block> SOUL_CARPET = DwmgBlocks.BLOCKS.register("soul_carpet", () -> 
-		new BlockSoulCarpet(BlockBehaviour.Properties.of
-				(Material.WOOL, MaterialColor.COLOR_PURPLE)
+		new BlockSoulCarpet(BlockMaterial.WOOL.properties(MapColor.COLOR_PURPLE)
 				.strength(0.1f)
 				.sound(SoundType.WOOL)));
 	public static final RegistryObject<Block> SOUL_CAKE = DwmgBlocks.BLOCKS.register("soul_cake", () -> 
-		new BlockSoulCake(BlockBehaviour.Properties.of
-				(Material.CAKE)
+		new BlockSoulCake(BlockMaterial.CAKE.properties()
 				.strength(0.5F)
 				.sound(SoundType.WOOL)));
 

@@ -69,7 +69,7 @@ public class BefriendablePickItemGoal extends Goal
 	protected List<ItemEntity> getAcceptableItems()
 	{
 		List<ItemEntity> list = new ArrayList<ItemEntity>();
-		mob.level.getEntities(mob, EntityHelper.getNeighboringArea(mob, 8, 2, 8))
+		mob.level().getEntities(mob, EntityHelper.getNeighboringArea(mob, 8, 2, 8))
 		.stream().filter((Entity e) -> {
 			if (e instanceof ItemEntity ie)
 			{

@@ -130,13 +130,13 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 		if (!player.isShiftKeyDown())
 		{
 			if (player.getUUID().equals(getOwnerUUID())) {
-				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
+				if (!player.level().isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
 					if (player.getItemInHand(hand).is(Items.SPONGE) && isFromHusk) {
 						player.getItemInHand(hand).shrink(1);
 						this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
 						this.convertToHusk();
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					} 
 					else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) 
 					{}
@@ -147,7 +147,7 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 					}
 					else return InteractionResult.PASS;
 				}
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			} 
 			return InteractionResult.PASS;
 		}
@@ -157,7 +157,7 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
 			}
 			return InteractionResult.PASS;
@@ -182,7 +182,7 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			additionalInventory.setMobEquipment(this);
 		}
 	}
@@ -190,7 +190,7 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 	@Override
 	public void setInventoryFromMob()
 	{
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			additionalInventory.getFromMob(this);
 		}
 		return;
@@ -233,7 +233,7 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 		this.convertToDrowned();
 		if (!this.isSilent())
 		{
-			this.level.levelEvent((Player) null, 1041, this.blockPosition(), 0);
+			this.level().levelEvent((Player) null, 1041, this.blockPosition(), 0);
 		}
 	}	
 	

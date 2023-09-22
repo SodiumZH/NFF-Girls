@@ -202,7 +202,7 @@ public class MagicalGelBottleItem extends Item
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity living, InteractionHand usedHand)
 	{
-		if (!player.level.isClientSide)
+		if (!player.level().isClientSide)
 		{
 			if (this.getAmount(stack) <= 0)
 			{
@@ -264,7 +264,7 @@ public class MagicalGelBottleItem extends Item
 				ItemStack stack1 = stack.copy();
 				stack.shrink(1);
 				player.spawnAtLocation(stack1, 1f).setNoPickUpDelay();
-				return InteractionResult.sidedSuccess(living.level.isClientSide);
+				return InteractionResult.sidedSuccess(living.level().isClientSide);
 			}
 			else if (action == 2)
 			{
@@ -284,7 +284,7 @@ public class MagicalGelBottleItem extends Item
 						player.spawnAtLocation(stack1, 1f).setNoPickUpDelay();
 					}
 				}
-				return InteractionResult.sidedSuccess(living.level.isClientSide);
+				return InteractionResult.sidedSuccess(living.level().isClientSide);
 			}
 			
 		}

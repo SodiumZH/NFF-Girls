@@ -75,7 +75,7 @@ public class MagicalGelBallEntity extends ThrowableItemProjectile
 
 			for (int i = 0; i < 8; ++i)
 			{
-				this.level.addParticle(particleoptions, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(particleoptions, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		}
 
@@ -84,14 +84,14 @@ public class MagicalGelBallEntity extends ThrowableItemProjectile
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (result.getEntity() instanceof LivingEntity living && !living.level.isClientSide)
+		if (result.getEntity() instanceof LivingEntity living && !living.level().isClientSide)
 		{
 			// Generate a tiny magical slime when hit a large vanilla slime or a slime girl
 			if (((living.getType() == EntityType.SLIME && ((Slime)living).getSize() >= 3)
 					|| living instanceof SlimeGirlEntity)
 					&& living.getRandom().nextDouble() < 0.25d)
 			{
-	            MagicalSlimeEntity slime = ModEntityTypes.MAGICAL_SLIME.get().create(this.level);
+	            MagicalSlimeEntity slime = ModEntityTypes.MAGICAL_SLIME.get().create(this.level());
 	            slime.setSize(1, true);
 	            
 	            // For vanilla slime, the color is random
@@ -115,12 +115,12 @@ public class MagicalGelBallEntity extends ThrowableItemProjectile
 	            	slime.setVariant(v.getId());
 	            }
 	            slime.moveTo(living.getX() + RndUtil.rndRangedDouble(-0.5, 0.5), living.getY() + 0.5D, living.getZ() + RndUtil.rndRangedDouble(-0.5, 0.5), this.random.nextFloat() * 360.0F, 0.0F);
-	            this.level.addFreshEntity(slime);
+	            this.level().addFreshEntity(slime);
 			}
 			// For other livings (except slime-derived mobs), make a knockback and give 30s slowness II 
 			else if (!(living instanceof Slime) && !(living instanceof SlimeGirlEntity) && !TagHelper.hasTag(living, "dwmg:ignore_magical_gel_slowdown"))
 			{
-				result.getEntity().hurt(DamageSource.thrown(this, this.getOwner()), 0);
+				result.getEntity().hurt(level().damageSources().thrown(this.getOwner(), this), 0);
 				EntityHelper.addEffectSafe(living, new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30 * 20, 1));
 			}
 		}
@@ -130,9 +130,9 @@ public class MagicalGelBallEntity extends ThrowableItemProjectile
 	@Override
 	protected void onHit(HitResult pResult) {
 		super.onHit(pResult);
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 		{
-			this.level.broadcastEntityEvent(this, (byte) 3);
+			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
 	}

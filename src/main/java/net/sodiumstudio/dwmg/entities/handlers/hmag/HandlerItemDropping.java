@@ -97,10 +97,10 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 		if (!getDeltaProc().keySet().contains(ItemHelper.getRegistryKeyStr(itemEntity.getItem())))
 			return false;
 		// If item not thrown by player, pass
-		if (itemEntity.getThrower() == null || mob.level.getPlayerByUUID(itemEntity.getThrower()) == null)
+		if (itemEntity.getOwner() == null || mob.level().getPlayerByUUID(itemEntity.getOwner()) == null)
 			return false;
 		// If in hatred, pass
-		if (CBefriendableMob.getCap(mob).getHatred().contains(itemEntity.getThrower()))
+		if (CBefriendableMob.getCap(mob).getHatred().contains(itemEntity.getOwner()))
 			return false;
 		// If the item is still in picking cooldown for the mob, pass
 		if (itemEntity.getItem().getOrCreateTagElement("already_picked_befriendable_mobs").contains(mob.getStringUUID(), NbtHelper.TAG_INT_ID)
@@ -136,7 +136,7 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 			// Pick one and label picked
 			ItemStack stack = itemEntity.getItem().copy();
 			stack.setCount(1);
-			stack.getOrCreateTag().putUUID("befriendable_picked_from_player", itemEntity.getThrower());
+			stack.getOrCreateTag().putUUID("befriendable_picked_from_player", itemEntity.getOwner().getUUID());
 			mob.setItemInHand(InteractionHand.OFF_HAND, stack);
 			// If only one, remove item entity
 			if (itemEntity.getItem().getCount() <= 1)
@@ -185,7 +185,7 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 				&& mob.getItemInHand(InteractionHand.OFF_HAND).getTag().contains("befriendable_picked_from_player", NbtHelper.TAG_INT_ARRAY_ID)
 				&& !CBefriendableMob.getCap(mob).hasTimer("hold_item_time"))
 		{
-			Player player = mob.level.getPlayerByUUID(mob.getItemInHand(InteractionHand.OFF_HAND).getTag().getUUID("befriendable_picked_from_player"));
+			Player player = mob.level().getPlayerByUUID(mob.getItemInHand(InteractionHand.OFF_HAND).getTag().getUUID("befriendable_picked_from_player"));
 			if (player != null && mob.hasLineOfSight(player))
 			{
 				String strUUID = player.getStringUUID();
@@ -225,7 +225,7 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 			Predicate<ItemEntity> pickCondition = (ItemEntity ie) -> ie.getBoundingBox().intersects(mob.getBoundingBox()) 
 					|| (Math.abs(ie.getBlockX() - mob.getBlockX()) <= 1 && Math.abs(ie.getBlockZ() - mob.getBlockZ()) <= 1 && ie.getBlockY() == mob.getBlockY());
 			List<ItemEntity> overlappingItems = 
-					mob.level.getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().minmax(EntityHelper.getNeighboringArea(mob, 2.0d)))
+					mob.level().getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().minmax(EntityHelper.getNeighboringArea(mob, 2.0d)))
 						.stream().filter(pickCondition)
 						.toList();
 			if (overlappingItems.size() > 0)

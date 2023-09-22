@@ -37,19 +37,19 @@ public class BefriendedGhastFireballEntity extends Fireball
 	@Override
 	protected void onHit(HitResult pResult) {
 		super.onHit(pResult);
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 		{
 			boolean allowDestroy;
 			if (!breakBlocks)
 				allowDestroy = false;
 			else if (this.getOwner() != null && this.getOwner() instanceof Mob)
 			{
-				allowDestroy = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level,
+				allowDestroy = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(),
 									this.getOwner());
 			}
 			else allowDestroy = true;
 			
-			this.level.explode((Entity) null, this.getX(), this.getY(), this.getZ(), this.explosionPower, allowDestroy,
+			this.level().explode((Entity) null, this.getX(), this.getY(), this.getZ(), this.explosionPower, allowDestroy,
 					allowDestroy ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE);
 			this.discard();
 		}
@@ -62,11 +62,11 @@ public class BefriendedGhastFireballEntity extends Fireball
 	@Override
 	protected void onHitEntity(EntityHitResult pResult) {
 		super.onHitEntity(pResult);
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 		{
 			Entity entity = pResult.getEntity();
 			Entity entity1 = this.getOwner();
-			entity.hurt(DamageSource.fireball(this, entity1), 6.0F);
+			entity.hurt(level().damageSources().fireball(this, getOwner()), 6.0F);
 			if (entity1 instanceof LivingEntity)
 			{
 				this.doEnchantDamageEffects((LivingEntity) entity1, entity);

@@ -49,7 +49,7 @@ public class ItemNecromancerWand extends Item implements IWithDuration
 				bullet.hasNecromancerHat = true;
 			level.addFreshEntity(bullet);
 			consumeDuration(stack, 1);
-			player.hurt(DamageSource.MAGIC, 2);
+			player.hurt(player.level().damageSources().magic(), 2);
 			player.getCooldowns().addCooldown(DwmgItems.NECROMANCER_WAND.get(), 50);
 			return InteractionResultHolder.success(stack);
 		}
