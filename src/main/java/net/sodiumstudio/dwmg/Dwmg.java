@@ -20,6 +20,7 @@ import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.registries.DwmgParticleTypes;
 import net.sodiumstudio.dwmg.registries.DwmgRecipes;
+import net.sodiumstudio.dwmg.registries.DwmgTabs;
 
 @Mod(Dwmg.MOD_ID)
 public class Dwmg
@@ -46,9 +47,11 @@ public class Dwmg
         DwmgEffects.EFFECTS.register(modEventBus);
         DwmgBlocks.BLOCKS.register(modEventBus);
         DwmgItems.ITEMS.register(modEventBus);
+        DwmgItems.ITEMS_NO_TAB.register(modEventBus);
         DwmgEntityTypes.ENTITY_TYPES.register(modEventBus);
         DwmgRecipes.RECIPES.register(modEventBus);
         DwmgParticleTypes.PARTICLE_TYPES.register(modEventBus);
+        DwmgTabs.CREATIVE_TABS.register(modEventBus);
         
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

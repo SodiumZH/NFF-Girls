@@ -17,6 +17,7 @@ public class BefriendedGhastFireballEntity extends Fireball
 	public float explosionPower = 1f;
 	public boolean breakBlocks = true;
 	public boolean isFromMob = true;
+	public boolean alwaysDrop = true;
 
 	public BefriendedGhastFireballEntity(EntityType<? extends BefriendedGhastFireballEntity> pEntityType,
 			Level pLevel)
@@ -50,7 +51,7 @@ public class BefriendedGhastFireballEntity extends Fireball
 			else allowDestroy = true;
 			
 			this.level().explode((Entity) null, this.getX(), this.getY(), this.getZ(), this.explosionPower, allowDestroy,
-					allowDestroy ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE);
+					allowDestroy ? (alwaysDrop ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.MOB) : Level.ExplosionInteraction.NONE);
 			this.discard();
 		}
 

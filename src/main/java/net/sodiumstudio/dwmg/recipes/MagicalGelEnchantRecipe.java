@@ -3,12 +3,18 @@ package net.sodiumstudio.dwmg.recipes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.registries.DwmgRecipes;
 
 public class MagicalGelEnchantRecipe extends SimpleModificationRecipe
 {
+	
+	public MagicalGelEnchantRecipe(ResourceLocation id, CraftingBookCategory category)
+	{
+		super(id, category);
+	}
 
 	public MagicalGelEnchantRecipe(ResourceLocation pId)
 	{

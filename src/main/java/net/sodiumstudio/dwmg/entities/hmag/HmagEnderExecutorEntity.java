@@ -16,6 +16,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -37,18 +38,16 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedNearestAttackableTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.vanillapreset.enderman.AbstractBefriendedEnderMan;
 import net.sodiumstudio.befriendmobs.entity.vanillapreset.enderman.BefriendedEnderManGoals;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
@@ -309,7 +308,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 
 				if (reduceDamage)
 				{
-					if (!(source.getEntity() != null && source.isCreativePlayer()) && source != DamageSource.OUT_OF_WORLD && f > 10.0F)
+					if (!((source.getEntity() != null && source.isCreativePlayer()) || source.is(DamageTypes.FELL_OUT_OF_WORLD)) && f > 10.0F)
 					{
 						
 							f = 10.0F + (f - 10.0F) * 0.1F;
@@ -410,7 +409,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 		}
 
 		float f = damage;			
-		return target.hurt(DamageSource.indirectMagic(this, this), f);
+		return target.hurt(target.level().damageSources().indirectMagic(this, this), f);
 	}
 
 	@Override
@@ -543,6 +542,12 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	@Override
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
+	}
+
+	@Override
+	public float getClientSideAttackTime() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	// ========================= General Settings end ========================= //

@@ -12,6 +12,7 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -27,6 +28,11 @@ import net.sodiumstudio.nautils.math.StandardColor;
 public class MagicalGelStainRecipe extends SimpleModificationRecipe
 {
 	protected static final HashMap<String, StainInfo> STAINS = new HashMap<>();
+
+	public MagicalGelStainRecipe(ResourceLocation id, CraftingBookCategory category)
+	{
+		super(id, category);
+	}
 	
 	protected static void putStandardColorStain(String itemKey, StandardColor color, Supplier<Double> strength)
 	{

@@ -31,7 +31,7 @@ public class DwmgBlocks {
 	// Register block items. Must be called after the corresponding block is registered!!
 	public static RegistryObject<Item> regBlockItem(String name, RegistryObject<Block> block, Item.Properties properties)
 	{
-		return DwmgItems.ITEMS.register(name, () -> new BlockItem(block.get(), properties.tab(DwmgItems.TAB)));
+		return DwmgItems.ITEMS.register(name, () -> new BlockItem(block.get(), properties));
 	}
 	
 	

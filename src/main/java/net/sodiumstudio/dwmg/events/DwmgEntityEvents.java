@@ -18,6 +18,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -264,7 +265,9 @@ public class DwmgEntityEvents
 			// Favorability loss on death
 			if (event.getDamageSource().getEntity() != null
 					&& event.getDamageSource().getEntity() == bm.getOwner()
-					&& !event.getDamageSource().is(DamageTypes.FELL_OUT_OF_WORLD))
+					&& !event.getDamageSource().is(DamageTypes.FELL_OUT_OF_WORLD)
+					&& !event.getDamageSource().is(DamageTypes.GENERIC_KILL))
+					
 				bm.getFavorability().setFavorability(0);
 			else if (bm.asMob().distanceToSqr(bm.getOwner()) < 64d 
 					&& bm.asMob().hasLineOfSight(bm.getOwner())
@@ -413,7 +416,7 @@ public class DwmgEntityEvents
 			{
 				if (!bm.asMob().getItemBySlot(EquipmentSlot.HEAD).isEmpty())
 				{
-					if (event.getSource().isDamageHelmet())
+					if (event.getSource().is(DamageTypeTags.DAMAGES_HELMET))
 					{
 						hurtHelmet(bm.asMob(), event.getSource(), event.getAmount());
 					}
@@ -445,9 +448,9 @@ public class DwmgEntityEvents
 	protected static void hurtArmor(Mob mob, DamageSource damageSource, float damage, EquipmentSlot[] slots)
 	{
 		// Ignore effect of /kill
-		if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) && damage > 1000)
+		if ((damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) && damage > 1000)
 			return;
-		if (damageSource.isBypassArmor())
+		if (damageSource.is(DamageTypeTags.BYPASSES_ARMOR))
 			return;
 		if (!(damage <= 0.0F))
 		{
@@ -459,7 +462,7 @@ public class DwmgEntityEvents
 			for (EquipmentSlot slot : slots)
 			{
 				ItemStack itemstack = mob.getItemBySlot(slot);
-				if ((!damageSource.isFire() || !itemstack.getItem().isFireResistant())
+				if ((!damageSource.is(DamageTypeTags.IS_FIRE) || !itemstack.getItem().isFireResistant())
 						&& itemstack.getItem() instanceof ArmorItem)
 				{
 					itemstack.hurtAndBreak((int) damage, mob, (m) ->
@@ -600,7 +603,7 @@ public class DwmgEntityEvents
 					int ampl = event.getEntity().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
 					if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
 					{
-						event.getEntity().hurt(DwmgDamageSources.NECROMANCER_WITHER, 1);
+						event.getEntity().hurt(DwmgDamageSources.source(event.getEntity().level(), DwmgDamageSources.NECROMANCER_WITHER), 1);
 					}
 				}
 			}
