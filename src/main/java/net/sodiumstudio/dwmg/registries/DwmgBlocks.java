@@ -15,7 +15,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.blocks.BlockSoulCake;
 import net.sodiumstudio.dwmg.blocks.BlockSoulCarpet;
-import net.sodiumstudio.dwmg.util.BlockMaterial;
+import net.sodiumstudio.nautils.block.BlockMaterial;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgBlocks {

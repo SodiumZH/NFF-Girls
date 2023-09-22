@@ -20,6 +20,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -263,11 +264,11 @@ public class DwmgEntityEvents
 			// Favorability loss on death
 			if (event.getDamageSource().getEntity() != null
 					&& event.getDamageSource().getEntity() == bm.getOwner()
-					&& event.getDamageSource() != event.getMob().asMob().level().damageSources().fellOutOfWorld())
+					&& !event.getDamageSource().is(DamageTypes.FELL_OUT_OF_WORLD))
 				bm.getFavorability().setFavorability(0);
 			else if (bm.asMob().distanceToSqr(bm.getOwner()) < 64d 
 					&& bm.asMob().hasLineOfSight(bm.getOwner())
-					&& event.getDamageSource() != event.getMob().asMob().level().damageSources().fellOutOfWorld())
+					&& !event.getDamageSource().is(DamageTypes.FELL_OUT_OF_WORLD))
 				bm.getFavorability().addFavorability(-20);
 			// EXP loses by a half on death
 			// As respawner construction (in befriendmobs) is after posting BefriendedDeathEvent, it can be set here
@@ -328,7 +329,7 @@ public class DwmgEntityEvents
 			if (living.hasEffect(DwmgEffects.ENDER_PROTECTION.get()))
 			{
 				// If the player drops into the void, try pull up
-				if (event.getSource().equals(event.getEntity().level().damageSources().fellOutOfWorld()))
+				if (event.getSource().is(DamageTypes.FELL_OUT_OF_WORLD))
 				{
 					// Ignore damage by /kill
 					if (living.getY() < -64.0d)
@@ -369,8 +370,8 @@ public class DwmgEntityEvents
 						}
 					}
 				}
-				else if (!event.getSource().equals(event.getEntity().damageSources().inFire())
-						&& !event.getSource().equals(event.getEntity().damageSources().starve()))
+				else if (!event.getSource().is(DamageTypes.IN_FIRE)
+						&& !event.getSource().is(DamageTypes.STARVE))
 				{
 					EntityHelper.sendParticlesToEntity(living, ParticleTypes.PORTAL, 0, living.getBbHeight()/2, 0, 0.5, living.getBbHeight()/2, 0.5, 2, 1);
 					/*living.level.addParticle(ParticleTypes.PORTAL, 
@@ -444,7 +445,7 @@ public class DwmgEntityEvents
 	protected static void hurtArmor(Mob mob, DamageSource damageSource, float damage, EquipmentSlot[] slots)
 	{
 		// Ignore effect of /kill
-		if (damageSource.getMsgId().equals(mob.level().damageSources().fellOutOfWorld().getMsgId()) && damage > 1000)
+		if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) && damage > 1000)
 			return;
 		if (damageSource.isBypassArmor())
 			return;
@@ -834,7 +835,7 @@ public class DwmgEntityEvents
 						&& event.getSource().getEntity() != null
 						&& event.getSource().getEntity() instanceof Player player
 						&& bm.getOwnerUUID().equals(player.getUUID())
-						&& !event.getSource().equals(event.getEntity().level().damageSources().fellOutOfWorld())
+						&& !event.getSource().is(DamageTypes.FELL_OUT_OF_WORLD)
 						&& !event.getSource().isCreativePlayer())
 				{
 					if (event.getAmount() >= 0.5f)
