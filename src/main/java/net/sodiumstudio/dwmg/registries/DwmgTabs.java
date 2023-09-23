@@ -21,7 +21,8 @@ public class DwmgTabs{
 			{
 				for (var item: DwmgItems.ITEMS.getEntries())
 				{
-					output.accept(item.get());
+					if (!DwmgItems.NO_TAB.contains(item))
+						output.accept(item.get());
 				}
 			}).build());
 }

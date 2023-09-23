@@ -64,11 +64,11 @@ public class GuiSlimeGirl extends GuiPreset0
 	@Override
 	public void addFavorabilityAndLevelInfo(GuiGraphics graphics, IntVec2 position, int color, int textRowWidth)
 	{
-		graphics.drawString(font, getDefaultLevelAndExpInfo(), position.x, position.y, color);
+		graphics.drawString(font, getDefaultLevelAndExpInfo(), position.x, position.y, color, false);
 		position.addY(textRowWidth);
-		graphics.drawString(font, getDefaultFavInfo(), position.x, position.y, color);
+		graphics.drawString(font, getDefaultFavInfo(), position.x, position.y, color, false);
 		position.addY(textRowWidth);
-		graphics.drawString(font, getDefaultColorInfo(), position.x, position.y, color);
+		graphics.drawString(font, getDefaultColorInfo(), position.x, position.y, color, false);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package net.sodiumstudio.dwmg.registries;
 
+import java.util.HashSet;
 import java.util.function.Supplier;
 
 import com.github.mechalopa.hmag.world.item.ModSwordItem;
@@ -38,7 +39,7 @@ import net.sodiumstudio.nautils.InfoHelper;
 public class DwmgItems {
 	
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Dwmg.MOD_ID);
-	public static final DeferredRegister<Item> ITEMS_NO_TAB = DeferredRegister.create(ForgeRegistries.ITEMS, Dwmg.MOD_ID);
+	public static final HashSet<RegistryObject<? extends Item>> NO_TAB = new HashSet<>();
 	
 	// General register function for items
 	
@@ -55,10 +56,10 @@ public class DwmgItems {
 	
 	public static <T extends Item> RegistryObject<T> registerItem(String name, Class<T> clazz, boolean tab, Supplier<T> supplier)
 	{
+		var res = ITEMS.register(name, supplier);
 		if (tab)
-			return ITEMS.register(name, supplier);
-		else 
-			return ITEMS_NO_TAB.register(name, supplier);
+			NO_TAB.add(res);
+		return res;
 	}
 	
 	public static <T extends Item> RegistryObject<T> registerItem(String name, Class<T> clazz, Supplier<T> supplier)
@@ -76,33 +77,22 @@ public class DwmgItems {
 	 */
 	public static <T extends Item> RegistryObject<T> registerItem(String name, Item.Properties properties, Class<T> clazz, boolean tab)
 	{
-			if (tab)
-				return ITEMS.register(name, () ->
-				{
-					try
-					{
-						return clazz.getConstructor(Item.Properties.class).newInstance(properties);
-					} catch (Exception e)
-					{
-						e.printStackTrace();
-						return null;
-					}
+		var res = ITEMS.register(name, () ->
+		{
+			try
+			{
+				return clazz.getConstructor(Item.Properties.class).newInstance(properties);
 
-				});
-			else
-				return ITEMS_NO_TAB.register(name,
-					() -> 
-				{
-					try
-					{
-						return clazz.getConstructor(Item.Properties.class).newInstance(properties);
-					} 
-					catch (Exception e)
-					{
-						e.printStackTrace();
-						return null;
-					}
-				});
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+				return null;
+			}
+		});
+		if (!tab)
+			NO_TAB.add(res);
+		return res;
+
 	}
 	
 	/**
@@ -267,17 +257,18 @@ public class DwmgItems {
 	public static final RegistryObject<Item> TAOIST_TALISMAN = ITEMS.register("taoist_talisman", () -> new TaoistTalismanItem(new Item.Properties()));
 	
 	// Misc
-	public static final RegistryObject<MobRespawnerItem> MOB_RESPAWNER = ITEMS_NO_TAB.register("mob_respawner", () -> new DwmgRespawnerItem(new Item.Properties()).setRetainBefriendedMobInventory(false));
-	public static final RegistryObject<MobRespawnerItem> MOB_STORAGE_POD = ITEMS_NO_TAB.register("mob_storage_pod", () -> new DwmgRespawnerItem(new Item.Properties()));
+	public static final RegistryObject<MobRespawnerItem> MOB_RESPAWNER = ITEMS.register("mob_respawner", () -> new DwmgRespawnerItem(new Item.Properties()).setRetainBefriendedMobInventory(false));
+	public static final RegistryObject<MobRespawnerItem> MOB_STORAGE_POD = ITEMS.register("mob_storage_pod", () -> new DwmgRespawnerItem(new Item.Properties()));
 	public static final RegistryObject<MobCatcherItem> EMPTY_MOB_STORAGE_POD = ITEMS.register("empty_mob_storage_pod", () -> new MobCatcherItem(new Item.Properties(), MOB_STORAGE_POD.get()).canCatchCondition(
 			((m, p) -> (m instanceof IDwmgBefriendedMob bm && bm.getOwnerUUID().equals(p.getUUID())))));
 
-	public static final RegistryObject<Item> TAB_ICON = ITEMS_NO_TAB.register("tab_icon", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> TAB_ICON = ITEMS.register("tab_icon", () -> new Item(new Item.Properties()));
 	
-	
-	/* Item register end */
-	
-	public static void register(IEventBus eventBus){
-	    ITEMS.register(eventBus);
+	static
+	{
+		NO_TAB.add(MOB_RESPAWNER);
+		NO_TAB.add(MOB_STORAGE_POD);
+		NO_TAB.add(TAB_ICON);
 	}
+
 }

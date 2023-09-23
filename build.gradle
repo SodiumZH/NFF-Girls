@@ -154,7 +154,7 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
 	implementation fg.deobf("net.sodiumstudio.befriendmobs:befriendmobs:${mc_version}-${bm_version}")
-    implementation fg.deobf("curse.maven:jade-324717:4711195")
+    //implementation fg.deobf("curse.maven:jade-324717:4711195")
     
     implementation fg.deobf("curse.maven:hmag-537613:4757070")
 	implementation fg.deobf("curse.maven:tf-227639:4755494")

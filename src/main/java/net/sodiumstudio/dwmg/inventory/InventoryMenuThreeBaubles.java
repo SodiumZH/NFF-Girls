@@ -20,7 +20,7 @@ public class InventoryMenuThreeBaubles extends InventoryMenuPreset0
 	protected void addMenuSlots() {
 		this.addBaubleSlot(0, rightRowPos().addY(4), "0");
 		this.addBaubleSlot(1, rightRowPos().slotBelow().addY(8), "1");
-		this.addBaubleSlot(2, rightRowPos().slotBelow().addY(12), "2");
+		this.addBaubleSlot(2, rightRowPos().slotBelow(2).addY(12), "2");
 	}
 
 	@Override

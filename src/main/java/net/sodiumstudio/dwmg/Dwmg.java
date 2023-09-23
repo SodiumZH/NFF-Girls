@@ -47,7 +47,6 @@ public class Dwmg
         DwmgEffects.EFFECTS.register(modEventBus);
         DwmgBlocks.BLOCKS.register(modEventBus);
         DwmgItems.ITEMS.register(modEventBus);
-        DwmgItems.ITEMS_NO_TAB.register(modEventBus);
         DwmgEntityTypes.ENTITY_TYPES.register(modEventBus);
         DwmgRecipes.RECIPES.register(modEventBus);
         DwmgParticleTypes.PARTICLE_TYPES.register(modEventBus);

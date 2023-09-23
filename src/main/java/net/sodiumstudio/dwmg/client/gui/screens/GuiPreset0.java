@@ -75,11 +75,11 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	
 	public void addFavorabilityAndLevelInfo(GuiGraphics graphics, IntVec2 position, int color, int textRowWidth)
 	{
-		graphics.drawString(font, getDefaultLevelInfo(), position.x, position.y, color);
+		graphics.drawString(font, getDefaultLevelInfo(), position.x, position.y, color, false);
 		position.addY(textRowWidth);
-		graphics.drawString(font, getDefaultExpInfo(), position.x, position.y, color);
+		graphics.drawString(font, getDefaultExpInfo(), position.x, position.y, color, false);
 		position.addY(textRowWidth);
-		graphics.drawString(font, getDefaultFavInfo(), position.x, position.y, color);
+		graphics.drawString(font, getDefaultFavInfo(), position.x, position.y, color, false);
 	}
 	
 	protected MutableComponent getDefaultLevelAndExpInfo()
