@@ -1,12 +1,15 @@
 {
-  "type": "minecraft:smithing",
-  "base": {
-    "item": "dwmg:soul_amulet"
-  },
+  "type": "minecraft:smithing_transform",
   "addition": {
     "item": "minecraft:nether_star"
   },
+  "base": {
+    "item": "dwmg:soul_amulet"
+  },
   "result": {
     "item": "dwmg:soul_amulet_ii"
+  },
+    "template": {
+    "item": "hmag:evil_crystal_upgrade_smithing_template"
   }
 }

@@ -52,7 +52,7 @@
   "effect.dwmg.ender_protection": "末影之护",
   "effect.dwmg.necromancer_wither": "死灵诅咒",
   
-  "itemGroup.dwmg_tab" : "与怪物娘的日常",
+  "item_group.dwmg_tab" : "与怪物娘的日常",
   
   "entity.dwmg.hmag_zombie_girl" : "僵尸娘",
   "entity.dwmg.hmag_skeleton_girl" : "骷髅娘",

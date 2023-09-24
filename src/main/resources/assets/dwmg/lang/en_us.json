@@ -52,7 +52,7 @@
   "effect.dwmg.ender_protection": "Protection of the End",
   "effect.dwmg.necromancer_wither": "Curse of Necromancy",
   
-  "itemGroup.dwmg_tab" : "Days with Monster Girls",
+  "item_group.dwmg_tab" : "Days with Monster Girls",
   
   "entity.dwmg.hmag_zombie_girl" : "Zombie Girl",
   "entity.dwmg.hmag_skeleton_girl" : "Skeleton Girl",

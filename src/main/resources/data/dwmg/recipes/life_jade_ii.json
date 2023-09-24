@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:smithing",
+  "type": "minecraft:smithing_transform",
   "base": {
     "item": "dwmg:life_jade"
   },
@@ -8,5 +8,8 @@
   },
   "result": {
     "item": "dwmg:life_jade_ii"
+  },
+  "template": {
+    "item": "hmag:evil_crystal_upgrade_smithing_template"
   }
 }
