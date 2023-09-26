@@ -13,6 +13,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.sodiumstudio.dwmg.Dwmg;
 
+/**
+ * This doesn't work but the reason is unknown
+ */
 public class DwmgDamageSources
 {
 	public static final ResourceKey<DamageType> NECROMANCER_WITHER = register("necromancer_wither");

@@ -29,7 +29,6 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.NbtHelper;
 
-
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgItemEvents
 {

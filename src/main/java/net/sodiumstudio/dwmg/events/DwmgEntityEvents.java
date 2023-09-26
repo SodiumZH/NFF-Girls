@@ -603,7 +603,9 @@ public class DwmgEntityEvents
 					int ampl = event.getEntity().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
 					if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
 					{
-						event.getEntity().hurt(DwmgDamageSources.source(event.getEntity().level(), DwmgDamageSources.NECROMANCER_WITHER), 1);
+						// TODO: fix DamageSource NECROMANCER_WITHER and set it back
+						//event.getEntity().hurt(DwmgDamageSources.source(event.getEntity().level(), DwmgDamageSources.NECROMANCER_WITHER), 1);
+						event.getEntity().hurt(event.getEntity().level().damageSources().wither(), 1);
 					}
 				}
 			}
@@ -1015,19 +1017,6 @@ public class DwmgEntityEvents
 	public static void setHostileToAllBefriendedMobs(Mob mob, Predicate<LivingEntity> condition)
 	{
 		AiHelper.setHostileTo(mob, Mob.class, condition.and(m -> m instanceof IDwmgBefriendedMob));
-		/*AiHelper.setHostileTo(mob, HmagZombieGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagHuskGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagDrownedGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagSkeletonGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagStrayGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagWitherSkeletonGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagCreeperGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagEnderExecutorEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagHornetEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagNecroticReaperEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagBansheeEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagGhastlySeekerEntity.class, condition);*/
-		// Extending...
 	}
 
 	public static void setHostileToAllBefriendedMobs(Mob mob)
