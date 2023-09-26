@@ -371,6 +371,14 @@ Rollbacked HMaG dependency to 6.1.0.
 
 Ported from 1.18.2 - 0.0.0-snapshot.3.
 
+## 1.20.1
+
+### 0.2.15
+
+Ported from 1.19.2-0.1.15.
+
+Special death message of Necromancer's Hat curse is temporarily removed due to an unfixed bug.
+
 ## 1.18.2
 
 ### 0.0.14
