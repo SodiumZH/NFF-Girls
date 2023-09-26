@@ -147,6 +147,7 @@ public class DwmgEntityEvents
 		// Handle mobs //
 		if (target != null && event.getEntity() instanceof Mob mob)
 		{
+			
 			// Handle undead mobs start //
 	        if (mob.getMobType() == MobType.UNDEAD 
 	        		&& !(event.getEntity() instanceof IBefriendedMob) 
@@ -157,7 +158,7 @@ public class DwmgEntityEvents
         		{
         			if (target != null && target.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get()) && lastHurtBy != target && !l.getHatred().contains(target.getUUID()))
         			{
-        				mob.setTarget(null);
+        				event.setNewTarget(null);
         				isCancelledByEffect.set(true);
         			}
         			// Hatred will be added in priority-lowest event
@@ -179,7 +180,7 @@ public class DwmgEntityEvents
 	        		&& bef.getModId().equals(Dwmg.MOD_ID)
 	        		&& BefriendingTypeRegistry.getTypeBefore(mob) == target.getType())
 	        {
-				mob.setTarget(null);
+				event.setNewTarget(null);
 	        }
 	        
 	        // Handle Ghastly Seeker
@@ -196,7 +197,7 @@ public class DwmgEntityEvents
 	        	}
 	        	if (gs.getLastHurtByMob() != gs.getTarget() && gs.getAIState() == BefriendedAIState.WAIT)
 	        	{
-	        		gs.setTarget(null);
+	        		event.setNewTarget(null);
 	        	}
 	        	gs.lastTarget = gs.getTarget();
 	        }    
