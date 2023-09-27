@@ -110,7 +110,6 @@ import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 import net.sodiumstudio.dwmg.events.hooks.DwmgHooks;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
-import net.sodiumstudio.dwmg.registries.DwmgDamageSources;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -124,7 +123,6 @@ import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.TagHelper;
 import net.sodiumstudio.nautils.Wrapped;
 
-@SuppressWarnings("removal")
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgEntityEvents
 {
@@ -139,7 +137,6 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingChangeTargetEvent event)
 	{
-		@SuppressWarnings("deprecation")
 		LivingEntity target = event.getNewTarget();		
 		LivingEntity lastHurtBy = event.getEntity().getLastHurtByMob();
 		Wrapped<Boolean> isCancelledByEffect = new Wrapped<Boolean>(Boolean.FALSE);
@@ -158,8 +155,8 @@ public class DwmgEntityEvents
         		{
         			if (target != null && target.hasEffect(DwmgEffects.UNDEAD_AFFINITY.get()) && lastHurtBy != target && !l.getHatred().contains(target.getUUID()))
         			{
-        				event.setNewTarget(null);
-        				isCancelledByEffect.set(true);
+        				event.setCanceled(true);
+        				return;
         			}
         			// Hatred will be added in priority-lowest event
         		});
@@ -173,14 +170,14 @@ public class DwmgEntityEvents
 	        		&& target instanceof IBefriendedMob bef
 	        		&& bef.getModId().equals(Dwmg.MOD_ID))
 	        {
-				mob.setTarget(null);
+				event.setCanceled(true);
 	        }
 	        // Befriended mobs don't attack their wild variation
 	        if (mob instanceof IBefriendedMob bef 
 	        		&& bef.getModId().equals(Dwmg.MOD_ID)
 	        		&& BefriendingTypeRegistry.getTypeBefore(mob) == target.getType())
 	        {
-				event.setNewTarget(null);
+				event.setCanceled(true);
 	        }
 	        
 	        // Handle Ghastly Seeker
@@ -197,7 +194,7 @@ public class DwmgEntityEvents
 	        	}
 	        	if (gs.getLastHurtByMob() != gs.getTarget() && gs.getAIState() == BefriendedAIState.WAIT)
 	        	{
-	        		event.setNewTarget(null);
+	        		event.setCanceled(true);
 	        	}
 	        	gs.lastTarget = gs.getTarget();
 	        }    
@@ -214,7 +211,9 @@ public class DwmgEntityEvents
 			// Undead mob add neutral here to prevent compat issues with other mods that can make undead mobs non-hostile
 			event.getEntity().getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) ->
 			{
-				LivingEntity target = mob.getTarget();
+				if (event.isCanceled())
+					return;
+				LivingEntity target = event.getNewTarget();
 				if (target != null)
 				{
 					l.addHatred(target, 300 * 20);
@@ -282,6 +281,7 @@ public class DwmgEntityEvents
 	}
 	
 	
+	@SuppressWarnings("resource")
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onPlayerAttack_PriorityHighest(AttackEntityEvent event)
 	{
@@ -293,6 +293,7 @@ public class DwmgEntityEvents
 		}
 	}
 	
+	@SuppressWarnings("resource")
 	@SubscribeEvent
 	public static void onLivingHurt(LivingHurtEvent event) {
 
@@ -542,6 +543,7 @@ public class DwmgEntityEvents
 		}
 	}
 	
+	@SuppressWarnings("resource")
 	@SubscribeEvent
 	public static void onLivingTick(LivingTickEvent event)
 	{
