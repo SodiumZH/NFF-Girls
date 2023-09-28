@@ -379,7 +379,13 @@ Ported from 1.19.2-0.1.15.
 
 Special death message of Necromancer's Hat curse is temporarily removed due to an unfixed bug.
 
+Now blocks destroyed by the explosions of Creeper Girl and Ghastly Seeker will always drop corresponding items.
+
 ## 1.18.2
+
+### 0.0.15
+
+Identical to 1.19.2-0.1.15.
 
 ### 0.0.14
 
