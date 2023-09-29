@@ -5,6 +5,7 @@ import com.github.mechalopa.hmag.registry.ModEntityTypes;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.sodiumstudio.befriendmobs.bmevents.setup.RegisterBefriendingTypeEvent;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerAlraune;
@@ -30,94 +31,94 @@ import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSlimeGirl;
 public class DwmgBefriendingTypes {
 
 	@SubscribeEvent
-	public static void registerBefriendingType(FMLCommonSetupEvent event)
+	public static void registerBefriendingType(RegisterBefriendingTypeEvent event)
 	{
 		
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.ZOMBIE_GIRL.get(),
 				DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get(),
 				new HandlerZombieGirl());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.SKELETON_GIRL.get(),
 				DwmgEntityTypes.HMAG_SKELETON_GIRL.get(),
 				new HandlerSkeletonGirl());		
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.HUSK_GIRL.get(),
 				DwmgEntityTypes.HMAG_HUSK_GIRL.get(),
 				new HandlerHuskGirl());			
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.DROWNED_GIRL.get(),
 				DwmgEntityTypes.HMAG_DROWNED_GIRL.get(),
 				new HandlerZombieGirl());	
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.CREEPER_GIRL.get(),
 				DwmgEntityTypes.HMAG_CREEPER_GIRL.get(),
 				new HandlerCreeperGirl());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.ENDER_EXECUTOR.get(),
 				DwmgEntityTypes.HMAG_ENDER_EXECUTOR.get(),
 				new HandlerEnderExecutor());	
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.STRAY_GIRL.get(),
 				DwmgEntityTypes.HMAG_STRAY_GIRL.get(),
 				new HandlerSkeletonGirl());	
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.WITHER_SKELETON_GIRL.get(),
 				DwmgEntityTypes.HMAG_WITHER_SKELETON_GIRL.get(),
 				new HandlerWitherSkeletonGirl());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.HORNET.get(),
 				DwmgEntityTypes.HMAG_HORNET.get(),
 				new HandlerHornet());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.NECROTIC_REAPER.get(),
 				DwmgEntityTypes.HMAG_NECROTIC_REAPER.get(),
 				new HandlerNecroticReaper());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.GHASTLY_SEEKER.get(),
 				DwmgEntityTypes.HMAG_GHASTLY_SEEKER.get(),
 				new HandlerGhastlySeeker());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.BANSHEE.get(),
 				DwmgEntityTypes.HMAG_BANSHEE.get(),
 				new HandlerBanshee());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.KOBOLD.get(),
 				DwmgEntityTypes.HMAG_KOBOLD.get(),
 				new HandlerKobold());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.IMP.get(),
 				DwmgEntityTypes.HMAG_IMP.get(),
 				new HandlerImp());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.HARPY.get(),
 				DwmgEntityTypes.HMAG_HARPY.get(),
 				new HandlerHarpy());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.SNOW_CANINE.get(),
 				DwmgEntityTypes.HMAG_SNOW_CANINE.get(),
 				new HandlerSnowCanine());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.SLIME_GIRL.get(),
 				DwmgEntityTypes.HMAG_SLIME_GIRL.get(),
 				new HandlerSlimeGirl());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.JIANGSHI.get(),
 				DwmgEntityTypes.HMAG_JIANGSHI.get(),
 				new HandlerJiangshi());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.DULLAHAN.get(),
 				DwmgEntityTypes.HMAG_DULLAHAN.get(),
 				new HandlerSkeletonGirl());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.DODOMEKI.get(),
 				DwmgEntityTypes.HMAG_DODOMEKI.get(),
 				new HandlerSkeletonGirl());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.ALRAUNE.get(),
 				DwmgEntityTypes.HMAG_ALRAUNE.get(),
 				new HandlerAlraune());
-		BefriendingTypeRegistry.register(
+		event.register(
 				ModEntityTypes.GLARYAD.get(),
 				DwmgEntityTypes.HMAG_GLARYAD.get(),
 				new HandlerAlraune());
