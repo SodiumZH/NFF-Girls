@@ -34,6 +34,7 @@ import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.sodiumstudio.befriendmobs.bmevents.client.RegisterGuiScreenEvent;
 import net.sodiumstudio.befriendmobs.client.gui.screens.BefriendedGuiScreenMaker;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiBanshee;
@@ -129,24 +130,27 @@ public class DwmgClientSetupEvents
     	{
     		// Item properties
     		ItemProperties.register(DwmgItems.REINFORCED_FISHING_ROD.get(), new ResourceLocation("cast"), ReinforcedFishingRodItem::isCastClient);
-    		
-    		// GUI screens
-    		BefriendedGuiScreenMaker.put(InventoryMenuCreeper.class, (menu) -> new GuiCreeperGirl(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuEnderExecutor.class, (menu) -> new GuiEnderExecutor(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuEquipmentTwoBaubles.class, (menu) -> new GuiEquipmentTwoBaubles(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuGhastlySeeker.class, (menu) -> new GuiGhastlySeeker(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuHandItemsTwoBaubles.class, (menu) -> new GuiHandItemsTwoBaubles(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuNecroticReaper.class, (menu) -> new GuiNecroticReaper(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuSkeleton.class, (menu) -> new GuiBowSecWeaponOneBauble(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuBanshee.class, (menu) -> new GuiBanshee(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuKobold.class, (menu) -> new GuiKobold(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuImp.class, (menu) -> new GuiImp(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuFourBaubles.class, (menu) -> new GuiFourBaubles(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuSlimeGirl.class, (menu) -> new GuiSlimeGirl(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuDullahan.class, (menu) -> new GuiDullahan(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuDodomeki.class, (menu) -> new GuiDodomeki(menu, menu.playerInventory, menu.mob));
-    		BefriendedGuiScreenMaker.put(InventoryMenuThreeBaubles.class, (menu) -> new GuiThreeBaubles(menu, menu.playerInventory, menu.mob));
     	});
+    }
+    
+    @SubscribeEvent
+    public static void registerGuiScreen(RegisterGuiScreenEvent event)
+    {
+		event.registerDefault(InventoryMenuCreeper.class, GuiCreeperGirl::new);
+		event.registerDefault(InventoryMenuEnderExecutor.class, GuiEnderExecutor::new);
+		event.registerDefault(InventoryMenuEquipmentTwoBaubles.class, GuiEquipmentTwoBaubles::new);
+		event.registerDefault(InventoryMenuGhastlySeeker.class, GuiGhastlySeeker::new);
+		event.registerDefault(InventoryMenuHandItemsTwoBaubles.class, GuiHandItemsTwoBaubles::new);
+		event.registerDefault(InventoryMenuNecroticReaper.class, GuiNecroticReaper::new);
+		event.registerDefault(InventoryMenuSkeleton.class, GuiBowSecWeaponOneBauble::new);
+		event.registerDefault(InventoryMenuBanshee.class, GuiBanshee::new);
+		event.registerDefault(InventoryMenuKobold.class, GuiKobold::new);
+		event.registerDefault(InventoryMenuImp.class, GuiImp::new);
+		event.registerDefault(InventoryMenuFourBaubles.class, GuiFourBaubles::new);
+		event.registerDefault(InventoryMenuSlimeGirl.class, GuiSlimeGirl::new);
+		event.registerDefault(InventoryMenuDullahan.class, GuiDullahan::new);
+		event.registerDefault(InventoryMenuDodomeki.class, GuiDodomeki::new);
+		event.registerDefault(InventoryMenuThreeBaubles.class, GuiThreeBaubles::new);
     }
 
 }
