@@ -76,6 +76,8 @@
   "entity.dwmg.hmag_dodomeki": "百目鬼",
   "entity.dwmg.hmag_alraune": "花精灵",
   "entity.dwmg.hmag_glaryad": "苔藓树妖",
+  "entity.dwmg.hmag_crimson_slaughterer": "绯红屠戮者",
+  "entity.dwmg.hmag_cursed_doll": "诅咒玩偶",
   
   "info.dwmg.necrotic_reaper_not_controllable": "你需要拥有死灵巫师的帽子或死灵巫师之杖以指挥死灵收割者。",
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "你需要拥有死灵巫师的帽子或死灵巫师之杖以打开死灵收割者的道具栏。",
@@ -104,7 +106,7 @@
   "info.dwmg.bauble.proactive_attack": "主动攻击敌对生物",
   "info.dwmg.bauble.soul_amulet": "亡灵生物可装备",
   "info.dwmg.bauble.aqua_jade": "溺尸娘可装备",
-  "info.dwmg.bauble.poisonous_thorn": "蜜蜂娘可装备",
+  "info.dwmg.bauble.poisonous_thorn": "节肢生物可装备",
   "info.dwmg.bauble.poisonous_thorn_1": "攻击付与中毒效果强化",
   "death.attack.necromancer_wither": "%1$s没能承受住死灵巫术的诅咒"
 }
