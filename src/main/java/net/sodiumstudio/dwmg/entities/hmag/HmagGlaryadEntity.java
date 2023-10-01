@@ -49,8 +49,8 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuThreeBaubles;
+import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
@@ -113,8 +113,9 @@ public class HmagGlaryadEntity extends GlaryadEntity implements IDwmgBefriendedM
 	@Override
 	public void aiStep()
 	{
-		// This blocks alerting others
-		ReflectHelper.forceSet(this, GlaryadEntity.class, "ticksUntilNextAlert", 999);
+		if (!this.level.isClientSide)
+			// This blocks alerting others
+			ReflectHelper.forceSet(this, GlaryadEntity.class, "ticksUntilNextAlert", 999);
 		super.aiStep();
 	}
 	

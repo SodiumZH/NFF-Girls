@@ -8,13 +8,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
+import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 
 public class BaubleHandlerNecroticReaper extends BaubleHandlerUndead
 {
 
 	@Override
-	public boolean isAccepted(Item item, String key, IBaubleHolder mob)
+	public boolean isAccepted(Item item, String key, IBaubleEquipable mob)
 	{
 		if (key.equals("main_hand"))
 		{
@@ -36,7 +36,7 @@ public class BaubleHandlerNecroticReaper extends BaubleHandlerUndead
 	}
 	
 	@Override
-	public void refreshBaubleEffect(String slotKey, ItemStack bauble, IBaubleHolder owner) {
+	public void refreshBaubleEffect(String slotKey, ItemStack bauble, IBaubleEquipable owner) {
 		if (slotKey.equals("main_hand"))
 		{
 			if (bauble.getItem() instanceof HoeItem hoe)

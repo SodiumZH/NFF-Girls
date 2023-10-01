@@ -53,8 +53,8 @@ import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedCreeperGirlMeleeAttackG
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedCreeperFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuCreeper;
+import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
@@ -118,6 +118,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 			this.setVariant(this.getRandom().nextInt(3));
 	}
 	
+	@Deprecated
 	public static Builder createAttributes() {
 		return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.3D).add(Attributes.KNOCKBACK_RESISTANCE, 0.25D).add(Attributes.ATTACK_DAMAGE, 0);
 	}
@@ -342,7 +343,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 	}
 	
 
-	// IBaubleHolder interface
+	// IBaubleEquipable interface
 	// Actually it doesn't have bauble
 	
 	@Override
