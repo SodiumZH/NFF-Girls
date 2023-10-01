@@ -76,6 +76,8 @@
   "entity.dwmg.hmag_dodomeki": "Dodomeki",
   "entity.dwmg.hmag_alraune": "Alraune",
   "entity.dwmg.hmag_glaryad": "Glaryad",
+  "entity.dwmg.hmag_crimson_slaughterer": "Crimson Slaughterer",
+  "entity.dwmg.hmag_cursed_doll": "Cursed Doll",
   
   "info.dwmg.necrotic_reaper_not_controllable": "To give command to the Necrotic Reaper, you must have a Necromancer's Hat or Necromancer's Wand.",
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "To open Necrotic Reaper's inventory, you must have a Necromancer's Hat or Necromancer's Wand.",
@@ -104,8 +106,8 @@
   "info.dwmg.bauble.proactive_attack": "Proactively attack hostile mobs",
   "info.dwmg.bauble.soul_amulet": "For undead mobs only",
   "info.dwmg.bauble.aqua_jade": "For Drowned Girls only",
-  "info.dwmg.bauble.poisonous_thorn": "For Hornet only",
-  "info.dwmg.bauble.poisonous_thorn_1": "Enhancing Poison effect on attacking",
+  "info.dwmg.bauble.poisonous_thorn": "For arthropod mobs only",
+  "info.dwmg.bauble.poisonous_thorn_1": "Adding & enhancing Poison effect on attacking",
   "death.attack.necromancer_wither": "%1$s failed to bear the curse of necromancy.",
   
   "color.dwmg.html.alice_blue": "Alice Blue",
