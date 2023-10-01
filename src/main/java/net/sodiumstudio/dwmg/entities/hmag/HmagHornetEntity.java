@@ -42,7 +42,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
+import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingLandGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomMoveGoal;
@@ -55,8 +55,8 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTar
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.movecontrol.BefriendedFlyingMoveControl;
-import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
+import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ItemHelper;
@@ -70,6 +70,7 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 		this.moveControl = new BefriendedFlyingMoveControl(this);
 	}
 
+	@Deprecated
 	public static Builder createAttributes() {
 		return Monster.createMonsterAttributes()
 				.add(Attributes.MAX_HEALTH, 60.0D)
@@ -102,7 +103,7 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 	public static final int ADD_POISON_LEVEL_DEFAULT = 1;
 	public static final int ADD_POISON_TICKS_DEFAULT = 200;
 	public int addPoisonLevel = 1;
-	public int addPoisonTicks = 200;	// 10s, equal to hornet poisoning time in hard mode
+	public int addPoisonTicks = 10 * 20;	// 10s, equal to hornet poisoning time in hard mode
 	
 	@Override
 	public boolean doHurtTarget(Entity entity)
@@ -293,7 +294,7 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 		return DATA_AISTATE;
 	}
 
-	/* IBaubleHolder interface */
+	/* IBaubleEquipable interface */
 
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {

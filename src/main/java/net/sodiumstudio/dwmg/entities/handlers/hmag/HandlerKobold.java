@@ -4,8 +4,10 @@ import java.util.Map;
 
 import java.util.function.Supplier;
 
+import net.minecraft.world.item.Items;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
+import net.sodiumstudio.nautils.math.RandomSelection;
 import net.sodiumstudio.nautils.math.RndUtil;
 
 public class HandlerKobold extends HandlerItemDropping

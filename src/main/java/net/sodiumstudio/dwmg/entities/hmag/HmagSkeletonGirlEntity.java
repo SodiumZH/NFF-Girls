@@ -45,7 +45,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
+import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.dwmg.Dwmg;
@@ -58,8 +58,8 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
+import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
@@ -75,6 +75,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 		Arrays.fill(this.handDropChances, 0);
 	}
 
+	@Deprecated
 	public static Builder createAttributes() 
 	{
 		return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ATTACK_DAMAGE, 3.25D).add(Attributes.ARMOR, 1.0D);
@@ -148,6 +149,8 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 		double d2 = pTarget.getZ() - this.getZ();
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
 		abstractarrow.setBaseDamage(abstractarrow.getBaseDamage() * this.getAttributeValue(Attributes.ATTACK_DAMAGE) / this.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
+		boolean canPickUp = this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0;
+		abstractarrow.pickup = canPickUp ? AbstractArrow.Pickup.ALLOWED : AbstractArrow.Pickup.DISALLOWED;
 		abstractarrow.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);
 		this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 		this.level.addFreshEntity(abstractarrow);
@@ -159,7 +162,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 	public void aiStep() {
 
 		// Handle sun sensitivity
-		if (this.isSunImmune())
+		if (!this.level.isClientSide && this.isSunImmune())
 		{
 			// Save no matter what, empty or not
 			NbtHelper.saveItemStack(this.getItemBySlot(EquipmentSlot.HEAD), this.getTempData().values().tag, "head_item");
@@ -179,48 +182,50 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 		}
 		
 		/* Handle combat AI */
-		if (justShot)
+		if (!this.level.isClientSide)
 		{
-			if (this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0)
-				this.getAdditionalInventory().consumeItem(8);
-			justShot = false;
-		}
-		
-		if (this.getTarget() != null) {
-			// When too close, switch to melee mode if possible
-			if (this.distanceTo(this.getTarget()) < 2.5) {
-				if (additionalInventory.getItem(4).is(Items.BOW) && additionalInventory.getItem(7).getItem() instanceof TieredItem) {
-					additionalInventory.swapItem(4, 7);
-					updateFromInventory();
-				}
-			}
-			// When run out arrows, try taking weapon from backup-weapon slot
-			if (additionalInventory.getItem(4).is(Items.BOW) && additionalInventory.getItem(7).getItem() instanceof TieredItem
-					&& additionalInventory.getItem(8).isEmpty()) {
-				additionalInventory.swapItem(4, 7);
-				updateFromInventory();
-			}
-			// When too far and having a bow on backup-weapon, switch to bow mode
-			// Don't switch if don't have arrows
-			else if (this.distanceTo(this.getTarget()) > 4) {
-				if (!additionalInventory.getItem(4).is(Items.BOW) && getAdditionalInventory().getItem(7).is(Items.BOW)
-						&& !additionalInventory.getItem(8).isEmpty()) {
-					additionalInventory.swapItem(4, 7);
-					updateFromInventory();
-				}
-			}
-			// When in melee mode without a weapon but having one on backup slot, change to it
-			else if (!this.getInventoryItemStack(4).is(Items.BOW)
-					&& !this.getInventoryItemStack(7).is(Items.BOW)
-					&& (this.getInventoryItemStack(4).isEmpty() || !(this.getInventoryItem(4) instanceof TieredItem))
-					&& !this.getInventoryItemStack(7).isEmpty()
-					&& (this.getInventoryItem(7) instanceof TieredItem)
-					)
+			if (justShot)
 			{
-				additionalInventory.swapItem(4, 7);
-				updateFromInventory();
+				if (this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0)
+					this.getAdditionalInventory().consumeItem(8);
+				justShot = false;
 			}
 			
+			if (this.getTarget() != null) {
+				// When too close, switch to melee mode if possible
+				if (this.distanceTo(this.getTarget()) < 2.5) {
+					if (additionalInventory.getItem(4).is(Items.BOW) && additionalInventory.getItem(7).getItem() instanceof TieredItem) {
+						additionalInventory.swapItem(4, 7);
+						updateFromInventory();
+					}
+				}
+				// When run out arrows, try taking weapon from backup-weapon slot
+				if (additionalInventory.getItem(4).is(Items.BOW) && additionalInventory.getItem(7).getItem() instanceof TieredItem
+						&& additionalInventory.getItem(8).isEmpty()) {
+					additionalInventory.swapItem(4, 7);
+					updateFromInventory();
+				}
+				// When too far and having a bow on backup-weapon, switch to bow mode
+				// Don't switch if don't have arrows
+				else if (this.distanceTo(this.getTarget()) > 4) {
+					if (!additionalInventory.getItem(4).is(Items.BOW) && getAdditionalInventory().getItem(7).is(Items.BOW)
+							&& !additionalInventory.getItem(8).isEmpty()) {
+						additionalInventory.swapItem(4, 7);
+						updateFromInventory();
+					}
+				}
+				// When in melee mode without a weapon but having one on backup slot, change to it
+				else if (!this.getInventoryItemStack(4).is(Items.BOW)
+						&& !this.getInventoryItemStack(7).is(Items.BOW)
+						&& (this.getInventoryItemStack(4).isEmpty() || !(this.getInventoryItem(4) instanceof TieredItem))
+						&& !this.getInventoryItemStack(7).isEmpty()
+						&& (this.getInventoryItem(7) instanceof TieredItem)
+						)
+				{
+					additionalInventory.swapItem(4, 7);
+					updateFromInventory();
+				}
+			}
 		}
 	}
 	
@@ -374,7 +379,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 	}
 	
 	
-	/* IBaubleHolder interface */
+	/* IBaubleEquipable interface */
 
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {

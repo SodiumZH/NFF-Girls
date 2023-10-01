@@ -57,8 +57,8 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
+import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
@@ -77,6 +77,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 
 	}
 
+	@Deprecated
 	public static Builder createAttributes() {
 		return Zombie.createAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.245D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.ARMOR, 3.0D);
 	}
@@ -294,7 +295,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 		return !this.isSunImmune();
 	}
 	
-	/* IBaubleHolder interface */
+	/* IBaubleEquipable interface */
 
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
