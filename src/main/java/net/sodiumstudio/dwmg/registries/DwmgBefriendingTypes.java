@@ -11,6 +11,7 @@ import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerAlraune;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerBanshee;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerCreeperGirl;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerCrimsonSlaughterer;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerEnderExecutor;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerGhastlySeeker;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerGlaryad;
@@ -117,5 +118,9 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.GLARYAD.get(),
 				DwmgEntityTypes.HMAG_GLARYAD.get(),
 				new HandlerAlraune());
+		event.register(
+				ModEntityTypes.CRIMSON_SLAUGHTERER.get(),
+				DwmgEntityTypes.HMAG_CRIMSON_SLAUGHTERER.get(),
+				new HandlerCrimsonSlaughterer());
 	}
 }
