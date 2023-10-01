@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
+import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -19,7 +19,7 @@ public class BaubleHandlerGeneral extends BaubleHandler
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Map<String, Predicate<IBaubleHolder>> getItemKeysAccepted(String key, IBaubleHolder mob) {
+	public Map<String, Predicate<IBaubleEquipable>> getItemKeysAccepted(String key, IBaubleEquipable mob) {
 		return ContainerHelper.mapOf(
 				MapPair.of("dwmg:resistance_amulet", null),
 				MapPair.of("dwmg:resistance_amulet_ii", null),
@@ -32,7 +32,7 @@ public class BaubleHandlerGeneral extends BaubleHandler
 	}
 	
 	@Override
-	public boolean shouldAlwaysRefresh(String slotKey, IBaubleHolder holder)
+	public boolean shouldAlwaysRefresh(String slotKey, IBaubleEquipable holder)
 	{
 		return holder.getBaubleSlots().get(slotKey).is(DwmgItems.HEALING_JADE.get())
 				|| holder.getBaubleSlots().get(slotKey).is(DwmgItems.LIFE_JADE.get())
@@ -40,7 +40,7 @@ public class BaubleHandlerGeneral extends BaubleHandler
 	} 
 	
 	@Override
-	public void refreshBaubleEffect(String slotKey, ItemStack bauble, IBaubleHolder owner) {
+	public void refreshBaubleEffect(String slotKey, ItemStack bauble, IBaubleEquipable owner) {
 		if (bauble.is(DwmgItems.RESISTANCE_AMULET.get()))
 		{
 			owner.addBaubleModifier(slotKey, "ra_armor", Attributes.ARMOR, 4.0d, Operation.ADDITION);
@@ -79,7 +79,7 @@ public class BaubleHandlerGeneral extends BaubleHandler
 	
 	
 	@Override
-	public void postTick(IBaubleHolder owner)
+	public void postTick(IBaubleEquipable owner)
 	{
 		super.postTick(owner);
 		

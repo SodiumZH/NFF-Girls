@@ -49,9 +49,9 @@ import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.entities.projectile.BefriendedAlrauneSeedEntity;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuThreeBaubles;
+import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
@@ -118,7 +118,7 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 	public void aiStep()
 	{
 		super.aiStep();
-		if (meleeAttackGoal != null)
+		if (!this.level.isClientSide && meleeAttackGoal != null)
 		{
 			if (this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && this.distanceToSqr(this.getTarget()) >= 9d)
 				meleeAttackGoal.block();

@@ -41,7 +41,7 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwne
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
+import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingLandGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomMoveGoal;
@@ -54,10 +54,10 @@ import net.sodiumstudio.dwmg.entities.ai.goals.HmagFlyingGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.movecontrol.BefriendedFlyingMoveControl;
-import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.entities.projectile.BefriendedGhastFireballEntity;
 import net.sodiumstudio.dwmg.events.DwmgEntityEvents;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuGhastlySeeker;
+import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
@@ -107,6 +107,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 		this.moveControl = new BefriendedFlyingMoveControl(this);
 	}
 
+	@Deprecated
 	public static Builder createAttributes() {
 		return Monster.createMonsterAttributes()
 				.add(Attributes.MAX_HEALTH, 60.0D)
@@ -138,13 +139,13 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
 		
-	@Override
+	/*@Override
 	public void aiStep()
 	{
 		if (!level().isClientSide)
 			super.aiStep();
 		else super.aiStep();
-	}
+	}*/
 	
 	/* Interaction */
 

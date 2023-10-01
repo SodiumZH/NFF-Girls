@@ -47,6 +47,7 @@ import net.sodiumstudio.befriendmobs.entity.vanillapreset.enderman.BefriendedEnd
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
+import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
@@ -54,8 +55,8 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEnderExecutor;
+import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
@@ -85,6 +86,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 		this.modId = Dwmg.MOD_ID;
 	}
 	
+	@Deprecated
 	public static Builder createAttributes() {
 		return EnderMan.createAttributes().add(Attributes.MAX_HEALTH, 120.0D).add(Attributes.MOVEMENT_SPEED, 0.3D).add(Attributes.ATTACK_DAMAGE, 8.0D).add(Attributes.ARMOR, 4.0D);
 	}
@@ -504,7 +506,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 		this.setInit();
 	}
 	
-	/* IBaubleHolder interface */
+	/* IBaubleEquipable interface */
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
 		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
@@ -514,7 +516,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	}
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.ENDER_EXECUTOR;
+		return DwmgBaubleHandlers.GENERAL;
 	}
 
 	// ------------------ Misc ------------------ //

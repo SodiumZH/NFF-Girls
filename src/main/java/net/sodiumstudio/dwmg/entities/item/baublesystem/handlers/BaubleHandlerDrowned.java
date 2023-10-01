@@ -5,21 +5,21 @@ import java.util.function.Predicate;
 
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleHolder;
+import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
 public class BaubleHandlerDrowned extends BaubleHandlerUndead
 {
 
 	@Override
-	public Map<String, Predicate<IBaubleHolder>> getItemKeysAccepted(String key, IBaubleHolder mob) {
-		Map<String, Predicate<IBaubleHolder>> map = super.getItemKeysAccepted(key, mob);
+	public Map<String, Predicate<IBaubleEquipable>> getItemKeysAccepted(String key, IBaubleEquipable mob) {
+		Map<String, Predicate<IBaubleEquipable>> map = super.getItemKeysAccepted(key, mob);
 		map.put("dwmg:aqua_jade", null);
 		return map;
 	}
 
 	@Override
-	public void postTick(IBaubleHolder owner)
+	public void postTick(IBaubleEquipable owner)
 	{
 		super.postTick(owner);
 		owner.removeBaubleModifiers("aj");
