@@ -1,14 +1,26 @@
 package net.sodiumstudio.dwmg.registries;
 
+import java.util.HashMap;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
+
 import com.github.mechalopa.hmag.HMaG;
+import com.github.mechalopa.hmag.client.renderer.GlaryadRenderer;
 import com.github.mechalopa.hmag.world.entity.AlrauneEntity;
 import com.github.mechalopa.hmag.world.entity.DodomekiEntity;
 import com.github.mechalopa.hmag.world.entity.GlaryadEntity;
 import com.github.mechalopa.hmag.world.entity.projectile.PoisonSeedEntity;
 
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,6 +32,7 @@ import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.hmag.HmagAlrauneEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagBansheeEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagCrimsonSlaughtererEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagDodomekiEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagDrownedGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagDullahanEntity;
@@ -262,8 +275,9 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_alraune").toString()));
-	
+
 	public static final RegistryObject<EntityType<HmagGlaryadEntity>> HMAG_GLARYAD = 
 			ENTITY_TYPES.register("hmag_glaryad", () -> EntityType.Builder
 			.of(HmagGlaryadEntity::new, MobCategory.CREATURE)
@@ -271,13 +285,34 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_glaryad").toString()));
 
+	public static final RegistryObject<EntityType<HmagCrimsonSlaughtererEntity>> HMAG_CRIMSON_SLAUGHTERER = 
+			ENTITY_TYPES.register("hmag_crimson_slaughterer", () -> EntityType.Builder
+			.of(HmagCrimsonSlaughtererEntity::new, MobCategory.CREATURE)
+			.fireImmune()
+			.sized(0.75F, 2.45F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_crimson_slaughterer").toString()));
+
+	// ================================================================================================= //
 	
 	@SubscribeEvent
-    public static void onAttributeCreate(EntityAttributeCreationEvent event) {
-        event.put(DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get(), HmagZombieGirlEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_SKELETON_GIRL.get(), HmagSkeletonGirlEntity.createAttributes().build());
+    public static void onAttributeCreate(EntityAttributeCreationEvent event) {	
+		
+		DwmgEntityAttributes.REGISTRY.forEach((type, supplier) -> 
+		{
+			event.put(type, supplier.get().build());
+		});
+		
+		// Declaration of attributes are migrated to DwmgEntityAttributes
+		/*
+        event.put(DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get(), DwmgEntityAttributes.HMAG_ZOMBIE_GIRL_ATTRIBUTES.get().build());
+        event.put(DwmgEntityTypes.HMAG_SKELETON_GIRL.get(), DwmgEntityAttributes.HMAG_SKELETON_GIRL_ATTRIBUTES.get().build());
         event.put(DwmgEntityTypes.HMAG_HUSK_GIRL.get(), HmagHuskGirlEntity.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_DROWNED_GIRL.get(), HmagDrownedGirlEntity.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_CREEPER_GIRL.get(), HmagCreeperGirlEntity.createAttributes().build());
@@ -293,12 +328,16 @@ public class DwmgEntityTypes {
         event.put(DwmgEntityTypes.HMAG_HARPY.get(), HmagHarpyEntity.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_SNOW_CANINE.get(), HmagSnowCanineEntity.createAttributes().build());
         event.put(DwmgEntityTypes.HMAG_SLIME_GIRL.get(), HmagSlimeGirlEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_JIANGSHI.get(), DwmgAttributes.HMAG_JIANGSHI_ATTRIBUTES.get().build());
-        event.put(DwmgEntityTypes.HMAG_DULLAHAN.get(), DwmgAttributes.HMAG_DULLAHAN_ATTRIBUTES.get().build());
-        event.put(DwmgEntityTypes.HMAG_DODOMEKI.get(), DwmgAttributes.HMAG_DODOMEKI_ATTRIBUTES.get().build());
-        event.put(DwmgEntityTypes.HMAG_ALRAUNE.get(), DwmgAttributes.HMAG_ALRAUNE_ATTRIBUTES.get().build());
-        event.put(DwmgEntityTypes.HMAG_GLARYAD.get(), DwmgAttributes.HMAG_GLARYAD_ATTRIBUTES.get().build());
+        event.put(DwmgEntityTypes.HMAG_JIANGSHI.get(), DwmgEntityAttributes.HMAG_JIANGSHI_ATTRIBUTES.get().build());
+        event.put(DwmgEntityTypes.HMAG_DULLAHAN.get(), DwmgEntityAttributes.HMAG_DULLAHAN_ATTRIBUTES.get().build());
+        event.put(DwmgEntityTypes.HMAG_DODOMEKI.get(), DwmgEntityAttributes.HMAG_DODOMEKI_ATTRIBUTES.get().build());
+        event.put(DwmgEntityTypes.HMAG_ALRAUNE.get(), DwmgEntityAttributes.HMAG_ALRAUNE_ATTRIBUTES.get().build());
+        event.put(DwmgEntityTypes.HMAG_GLARYAD.get(), DwmgEntityAttributes.HMAG_GLARYAD_ATTRIBUTES.get().build());
+        event.put(DwmgEntityTypes.HMAG_CRIMSON_SLAUGHTERER.get(), DwmgEntityAttributes.HMAG_CRIMSON_SLAUGHTERER_ATTRIBUTES.get().build());
+        */
 	}
+	
+	// ================================================================================================= //
 	
 	// Projectiles
 	
@@ -357,4 +396,5 @@ public class DwmgEntityTypes {
 			.clientTrackingRange(4)
 			.updateInterval(5)
 			.build(new ResourceLocation(Dwmg.MOD_ID, "reinforced_fishing_hook").toString()));
+
 }
