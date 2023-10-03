@@ -5,10 +5,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 
-public class InventoryMenuDullahan extends InventoryMenuHandItemsFourBaubles
+public class InventoryMenuHandItemsFourBaublesDefault extends InventoryMenuHandItemsFourBaubles
 {
 
-	public InventoryMenuDullahan(int containerId, Inventory playerInventory, Container container, IBefriendedMob mob)
+	public InventoryMenuHandItemsFourBaublesDefault(int containerId, Inventory playerInventory, Container container, IBefriendedMob mob)
 	{
 		super(containerId, playerInventory, container, mob); 
 	}
