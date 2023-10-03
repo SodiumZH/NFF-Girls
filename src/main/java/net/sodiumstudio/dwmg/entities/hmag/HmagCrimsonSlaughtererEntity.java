@@ -133,17 +133,15 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 		if (!this.level.isClientSide && this.tickCount % 100 == 50 && this.isOwnerPresent() && this.distanceToSqr(this.getOwner()) <= 64d && this.hasLineOfSight(this.getOwner()))
 		{
 			Player owner = this.getOwner();
-			if (owner.getMainHandItem().is(ModItems.CRIMSON_BOW.get()))
+			if (owner.getMainHandItem().is(ModItems.CRIMSON_BOW.get()) && owner.getFoodData().getFoodLevel() > 7)
 			{
-				if (owner.getFoodData().getFoodLevel() > 7)
-				{
-					owner.getFoodData().setFoodLevel(owner.getFoodData().getFoodLevel() - 1);
-					owner.getFoodData().setSaturation(Math.min((float)(owner.getFoodData().getFoodLevel()), owner.getFoodData().getSaturationLevel()));
-				}
+				owner.getFoodData().setFoodLevel(owner.getFoodData().getFoodLevel() - 1);
+				owner.getFoodData().setSaturation(Math.min((float)(owner.getFoodData().getFoodLevel()), owner.getFoodData().getSaturationLevel()));
 			}
 			else
 			{
-				owner.getFoodData().eat(1, 1f);
+				if ((this.tickCount / 200) % 2 == 1 && (!(owner.getMainHandItem().is(ModItems.CRIMSON_BOW.get()) && owner.getFoodData().getFoodLevel() == 7)))
+					owner.getFoodData().eat(1, 1f);
 			}
 		}
 	}
