@@ -177,6 +177,7 @@ public class HandlerCursedDoll extends BefriendingHandler
 			String droppedColor = ContainerHelper.randomPick(getHoldingWools(mob, player));
 			mob.spawnAtLocation(new ItemStack(WOOL_MAP.get(droppedColor)));
 			setWool(mob, player, droppedColor, false);
+			setPhase(mob, player, false);
 			if (woolCount(mob, player) == 0)
 				interrupt(player, mob, true);
 		}

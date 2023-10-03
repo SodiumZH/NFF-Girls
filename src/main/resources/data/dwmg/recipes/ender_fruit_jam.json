@@ -6,19 +6,19 @@
 	  }, 
 	  
 	  {
-	    "item" : "dwmg:enderberry"
+	    "item" : "minecraft:sweet_berries"
 	  }, 
 	  
+	  {
+	    "item" : "minecraft:glow_berries"
+	  }, 
+	  	  
 	  {
 	    "tag" : "forge:crops/lemon"
 	  }, 
 	  
 	  {
-	    "item" : "minecraft:chorus_fruit"
-	  }, 
-	  
-	  {
-	    "tag" : "dwmg:hmag_berries"
+	    "tag" : "dwmg:ender_fruit_jam_optional_fruits"
 	  }, 
 	  
 	  {
@@ -26,7 +26,7 @@
 	  },
 	  
 	  { 
-	  	"item": "hmag:evil_crystal"
+	  	"item" : "minecraft:honey_bottle"
 	  },
 	    
 	  {
@@ -39,6 +39,6 @@
   ],
   "result" : {
     "item" : "dwmg:ender_fruit_jam",
-    "count" : 2
+    "count" : 3
   }
 }

@@ -16,6 +16,8 @@ Enhanced Poisonous Thorn effect:
 
 Now Arrows shot by Skeleton Girl and derivatives can be picked up, unless with Infinite bow.
 
+Adjusted some recipes to reduce the cost.
+
 Some internal registry changes (not affecting data).
 
 ### 0.1.15
