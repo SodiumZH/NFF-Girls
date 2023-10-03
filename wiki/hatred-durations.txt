@@ -15,4 +15,4 @@ Reasons:
 ATTACKED: on mob attacked by the player, and receiving damage.
 ATTACKING: on mob attacking the player.
 HIT: on mob hit by the player, but not receiving damage (< 0.1).
-SET_TARGET: on hostile mob preactively set target to the player.
+SET_TARGET: on hostile mob proactively set target to the player.
