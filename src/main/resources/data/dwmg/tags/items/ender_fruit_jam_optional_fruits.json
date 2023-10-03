@@ -1,0 +1,8 @@
+{
+  "replace" : false,
+  "values" : [ 
+      "minecraft:chorus_fruit",
+	  "hmag:mysterious_petal",
+	  "minecraft:golden_apple"
+  ]
+}

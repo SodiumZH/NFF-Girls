@@ -4,9 +4,11 @@
 
 ### Current version: 
 
-#### 0.0.14 (1.18.2)
+#### 0.0.15 (1.18.2)
 
-#### 0.1.15 (1.19.2)
+#### 0.1.16 (1.19.2)
+
+#### 0.2.15 (1.20.1)
 
 
 
@@ -61,6 +63,10 @@ Dodomeki (0.x.14)
 Alraune (0.x.15)
 
 Glaryad (0.x.15)
+
+Crimson Slaughterer (0.x.16)
+
+Cursed Doll (0.x.16)
 
 ## General befriending methods
 
@@ -140,7 +146,7 @@ Once you provoked them and/or lost the Undead Affinity effect, the process will 
 
 ##### Interaction
 
-To interact, player must have a Commanding Wand on either hand. (0.0.6 / 0.1.6)
+To interact, player must have a Commanding Wand on either hand.
 
 Right click to switch the AI state among Wait, Follow and Wander. 
 
@@ -330,7 +336,7 @@ It can be healed with Eye of Ender(5).
 
 With general item-giving process. (Item giving cooldown 10s)
 
-During the whole process, there must be at least 8 Honey Blocks in the 9x9x9 area around it. (As it can fly, probably you need far more than 8 Honey Blocks.) Once there is <8, ~~it will be interrupted~~ the progress will drop by 0.1 each second. If it damaged you, there will be 60s cooldown during which you cannot give item, but no interruption.
+During the whole process, there must be at least 8 Honey Blocks in the 9x9x9 area around it. (As it can fly, probably you need far more than 8 Honey Blocks.) Once there is <8, the progress will drop by 0.1 each second. If it damaged you, there will be 60s cooldown during which you cannot give item, but no interruption.
 
 Accepted Items:
 
@@ -362,7 +368,7 @@ If you get >32 blocks away from it, the process will be interrupted.
 
 ##### Interaction
 
-To interact with it, you must either wear a Necromancer's Hat or hold a Necromancer's Wand on either hand. Otherwise ~~you'll not be able to switch its AI state or open the inventory GUI, and~~ it will refuse to follow you or attack your targets. The requirements are removed if its favorability reaches 90.
+To interact with it, you must either wear a Necromancer's Hat or hold a Necromancer's Wand on either hand. Otherwise it will refuse to follow you or attack your targets. The requirements are removed if its favorability reaches 90.
 
 Necromancer's Wand is required instead of Commanding Wand to switch AI state and open the GUI.
 
@@ -374,15 +380,13 @@ Hoe attack (only for Necrotic Reapers):  Wood/Gold = 1, Stone = 2, Iron = 3, Dia
 
 *Tip: if other mods provide hoes with higher tier than Netherite, it will be a strong weapon. Tiers above Netherite hoes (without Efficiency) will be subsequently: 13, 21, 34(max).
 
-If the hoe has Fortune enchantment, more items will drop on killing mobs as if it has Looting enchantment. (0.x.8)
+If the hoe has Fortune enchantment, more items will drop on killing mobs as if it has Looting enchantment.
 
 It has 4 Bauble slots.
 
 It can be healed with Soul Powder (5) and Soul Apple (15).
 
-~~It will be healed by 2 if hit by its owner's *Necromancer's Wand* magic ball. If the owner is wearing a *Necromancer's Hat*, it will be healed by 3 and get 5s Strength II effect. (0.x.8)~~
-
-When it's affected by owner's *Necromancer's Wand* magic ball, it will be healed by 2 (blasted) or 4 (directly hit). If owner is wearing *Necromancer's Hat*, it will be healed by 3 (blasted) or 6 (directly hit), and get Strength effect for 10s (blasted) or 15s (directly hit). (0.x.8)
+When it's affected by owner's *Necromancer's Wand* magic ball, it will be healed by 2 (blasted) or 4 (directly hit). If owner is wearing *Necromancer's Hat*, it will be healed by 3 (blasted) or 6 (directly hit), and get Strength effect for 10s (blasted) or 15s (directly hit). 
 
 When the player is wearing a *Necromancer's Hat*, the owning Necrotic Reapers nearby (< 8 blocks) will provide Regeneration effect. The effect level depends on how many Necrotic Reapers there are around. (Regeneration III at most.)
 
@@ -408,7 +412,7 @@ It has 3 bauble slots.
 
 
 
-#### Ghastly Seeker (HMaG) (0.0.6 / 0.1.6)
+#### Ghastly Seeker (HMaG)
 
 ##### Befriending
 
@@ -418,7 +422,7 @@ Ghastly Seekers are befriendable only when they're in the Overworld and can see 
 
 ##### Interaction
 
-It has 4 bauble slots.
+It has 4 bauble slots and can equip Soul Amulet even if it's not undead.
 
 It requires ammo to fire. The ammo slot (explosive icon) accepts either Fire Charges or Blasting Bottles (HMaG). When using Fire Charges, the explosions of the fireballs have normal power and don't break blocks. When using Blasting Bottles, the explosions have 1.5x normal power and break blocks.
 
@@ -428,7 +432,7 @@ The base explosion power is 1. Each ATK point adds extra 0.1 to the power.
 
 
 
-#### Kobold (HMaG) (0.0.9 / 0.1.9)
+#### Kobold (HMaG)
 
 **Befriending**
 
@@ -478,7 +482,7 @@ It can be healed with Apple (5), Cookie (5), Pumpkin Pie (5), Lemon (10), Lemon 
 
 
 
-#### Imp (HMaG) (0.x.9)
+#### Imp (HMaG)
 
 ##### Befriending
 
@@ -499,6 +503,8 @@ Accepted items:
 *Gilded Blackstone*: 0.04 - 0.07
 
 *Enchanted Golden Apple*: ~~0.80 - 1.40~~ 0.50-1.00 (0.x.11)
+
+*Nether Star*: 80% for 0.50, 20% for 1.00 (0.1.16)
 
 ##### Interaction
 
@@ -538,7 +544,7 @@ It can be healed with Cookie (5), Cooked Chicken/Rabbit/Mutton (8), Cooked Beef/
 
 
 
-#### Snow Canine (0.x.12)
+#### Snow Canine (HMaG) (0.x.12)
 
 ##### Befriending
 
@@ -550,7 +556,7 @@ Identical to Harpy.
 
 
 
-#### Slime Girl (0.x.13)
+#### Slime Girl (HMaG) (0.x.13)
 
 ##### Befriending
 
@@ -574,7 +580,7 @@ It can be healed with Slimeball(5), Magical Gel Ball (15, not spawning Magical S
 
  
 
-#### Dullahan (0.x.14)
+#### Dullahan (HMaG) (0.x.14)
 
 ##### Befriending
 
@@ -582,7 +588,7 @@ Identical to Skeleton Girl. (May change in the future)
 
 ##### Interaction
 
-Its hand items can be customized. It has 4 bauble slots.
+Its hand items can be customized. It has 4 bauble slots and can equip Soul Amulet even if it's not undead.
 
 It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as vanilla undead mob girls.)
 
@@ -590,7 +596,7 @@ It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as van
 
 
 
-#### Dodomeki (0.x.14)
+#### Dodomeki (HMaG) (0.x.14)
 
 ##### Befriending
 
@@ -598,7 +604,7 @@ Identical to Skeleton Girl. (May change in the future)
 
 ##### Interaction
 
-It has 4 bauble slots.
+It has 4 bauble slots and can equip Soul Amulet even if it's not undead.
 
 It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as vanilla undead mob girls.)
 
@@ -606,7 +612,7 @@ It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as van
 
 
 
-#### Jiangshi (0.1.14) (1.19.2 only)
+#### Jiangshi (HMaG) (0.1.14) (1.19.2+ only)
 
 ##### Befriending
 
@@ -623,6 +629,144 @@ It has 4 baubles.
 If it's struck by thunder, it won't take damage but will get strong positive effects (Including Strength III, Resistance III, Speed II and Fire Resistance for 1 min), and get 20 experience.
 
 It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as vanilla undead mob girls.)
+
+
+
+#### Alraune (HMaG) (0.x.15)
+
+##### Befriending
+
+Item-giving process .
+
+When giving, the mob must have Regeneration III effect of over 10 s. That means you must throw Splash Regeneration III Potion (HMaG) to it because water can provide only 10 s.
+
+Accepted Items: (Cooldown 5 s)
+
+*Spore Blossom*: 0.05 - 0.10
+
+*Mysteraious Petal*: 0.10 - 0.20
+
+Any HMaG Berries: 0.20 - 0.30
+
+Any Flower: 0.03 - 0.06
+
+##### Interaction
+
+It can shoot poison seed with splash effects to the enemies, giving Poison I, Weakness I and Slowness I for at most 15 s (like the original mob). It won't affect allies (including the owner, owner's other befriended mobs and tamed animals).
+
+When an ally around it has HP less than 50%, it will shoot a healing seed, healing by 1 and giving Regeneration I effect for at most 5 s.
+
+It has 3 Baubles.
+
+Healing items: Wheat Seeds (2), Bone Meal (5), Spore Blossom (15), Mysterious Petal (to max).
+
+
+
+#### Glaryad (0.x.15)
+
+##### Befriending
+
+Item-giving process.
+
+When giving, the mob must have Regeneration III effect of over 10 s. That means you must throw Splash Regeneration III Potion (HMaG) to it because water can provide only 10 s.
+
+Also, you need to have a tempting item (Mysterious Petal) on the off-hand and not have provoked it.
+
+Accepted Items: (Cooldown 5 s)
+
+*Spore Blossom*: 0.08 - 0.16
+
+*Mysteraious Petal*: 0.15 - 0.30
+
+Any HMaG Berries: 0.30 - 0.50
+
+Any Flower: 0.06 - 0.10
+
+##### Interaction
+
+It has 3 Bauble slots.
+
+Healing items: Wheat Seeds (2), Bone Meal (5), Spore Blossom (15), Mysterious Petal (to max).
+
+(More features may be added in the future.)
+
+
+
+#### Crimson Slaughterer (HMaG) (0.x.16)
+
+##### Befriending
+
+Item-giving process.
+
+To give, the mob must be standing on a Warped block, including Warped Nylium or Warped Wart Block (tag: `dwmg:affects_crimson_slaughterer`). If so, it will get Slowness I effect but the attacking knockback will become incredibly high. Also there must be >= 16 Shroomlight blocks in the 13x7x13 area centered by the mob. Once there are less than 16, the progress will drop by 0.1 per second while the mob generating massive smoke particles.
+
+Accepted items: (Cooldown 10 s)
+
+*Crimson Roots* & *Weeping Vine*: 0.02 - 0.04
+
+*Nether Wart* & *Crimson Fungus*: 0.03 - 0.06
+
+*Shroomlight* & *Gilded Blackstone*: 0.04 - 0.08
+
+*Golden Apple*: 0.08 - 0.16
+
+*Netherite Ingot*: 0.16 - 0.32
+
+*Nether Star*: 80% for 0.50, 20% for 1.00
+
+##### Interaction
+
+If the owner is less than 8 blocks away from an can be seen by the mob, it will provide food level of 1.
+
+Specially, if the owner is holding a Crimson Bow on the main-hand and the food level is higher than 7 (3.5 meat icons), it will instead reduce food level by 1 each 5 s, allowing to deal more damage with Crimson Bow.
+
+It has 4 Bauble slots.
+
+Healing items: Crimson Fungus (5), Nether Wart (5), Shroomlight (15), Golden Apple (to max).
+
+
+
+#### Cursed Doll (HMaG) (0.x.16)
+
+##### Befriending
+
+Give it a Wool then a String as a "sew" action. Each action has 10 s cooldown. 
+
+Each sew action requires a different color of wool. After 8 actions it's done.
+
+If the mob attacked the player without being blocked by Shield, it will drop a random holding wool and the corresponding action will be canceled.
+
+##### Interaction
+
+It can be given a wool and receive effects depending on the color.
+
+*Orange: Fire Resistance for 30 s*
+
+*Yellow: Glowing for 30 s*
+
+*Red: Strength I for 30 s*
+
+*Purple: Strength II for 15 s*
+
+*Lime: Regeneration I for 30 s*
+
+*Green: Regeneration II for 10 s*
+
+*Light Blue: Speed I for 30 s*
+
+*Blue: Speed II for 15 s*
+
+*Cyan: Speed III and Weakness I for 15 s*
+
+*Magenta: Strength III and Slowness I for 15 s*
+
+*Pink: Removing all negative effects*
+
+All wools above shares a cooldown of 15 s. Other wools cannot be used in this way but are healing items.
+
+It's hand items can be customized. It has 6 Baubles and can equip Soul Amulet even if it's not undead.
+
+Healing items: String (2), White/Light Gray/Gray/Black/Brown Wool (5), Lapis Lazuli (10), Emerald (15), Cubic Nucleus (to max).
 
 
 
@@ -668,7 +812,7 @@ It can be obtained by eating Ender Pie.
 
 ### Curse of Necromancy
 
-The harmful effect of Necromancer's Hat. This effect is same as Wither, but not causing the health bar turning black. ~~Wither Skeletons are not immune to this effect. (0.x.7)~~ Wither Skeletons are immune to this effect. (0.x.7)
+The harmful effect of Necromancer's Hat. This effect is same as Wither, but not causing the health bar turning black. Wither Skeletons are immune to this effect.
 
 
 
@@ -676,7 +820,7 @@ The harmful effect of Necromancer's Hat. This effect is same as Wither, but not 
 
 ### Soul Carpet
 
-A variation of Carpet. Player/mob standing on it will get Undead Affinity effect which immediately expires once player steps out, including jumping up. It will also remove the ~~Wither I~~ Curse of Necromancy effect of Necromancer's Hat.
+A variation of Carpet. Player/mob standing on it will get Undead Affinity effect which immediately expires once player steps out, including jumping up. It will also remove the curse effect of Necromancer's Hat.
 
 
 
@@ -684,7 +828,9 @@ A variation of Carpet. Player/mob standing on it will get Undead Affinity effect
 
 ### Respawner
 
-An item dropped on befriended mob die to respawn the mob. Only owner can pick up and use it to respawn.
+~~An item dropped on befriended mob die to respawn the mob. Only owner can pick up and use it to respawn.~~  (Removal: 0.1.15)
+
+An item generated on befriended mob die to respawn the mob. It will automatically given to the owner.(0.x.15)
 
 The dropped respawner item entities are invulnerable (except to creative player or /kill), and don't expire. If it drops into the void, it will be lifted up and find a solid ground to place. If there's no solid ground, it will get floating.
 
@@ -732,7 +878,7 @@ Speed 4x in water (Only usable for Drowned Girls, applying only once)
 
 #### Poisonous Thorn
 
-Adding Poison III instead of II on attacking. (Only usable for Hornet)
+Giving or enhancing Poison effect on attacking. (Only usable for ~~Hornet~~ Arthropod mobs (0.x.16))
 
 
 
@@ -740,7 +886,7 @@ Adding Poison III instead of II on attacking. (Only usable for Hornet)
 
 #### Sunhat
 
-Allowing undead mobs not to burn under sun without durability damage. Undead mobs wearing Sunhat will also performs normally under sun, instead of trying to avoid sun as the highest priority.
+Allowing sun-sensitive mobs not to burn under sun without durability damage. Sun-sensitive mobs wearing Sunhat will also performs normally under sun, instead of trying to avoid sun as the highest priority.
 
 It's other properties are identical to Leather Helmet.
 
@@ -790,13 +936,13 @@ It can be repaired with Death Crystal Powder on Anvil. Each item repairs ~~16(0.
 
 
 
-#### Netherite Fork (0.x.9)
+#### Netherite Fork
 
 An upgrade of Golden Fork (HMaG). Aside of general properties, Imps require this item for locating Ancient Debris blocks.
 
 
 
-#### Mob Storage Pod (0.x.10)
+#### Mob Storage Pod
 
 Right click the mob with this item to store the mob inside. This item is single-use.
 
@@ -901,7 +1047,7 @@ Burning Core			Orange				0.5
 
 
 
-#### Taoist Talisman (0.1.14) (1.19.2 only)
+#### Taoist Talisman (0.1.14) (1.19.2+ only)
 
 An item that can freeze Jiangshi for 10 seconds.
 
@@ -909,7 +1055,7 @@ When applied, the Jiangshi will stop moving and get extra 20 armor. After the 10
 
 
 
-#### Peach-Wood Sword (0.1.14) (1.19.2 only)
+#### Peach-Wood Sword (0.1.14) (1.19.2+ only)
 
 A weapon especially effective to undead mobs. It cannot sweep.
 
@@ -930,3 +1076,5 @@ A fishing rod with higher durability (4x vanilla Fishing Rod).
 When the fishing hook hits an entity, right click to pull the entity without retrieving the hook. Each pulling action consumes only 1 durability. The pulling force is 3 times to vanilla Fishing Rod (4x for item entities). Shift + right click to retrieve the hook.
 
  It can be repaired on the Anvil with Reinforcing Chain.
+
+*Note: A rare bug is observed in which the hook cannot be thrown. In this case Shift + right click may fix it.*
