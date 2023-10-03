@@ -45,9 +45,9 @@ public class GuiSlimeGirl extends GuiPreset0
 	public void addInfoBox(PoseStack poseStack)
 	{
 		//this.blit(poseStack, absPos(99, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(120, 72));
-		this.blit(poseStack, absPos(81, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(2, 72));
-		this.blit(poseStack, absPos(83, 17), IntVec2.valueOf(2, 183), IntVec2.valueOf(18, 72));
-		this.blit(poseStack, absPos(101, 17), IntVec2.valueOf(2, 183), IntVec2.valueOf(118, 72));
+		this.drawSprite(poseStack, absPos(81, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(2, 72));
+		this.drawSprite(poseStack, absPos(83, 17), IntVec2.valueOf(2, 183), IntVec2.valueOf(18, 72));
+		this.drawSprite(poseStack, absPos(101, 17), IntVec2.valueOf(2, 183), IntVec2.valueOf(118, 72));
 	}
 	
 	public MutableComponent getDefaultColorInfo()
@@ -75,5 +75,6 @@ public class GuiSlimeGirl extends GuiPreset0
 	{
 		return absPos(85, 21);
 	}
+
 	
 }

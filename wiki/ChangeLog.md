@@ -2,6 +2,22 @@
 
 ## 1.19.2
 
+### 0.1.16
+
+Added Crimson Slaughterer and Cursed Doll support.
+
+Enhanced Poisonous Thorn effect:
+
+​	- Now the effect is repeatable.
+
+​	- Each bauble increases the poison level by 1 and duration by 5 s.
+
+​	- Crimson Slaughterer can equip it, enhancing the slowness effect and adding poison effect.
+
+Now Arrows shot by Skeleton Girl and derivatives can be picked up, unless with Infinite bow.
+
+Some internal registry changes (not affecting data).
+
 ### 0.1.15
 
 Added Alraune and Glaryad support.

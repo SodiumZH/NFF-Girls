@@ -11,6 +11,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.sodiumstudio.dwmg.Dwmg;
 
+@SuppressWarnings("deprecation")
 public enum DwmgArmorMaterials implements ArmorMaterial
 {
 	NECROMANCER(Dwmg.MOD_ID + ":necromancer", 15, new int[] { 1, 2, 3, 1 }, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(Items.LEATHER)),
