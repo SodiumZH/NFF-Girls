@@ -255,6 +255,15 @@ public class DwmgEntityAttributes
 		.add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 2.0D),
 		DwmgEntityTypes.HMAG_CRIMSON_SLAUGHTERER.get());
 
+	public static final Supplier<AttributeSupplier.Builder> HMAG_CURSED_DOLL_ATTRIBUTES = register(() ->
+		VANILLA_MONSTER_COMMON_ATTRIBUTES.get()
+		.add(Attributes.MAX_HEALTH, 40.0D)
+		.add(Attributes.MOVEMENT_SPEED, 0.29D)
+		.add(Attributes.ATTACK_DAMAGE, 4.0D)
+		.add(Attributes.ATTACK_KNOCKBACK, 1.0D)
+		.add(Attributes.KNOCKBACK_RESISTANCE, 0.25D)
+		.add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.5D),
+		DwmgEntityTypes.HMAG_CURSED_DOLL.get());
 	/*	
 	public static final Supplier<AttributeSupplier.Builder> HMAG__ATTRIBUTES = register(() ->
 	*/	

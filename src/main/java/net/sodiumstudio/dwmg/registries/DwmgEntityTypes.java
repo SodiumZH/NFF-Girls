@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.registries;
 
 import java.util.HashMap;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
@@ -9,6 +10,7 @@ import javax.annotation.Nonnull;
 import com.github.mechalopa.hmag.HMaG;
 import com.github.mechalopa.hmag.client.renderer.GlaryadRenderer;
 import com.github.mechalopa.hmag.world.entity.AlrauneEntity;
+import com.github.mechalopa.hmag.world.entity.CursedDollEntity;
 import com.github.mechalopa.hmag.world.entity.DodomekiEntity;
 import com.github.mechalopa.hmag.world.entity.GlaryadEntity;
 import com.github.mechalopa.hmag.world.entity.projectile.PoisonSeedEntity;
@@ -33,6 +35,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagAlrauneEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagBansheeEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagCrimsonSlaughtererEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagCursedDollEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagDodomekiEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagDrownedGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagDullahanEntity;
@@ -299,6 +302,21 @@ public class DwmgEntityTypes {
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_crimson_slaughterer").toString()));
 
+	public static final RegistryObject<EntityType<HmagCursedDollEntity>> HMAG_CURSED_DOLL = 
+			/*ENTITY_TYPES.register("hmag_cursed_doll", () -> EntityType.Builder
+			.of(HmagCursedDollEntity::new, MobCategory.CREATURE)
+			.sized(0.6F, 1.7F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false)
+			.noSummon()
+			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_cursed_doll").toString()));*/
+			registerBM("hmag_cursed_doll", HmagCursedDollEntity::new, (builder) -> builder
+			.sized(0.6F, 1.7F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false));
+	
 	// ================================================================================================= //
 	
 	@SubscribeEvent
@@ -397,4 +415,18 @@ public class DwmgEntityTypes {
 			.updateInterval(5)
 			.build(new ResourceLocation(Dwmg.MOD_ID, "reinforced_fishing_hook").toString()));
 
+	// ========== Utilities ============ //
+	
+	public static <T extends LivingEntity> RegistryObject<EntityType<T>> registerBM(DeferredRegister<EntityType<?>> registry, String modId, String regName, 
+			EntityType.EntityFactory<T> creator, MobCategory category, Function<EntityType.Builder<T>, EntityType.Builder<T>> builderModifier)
+	{
+		return registry.register(regName, () -> builderModifier.apply(EntityType.Builder
+		.of(creator, category)).noSummon().build(new ResourceLocation(modId, regName).toString()));
+	}
+	
+	private static <T extends LivingEntity> RegistryObject<EntityType<T>> registerBM(String regName, 
+			EntityType.EntityFactory<T> creator, Function<EntityType.Builder<T>, EntityType.Builder<T>> builderModifier)
+	{
+		return registerBM(ENTITY_TYPES, Dwmg.MOD_ID, regName, creator, MobCategory.CREATURE, builderModifier);
+	}
 }

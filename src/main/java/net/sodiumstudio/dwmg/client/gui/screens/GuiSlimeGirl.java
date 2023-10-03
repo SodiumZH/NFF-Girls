@@ -76,5 +76,6 @@ public class GuiSlimeGirl extends GuiPreset0
 	{
 		return absPos(85, 21);
 	}
+
 	
 }

@@ -37,6 +37,7 @@ import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
+import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.exceptions.UnimplementedException;
 
 /**
@@ -95,9 +96,10 @@ public class DwmgMobTemplate extends Monster implements IDwmgBefriendedMob {
 	@Override
 	public HashMap<Item, Float> getHealingItems()
 	{
-		HashMap<Item, Float> map = new HashMap<Item, Float>();
-		// map.put(YOUR_ITEM_TYPE, HEALING_HEALTH_VALUE);
-		return map;
+		return ContainerHelper.mapOf(
+				// MapPair.of({item}, {healing_amount})
+				);
+		
 	}
 	
 	// Set of items that can heal the mob WITHOUT CONSUMING.
@@ -105,9 +107,9 @@ public class DwmgMobTemplate extends Monster implements IDwmgBefriendedMob {
 	@Override
 	public HashSet<Item> getNonconsumingHealingItems()
 	{
-		HashSet<Item> set = new HashSet<Item>();
-		// set.add(YOUR_ITEM_TYPE);
-		return set;
+		return ContainerHelper.setOf(
+				// items....
+				);
 	}
 	
 	@Override
