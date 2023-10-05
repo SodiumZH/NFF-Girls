@@ -204,17 +204,6 @@ public class DwmgEntityAttributes
 		.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
 		.add(Attributes.FOLLOW_RANGE, 20.0D),
 		DwmgEntityTypes.HMAG_DULLAHAN.get());
-	
-	public static final Supplier<AttributeSupplier.Builder> HMAG_JIANGSHI_ATTRIBUTES = register(() ->
-		VANILLA_MONSTER_COMMON_ATTRIBUTES.get()
-		.add(Attributes.MAX_HEALTH, 40.0D)
-		.add(Attributes.MOVEMENT_SPEED, 0.19D)
-		.add(Attributes.ATTACK_DAMAGE, 6.0D)
-		.add(Attributes.ATTACK_KNOCKBACK, 0.5D)
-		.add(Attributes.ARMOR, 4.0D)
-		.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
-		.add(Attributes.FOLLOW_RANGE, 24.0D),
-		DwmgEntityTypes.HMAG_JIANGSHI.get());
 
 	public static final Supplier<AttributeSupplier.Builder> HMAG_DODOMEKI_ATTRIBUTES = register(() ->
 		VANILLA_MONSTER_COMMON_ATTRIBUTES.get()
