@@ -265,7 +265,11 @@ public class DwmgItems {
 			((m, p) -> (m instanceof IDwmgBefriendedMob bm && bm.getOwnerUUID().equals(p.getUUID())))));
 
 	public static final RegistryObject<Item> TAB_ICON = ITEMS.register("tab_icon", () -> new Item(new Item.Properties()));
-
+	
+	// Debug
+	public static final RegistryObject<BefriendingProgressProbeItem> BEFRIENDING_PROGRESS_PROBE = 
+			ITEMS.register("befriending_progress_probe", () -> new BefriendingProgressProbeItem(new Item.Properties()));
+	
 	static
 	{
 		NO_TAB.add(MOB_RESPAWNER);
@@ -273,10 +277,7 @@ public class DwmgItems {
 		NO_TAB.add(TAB_ICON);
 		NO_TAB.add(BEFRIENDING_PROGRESS_PROBE);
     }
-	// Debug
-	public static final RegistryObject<BefriendingProgressProbeItem> BEFRIENDING_PROGRESS_PROBE = 
-			ITEMS.register("befriending_progress_probe", () -> new BefriendingProgressProbeItem(new Item.Properties()));
-	
+
 	/* Item register end */
 	
 	public static void register(IEventBus eventBus){

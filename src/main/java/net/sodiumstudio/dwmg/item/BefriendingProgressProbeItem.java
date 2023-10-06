@@ -24,7 +24,7 @@ public class BefriendingProgressProbeItem extends Item
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) 
 	{
-		if (!player.level.isClientSide)
+		if (!player.level().isClientSide)
 		{
 			if (target instanceof Mob mob && target.getCapability(BMCaps.CAP_BEFRIENDABLE_MOB).isPresent())
 			{
