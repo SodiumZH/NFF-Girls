@@ -10,9 +10,11 @@ import com.github.mechalopa.hmag.world.entity.CreeperGirlEntity;
 import com.github.mechalopa.hmag.world.entity.DyssomniaEntity;
 import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
+import com.github.mechalopa.hmag.world.entity.HarpyEntity;
 import com.github.mechalopa.hmag.world.entity.ImpEntity;
 import com.github.mechalopa.hmag.world.entity.JiangshiEntity;
 import com.github.mechalopa.hmag.world.entity.KoboldEntity;
+import com.github.mechalopa.hmag.world.entity.SnowCanineEntity;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.BlockPos;
@@ -1008,7 +1010,12 @@ public class DwmgEntityEvents
 							js.goalSelector.addGoal(2, new JiangshiMutableLeapGoal(js));
 						}
 					}
-					
+					// Harpy and Snow Canine
+					if (mob instanceof HarpyEntity || mob instanceof SnowCanineEntity)
+					{
+						mob.goalSelector.addGoal(2, new BefriendableWatchHandItemGoal(mob));
+						mob.goalSelector.addGoal(3, new BefriendablePickItemGoal(mob));
+					}
 				}
 			}
 		}

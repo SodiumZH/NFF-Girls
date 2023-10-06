@@ -23,6 +23,7 @@ import net.sodiumstudio.befriendmobs.item.MobRespawnerItem;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleItem;
+import net.sodiumstudio.dwmg.item.BefriendingProgressProbeItem;
 import net.sodiumstudio.dwmg.item.DwmgRespawnerItem;
 import net.sodiumstudio.dwmg.item.EmptyMagicalGelBottleItem;
 import net.sodiumstudio.dwmg.item.ItemCommandWand;
@@ -264,12 +265,22 @@ public class DwmgItems {
 			((m, p) -> (m instanceof IDwmgBefriendedMob bm && bm.getOwnerUUID().equals(p.getUUID())))));
 
 	public static final RegistryObject<Item> TAB_ICON = ITEMS.register("tab_icon", () -> new Item(new Item.Properties()));
-	
+
 	static
 	{
 		NO_TAB.add(MOB_RESPAWNER);
 		NO_TAB.add(MOB_STORAGE_POD);
 		NO_TAB.add(TAB_ICON);
+		NO_TAB.add(BEFRIENDING_PROGRESS_PROBE);
+    }
+	// Debug
+	public static final RegistryObject<BefriendingProgressProbeItem> BEFRIENDING_PROGRESS_PROBE = 
+			ITEMS.register("befriending_progress_probe", () -> new BefriendingProgressProbeItem(new Item.Properties()));
+	
+	/* Item register end */
+	
+	public static void register(IEventBus eventBus){
+	    ITEMS.register(eventBus);
 	}
 
 }
