@@ -168,7 +168,7 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 	@Override
 	public void aiStep()
 	{
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
 		super.aiStep();
 	}

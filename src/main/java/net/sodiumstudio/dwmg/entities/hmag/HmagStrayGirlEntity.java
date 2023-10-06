@@ -163,7 +163,7 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 	public void aiStep() {
 
 		// Handle sun sensitivity
-		if (!this.level.isClientSide && this.isSunImmune())
+		if (!this.level().isClientSide && this.isSunImmune())
 		{
 			// Save no matter what, empty or not
 			NbtHelper.saveItemStack(this.getItemBySlot(EquipmentSlot.HEAD), this.getTempData().values().tag, "head_item");
@@ -183,7 +183,7 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 		}
 		
 
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 		{
 			/* Handle combat AI */
 			if (justShot)

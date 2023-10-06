@@ -113,7 +113,7 @@ public class HmagGlaryadEntity extends GlaryadEntity implements IDwmgBefriendedM
 	@Override
 	public void aiStep()
 	{
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 			// This blocks alerting others
 			ReflectHelper.forceSet(this, GlaryadEntity.class, "ticksUntilNextAlert", 999);
 		super.aiStep();

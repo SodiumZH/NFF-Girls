@@ -154,7 +154,7 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 	@Override
 	public void aiStep() {
 
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 		{
 			// Wither skeletons don't burn under sun but still damage helmet, so cancel it
 			// Save no matter what, empty or not

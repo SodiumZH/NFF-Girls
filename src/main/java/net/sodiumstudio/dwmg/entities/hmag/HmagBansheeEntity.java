@@ -327,7 +327,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 				DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
 				super.aiStep();
 				applyAllyEffect();
-				if (!this.level.isClientSide)
+				if (!this.level().isClientSide)
 				{
 					FlowerBlock flower = this.getFlowerOnOffhand();
 					if (flower != null && flower != lastFlower)

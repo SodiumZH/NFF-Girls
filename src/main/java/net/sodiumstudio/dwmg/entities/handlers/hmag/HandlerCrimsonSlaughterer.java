@@ -129,12 +129,12 @@ public class HandlerCrimsonSlaughterer extends HandlerItemGivingProgress
 	
 	public boolean isOnWarpedBlock(Mob mob)
 	{
-		return mob.level.getBlockState(mob.blockPosition().below()).is(DwmgTags.AFFECTS_CRIMSON_SLAUGHTERER);
+		return mob.level().getBlockState(mob.blockPosition().below()).is(DwmgTags.AFFECTS_CRIMSON_SLAUGHTERER);
 	}
 	
 	public boolean satisfiesShroomlightCondition(Mob mob)
 	{
-		return mob.level.getBlockStates(EntityHelper.getNeighboringArea(mob, 6, 3)).filter(bs -> bs.is(Blocks.SHROOMLIGHT))
+		return mob.level().getBlockStates(EntityHelper.getNeighboringArea(mob, 6, 3)).filter(bs -> bs.is(Blocks.SHROOMLIGHT))
 				.toList().size() >= 16;
 	}
 

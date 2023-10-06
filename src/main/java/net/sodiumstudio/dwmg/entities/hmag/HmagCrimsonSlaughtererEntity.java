@@ -130,7 +130,7 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 	public void aiStep()
 	{
 		super.aiStep();
-		if (!this.level.isClientSide && this.tickCount % 100 == 50 && this.isOwnerPresent() && this.distanceToSqr(this.getOwner()) <= 64d && this.hasLineOfSight(this.getOwner()))
+		if (!this.level().isClientSide && this.tickCount % 100 == 50 && this.isOwnerPresent() && this.distanceToSqr(this.getOwner()) <= 64d && this.hasLineOfSight(this.getOwner()))
 		{
 			Player owner = this.getOwner();
 			if (owner.getMainHandItem().is(ModItems.CRIMSON_BOW.get()) && owner.getFoodData().getFoodLevel() > 7)
@@ -170,6 +170,7 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 		return set;
 	}
 	
+	@SuppressWarnings("resource")
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{
@@ -177,11 +178,11 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 			// For normal interaction
 			if (!player.isShiftKeyDown())
 			{
-				if (!player.level.isClientSide()) 
+				if (!player.level().isClientSide()) 
 				{
 					/* Put checks before healing item check */
 					if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 					else if (hand == InteractionHand.MAIN_HAND
 							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
@@ -192,7 +193,7 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 					else return InteractionResult.PASS;
 				}
 				// Interacted
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			}
 			// For interaction with shift key down
 			else
@@ -201,7 +202,7 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
 			}
 		} 
@@ -229,7 +230,7 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 
 		}
 	}
@@ -237,7 +238,7 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 	@Override
 	public void setInventoryFromMob()
 	{
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 
 		}
 		return;

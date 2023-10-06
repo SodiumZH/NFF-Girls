@@ -207,7 +207,7 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 
 	public void addMobRenderBox(GuiGraphics graphics)
 	{
-		this.blit(poseStack, absPos(27, 17), IntVec2.valueOf(120 + this.mobRenderBoxStyle.getIndex() * 50, 183), IntVec2.valueOf(50, 72));
+		this.drawSprite(graphics, absPos(27, 17), IntVec2.valueOf(120 + this.mobRenderBoxStyle.getIndex() * 50, 183), IntVec2.valueOf(50, 72));
 	}
 	
 	public void addInfoBox(GuiGraphics graphics)

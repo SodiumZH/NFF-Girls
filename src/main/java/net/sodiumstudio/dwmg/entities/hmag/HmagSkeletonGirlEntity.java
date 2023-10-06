@@ -162,7 +162,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 	public void aiStep() {
 
 		// Handle sun sensitivity
-		if (!this.level.isClientSide && this.isSunImmune())
+		if (!this.level().isClientSide && this.isSunImmune())
 		{
 			// Save no matter what, empty or not
 			NbtHelper.saveItemStack(this.getItemBySlot(EquipmentSlot.HEAD), this.getTempData().values().tag, "head_item");
@@ -182,7 +182,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 		}
 		
 		/* Handle combat AI */
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 		{
 			if (justShot)
 			{

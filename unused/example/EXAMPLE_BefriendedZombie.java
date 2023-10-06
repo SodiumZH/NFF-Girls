@@ -157,7 +157,7 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	 */
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			inventoryTag.setMobEquipment(this);
 		}
 	}
@@ -168,7 +168,7 @@ public class EXAMPLE_BefriendedZombie extends EXAMPLE_BefriendableZombie impleme
 	 */
 	@Override
 	public void setInventoryFromMob() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			inventoryTag.getFromMob(this);
 		}
 	}

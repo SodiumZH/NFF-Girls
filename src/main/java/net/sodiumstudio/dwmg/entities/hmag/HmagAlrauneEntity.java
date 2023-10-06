@@ -118,7 +118,7 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 	public void aiStep()
 	{
 		super.aiStep();
-		if (!this.level.isClientSide && meleeAttackGoal != null)
+		if (!this.level().isClientSide && meleeAttackGoal != null)
 		{
 			if (this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && this.distanceToSqr(this.getTarget()) >= 9d)
 				meleeAttackGoal.block();
