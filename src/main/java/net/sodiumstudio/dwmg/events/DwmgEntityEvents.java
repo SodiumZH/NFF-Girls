@@ -9,8 +9,10 @@ import com.github.mechalopa.hmag.world.entity.CreeperGirlEntity;
 import com.github.mechalopa.hmag.world.entity.DyssomniaEntity;
 import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
+import com.github.mechalopa.hmag.world.entity.HarpyEntity;
 import com.github.mechalopa.hmag.world.entity.ImpEntity;
 import com.github.mechalopa.hmag.world.entity.KoboldEntity;
+import com.github.mechalopa.hmag.world.entity.SnowCanineEntity;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.BlockPos;
@@ -960,28 +962,12 @@ public class DwmgEntityEvents
 							mob.goalSelector.addGoal(4, new BefriendablePickItemGoal(mob));
 						}
 					}
-					// Jiangshi
-				/*	if (mob instanceof JiangshiEntity js)
+					// Harpy and Snow Canine
+					if (mob instanceof HarpyEntity || mob instanceof SnowCanineEntity)
 					{
-						// Frozen by talisman
-						js.goalSelector.addGoal(1, new FreezeGoal(js, HandlerJiangshi::isFrozen));
-						// Adjust leap goal
-						WrappedGoal oldLeapGoal = null;
-						for (WrappedGoal wg : js.goalSelector.getAvailableGoals())
-						{
-							if (wg.getPriority() == 2) // Priority 2 is only for leap goal
-							{
-								oldLeapGoal = wg;
-								break;
-							}
-						}
-						if (oldLeapGoal != null)
-						{
-							js.goalSelector.getAvailableGoals().remove(oldLeapGoal);//.getAvailableGoals().remove(oldMoveGoal);
-							js.goalSelector.addGoal(2, new JiangshiMutableLeapGoal(js));
-						}
-					}*/
-					
+						mob.goalSelector.addGoal(2, new BefriendableWatchHandItemGoal(mob));
+						mob.goalSelector.addGoal(3, new BefriendablePickItemGoal(mob));
+					}
 				}
 			}
 		}
@@ -993,19 +979,6 @@ public class DwmgEntityEvents
 	public static void setHostileToAllBefriendedMobs(Mob mob, Predicate<LivingEntity> condition)
 	{
 		AiHelper.setHostileTo(mob, Mob.class, condition.and(m -> m instanceof IDwmgBefriendedMob));
-		/*AiHelper.setHostileTo(mob, HmagZombieGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagHuskGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagDrownedGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagSkeletonGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagStrayGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagWitherSkeletonGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagCreeperGirlEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagEnderExecutorEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagHornetEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagNecroticReaperEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagBansheeEntity.class, condition);
-		AiHelper.setHostileTo(mob, HmagGhastlySeekerEntity.class, condition);*/
-		// Extending...
 	}
 
 	public static void setHostileToAllBefriendedMobs(Mob mob)

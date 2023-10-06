@@ -11,7 +11,6 @@ import net.sodiumstudio.dwmg.Dwmg;
 public class DwmgTags
 {
 
-
 	public static final TagKey<Block> AFFECTS_CRIMSON_SLAUGHTERER = blockTag("affects_crimson_slaughterer");
 	
 	
