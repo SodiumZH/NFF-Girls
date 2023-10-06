@@ -2,6 +2,12 @@
 
 ## 1.19.2
 
+### 0.1.16.1
+
+Added Befriending Progress Probe (debug only).
+
+Fixed Harpy and Snow Canine not attempting to pick items.
+
 ### 0.1.16
 
 Added Crimson Slaughterer and Cursed Doll support.
