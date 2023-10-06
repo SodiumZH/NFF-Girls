@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:item/handheld",
+	"textures": {
+		"layer0": "dwmg:item/befriending_progress_probe"
+	}
+}

@@ -26,7 +26,7 @@ public class BefriendablePickItemGoal extends Goal
 	protected final CBefriendableMob cap;
 	protected final HandlerItemDropping handler;
 	/** Determines the frequency this goal is attempted to run. Larger value means lower frequency. */
-	protected int chance = 5;
+	protected int chance = 1;
 	protected ItemEntity targetItem = null;
 	protected double speedModifier = 1.0d;
 	
@@ -80,11 +80,16 @@ public class BefriendablePickItemGoal extends Goal
 		return list;
 	}
 	
+	public BefriendablePickItemGoal chance(int value)
+	{
+		this.chance = value;
+		return this;
+	}
 	
 	@Override
 	public boolean canUse() 
 	{
-		return /*rnd.nextInt(chance) == 0 &&*/ getAcceptableItems().size() > 0;
+		return rnd.nextInt(chance) == 0 && getAcceptableItems().size() > 0;
 	}
 	
 	@Override

@@ -255,4 +255,13 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 	/** Actions executed on mob consume an item. */
 	protected void onConsumeItem(Mob mob, ItemStack item, double deltaProc) {}
 	
+	public double getProgress(Mob mob, Player player)
+	{
+		if (CBefriendableMob.getCap(mob) != null && CBefriendableMob.getCapNbt(mob).contains("ongoing_players", NbtHelper.TAG_COMPOUND_ID)
+				&& CBefriendableMob.getCapNbt(mob).getCompound("ongoing_players").contains(player.getStringUUID(), NbtHelper.TAG_DOUBLE_ID))
+		{
+			return CBefriendableMob.getCapNbt(mob).getCompound("ongoing_players").getDouble(player.getStringUUID());
+		}
+		else return 0d;
+	}
  }

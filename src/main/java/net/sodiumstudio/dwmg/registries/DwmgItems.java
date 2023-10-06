@@ -25,6 +25,7 @@ import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.DwmgTab;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleItem;
+import net.sodiumstudio.dwmg.item.BefriendingProgressProbeItem;
 import net.sodiumstudio.dwmg.item.DwmgRespawnerItem;
 import net.sodiumstudio.dwmg.item.EmptyMagicalGelBottleItem;
 import net.sodiumstudio.dwmg.item.ItemCommandWand;
@@ -167,6 +168,9 @@ public class DwmgItems {
 
 	public static final RegistryObject<Item> TAB_ICON = ITEMS.register("tab_icon", ()->new Item(new Item.Properties()));
 	
+	// Debug
+	public static final RegistryObject<BefriendingProgressProbeItem> BEFRIENDING_PROGRESS_PROBE = 
+			ITEMS.register("befriending_progress_probe", () -> new BefriendingProgressProbeItem(new Item.Properties()));
 	
 	/* Item register end */
 	
