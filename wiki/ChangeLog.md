@@ -2,6 +2,18 @@
 
 ## 1.19.2
 
+### 0.1.17
+
+Now Phantoms and Dyssomnias don't proactively attack befriended mobs.
+
+Changed tag names:
+
+​	-`ignore_undead_affinity` => `ignores_undead_affinity`
+
+​	-`ignore_magical_gel_slowdown` => `ignores_magical_gel_slowness`
+
+​	-`use_fortune_as_looting` => `uses_fortune_as_looting`
+
 ### 0.1.16.1
 
 Added Befriending Progress Probe (debug only).
