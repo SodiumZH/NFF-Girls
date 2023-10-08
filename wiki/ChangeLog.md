@@ -2,6 +2,30 @@
 
 ## 1.19.2
 
+### 0.1.16.2
+
+Now Phantoms and Dyssomnias don't proactively attack befriended mobs.
+
+Now Husk Girls don't burn under sun.
+
+Changed tag names:
+
+​	-`ignore_undead_affinity` => `ignores_undead_affinity`
+
+​	-`ignore_magical_gel_slowdown` => `ignores_magical_gel_slowness`
+
+​	-`use_fortune_as_looting` => `uses_fortune_as_looting`
+
+Fixed some mobs displaying a barrier label on the head when equipping baubles providing sun-immunity.
+
+Fixed crash on Zombie Girl, Husk Girl and Drowned Girl hurt.
+
+### 0.1.16.1
+
+Added Befriending Progress Probe (debug only).
+
+Fixed Harpy and Snow Canine not attempting to pick items.
+
 ### 0.1.16
 
 Added Crimson Slaughterer and Cursed Doll support.
@@ -26,13 +50,9 @@ Added Alraune and Glaryad support.
 
 Added Reinforced Fishing Rod.
 
-Now Soul Cake can be made with Golden Apple.
-
-Now Death Crystal can be recovered from powder.
+Adjusted some recipes to reduce Evil Crystal cost.
 
 Now the mob's custom name will be removed on befriended.
-
-Adjusted some recipes to reduce Evil Crystal cost.
 
 ### 0.1.14.1
 
@@ -393,7 +413,21 @@ Rollbacked HMaG dependency to 6.1.0.
 
 Ported from 1.18.2 - 0.0.0-snapshot.3.
 
+## 1.20.1
+
+### 0.2.15
+
+Ported from 1.19.2-0.1.15.
+
+Temporarily removed the special death message of Necromancer's Hat curse due to an unfixed bug.
+
+Now blocks destroyed by the explosions of Creeper Girl and Ghastly Seeker will always drop corresponding items.
+
 ## 1.18.2
+
+### 0.0.15
+
+Identical to 1.19.2-0.1.15.
 
 ### 0.0.14
 
