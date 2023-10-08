@@ -33,12 +33,12 @@ public class DwmgTags
 	
 	protected static TagKey<Item> itemTag(String name)
 	{
-		return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(Dwmg.MOD_ID, name));
+		return TagKey.create(Registries.ITEM, new ResourceLocation(Dwmg.MOD_ID, name));
 	}
 	
 	protected static TagKey<EntityType<?>> entityTag(String name)
 	{
-		return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(Dwmg.MOD_ID, name));
+		return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(Dwmg.MOD_ID, name));
 	}
 	
 }
