@@ -2,6 +2,10 @@
 
 ## 1.19.2
 
+### 0.1.16.3
+
+Fixed entity tags missing.
+
 ### 0.1.16.2
 
 Now Phantoms and Dyssomnias don't proactively attack befriended mobs.
@@ -415,6 +419,18 @@ Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.20.1
 
+### 0.2.16.2
+
+Identical to 1.19.2-0.1.16.3.
+
+### 0.2.16.1
+
+Identical to 1.19.2-0.1.16.2.
+
+### 0.2.16
+
+Identical to 1.19.2-0.1.16 & 0.1.16.1.
+
 ### 0.2.15
 
 Ported from 1.19.2-0.1.15.
@@ -424,6 +440,22 @@ Temporarily removed the special death message of Necromancer's Hat curse due to 
 Now blocks destroyed by the explosions of Creeper Girl and Ghastly Seeker will always drop corresponding items.
 
 ## 1.18.2
+
+### 0.0.16.3
+
+Identical to 1.19.2-0.1.16.3.
+
+### 0.0.16.2
+
+Identical to 1.19.2-0.1.16.2.
+
+### 0.0.16.1
+
+Identical to 1.19.2-0.1.16.1.
+
+### 0.0.16
+
+Identical to 1.19.2-0.1.16.
 
 ### 0.0.15
 
