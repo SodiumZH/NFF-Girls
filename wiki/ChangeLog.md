@@ -2,9 +2,11 @@
 
 ## 1.19.2
 
-### 0.1.17
+### 0.1.16.2
 
 Now Phantoms and Dyssomnias don't proactively attack befriended mobs.
+
+Now Husk Girls don't burn under sun.
 
 Changed tag names:
 
@@ -13,6 +15,10 @@ Changed tag names:
 ​	-`ignore_magical_gel_slowdown` => `ignores_magical_gel_slowness`
 
 ​	-`use_fortune_as_looting` => `uses_fortune_as_looting`
+
+Fixed some mobs displaying a barrier label on the head when equipping baubles providing sun-immunity.
+
+Fixed crash on Zombie Girl, Husk Girl and Drowned Girl hurt.
 
 ### 0.1.16.1
 
