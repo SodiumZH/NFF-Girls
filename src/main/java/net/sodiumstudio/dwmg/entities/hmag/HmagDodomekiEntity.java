@@ -114,6 +114,8 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 		if (!this.level().isClientSide)
 			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
 		super.aiStep();
+		if (!this.level.isClientSide)
+			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, ItemStack.EMPTY);
 	}
 
 	/* Interaction */

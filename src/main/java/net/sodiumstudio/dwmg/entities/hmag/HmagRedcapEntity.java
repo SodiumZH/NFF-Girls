@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.github.mechalopa.hmag.world.entity.DullahanEntity;
+import com.github.mechalopa.hmag.world.entity.RedcapEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -16,61 +16,36 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
-import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
-import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsFourBaublesDefault;
-import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsFourBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
-import net.sodiumstudio.dwmg.registries.DwmgMiscReg;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
 
-/**
- * This is a template with more preset
- */
-public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
-{
+public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob {
 
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagDullahanEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagRedcapEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagDullahanEntity.class, EntityDataSerializers.INT);
+			.defineId(HmagRedcapEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
@@ -91,40 +66,22 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 
 	/* Initialization */
 
-	public HmagDullahanEntity(EntityType<? extends HmagDullahanEntity> pEntityType, Level pLevel) {
+	public HmagRedcapEntity(EntityType<? extends HmagRedcapEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
 		Arrays.fill(this.handDropChances, 0);
 	}
-
+	
 	/* AI */
 
 	@Override
 	protected void registerGoals() {
-		goalSelector.addGoal(1, new FloatGoal(this));
-		goalSelector.addGoal(2, new BefriendedRestrictSunGoal(this));
-		goalSelector.addGoal(3, new BefriendedFleeSunGoal(this, 1));
-		goalSelector.addGoal(4, new BefriendedMeleeAttackGoal(this, 1.0d, true));
-		goalSelector.addGoal(5, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false)
-				.avoidSunCondition(DwmgEntityHelper::isSunSensitive));
-		goalSelector.addGoal(6, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
-		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-		targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this));
+		// Add goals here
+		// Generally target goals can be preset below. Change if it needs to modify.
+		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
-		targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
-		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
-		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
-	}
-	
-	@Override
-	public void aiStep() {
-		if (!this.level().isClientSide)
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
-		super.aiStep();
-		if (!this.level.isClientSide)
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, ItemStack.EMPTY);
+		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
 	}
 	
 	/* Interaction */
@@ -134,7 +91,10 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 	@Override
 	public HashMap<Item, Float> getHealingItems()
 	{
-		return DwmgMiscReg.HEALING_ITEMS_UNDEAD;
+		return ContainerHelper.mapOf(
+				// MapPair.of({item}, {healing_amount})
+				);
+		
 	}
 	
 	// Set of items that can heal the mob WITHOUT CONSUMING.
@@ -142,9 +102,9 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 	@Override
 	public HashSet<Item> getNonconsumingHealingItems()
 	{
-		HashSet<Item> set = new HashSet<Item>();
-		// set.add(YOUR_ITEM_TYPE);
-		return set;
+		return ContainerHelper.setOf(
+				// items....
+				);
 	}
 	
 	@Override
@@ -154,7 +114,7 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 			// For normal interaction
 			if (!player.isShiftKeyDown())
 			{
-				if (!player.level().isClientSide()) 
+				if (!player.level.isClientSide()) 
 				{
 					/* Put checks before healing item check */
 					/* if (....)
@@ -162,7 +122,7 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 					 	....
 					 }
 					else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-						return InteractionResult.sidedSuccess(player.level().isClientSide);
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 					else if (hand == InteractionHand.MAIN_HAND
 							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
@@ -173,7 +133,7 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 					else return InteractionResult.PASS;
 				}
 				// Interacted
-				return InteractionResult.sidedSuccess(player.level().isClientSide);
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
 			// For interaction with shift key down
 			else
@@ -182,19 +142,19 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level().isClientSide);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
 				}
 			}
 		} 
 		// Always pass when not owning this mob
 		return InteractionResult.PASS;
 	}
-
+	
 	/* Inventory */
 
 	// This enables mob armor and hand items by default.
 	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithHandItems additionalInventory = new BefriendedInventoryWithHandItems(getInventorySize(), this);
+	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
 
 	@Override
 	public BefriendedInventory getAdditionalInventory()
@@ -205,13 +165,12 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 	@Override
 	public int getInventorySize()
 	{
-		// Hand items + 4 baubles
-		return 6;
+		return 7;	// 0 - helmet is invalid; 6 - bauble
 	}
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
+		if (!this.level.isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 			additionalInventory.setMobEquipment(this);
 		}
@@ -220,7 +179,7 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 	@Override
 	public void setInventoryFromMob()
 	{
-		if (!this.level().isClientSide) {
+		if (!this.level.isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 			additionalInventory.getFromMob(this);
 		}
@@ -229,7 +188,8 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuHandItemsFourBaublesDefault(containerId, playerInventory, container, this);
+		return null; // new YourInventoryMenuClass(containerId, playerInventory, container, this);
+		// You can keep it null, but in this case never call openBefriendedInventory() or it will crash.
 	}
 
 	/* Save and Load */
@@ -251,25 +211,15 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
-		return ContainerHelper.mapOf(
-				MapPair.of("0", getAdditionalInventory().getItem(2)),
-				MapPair.of("1", getAdditionalInventory().getItem(3)),
-				MapPair.of("2", getAdditionalInventory().getItem(4)),
-				MapPair.of("3", getAdditionalInventory().getItem(5)));
+		return ContainerHelper.mapOf(MapPair.of("0", getAdditionalInventory().getItem(6)));
 	}
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.UNDEAD;
+		return DwmgBaubleHandlers.GENERAL;
 	}
 	
 	// Misc
-	
-	@Override
-	public void setupSunImmunityRules() {
-		this.sunImmuneConditions().put("soul_amulet", () -> this.hasDwmgBauble("soul_amulet"));
-		this.sunImmuneConditions().put("resis_amulet", () -> this.hasDwmgBauble("resistance_amulet"));
-	}
 	
 	// Indicates which mod this mob belongs to
 	@Override

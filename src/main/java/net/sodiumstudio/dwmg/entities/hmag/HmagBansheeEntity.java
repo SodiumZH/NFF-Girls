@@ -326,6 +326,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 			{
 				DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
 				super.aiStep();
+				DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, ItemStack.EMPTY);
 				applyAllyEffect();
 				if (!this.level().isClientSide)
 				{

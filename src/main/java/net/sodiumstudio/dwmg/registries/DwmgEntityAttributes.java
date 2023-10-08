@@ -48,7 +48,8 @@ public class DwmgEntityAttributes
 		.add(Attributes.MOVEMENT_SPEED, 0.28D)
 		.add(Attributes.ATTACK_DAMAGE, 4.0D)
 		.add(Attributes.ARMOR, 4.0D)
-		.add(Attributes.FOLLOW_RANGE, 35.0D),
+		.add(Attributes.FOLLOW_RANGE, 35.0D)
+		.add(Attributes.SPAWN_REINFORCEMENTS_CHANCE),
 		DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get()); 
 		
 	public static final Supplier<AttributeSupplier.Builder> HMAG_HUSK_GIRL_ATTRIBUTES = register(() ->
@@ -57,7 +58,8 @@ public class DwmgEntityAttributes
 		.add(Attributes.MOVEMENT_SPEED, 0.28D)
 		.add(Attributes.ATTACK_DAMAGE, 4.0D)
 		.add(Attributes.ARMOR, 5.0D)
-		.add(Attributes.FOLLOW_RANGE, 35.0D),
+		.add(Attributes.FOLLOW_RANGE, 35.0D)
+		.add(Attributes.SPAWN_REINFORCEMENTS_CHANCE),
 		DwmgEntityTypes.HMAG_HUSK_GIRL.get());
 
 	public static final Supplier<AttributeSupplier.Builder> HMAG_DROWNED_GIRL_ATTRIBUTES = register(() ->
@@ -66,7 +68,8 @@ public class DwmgEntityAttributes
 		.add(Attributes.MOVEMENT_SPEED, 0.245D)
 		.add(Attributes.ATTACK_DAMAGE, 4.0D)
 		.add(Attributes.ARMOR, 3.0D)
-		.add(Attributes.FOLLOW_RANGE, 35.0D),
+		.add(Attributes.FOLLOW_RANGE, 35.0D)
+		.add(Attributes.SPAWN_REINFORCEMENTS_CHANCE),
 		DwmgEntityTypes.HMAG_DROWNED_GIRL.get());
 
 	public static final Supplier<AttributeSupplier.Builder> HMAG_SKELETON_GIRL_ATTRIBUTES = register(() ->	
@@ -264,6 +267,16 @@ public class DwmgEntityAttributes
 		.add(Attributes.KNOCKBACK_RESISTANCE, 0.25D)
 		.add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.5D),
 		DwmgEntityTypes.HMAG_CURSED_DOLL.get());
+	
+	public static final Supplier<AttributeSupplier.Builder> HMAG_REDCAP_ATTRIBUTES = register(() ->
+		VANILLA_MONSTER_COMMON_ATTRIBUTES.get()
+		.add(Attributes.MAX_HEALTH, 40.0D)
+		.add(Attributes.MOVEMENT_SPEED, 0.31D)
+		.add(Attributes.ATTACK_DAMAGE, 4.0D)
+		.add(Attributes.FOLLOW_RANGE, 24.0D),
+		DwmgEntityTypes.HMAG_REDCAP.get());
+	
+	
 	/*	
 	public static final Supplier<AttributeSupplier.Builder> HMAG__ATTRIBUTES = register(() ->
 	*/	

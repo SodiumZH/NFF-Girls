@@ -28,7 +28,10 @@ public class DwmgChannels {
     
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event) {
-        registerMessage();
+        event.enqueueWork(() ->
+        {
+        	registerMessage();
+        });
     }
     
 }

@@ -3,6 +3,7 @@
   "replace" : false,
   "values" : [ 
   	"dwmg:hmag_necrotic_reaper",
-  	"dwmg:hmag_kobold"
+  	"dwmg:hmag_kobold",
+  	"#dwmg:use_fortune_as_looting"
 	]
 }

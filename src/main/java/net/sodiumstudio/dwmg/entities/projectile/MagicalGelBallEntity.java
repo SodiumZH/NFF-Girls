@@ -27,6 +27,7 @@ import net.sodiumstudio.dwmg.item.MagicalGelColorUtils;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.registries.DwmgParticleTypes;
+import net.sodiumstudio.dwmg.registries.DwmgTags;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.TagHelper;
 import net.sodiumstudio.nautils.math.LinearColor;
@@ -118,7 +119,7 @@ public class MagicalGelBallEntity extends ThrowableItemProjectile
 	            this.level().addFreshEntity(slime);
 			}
 			// For other livings (except slime-derived mobs), make a knockback and give 30s slowness II 
-			else if (!(living instanceof Slime) && !(living instanceof SlimeGirlEntity) && !TagHelper.hasTag(living, "dwmg:ignore_magical_gel_slowdown"))
+			else if (!(living instanceof Slime) && !(living instanceof SlimeGirlEntity) && !living.getType().is(DwmgTags.IGNORES_MAGICAL_GEL_SLOWNESS))
 			{
 				result.getEntity().hurt(level().damageSources().thrown(this.getOwner(), this), 0);
 				EntityHelper.addEffectSafe(living, new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30 * 20, 1));
