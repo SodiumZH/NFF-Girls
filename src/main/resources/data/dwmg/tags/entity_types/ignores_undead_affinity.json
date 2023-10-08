@@ -1,6 +1,5 @@
 {
   "replace" : false,
-  "values" : [ "minecraft:wither",
-  	"#dwmg:ignore_undead_affinity"
+  "values" : [ "minecraft:wither"
 	 ]
 }
