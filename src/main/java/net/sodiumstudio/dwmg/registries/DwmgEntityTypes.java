@@ -49,6 +49,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagHuskGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagImpEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagKoboldEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagNecroticReaperEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagRedcapEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSkeletonGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSnowCanineEntity;
@@ -312,6 +313,13 @@ public class DwmgEntityTypes {
 			.noSummon()
 			.build(new ResourceLocation(Dwmg.MOD_ID, "hmag_cursed_doll").toString()));*/
 			registerBM("hmag_cursed_doll", HmagCursedDollEntity::new, (builder) -> builder
+			.sized(0.6F, 1.7F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false));
+	
+	public static final RegistryObject<EntityType<HmagRedcapEntity>> HMAG_REDCAP = 
+			registerBM("hmag_redcap", HmagRedcapEntity::new, (builder) -> builder
 			.sized(0.6F, 1.7F)
 			.setTrackingRange(8)
 			.setUpdateInterval(3)

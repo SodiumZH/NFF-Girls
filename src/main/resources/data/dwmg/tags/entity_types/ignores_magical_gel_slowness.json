@@ -1,5 +1,6 @@
 {
   "replace" : false,
   "values" : [
+  	"#dwmg:ignore_magical_gel_slowdown"
 	 ]
 }

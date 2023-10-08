@@ -26,7 +26,7 @@ public class DwmgCapabilityAttachment {
 	{
 		if(event.getObject() instanceof LivingEntity living)
 		{
-			if (living.getMobType() == MobType.UNDEAD && !(living instanceof IBefriendedMob) && !TagHelper.hasTag(living, Dwmg.MOD_ID, "ignore_death_affinity"))	// Befriended mobs aren't affected by Death Affinity
+			if (living.getMobType() == MobType.UNDEAD && !(living instanceof IBefriendedMob) && !living.getType().is(DwmgTags.IGNORES_UNDEAD_AFFINITY))	// Befriended mobs aren't affected by Death Affinity
 			{
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_undead"), new CUndeadMobProvider());
 			}

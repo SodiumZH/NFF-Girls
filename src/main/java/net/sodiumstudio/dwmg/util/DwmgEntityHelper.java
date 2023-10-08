@@ -4,12 +4,14 @@ import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.Tags;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
@@ -37,7 +39,7 @@ public class DwmgEntityHelper
 	{
 		for (EquipmentSlot slot: EquipmentSlot.values())
 		{
-			if (TagHelper.hasTag(living.getItemBySlot(slot).getItem(), "minecraft:piglin_loved"))
+			if (living.getItemBySlot(slot).is(ItemTags.PIGLIN_LOVED))
 			{
 				return false;
 			}

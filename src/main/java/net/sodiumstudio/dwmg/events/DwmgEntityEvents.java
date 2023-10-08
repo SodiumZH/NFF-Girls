@@ -106,6 +106,7 @@ import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgDamageSources;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.registries.DwmgTags;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.AiHelper;
 import net.sodiumstudio.nautils.EntityHelper;
@@ -142,7 +143,7 @@ public class DwmgEntityEvents
 			// Handle undead mobs start //
 	        if (mob.getMobType() == MobType.UNDEAD 
 	        		&& !(event.getEntity() instanceof IBefriendedMob) 
-	        		&& !TagHelper.hasTag(mob, Dwmg.MOD_ID, "ignore_undead_affinity")) 
+	        		&& !event.getEntity().getType().is(DwmgTags.IGNORES_UNDEAD_AFFINITY)) 
 	        {
 	        	// Handle CUndeadMob //
         		mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) ->
@@ -668,7 +669,7 @@ public class DwmgEntityEvents
 			 * so force set this to make it drop player-kill loot */
 			ReflectHelper.forceSet(event.getEntityLiving(), LivingEntity.class, "f_20889_",  1);	// LivingEntity.lastHurtByPlayerTime
 			/** For mobs with tag "use_fortune_as_looting", Fortune enchantment is applied in place of Looting */
-			if (TagHelper.hasTag(bm.asMob(), "dwmg:use_fortune_as_looting") && !bm.asMob().getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
+			if (bm.asMob().getType().is(DwmgTags.USES_FORTUNE_AS_LOOTING) && !bm.asMob().getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
 			{
 				event.setLootingLevel(Math.max(EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, bm.asMob().getItemBySlot(EquipmentSlot.MAINHAND)),
 						EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, bm.asMob().getItemBySlot(EquipmentSlot.MAINHAND))));
@@ -858,11 +859,6 @@ public class DwmgEntityEvents
 				if (mob.getMobType() == MobType.ILLAGER)
 				{
 					setHostileToAllBefriendedMobs(mob, isNotWaiting);
-				}
-				// Phantom/dyssomnia hostile to all mobs
-				else if (mob instanceof Phantom || mob.getClass() == DyssomniaEntity.class)
-				{
-					setHostileToAllBefriendedMobs(mob);
 				}
 				// Skeletons hostile to zombies & creepers
 				else if (mob instanceof AbstractSkeleton 

@@ -53,7 +53,7 @@ import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
-public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
+public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriendedMob//, IBefriendedSunSensitiveMob
 {
 
 	/* Initialization */
@@ -239,17 +239,17 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 	
 	/* IBefriendedSunSensitiveMob interface */
 
-	@Override
+	/*@Override
 	public void setupSunImmunityRules() {
 		this.sunImmuneConditions().put("sunhat", () -> this.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
 		this.sunImmuneConditions().put("soul_amulet", () -> this.hasDwmgBauble("soul_amulet"));
 		this.sunImmuneConditions().put("resis_amulet", () -> this.hasDwmgBauble("resistance_amulet"));
 	}
-
+*/
 	@Override
 	protected boolean isSunSensitive()
 	{
-		return !this.isSunImmune();
+		return false;
 	}
 	
 	/* IBaubleEquipable interface */
