@@ -27,7 +27,7 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 	protected static final EquipmentSlot OFFHAND = EquipmentSlot.OFFHAND;
 	
 	
-	protected InventoryMenuPreset0(int containerId, Inventory playerInventory, Container container, IBefriendedMob mob)
+	public InventoryMenuPreset0(int containerId, Inventory playerInventory, Container container, IBefriendedMob mob)
 	{
 		super(containerId, playerInventory, container, mob);
 	}
@@ -101,8 +101,8 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 			return ItemStack.EMPTY;
 
 		ItemStack stack = slot.getItem();
-
-		// From mob equipment to player befriendedInventory
+		//ItemStack stackCopy = stack.copy();
+		// From mob's additional inventory to player inventory
 		if (index < inventorySize) {
 			if (!this.moveItemStackTo(stack, inventorySize, inventorySize + 36, true)) {
 				return ItemStack.EMPTY;
@@ -110,10 +110,11 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 				done = true;
 			}
 		}
-		// From befriendedInventory to mob
+		// From inventory to mob's additional inventory
 		else {
+			
 			// Try each mob slot
-			for (int i = 0; i < inventorySize; ++i)
+			for (int i = 0; i < order.length; ++i)
 			{
 				// If the item is suitable and slot isn't occupied
 				if (this.getSlot(order[i]).mayPlace(stack) && !this.getSlot(order[i]).hasItem())
@@ -122,7 +123,7 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 					if (this.moveItemStackTo(stack, order[i], order[i] + 1, false))
 					{
 						done = true;
-						break;
+						return ItemStack.EMPTY;
 					}
 				}
 			}
