@@ -16,6 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -73,6 +74,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTa
 import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
@@ -225,7 +227,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 			FlowerBlock flower = getFlowerOnOffhand();
 			if (flower == null)
 				return;
-			MobEffect effect = flower.getSuspiciousEffect();
+			MobEffect effect = flower.getSuspiciousStewEffect();
 			int duration = flower.getEffectDuration();
 
 			// Reverse for undead mob to apply the expected effect
@@ -253,8 +255,8 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 				return;
 
 			// Block harmful effect first
-			if (flower.getSuspiciousEffect().getCategory() == MobEffectCategory.HARMFUL
-					&& flower.getSuspiciousEffect() != MobEffects.HARM)
+			if (flower.getSuspiciousStewEffect().getCategory() == MobEffectCategory.HARMFUL
+					&& flower.getSuspiciousStewEffect() != MobEffects.HARM)
 				return;
 
 			// Applie on owner and owner's other befriended mobs/tamed animals
@@ -274,7 +276,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 
 			for (Entity entity : entities)
 			{
-				MobEffect effect = flower.getSuspiciousEffect();
+				MobEffect effect = flower.getSuspiciousStewEffect();
 				int duration = flower.getEffectDuration();
 				// Reverse for undead mob to apply the expected effect
 				if (entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD)
@@ -417,6 +419,13 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
 		// Add other data reading here
 		setInit();
+	}
+
+	// Sounds
+
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return DwmgSoundPresets.generalAmbient(super.getAmbientSound());
 	}
 
 	// Misc
