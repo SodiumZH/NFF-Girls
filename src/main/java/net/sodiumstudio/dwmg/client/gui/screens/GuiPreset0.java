@@ -24,6 +24,7 @@ import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 public class GuiPreset0 extends BefriendedGuiScreen {
 	
 	protected int mobRenderScale = 25;
+	@Deprecated
 	protected MobRenderBoxStyle mobRenderBoxStyle = MobRenderBoxStyle.DARK;
 	
 	@Override
@@ -67,6 +68,7 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 		return this;
 	}
 	
+	@Deprecated
 	public GuiPreset0 setMobRenderBoxStyle(MobRenderBoxStyle style)
 	{
 		this.mobRenderBoxStyle = style;
@@ -186,7 +188,7 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	
 	protected void addMainScreen(PoseStack poseStack)
 	{
-		this.blit(poseStack, basePos(), IntVec2.zero(), screenSize());
+		this.drawSprite(poseStack, basePos(), IntVec2.zero(), screenSize());
 	}
 	
 	protected void addSlotBg(PoseStack poseStack, int slotIndex, IntVec2 pos, int slotIndexX, int slotIndexY)
@@ -202,19 +204,24 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	@Deprecated
 	public void addMobRenderBox(PoseStack poseStack, int variation)
 	{
-		this.blit(poseStack, absPos(27, 17), IntVec2.valueOf(120 + variation * 50, 183), IntVec2.valueOf(50, 72));
+		this.drawSprite(poseStack, absPos(27, 17), IntVec2.valueOf(120 + variation * 50, 183), IntVec2.valueOf(50, 72));
 	}
 	
 	public void addMobRenderBox(PoseStack poseStack)
 	{
-		this.blit(poseStack, absPos(27, 17), IntVec2.valueOf(120 + this.mobRenderBoxStyle.getIndex() * 50, 183), IntVec2.valueOf(50, 72));
+		this.drawSprite(poseStack, absPos(27, 17), IntVec2.valueOf(120 + this.mobRenderBoxStyle.getIndex() * 50, 183), IntVec2.valueOf(50, 72));
+	}
+	
+	public void addMobRenderBox(PoseStack poseStack, MobRenderBoxStyle style)
+	{
+		this.drawSprite(poseStack, absPos(27, 17), IntVec2.valueOf(120 + style.getIndex() * 50, 183), IntVec2.valueOf(50, 72));
 	}
 	
 	public void addInfoBox(PoseStack poseStack)
 	{
-		this.blit(poseStack, absPos(99, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(120, 72));
+		this.drawSprite(poseStack, absPos(99, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(120, 72));
 	}
-	
+
 	public IntVec2 infoPos()
 	{
 		return absPos(103, 21);

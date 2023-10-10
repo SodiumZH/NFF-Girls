@@ -27,7 +27,7 @@ public class GuiBowSecWeaponOneBauble extends GuiPreset0 {
 		this.addSlotBg(pPoseStack, 5, rightRowPos().slotBelow(2), 1, 0);
 		this.addBaubleSlotBg(pPoseStack, 6, rightRowPos());
 		this.addSlotBg(pPoseStack, 7, rightRowPos().slotBelow(1), 2, 1);
-		this.addMobRenderBox(pPoseStack, 2);
+		this.addMobRenderBox(pPoseStack, MobRenderBoxStyle.DARK);
 		this.addSlotBg(pPoseStack, 8, rightRowPos().slotLeft(1).addX(-2), 2, 0);
 		this.addInfoBox(pPoseStack);
 		this.addAttributeInfo(pPoseStack, infoPos());

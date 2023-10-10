@@ -23,7 +23,7 @@ public class GuiBanshee extends GuiPreset0
 		this.addBaubleSlotBg(pPoseStack, 2, rightRowPos().addY(4));
 		this.addBaubleSlotBg(pPoseStack, 3, rightRowPos().slotBelow().addY(8));
 		this.addBaubleSlotBg(pPoseStack, 4, rightRowPos().slotBelow(2).addY(12));
-		this.addMobRenderBox(pPoseStack, 1);
+		this.addMobRenderBox(pPoseStack, MobRenderBoxStyle.NORMAL);
 		this.addInfoBox(pPoseStack);
 		this.addAttributeInfo(pPoseStack, infoPos());
 		this.renderMob();	

@@ -25,7 +25,7 @@ public class GuiCreeperGirl extends GuiPreset0
 		this.addSlotBg(pPoseStack, 4, rightRowPos().slotBelow(3), 1, 1);
 		this.addSlotBg(pPoseStack, 5, rightRowPos().slotBelow(2), 1, 0);
 		this.addSlotBg(pPoseStack, 6, rightRowPos(), 2, 3);
-		this.addMobRenderBox(pPoseStack, 2);
+		this.addMobRenderBox(pPoseStack, MobRenderBoxStyle.DARK);
 		this.addInfoBox(pPoseStack);
 		this.addAttributeInfo(pPoseStack, infoPos());
 		this.renderMob();		
