@@ -334,33 +334,7 @@ public class DwmgEntityTypes {
 		{
 			event.put(type, supplier.get().build());
 		});
-		
-		// Declaration of attributes are migrated to DwmgEntityAttributes
-		/*
-        event.put(DwmgEntityTypes.HMAG_ZOMBIE_GIRL.get(), DwmgEntityAttributes.HMAG_ZOMBIE_GIRL_ATTRIBUTES.get().build());
-        event.put(DwmgEntityTypes.HMAG_SKELETON_GIRL.get(), DwmgEntityAttributes.HMAG_SKELETON_GIRL_ATTRIBUTES.get().build());
-        event.put(DwmgEntityTypes.HMAG_HUSK_GIRL.get(), HmagHuskGirlEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_DROWNED_GIRL.get(), HmagDrownedGirlEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_CREEPER_GIRL.get(), HmagCreeperGirlEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_ENDER_EXECUTOR.get(), HmagEnderExecutorEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_STRAY_GIRL.get(), HmagStrayGirlEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_WITHER_SKELETON_GIRL.get(), HmagWitherSkeletonGirlEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_HORNET.get(), HmagHornetEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_NECROTIC_REAPER.get(), HmagNecroticReaperEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_GHASTLY_SEEKER.get(), HmagGhastlySeekerEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_BANSHEE.get(), HmagBansheeEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_KOBOLD.get(), HmagKoboldEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_IMP.get(), HmagImpEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_HARPY.get(), HmagHarpyEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_SNOW_CANINE.get(), HmagSnowCanineEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_SLIME_GIRL.get(), HmagSlimeGirlEntity.createAttributes().build());
-        event.put(DwmgEntityTypes.HMAG_JIANGSHI.get(), DwmgEntityAttributes.HMAG_JIANGSHI_ATTRIBUTES.get().build());
-        event.put(DwmgEntityTypes.HMAG_DULLAHAN.get(), DwmgEntityAttributes.HMAG_DULLAHAN_ATTRIBUTES.get().build());
-        event.put(DwmgEntityTypes.HMAG_DODOMEKI.get(), DwmgEntityAttributes.HMAG_DODOMEKI_ATTRIBUTES.get().build());
-        event.put(DwmgEntityTypes.HMAG_ALRAUNE.get(), DwmgEntityAttributes.HMAG_ALRAUNE_ATTRIBUTES.get().build());
-        event.put(DwmgEntityTypes.HMAG_GLARYAD.get(), DwmgEntityAttributes.HMAG_GLARYAD_ATTRIBUTES.get().build());
-        event.put(DwmgEntityTypes.HMAG_CRIMSON_SLAUGHTERER.get(), DwmgEntityAttributes.HMAG_CRIMSON_SLAUGHTERER_ATTRIBUTES.get().build());
-        */
+
 	}
 	
 	// ================================================================================================= //
