@@ -57,6 +57,7 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuSlimeGirl;
 import net.sodiumstudio.dwmg.item.MagicalGelColorUtils;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.annotation.DontCallManually;
@@ -309,6 +310,14 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 		LinearColor color = getColorLinear();
 		float[] res = {(float) color.r, (float) color.g, (float) color.b};
 		return res;
+	}
+	
+	// Sounds
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return DwmgSoundPresets.generalAmbient(super.getAmbientSound());
 	}
 	
 	// Misc

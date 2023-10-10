@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -33,8 +34,6 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSu
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
@@ -47,9 +46,9 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTar
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
-import net.sodiumstudio.dwmg.inventory.InventoryMenuSixBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.EntityHelper;
@@ -276,6 +275,13 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 		return DwmgBaubleHandlers.CRIMSON_SLAUGHTERER;
 	}
 	
+	// Sounds
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return DwmgSoundPresets.generalAmbient(super.getAmbientSound());
+	}
 	// Misc
 	
 	// Indicates which mod this mob belongs to

@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -49,6 +50,7 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuDodomeki;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.registries.DwmgMiscReg;
+import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
@@ -268,6 +270,13 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 		return Dwmg.MOD_ID;
 	}
 	
+	// Sounds
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return DwmgSoundPresets.generalAmbient(super.getAmbientSound());
+	}
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //

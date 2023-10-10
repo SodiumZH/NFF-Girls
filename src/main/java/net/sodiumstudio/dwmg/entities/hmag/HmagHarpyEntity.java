@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -51,6 +52,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTa
 import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
@@ -268,6 +270,14 @@ public class HmagHarpyEntity extends HarpyEntity implements IDwmgBefriendedMob {
 	@Override
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.GENERAL;
+	}
+	
+	// Sounds
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return DwmgSoundPresets.generalAmbient(super.getAmbientSound());
 	}
 	
 	// Misc
