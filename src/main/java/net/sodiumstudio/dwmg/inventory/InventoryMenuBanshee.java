@@ -30,38 +30,17 @@ public class InventoryMenuBanshee extends InventoryMenuPreset0
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
 		int inventorySize = 5;
-		boolean done = false;
+		//boolean done = false;
 		Slot slot = this.slots.get(index);
 		ItemStack stack = slot.getItem();
 		if (slot == null || !slot.hasItem())
 			return ItemStack.EMPTY;
 		
-		if (index >= inventorySize)
-		{		
-			// If flower, try offhand first
-			if (stack.getItem() instanceof BlockItem blockitem && blockitem.getBlock() instanceof FlowerBlock)
-			{
-				if (this.moveItemStackTo(stack, 1, 2, false))
-				{
-					done = true;
-				}
-			}
-			// If weapon, try mainhand first
-			else if (stack.getItem() instanceof TieredItem)
-			{
-				if (this.moveItemStackTo(stack, 0, 1, false))
-				{
-					done = true;
-				}
-			}			
-		}
-		if (done)
-			return stack.copy();
-		else
-		{
-			int[] order = {2, 3, 4, 0, 1};
-			return this.quickMovePreset(inventorySize, player, index, order);
-		}
+
+		boolean flag = stack.getItem() instanceof BlockItem b && b.getBlock() instanceof FlowerBlock;
+		int[] order = {2, 3, 4, 0, 1};
+		int[] order1 = {2, 3, 4, 1, 0};
+		return this.quickMovePreset(inventorySize, player, index, flag ? order1 : order);
 	}
 
 }

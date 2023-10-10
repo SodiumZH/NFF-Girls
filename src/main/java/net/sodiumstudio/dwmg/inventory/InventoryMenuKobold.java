@@ -22,4 +22,10 @@ public class InventoryMenuKobold extends InventoryMenuHandItemsTwoBaubles
 		return l -> l.getItem() instanceof PickaxeItem;
 	}
 	
+	@Override
+	protected int getOffHandMaxAmount()
+	{
+		return 1;
+	}
+	
 }
