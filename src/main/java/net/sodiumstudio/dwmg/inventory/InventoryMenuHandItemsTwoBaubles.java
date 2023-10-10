@@ -23,7 +23,7 @@ public class InventoryMenuHandItemsTwoBaubles extends InventoryMenuPreset0
 	protected void addMenuSlots()
 	{
 		this.addGeneralSlot(0, leftRowPos().addY(10), getMainHandCondition());
-		this.addGeneralSlot(1, leftRowPos().slotBelow().addY(20), null);
+		this.addGeneralSlot(1, leftRowPos().slotBelow().addY(20), null, getOffHandMaxAmount());
 		this.addBaubleSlot(2, rightRowPos().addY(10), "0");
 		this.addBaubleSlot(3, rightRowPos().slotBelow().addY(20), "1");
 	}
@@ -45,4 +45,8 @@ public class InventoryMenuHandItemsTwoBaubles extends InventoryMenuPreset0
 		return null;
 	}
 	
+	protected int getOffHandMaxAmount()
+	{
+		return 64;
+	}
 }

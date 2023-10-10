@@ -12,4 +12,10 @@ public class InventoryMenuImp extends InventoryMenuHandItemsTwoBaubles
 		super(containerId, playerInventory, container, mob);
 	}
 
+	@Override
+	protected int getOffHandMaxAmount()
+	{
+		return 1;
+	}
+	
 }
