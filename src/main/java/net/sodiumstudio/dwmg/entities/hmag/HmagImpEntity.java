@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -48,10 +49,13 @@ import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedLocateBlockGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.IBlockLocator;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuImp;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.TagHelper;
@@ -109,7 +113,6 @@ public class HmagImpEntity extends ImpEntity implements IDwmgBefriendedMob, IBlo
 	protected void registerGoals() {
 		goalSelector.addGoal(1, new FloatGoal(this));
 		goalSelector.addGoal(3, new BefriendedMeleeAttackGoal(this, 1.0d, true));
-		goalSelector.addGoal(3, new BefriendedLocateBlockGoal(this, 6d));
 		goalSelector.addGoal(4, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -117,6 +120,8 @@ public class HmagImpEntity extends ImpEntity implements IDwmgBefriendedMob, IBlo
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
+		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
+		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
 	
 	/* Interaction */
@@ -287,6 +292,14 @@ public class HmagImpEntity extends ImpEntity implements IDwmgBefriendedMob, IBlo
 	@Override
 	public String getModId() {
 		return Dwmg.MOD_ID;
+	}
+	
+	// Sounds
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return DwmgSoundPresets.generalAmbient(super.getAmbientSound());
 	}
 	
 	// ==================================================================== //

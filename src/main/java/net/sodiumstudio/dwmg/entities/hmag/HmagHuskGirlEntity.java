@@ -12,9 +12,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
@@ -51,6 +53,7 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriendedMob//, IBefriendedSunSensitiveMob
@@ -265,7 +268,27 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.UNDEAD;
 	}
+	
+	// Sounds
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return DwmgSoundPresets.zombieAmbient(super.getAmbientSound());
+	}
 
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSource)
+	{
+		return DwmgSoundPresets.zombieHurt(super.getHurtSound(damageSource));
+	}
+
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return DwmgSoundPresets.zombieDeath(super.getDeathSound());
+	}
+	
 	// ------------------ Misc ------------------ //
 	
 	@Override
