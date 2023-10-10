@@ -27,7 +27,7 @@ public class BefriendedNearestUnfriendlyMobTargetGoal extends BefriendedTargetGo
 	protected LivingEntity target;
 	// The condition that a mob's target should fulfill for this mob to be selected by this goal.
 	// By default it's the owner mob itself
-	protected Predicate<LivingEntity> targetOfTargetCondition = l -> true;
+	protected Predicate<LivingEntity> targetOfTargetCondition ;
 	/**
 	 * This filter is applied to the Entity search. Only matching entities will be
 	 * targeted.
@@ -64,6 +64,9 @@ public class BefriendedNearestUnfriendlyMobTargetGoal extends BefriendedTargetGo
 		this.targetOfTargetCondition = m -> (m == mob.asMob());
 	}
 
+	/**
+	 * Set state conditions. The {@code IBefriendedMob} using this goal needs to pass this check to start.
+	 */
 	public BefriendedNearestUnfriendlyMobTargetGoal stateConditions(Predicate<IBefriendedMob> condition)
 	{
 		stateConditions = condition;
@@ -71,9 +74,9 @@ public class BefriendedNearestUnfriendlyMobTargetGoal extends BefriendedTargetGo
 	}
 	
 	/**
-	 * Condition that the mob's target should fulfill to allow the mob to be selected in this goal.
+	 * Set the condition for the targets of the mob's target candidates. The target mob must have a target satisfying this to be set as this mob's target.
 	 */
-	public BefriendedNearestUnfriendlyMobTargetGoal targetOfTargetCondition(Predicate<LivingEntity> cond)
+	public BefriendedNearestUnfriendlyMobTargetGoal targetOfTargetConditions(Predicate<LivingEntity> cond)
 	{
 		targetOfTargetCondition = cond;
 		return this;
@@ -100,24 +103,25 @@ public class BefriendedNearestUnfriendlyMobTargetGoal extends BefriendedTargetGo
 	protected void findTarget() {
 	      double followDist = mob.asMob().getAttributeValue(Attributes.FOLLOW_RANGE);
 	      AABB searchArea = new AABB(mob.asMob().position().subtract(new Vec3(followDist, followDist, followDist)), mob.asMob().position().add(new Vec3(followDist, followDist, followDist)));
-	      List<Entity> unfriendlys = mob.asMob().level().getEntities(mob.asMob(), searchArea, (Entity e) -> 
+	      List<Entity> candidates = mob.asMob().level.getEntities(mob.asMob(), searchArea, (Entity e) ->
 	      {
 	    	  if (e instanceof Mob m)
 	    	  {
-	    		  return targetOfTargetCondition.test(m)
-	    			&& mob.asMob().hasLineOfSight(m)
+	    		 return mob.asMob().hasLineOfSight(m)
 	    			&& mob.asMob().distanceToSqr(m) <= followDist * followDist
-	    			&& targetConditions.test(mob.asMob(), m);
+	    			&& targetConditions.test(mob.asMob(), m)
+	    			&& m.getTarget() != null
+	    			&& targetOfTargetCondition.test(m.getTarget());
 	    	  }
-	    	  else return false;
+	    	  return false;
 	      });
-	      if (unfriendlys.size() <= 0)
+	      if (candidates.size() <= 0)
 	      {
 	    	  this.target = null;
 	    	  return;
 	      }
 	      Mob setTarget = null;
-	      for (Entity e: unfriendlys)
+	      for (Entity e: candidates)
 	      {
 	    	  if (e instanceof Mob m)
 	    	  {

@@ -15,7 +15,7 @@ public class DwmgNearestHostileToSelfTargetGoal extends BefriendedNearestUnfrien
 	{		
 		super(pMob, true, true);
 		stateConditions(bm -> bm instanceof IDwmgBefriendedMob dbm && dbm.hasDwmgBauble("courage_amulet"));
-		targetOfTargetCondition(living -> living instanceof Mob && ((Mob)living).getTarget() == pMob.asMob());
+		//targetOfTargetCondition(living -> living instanceof Mob && ((Mob)living).getTarget() == pMob.asMob());
 		allowAllStatesExceptWait();
 	}
 	
@@ -23,4 +23,5 @@ public class DwmgNearestHostileToSelfTargetGoal extends BefriendedNearestUnfrien
 	{
 		this(pMob, l -> true);
 	}
+
 }

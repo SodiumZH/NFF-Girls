@@ -8,11 +8,11 @@ import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 
 public class DwmgNearestHostileToOwnerTargetGoal extends BefriendedNearestUnfriendlyMobTargetGoal
 {
-	public DwmgNearestHostileToOwnerTargetGoal(IDwmgBefriendedMob pMob, Predicate<Mob> condition)
+	public DwmgNearestHostileToOwnerTargetGoal(IDwmgBefriendedMob mob, Predicate<Mob> condition)
 	{		
-		super(pMob, true, true);
+		super(mob, true, true);
 		stateConditions(bm -> bm instanceof IDwmgBefriendedMob dbm && dbm.hasDwmgBaubleWithMinLevel("courage_amulet", 2));
-		targetOfTargetCondition(living -> living instanceof Mob && ((Mob)living).getTarget() == pMob.getOwner());
+		targetOfTargetConditions(living -> mob.isOwnerPresent() && living == mob.getOwner());
 		allowAllStatesExceptWait();
 	}
 	
