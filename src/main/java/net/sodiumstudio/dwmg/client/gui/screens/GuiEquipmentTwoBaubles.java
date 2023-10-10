@@ -25,7 +25,7 @@ public class GuiEquipmentTwoBaubles extends GuiPreset0 {
 		this.addSlotBg(pPoseStack, 5, rightRowPos().slotBelow(2), 1, 0);
 		this.addSlotBg(pPoseStack, 6, rightRowPos(), 1, 2);
 		this.addSlotBg(pPoseStack, 7, rightRowPos().slotBelow(1), 1, 2);
-		this.addMobRenderBox(pPoseStack, 2);
+		this.addMobRenderBox(pPoseStack, MobRenderBoxStyle.DARK);
 		this.addInfoBox(pPoseStack);
 		this.addAttributeInfo(pPoseStack, infoPos());
 		this.renderMob();
