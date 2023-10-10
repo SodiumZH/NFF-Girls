@@ -22,6 +22,7 @@ import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHuskGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerImp;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerKobold;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNecroticReaper;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerRedcap;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSlimeGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSnowCanine;
@@ -127,5 +128,9 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.CURSED_DOLL.get(),
 				DwmgEntityTypes.HMAG_CURSED_DOLL.get(),
 				new HandlerCursedDoll());
+		event.register(
+				ModEntityTypes.REDCAP.get(),
+				DwmgEntityTypes.HMAG_REDCAP.get(),
+				new HandlerRedcap());
 	}
 }
