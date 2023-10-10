@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -55,6 +56,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTar
 import net.sodiumstudio.dwmg.inventory.InventoryMenuCreeper;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 // Rewritten from HMaG CreeperGirlEntity
@@ -355,6 +357,20 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 		return DwmgBaubleHandlers.EMPTY;
 	}
 	
+	// Sounds
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return DwmgSoundPresets.generalAmbient(super.getAmbientSound());
+	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState blockIn)
+	{
+		this.playSound(SoundEvents.ZOMBIE_STEP, 0.15F, 1.0F);
+	}
+
 	// Misc
 	
 	@Override
@@ -372,12 +388,6 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 	protected float getStandingEyeHeight(Pose poseIn, EntityDimensions sizeIn)
 	{
 		return 1.74F;
-	}
-
-	@Override
-	protected void playStepSound(BlockPos pos, BlockState blockIn)
-	{
-		this.playSound(SoundEvents.ZOMBIE_STEP, 0.15F, 1.0F);
 	}
 
 }

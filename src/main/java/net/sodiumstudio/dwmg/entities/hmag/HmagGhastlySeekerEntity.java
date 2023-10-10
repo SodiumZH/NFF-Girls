@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -59,6 +60,7 @@ import net.sodiumstudio.dwmg.events.DwmgEntityEvents;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuGhastlySeeker;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 /**
@@ -280,6 +282,13 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 		return DwmgBaubleHandlers.UNDEAD;
 	}
 
+	// Sounds
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return DwmgSoundPresets.generalAmbient(super.getAmbientSound());
+	}
 	
 	// Misc
 	

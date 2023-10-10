@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -58,6 +59,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTa
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEnderExecutor;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 // Adjusted from EnderExcutor in HMaG
@@ -518,7 +520,15 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.GENERAL;
 	}
-
+	
+	// Sounds
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return DwmgSoundPresets.generalAmbient(super.getAmbientSound());
+	}
+	
 	// ------------------ Misc ------------------ //
 	
 	@Override

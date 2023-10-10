@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -58,6 +59,7 @@ import net.sodiumstudio.dwmg.entities.ai.movecontrol.BefriendedFlyingMoveControl
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ItemHelper;
 public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
@@ -307,7 +309,15 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.HORNET;
 	}
-
+	
+	// Sounds
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return DwmgSoundPresets.generalAmbient(super.getAmbientSound());
+	}
+	
 	// ------------------ Misc ------------------ //
 	
 	@Override

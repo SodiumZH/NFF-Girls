@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg;
 
 import org.slf4j.Logger;
 
+import com.github.mechalopa.hmag.ModConfigs;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
@@ -9,12 +10,15 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.sodiumstudio.befriendmobs.BefriendMobs;
 import net.sodiumstudio.dwmg.registries.DwmgBlocks;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -41,7 +45,11 @@ public class Dwmg
     public Dwmg()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
+        
+        // Config
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, DwmgConfigs.CONFIG);
+        modEventBus.addListener(DwmgConfigs::loadConfig);
+        
         // Set up registries
         DwmgEffects.EFFECTS.register(modEventBus);
         DwmgBlocks.BLOCKS.register(modEventBus);
