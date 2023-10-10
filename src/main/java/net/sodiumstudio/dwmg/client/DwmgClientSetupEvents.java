@@ -18,6 +18,7 @@ import com.github.mechalopa.hmag.client.renderer.KoboldRenderer;
 import com.github.mechalopa.hmag.client.renderer.MagicBulletRenderer;
 import com.github.mechalopa.hmag.client.renderer.ModThrownItemRenderer;
 import com.github.mechalopa.hmag.client.renderer.NecroticReaperRenderer;
+import com.github.mechalopa.hmag.client.renderer.RedcapRenderer;
 import com.github.mechalopa.hmag.client.renderer.SkeletonGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.SlimeGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.SnowCanineRenderer;
@@ -36,7 +37,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.sodiumstudio.befriendmobs.bmevents.client.RegisterGuiScreenEvent;
-import net.sodiumstudio.befriendmobs.client.gui.screens.BefriendedGuiScreenMaker;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiBanshee;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiBowSecWeaponOneBauble;
@@ -52,6 +52,7 @@ import net.sodiumstudio.dwmg.client.gui.screens.GuiHandItemsTwoBaubles;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiImp;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiKobold;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiNecroticReaper;
+import net.sodiumstudio.dwmg.client.gui.screens.GuiRedcap;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiSixBaubles;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiSlimeGirl;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiThreeBaubles;
@@ -61,16 +62,17 @@ import net.sodiumstudio.dwmg.client.renderer.BefriendedEnderExecutorRenderer;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuCreeper;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuDodomeki;
-import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsFourBaublesDefault;
-import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsSixBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEnderExecutor;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuGhastlySeeker;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsFourBaublesDefault;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsSixBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuImp;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuKobold;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuRedcap;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSixBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSlimeGirl;
@@ -114,6 +116,7 @@ public class DwmgClientSetupEvents
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_GLARYAD.get(), GlaryadRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_CRIMSON_SLAUGHTERER.get(), CrimsonSlaughtererRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_CURSED_DOLL.get(), CursedDollRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_REDCAP.get(), RedcapRenderer::new);
         
         event.registerEntityRenderer(DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get(), MagicBulletRenderer::new); 
         event.registerEntityRenderer(DwmgEntityTypes.BEFRIENDED_GHAST_FIREBALL.get(), c -> new ThrownItemRenderer<>(c, 3.0F, true));
@@ -158,6 +161,7 @@ public class DwmgClientSetupEvents
 		event.registerDefault(InventoryMenuThreeBaubles.class, GuiThreeBaubles::new);
 		event.registerDefault(InventoryMenuSixBaubles.class, GuiSixBaubles::new);
 		event.registerDefault(InventoryMenuHandItemsSixBaubles.class, GuiHandItemsSixBaubles::new);
+		event.registerDefault(InventoryMenuRedcap.class, GuiRedcap::new);
     }
 
 }
