@@ -6,21 +6,25 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.RedcapEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
@@ -32,8 +36,10 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuRedcap;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
@@ -91,9 +97,13 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 	@Override
 	public HashMap<Item, Float> getHealingItems()
 	{
-		return ContainerHelper.mapOf(
-				// MapPair.of({item}, {healing_amount})
-				);
+		return ContainerHelper.<Item, Float>mapOf(
+				MapPair.of(Items.APPLE, 5f),
+				MapPair.of(Items.COOKIE, 5f),
+				MapPair.of(Items.PUMPKIN_PIE, 15f),
+				MapPair.of(ModItems.LEMON.get(), 10f),
+				MapPair.of(ModItems.LEMON_PIE.get(), 20f),
+				MapPair.of(Items.GOLDEN_APPLE, (float)getAttributeValue(Attributes.MAX_HEALTH)));
 		
 	}
 	
@@ -188,8 +198,7 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return null; // new YourInventoryMenuClass(containerId, playerInventory, container, this);
-		// You can keep it null, but in this case never call openBefriendedInventory() or it will crash.
+		return new InventoryMenuRedcap(containerId, playerInventory, container, this);
 	}
 
 	/* Save and Load */
@@ -217,6 +226,14 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 	@Override
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.GENERAL;
+	}
+	
+	// Sounds
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return DwmgSoundPresets.generalAmbient(super.getAmbientSound());
 	}
 	
 	// Misc
