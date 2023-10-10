@@ -29,6 +29,6 @@ public class GuiCreeperGirl extends GuiPreset0
 		this.addMobRenderBox(graphics, 2);
 		this.addInfoBox(graphics);
 		this.addAttributeInfo(graphics, infoPos());
-		this.renderMob(graphics);		
+		this.renderMob(graphics);
 	}
 }

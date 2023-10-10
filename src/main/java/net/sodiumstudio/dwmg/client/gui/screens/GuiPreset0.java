@@ -23,6 +23,7 @@ import net.sodiumstudio.nautils.math.IntVec2;
 public class GuiPreset0 extends BefriendedGuiScreen {
 	
 	protected int mobRenderScale = 25;
+	@Deprecated
 	protected MobRenderBoxStyle mobRenderBoxStyle = MobRenderBoxStyle.DARK;
 	
 	@Override
@@ -66,6 +67,7 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 		return this;
 	}
 	
+	@Deprecated
 	public GuiPreset0 setMobRenderBoxStyle(MobRenderBoxStyle style)
 	{
 		this.mobRenderBoxStyle = style;
@@ -210,12 +212,17 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 		this.drawSprite(graphics, absPos(27, 17), IntVec2.valueOf(120 + this.mobRenderBoxStyle.getIndex() * 50, 183), IntVec2.valueOf(50, 72));
 	}
 	
+	public void addMobRenderBox(GuiGraphics graphics, MobRenderBoxStyle style)
+	{
+		this.drawSprite(graphics, absPos(27, 17), IntVec2.valueOf(120 + style.getIndex() * 50, 183), IntVec2.valueOf(50, 72));
+	}
+	
 	public void addInfoBox(GuiGraphics graphics)
 
 	{
 		this.drawSprite(graphics, absPos(99, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(120, 72));
 	}
-	
+
 	public IntVec2 infoPos()
 	{
 		return absPos(103, 21);

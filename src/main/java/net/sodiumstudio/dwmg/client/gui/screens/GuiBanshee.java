@@ -27,7 +27,7 @@ public class GuiBanshee extends GuiPreset0
 		this.addMobRenderBox(graphics, 1);
 		this.addInfoBox(graphics);
 		this.addAttributeInfo(graphics, infoPos());
-		this.renderMob(graphics);	
+		this.renderMob(graphics);
 	}
 
 }
