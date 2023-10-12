@@ -137,5 +137,9 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.REDCAP.get(),
 				DwmgEntityTypes.HMAG_REDCAP.get(),
 				new HandlerRedcap());
+		event.register(
+				ModEntityTypes.JACK_FROST.get(),
+				DwmgEntityTypes.HMAG_JACK_FROST.get(),
+				new HandlerZombieGirl());	// TO BE CHANGED
 	}
 }

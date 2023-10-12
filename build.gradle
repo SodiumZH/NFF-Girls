@@ -9,7 +9,8 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.parchmentmc:librarian:1.+'
-       // classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+        
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
@@ -26,7 +27,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 }*/
 
 
-version = '0.1.16.3'
+version = '0.1.17'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'dwmg-1.19.2'
 
@@ -202,9 +203,10 @@ dependencies {
 
     //annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    implementation fg.deobf("curse.maven:hmag-537613:4526251")
+    implementation fg.deobf("curse.maven:hmag-537613:4745980")
 	implementation fg.deobf("curse.maven:tf-227639:4389567")
 	implementation fg.deobf("curse.maven:gog4-228948:4683679")
+	//implementation fg.deobf("curse.maven:testdummy-225738:4410143")
 	//implementation fg.deobf("curse.maven:citadel-331936:4556677")
 	//implementation fg.deobf("curse.maven:am-426558:4159154")	
 	//implementation fg.deobf("curse.maven:patchouli-306770:4031402")

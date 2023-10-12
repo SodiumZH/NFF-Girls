@@ -59,6 +59,7 @@ import net.sodiumstudio.dwmg.client.gui.screens.GuiThreeBaubles;
 import net.sodiumstudio.dwmg.client.particles.MagicalGelBallParticle;
 import net.sodiumstudio.dwmg.client.renderer.BefriendedCreeperGirlRenderer;
 import net.sodiumstudio.dwmg.client.renderer.BefriendedEnderExecutorRenderer;
+import net.sodiumstudio.dwmg.client.renderer.HmagJackFrostRenderer;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuCreeper;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuDodomeki;
@@ -117,6 +118,7 @@ public class DwmgClientSetupEvents
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_CRIMSON_SLAUGHTERER.get(), CrimsonSlaughtererRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_CURSED_DOLL.get(), CursedDollRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_REDCAP.get(), RedcapRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_JACK_FROST.get(), HmagJackFrostRenderer::new);
         
         event.registerEntityRenderer(DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get(), MagicBulletRenderer::new); 
         event.registerEntityRenderer(DwmgEntityTypes.BEFRIENDED_GHAST_FIREBALL.get(), c -> new ThrownItemRenderer<>(c, 3.0F, true));

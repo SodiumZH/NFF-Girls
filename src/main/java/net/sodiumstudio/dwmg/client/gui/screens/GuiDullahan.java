@@ -25,7 +25,7 @@ public class GuiDullahan extends GuiPreset0
 		this.addBaubleSlotBg(pPoseStack, 3, leftRowPos().slotBelow());
 		this.addBaubleSlotBg(pPoseStack, 4, rightRowPos());
 		this.addBaubleSlotBg(pPoseStack, 5, rightRowPos().slotBelow());
-		this.addMobRenderBox(pPoseStack, 2);
+		this.addMobRenderBox(pPoseStack, MobRenderBoxStyle.DARK);
 		this.addInfoBox(pPoseStack);
 		this.addAttributeInfo(pPoseStack, infoPos());
 		this.renderMob();

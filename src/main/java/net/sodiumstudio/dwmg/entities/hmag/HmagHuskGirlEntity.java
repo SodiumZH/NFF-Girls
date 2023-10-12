@@ -239,16 +239,7 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 		newMob.setInit();
 		return newMob;
 	}
-	
-	/* IBefriendedSunSensitiveMob interface */
 
-	/*@Override
-	public void setupSunImmunityRules() {
-		this.sunImmuneConditions().put("sunhat", () -> this.getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
-		this.sunImmuneConditions().put("soul_amulet", () -> this.hasDwmgBauble("soul_amulet"));
-		this.sunImmuneConditions().put("resis_amulet", () -> this.hasDwmgBauble("resistance_amulet"));
-	}
-*/
 	@Override
 	protected boolean isSunSensitive()
 	{

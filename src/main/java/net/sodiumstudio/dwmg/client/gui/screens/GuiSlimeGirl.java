@@ -34,7 +34,7 @@ public class GuiSlimeGirl extends GuiPreset0
 		this.addBaubleSlotBg(pPoseStack, 1, leftRowPos().slotBelow(1));
 		this.addBaubleSlotBg(pPoseStack, 2, leftRowPos().slotBelow(2));
 		this.addBaubleSlotBg(pPoseStack, 3, leftRowPos().slotBelow(3));
-		this.addMobRenderBox(pPoseStack, 2);
+		this.addMobRenderBox(pPoseStack, MobRenderBoxStyle.DARK);
 		this.addInfoBox(pPoseStack);
 		this.addAttributeInfo(pPoseStack, infoPos());
 		this.renderMob();

@@ -113,6 +113,7 @@ public class HmagImpEntity extends ImpEntity implements IDwmgBefriendedMob, IBlo
 	protected void registerGoals() {
 		goalSelector.addGoal(1, new FloatGoal(this));
 		goalSelector.addGoal(3, new BefriendedMeleeAttackGoal(this, 1.0d, true));
+		goalSelector.addGoal(3, new BefriendedLocateBlockGoal(this, 6d));
 		goalSelector.addGoal(4, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
