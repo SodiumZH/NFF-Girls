@@ -28,7 +28,7 @@ public class InventoryMenuRedcap extends InventoryMenuPreset0
 
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
-		int[] order = {6, 1, 2, 3, 4, 5};
+		int[] order = {5, 0, 1, 2, 3, 4};
 		return this.quickMovePreset(order.length, player, index, order);
 	}
 

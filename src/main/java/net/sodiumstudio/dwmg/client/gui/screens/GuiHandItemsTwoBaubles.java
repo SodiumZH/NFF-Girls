@@ -23,7 +23,7 @@ public class GuiHandItemsTwoBaubles extends GuiPreset0 {
 		this.addSlotBg(graphics, 1, leftRowPos().slotBelow(1).addY(20), getOffHandIconPos().x, getOffHandIconPos().y);
 		this.addBaubleSlotBg(graphics, 2, rightRowPos().addY(10));
 		this.addBaubleSlotBg(graphics, 3, rightRowPos().slotBelow().addY(20));
-		this.addMobRenderBox(graphics, 2);
+		this.addMobRenderBox(graphics, MobRenderBoxStyle.DARK);
 		this.addInfoBox(graphics);
 		this.addAttributeInfo(graphics, infoPos());
 		this.renderMob(graphics);

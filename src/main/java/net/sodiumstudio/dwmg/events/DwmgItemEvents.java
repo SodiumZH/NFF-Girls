@@ -5,14 +5,8 @@ import java.util.UUID;
 import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,9 +18,9 @@ import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
 import net.sodiumstudio.befriendmobs.item.event.MobRespawnerStartRespawnEvent;
 import net.sodiumstudio.befriendmobs.item.event.RespawnerConstructEvent;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.item.IWithDuration;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
-import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.NbtHelper;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -85,12 +79,14 @@ public class DwmgItemEvents
 		}
 	}
 
+	/** @deprecated Use {@link IDwmgBefriendedMob#getSharpnessModifierUUID} instead */
+	@Deprecated
 	protected static final UUID SHARPNESS_MODIFIER_UUID = UUID.fromString("9c12b503-63c0-43e6-bd30-d7aae9818c99");
 	
 	/**
 	 * Add sharpness atk modifier to befriended mobs
 	 */
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public static void onBefriendedMainHandItemChange(CItemStackMonitor.ChangeEvent event)
 	{
 		event.living.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(SHARPNESS_MODIFIER_UUID);
@@ -101,7 +97,7 @@ public class DwmgItemEvents
 			event.living.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(new AttributeModifier(
 					SHARPNESS_MODIFIER_UUID, "sharpness_modifier", 0.5d + 0.5d * (double) lv, AttributeModifier.Operation.ADDITION));
 		}
-	}
+	}*/
 	
 	@SubscribeEvent
 	public static void onAnvilChange(AnvilUpdateEvent event)

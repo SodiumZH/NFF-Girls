@@ -25,7 +25,7 @@ public class GuiSixBaubles extends GuiPreset0
 		this.addBaubleSlotBg(graphics, 3, rightRowPos().addY(4));
 		this.addBaubleSlotBg(graphics, 4, rightRowPos().slotBelow(1).addY(8));
 		this.addBaubleSlotBg(graphics, 5, rightRowPos().slotBelow(2).addY(12));
-		this.addMobRenderBox(graphics);
+		this.addMobRenderBox(graphics, MobRenderBoxStyle.DARK);
 		this.addInfoBox(graphics);
 		this.addAttributeInfo(graphics, infoPos());
 		this.renderMob(graphics);

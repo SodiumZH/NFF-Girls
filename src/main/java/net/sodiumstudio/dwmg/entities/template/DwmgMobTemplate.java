@@ -16,6 +16,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
@@ -80,7 +81,7 @@ public class DwmgMobTemplate extends Monster implements IDwmgBefriendedMob {
 		Arrays.fill(this.handDropChances, 0);
 	}
 	
-	/* AI */
+	/* Behavior */
 
 	@Override
 	protected void registerGoals() {

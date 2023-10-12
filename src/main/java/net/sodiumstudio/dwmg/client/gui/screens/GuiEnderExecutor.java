@@ -23,10 +23,10 @@ public class GuiEnderExecutor extends GuiPreset0 {
 		this.addSlotBg(graphics, 2, leftRowPos().slotBelow(2).addY(12), 2, 2);
 		this.addBaubleSlotBg(graphics, 3, rightRowPos().addY(10));
 		this.addBaubleSlotBg(graphics, 4, rightRowPos().slotBelow().addY(20));
-		this.addMobRenderBox(graphics, 1);
+		this.addMobRenderBox(graphics, MobRenderBoxStyle.NORMAL);
 		this.addInfoBox(graphics);
 		this.addAttributeInfo(graphics, infoPos());
-		this.renderMob(graphics);	
+		this.renderMob(graphics);
 	}
 	
 	@Override

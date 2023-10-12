@@ -22,7 +22,7 @@ public class GuiThreeBaubles extends GuiPreset0
 		this.addBaubleSlotBg(graphics, 0, rightRowPos().addY(4));
 		this.addBaubleSlotBg(graphics, 1, rightRowPos().slotBelow(1).addY(8));
 		this.addBaubleSlotBg(graphics, 2, rightRowPos().slotBelow(2).addY(12));
-		this.addMobRenderBox(graphics, 2);
+		this.addMobRenderBox(graphics, MobRenderBoxStyle.DARK);
 		this.addInfoBox(graphics);
 		this.addAttributeInfo(graphics, infoPos());
 		this.renderMob(graphics);

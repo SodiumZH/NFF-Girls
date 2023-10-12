@@ -12,8 +12,10 @@ import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
 import com.github.mechalopa.hmag.world.entity.HarpyEntity;
 import com.github.mechalopa.hmag.world.entity.ImpEntity;
+import com.github.mechalopa.hmag.world.entity.JackFrostEntity;
 import com.github.mechalopa.hmag.world.entity.JiangshiEntity;
 import com.github.mechalopa.hmag.world.entity.KoboldEntity;
+import com.github.mechalopa.hmag.world.entity.RedcapEntity;
 import com.github.mechalopa.hmag.world.entity.SnowCanineEntity;
 import com.mojang.logging.LogUtils;
 
@@ -534,7 +536,7 @@ public class DwmgEntityEvents
 		}
 	}
 	
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public static void onBefriendedAttributeChange(CAttributeMonitor.ChangeEvent event)
 	{
 		if (event.entity instanceof IBefriendedMob b 
@@ -544,7 +546,7 @@ public class DwmgEntityEvents
 		{
 			event.entity.setHealth((float) (event.entity.getHealth() * event.newValue / event.oldValue));
 		}
-	}
+	}*/
 	
 	@SuppressWarnings("resource")
 	@SubscribeEvent
@@ -1012,7 +1014,13 @@ public class DwmgEntityEvents
 						mob.goalSelector.addGoal(2, new BefriendableWatchHandItemGoal(mob));
 						mob.goalSelector.addGoal(3, new BefriendablePickItemGoal(mob));
 					}
+					if (mob instanceof RedcapEntity || mob instanceof JackFrostEntity)
+					{
+						mob.goalSelector.addGoal(3, new BefriendableWatchHandItemGoal(mob));
+						mob.goalSelector.addGoal(4, new BefriendablePickItemGoal(mob));
+					}
 				}
+			
 			}
 		}
 	}

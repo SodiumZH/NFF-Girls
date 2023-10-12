@@ -27,7 +27,7 @@ public class GuiDodomeki extends GuiPreset0
 		this.addSlotBg(graphics, 5, rightRowPos().slotBelow(), 4, 0);
 		this.addSlotBg(graphics, 6, rightRowPos().slotBelow(2), 4, 0);
 		this.addSlotBg(graphics, 7, rightRowPos().slotBelow(3), 4, 0);*/
-		this.addMobRenderBox(graphics, 1);
+		this.addMobRenderBox(graphics, MobRenderBoxStyle.LIGHT);
 		this.addInfoBox(graphics);
 		this.addAttributeInfo(graphics, infoPos());
 		this.renderMob(graphics);

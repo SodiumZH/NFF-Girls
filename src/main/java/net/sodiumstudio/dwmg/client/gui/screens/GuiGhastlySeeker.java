@@ -24,7 +24,7 @@ public class GuiGhastlySeeker extends GuiPreset0 {
 		this.addBaubleSlotBg(graphics, 2, rightRowPos().addY(4));
 		this.addBaubleSlotBg(graphics, 3, rightRowPos().slotBelow().addY(8));
 		this.addSlotBg(graphics, 4, rightRowPos().slotBelow(2).addY(12), 2, 3);
-		this.addMobRenderBox(graphics, 2);
+		this.addMobRenderBox(graphics, MobRenderBoxStyle.DARK);
 		this.addInfoBox(graphics);
 		this.addAttributeInfo(graphics, infoPos());
 		this.renderMob(graphics);

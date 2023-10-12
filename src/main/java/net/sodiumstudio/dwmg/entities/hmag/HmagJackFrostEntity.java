@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-import com.github.mechalopa.hmag.world.entity.DodomekiEntity;
+import com.github.mechalopa.hmag.world.entity.projectile.HardSnowballEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -17,8 +18,9 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -26,44 +28,44 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.capability.wrapper.ILivingDelayedActions;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedRangedAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.inventory.InventoryMenuDodomeki;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
-import net.sodiumstudio.dwmg.registries.DwmgMiscReg;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
+import net.sodiumstudio.nautils.math.GeometryUtil;
+import net.sodiumstudio.nautils.math.RndUtil;
 
-public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
-{
+public class HmagJackFrostEntity extends HmagJackFrostEntityBase implements IDwmgBefriendedMob, ILivingDelayedActions {
 
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagDodomekiEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagJackFrostEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagDodomekiEntity.class, EntityDataSerializers.INT);
+			.defineId(HmagJackFrostEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
@@ -84,42 +86,127 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 
 	/* Initialization */
 
-	public HmagDodomekiEntity(EntityType<? extends HmagDodomekiEntity> pEntityType, Level pLevel) {
+	public HmagJackFrostEntity(EntityType<? extends HmagJackFrostEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
 		Arrays.fill(this.handDropChances, 0);
+		this.immuneToHotBiomes.putOptional("resis_amulet", m -> ((HmagJackFrostEntity)m).hasDwmgBauble("resistance_amulet"));
 	}
-
-	/* AI */
+	
+	/* Behavior */
 
 	@Override
 	protected void registerGoals() {
 		goalSelector.addGoal(1, new FloatGoal(this));
-		goalSelector.addGoal(2, new BefriendedRestrictSunGoal(this));
-		goalSelector.addGoal(3, new BefriendedFleeSunGoal(this, 1));
-		goalSelector.addGoal(4, new BefriendedMeleeAttackGoal(this, 1.0d, true));
-		goalSelector.addGoal(5, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false)
-				.avoidSunCondition(DwmgEntityHelper::isSunSensitive));
+		goalSelector.addGoal(4, new DwmgBefriendedRangedAttackGoal(this, 1.0D, 3 * 20, 15.0F).setSkipChance(0.5d));
+		goalSelector.addGoal(5, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 		goalSelector.addGoal(6, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-		targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this));
+		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
-		targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
+		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
 		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
 		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
 	
 	@Override
-	public void aiStep() {
-		if (!this.level().isClientSide)
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
-		super.aiStep();
-		if (!this.level().isClientSide)
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, ItemStack.EMPTY);
+	protected HardSnowballEntity getNewSnowball()
+	{
+		return new HardSnowballEntity(this.level, this)
+			{
+				@Override
+				public void onHitEntity(EntityHitResult result)
+				{
+					if (this.getOwner() instanceof HmagJackFrostEntity jf)
+					{
+						if (jf == result.getEntity())
+							return;
+						if (jf.isOwnerPresent() && jf.getOwnerUUID().equals(result.getEntity().getUUID()))
+							return;
+						if (result.getEntity() instanceof IBefriendedMob bm && bm.getOwnerUUID().equals(jf.getOwnerUUID()))
+							return;
+						if (result.getEntity() instanceof TamableAnimal ta && ta.isTame() && ta.getOwnerUUID().equals(jf.getOwnerUUID()))
+							return;
+					}
+					super.onHitEntity(result);
+				}
+			};
 	}
-
+	
+	protected int getThrowLevel()
+	{
+		return this.getLevelHandler().getExpectedLevel() < 15 ? 0 : (
+				this.getLevelHandler().getExpectedLevel() < 30 ? 1 : (
+				this.getLevelHandler().getExpectedLevel() < 60 ? 2 : 3));
+	}
+	
+	@Override
+	public void performRangedAttack(LivingEntity target, float distance)
+	{
+		Consumer<Vec3> action = (offset) -> 
+		{
+			this.throwSnowballTo(target.getEyePosition().add(offset));
+			this.playThrowingSound();
+		};
+		Runnable action1 = () -> action.accept(Vec3.ZERO);
+		int i = getThrowLevel();
+		switch (i)
+		{
+		case 0: 
+		{
+			action1.run();
+			break;
+		}
+		case 1:
+		{
+			action1.run();
+			this.addMultipleDelayedActions(action1, 4, 8);
+			break;
+		}
+		case 2:
+		{
+			Runnable action2 = () -> {
+				action1.run();
+				for (int j = 0; j < 3; ++j)
+					action.accept(GeometryUtil.randomVector().scale(RndUtil.rndRangedDouble(0, 2)));
+			};
+			action2.run();
+			this.addMultipleDelayedActions(action2, 3, 6, 9, 12);
+			break;
+		}
+		case 3:
+		{
+			Runnable action3 = () -> {
+				action1.run();
+				for (int j = 0; j < 6; ++j)
+					action.accept(GeometryUtil.randomVector().scale(RndUtil.rndRangedDouble(0, 2)));
+			};
+			action3.run();
+			this.addMultipleDelayedActions(action3, 3, 6, 9, 12, 15, 18);
+			break;
+		}
+		default: 
+		{
+			throw new RuntimeException();
+		}
+		}
+		
+	}
+	
+	@Override
+	protected float getShootInaccuracy()
+	{
+		return 5f;
+	}
+	
+	@Override
+	protected float getShootDamage()
+	{
+		return 3f + (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+	}
+	
 	/* Interaction */
 
 	// Map items that can heal the mob and healing values here.
@@ -127,7 +214,13 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 	@Override
 	public HashMap<Item, Float> getHealingItems()
 	{
-		return DwmgMiscReg.HEALING_ITEMS_UNDEAD;
+		return ContainerHelper.mapOf(
+				MapPair.of(Items.SNOWBALL, 2f),
+				MapPair.of(Items.SNOW_BLOCK, 5f),
+				MapPair.of(Items.PUMPKIN_PIE, 10f)
+				);
+		
+		
 	}
 	
 	// Set of items that can heal the mob WITHOUT CONSUMING.
@@ -135,9 +228,9 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 	@Override
 	public HashSet<Item> getNonconsumingHealingItems()
 	{
-		HashSet<Item> set = new HashSet<Item>();
-		// set.add(YOUR_ITEM_TYPE);
-		return set;
+		return ContainerHelper.setOf(
+				// items....
+				);
 	}
 	
 	@Override
@@ -147,7 +240,7 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 			// For normal interaction
 			if (!player.isShiftKeyDown())
 			{
-				if (!player.level().isClientSide()) 
+				if (!player.level.isClientSide()) 
 				{
 					/* Put checks before healing item check */
 					/* if (....)
@@ -155,7 +248,7 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 					 	....
 					 }
 					else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-						return InteractionResult.sidedSuccess(player.level().isClientSide);
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 					else if (hand == InteractionHand.MAIN_HAND
 							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
@@ -166,7 +259,7 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 					else return InteractionResult.PASS;
 				}
 				// Interacted
-				return InteractionResult.sidedSuccess(player.level().isClientSide);
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
 			// For interaction with shift key down
 			else
@@ -175,7 +268,7 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level().isClientSide);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
 				}
 			}
 		} 
@@ -187,7 +280,7 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 
 	// This enables mob armor and hand items by default.
 	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithHandItems additionalInventory = new BefriendedInventoryWithHandItems(getInventorySize(), this);
+	protected BefriendedInventory additionalInventory = new BefriendedInventory(getInventorySize(), this);
 
 	@Override
 	public BefriendedInventory getAdditionalInventory()
@@ -198,31 +291,31 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 	@Override
 	public int getInventorySize()
 	{
-		// 0-mainhand 1-offhand 2-5 baubles 6-9 stolen items
-		return 10;
+		return 4;
 	}
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
+		if (!this.level.isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.setMobEquipment(this);
+			//additionalInventory.setMobEquipment(this);
 		}
 	}
 
 	@Override
 	public void setInventoryFromMob()
 	{
-		if (!this.level().isClientSide) {
+		if (!this.level.isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.getFromMob(this);
+			//additionalInventory.getFromMob(this);
 		}
 		return;
 	}
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuDodomeki(containerId, playerInventory, container, this);
+		return new InventoryMenuFourBaubles(containerId, playerInventory, container, this);
+		// You can keep it null, but in this case never call openBefriendedInventory() or it will crash.
 	}
 
 	/* Save and Load */
@@ -244,32 +337,14 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
-		return ContainerHelper.mapOf(
-				MapPair.of("0", getAdditionalInventory().getItem(2)),
-				MapPair.of("1", getAdditionalInventory().getItem(3)),
-				MapPair.of("2", getAdditionalInventory().getItem(4)),
-				MapPair.of("3", getAdditionalInventory().getItem(5)));
+		return this.continuousBaubleSlots(0, 3);
 	}
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.UNDEAD;
+		return DwmgBaubleHandlers.GENERAL;
 	}
-	
-	// Misc
-	
-	@Override
-	public void setupSunImmunityRules() {
-		this.getSunImmunity().putOptional("soul_amulet", mob -> ((IDwmgBefriendedMob)mob).hasDwmgBauble("soul_amulet"));
-		this.getSunImmunity().putOptional("resis_amulet", mob -> ((IDwmgBefriendedMob)mob).hasDwmgBauble("resistance_amulet"));
-	}
-	
-	// Indicates which mod this mob belongs to
-	@Override
-	public String getModId() {
-		return Dwmg.MOD_ID;
-	}
-	
+
 	// Sounds
 	
 	@Override
@@ -277,6 +352,15 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 	{
 		return DwmgSoundPresets.generalAmbient(super.getAmbientSound());
 	}
+	
+	// Misc
+	
+	// Indicates which mod this mob belongs to
+	@Override
+	public String getModId() {
+		return Dwmg.MOD_ID;
+	}
+	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
@@ -300,3 +384,5 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 	// ======================================================================== //
 
 }
+
+

@@ -17,15 +17,22 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
@@ -36,12 +43,17 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedLocateBlockGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuRedcap;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
 
 public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob {
@@ -83,11 +95,17 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 
 	@Override
 	protected void registerGoals() {
-		// Add goals here
-		// Generally target goals can be preset below. Change if it needs to modify.
+		goalSelector.addGoal(1, new FloatGoal(this));
+		goalSelector.addGoal(3, new BefriendedMeleeAttackGoal(this, 1.0d, true));
+		goalSelector.addGoal(4, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
+		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
+		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
+		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
+		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
 	
 	/* Interaction */
@@ -105,6 +123,35 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 				MapPair.of(ModItems.LEMON_PIE.get(), 20f),
 				MapPair.of(Items.GOLDEN_APPLE, (float)getAttributeValue(Attributes.MAX_HEALTH)));
 		
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public void aiStep()
+	{
+		super.aiStep();
+		if (!level.isClientSide)
+		{			
+			if (!this.getMainHandItem().isEmpty() 
+			&& this.isOwnerPresent()
+			&& !this.getOwner().getMainHandItem().isEmpty()
+			&& this.getOwner().getMainHandItem().getItem() instanceof AxeItem
+			&& this.getMainHandItem().getItem() instanceof AxeItem axe)
+			{
+				int ampl = 0;
+				AxeItem diamondAxe = (AxeItem)Items.DIAMOND_AXE;
+				if (axe.getTier().getLevel() < diamondAxe.getTier().getLevel())
+				{
+					ampl = 0;
+				}
+				else if (axe.getTier().getLevel() == diamondAxe.getTier().getLevel())
+				{
+					ampl = 1;
+				}
+				else ampl = 2;
+				EntityHelper.addEffectSafe(this.getOwner(), MobEffects.DIG_SPEED, 10, ampl);
+			}
+		}
 	}
 	
 	// Set of items that can heal the mob WITHOUT CONSUMING.
