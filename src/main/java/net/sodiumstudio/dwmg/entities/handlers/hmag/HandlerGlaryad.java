@@ -52,7 +52,7 @@ public class HandlerGlaryad extends HandlerItemGivingProgress
 		return mob.hasEffect(MobEffects.REGENERATION) 
 				&& mob.getEffect(MobEffects.REGENERATION).getAmplifier() >= 2
 				&& mob.getEffect(MobEffects.REGENERATION).getDuration() > 10 * 20
-				&& player.getOffhandItem().is(ModTags.GLARYAD_TEMPT_ITEMS)
+				&& player.getOffhandItem().is(ModTags.ItemTags.GLARYAD_TEMPT_ITEMS)
 				&& !player.getUUID().equals(((GlaryadEntity)mob).getPersistentAngerTarget());
 	}
 

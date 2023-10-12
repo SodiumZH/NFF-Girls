@@ -47,6 +47,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagHarpyEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHornetEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHuskGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagImpEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagJackFrostEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagKoboldEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagNecroticReaperEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagRedcapEntity;
@@ -321,6 +322,13 @@ public class DwmgEntityTypes {
 	public static final RegistryObject<EntityType<HmagRedcapEntity>> HMAG_REDCAP = 
 			registerBM("hmag_redcap", HmagRedcapEntity::new, (builder) -> builder
 			.sized(0.6F, 1.7F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false));
+	
+	public static final RegistryObject<EntityType<HmagJackFrostEntity>> HMAG_JACK_FROST = 
+			registerBM("hmag_jack_frost", HmagJackFrostEntity::new, (builder) -> builder
+			.sized(0.6F, 1.95F)
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false));

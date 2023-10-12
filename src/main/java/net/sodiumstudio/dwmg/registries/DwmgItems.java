@@ -24,6 +24,7 @@ import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleItem;
 import net.sodiumstudio.dwmg.item.BefriendingProgressProbeItem;
 import net.sodiumstudio.dwmg.item.DwmgRespawnerItem;
 import net.sodiumstudio.dwmg.item.EmptyMagicalGelBottleItem;
+import net.sodiumstudio.dwmg.item.ExpModifierItem;
 import net.sodiumstudio.dwmg.item.ItemCommandWand;
 import net.sodiumstudio.dwmg.item.ItemEvilMagnet;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
@@ -162,6 +163,8 @@ public class DwmgItems {
 	// Debug
 	public static final RegistryObject<BefriendingProgressProbeItem> BEFRIENDING_PROGRESS_PROBE = 
 			ITEMS.register("befriending_progress_probe", () -> new BefriendingProgressProbeItem(new Item.Properties()));
+	public static final RegistryObject<ExpModifierItem> EXP_MODIFIER = 
+			ITEMS.register("exp_modifier", () -> new ExpModifierItem(new Item.Properties()));
 	
 	/* Item register end */
 	

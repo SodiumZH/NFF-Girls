@@ -36,7 +36,6 @@ public class InventoryMenuBanshee extends InventoryMenuPreset0
 		if (slot == null || !slot.hasItem())
 			return ItemStack.EMPTY;
 		
-
 		boolean flag = stack.getItem() instanceof BlockItem b && b.getBlock() instanceof FlowerBlock;
 		int[] order = {2, 3, 4, 0, 1};
 		int[] order1 = {2, 3, 4, 1, 0};

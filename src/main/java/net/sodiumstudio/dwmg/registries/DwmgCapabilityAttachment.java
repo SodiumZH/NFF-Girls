@@ -50,9 +50,9 @@ public class DwmgCapabilityAttachment {
 	@SubscribeEvent
 	public static void setupItemStackMonitor(CItemStackMonitor.SetupEvent event)
 	{
-		if (event.living instanceof IBefriendedMob b && b.getModId().equals(Dwmg.MOD_ID))
+		if (event.living instanceof IBefriendedMob b)
 		{
-			event.monitor.listen("main_hand", LivingEntity::getMainHandItem);
+			event.monitor.listen("main_hand", () -> event.living.getMainHandItem());
 		}
 	}
 }

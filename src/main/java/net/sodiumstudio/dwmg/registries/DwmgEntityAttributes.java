@@ -265,6 +265,13 @@ public class DwmgEntityAttributes
 		.add(Attributes.FOLLOW_RANGE, 24.0D),
 		DwmgEntityTypes.HMAG_REDCAP.get());
 	
+	public static final Supplier<AttributeSupplier.Builder> HMAG_JACK_FROST_ATTRIBUTES = register(() ->
+		VANILLA_MONSTER_COMMON_ATTRIBUTES.get()
+		.add(Attributes.MAX_HEALTH, 60.0D)
+		.add(Attributes.MOVEMENT_SPEED, 0.24D)
+		.add(Attributes.ATTACK_DAMAGE, 0d)
+		.add(Attributes.ARMOR, 2.0D),
+		DwmgEntityTypes.HMAG_JACK_FROST.get());
 	
 	/*	
 	public static final Supplier<AttributeSupplier.Builder> HMAG__ATTRIBUTES = register(() ->

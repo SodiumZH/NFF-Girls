@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-import com.github.mechalopa.hmag.registry.ModItems;
-import com.github.mechalopa.hmag.world.entity.RedcapEntity;
+import com.github.mechalopa.hmag.world.entity.projectile.HardSnowballEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -17,53 +17,55 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.capability.wrapper.ILivingDelayedActions;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
-import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedLocateBlockGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedRangedAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.inventory.InventoryMenuRedcap;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
-import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
+import net.sodiumstudio.nautils.math.GeometryUtil;
+import net.sodiumstudio.nautils.math.RndUtil;
 
-public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob {
+public class HmagJackFrostEntity extends HmagJackFrostEntityBase implements IDwmgBefriendedMob, ILivingDelayedActions {
 
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagRedcapEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagJackFrostEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagRedcapEntity.class, EntityDataSerializers.INT);
+			.defineId(HmagJackFrostEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
@@ -84,28 +86,125 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 
 	/* Initialization */
 
-	public HmagRedcapEntity(EntityType<? extends HmagRedcapEntity> pEntityType, Level pLevel) {
+	public HmagJackFrostEntity(EntityType<? extends HmagJackFrostEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
 		Arrays.fill(this.handDropChances, 0);
+		this.immuneToHotBiomes.putOptional("resis_amulet", m -> ((HmagJackFrostEntity)m).hasDwmgBauble("resistance_amulet"));
 	}
 	
-	/* AI */
+	/* Behavior */
 
 	@Override
 	protected void registerGoals() {
 		goalSelector.addGoal(1, new FloatGoal(this));
-		goalSelector.addGoal(3, new BefriendedMeleeAttackGoal(this, 1.0d, true));
-		goalSelector.addGoal(4, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
-		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
-		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+		goalSelector.addGoal(4, new DwmgBefriendedRangedAttackGoal(this, 1.0D, 3 * 20, 15.0F).setSkipChance(0.5d));
+		goalSelector.addGoal(5, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
+		goalSelector.addGoal(6, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
+		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
 		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
 		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
+	}
+	
+	@Override
+	protected HardSnowballEntity getNewSnowball()
+	{
+		return new HardSnowballEntity(this.level, this)
+			{
+				@Override
+				public void onHitEntity(EntityHitResult result)
+				{
+					if (this.getOwner() instanceof HmagJackFrostEntity jf)
+					{
+						if (jf == result.getEntity())
+							return;
+						if (jf.isOwnerPresent() && jf.getOwnerUUID().equals(result.getEntity().getUUID()))
+							return;
+						if (result.getEntity() instanceof IBefriendedMob bm && bm.getOwnerUUID().equals(jf.getOwnerUUID()))
+							return;
+						if (result.getEntity() instanceof TamableAnimal ta && ta.isTame() && ta.getOwnerUUID().equals(jf.getOwnerUUID()))
+							return;
+					}
+					super.onHitEntity(result);
+				}
+			};
+	}
+	
+	protected int getThrowLevel()
+	{
+		return this.getLevelHandler().getExpectedLevel() < 15 ? 0 : (
+				this.getLevelHandler().getExpectedLevel() < 30 ? 1 : (
+				this.getLevelHandler().getExpectedLevel() < 60 ? 2 : 3));
+	}
+	
+	@Override
+	public void performRangedAttack(LivingEntity target, float distance)
+	{
+		Consumer<Vec3> action = (offset) -> 
+		{
+			this.throwSnowballTo(target.getEyePosition().add(offset));
+			this.playThrowingSound();
+		};
+		Runnable action1 = () -> action.accept(Vec3.ZERO);
+		int i = getThrowLevel();
+		switch (i)
+		{
+		case 0: 
+		{
+			action1.run();
+			break;
+		}
+		case 1:
+		{
+			action1.run();
+			this.addMultipleDelayedActions(action1, 4, 8);
+			break;
+		}
+		case 2:
+		{
+			Runnable action2 = () -> {
+				action1.run();
+				for (int j = 0; j < 3; ++j)
+					action.accept(GeometryUtil.randomVector().scale(RndUtil.rndRangedDouble(0, 2)));
+			};
+			action2.run();
+			this.addMultipleDelayedActions(action2, 3, 6, 9, 12);
+			break;
+		}
+		case 3:
+		{
+			Runnable action3 = () -> {
+				action1.run();
+				for (int j = 0; j < 6; ++j)
+					action.accept(GeometryUtil.randomVector().scale(RndUtil.rndRangedDouble(0, 2)));
+			};
+			action3.run();
+			this.addMultipleDelayedActions(action3, 3, 6, 9, 12, 15, 18);
+			break;
+		}
+		default: 
+		{
+			throw new RuntimeException();
+		}
+		}
+		
+	}
+	
+	@Override
+	protected float getShootInaccuracy()
+	{
+		return 5f;
+	}
+	
+	@Override
+	protected float getShootDamage()
+	{
+		return 3f + (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
 	}
 	
 	/* Interaction */
@@ -115,43 +214,13 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 	@Override
 	public HashMap<Item, Float> getHealingItems()
 	{
-		return ContainerHelper.<Item, Float>mapOf(
-				MapPair.of(Items.APPLE, 5f),
-				MapPair.of(Items.COOKIE, 5f),
-				MapPair.of(Items.PUMPKIN_PIE, 15f),
-				MapPair.of(ModItems.LEMON.get(), 10f),
-				MapPair.of(ModItems.LEMON_PIE.get(), 20f),
-				MapPair.of(Items.GOLDEN_APPLE, (float)getAttributeValue(Attributes.MAX_HEALTH)));
+		return ContainerHelper.mapOf(
+				MapPair.of(Items.SNOWBALL, 2f),
+				MapPair.of(Items.SNOW_BLOCK, 5f),
+				MapPair.of(Items.PUMPKIN_PIE, 10f)
+				);
 		
-	}
-	
-	@SuppressWarnings("deprecation")
-	@Override
-	public void aiStep()
-	{
-		super.aiStep();
-		if (!level.isClientSide)
-		{			
-			if (!this.getMainHandItem().isEmpty() 
-			&& this.isOwnerPresent()
-			&& !this.getOwner().getMainHandItem().isEmpty()
-			&& this.getOwner().getMainHandItem().getItem() instanceof AxeItem
-			&& this.getMainHandItem().getItem() instanceof AxeItem axe)
-			{
-				int ampl = 0;
-				AxeItem diamondAxe = (AxeItem)Items.DIAMOND_AXE;
-				if (axe.getTier().getLevel() < diamondAxe.getTier().getLevel())
-				{
-					ampl = 0;
-				}
-				else if (axe.getTier().getLevel() == diamondAxe.getTier().getLevel())
-				{
-					ampl = 1;
-				}
-				else ampl = 2;
-				EntityHelper.addEffectSafe(this.getOwner(), MobEffects.DIG_SPEED, 10, ampl);
-			}
-		}
+		
 	}
 	
 	// Set of items that can heal the mob WITHOUT CONSUMING.
@@ -211,7 +280,7 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 
 	// This enables mob armor and hand items by default.
 	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
+	protected BefriendedInventory additionalInventory = new BefriendedInventory(getInventorySize(), this);
 
 	@Override
 	public BefriendedInventory getAdditionalInventory()
@@ -222,14 +291,14 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 	@Override
 	public int getInventorySize()
 	{
-		return 7;	// 0 - helmet is invalid; 6 - bauble
+		return 4;
 	}
 
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.setMobEquipment(this);
+			//additionalInventory.setMobEquipment(this);
 		}
 	}
 
@@ -238,14 +307,15 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 	{
 		if (!this.level.isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.getFromMob(this);
+			//additionalInventory.getFromMob(this);
 		}
 		return;
 	}
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuRedcap(containerId, playerInventory, container, this);
+		return new InventoryMenuFourBaubles(containerId, playerInventory, container, this);
+		// You can keep it null, but in this case never call openBefriendedInventory() or it will crash.
 	}
 
 	/* Save and Load */
@@ -267,14 +337,14 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
-		return ContainerHelper.mapOf(MapPair.of("0", getAdditionalInventory().getItem(6)));
+		return this.continuousBaubleSlots(0, 3);
 	}
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.GENERAL;
 	}
-	
+
 	// Sounds
 	
 	@Override
@@ -314,3 +384,5 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 	// ======================================================================== //
 
 }
+
+
