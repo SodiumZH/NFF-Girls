@@ -336,6 +336,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 				}
 			}
 		}
+		else super.aiStep();
 	}
 
 	/** Inventory **/

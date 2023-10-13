@@ -2,6 +2,24 @@
 
 ## 1.19.2
 
+### 0.1.17
+
+Updated HMaG dependency to 6.2.5.
+
+Added Redcap support.
+
+Added some configs for mob sound.
+
+​	-Frequency of the ambient sound can be reduced.
+
+​	-Zombie and/or Skeleton sound can be replaced with HMaG girl mob sound.
+
+​	-Zombie and/or Skeleton ambient sound can be blocked.
+
+Now mobs equipping Courage Amulet II will proactively attack enemies hostile to the owner. 
+
+Now off-hand item of Kobold and Imp can be stacked only to 1.
+
 ### 0.1.16.3
 
 Fixed entity tags missing.
@@ -20,7 +38,7 @@ Changed tag names:
 
 ​	-`use_fortune_as_looting` => `uses_fortune_as_looting`
 
-Fixed some mobs displaying a barrier label on the head when equipping baubles providing sun-immunity.
+Fixed some mobs displaying a barrier label on the head when equipping baubles provide sun-immunity.
 
 Fixed crash on Zombie Girl, Husk Girl and Drowned Girl hurt.
 
