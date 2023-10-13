@@ -22,18 +22,13 @@ public class HandlerJackFrost extends HandlerItemDropping
 				MapPair.of("hmag:exp_berry", () -> RndUtil.rndRangedDouble(0.08, 0.12)),
 				MapPair.of("minecraft:golden_apple", () -> RndUtil.rndRangedDouble(0.10, 0.15)),
 				MapPair.of("hmag:golden_tropical_fish", () -> RndUtil.rndRangedDouble(0.10, 0.15)),
-				MapPair.of("minecraft:iron_axe", () -> RndUtil.rndRangedDouble(0.05, 0.07)),
-				MapPair.of("minecraft:gold_axe", () -> RndUtil.rndRangedDouble(0.07, 0.10)),
-				MapPair.of("minecraft:diamond_axe", () -> RndUtil.rndRangedDouble(0.12, 0.18)),
-				MapPair.of("minecraft:netherite_axe", () -> RndUtil.rndRangedDouble(0.50, 1.00)),
 				MapPair.of("twilightforest:ice_bomb", () -> RndUtil.rndRangedDouble(0.10, 0.15))
 				);
 	}
 
 	@Override
 	public int getHoldingItemTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 5 * 20;
 	}
 
 }

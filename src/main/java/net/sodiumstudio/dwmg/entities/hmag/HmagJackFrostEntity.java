@@ -217,7 +217,8 @@ public class HmagJackFrostEntity extends HmagJackFrostEntityBase implements IDwm
 		return ContainerHelper.mapOf(
 				MapPair.of(Items.SNOWBALL, 2f),
 				MapPair.of(Items.SNOW_BLOCK, 5f),
-				MapPair.of(Items.PUMPKIN_PIE, 10f)
+				MapPair.of(Items.PUMPKIN_PIE, 15f),
+				MapPair.of(Items.GOLDEN_APPLE, (float)this.getAttribute(Attributes.MAX_HEALTH).getValue())
 				);
 		
 		

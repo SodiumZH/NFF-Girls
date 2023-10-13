@@ -604,7 +604,9 @@ public class DwmgEntityEvents
 					int ampl = event.getEntity().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
 					if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
 					{
-						event.getEntity().hurt(DwmgDamageSources.NECROMANCER_WITHER, 1);
+						if (event.getEntity().getHealth() <= 1f)
+							event.getEntity().die(DwmgDamageSources.NECROMANCER_WITHER);
+						else event.getEntity().setHealth(event.getEntity().getHealth() - 1);
 					}
 				}
 			}
