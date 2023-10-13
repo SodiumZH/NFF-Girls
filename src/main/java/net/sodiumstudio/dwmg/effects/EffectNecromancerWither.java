@@ -30,7 +30,7 @@ public class EffectNecromancerWither extends MobEffect
 		{
 			factor *= 2;
 		}
-		return Math.max(40 / factor, 1);
+		return Math.max(80 / factor, 1);
 	}
 
 }

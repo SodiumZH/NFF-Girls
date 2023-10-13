@@ -22,7 +22,7 @@ public class HandlerRedcap extends HandlerItemDropping
 				MapPair.of("minecraft:golden_apple", () -> RndUtil.rndRangedDouble(0.10, 0.15)),
 				MapPair.of("hmag:golden_tropical_fish", () -> RndUtil.rndRangedDouble(0.10, 0.15)),
 				MapPair.of("minecraft:iron_axe", () -> RndUtil.rndRangedDouble(0.05, 0.07)),
-				MapPair.of("minecraft:gold_axe", () -> RndUtil.rndRangedDouble(0.07, 0.10)),
+				MapPair.of("minecraft:golden_axe", () -> RndUtil.rndRangedDouble(0.07, 0.10)),
 				MapPair.of("minecraft:diamond_axe", () -> RndUtil.rndRangedDouble(0.12, 0.18)),
 				MapPair.of("minecraft:netherite_axe", () -> RndUtil.rndRangedDouble(0.50, 1.00)),
 				MapPair.of("twilightforest:maze_map_focus", () -> RndUtil.rndRangedDouble(0.15, 0.30))
