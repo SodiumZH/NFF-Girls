@@ -156,7 +156,7 @@ dependencies {
 	implementation fg.deobf("net.sodiumstudio.befriendmobs:befriendmobs:${mc_version}-${bm_version}")
     //implementation fg.deobf("curse.maven:jade-324717:4711195")
     
-    implementation fg.deobf("curse.maven:hmag-537613:4757070")
+    implementation fg.deobf("curse.maven:hmag-537613:4787067")
 	implementation fg.deobf("curse.maven:tf-227639:4755494")
 	implementation fg.deobf("curse.maven:gog4-228948:4683680")
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
