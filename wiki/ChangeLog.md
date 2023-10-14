@@ -459,6 +459,12 @@ Now blocks destroyed by the explosions of Creeper Girl and Ghastly Seeker will a
 
 ## 1.18.2
 
+### 0.0.17
+
+Updated HMaG dependency version to 5.1.15.
+
+All other changes in 1.19.2-0.1.17.
+
 ### 0.0.16.3
 
 Identical to 1.19.2-0.1.16.3.
