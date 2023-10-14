@@ -130,7 +130,7 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 	public void aiStep()
 	{
 		super.aiStep();
-		if (!level.isClientSide)
+		if (!level().isClientSide)
 		{			
 			if (!this.getMainHandItem().isEmpty() 
 			&& this.isOwnerPresent()

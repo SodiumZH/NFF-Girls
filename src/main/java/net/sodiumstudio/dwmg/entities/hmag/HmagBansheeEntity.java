@@ -227,7 +227,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 			FlowerBlock flower = getFlowerOnOffhand();
 			if (flower == null)
 				return;
-			MobEffect effect = flower.getSuspiciousStewEffect();
+			MobEffect effect = flower.getSuspiciousEffect();
 			int duration = flower.getEffectDuration();
 
 			// Reverse for undead mob to apply the expected effect
@@ -255,8 +255,8 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 				return;
 
 			// Block harmful effect first
-			if (flower.getSuspiciousStewEffect().getCategory() == MobEffectCategory.HARMFUL
-					&& flower.getSuspiciousStewEffect() != MobEffects.HARM)
+			if (flower.getSuspiciousEffect().getCategory() == MobEffectCategory.HARMFUL
+					&& flower.getSuspiciousEffect() != MobEffects.HARM)
 				return;
 
 			// Applie on owner and owner's other befriended mobs/tamed animals
@@ -276,7 +276,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 
 			for (Entity entity : entities)
 			{
-				MobEffect effect = flower.getSuspiciousStewEffect();
+				MobEffect effect = flower.getSuspiciousEffect();
 				int duration = flower.getEffectDuration();
 				// Reverse for undead mob to apply the expected effect
 				if (entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD)

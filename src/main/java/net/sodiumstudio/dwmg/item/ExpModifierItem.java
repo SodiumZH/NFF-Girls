@@ -46,7 +46,7 @@ public class ExpModifierItem extends Item
     	if (target.getCapability(DwmgCapabilities.CAP_LEVEL_HANDLER).isPresent())
     	{
     		target.getCapability(DwmgCapabilities.CAP_LEVEL_HANDLER).ifPresent(cap -> {
-    			if (!player.level.isClientSide)
+    			if (!player.level().isClientSide)
 	    		{
 	    			if (!player.isShiftKeyDown())
 	    			{
@@ -60,7 +60,7 @@ public class ExpModifierItem extends Item
 	    			}
     			}
     		});
-    		return InteractionResult.sidedSuccess(player.level.isClientSide);
+    		return InteractionResult.sidedSuccess(player.level().isClientSide);
     	}
     	return InteractionResult.PASS;
     }

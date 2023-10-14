@@ -2,56 +2,38 @@ package net.sodiumstudio.dwmg.entities.hmag;
 
 import javax.annotation.Nonnull;
 
-import org.checkerframework.common.returnsreceiver.qual.This;
-
 import com.github.mechalopa.hmag.ModConfigs;
 import com.github.mechalopa.hmag.registry.ModSoundEvents;
 import com.github.mechalopa.hmag.util.ModTags;
-import com.github.mechalopa.hmag.world.entity.JackFrostEntity;
-import com.github.mechalopa.hmag.world.entity.ai.goal.RangedAttackGoal2;
 import com.github.mechalopa.hmag.world.entity.projectile.HardSnowballEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.FrostedIceBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
-import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.nautils.function.MutablePredicate;
 
 /**
@@ -73,36 +55,34 @@ public abstract class HmagJackFrostEntityBase extends Monster implements RangedA
 	{
 		super.aiStep();
 
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide())
 		{
-			if (isMeltingBiome(this, this.level) && !immuneToHotBiomes.test(this))
+			if (isMeltingBiome(this, this.level()) && immuneToHotBiomes.test(this))
 			{
-				this.hurt(DamageSource.ON_FIRE, 1.0F);
+				this.hurt(this.damageSources().onFire(), 1.0F);
 			}
-			else if (ModConfigs.cachedServer.JACK_FROST_FREEZES_WATER && ForgeEventFactory.getMobGriefingEvent(this.level, this))
+			else if (ModConfigs.cachedServer.JACK_FROST_FREEZES_WATER && ForgeEventFactory.getMobGriefingEvent(this.level(), this))
 			{
-				if (this.isOnGround())
+				if (this.onGround())
 				{
 					BlockState blockstate = Blocks.FROSTED_ICE.defaultBlockState();
-					float f = 2.0F;
+					int i = 2;
 					BlockPos blockpos = this.blockPosition();
 					BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
-					for (BlockPos blockpos1 : BlockPos.betweenClosed(blockpos.offset((-f), -1.0D, (-f)), blockpos.offset(f, -1.0D, f)))
+					for (BlockPos blockpos1 : BlockPos.betweenClosed(blockpos.offset(-i, -1, -i), blockpos.offset(i, -1, i)))
 					{
-						if (blockpos1.closerToCenterThan(this.position(), f))
+						if (blockpos1.closerToCenterThan(this.position(), (double)i))
 						{
 							blockpos$mutable.set(blockpos1.getX(), blockpos1.getY() + 1, blockpos1.getZ());
+							BlockState blockstate1 = this.level().getBlockState(blockpos$mutable);
 
-							if (this.level.isEmptyBlock(blockpos$mutable))
+							if (blockstate1.isAir())
 							{
-								BlockState blockstate1 = this.level.getBlockState(blockpos1);
-								boolean isFull = blockstate1.getBlock() == Blocks.WATER && blockstate1.getValue(LiquidBlock.LEVEL) == 0;
-
-								if (blockstate1.getMaterial() == Material.WATER && isFull && blockstate.canSurvive(this.level, blockpos1) && this.level.isUnobstructed(blockstate, blockpos1, CollisionContext.empty()) && !ForgeEventFactory.onBlockPlace(this, BlockSnapshot.create(this.level.dimension(), this.level, blockpos1), Direction.UP))
+								if (this.level().getBlockState(blockpos1) == FrostedIceBlock.meltsInto() && blockstate.canSurvive(this.level(), blockpos1) && this.level().isUnobstructed(blockstate, blockpos1, CollisionContext.empty()) && !ForgeEventFactory.onBlockPlace(this, BlockSnapshot.create(this.level().dimension(), this.level(), blockpos1), Direction.UP))
 								{
-									this.level.setBlockAndUpdate(blockpos1, blockstate);
-									this.level.scheduleTick(blockpos1, Blocks.FROSTED_ICE, Mth.nextInt(this.getRandom(), 60, 120));
+									this.level().setBlockAndUpdate(blockpos1, blockstate);
+									this.level().scheduleTick(blockpos1, Blocks.FROSTED_ICE, Mth.nextInt(this.getRandom(), 60, 120));
 								}
 							}
 						}
@@ -112,11 +92,9 @@ public abstract class HmagJackFrostEntityBase extends Monster implements RangedA
 		}
 	}
 
-	protected static boolean isMeltingBiome(Entity enity, Level level)
+	protected static boolean isMeltingBiome(Entity entity, Level level)
 	{
-		BlockPos blockpos = new BlockPos(Mth.floor(enity.getX()), Mth.floor(enity.getY()), Mth.floor(enity.getZ()));
-		Holder<Biome> holder = level.getBiome(blockpos);
-		return holder.value().shouldSnowGolemBurn(blockpos) && !holder.containsTag(ModTags.BiomeTags.MELTS_JACK_FROSTS_BLACKLIST);
+		return entity.level().getBiome(entity.blockPosition()).is(ModTags.BiomeTags.JACK_FROST_MELTS);
 	}
 
 	@Override
@@ -136,7 +114,7 @@ public abstract class HmagJackFrostEntityBase extends Monster implements RangedA
 	@Override
 	public boolean hurt(DamageSource source, float amount)
 	{
-		if (source.isFire())
+		if (source.is(DamageTypes.IN_FIRE))
 		{
 			amount = amount * 2.0F;
 		}
@@ -166,7 +144,7 @@ public abstract class HmagJackFrostEntityBase extends Monster implements RangedA
 		double yOffset = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ) * 0.05D;
 		snowball.shoot(deltaX, deltaY + yOffset, deltaZ, getShootSpeed(), getShootInaccuracy());
 		snowball.setDamage(getShootDamage());
-		this.level.addFreshEntity(snowball);
+		this.level().addFreshEntity(snowball);
 	}
 	
 	public void throwSnowball(Vec3 direction)
@@ -176,7 +154,7 @@ public abstract class HmagJackFrostEntityBase extends Monster implements RangedA
 		HardSnowballEntity snowball = getNewSnowball();
 		snowball.shoot(n.x, n.y, n.z, getShootSpeed(), getShootInaccuracy());
 		snowball.setDamage(getShootDamage());
-		this.level.addFreshEntity(snowball);
+		this.level().addFreshEntity(snowball);
 	}
 	
 	public void playThrowingSound()
@@ -186,7 +164,7 @@ public abstract class HmagJackFrostEntityBase extends Monster implements RangedA
 	
 	protected HardSnowballEntity getNewSnowball()
 	{
-		return new HardSnowballEntity(this.level, this);
+		return new HardSnowballEntity(this.level(), this);
 	}
 	
 	protected float getShootSpeed()
@@ -248,7 +226,7 @@ public abstract class HmagJackFrostEntityBase extends Monster implements RangedA
 
 	@Nonnull
 	@Override
-	public Packet<?> getAddEntityPacket()
+	public Packet<ClientGamePacketListener> getAddEntityPacket()
 	{
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}

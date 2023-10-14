@@ -26,7 +26,7 @@ public class GuiNecroticReaper extends GuiPreset0
 		this.addBaubleSlotBg(graphics, 3, leftRowPos().slotBelow());
 		this.addBaubleSlotBg(graphics, 4, rightRowPos());
 		this.addBaubleSlotBg(graphics, 5, rightRowPos().slotBelow());
-		this.addMobRenderBox(graphics, MobRenderBoxStyle.DARK;
+		this.addMobRenderBox(graphics, MobRenderBoxStyle.DARK);
 		this.addInfoBox(graphics);
 		this.addAttributeInfo(graphics, infoPos());
 		this.renderMob(graphics);

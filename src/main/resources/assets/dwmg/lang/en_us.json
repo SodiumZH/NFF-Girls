@@ -81,6 +81,8 @@
   "entity.dwmg.hmag_glaryad": "Glaryad",
   "entity.dwmg.hmag_crimson_slaughterer": "Crimson Slaughterer",
   "entity.dwmg.hmag_cursed_doll": "Cursed Doll",
+  "entity.dwmg.hmag_redcap": "Redcap",
+  "entity.dwmg.hmag_jack_frost": "Jack o' Frost",
   
   "info.dwmg.necrotic_reaper_not_controllable": "To give command to the Necrotic Reaper, you must have a Necromancer's Hat or Necromancer's Wand.",
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "To open Necrotic Reaper's inventory, you must have a Necromancer's Hat or Necromancer's Wand.",

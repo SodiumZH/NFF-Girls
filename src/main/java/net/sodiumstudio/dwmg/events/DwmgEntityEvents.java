@@ -114,6 +114,7 @@ import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 import net.sodiumstudio.dwmg.events.hooks.DwmgHooks;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
+import net.sodiumstudio.dwmg.registries.DwmgDamageSources;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -612,7 +613,7 @@ public class DwmgEntityEvents
 					if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
 					{
 						if (event.getEntity().getHealth() <= 1f)
-							event.getEntity().die(DwmgDamageSources.NECROMANCER_WITHER);
+							event.getEntity().die(/*DwmgDamageSources.NECROMANCER_WITHER*/event.getEntity().damageSources().wither());
 						else event.getEntity().setHealth(event.getEntity().getHealth() - 1);
 					}
 				}
