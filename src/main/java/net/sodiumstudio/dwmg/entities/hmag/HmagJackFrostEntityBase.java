@@ -112,11 +112,13 @@ public abstract class HmagJackFrostEntityBase extends Monster implements RangedA
 		}
 	}
 
-	protected static boolean isMeltingBiome(Entity enity, Level level)
+	protected static boolean isMeltingBiome(Entity entity, Level level)
 	{
-		BlockPos blockpos = new BlockPos(Mth.floor(enity.getX()), Mth.floor(enity.getY()), Mth.floor(enity.getZ()));
-		Holder<Biome> holder = level.getBiome(blockpos);
-		return holder.value().shouldSnowGolemBurn(blockpos) && !holder.containsTag(ModTags.BiomeTags.MELTS_JACK_FROSTS_BLACKLIST);
+		int i = Mth.floor(entity.getX());
+		int j = Mth.floor(entity.getY());
+		int k = Mth.floor(entity.getZ());
+		BlockPos blockpos = new BlockPos(i, j, k);
+		return ((Biome)entity.level.getBiome(blockpos).value()).shouldSnowGolemBurn(blockpos);
 	}
 
 	@Override

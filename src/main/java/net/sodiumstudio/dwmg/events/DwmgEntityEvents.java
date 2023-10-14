@@ -6,13 +6,11 @@ import java.util.function.Predicate;
 import com.github.mechalopa.hmag.HMaG;
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.CreeperGirlEntity;
-import com.github.mechalopa.hmag.world.entity.DyssomniaEntity;
 import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
 import com.github.mechalopa.hmag.world.entity.HarpyEntity;
 import com.github.mechalopa.hmag.world.entity.ImpEntity;
 import com.github.mechalopa.hmag.world.entity.JackFrostEntity;
-import com.github.mechalopa.hmag.world.entity.JiangshiEntity;
 import com.github.mechalopa.hmag.world.entity.KoboldEntity;
 import com.github.mechalopa.hmag.world.entity.RedcapEntity;
 import com.github.mechalopa.hmag.world.entity.SnowCanineEntity;
@@ -37,7 +35,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.Ghast;
-import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.monster.WitherSkeleton;
@@ -79,7 +76,6 @@ import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
-import net.sodiumstudio.befriendmobs.entity.capability.CAttributeMonitor;
 import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
 import net.sodiumstudio.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
@@ -117,7 +113,6 @@ import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.MiscUtil;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
-import net.sodiumstudio.nautils.TagHelper;
 import net.sodiumstudio.nautils.Wrapped;
 
 @SuppressWarnings("removal")
@@ -594,9 +589,9 @@ public class DwmgEntityEvents
 					int ampl = event.getEntityLiving().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
 					if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
 					{
-						if (event.getEntity().getHealth() <= 1f)
-							event.getEntity().die(DwmgDamageSources.NECROMANCER_WITHER);
-						else event.getEntity().setHealth(event.getEntity().getHealth() - 1);
+						if (event.getEntityLiving().getHealth() <= 1f)
+							event.getEntityLiving().die(DwmgDamageSources.NECROMANCER_WITHER);
+						else event.getEntityLiving().setHealth(event.getEntityLiving().getHealth() - 1);
 					}
 				}
 			}
