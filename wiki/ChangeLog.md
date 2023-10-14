@@ -445,6 +445,14 @@ Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.20.1
 
+### 0.2.17
+
+Updated HMaG dependency version to 9.0.2.
+
+All other changes in 1.19.2-0.1.17.
+
+Fixed possible compatibility issues of the feature that Jiangshi, Necrotic Reaper and Ender Executor keeping hostile during befriending process.
+
 ### 0.2.16.2
 
 Identical to 1.19.2-0.1.16.3.
