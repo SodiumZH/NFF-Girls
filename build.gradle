@@ -27,7 +27,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 }*/
 
 
-version = '0.1.17'
+version = '0.1.17.1'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'dwmg-1.19.2'
 
