@@ -77,380 +77,377 @@ import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
 {
-		/* Data sync */
+	/* Data sync */
 
-		protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-				.defineId(HmagBansheeEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-		protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-				.defineId(HmagBansheeEntity.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
+			.defineId(HmagBansheeEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
+			.defineId(HmagBansheeEntity.class, EntityDataSerializers.INT);
 
-		@Override
-		protected void defineSynchedData() {
-			super.defineSynchedData();
-			entityData.define(DATA_OWNERUUID, Optional.empty());
-			entityData.define(DATA_AISTATE, 1);
-		}
-		
-		@Override
-		public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-			return DATA_OWNERUUID;
-		}
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(DATA_OWNERUUID, Optional.empty());
+		entityData.define(DATA_AISTATE, 1);
+	}
 
-		@Override
-		public EntityDataAccessor<Integer> getAIStateData() {
-			return DATA_AISTATE;
-		}
+	@Override
+	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
+		return DATA_OWNERUUID;
+	}
 
-		/* Initialization */
+	@Override
+	public EntityDataAccessor<Integer> getAIStateData() {
+		return DATA_AISTATE;
+	}
 
-		public HmagBansheeEntity(EntityType<? extends HmagBansheeEntity> pEntityType, Level pLevel) {
-			super(pEntityType, pLevel);
-			this.xpReward = 0;
-			Arrays.fill(this.armorDropChances, 0);
-			Arrays.fill(this.handDropChances, 0);
-		}
+	/* Initialization */
 
-		@Deprecated
-		public static Builder createAttributes() {
-			return Monster.createMonsterAttributes()
-					.add(Attributes.MAX_HEALTH, 40.0D)
-					.add(Attributes.MOVEMENT_SPEED, 0.24D)
-					.add(Attributes.ATTACK_DAMAGE, 6.0D)
-					.add(Attributes.KNOCKBACK_RESISTANCE, 0.25D)
-					.add(Attributes.FOLLOW_RANGE, 24.0D);
-		}
+	public HmagBansheeEntity(EntityType<? extends HmagBansheeEntity> pEntityType, Level pLevel)
+	{
+		super(pEntityType, pLevel);
+		this.xpReward = 0;
+		Arrays.fill(this.armorDropChances, 0);
+		Arrays.fill(this.handDropChances, 0);
+	}
 
-		/* AI */
+	@Deprecated
+	public static Builder createAttributes() {
+		return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.24D)
+				.add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.25D)
+				.add(Attributes.FOLLOW_RANGE, 24.0D);
+	}
 
-		@Override
-		protected void registerGoals() {
-			this.goalSelector.addGoal(0, new FloatGoal(this));
-			this.goalSelector.addGoal(5, new BefriendedFlyingLandGoal(this));
-			this.goalSelector.addGoal(4, new HmagFlyingGoal.ChargeAttackGoal(this, 0.5D, 1.5F, 6));
-			// this.goalSelector.addGoal(4, new BefriendedMeleeAttackGoal(this, 1d, false));
-			this.goalSelector.addGoal(6, new DwmgBefriendedFlyingFollowOwnerGoal(this));
-			this.goalSelector.addGoal(8, new BefriendedFlyingRandomMoveGoal(this).heightLimit(10));
-			this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
-			this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
-			this.goalSelector.addGoal(11, new RandomLookAroundGoal(this));
-			targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
-			targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
-			targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
-			targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
-			targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
-		}
+	/* AI */
 
-		/* Interaction */
+	@Override
+	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new FloatGoal(this));
+		this.goalSelector.addGoal(5, new BefriendedFlyingLandGoal(this));
+		this.goalSelector.addGoal(4, new HmagFlyingGoal.ChargeAttackGoal(this, 0.5D, 1.5F, 6));
+		// this.goalSelector.addGoal(4, new BefriendedMeleeAttackGoal(this, 1d, false));
+		this.goalSelector.addGoal(6, new DwmgBefriendedFlyingFollowOwnerGoal(this));
+		this.goalSelector.addGoal(8, new BefriendedFlyingRandomMoveGoal(this).heightLimit(10));
+		this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
+		this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
+		this.goalSelector.addGoal(11, new RandomLookAroundGoal(this));
+		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
+		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
+		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
+		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
+		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
+	}
 
-		// Map items that can heal the mob and healing values here.
-		// Leave it empty if you don't need healing features.
-		@Override
-		public HashMap<Item, Float> getHealingItems()
+	/* Interaction */
+
+	// Map items that can heal the mob and healing values here.
+	// Leave it empty if you don't need healing features.
+	@Override
+	public HashMap<Item, Float> getHealingItems() {
+		return DwmgBMStatics.UNDEAD_DEFAULT_HEALING_ITEMS;
+	}
+
+	// Set of items that can heal the mob WITHOUT CONSUMING.
+	// Leave it empty if not needed.
+	@Override
+	public HashSet<Item> getNonconsumingHealingItems() {
+		HashSet<Item> set = new HashSet<Item>();
+		// set.add(YOUR_ITEM_TYPE);
+		return set;
+	}
+
+	@Override
+	public InteractionResult mobInteract(Player player, InteractionHand hand) {
+		if (player.getUUID().equals(getOwnerUUID()))
 		{
-			return DwmgBMStatics.UNDEAD_DEFAULT_HEALING_ITEMS;
-		}
-		
-		// Set of items that can heal the mob WITHOUT CONSUMING.
-		// Leave it empty if not needed.
-		@Override
-		public HashSet<Item> getNonconsumingHealingItems()
-		{
-			HashSet<Item> set = new HashSet<Item>();
-			// set.add(YOUR_ITEM_TYPE);
-			return set;
-		}
-		
-		@Override
-		public InteractionResult mobInteract(Player player, InteractionHand hand)
-		{	
-			if (player.getUUID().equals(getOwnerUUID())) {
-				// For normal interaction
-				if (!player.isShiftKeyDown())
+			// For normal interaction
+			if (!player.isShiftKeyDown())
+			{
+				if (!player.level().isClientSide())
 				{
-					if (!player.level().isClientSide()) 
+					/* Put checks before healing item check */
+					/*
+					 * if (....) { .... } else
+					 */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
+					// The function above returns PASS when the items are not correct. So when not
+					// PASS it should stop here
+					else if (hand == InteractionHand.MAIN_HAND
+							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 					{
-						/* Put checks before healing item check */
-						/* if (....)
-						 {
-						 	....
-						 }
-						else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-							return InteractionResult.sidedSuccess(player.level().isClientSide);
-						// The function above returns PASS when the items are not correct. So when not PASS it should stop here
-						else if (hand == InteractionHand.MAIN_HAND 
-								&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
-						{
-							switchAIState();
-						}
-						// Here it's main hand but no interaction. Return pass to enable off hand interaction.
-						else return InteractionResult.PASS;
+						switchAIState();
 					}
-					// Interacted
+					// Here it's main hand but no interaction. Return pass to enable off hand
+					// interaction.
+					else
+						return InteractionResult.PASS;
+				}
+				// Interacted
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
+			}
+			// For interaction with shift key down
+			else
+			{
+				// Open inventory and GUI
+				if (hand == InteractionHand.MAIN_HAND
+						&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
+				{
+					BefriendedHelper.openBefriendedInventory(player, this);
 					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
-				// For interaction with shift key down
-				else
-				{
-					// Open inventory and GUI
-					if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
-					{
-						BefriendedHelper.openBefriendedInventory(player, this);
-						return InteractionResult.sidedSuccess(player.level().isClientSide);
-					}
-				}
-			} 
+			}
+		}
 
-			// Always pass when not owning this mob
-			return InteractionResult.PASS;
-		}
-		
-		/** Flower Effects **/
-		
-		protected int allyEffectCooldown = 300;
-		protected int addEffectTimePoint = new Random().nextInt(allyEffectCooldown);
-		protected FlowerBlock lastFlower = null;
-		
-		@Nullable
-		protected FlowerBlock getFlowerOnOffhand()
+		// Always pass when not owning this mob
+		return InteractionResult.PASS;
+	}
+
+	/** Flower Effects **/
+
+	protected int allyEffectCooldown = 300;
+	protected int addEffectTimePoint = new Random().nextInt(allyEffectCooldown);
+	protected FlowerBlock lastFlower = null;
+
+	@Nullable
+	protected FlowerBlock getFlowerOnOffhand() {
+		if (this.getItemBySlot(EquipmentSlot.OFFHAND).isEmpty())
+			return null;
+		Item item = this.getItemBySlot(EquipmentSlot.OFFHAND).getItem();
+		if (item instanceof BlockItem blockitem && blockitem.getBlock() instanceof FlowerBlock flower)
+			return flower;
+		else
+			return null;
+	}
+
+	protected void applyEnemyEffect(LivingEntity target) {
+		if (!this.level().isClientSide)
 		{
-			if (this.getItemBySlot(EquipmentSlot.OFFHAND).isEmpty())
-				return null;
-			Item item = this.getItemBySlot(EquipmentSlot.OFFHAND).getItem();
-			if (item instanceof BlockItem blockitem && blockitem.getBlock() instanceof FlowerBlock flower)
-				return flower;
-			else return null;
-		}
-		
-		protected void applyEnemyEffect(LivingEntity target)
-		{
-			if (!this.level().isClientSide)
+			FlowerBlock flower = getFlowerOnOffhand();
+			if (flower == null)
+				return;
+			MobEffect effect = flower.getSuspiciousEffect();
+			int duration = flower.getEffectDuration();
+
+			// Reverse for undead mob to apply the expected effect
+			if (target instanceof Mob mob && mob.getMobType() == MobType.UNDEAD)
 			{
-				FlowerBlock flower = getFlowerOnOffhand();
-				if (flower == null)
-					return;
+				if (effect == MobEffects.HEAL)
+					effect = MobEffects.HARM;
+				else if (effect == MobEffects.HARM)
+					effect = MobEffects.HEAL;
+			}
+
+			if (effect.getCategory() != MobEffectCategory.BENEFICIAL)
+				EntityHelper.addEffectSafe(target, new MobEffectInstance(effect, duration, 0));
+		}
+	}
+
+	protected void applyAllyEffect() {
+		if (!this.level().isClientSide)
+		{
+			// Add effect each 15s
+			if (this.tickCount % 300 != addEffectTimePoint)
+				return;
+			FlowerBlock flower = getFlowerOnOffhand();
+			if (flower == null)
+				return;
+
+			// Block harmful effect first
+			if (flower.getSuspiciousEffect().getCategory() == MobEffectCategory.HARMFUL
+					&& flower.getSuspiciousEffect() != MobEffects.HARM)
+				return;
+
+			// Applie on owner and owner's other befriended mobs/tamed animals
+			List<Entity> entities = this.level().getEntities(this,
+					new AABB(this.position().add(-8, -8, -8), this.position().add(8, 8, 8)));
+			entities = entities.stream().filter(e ->
+			{
+				if (e instanceof Player player && player == this.getOwner())
+					return true;
+				else if (e instanceof IBefriendedMob bm && bm.getOwner() == this.getOwner())
+					return true;
+				else if (e instanceof TamableAnimal ta && ta.getOwner() == this.getOwner())
+					return true;
+				else
+					return false;
+			}).toList();
+
+			for (Entity entity : entities)
+			{
 				MobEffect effect = flower.getSuspiciousEffect();
 				int duration = flower.getEffectDuration();
-				
 				// Reverse for undead mob to apply the expected effect
-				if (target instanceof Mob mob && mob.getMobType() == MobType.UNDEAD)
+				if (entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD)
 				{
 					if (effect == MobEffects.HEAL)
 						effect = MobEffects.HARM;
 					else if (effect == MobEffects.HARM)
 						effect = MobEffects.HEAL;
 				}
-				
-				if (effect.getCategory() != MobEffectCategory.BENEFICIAL)
-					EntityHelper.addEffectSafe(target, new MobEffectInstance(effect, duration, 0));
+				if (effect.getCategory() != MobEffectCategory.HARMFUL)
+					EntityHelper.addEffectSafe((LivingEntity) entity, new MobEffectInstance(effect, duration, 0));
 			}
 		}
-		
-		protected void applyAllyEffect()
+	}
+
+	public void removeDefaultEffects(LivingEntity target) {
+		int time = this.level().getDifficulty() == Difficulty.NORMAL ? 7 * 20
+				: (this.level().getDifficulty() == Difficulty.HARD ? 15 * 20 : 0);
+		if (target.getEffect(MobEffects.HUNGER) == null || target.getEffect(MobEffects.HUNGER).getDuration() <= time
+				&& target.getEffect(MobEffects.HUNGER).getAmplifier() == 0)
+			target.removeEffect(MobEffects.HUNGER);
+		if (target.getEffect(MobEffects.WEAKNESS) == null || target.getEffect(MobEffects.WEAKNESS).getDuration() <= time
+				&& target.getEffect(MobEffects.WEAKNESS).getAmplifier() == 0)
+			target.removeEffect(MobEffects.WEAKNESS);
+	}
+
+	@Override
+	public boolean doHurtTarget(Entity target) {
+		if (super.doHurtTarget(target))
 		{
-			if (!this.level().isClientSide)
+			if (target instanceof LivingEntity living)
 			{
-				// Add effect each 15s
-				if (this.tickCount % 300 != addEffectTimePoint)
-					return;
-				FlowerBlock flower = getFlowerOnOffhand();
-				if (flower == null)
-					return;
-				
-				// Block harmful effect first
-				if (flower.getSuspiciousEffect().getCategory() == MobEffectCategory.HARMFUL && 
-						flower.getSuspiciousEffect() != MobEffects.HARM)
-					return;
-								
-				// Applie on owner and owner's other befriended mobs/tamed animals
-				List<Entity> entities = this.level().getEntities(this, new AABB(this.position().add(-8, -8, -8), this.position().add(8, 8, 8)));
-				entities = entities.stream().filter(e -> 
-				{
-					if (e instanceof Player player && player == this.getOwner())
-						return true;
-					else if (e instanceof IBefriendedMob bm && bm.getOwner() == this.getOwner())
-						return true;
-					else if (e instanceof TamableAnimal ta && ta.getOwner() == this.getOwner())
-						return true;
-					else return false;
-				}).toList();
-				
-				for (Entity entity: entities)
-				{
-					MobEffect effect = flower.getSuspiciousEffect();
-					int duration = flower.getEffectDuration();
-					// Reverse for undead mob to apply the expected effect
-					if (entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD)
-					{
-						if (effect == MobEffects.HEAL)
-							effect = MobEffects.HARM;
-						else if (effect == MobEffects.HARM)
-							effect = MobEffects.HEAL;
-					}
-					if (effect.getCategory() != MobEffectCategory.HARMFUL)
-						EntityHelper.addEffectSafe((LivingEntity) entity, new MobEffectInstance(effect, duration, 0));
-				}
+				removeDefaultEffects(living);
+				applyEnemyEffect(living);
 			}
-		}
-		
-		
-		public void removeDefaultEffects(LivingEntity target)
-		{
-			int time = this.level().getDifficulty() == Difficulty.NORMAL ? 7 * 20 : (
-					this.level().getDifficulty() == Difficulty.HARD ? 15 * 20 : 0) ;
-			if (target.getEffect(MobEffects.HUNGER) == null || 
-					target.getEffect(MobEffects.HUNGER).getDuration() <= time && target.getEffect(MobEffects.HUNGER).getAmplifier() == 0)
-				target.removeEffect(MobEffects.HUNGER);
-			if (target.getEffect(MobEffects.WEAKNESS) == null || 
-					target.getEffect(MobEffects.WEAKNESS).getDuration() <= time && target.getEffect(MobEffects.WEAKNESS).getAmplifier() == 0)
-				target.removeEffect(MobEffects.WEAKNESS);
-		}
-
-		@Override
-		public boolean doHurtTarget(Entity target)
-		{
-			if (super.doHurtTarget(target))
-			{
-				if (target instanceof LivingEntity living)
-				{
-					removeDefaultEffects(living);
-					applyEnemyEffect(living);
-				}
-				return true;
-			}
-			return false;
-		}
-		
-		@Override
-		public void aiStep() {
-			if (!this.level().isClientSide)
-			{
-				DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
-				super.aiStep();
-				DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, ItemStack.EMPTY);
-				applyAllyEffect();
-				if (!this.level().isClientSide)
-				{
-					FlowerBlock flower = this.getFlowerOnOffhand();
-					if (flower != null && flower != lastFlower)
-					{
-						addEffectTimePoint = this.random.nextInt(allyEffectCooldown);
-						lastFlower = flower;
-					}
-				}
-			}
-		}
-				
-		/** Inventory **/
-
-		// This enables mob armor and hand items by default.
-		// If not needed, use BefriendedInventory class instead.
-		protected BefriendedInventoryWithHandItems additionalInventory = new BefriendedInventoryWithHandItems(getInventorySize(), this);
-
-		@Override
-		public BefriendedInventory getAdditionalInventory()
-		{
-			return additionalInventory;
-		}
-		
-		@Override
-		public int getInventorySize()
-		{
-			// mainhand, offhand, 3 baubles
-			return 5;
-		}
-
-		@Override
-		public void updateFromInventory() {
-			if (!this.level().isClientSide) {
-				// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-				additionalInventory.setMobEquipment(this);
-			}
-		}
-
-		@Override
-		public void setInventoryFromMob()
-		{
-			if (!this.level().isClientSide) {
-				// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-				additionalInventory.getFromMob(this);
-			}
-			return;
-		}
-
-		@Override
-		public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-			return new InventoryMenuBanshee(containerId, playerInventory, container, this);
-		}
-
-		/* IBaubleEquipable interface */
-		
-
-		@Override
-		public HashMap<String, ItemStack> getBaubleSlots() {
-			HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
-			map.put("0", this.getAdditionalInventory().getItem(2));
-			map.put("1", this.getAdditionalInventory().getItem(3));
-			map.put("2", this.getAdditionalInventory().getItem(4));
-			return map;
-		}
-
-		@Override
-		public BaubleHandler getBaubleHandler() {
-			return DwmgBaubleHandlers.UNDEAD;
-		}
-
-		@Override
-		public void setupSunImmunityRules() {
-			this.sunImmuneConditions().put("soul_amulet", () -> this.hasDwmgBauble("soul_amulet"));
-			this.sunImmuneConditions().put("resis_amulet", () -> this.hasDwmgBauble("resistance_amulet"));
-		}
-		
-		/* Save and Load */
-		
-		@Override
-		public void addAdditionalSaveData(CompoundTag nbt) {
-			super.addAdditionalSaveData(nbt);
-			BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-			// Add other data to save here
-		}
-
-		@Override
-		public void readAdditionalSaveData(CompoundTag nbt) {
-			super.readAdditionalSaveData(nbt);
-			BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-			// Add other data reading here
-			setInit();
-		}
-
-		// Misc
-		
-		// Indicates which mod this mob belongs to
-		@Override
-		public String getModId() {
-			return Dwmg.MOD_ID;
-		}
-		
-		// ==================================================================== //
-		// ========================= General Settings ========================= //
-		// Generally these can be copy-pasted to other IBefriendedMob classes //
-
-		@Override
-		public boolean isPersistenceRequired() {
 			return true;
 		}
-
-		@Override
-		public boolean isPreventingPlayerRest(Player pPlayer) {
-			return false;
-		}
-
-		@Override
-		protected boolean shouldDespawnInPeaceful() {
-			return false;
-		}
-
-		// ========================= General Settings end ========================= //
-		// ======================================================================== //
-
+		return false;
 	}
+
+	@Override
+	public void aiStep() {
+		if (!this.level().isClientSide)
+		{
+			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD,
+					this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
+			super.aiStep();
+			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, ItemStack.EMPTY);
+			applyAllyEffect();
+			if (!this.level().isClientSide)
+			{
+				FlowerBlock flower = this.getFlowerOnOffhand();
+				if (flower != null && flower != lastFlower)
+				{
+					addEffectTimePoint = this.random.nextInt(allyEffectCooldown);
+					lastFlower = flower;
+				}
+			}
+		}
+	}
+
+	/** Inventory **/
+
+	// This enables mob armor and hand items by default.
+	// If not needed, use BefriendedInventory class instead.
+	protected BefriendedInventoryWithHandItems additionalInventory = new BefriendedInventoryWithHandItems(
+			getInventorySize(), this);
+
+	@Override
+	public BefriendedInventory getAdditionalInventory() {
+		return additionalInventory;
+	}
+
+	@Override
+	public int getInventorySize() {
+		// mainhand, offhand, 3 baubles
+		return 5;
+	}
+
+	@Override
+	public void updateFromInventory() {
+		if (!this.level().isClientSide)
+		{
+			// Sync inventory with mob equipments. If it's not
+			// BefriendedInventoryWithEquipment, remove it
+			additionalInventory.setMobEquipment(this);
+		}
+	}
+
+	@Override
+	public void setInventoryFromMob() {
+		if (!this.level().isClientSide)
+		{
+			// Sync inventory with mob equipments. If it's not
+			// BefriendedInventoryWithEquipment, remove it
+			additionalInventory.getFromMob(this);
+		}
+		return;
+	}
+
+	@Override
+	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
+		return new InventoryMenuBanshee(containerId, playerInventory, container, this);
+	}
+
+	/* IBaubleEquipable interface */
+
+	@Override
+	public HashMap<String, ItemStack> getBaubleSlots() {
+		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
+		map.put("0", this.getAdditionalInventory().getItem(2));
+		map.put("1", this.getAdditionalInventory().getItem(3));
+		map.put("2", this.getAdditionalInventory().getItem(4));
+		return map;
+	}
+
+	@Override
+	public BaubleHandler getBaubleHandler() {
+		return DwmgBaubleHandlers.UNDEAD;
+	}
+
+	@Override
+	public void setupSunImmunityRules() {
+		this.sunImmuneConditions().put("soul_amulet", () -> this.hasDwmgBauble("soul_amulet"));
+		this.sunImmuneConditions().put("resis_amulet", () -> this.hasDwmgBauble("resistance_amulet"));
+	}
+
+	/* Save and Load */
+
+	@Override
+	public void addAdditionalSaveData(CompoundTag nbt) {
+		super.addAdditionalSaveData(nbt);
+		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
+		// Add other data to save here
+	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag nbt) {
+		super.readAdditionalSaveData(nbt);
+		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
+		// Add other data reading here
+		setInit();
+	}
+
+	// Misc
+
+	// Indicates which mod this mob belongs to
+	@Override
+	public String getModId() {
+		return Dwmg.MOD_ID;
+	}
+
+	// ==================================================================== //
+	// ========================= General Settings ========================= //
+	// Generally these can be copy-pasted to other IBefriendedMob classes //
+
+	@Override
+	public boolean isPersistenceRequired() {
+		return true;
+	}
+
+	@Override
+	public boolean isPreventingPlayerRest(Player pPlayer) {
+		return false;
+	}
+
+	@Override
+	protected boolean shouldDespawnInPeaceful() {
+		return false;
+	}
+
+	// ========================= General Settings end ========================= //
+	// ======================================================================== //
+
+}
 
