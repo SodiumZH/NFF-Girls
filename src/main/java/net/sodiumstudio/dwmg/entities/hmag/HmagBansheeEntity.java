@@ -11,6 +11,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.github.mechalopa.hmag.world.entity.BansheeEntity;
+import com.github.mechalopa.hmag.world.entity.HarpyEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -61,6 +62,7 @@ import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.MiscUtil;
+import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingLandGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomMoveGoal;
@@ -85,6 +87,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 			.defineId(HmagBansheeEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
 			.defineId(HmagBansheeEntity.class, EntityDataSerializers.INT);
+	
 
 	@Override
 	protected void defineSynchedData() {
@@ -120,6 +123,15 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 				.add(Attributes.FOLLOW_RANGE, 24.0D);
 	}
 
+	@Override
+	public void onInit(UUID playerUUID, Mob from)
+	{
+		if (from instanceof BansheeEntity b)
+		{
+			this.setVariant(b.getVariant());
+		}
+	}
+	
 	/* AI */
 
 	@Override
@@ -437,6 +449,11 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 		return Dwmg.MOD_ID;
 	}
 
+	public void setVariant(int type)
+	{
+		ReflectHelper.forceInvoke(this, BansheeEntity.class, "setVariant", int.class, type);
+	}
+	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //

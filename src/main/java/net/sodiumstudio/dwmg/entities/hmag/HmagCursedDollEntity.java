@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.github.mechalopa.hmag.registry.ModItems;
+import com.github.mechalopa.hmag.world.entity.BansheeEntity;
 import com.github.mechalopa.hmag.world.entity.CursedDollEntity;
 
 import net.minecraft.nbt.CompoundTag;
@@ -23,6 +24,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -62,6 +64,7 @@ import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
 
 public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob {
@@ -96,7 +99,16 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 		super(pEntityType, pLevel);
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
+		
 		Arrays.fill(this.handDropChances, 0);
+	}
+	@Override
+	public void onInit(UUID playerUUID, Mob from)
+	{
+		if (from instanceof CursedDollEntity c)
+		{
+			this.setVariant(c.getVariant());
+		}
 	}
 	
 	/* AI */
@@ -371,6 +383,11 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 	@Override
 	public String getModId() {
 		return Dwmg.MOD_ID;
+	}
+	
+	public void setVariant(int type)
+	{
+		ReflectHelper.forceInvoke(this, CursedDollEntity.class, "setVariant", int.class, type);
 	}
 	
 	// Sounds
