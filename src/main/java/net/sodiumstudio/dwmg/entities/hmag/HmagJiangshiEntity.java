@@ -8,6 +8,8 @@ import java.util.UUID;
 
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.registry.ModSoundEvents;
+import com.github.mechalopa.hmag.world.entity.BansheeEntity;
+import com.github.mechalopa.hmag.world.entity.HarpyEntity;
 import com.github.mechalopa.hmag.world.entity.JiangshiEntity;
 import com.github.mechalopa.hmag.world.entity.ai.goal.LeapAtTargetGoal2;
 
@@ -23,6 +25,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -62,6 +65,7 @@ import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
 
 public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
@@ -100,6 +104,15 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 		Arrays.fill(this.handDropChances, 0);
 	}
 
+	@Override
+	public void onInit(UUID playerUUID, Mob from)
+	{
+		if (from instanceof JiangshiEntity js)
+		{
+			this.setVariant(js.getVariant());
+		}
+	}
+	
 	/* AI */
 
 	@Override
@@ -292,6 +305,11 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 	@Override
 	public String getModId() {
 		return Dwmg.MOD_ID;
+	}
+	
+	public void setVariant(int type)
+	{
+		ReflectHelper.forceInvoke(this, JiangshiEntity.class, "setVariant", int.class, type);
 	}
 	
 	// Sounds
