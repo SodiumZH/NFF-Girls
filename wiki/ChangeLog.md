@@ -2,6 +2,14 @@
 
 ## 1.19.2
 
+### 0.1.17.1
+
+Fixed Jack o' Frost (HMaG) not spawning.
+
+Fixed Banshee, Cursed Doll and Jiangshi not maintaining the color variant on befriended.
+
+Fixed Redcap and Jack o' Frost missing name.
+
 ### 0.1.17
 
 Updated HMaG dependency to 6.2.5.
