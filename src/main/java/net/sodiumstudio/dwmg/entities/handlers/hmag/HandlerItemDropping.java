@@ -100,7 +100,7 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 		if (itemEntity.getThrower() == null || mob.level.getPlayerByUUID(itemEntity.getThrower()) == null)
 			return false;
 		// If in hatred, pass
-		if (CBefriendableMob.getCap(mob).getHatred().contains(itemEntity.getThrower()))
+		if (CBefriendableMob.getCap(mob) != null && CBefriendableMob.getCap(mob).getHatred().contains(itemEntity.getThrower()))
 			return false;
 		// If the item is still in picking cooldown for the mob, pass
 		if (itemEntity.getItem().getOrCreateTagElement("already_picked_befriendable_mobs").contains(mob.getStringUUID(), NbtHelper.TAG_INT_ID)
