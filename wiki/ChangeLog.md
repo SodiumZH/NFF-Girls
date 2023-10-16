@@ -461,6 +461,10 @@ All other changes in 1.19.2-0.1.17.
 
 Fixed possible compatibility issues of the feature that Jiangshi, Necrotic Reaper and Ender Executor keeping hostile during befriending process.
 
+Fixed Banshee, Cursed Doll and Jiangshi not maintaining the color variant on befriended.
+
+Fixed some random crashes on successfully befriending mobs using Item-Dropping Process.
+
 ### 0.2.16.2
 
 Identical to 1.19.2-0.1.16.3.
