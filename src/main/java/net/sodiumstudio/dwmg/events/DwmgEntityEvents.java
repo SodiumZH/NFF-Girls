@@ -77,6 +77,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.bmevents.entity.MobBefriendedEvent;
 import net.sodiumstudio.befriendmobs.bmevents.entity.ai.BefriendedChangeAiStateEvent;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
+import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
@@ -104,6 +105,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagGhastlySeekerEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHornetEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHuskGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagJiangshiEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagMeltyMonsterEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSkeletonGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagStrayGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagWitherSkeletonGirlEntity;
@@ -610,8 +612,37 @@ public class DwmgEntityEvents
 					}
 				}
 			}
-
-
+			/** Handle {@link HmagMeltyMonsterEntity} lava acceleration effect */
+			if (event.getEntity() instanceof Player player)
+			{
+				List<HmagMeltyMonsterEntity> list = BefriendedHelper.getOwningMobsInArea(player, DwmgEntityTypes.HMAG_MELTY_MONSTER.get(), 16d, true);
+				if (list.size() > 0 && player.isInLava())
+					EntityHelper.addModifierIfAbsent(player, Attributes.MOVEMENT_SPEED, HmagMeltyMonsterEntity.MODIFIER_OWNER_SPEED_UP_IN_LAVA, false);
+				else player.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(HmagMeltyMonsterEntity.MODIFIER_OWNER_SPEED_UP_IN_LAVA);
+				
+			}
+			if (event.getEntity() instanceof HmagMeltyMonsterEntity mm)
+			{
+				if (BefriendedHelper.getOwnerInArea(mm, 16d, true).isPresent())
+				{
+					if (mm.isInLava())
+					{
+						EntityHelper.addModifierIfAbsent(mm, Attributes.MOVEMENT_SPEED, HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_IN_LAVA, false);
+						mm.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_ON_GROUND);						
+					}
+					else
+					{
+						EntityHelper.addModifierIfAbsent(mm, Attributes.MOVEMENT_SPEED, HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_ON_GROUND, false);
+						mm.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_IN_LAVA);	
+					}
+				}
+				else 
+				{
+					mm.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_IN_LAVA);
+					mm.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_ON_GROUND);
+				}
+			}
+			
 		}
 	}
 	
