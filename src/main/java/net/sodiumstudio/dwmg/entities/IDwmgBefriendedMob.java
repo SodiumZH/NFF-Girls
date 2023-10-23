@@ -1,6 +1,7 @@
 package net.sodiumstudio.dwmg.entities;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.UUID;
 
 import net.minecraft.world.entity.Entity;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.entity.capability.wrapper.IAttributeMonitor;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerItem;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
@@ -20,6 +22,8 @@ import net.sodiumstudio.befriendmobs.item.capability.wrapper.IItemStackMonitor;
 import net.sodiumstudio.nautils.Wrapped;
 import net.sodiumstudio.nautils.annotation.DontCallManually;
 import net.sodiumstudio.nautils.annotation.DontOverride;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
+import net.sodiumstudio.nautils.object.ItemOrKey;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleItem;
@@ -141,6 +145,9 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleEquipable, IA
 			this.asMob().setHealth((float) (this.asMob().getHealth() * newVal / oldVal));
 		}
 	}
+
+	@Override
+	public HealingItemTable getHealingItems();
 	
 	// === IItemStackMonitor interface
 	

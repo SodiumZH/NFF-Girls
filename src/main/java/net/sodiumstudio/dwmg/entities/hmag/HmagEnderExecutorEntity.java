@@ -58,9 +58,11 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEnderExecutor;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 
 // Adjusted from EnderExcutor in HMaG
 public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implements IBeamAttackMob, IDwmgBefriendedMob
@@ -117,11 +119,9 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	// Interaction
 	
 	@Override
-	public HashMap<Item, Float> getHealingItems()
+	public HealingItemTable getHealingItems()
 	{
-		HashMap<Item, Float> map = new HashMap<Item, Float>();
-		map.put(Items.ENDER_EYE, 5.0f);
-		return map;
+		return DwmgHealingItems.ENDERMAN;
 	}
 	
 	@Override

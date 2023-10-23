@@ -42,6 +42,7 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwne
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
@@ -53,11 +54,13 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTa
 import net.sodiumstudio.dwmg.entities.projectile.BefriendedAlrauneSeedEntity;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuThreeBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.nautils.containers.MapPair;
 
 public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedMob {
@@ -162,23 +165,9 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 	// Map items that can heal the mob and healing values here.
 	// Leave it empty if you don't need healing features.
 	@Override
-	public HashMap<Item, Float> getHealingItems()
+	public HealingItemTable getHealingItems()
 	{
-		return ContainerHelper.mapOf(
-			MapPair.of(Items.WHEAT_SEEDS, 2.0f),
-			MapPair.of(Items.BONE_MEAL, 5.0f),
-			MapPair.of(Items.SPORE_BLOSSOM, 15f),
-			MapPair.of(ModItems.MYSTERIOUS_PETAL.get(), (float)this.getAttributeValue(Attributes.MAX_HEALTH)));
-	}
-	
-	// Set of items that can heal the mob WITHOUT CONSUMING.
-	// Leave it empty if not needed.
-	@Override
-	public HashSet<Item> getNonconsumingHealingItems()
-	{
-		HashSet<Item> set = new HashSet<Item>();
-		// set.add(YOUR_ITEM_TYPE);
-		return set;
+		return DwmgHealingItems.PLANT;
 	}
 	
 	@Override

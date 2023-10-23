@@ -2,6 +2,14 @@
 
 ## 1.19.2
 
+### 0.1.18
+
+Added Melty Monster support.
+
+Now Ghastly Seekers accept healing items like Creeper Girls.
+
+Now fireballs of Ghastly Seekers don't hurt allies.
+
 ### 0.1.17.1
 
 Fixed Jack o' Frost (HMaG) not spawning.

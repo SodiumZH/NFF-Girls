@@ -24,6 +24,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -445,6 +446,14 @@ public class DwmgEntityEvents
 				mob.setLastHurtByPlayer(bm.getOwner());
 			}
 			
+			/** Ghastly Seeker */
+			
+			if (event.getSource() instanceof EntityDamageSource eds && eds.getEntity() instanceof HmagGhastlySeekerEntity gs)
+			{
+				if (DwmgEntityHelper.isAlly(gs, event.getEntity()))
+					event.setCanceled(true);
+			}
+			
 		}
 	}
 		
@@ -613,7 +622,7 @@ public class DwmgEntityEvents
 				}
 			}
 			/** Handle {@link HmagMeltyMonsterEntity} lava acceleration effect */
-			if (event.getEntity() instanceof Player player)
+		/*	if (event.getEntity() instanceof Player player)
 			{
 				List<HmagMeltyMonsterEntity> list = BefriendedHelper.getOwningMobsInArea(player, DwmgEntityTypes.HMAG_MELTY_MONSTER.get(), 16d, true);
 				if (list.size() > 0 && player.isInLava())
@@ -642,7 +651,7 @@ public class DwmgEntityEvents
 					mm.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_ON_GROUND);
 				}
 			}
-			
+			*/
 		}
 	}
 	
@@ -1044,7 +1053,16 @@ public class DwmgEntityEvents
 						mob.goalSelector.addGoal(4, new BefriendablePickItemGoal(mob));
 					}
 				}
-			
+			}
+			/** Add ConditionalAttributeModifier */
+			if (event.getEntity() instanceof HmagMeltyMonsterEntity mm)
+			{
+				HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_IN_LAVA.apply(mm);
+				HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_ON_GROUND.apply(mm);
+			}
+			if (event.getEntity() instanceof Player player)
+			{
+				HmagMeltyMonsterEntity.MODIFIER_OWNER_SPEED_UP_IN_LAVA.apply(player);
 			}
 		}
 	}
