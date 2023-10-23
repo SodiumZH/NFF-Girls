@@ -35,6 +35,7 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestri
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
@@ -47,6 +48,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
@@ -150,25 +152,11 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 	// Map items that can heal the mob and healing values here.
 	// Leave it empty if you don't need healing features.
 	@Override
-	public HashMap<Item, Float> getHealingItems()
+	public HealingItemTable getHealingItems()
 	{
-		return ContainerHelper.<Item, Float>mapOf(
-				MapPair.of(Items.CRIMSON_FUNGUS, 5f),
-				MapPair.of(Items.NETHER_WART, 5f),
-				MapPair.of(Items.SHROOMLIGHT, 15f),
-				MapPair.of(Items.GOLDEN_APPLE, this.getMaxHealth()));
+		return DwmgHealingItems.CRIMSON;
 	}
-	
-	// Set of items that can heal the mob WITHOUT CONSUMING.
-	// Leave it empty if not needed.
-	@Override
-	public HashSet<Item> getNonconsumingHealingItems()
-	{
-		HashSet<Item> set = new HashSet<Item>();
-		// set.add(YOUR_ITEM_TYPE);
-		return set;
-	}
-	
+
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{

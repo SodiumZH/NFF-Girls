@@ -34,6 +34,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
@@ -54,6 +55,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTa
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuImp;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
@@ -131,28 +133,11 @@ public class HmagImpEntity extends ImpEntity implements IDwmgBefriendedMob, IBlo
 	// Leave it empty if you don't need healing features.
 	@SuppressWarnings("unchecked")
 	@Override
-	public Map<Item, Float> getHealingItems()
+	public HealingItemTable getHealingItems()
 	{
-		// map.put(YOUR_ITEM_TYPE, HEALING_HEALTH_VALUE);
-		return ContainerHelper.<Item, Float>mapOf(
-				MapPair.of(Items.APPLE, 5f),
-				MapPair.of(Items.COOKIE, 5f),
-				MapPair.of(Items.PUMPKIN_PIE, 15f),
-				MapPair.of(ModItems.LEMON.get(), 10f),
-				MapPair.of(ModItems.LEMON_PIE.get(), 20f),
-				MapPair.of(Items.GOLDEN_APPLE, (float)getAttributeValue(Attributes.MAX_HEALTH)));
+		return DwmgHealingItems.GENERAL_HUMANOID_0;
 	}
-	
-	// Set of items that can heal the mob WITHOUT CONSUMING.
-	// Leave it empty if not needed.
-	@Override
-	public HashSet<Item> getNonconsumingHealingItems()
-	{
-		HashSet<Item> set = new HashSet<Item>();
-		// set.add(YOUR_ITEM_TYPE);
-		return set;
-	}
-	
+
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{

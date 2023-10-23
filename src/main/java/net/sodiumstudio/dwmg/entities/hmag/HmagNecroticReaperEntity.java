@@ -55,6 +55,7 @@ import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.MiscUtil;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
@@ -65,6 +66,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
@@ -197,23 +199,11 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 	// Map items that can heal the mob and healing values here.
 	// Leave it empty if you don't need healing features.
 	@Override
-	public HashMap<Item, Float> getHealingItems()
+	public HealingItemTable getHealingItems()
 	{
-		HashMap<Item, Float> map = new HashMap<Item, Float>();
-		map.put(ModItems.SOUL_POWDER.get(), 5f);
-		map.put(ModItems.SOUL_APPLE.get(), 15f);
-		return map;
+		return DwmgHealingItems.UNDEAD;
 	}
-	
-	// Set of items that can heal the mob WITHOUT CONSUMING.
-	// Leave it empty if not needed.
-	@Override
-	public HashSet<Item> getNonconsumingHealingItems()
-	{
-		HashSet<Item> set = new HashSet<Item>();
-		return set;
-	}
-	
+
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{

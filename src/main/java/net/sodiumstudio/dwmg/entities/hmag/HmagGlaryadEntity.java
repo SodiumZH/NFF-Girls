@@ -46,11 +46,13 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuThreeBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.nautils.containers.MapPair;
 
 public class HmagGlaryadEntity extends GlaryadEntity implements IDwmgBefriendedMob 
@@ -120,25 +122,11 @@ public class HmagGlaryadEntity extends GlaryadEntity implements IDwmgBefriendedM
 	// Map items that can heal the mob and healing values here.
 	// Leave it empty if you don't need healing features.
 	@Override
-	public HashMap<Item, Float> getHealingItems()
+	public HealingItemTable getHealingItems()
 	{
-		return ContainerHelper.mapOf(
-				MapPair.of(Items.WHEAT_SEEDS, 2.0f),
-				MapPair.of(Items.BONE_MEAL, 5.0f),
-				MapPair.of(Items.SPORE_BLOSSOM, 15f),
-				MapPair.of(ModItems.MYSTERIOUS_PETAL.get(), (float)this.getAttributeValue(Attributes.MAX_HEALTH)));
+		return DwmgHealingItems.PLANT;
 	}
-	
-	// Set of items that can heal the mob WITHOUT CONSUMING.
-	// Leave it empty if not needed.
-	@Override
-	public HashSet<Item> getNonconsumingHealingItems()
-	{
-		HashSet<Item> set = new HashSet<Item>();
-		// set.add(YOUR_ITEM_TYPE);
-		return set;
-	}
-	
+
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{

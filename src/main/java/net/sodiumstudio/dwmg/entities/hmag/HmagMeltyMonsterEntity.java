@@ -19,6 +19,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -28,30 +29,48 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurt
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
+import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
+import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.entity.ConditionalAttributeModifier;
 
 public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgBefriendedMob {
 
-	protected static final UUID MODIFIER_OWNER_SPEED_UP_IN_LAVA_UUID = UUID.fromString("17e617b0-964e-42b3-86a8-c264de6e19d8");
-	protected static final UUID MODIFIER_SELF_SPEED_UP_IN_LAVA_UUID = UUID.fromString("2f2f7447-a39f-435c-a21a-29ea47298f3e");
-	protected static final UUID MODIFIER_SELF_SPEED_UP_ON_GROUND_UUID = UUID.fromString("6bf67d57-5068-4f28-b433-a55fc232d679");
-	/** Handled in {@link DwmgEntityEvents} */
-	public static final AttributeModifier MODIFIER_OWNER_SPEED_UP_IN_LAVA = new AttributeModifier(MODIFIER_OWNER_SPEED_UP_IN_LAVA_UUID,
-			"speed_up_in_lava", 4d, AttributeModifier.Operation.ADDITION);
-	public static final AttributeModifier MODIFIER_SELF_SPEED_UP_IN_LAVA = new AttributeModifier(MODIFIER_SELF_SPEED_UP_IN_LAVA_UUID,
-			"speed_up_in_lava", 4d, AttributeModifier.Operation.ADDITION);
-	public static final AttributeModifier MODIFIER_SELF_SPEED_UP_ON_GROUND = new AttributeModifier(MODIFIER_SELF_SPEED_UP_ON_GROUND_UUID,
-			"speed_up_in_lava", 4d, AttributeModifier.Operation.ADDITION);
+	/** Added in */
+	public static final ConditionalAttributeModifier MODIFIER_OWNER_SPEED_UP_IN_LAVA = 
+			new ConditionalAttributeModifier(Attributes.MOVEMENT_SPEED, 4d, AttributeModifier.Operation.ADDITION, living -> 
+			(
+				living instanceof Player player 
+				&& BefriendedHelper.getOwningMobsInArea(player, DwmgEntityTypes.HMAG_MELTY_MONSTER.get(), 16d, true).size() > 0
+				&& player.isInLava())
+			);
+	public static final ConditionalAttributeModifier MODIFIER_SELF_SPEED_UP_IN_LAVA = 
+			new ConditionalAttributeModifier(Attributes.MOVEMENT_SPEED, 4d, AttributeModifier.Operation.ADDITION, living -> 
+			(
+				living instanceof HmagMeltyMonsterEntity mm
+				&& BefriendedHelper.getOwnerInArea(mm, 16d, true).isPresent()
+				&& mm.isInLava()
+			));
+	public static final ConditionalAttributeModifier MODIFIER_SELF_SPEED_UP_ON_GROUND = 
+			new ConditionalAttributeModifier(Attributes.MOVEMENT_SPEED, 4d, AttributeModifier.Operation.ADDITION, living -> 
+			(
+				living instanceof HmagMeltyMonsterEntity mm
+				&& BefriendedHelper.getOwnerInArea(mm, 16d, true).isPresent()
+				&& mm.isOnGround()
+			));
 	
 	/* Data sync */
 
@@ -86,6 +105,11 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		Arrays.fill(this.handDropChances, 0);
 	}
 	
+	public void onInit()
+	{
+		
+	}
+	
 	/* Behavior */
 
 	@Override
@@ -103,7 +127,6 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		if (this.isInLava() && this.isOwnerPresent() && this.getOwner().isInLava() && this.distanceToSqr(this.getOwner()) <= 64d)
 		{
 			EntityHelper.addEffectSafe(this.getOwner(), MobEffects.FIRE_RESISTANCE, 19);
-			
 		}
 	}
 	/* Interaction */
@@ -111,24 +134,12 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	// Map items that can heal the mob and healing values here.
 	// Leave it empty if you don't need healing features.
 	@Override
-	public HashMap<Item, Float> getHealingItems()
+	public HealingItemTable getHealingItems()
 	{
-		return ContainerHelper.mapOf(
-				// MapPair.of({item}, {healing_amount})
-				);
-		
+		// TODO: change
+		return DwmgHealingItems.NONE;
 	}
-	
-	// Set of items that can heal the mob WITHOUT CONSUMING.
-	// Leave it empty if not needed.
-	@Override
-	public HashSet<Item> getNonconsumingHealingItems()
-	{
-		return ContainerHelper.setOf(
-				// items....
-				);
-	}
-	
+
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{
@@ -176,7 +187,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 
 	// This enables mob armor and hand items by default.
 	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
+	protected BefriendedInventory additionalInventory = new BefriendedInventory(getInventorySize(), this);
 
 	@Override
 	public BefriendedInventory getAdditionalInventory()
@@ -187,14 +198,14 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	@Override
 	public int getInventorySize()
 	{
-		return 8;
+		return 4;
 	}
 
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.setMobEquipment(this);
+			//additionalInventory.setMobEquipment(this);
 		}
 	}
 
@@ -203,14 +214,14 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	{
 		if (!this.level.isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.getFromMob(this);
+			//additionalInventory.getFromMob(this);
 		}
 		return;
 	}
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return null; // new YourInventoryMenuClass(containerId, playerInventory, container, this);
+		return new InventoryMenuFourBaubles(containerId, playerInventory, container, this);
 		// You can keep it null, but in this case never call openBefriendedInventory() or it will crash.
 	}
 
@@ -233,14 +244,12 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
-		/* Set here */
-		return null;
+		return this.continuousBaubleSlots(0, 4);
 	}
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		/* Set here */
-		return null;
+		return DwmgBaubleHandlers.GENERAL;
 	}
 
 	// Sounds

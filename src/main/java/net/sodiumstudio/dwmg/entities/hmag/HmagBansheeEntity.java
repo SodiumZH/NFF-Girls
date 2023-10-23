@@ -2,7 +2,6 @@ package net.sodiumstudio.dwmg.entities.hmag;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -11,7 +10,6 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.github.mechalopa.hmag.world.entity.BansheeEntity;
-import com.github.mechalopa.hmag.world.entity.HarpyEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -47,27 +45,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.phys.AABB;
-import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.befriendmobs.registry.BMItems;
-import net.sodiumstudio.nautils.EntityHelper;
-import net.sodiumstudio.nautils.InfoHelper;
-import net.sodiumstudio.nautils.MiscUtil;
-import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingLandGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomMoveGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
-import net.sodiumstudio.dwmg.entities.DwmgBMStatics;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFlyingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.HmagFlyingGoal;
@@ -75,9 +66,13 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
+import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.ReflectHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 
 public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
 {
@@ -157,17 +152,8 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 	// Map items that can heal the mob and healing values here.
 	// Leave it empty if you don't need healing features.
 	@Override
-	public HashMap<Item, Float> getHealingItems() {
-		return DwmgBMStatics.UNDEAD_DEFAULT_HEALING_ITEMS;
-	}
-
-	// Set of items that can heal the mob WITHOUT CONSUMING.
-	// Leave it empty if not needed.
-	@Override
-	public HashSet<Item> getNonconsumingHealingItems() {
-		HashSet<Item> set = new HashSet<Item>();
-		// set.add(YOUR_ITEM_TYPE);
-		return set;
+	public HealingItemTable getHealingItems() {
+		return DwmgHealingItems.UNDEAD;
 	}
 
 	@Override

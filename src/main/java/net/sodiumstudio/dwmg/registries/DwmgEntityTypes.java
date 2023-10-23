@@ -341,19 +341,16 @@ public class DwmgEntityTypes {
 			.setTrackingRange(8)
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false));
-	
+
 	// ================================================================================================= //
-	
 	@SubscribeEvent
-    public static void onAttributeCreate(EntityAttributeCreationEvent event) {	
+	public static void onAttributeCreate(EntityAttributeCreationEvent event) {	
 		
 		DwmgEntityAttributes.REGISTRY.forEach((type, supplier) -> 
 		{
 			event.put(type, supplier.get().build());
 		});
-		
 	}
-	
 	// ================================================================================================= //
 	
 	// Projectiles
@@ -414,6 +411,9 @@ public class DwmgEntityTypes {
 			.updateInterval(5)
 			.build(new ResourceLocation(Dwmg.MOD_ID, "reinforced_fishing_hook").toString()));
 
+	
+	
+	
 	// ========== Utilities ============ //
 	
 	public static <T extends LivingEntity> RegistryObject<EntityType<T>> registerBM(DeferredRegister<EntityType<?>> registry, String modId, String regName, 

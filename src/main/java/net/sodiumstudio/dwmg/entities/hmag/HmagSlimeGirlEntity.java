@@ -35,6 +35,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFollowOwnerGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
@@ -56,6 +57,7 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSlimeGirl;
 import net.sodiumstudio.dwmg.item.MagicalGelColorUtils;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
@@ -144,25 +146,11 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 	// Map items that can heal the mob and healing values here.
 	// Leave it empty if you don't need healing features.
 	@Override
-	public HashMap<Item, Float> getHealingItems()
+	public HealingItemTable getHealingItems()
 	{
-		HashMap<Item, Float> map = new HashMap<Item, Float>();
-		map.put(Items.SLIME_BALL, 5f);
-		map.put(DwmgItems.MAGICAL_GEL_BALL.get(), 15f);
-		map.put(ModItems.CUBIC_NUCLEUS.get(), this.getMaxHealth());
-		return map;
+		return DwmgHealingItems.SLIME;
 	}
-	
-	// Set of items that can heal the mob WITHOUT CONSUMING.
-	// Leave it empty if not needed.
-	@Override
-	public HashSet<Item> getNonconsumingHealingItems()
-	{
-		HashSet<Item> set = new HashSet<Item>();
-		// set.add(YOUR_ITEM_TYPE);
-		return set;
-	}
-	
+
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{

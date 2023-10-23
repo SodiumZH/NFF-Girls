@@ -1,5 +1,7 @@
 package net.sodiumstudio.dwmg.util;
 
+import java.util.UUID;
+
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.NonNullList;
@@ -9,12 +11,15 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.Tags;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.TagHelper;
@@ -97,6 +102,32 @@ public class DwmgEntityHelper
 	public static void sendCriticalParticlesToLivingDefault(LivingEntity entity, float heightOffset, int amount)
 	{
 		EntityHelper.sendParticlesToEntity(entity, ParticleTypes.CRIT, entity.getBbHeight() - 0.2 + heightOffset, 0.5d, amount, 0.1d);
+	}
+	
+	/**
+	 * Check if a LivingEntity is ally to the given befriended mob.
+	 * <p> Rule: Owner, owner's other befriended mobs, owner's tamed animals; other players and their befriended mobs & tamed animals if no PVP
+	 */
+	public static boolean isAlly(IDwmgBefriendedMob allyTo, LivingEntity test)
+	{
+		if (allyTo.asMob().level.isClientSide)
+			return false;
+		boolean allowPvp = allyTo.asMob().level.getServer().isPvpAllowed();
+		if (!allowPvp)
+		{
+			return (test instanceof Player || (test instanceof TamableAnimal ta && ta.isTame()) || test instanceof IBefriendedMob);
+		}
+		else
+		{
+			UUID ownerUUID = allyTo.getOwnerUUID();
+			if (test.getUUID().equals(ownerUUID))
+				return true;
+			else if (test instanceof TamableAnimal ta && ta.isTame() && ta.getOwnerUUID().equals(ownerUUID))
+				return true;
+			else if (test instanceof IBefriendedMob bm && bm.getOwnerUUID().equals(ownerUUID))
+				return true;
+			else return false;
+		}
 	}
 	
 }
