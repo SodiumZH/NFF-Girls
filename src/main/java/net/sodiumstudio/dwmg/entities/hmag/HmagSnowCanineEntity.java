@@ -52,10 +52,12 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.nautils.containers.MapPair;
 
 public class HmagSnowCanineEntity extends SnowCanineEntity implements IDwmgBefriendedMob
@@ -130,28 +132,11 @@ public class HmagSnowCanineEntity extends SnowCanineEntity implements IDwmgBefri
 	// Leave it empty if you don't need healing features.
 	@SuppressWarnings("unchecked")
 	@Override
-	public HashMap<Item, Float> getHealingItems()
+	public HealingItemTable getHealingItems()
 	{
-		return ContainerHelper.<Item, Float>mapOf(
-				MapPair.of(Items.COOKIE, 5f),
-				MapPair.of(Items.COOKED_CHICKEN, 8f),
-				MapPair.of(Items.COOKED_RABBIT, 8f),
-				MapPair.of(Items.COOKED_MUTTON, 8f),
-				MapPair.of(Items.COOKED_BEEF, 10f),
-				MapPair.of(Items.COOKED_PORKCHOP, 10f),
-				MapPair.of(Items.GOLDEN_APPLE, (float)getAttributeValue(Attributes.MAX_HEALTH)));
+		return DwmgHealingItems.ANIMAL;
 	}
-	
-	// Set of items that can heal the mob WITHOUT CONSUMING.
-	// Leave it empty if not needed.
-	@Override
-	public HashSet<Item> getNonconsumingHealingItems()
-	{
-		HashSet<Item> set = new HashSet<Item>();
-		// set.add(YOUR_ITEM_TYPE);
-		return set;
-	}
-	
+
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{

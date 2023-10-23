@@ -37,6 +37,7 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurt
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
@@ -49,6 +50,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuRedcap;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
@@ -113,15 +115,9 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 	// Map items that can heal the mob and healing values here.
 	// Leave it empty if you don't need healing features.
 	@Override
-	public HashMap<Item, Float> getHealingItems()
+	public HealingItemTable getHealingItems()
 	{
-		return ContainerHelper.<Item, Float>mapOf(
-				MapPair.of(Items.APPLE, 5f),
-				MapPair.of(Items.COOKIE, 5f),
-				MapPair.of(Items.PUMPKIN_PIE, 15f),
-				MapPair.of(ModItems.LEMON.get(), 10f),
-				MapPair.of(ModItems.LEMON_PIE.get(), 20f),
-				MapPair.of(Items.GOLDEN_APPLE, (float)getAttributeValue(Attributes.MAX_HEALTH)));
+		return DwmgHealingItems.GENERAL_HUMANOID_0;
 		
 	}
 	
@@ -153,17 +149,7 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 			}
 		}
 	}
-	
-	// Set of items that can heal the mob WITHOUT CONSUMING.
-	// Leave it empty if not needed.
-	@Override
-	public HashSet<Item> getNonconsumingHealingItems()
-	{
-		return ContainerHelper.setOf(
-				// items....
-				);
-	}
-	
+
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{

@@ -43,6 +43,7 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwne
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
@@ -59,6 +60,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTa
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsFourBaublesDefault;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsSixBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
@@ -149,32 +151,12 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 	// Map items that can heal the mob and healing values here.
 	// Leave it empty if you don't need healing features.
 	@Override
-	public HashMap<Item, Float> getHealingItems()
+	public HealingItemTable getHealingItems()
 	{
-		return ContainerHelper.mapOf(
-				MapPair.of(Items.STRING, 2f),
-				MapPair.of(Items.WHITE_WOOL, 5f),
-				MapPair.of(Items.LIGHT_GRAY_WOOL, 5f),
-				MapPair.of(Items.GRAY_WOOL, 5f),
-				MapPair.of(Items.BLACK_WOOL, 5f),
-				MapPair.of(Items.BROWN_WOOL, 5f),
-				MapPair.of(Items.LAPIS_LAZULI, 10f),
-				MapPair.of(Items.EMERALD, 15f),
-				MapPair.of(ModItems.CUBIC_NUCLEUS.get(), this.getMaxHealth())
-				);
+		return DwmgHealingItems.CURSED_DOLL;
 
 	}
-	
-	// Set of items that can heal the mob WITHOUT CONSUMING.
-	// Leave it empty if not needed.
-	@Override
-	public HashSet<Item> getNonconsumingHealingItems()
-	{
-		HashSet<Item> set = new HashSet<Item>();
-		// set.add(YOUR_ITEM_TYPE);
-		return set;
-	}
-	
+
 	protected int enhancingCooldown = 0;
 	protected static final HashSet<Item> ENHANCING_ITEMS = ContainerHelper.setOf(
 			Items.ORANGE_WOOL, Items.YELLOW_WOOL, Items.RED_WOOL, Items.PURPLE_WOOL,

@@ -11,6 +11,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 
 public class BefriendedGhastFireballEntity extends Fireball
 {
@@ -18,7 +19,9 @@ public class BefriendedGhastFireballEntity extends Fireball
 	public boolean breakBlocks = true;
 	public boolean isFromMob = true;
 	public boolean alwaysDrop = true;
-
+	public float hitDamage = 6.0f;
+	
+	
 	public BefriendedGhastFireballEntity(EntityType<? extends BefriendedGhastFireballEntity> pEntityType,
 			Level pLevel)
 	{
@@ -28,7 +31,7 @@ public class BefriendedGhastFireballEntity extends Fireball
 	public BefriendedGhastFireballEntity(Level pLevel, LivingEntity pShooter, double pOffsetX, double pOffsetY,
 			double pOffsetZ, float pExplosionPower)
 	{
-		super(EntityType.FIREBALL, pShooter, pOffsetX, pOffsetY, pOffsetZ, pLevel);
+		super(DwmgEntityTypes.BEFRIENDED_GHAST_FIREBALL.get(), pShooter, pOffsetX, pOffsetY, pOffsetZ, pLevel);
 		this.explosionPower = pExplosionPower;
 	}
 
@@ -49,9 +52,8 @@ public class BefriendedGhastFireballEntity extends Fireball
 									this.getOwner());
 			}
 			else allowDestroy = true;
-
-			this.level().explode((Entity) null, this.getX(), this.getY(), this.getZ(), this.explosionPower, allowDestroy,
-					allowDestroy ? (alwaysDrop ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.MOB) : Level.ExplosionInteraction.NONE);
+			this.level.explode(this, this.getX(), this.getY(), this.getZ(), this.explosionPower, allowDestroy,
+					allowDestroy ? (alwaysDrop ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.DESTROY) : Explosion.BlockInteraction.NONE);
 			this.discard();
 		}
 
@@ -67,7 +69,7 @@ public class BefriendedGhastFireballEntity extends Fireball
 		{
 			Entity entity = pResult.getEntity();
 			Entity entity1 = this.getOwner();
-			entity.hurt(level().damageSources().fireball(this, getOwner()), 6.0F);
+			entity.hurt(level().damageSources().fireball(this, getOwner()), hitDamage);
 			if (entity1 instanceof LivingEntity)
 			{
 				this.doEnchantDamageEffects((LivingEntity) entity1, entity);
@@ -75,7 +77,7 @@ public class BefriendedGhastFireballEntity extends Fireball
 
 		}
 	}
-
+	
 	@Override
 	public void addAdditionalSaveData(CompoundTag pCompound) {
 		super.addAdditionalSaveData(pCompound);

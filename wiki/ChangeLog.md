@@ -2,23 +2,47 @@
 
 ## 1.19.2
 
+### 0.1.18
+
+Added Melty Monster support.
+
+Now Ghastly Seekers accept healing items like Creeper Girls.
+
+Now fireballs of Ghastly Seekers don't hurt allies.
+
+### 0.1.17.1
+
+Fixed Jack o' Frost (HMaG) not spawning.
+
+Fixed Banshee, Cursed Doll and Jiangshi not maintaining the color variant on befriended.
+
+Fixed Redcap and Jack o' Frost missing name.
+
 ### 0.1.17
 
 Updated HMaG dependency to 6.2.5.
 
-Added Redcap support.
+Added Redcap and Jack o' Frost support.
 
 Added some configs for mob sound.
 
 ​	-Frequency of the ambient sound can be reduced.
 
-​	-Zombie and/or Skeleton sound can be replaced with HMaG girl mob sound.
+​	-Zombie and Skeleton sound can be replaced with HMaG girl mob sound.
 
-​	-Zombie and/or Skeleton ambient sound can be blocked.
+​	-Zombie and Skeleton ambient sound can be blocked.
+
+Added EXP Modifier (debug only).
 
 Now mobs equipping Courage Amulet II will proactively attack enemies hostile to the owner. 
 
 Now off-hand item of Kobold and Imp can be stacked only to 1.
+
+Now Curse of Necromancy (curse effect of Necromancer's Hat) deals 1 damage per 4 seconds instead of 2 and don't cause knockback, but bypassing enchantments.
+
+Fixed Banshee not synched between server and client (i.e. display error).
+
+Fixed Kobold not accepting Golden Pickaxe.
 
 ### 0.1.16.3
 
@@ -437,6 +461,18 @@ Ported from 1.18.2 - 0.0.0-snapshot.3.
 
 ## 1.20.1
 
+### 0.2.17
+
+Updated HMaG dependency version to 9.0.2.
+
+All other changes in 1.19.2-0.1.17.
+
+Fixed possible compatibility issues of the feature that Jiangshi, Necrotic Reaper and Ender Executor keeping hostile during befriending process.
+
+Fixed Banshee, Cursed Doll and Jiangshi not maintaining the color variant on befriended.
+
+Fixed some random crashes on successfully befriending mobs using Item-Dropping Process.
+
 ### 0.2.16.2
 
 Identical to 1.19.2-0.1.16.3.
@@ -458,6 +494,14 @@ Temporarily removed the special death message of Necromancer's Hat curse due to 
 Now blocks destroyed by the explosions of Creeper Girl and Ghastly Seeker will always drop corresponding items.
 
 ## 1.18.2
+
+### 0.0.17
+
+Updated HMaG dependency to 5.1.15.
+
+All changes in 1.19.2-0.1.17.
+
+Fixed crash on mob changing target.
 
 ### 0.0.16.3
 

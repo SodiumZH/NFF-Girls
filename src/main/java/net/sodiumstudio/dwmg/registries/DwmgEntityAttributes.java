@@ -1,17 +1,21 @@
 package net.sodiumstudio.dwmg.registries;
 
 import java.util.HashMap;
-import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+
+import com.github.mechalopa.hmag.world.entity.MeltyMonsterEntity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 public class DwmgEntityAttributes
 {
@@ -284,6 +288,12 @@ public class DwmgEntityAttributes
 		.add(Attributes.ARMOR, 2.0D),
 		DwmgEntityTypes.HMAG_JACK_FROST.get());
 	
+	public static final Supplier<AttributeSupplier.Builder> HMAG_MELTY_MONSTER_ATTRIBUTES = register(() ->
+		VANILLA_MONSTER_COMMON_ATTRIBUTES.get()
+		.add(Attributes.MAX_HEALTH, 25.0D)
+		.add(Attributes.MOVEMENT_SPEED, 0.18D),
+		DwmgEntityTypes.HMAG_MELTY_MONSTER.get());
+
 	/*	
 	public static final Supplier<AttributeSupplier.Builder> HMAG__ATTRIBUTES = register(() ->
 	*/	
@@ -295,6 +305,6 @@ public class DwmgEntityAttributes
 		REGISTRY.put(type, builderSupplier);
 		return builderSupplier;
 	}
-		
+
 		
 }

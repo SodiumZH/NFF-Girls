@@ -62,9 +62,11 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTa
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
+import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 
 public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob, IBefriendedAmphibious
 {
@@ -162,12 +164,9 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 	/* Interaction */
 
 	@Override
-	public HashMap<Item, Float> getHealingItems()
+	public HealingItemTable getHealingItems()
 	{
-		HashMap<Item, Float> map = new HashMap<Item, Float>();
-		map.put(ModItems.SOUL_POWDER.get(), 5.0f);
-		map.put(ModItems.SOUL_APPLE.get(), 15.0f);
-		return map;
+		return DwmgHealingItems.UNDEAD;
 	}
 	
 	@Override
