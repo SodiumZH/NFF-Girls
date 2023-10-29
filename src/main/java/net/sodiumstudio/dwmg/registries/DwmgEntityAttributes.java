@@ -291,7 +291,8 @@ public class DwmgEntityAttributes
 	public static final Supplier<AttributeSupplier.Builder> HMAG_MELTY_MONSTER_ATTRIBUTES = register(() ->
 		VANILLA_MONSTER_COMMON_ATTRIBUTES.get()
 		.add(Attributes.MAX_HEALTH, 25.0D)
-		.add(Attributes.MOVEMENT_SPEED, 0.18D),
+		.add(Attributes.MOVEMENT_SPEED, 0.18D)
+		.add(Attributes.ATTACK_DAMAGE, 0d),
 		DwmgEntityTypes.HMAG_MELTY_MONSTER.get());
 
 	/*	

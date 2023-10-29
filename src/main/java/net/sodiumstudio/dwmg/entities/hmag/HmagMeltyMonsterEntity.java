@@ -2,7 +2,6 @@ package net.sodiumstudio.dwmg.entities.hmag;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,18 +12,27 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.entity.projectile.Fireball;
+import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
@@ -32,7 +40,6 @@ import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
@@ -43,7 +50,6 @@ import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
-import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.entity.ConditionalAttributeModifier;
 
@@ -122,6 +128,36 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	}
 	
 	@Override
+	public void performRangedAttack(LivingEntity target, float distanceFactor)
+	{
+		double d1 = target.getX() - this.getX();
+		double d2 = target.getY() + target.getEyeHeight() * 0.5D - this.getY(0.5D);
+		double d3 = target.getZ() - this.getZ();
+		double d4 = Math.sqrt(d1 * d1 + d3 * d3) * 0.02D;
+		SmallFireball fireballentity = new SmallFireball(this.level, this, d1 + this.getRandom().nextGaussian() * d4, d2, d3 + this.getRandom().nextGaussian() * d4);
+		fireballentity.setPos(fireballentity.getX(), this.getY(0.5D) + 0.5D, fireballentity.getZ());
+		this.level.addFreshEntity(fireballentity);
+		this.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+	}
+	
+	protected void fire(LivingEntity target, float distanceFactor)
+	{
+		
+		this.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+	}
+	
+	protected MMFireball newFireball(Vec3 targetPos)
+	{
+		double d1 = targetPos.x - this.getX();
+		double d2 = targetPos.y - this.getY(0.5D);
+		double d3 = targetPos.z - this.getZ();
+		//double d4 = Math.sqrt(d1 * d1 + d3 * d3) * 0.02D;
+		MMFireball fireballentity = new MMFireball(this.level, this, d1 /*+ this.getRandom().nextGaussian() * d4*/, d2, d3/* + this.getRandom().nextGaussian() * d4*/);
+		fireballentity.setPos(fireballentity.getX(), this.getY(0.5D) + 0.5D, fireballentity.getZ());
+		return fireballentity;
+	}
+	
+	@Override
 	protected void customServerAiStep()
 	{
 		if (this.isInLava() && this.isOwnerPresent() && this.getOwner().isInLava() && this.distanceToSqr(this.getOwner()) <= 64d)
@@ -136,7 +172,6 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	@Override
 	public HealingItemTable getHealingItems()
 	{
-		// TODO: change
 		return DwmgHealingItems.NONE;
 	}
 
@@ -291,4 +326,59 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 
+	public static class MMFireball extends SmallFireball
+	{
+		
+		protected HmagMeltyMonsterEntity owner;
+
+		public MMFireball(EntityType<? extends SmallFireball> pEntityType, Level pLevel)
+		{
+			super(pEntityType, pLevel);
+		}
+		public MMFireball(Level pLevel, double pX, double pY, double pZ, double pOffsetX, double pOffsetY,
+				double pOffsetZ)
+		{
+			super(pLevel, pX, pY, pZ, pOffsetX, pOffsetY, pOffsetZ);
+		}
+
+		public MMFireball(Level pLevel, LivingEntity pShooter, double pOffsetX, double pOffsetY, double pOffsetZ)
+		{
+			super(pLevel, pShooter, pOffsetX, pOffsetY, pOffsetZ);
+		}
+
+		/**
+		 * Called when the arrow hits an entity
+		 */
+		@Override
+		protected void onHitEntity(EntityHitResult pResult) 
+		{
+			if (pResult.getEntity() instanceof LivingEntity living)
+			{
+				if (!this.level.isClientSide)
+				{
+					if (!DwmgEntityHelper.isAlly(owner, living))
+						{
+						int i = living.getRemainingFireTicks();
+						living.setSecondsOnFire((int) Math.round(5.0d * (1d + owner.getAttributeValue(Attributes.ATTACK_DAMAGE))));
+						if (!living.hurt(DamageSource.fireball(this, this.owner), (float) (5.0d * (1d + owner.getAttributeValue(Attributes.ATTACK_DAMAGE)))))
+						{
+							living.setRemainingFireTicks(i);
+						} else if (this.owner instanceof LivingEntity)
+						{
+							this.doEnchantDamageEffects((LivingEntity) this.owner, living);
+						}
+					}
+				}
+				this.discard();
+			}
+		}
+
+		@Override
+		protected void onHitBlock(BlockHitResult pResult) {
+		      BlockState blockstate = this.level.getBlockState(pResult.getBlockPos());
+		      blockstate.onProjectileHit(this.level, blockstate, pResult, this);
+		      this.discard();
+		}
+	}
+	
 }
