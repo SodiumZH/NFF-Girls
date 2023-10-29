@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
@@ -217,6 +218,18 @@ public class DwmgMobTemplate extends Monster implements IDwmgBefriendedMob {
 		/* Change only when it's using zombie or skeleton variation sounds */
 	}
 	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSource)
+	{
+		return super.getHurtSound(damageSource);
+	}
+
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return super.getDeathSound();
+	}
+
 	// Misc
 	
 	// Indicates which mod this mob belongs to

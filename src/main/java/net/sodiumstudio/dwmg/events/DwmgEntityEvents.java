@@ -49,6 +49,7 @@ import net.minecraft.world.entity.monster.hoglin.Hoglin;
 import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
@@ -115,6 +116,7 @@ import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 import net.sodiumstudio.dwmg.events.hooks.DwmgHooks;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.registries.DwmgDamageSources;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
@@ -446,12 +448,25 @@ public class DwmgEntityEvents
 				mob.setLastHurtByPlayer(bm.getOwner());
 			}
 			
-			/** Ghastly Seeker */
+			/** Cancel Ghastly Seeker friendly damage */
 			
 			if (event.getSource() instanceof EntityDamageSource eds && eds.getEntity() instanceof HmagGhastlySeekerEntity gs)
 			{
 				if (DwmgEntityHelper.isAlly(gs, event.getEntity()))
+				{
 					event.setCanceled(true);
+					return;
+				}
+			}
+			
+			/** Cancel projectile friendly damage */
+			if (event.getSource() instanceof EntityDamageSource eds && eds.getEntity() instanceof IDwmgBefriendedMob bm && eds.getDirectEntity() instanceof Projectile)
+			{
+				if (!DwmgConfigs.ValueCache.ENABLE_PROJECTILE_FRIENDLY_DAMAGE && DwmgEntityHelper.isAlly(bm, event.getEntity()))
+				{
+					event.setCanceled(true);
+					return;
+				}
 			}
 			
 		}

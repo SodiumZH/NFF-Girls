@@ -107,24 +107,58 @@ public class DwmgEntityHelper
 	/**
 	 * Check if a LivingEntity is ally to the given befriended mob.
 	 * <p> Rule: Owner, owner's other befriended mobs, owner's tamed animals; other players and their befriended mobs & tamed animals if no PVP
+	 * <p> Only on server. On client always false.
 	 */
 	public static boolean isAlly(IDwmgBefriendedMob allyTo, LivingEntity test)
 	{
 		if (allyTo.asMob().level.isClientSide)
 			return false;
+		if ((LivingEntity)(allyTo.asMob()) == test)
+			return true;
 		boolean allowPvp = allyTo.asMob().level.getServer().isPvpAllowed();
 		if (!allowPvp)
 		{
-			return (test instanceof Player || (test instanceof TamableAnimal ta && ta.isTame()) || test instanceof IBefriendedMob);
+			return (test instanceof Player || (test instanceof TamableAnimal ta && ta.getOwnerUUID() != null) || test instanceof IBefriendedMob);
 		}
 		else
 		{
 			UUID ownerUUID = allyTo.getOwnerUUID();
 			if (test.getUUID().equals(ownerUUID))
 				return true;
-			else if (test instanceof TamableAnimal ta && ta.isTame() && ta.getOwnerUUID().equals(ownerUUID))
+			else if (test instanceof TamableAnimal ta && ta.getOwnerUUID() != null && ta.getOwnerUUID().equals(ownerUUID))
 				return true;
-			else if (test instanceof IBefriendedMob bm && bm.getOwnerUUID().equals(ownerUUID))
+			else if (test instanceof IBefriendedMob bm && bm.getOwnerUUID() != null && bm.getOwnerUUID().equals(ownerUUID))
+				return true;
+			else return false;
+		}
+	}
+	
+	/**
+	 * Check if a LivingEntity is ally to the given tamable animal.
+	 * <p> Rule: Owner, owner's other befriended mobs, owner's tamed animals; other players and their befriended mobs & tamed animals if no PVP
+	 * <p> Only on server. On client always false.
+	 */
+	public static boolean isAlly(TamableAnimal allyTo, LivingEntity test)
+	{
+		if (allyTo.level.isClientSide)
+			return false;
+		if (allyTo == test)
+			return true;
+		if (allyTo.getOwnerUUID() == null)
+			return false;
+		boolean allowPvp = allyTo.level.getServer().isPvpAllowed();
+		if (!allowPvp)
+		{
+			return (test instanceof Player || (test instanceof TamableAnimal ta && ta.getOwnerUUID() != null) || test instanceof IBefriendedMob);
+		}
+		else
+		{
+			UUID ownerUUID = allyTo.getOwnerUUID();
+			if (test.getUUID().equals(ownerUUID))
+				return true;
+			else if (test instanceof TamableAnimal ta && ta.getOwnerUUID() != null && ta.getOwnerUUID().equals(ownerUUID))
+				return true;
+			else if (test instanceof IBefriendedMob bm && bm.getOwnerUUID() != null && bm.getOwnerUUID().equals(ownerUUID))
 				return true;
 			else return false;
 		}

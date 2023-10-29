@@ -272,7 +272,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 	@Override
 	public int getInventorySize()
 	{
-		return 7;	// the 7rd slot is ammo slot ()
+		return 7;	// the 7th slot is ammo slot ()
 	}
 	
 	@Override
