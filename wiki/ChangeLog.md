@@ -4,11 +4,11 @@
 
 ### 0.1.18
 
-Added Melty Monster support.
+- Added Melty Monster support.
 
-Now Ghastly Seekers accept healing items like Creeper Girls.
+- Now Ghastly Seekers accept Gunpowder as healing item.
 
-Now fireballs of Ghastly Seekers don't hurt allies.
+- Now fireballs of Ghastly Seekers don't hurt allies, and the direct hit damage is scaled like the explosion.
 
 ### 0.1.17.1
 

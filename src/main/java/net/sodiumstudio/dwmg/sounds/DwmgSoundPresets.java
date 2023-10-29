@@ -67,4 +67,29 @@ public class DwmgSoundPresets
 			return ModSoundEvents.GIRL_MOB_DEATH.get();
 		return defaultSound;
 	}
+	
+	public static SoundEvent ghastAmbient(SoundEvent defaultSound)
+	{
+		if (DwmgConfigs.ValueCache.AMBIENT_SOUND_CHANCE > rnd.nextDouble())
+			return null;
+		if (DwmgConfigs.ValueCache.GHASTS_NO_AMBIENT_SOUND)
+			return null;
+		if (DwmgConfigs.ValueCache.GHASTS_USE_GIRL_SOUND)
+			return ModSoundEvents.GIRL_MOB_AMBIENT.get();
+		return defaultSound;
+	}
+	
+	public static SoundEvent ghastHurt(SoundEvent defaultSound)
+	{
+		if (DwmgConfigs.ValueCache.GHASTS_USE_GIRL_SOUND)
+			return ModSoundEvents.GIRL_MOB_HURT.get();
+		return defaultSound;
+	}
+	
+	public static SoundEvent ghastDeath(SoundEvent defaultSound)
+	{
+		if (DwmgConfigs.ValueCache.GHASTS_USE_GIRL_SOUND)
+			return ModSoundEvents.GIRL_MOB_DEATH.get();
+		return defaultSound;
+	}
 }

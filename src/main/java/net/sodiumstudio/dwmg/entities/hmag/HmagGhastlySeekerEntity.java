@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -275,7 +276,19 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 	@Override
 	protected SoundEvent getAmbientSound()
 	{
-		return DwmgSoundPresets.generalAmbient(super.getAmbientSound());
+		return DwmgSoundPresets.ghastAmbient(super.getAmbientSound());
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSource)
+	{
+		return DwmgSoundPresets.ghastHurt(super.getHurtSound(damageSource));
+	}
+
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return DwmgSoundPresets.ghastDeath(super.getDeathSound());
 	}
 	
 	// Misc
