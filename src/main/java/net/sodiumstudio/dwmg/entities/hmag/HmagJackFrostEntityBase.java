@@ -174,7 +174,7 @@ public abstract class HmagJackFrostEntityBase extends Monster implements RangedA
 	public void throwSnowball(Vec3 direction)
 	{
 		Vec3 n = direction.normalize();
-		double yOffset = Math.sqrt(n.x * n.x + n.z * n.z) * 0.1D;
+		//double yOffset = Math.sqrt(n.x * n.x + n.z * n.z) * 0.1D;
 		HardSnowballEntity snowball = getNewSnowball();
 		snowball.shoot(n.x, n.y, n.z, getShootSpeed(), getShootInaccuracy());
 		snowball.setDamage(getShootDamage());
