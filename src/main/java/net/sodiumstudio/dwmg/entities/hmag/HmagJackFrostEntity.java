@@ -189,7 +189,6 @@ public class HmagJackFrostEntity extends HmagJackFrostEntityBase implements IDwm
 			throw new RuntimeException();
 		}
 		}
-		
 	}
 	
 	@Override
