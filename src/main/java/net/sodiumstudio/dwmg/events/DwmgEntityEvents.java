@@ -613,9 +613,14 @@ public class DwmgEntityEvents
 					int ampl = event.getEntityLiving().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
 					if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
 					{
-						if (event.getEntityLiving().getHealth() <= 1f)
-							event.getEntityLiving().die(DwmgDamageSources.NECROMANCER_WITHER);
-						else event.getEntityLiving().setHealth(event.getEntityLiving().getHealth() - 1);
+						if (!(event.getEntity() instanceof Player player && player.isCreative())
+							|| event.getEntity() instanceof WitherSkeleton
+							|| !event.getEntity().canBeAffected(new MobEffectInstance(MobEffects.WITHER)))
+						{
+							if (event.getEntity().getHealth() <= 1f)
+								event.getEntity().die(DwmgDamageSources.NECROMANCER_WITHER);
+							else event.getEntity().setHealth(event.getEntity().getHealth() - 1);
+						}
 					}
 				}
 			}
