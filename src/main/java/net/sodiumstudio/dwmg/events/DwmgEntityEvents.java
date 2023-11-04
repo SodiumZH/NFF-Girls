@@ -644,8 +644,8 @@ public class DwmgEntityEvents
 							|| !event.getEntity().canBeAffected(new MobEffectInstance(MobEffects.WITHER)))
 						{
 							if (event.getEntity().getHealth() <= 1f)
-							event.getEntity().die(/*DwmgDamageSources.NECROMANCER_WITHER*/event.getEntity().damageSources().wither());
-						    else event.getEntity().setHealth(event.getEntity().getHealth() - 1);
+								event.getEntity().die(/*DwmgDamageSources.NECROMANCER_WITHER*/event.getEntity().damageSources().wither());
+							else event.getEntity().setHealth(event.getEntity().getHealth() - 1);
 						}
 					}
 				}
