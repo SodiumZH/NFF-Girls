@@ -25,6 +25,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -638,9 +639,14 @@ public class DwmgEntityEvents
 					int ampl = event.getEntity().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
 					if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
 					{
-						if (event.getEntity().getHealth() <= 1f)
+						if (!(event.getEntity() instanceof Player player && player.isCreative())
+							|| event.getEntity() instanceof WitherSkeleton
+							|| !event.getEntity().canBeAffected(new MobEffectInstance(MobEffects.WITHER)))
+						{
+							if (event.getEntity().getHealth() <= 1f)
 							event.getEntity().die(/*DwmgDamageSources.NECROMANCER_WITHER*/event.getEntity().damageSources().wither());
-						else event.getEntity().setHealth(event.getEntity().getHealth() - 1);
+						    else event.getEntity().setHealth(event.getEntity().getHealth() - 1);
+						}
 					}
 				}
 			}
