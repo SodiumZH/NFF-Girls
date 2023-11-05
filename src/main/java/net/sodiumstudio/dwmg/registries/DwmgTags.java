@@ -22,6 +22,7 @@ public class DwmgTags
 	public static final TagKey<EntityType<?>> IGNORES_UNDEAD_AFFINITY = entityTag("ignores_undead_affinity");
 	public static final TagKey<EntityType<?>> IGNORES_MAGICAL_GEL_SLOWNESS = entityTag("ignores_magical_gel_slowness");
 	public static final TagKey<EntityType<?>> USES_FORTUNE_AS_LOOTING = entityTag("uses_fortune_as_looting");
+	public static final TagKey<EntityType<?>> AFFECTED_BY_UNDEAD_AFFINITY = entityTag("affected_by_undead_affinity");
 	
 	protected static TagKey<Block> blockTag(String name)
 	{

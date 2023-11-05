@@ -2,8 +2,11 @@ package net.sodiumstudio.dwmg.entities.handlers.hmag;
 
 import java.util.HashSet;
 
+import com.github.mechalopa.hmag.registry.ModEffects;
 import com.github.mechalopa.hmag.registry.ModItems;
 
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -11,6 +14,7 @@ import net.minecraft.world.item.Items;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
 import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.math.RandomSelection;
 import net.sodiumstudio.nautils.math.RndUtil;
 
@@ -39,7 +43,8 @@ public class HandlerMeltyMonster extends HandlerItemGivingProgress
 
 	@Override
 	public boolean additionalConditions(Player player, Mob mob) {
-		return player.isInLava();
+		return (player.isInLava() || player.isOnFire() || player.hasEffect(ModEffects.COMBUSTION.get()))
+				&& !player.hasEffect(MobEffects.FIRE_RESISTANCE);
 	}
 
 	@Override
@@ -47,6 +52,13 @@ public class HandlerMeltyMonster extends HandlerItemGivingProgress
 		return 15 * 20;
 	}
 
+	@Override
+	public void onItemGiven(Player player, Mob mob, ItemStack itemGivenCopy, double procBefore, double procAfter)
+	{
+		player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 5 * 20));
+		EntityHelper.addEffectSafe(player, ModEffects.COMBUSTION.get(), 30 * 20);
+	}
+	
 	@Override
 	public HashSet<BefriendableAddHatredReason> getAddHatredReasons() {
 		return ContainerHelper.setOf(BefriendableAddHatredReason.ATTACKED);

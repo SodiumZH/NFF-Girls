@@ -22,13 +22,13 @@ public class HandlerWitherSkeletonGirl extends HandlerZombieGirl
 	@Override
 	protected double getProcValueToAdd(ItemStack item, Player player, Mob mob, double lastProc) {
 		if (item.is(DwmgItems.SOUL_CAKE_SLICE.get()))
-			return RandomSelection.create(0.15d)
+			return RandomSelection.createDouble(0.15d)
 					.add(0.30d, 0.15d)
 					.add(0.45d, 0.04d)
 					.add(0.60d, 0.01d)
 					.getDouble();
 		else if (item.is(Items.NETHER_STAR))
-			return RandomSelection.create(0.50d)
+			return RandomSelection.createDouble(0.50d)
 					.add(1.00d, 0.20d)
 					.getDouble();
 		else if (item.is(ModItems.SOUL_POWDER.get()))

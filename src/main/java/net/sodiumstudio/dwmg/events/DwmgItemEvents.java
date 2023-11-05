@@ -22,6 +22,7 @@ import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.item.IWithDuration;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.nautils.NbtHelper;
+import net.sodiumstudio.nautils.events.ItemEntityHurtEvent;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgItemEvents
@@ -151,5 +152,12 @@ public class DwmgItemEvents
 				}
 			}
 		}
+	}
+	
+	@SubscribeEvent
+	public static void onItemEntityHurt(ItemEntityHurtEvent event)
+	{
+		if (event.damageSource.getEntity() != null && event.damageSource.getEntity() instanceof IDwmgBefriendedMob)
+			event.setCanceled(true);
 	}
 }
