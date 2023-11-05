@@ -9,6 +9,7 @@
 - Added config to enable/disable friendly damage of projectiles from befriended mobs. (Disabled by default)
 - Now Ghastly Seekers accept Gunpowder as healing item.
 - Now fireballs of Ghastly Seekers don't hurt allies, and the direct hit damage is scaled like the explosion.
+- Fixed incompatibility with Target Dummy.
 
 ### 0.1.17.1
 

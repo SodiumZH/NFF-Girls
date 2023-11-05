@@ -26,7 +26,14 @@ public class DwmgCapabilityAttachment {
 	{
 		if(event.getObject() instanceof LivingEntity living)
 		{
-			if (living.getMobType() == MobType.UNDEAD && !(living instanceof IBefriendedMob) && !living.getType().is(DwmgTags.IGNORES_UNDEAD_AFFINITY))	// Befriended mobs aren't affected by Death Affinity
+			MobType mobtype = MobType.UNDEFINED;
+			// Some mods may not be able to load mob type at this phase since many parameters are not initialized
+			// e.g. Target Dummy. At this time ignore it.
+			try {mobtype = living.getMobType();} catch (NullPointerException e) {}
+			
+			if ((mobtype == MobType.UNDEAD || living.getType().is(DwmgTags.AFFECTED_BY_UNDEAD_AFFINITY))
+					&& !(living instanceof IBefriendedMob)  // Befriended mobs aren't affected by Death Affinity
+					&& !living.getType().is(DwmgTags.IGNORES_UNDEAD_AFFINITY))	
 			{
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_undead"), new CUndeadMobProvider());
 			}

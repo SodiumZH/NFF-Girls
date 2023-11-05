@@ -1,30 +1,32 @@
 buildscript {
     repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        // Mixin required
+        maven { 
+        	url = 'https://repo.spongepowered.org/repository/maven-public/' 
+        	content { includeGroup "org.spongepowered" }
+        }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
-        
+        classpath 'org.parchmentmc:librarian:1.+'      
+        // Mixin required 
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-plugins {
-    id 'eclipse'
-    id 'maven-publish'
-}
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
-//apply plugin: 'org.spongepowered.mixin'
-/*mixin {
-	// Alex support
-    add sourceSets.main, "citadel.refmap.json"
-}*/
+// Mixin required
+apply plugin: 'org.spongepowered.mixin'
+
+mixin {
+    add sourceSets.main, 'befriendmobs.refmap.json'
+    add sourceSets.main, 'dummmmmmy.refmap.json'
+    config 'befriendmobs.mixins.json'
+}
 
 
 version = '0.1.18'
@@ -181,12 +183,12 @@ repositories {
 }
 
 dependencies {
-    // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
+
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.14'
 
-    // Real mod deobf dependency examples - these get remapped to your current mappings
+	// Mixin required
+	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
 	compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
 	runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
@@ -194,19 +196,11 @@ dependencies {
     implementation fg.deobf("curse.maven:jade-324717:4433884")
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
 
-    // Examples using mod jars from ./libs
-    //implementation fg.deobf("blank:optifine-${mc_version}:1.0.0")
-
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
-    //annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-
     implementation fg.deobf("curse.maven:hmag-537613:4745980")
 	implementation fg.deobf("curse.maven:tf-227639:4389567")
 	implementation fg.deobf("curse.maven:gog4-228948:4683679")
-	//implementation fg.deobf("curse.maven:testdummy-225738:4410143")
+	implementation fg.deobf("curse.maven:moonlight-499980:4312303")
+	implementation fg.deobf("curse.maven:testdummy-225738:4410143")
 	//implementation fg.deobf("curse.maven:citadel-331936:4556677")
 	//implementation fg.deobf("curse.maven:am-426558:4159154")	
 	//implementation fg.deobf("curse.maven:patchouli-306770:4031402")
@@ -233,7 +227,7 @@ jar {
 jar.finalizedBy('reobfJar')
 // However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
 // publish.dependsOn('reobfJar')
-
+/*
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -246,7 +240,7 @@ publishing {
         }
     }
 }
-
+*/
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
