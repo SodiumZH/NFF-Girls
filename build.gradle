@@ -1,22 +1,31 @@
 buildscript {
     repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
+        // Mixin required
+        maven { 
+        	url = 'https://repo.spongepowered.org/repository/maven-public/' 
+        	content { includeGroup "org.spongepowered" }
+        }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
+        classpath 'org.parchmentmc:librarian:1.+'      
+        // Mixin required 
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-plugins {
-    id 'eclipse'
-    id 'maven-publish'
-}
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply plugin: 'org.spongepowered.mixin'
+
+mixin {
+    add sourceSets.main, 'befriendmobs.refmap.json'
+    add sourceSets.main, 'dummmmmmy.refmap.json'
+    config 'befriendmobs.mixins.json'
+}
 
 version = '0.0.17.1'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -193,7 +202,7 @@ dependencies {
 	//implementation fg.deobf("curse.maven:gog4-228948:4525159")
 	implementation fg.deobf("curse.maven:tf-227639:4337390")
 
-	
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
@@ -216,7 +225,7 @@ jar {
 jar.finalizedBy('reobfJar')
 // However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
 // publish.dependsOn('reobfJar')
-
+/*
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -229,7 +238,7 @@ publishing {
         }
     }
 }
-
+*/
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }

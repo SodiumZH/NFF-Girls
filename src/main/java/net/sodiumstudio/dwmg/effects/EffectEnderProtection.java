@@ -12,10 +12,12 @@ public class EffectEnderProtection extends MobEffect
 	}
 	
 	// No explicit effect here. Configured in ServerEvents.
+	@Override
 	public void applyEffectTick(LivingEntity livingEntityIn, int amplifier) {
 	}
 	
 	// For an effect with a duration
+	@Override
 	public boolean isDurationEffectTick(int duration, int amplifier) {
 		return duration > 0;
 	}

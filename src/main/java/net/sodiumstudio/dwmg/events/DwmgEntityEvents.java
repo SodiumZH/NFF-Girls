@@ -115,6 +115,7 @@ import net.sodiumstudio.nautils.AiHelper;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.MiscUtil;
+import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.Wrapped;
@@ -236,7 +237,7 @@ public class DwmgEntityEvents
 						{
 							event.getMob().asMob().setHealth(1.0f);
 							event.getMob().asMob().invulnerableTime += 60;
-							EntityHelper.sendGlintParticlesToLivingDefault(event.getMob().asMob());
+							NaParticleUtils.sendGlintParticlesToEntityDefault(event.getMob().asMob());
 							event.setCanceled(true);
 							return;
 						}
@@ -373,7 +374,7 @@ public class DwmgEntityEvents
 				else if (!event.getSource().equals(DamageSource.IN_FIRE)
 						&& !event.getSource().equals(DamageSource.STARVE))
 				{
-					EntityHelper.sendParticlesToEntity(living, ParticleTypes.PORTAL, 0, living.getBbHeight()/2, 0, 0.5, living.getBbHeight()/2, 0.5, 2, 1);
+					NaParticleUtils.sendParticlesToEntity(living, ParticleTypes.PORTAL, 0, living.getBbHeight()/2, 0, 0.5, living.getBbHeight()/2, 0.5, 2, 1);
 					/*living.level.addParticle(ParticleTypes.PORTAL, 
 							living.getRandomX(0.5D), 
 							living.getRandomY() - 0.25D,
@@ -624,37 +625,6 @@ public class DwmgEntityEvents
 					}
 				}
 			}
-			/** Handle {@link HmagMeltyMonsterEntity} lava acceleration effect */
-		/*	if (event.getEntity() instanceof Player player)
-			{
-				List<HmagMeltyMonsterEntity> list = BefriendedHelper.getOwningMobsInArea(player, DwmgEntityTypes.HMAG_MELTY_MONSTER.get(), 16d, true);
-				if (list.size() > 0 && player.isInLava())
-					EntityHelper.addModifierIfAbsent(player, Attributes.MOVEMENT_SPEED, HmagMeltyMonsterEntity.MODIFIER_OWNER_SPEED_UP_IN_LAVA, false);
-				else player.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(HmagMeltyMonsterEntity.MODIFIER_OWNER_SPEED_UP_IN_LAVA);
-				
-			}
-			if (event.getEntity() instanceof HmagMeltyMonsterEntity mm)
-			{
-				if (BefriendedHelper.getOwnerInArea(mm, 16d, true).isPresent())
-				{
-					if (mm.isInLava())
-					{
-						EntityHelper.addModifierIfAbsent(mm, Attributes.MOVEMENT_SPEED, HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_IN_LAVA, false);
-						mm.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_ON_GROUND);						
-					}
-					else
-					{
-						EntityHelper.addModifierIfAbsent(mm, Attributes.MOVEMENT_SPEED, HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_ON_GROUND, false);
-						mm.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_IN_LAVA);	
-					}
-				}
-				else 
-				{
-					mm.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_IN_LAVA);
-					mm.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_ON_GROUND);
-				}
-			}
-			*/
 		}
 	}
 	
@@ -889,9 +859,9 @@ public class DwmgEntityEvents
 								loseValue = 10f;
 							cap.addFavorability(-loseValue);
 							if (loseValue < 1.0f)
-								EntityHelper.sendSmokeParticlesToLivingDefault(bm.asMob());
+								NaParticleUtils.sendSmokeParticlesToEntityDefault(bm.asMob());
 							else
-								EntityHelper.sendAngryParticlesToLivingDefault(bm.asMob());
+								NaParticleUtils.sendAngryParticlesToEntityDefault(bm.asMob());
 						});
 					}
 				}

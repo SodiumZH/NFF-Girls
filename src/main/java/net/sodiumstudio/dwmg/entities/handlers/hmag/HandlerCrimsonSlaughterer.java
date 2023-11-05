@@ -47,7 +47,7 @@ public class HandlerCrimsonSlaughterer extends HandlerItemGivingProgress
 		else if (TagHelper.hasTag(item, "forge:ingots/netherite") || item.is(Items.NETHERITE_INGOT))
 			return RndUtil.rndRangedDouble(0.16d, 0.32d);
 		else if (item.is(Items.NETHER_STAR))
-			return RandomSelection.create(0.50d).add(1.01d, 0.20d).getDouble();
+			return RandomSelection.createDouble(0.50d).add(1.01d, 0.20d).getDouble();
 		else return 0;
 			
 	}
