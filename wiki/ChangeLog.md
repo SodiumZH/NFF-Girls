@@ -4,12 +4,15 @@
 
 ### 0.1.18
 
-- Added Melty Monster support.
-- Added sound configs about Ghast sounds.
-- Added config to enable/disable friendly damage of projectiles from befriended mobs. (Disabled by default)
+- Added some configs:
+  - Ghast sounds
+  - Enable/disable friendly damage of projectiles from befriended mobs (Disabled by default)
+  - Max health & atk boost from mob level
 - Now Ghastly Seekers accept Gunpowder as healing item.
+- Now explosions from befriended mobs will not destroy dropped items (but will blow them away).
 - Now fireballs of Ghastly Seekers don't hurt allies, and the direct hit damage is scaled like the explosion.
 - Fixed incompatibility with Target Dummy.
+- Fixed the last bauble of Jack o' Frost not working.
 
 ### 0.1.17.1
 

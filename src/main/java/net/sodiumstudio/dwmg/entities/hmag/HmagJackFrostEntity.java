@@ -317,7 +317,7 @@ public class HmagJackFrostEntity extends HmagJackFrostEntityBase implements IDwm
 
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
-		return this.continuousBaubleSlots(0, 3);
+		return this.continuousBaubleSlots(0, 4);
 	}
 
 	@Override
