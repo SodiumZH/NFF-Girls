@@ -13,7 +13,7 @@ import net.sodiumstudio.nautils.exceptions.UnimplementedException;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.AiMaths;
 
 /**
- * Common methods for all follow-owner goals.
+ * Sound methods for all follow-owner goals.
  */
 public interface IBefriendedFollowOwner
 {

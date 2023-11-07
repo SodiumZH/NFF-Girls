@@ -11,6 +11,7 @@ import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgSubsystemEvents
@@ -57,12 +58,14 @@ public class DwmgSubsystemEvents
 	public static void onLevelChange(CLevelHandler.LevelChangeEvent event)
 	{
 		double lvl = event.levelAfter;
+		double healthBoost = DwmgConfigs.ValueCache.Combat.MAX_HEALTH_BOOST_BY_LEVEL == 0d ? lvl : Math.min(lvl, DwmgConfigs.ValueCache.Combat.MAX_HEALTH_BOOST_BY_LEVEL);
+		double atkBoost = DwmgConfigs.ValueCache.Combat.MAX_ATK_BOOST_BY_LEVEL == 0d ? lvl / 10d : Math.min(lvl / 10d, DwmgConfigs.ValueCache.Combat.MAX_ATK_BOOST_BY_LEVEL);
 		if (!event.mob.level.isClientSide && event.mob instanceof IDwmgBefriendedMob bm)
 		{
 			event.mob.getAttribute(Attributes.MAX_HEALTH).removeModifier(LVL_HP_MODIFIER_UUID);
 			event.mob.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(LVL_ATK_MODIFIER_UUID);
-			event.mob.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(LVL_HP_MODIFIER_UUID, "level_max_hp", lvl, AttributeModifier.Operation.ADDITION));
-			event.mob.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(new AttributeModifier(LVL_ATK_MODIFIER_UUID, "level_atk", lvl / 10, AttributeModifier.Operation.ADDITION));
+			event.mob.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(LVL_HP_MODIFIER_UUID, "level_max_hp", healthBoost, AttributeModifier.Operation.ADDITION));
+			event.mob.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(new AttributeModifier(LVL_ATK_MODIFIER_UUID, "level_atk", atkBoost, AttributeModifier.Operation.ADDITION));
 		}
 	}
 }

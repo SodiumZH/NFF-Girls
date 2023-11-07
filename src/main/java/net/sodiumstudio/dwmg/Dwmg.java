@@ -45,6 +45,7 @@ public class Dwmg
         
         // Config
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, DwmgConfigs.CONFIG);
+        //ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, DwmgConfigs.CONFIG_SERVER, "dwmg-server");
         modEventBus.addListener(DwmgConfigs::loadConfig);
         
         // Set up registries
@@ -68,7 +69,7 @@ public class Dwmg
     public void onServerStarting(ServerStartingEvent event)
     {
         // Do something when the server starts
-        LOGGER.info("DWMG: Server started.");
+        LOGGER.info("DWMG: Combat started.");
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
