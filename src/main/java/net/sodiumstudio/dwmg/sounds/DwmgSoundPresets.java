@@ -13,82 +13,82 @@ public class DwmgSoundPresets
 	
 	public static SoundEvent generalAmbient(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.AMBIENT_SOUND_CHANCE > rnd.nextDouble())
+		if (DwmgConfigs.ValueCache.Sound.AMBIENT_SOUND_CHANCE > rnd.nextDouble())
 			return null;
 		return defaultSound;
 	}
 	
 	public static SoundEvent zombieAmbient(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.AMBIENT_SOUND_CHANCE < rnd.nextDouble())
+		if (DwmgConfigs.ValueCache.Sound.AMBIENT_SOUND_CHANCE < rnd.nextDouble())
 			return null;
-		if (DwmgConfigs.ValueCache.ZOMBIES_NO_AMBIENT_SOUND)
+		if (DwmgConfigs.ValueCache.Sound.ZOMBIES_NO_AMBIENT_SOUND)
 			return null;
-		if (DwmgConfigs.ValueCache.ZOMBIES_USE_GIRL_SOUND)
+		if (DwmgConfigs.ValueCache.Sound.ZOMBIES_USE_GIRL_SOUND)
 			return ModSoundEvents.GIRL_MOB_AMBIENT.get();
 		return defaultSound;
 	}
 	
 	public static SoundEvent zombieHurt(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.ZOMBIES_USE_GIRL_SOUND)
+		if (DwmgConfigs.ValueCache.Sound.ZOMBIES_USE_GIRL_SOUND)
 			return ModSoundEvents.GIRL_MOB_HURT.get();
 		return defaultSound;
 	}
 	
 	public static SoundEvent zombieDeath(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.ZOMBIES_USE_GIRL_SOUND)
+		if (DwmgConfigs.ValueCache.Sound.ZOMBIES_USE_GIRL_SOUND)
 			return ModSoundEvents.GIRL_MOB_DEATH.get();
 		return defaultSound;
 	}
 	
 	public static SoundEvent skeletonAmbient(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.AMBIENT_SOUND_CHANCE > rnd.nextDouble())
+		if (DwmgConfigs.ValueCache.Sound.AMBIENT_SOUND_CHANCE > rnd.nextDouble())
 			return null;
-		if (DwmgConfigs.ValueCache.SKELETONS_NO_AMBIENT_SOUND)
+		if (DwmgConfigs.ValueCache.Sound.SKELETONS_NO_AMBIENT_SOUND)
 			return null;
-		if (DwmgConfigs.ValueCache.SKELETONS_USE_GIRL_SOUND)
+		if (DwmgConfigs.ValueCache.Sound.SKELETONS_USE_GIRL_SOUND)
 			return ModSoundEvents.GIRL_MOB_AMBIENT.get();
 		return defaultSound;
 	}
 	
 	public static SoundEvent skeletonHurt(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.SKELETONS_USE_GIRL_SOUND)
+		if (DwmgConfigs.ValueCache.Sound.SKELETONS_USE_GIRL_SOUND)
 			return ModSoundEvents.GIRL_MOB_HURT.get();
 		return defaultSound;
 	}
 	
 	public static SoundEvent skeletonDeath(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.SKELETONS_USE_GIRL_SOUND)
+		if (DwmgConfigs.ValueCache.Sound.SKELETONS_USE_GIRL_SOUND)
 			return ModSoundEvents.GIRL_MOB_DEATH.get();
 		return defaultSound;
 	}
 	
 	public static SoundEvent ghastAmbient(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.AMBIENT_SOUND_CHANCE > rnd.nextDouble())
+		if (DwmgConfigs.ValueCache.Sound.AMBIENT_SOUND_CHANCE > rnd.nextDouble())
 			return null;
-		if (DwmgConfigs.ValueCache.GHASTS_NO_AMBIENT_SOUND)
+		if (DwmgConfigs.ValueCache.Sound.GHASTS_NO_AMBIENT_SOUND)
 			return null;
-		if (DwmgConfigs.ValueCache.GHASTS_USE_GIRL_SOUND)
+		if (DwmgConfigs.ValueCache.Sound.GHASTS_USE_GIRL_SOUND)
 			return ModSoundEvents.GIRL_MOB_AMBIENT.get();
 		return defaultSound;
 	}
 	
 	public static SoundEvent ghastHurt(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.GHASTS_USE_GIRL_SOUND)
+		if (DwmgConfigs.ValueCache.Sound.GHASTS_USE_GIRL_SOUND)
 			return ModSoundEvents.GIRL_MOB_HURT.get();
 		return defaultSound;
 	}
 	
 	public static SoundEvent ghastDeath(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.GHASTS_USE_GIRL_SOUND)
+		if (DwmgConfigs.ValueCache.Sound.GHASTS_USE_GIRL_SOUND)
 			return ModSoundEvents.GIRL_MOB_DEATH.get();
 		return defaultSound;
 	}

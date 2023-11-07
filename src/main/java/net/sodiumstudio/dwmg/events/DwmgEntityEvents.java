@@ -89,6 +89,7 @@ import net.sodiumstudio.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
 import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
 import net.sodiumstudio.befriendmobs.item.MobOwnershipTransfererItem;
+import net.sodiumstudio.befriendmobs.item.MobRespawnerItem;
 import net.sodiumstudio.befriendmobs.registry.BMCaps;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.FreezeGoal;
@@ -132,6 +133,7 @@ import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.TagHelper;
 import net.sodiumstudio.nautils.Wrapped;
+import net.sodiumstudio.nautils.events.ItemEntityHurtEvent;
 
 @SuppressWarnings("removal")
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -463,7 +465,7 @@ public class DwmgEntityEvents
 			/** Cancel projectile friendly damage */
 			if (event.getSource() instanceof EntityDamageSource eds && eds.getEntity() instanceof IDwmgBefriendedMob bm && eds.getDirectEntity() instanceof Projectile)
 			{
-				if (!DwmgConfigs.ValueCache.ENABLE_PROJECTILE_FRIENDLY_DAMAGE && DwmgEntityHelper.isAlly(bm, event.getEntity()))
+				if (!DwmgConfigs.ValueCache.Combat.ENABLE_PROJECTILE_FRIENDLY_DAMAGE && DwmgEntityHelper.isAlly(bm, event.getEntity()))
 				{
 					event.setCanceled(true);
 					return;
@@ -631,9 +633,9 @@ public class DwmgEntityEvents
 					int ampl = event.getEntity().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
 					if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
 					{
-						if (!(event.getEntity() instanceof Player player && player.isCreative())
-							|| event.getEntity() instanceof WitherSkeleton
-							|| !event.getEntity().canBeAffected(new MobEffectInstance(MobEffects.WITHER)))
+						if (!(/*event.getEntity() instanceof Player player && player.isCreative())
+							||*/ event.getEntity() instanceof WitherSkeleton
+							|| !event.getEntity().canBeAffected(new MobEffectInstance(MobEffects.WITHER))))
 						{
 							if (event.getEntity().getHealth() <= 1f)
 								event.getEntity().die(DwmgDamageSources.NECROMANCER_WITHER);
@@ -1155,6 +1157,15 @@ public class DwmgEntityEvents
 	public static void onBefriended(MobBefriendedEvent event)
 	{
 		event.mobBefriended.asMob().setCustomName(null);
+	}
+	
+	@SubscribeEvent
+	public static void onItemEntityHurt(ItemEntityHurtEvent event)
+	{
+		if (event.getEntity().getItem().getItem() instanceof MobRespawnerItem item)
+			event.setCanceled(true);
+		if (event.damageSource.getEntity() != null && event.damageSource.getEntity() instanceof IDwmgBefriendedMob mob)
+			event.setCanceled(false);
 	}
 	
 }
