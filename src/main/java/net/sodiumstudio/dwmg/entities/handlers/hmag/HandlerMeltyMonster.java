@@ -28,9 +28,9 @@ public class HandlerMeltyMonster extends HandlerItemGivingProgress
 		else if (item.is(Items.BLAZE_ROD))
 			return RndUtil.rndRangedDouble(0.03, 0.06);
 		else if (item.is(ModItems.BURNING_CORE.get()))
-			return RndUtil.rndRangedDouble(0.03, 0.16);
-		else if (item.is(ModItems.BURNING_CORE_BLOCK.get()))
-			return RndUtil.rndRangedDouble(0.12, 0.24);
+			return RndUtil.rndRangedDouble(0.03, 0.06);
+		/*else if (item.is(ModItems.BURNING_CORE_BLOCK.get()))
+			return RndUtil.rndRangedDouble(0.12, 0.24);*/
 		else if (item.is(Items.NETHER_STAR))
 			return RandomSelection.createDouble(0.5d).add(1.01d, 0.3d).getDouble();
 		else return 0;

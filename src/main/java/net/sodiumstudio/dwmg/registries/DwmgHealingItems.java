@@ -56,7 +56,7 @@ public class DwmgHealingItems
 		.add(Items.COOKED_MUTTON, 8f)
 		.add(Items.COOKED_BEEF, 10f)
 		.add(Items.COOKED_PORKCHOP, 10f)
-		.add(ModItems.COOKED_RAVAGER_MEAT.get(), 30f)
+		//.add(ModItems.COOKED_RAVAGER_MEAT.get(), 30f)
 		.add("twilightforest:cooked_meef", 8f)
 		.add(Items.GOLDEN_APPLE, mob -> mob.getMaxHealth())
 		.build();

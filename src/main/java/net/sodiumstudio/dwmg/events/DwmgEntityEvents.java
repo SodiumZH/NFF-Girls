@@ -99,6 +99,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagDrownedGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagGhastlySeekerEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHornetEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHuskGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagMeltyMonsterEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSkeletonGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagStrayGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagWitherSkeletonGirlEntity;
@@ -438,7 +439,7 @@ public class DwmgEntityEvents
 
 			if (event.getSource() instanceof EntityDamageSource eds && eds.getEntity() instanceof HmagGhastlySeekerEntity gs)
 			{
-				if (DwmgEntityHelper.isAlly(gs, event.getEntity()))
+				if (DwmgEntityHelper.isAlly(gs, event.getEntityLiving()))
 				{
 					event.setCanceled(true);
 					return;
@@ -448,7 +449,7 @@ public class DwmgEntityEvents
 			/** Cancel projectile friendly damage */
 			if (event.getSource() instanceof EntityDamageSource eds && eds.getEntity() instanceof IDwmgBefriendedMob bm && eds.getDirectEntity() instanceof Projectile)
 			{
-				if (!DwmgConfigs.ValueCache.Combat.ENABLE_PROJECTILE_FRIENDLY_DAMAGE && DwmgEntityHelper.isAlly(bm, event.getEntity()))
+				if (!DwmgConfigs.ValueCache.Combat.ENABLE_PROJECTILE_FRIENDLY_DAMAGE && DwmgEntityHelper.isAlly(bm, event.getEntityLiving()))
 				{
 					event.setCanceled(true);
 					return;
@@ -618,11 +619,11 @@ public class DwmgEntityEvents
 					{
 						if (!(/*event.getEntity() instanceof Player player && player.isCreative())
 							||*/ event.getEntity() instanceof WitherSkeleton
-							|| !event.getEntity().canBeAffected(new MobEffectInstance(MobEffects.WITHER))))
+							|| !event.getEntityLiving().canBeAffected(new MobEffectInstance(MobEffects.WITHER))))
 						{
-							if (event.getEntity().getHealth() <= 1f)
-								event.getEntity().die(DwmgDamageSources.NECROMANCER_WITHER);
-							else event.getEntity().setHealth(event.getEntity().getHealth() - 1);
+							if (event.getEntityLiving().getHealth() <= 1f)
+								event.getEntityLiving().die(DwmgDamageSources.NECROMANCER_WITHER);
+							else event.getEntityLiving().setHealth(event.getEntityLiving().getHealth() - 1);
 						}
 					}
 				}
@@ -1117,7 +1118,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onItemEntityHurt(ItemEntityHurtEvent event)
 	{
-		if (event.getEntity().getItem().getItem() instanceof MobRespawnerItem item)
+		if (event.getEntityItem().getItem().getItem() instanceof MobRespawnerItem item)
 			event.setCanceled(true);
 		if (event.damageSource.getEntity() != null && event.damageSource.getEntity() instanceof IDwmgBefriendedMob mob)
 			event.setCanceled(false);
