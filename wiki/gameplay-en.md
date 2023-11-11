@@ -170,6 +170,8 @@ Currently converting to Drowned is not added because Drowned Girl is not finishe
 
 ##### Befriending
 
+To interact, the player must have the undead affinity effect. (Wearing the Necromancer's hat, standing on Soul Carpet, or consuming Soul Cake will provide undead affinity.)
+
 Simple item-giving process. (Item giving cooldown 10s)
 
 *Soul Cake Slice*: 1% for 1.00, 4% for 3/4, 15% for 1/2, 80% for 1/4.
