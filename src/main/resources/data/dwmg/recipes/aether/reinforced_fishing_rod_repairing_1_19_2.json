@@ -1,0 +1,14 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "aether"
+    }
+  ],
+  "type": "aether:repairing",
+  "category": "enchanting_repair",
+  "ingredient": {
+    "item": "dwmg:reinforced_fishing_rod"
+  },
+  "repairTime": 1200
+}

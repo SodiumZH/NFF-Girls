@@ -1,0 +1,15 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "aether"
+    }
+  ],
+  "type": "aether:repairing",
+  "category": "enchanting_repair",
+  "group": "altar_helmet_repair",
+  "ingredient": {
+    "item": "dwmg:sunhat"
+  },
+  "repairTime": 250
+}
