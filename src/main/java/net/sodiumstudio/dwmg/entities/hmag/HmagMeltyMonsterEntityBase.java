@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
@@ -96,27 +97,27 @@ public class HmagMeltyMonsterEntityBase extends Monster implements RangedAttackM
 	@Override
 	public void aiStep()
 	{
-		if (this.level.isClientSide)
+		if (this.level().isClientSide)
 		{
 			if (!this.isInWaterOrRain())
 			{
 				if (this.tickCount % 5 == 0)
 				{
-					this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getRandomX(0.5D), this.getRandomY() - 0.5D, this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+					this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getRandomX(0.5D), this.getRandomY() - 0.5D, this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
 				}
 
 				if (this.tickCount % 10 == 1)
 				{
-					this.level.addParticle(ParticleTypes.LAVA, this.getRandomX(0.5D), this.getRandomY() - 0.5D, this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+					this.level().addParticle(ParticleTypes.LAVA, this.getRandomX(0.5D), this.getRandomY() - 0.5D, this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
 				}
 			}
 		}
 
 		super.aiStep();
 
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 		{
-			if (ModConfigs.cachedServer.MELTY_MONSTER_SET_FIRE && !this.isInLava() && !this.isInWaterRainOrBubble() && !this.isFreezing() && ForgeEventFactory.getMobGriefingEvent(this.level, this) && this.canSetFire())
+			if (ModConfigs.cachedServer.MELTY_MONSTER_SET_FIRE && !this.isInLava() && !this.isInWaterRainOrBubble() && !this.isFreezing() && ForgeEventFactory.getMobGriefingEvent(this.level(), this) && this.canSetFire())
 			{
 				int i = Mth.floor(this.getX());
 				int j = Mth.floor(this.getY());
@@ -129,9 +130,9 @@ public class HmagMeltyMonsterEntityBase extends Monster implements RangedAttackM
 					k = Mth.floor(this.getZ() + (l / 2 % 2 * 2 - 1) * 0.25F);
 					BlockPos blockpos = new BlockPos(i, j, k);
 
-					if (this.level.isEmptyBlock(blockpos))
+					if (this.level().isEmptyBlock(blockpos))
 					{
-						this.level.setBlockAndUpdate(blockpos, BaseFireBlock.getState(this.level, blockpos));
+						this.level().setBlockAndUpdate(blockpos, BaseFireBlock.getState(this.level(), blockpos));
 						this.onSetFire(blockpos);
 		            }
 				}
@@ -169,9 +170,9 @@ public class HmagMeltyMonsterEntityBase extends Monster implements RangedAttackM
 		double d2 = target.getY() + target.getEyeHeight() * 0.5D - this.getY(0.5D);
 		double d3 = target.getZ() - this.getZ();
 		double d4 = Math.sqrt(d1 * d1 + d3 * d3) * 0.02D;
-		SmallFireball fireballentity = new SmallFireball(this.level, this, d1 + this.getRandom().nextGaussian() * d4, d2, d3 + this.getRandom().nextGaussian() * d4);
+		SmallFireball fireballentity = new SmallFireball(this.level(), this, d1 + this.getRandom().nextGaussian() * d4, d2, d3 + this.getRandom().nextGaussian() * d4);
 		fireballentity.setPos(fireballentity.getX(), this.getY(0.5D) + 0.5D, fireballentity.getZ());
-		this.level.addFreshEntity(fireballentity);
+		this.level().addFreshEntity(fireballentity);
 		this.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 	}
 
@@ -229,9 +230,9 @@ public class HmagMeltyMonsterEntityBase extends Monster implements RangedAttackM
 		{
 			CollisionContext collisioncontext = CollisionContext.of(this);
 
-			if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level.getFluidState(this.blockPosition().above()).is(FluidTags.LAVA))
+			if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level().getFluidState(this.blockPosition().above()).is(FluidTags.LAVA))
 			{
-				this.onGround = true;
+				this.setOnGround(true);
 			}
 			else
 			{
@@ -315,7 +316,7 @@ public class HmagMeltyMonsterEntityBase extends Monster implements RangedAttackM
 
 	@Nonnull
 	@Override
-	public Packet<?> getAddEntityPacket()
+	public Packet<ClientGamePacketListener> getAddEntityPacket()
 	{
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
@@ -366,7 +367,7 @@ public class HmagMeltyMonsterEntityBase extends Monster implements RangedAttackM
 		@Override
 		public boolean canContinueToUse()
 		{
-			return !this.parent.isInLava() && this.isValidTarget(this.parent.level, this.blockPos);
+			return !this.parent.isInLava() && this.isValidTarget(this.parent.level(), this.blockPos);
 		}
 
 		@Override

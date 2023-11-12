@@ -59,7 +59,7 @@ public class DwmgSubsystemEvents
 		double lvl = event.levelAfter;
 		double healthBoost = DwmgConfigs.ValueCache.Combat.MAX_HEALTH_BOOST_BY_LEVEL == 0d ? lvl : Math.min(lvl, DwmgConfigs.ValueCache.Combat.MAX_HEALTH_BOOST_BY_LEVEL);
 		double atkBoost = DwmgConfigs.ValueCache.Combat.MAX_ATK_BOOST_BY_LEVEL == 0d ? lvl / 10d : Math.min(lvl / 10d, DwmgConfigs.ValueCache.Combat.MAX_ATK_BOOST_BY_LEVEL);
-		if (!event.mob.level.isClientSide && event.mob instanceof IDwmgBefriendedMob bm)
+		if (!event.mob.level().isClientSide && event.mob instanceof IDwmgBefriendedMob bm)
 		{
 			event.mob.getAttribute(Attributes.MAX_HEALTH).removeModifier(LVL_HP_MODIFIER_UUID);
 			event.mob.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(LVL_ATK_MODIFIER_UUID);

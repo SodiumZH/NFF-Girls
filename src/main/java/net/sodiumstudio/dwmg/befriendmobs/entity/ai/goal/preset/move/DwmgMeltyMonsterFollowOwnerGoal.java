@@ -23,7 +23,7 @@ public class DwmgMeltyMonsterFollowOwnerGoal extends DwmgBefriendedFollowOwnerGo
 	{
 		if (super.canTeleportTo(pos))
 			return true;
-		if (mob.asMob().level.getBlockState(pos).is(Blocks.LAVA))
+		if (mob.asMob().level().getBlockState(pos).is(Blocks.LAVA))
 		{
 			BlockPos blockpos = pos.subtract(getPathfinder().blockPosition());
 			return this.level.noCollision(getPathfinder(), getPathfinder().getBoundingBox().move(blockpos));

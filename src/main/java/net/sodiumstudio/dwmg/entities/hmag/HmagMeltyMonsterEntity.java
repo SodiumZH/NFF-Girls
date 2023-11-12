@@ -67,6 +67,7 @@ import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.ItemHelper;
+import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.entity.ConditionalAttributeModifier;
 import net.sodiumstudio.nautils.math.GeometryUtil;
 import net.sodiumstudio.nautils.math.RndUtil;
@@ -95,7 +96,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 			(
 				living instanceof HmagMeltyMonsterEntity mm
 				&& BefriendedHelper.getOwnerInArea(mm, 16d, true).isPresent()
-				&& mm.isOnGround()
+				&& mm.onGround()
 			));
 	
 	/* Data sync */
@@ -244,7 +245,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	protected MMFireball fire(Vec3 targetPos)
 	{
 		MMFireball fireball = newFireball(targetPos);
-		this.level.addFreshEntity(fireball);
+		this.level().addFreshEntity(fireball);
 		return fireball;
 	}
 	
@@ -254,7 +255,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		double d2 = targetPos.y - this.getY(0.5D);
 		double d3 = targetPos.z - this.getZ();
 		//double d4 = Math.sqrt(d1 * d1 + d3 * d3) * 0.02D;
-		MMFireball fireballentity = new MMFireball(this.level, this, d1 /*+ this.getRandom().nextGaussian() * d4*/, d2, d3/* + this.getRandom().nextGaussian() * d4*/);
+		MMFireball fireballentity = new MMFireball(this.level(), this, d1 /*+ this.getRandom().nextGaussian() * d4*/, d2, d3/* + this.getRandom().nextGaussian() * d4*/);
 		fireballentity.setPos(fireballentity.getX(), this.getY(0.5D) + 0.5D, fireballentity.getZ());
 		return fireballentity;
 	}
@@ -286,7 +287,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 			// For normal interaction
 			if (!player.isShiftKeyDown())
 			{
-				if (!player.level.isClientSide()) 
+				if (!player.level().isClientSide()) 
 				{
 					/* Put checks before healing item check */
 					if (player.getItemInHand(hand).is(Items.BUCKET))
@@ -299,11 +300,11 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 						}
 						else
 						{
-							EntityHelper.sendSmokeParticlesToLivingDefault(this);
+							NaParticleUtils.sendSmokeParticlesToEntityDefault(this);
 						}
 					 }
 					else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 					else if (hand == InteractionHand.MAIN_HAND
 							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
@@ -314,7 +315,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 					else return InteractionResult.PASS;
 				}
 				// Interacted
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			}
 			// For interaction with shift key down
 			else
@@ -323,7 +324,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
 			}
 		} 
@@ -351,7 +352,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 			//additionalInventory.setMobEquipment(this);
 		}
@@ -360,7 +361,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	@Override
 	public void setInventoryFromMob()
 	{
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
 			//additionalInventory.getFromMob(this);
 		}
@@ -467,13 +468,13 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		{
 			if (pResult.getEntity() instanceof LivingEntity living)
 			{
-				if (!this.level.isClientSide)
+				if (!this.level().isClientSide)
 				{
 					if (!DwmgEntityHelper.isAlly(owner, living))
 						{
 						int i = living.getRemainingFireTicks();
 						living.setSecondsOnFire((int) Math.round(5.0d * (1d + owner.getAttributeValue(Attributes.ATTACK_DAMAGE))));
-						if (!living.hurt(DamageSource.fireball(this, this.owner), (float) (5.0d * (1d + owner.getAttributeValue(Attributes.ATTACK_DAMAGE)))))
+						if (!living.hurt(this.level().damageSources().fireball(this, this.owner), (float) (5.0d * (1d + owner.getAttributeValue(Attributes.ATTACK_DAMAGE)))))
 						{
 							living.setRemainingFireTicks(i);
 						} else if (this.owner instanceof LivingEntity)
@@ -488,8 +489,8 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 
 		@Override
 		protected void onHitBlock(BlockHitResult pResult) {
-		      BlockState blockstate = this.level.getBlockState(pResult.getBlockPos());
-		      blockstate.onProjectileHit(this.level, blockstate, pResult, this);
+		      BlockState blockstate = this.level().getBlockState(pResult.getBlockPos());
+		      blockstate.onProjectileHit(this.level(), blockstate, pResult, this);
 		      this.discard();
 		}
 	}
@@ -520,7 +521,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		@Override
 		public boolean canContinueToUse()
 		{
-			return !this.parent.isInLava() && this.isValidTarget(this.parent.level, this.blockPos);
+			return !this.parent.isInLava() && this.isValidTarget(this.parent.level(), this.blockPos);
 		}
 
 		@Override

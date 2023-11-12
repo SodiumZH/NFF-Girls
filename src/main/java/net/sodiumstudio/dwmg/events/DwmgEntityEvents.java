@@ -7,7 +7,6 @@ import com.github.mechalopa.hmag.HMaG;
 import com.github.mechalopa.hmag.registry.ModEntityTypes;
 import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.CreeperGirlEntity;
-import com.github.mechalopa.hmag.world.entity.DyssomniaEntity;
 import com.github.mechalopa.hmag.world.entity.EnderExecutorEntity;
 import com.github.mechalopa.hmag.world.entity.GhastlySeekerEntity;
 import com.github.mechalopa.hmag.world.entity.HarpyEntity;
@@ -25,9 +24,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -42,7 +39,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.Ghast;
-import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.monster.WitherSkeleton;
@@ -82,11 +78,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.bmevents.entity.MobBefriendedEvent;
 import net.sodiumstudio.befriendmobs.bmevents.entity.ai.BefriendedChangeAiStateEvent;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
-import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
-import net.sodiumstudio.befriendmobs.entity.capability.CAttributeMonitor;
 import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
 import net.sodiumstudio.befriendmobs.events.BefriendableAddHatredEvent;
 import net.sodiumstudio.befriendmobs.events.BefriendedDeathEvent;
@@ -121,7 +115,6 @@ import net.sodiumstudio.dwmg.events.hooks.DwmgHooks;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgConfigs;
-import net.sodiumstudio.dwmg.registries.DwmgDamageSources;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -134,7 +127,6 @@ import net.sodiumstudio.nautils.MiscUtil;
 import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
-import net.sodiumstudio.nautils.TagHelper;
 import net.sodiumstudio.nautils.Wrapped;
 import net.sodiumstudio.nautils.events.ItemEntityHurtEvent;
 
@@ -461,7 +453,7 @@ public class DwmgEntityEvents
 			
 			/** Cancel Ghastly Seeker friendly damage */
 			
-			if (event.getSource() instanceof EntityDamageSource eds && eds.getEntity() instanceof HmagGhastlySeekerEntity gs)
+			if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof HmagGhastlySeekerEntity gs)
 			{
 				if (DwmgEntityHelper.isAlly(gs, event.getEntity()))
 				{
@@ -471,7 +463,7 @@ public class DwmgEntityEvents
 			}
 			
 			/** Cancel projectile friendly damage */
-			if (event.getSource() instanceof EntityDamageSource eds && eds.getEntity() instanceof IDwmgBefriendedMob bm && eds.getDirectEntity() instanceof Projectile)
+			if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof IDwmgBefriendedMob bm && event.getSource().getDirectEntity() instanceof Projectile)
 			{
 				if (!DwmgConfigs.ValueCache.Combat.ENABLE_PROJECTILE_FRIENDLY_DAMAGE && DwmgEntityHelper.isAlly(bm, event.getEntity()))
 				{

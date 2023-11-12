@@ -52,8 +52,8 @@ public class BefriendedGhastFireballEntity extends Fireball
 									this.getOwner());
 			}
 			else allowDestroy = true;
-			this.level.explode(this, this.getX(), this.getY(), this.getZ(), this.explosionPower, allowDestroy,
-					allowDestroy ? (alwaysDrop ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.DESTROY) : Explosion.BlockInteraction.NONE);
+			this.level().explode(this, this.getX(), this.getY(), this.getZ(), this.explosionPower, allowDestroy,
+					allowDestroy ? (alwaysDrop ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.MOB) : Level.ExplosionInteraction.NONE);
 			this.discard();
 		}
 

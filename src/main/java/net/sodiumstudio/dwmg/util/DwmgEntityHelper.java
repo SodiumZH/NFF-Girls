@@ -111,11 +111,11 @@ public class DwmgEntityHelper
 	 */
 	public static boolean isAlly(IDwmgBefriendedMob allyTo, LivingEntity test)
 	{
-		if (allyTo.asMob().level.isClientSide)
+		if (allyTo.asMob().level().isClientSide)
 			return false;
 		if ((LivingEntity)(allyTo.asMob()) == test)
 			return true;
-		boolean allowPvp = allyTo.asMob().level.getServer().isPvpAllowed();
+		boolean allowPvp = allyTo.asMob().level().getServer().isPvpAllowed();
 		if (!allowPvp)
 		{
 			return (test instanceof Player || (test instanceof TamableAnimal ta && ta.getOwnerUUID() != null) || test instanceof IBefriendedMob);
@@ -140,13 +140,13 @@ public class DwmgEntityHelper
 	 */
 	public static boolean isAlly(TamableAnimal allyTo, LivingEntity test)
 	{
-		if (allyTo.level.isClientSide)
+		if (allyTo.level().isClientSide)
 			return false;
 		if (allyTo == test)
 			return true;
 		if (allyTo.getOwnerUUID() == null)
 			return false;
-		boolean allowPvp = allyTo.level.getServer().isPvpAllowed();
+		boolean allowPvp = allyTo.level().getServer().isPvpAllowed();
 		if (!allowPvp)
 		{
 			return (test instanceof Player || (test instanceof TamableAnimal ta && ta.getOwnerUUID() != null) || test instanceof IBefriendedMob);
