@@ -220,6 +220,13 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 		return 1.5f;
 	}
 	
+	@SubscribeEvent
+	public static void onCheckMeltingBiome(DwmgHooks.JackFrostCheckMeltingBiomeEvent event)
+	{
+		if (event.getEntity() instanceof HmagJackFrostEntity jf && jf.hasDwmgBauble("courage_amulet"))
+			event.setCanceled(true);
+	}
+	
 	/* Interaction */
 
 	// Map items that can heal the mob and healing values here.
@@ -272,13 +279,7 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 		// Always pass when not owning this mob
 		return InteractionResult.PASS;
 	}
-	
-	@SubscribeEvent
-	public static void onCheckMeltingBiome(DwmgHooks.JackFrostCheckMeltingBiomeEvent event)
-	{
-		if (event.getEntity() instanceof HmagJackFrostEntity jf && jf.hasDwmgBauble("courage_amulet"))
-			event.setCanceled(true);
-	}
+
 	
 	/* Inventory */
 
@@ -412,7 +413,7 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 			super.onHitEntity(result);
 		}
 	}
-	
+
 }
 
 
