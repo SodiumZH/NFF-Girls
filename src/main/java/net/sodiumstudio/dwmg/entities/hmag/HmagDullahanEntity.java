@@ -111,16 +111,7 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
 		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
-	
-	@Override
-	public void aiStep() {
-		if (!this.level().isClientSide)
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
-		super.aiStep();
-		if (!this.level().isClientSide)
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, ItemStack.EMPTY);
-	}
-	
+
 	/* Interaction */
 
 	// Map items that can heal the mob and healing values here.

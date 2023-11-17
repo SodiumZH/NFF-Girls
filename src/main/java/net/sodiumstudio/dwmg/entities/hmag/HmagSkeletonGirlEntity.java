@@ -166,26 +166,8 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 	@Override
 	public void aiStep() {
 
-		// Handle sun sensitivity
-		if (!this.level().isClientSide && this.isSunImmune())
-		{
-			// Save no matter what, empty or not
-			NbtHelper.saveItemStack(this.getItemBySlot(EquipmentSlot.HEAD), this.getTempData().values().tag, "head_item");
-			// Block if not wearing anything on head
-			if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty())
-				DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, new ItemStack(BMItems.DUMMY_ITEM.get()));
-			super.aiStep();
-			// Set back
-			// Use reflect force set since normal set will cause repeat sound
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, NbtHelper.readItemStack(this.getTempData().values().tag, "head_item"));
-			this.getTempData().values().tag.remove("head_item");
-			this.setInventoryFromMob();
-		}
-		else 
-		{
-			super.aiStep();
-		}
-		
+		super.aiStep();
+
 		/* Handle combat AI */
 		if (!this.level().isClientSide)
 		{

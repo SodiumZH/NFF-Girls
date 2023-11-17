@@ -171,16 +171,6 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
 	
-	@Override
-	public void aiStep()
-	{
-		if (!this.level().isClientSide)
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
-		super.aiStep();
-		if (!this.level().isClientSide)
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, ItemStack.EMPTY);
-	}
-	
 	/* Combat */
 	@SubscribeEvent
 	public static void onAttack(LivingHurtEvent event)

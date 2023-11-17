@@ -317,24 +317,17 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 
 	@Override
 	public void aiStep() {
-		if (!this.level().isClientSide)
+		super.aiStep();
+		if (!this.level.isClientSide)
 		{
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD,
-					this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
-			super.aiStep();
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, ItemStack.EMPTY);
 			applyAllyEffect();
-			if (!this.level().isClientSide)
+			FlowerBlock flower = this.getFlowerOnOffhand();
+			if (flower != null && flower != lastFlower)
 			{
-				FlowerBlock flower = this.getFlowerOnOffhand();
-				if (flower != null && flower != lastFlower)
-				{
-					addEffectTimePoint = this.random.nextInt(allyEffectCooldown);
-					lastFlower = flower;
-				}
+				addEffectTimePoint = this.random.nextInt(allyEffectCooldown);
+				lastFlower = flower;
 			}
 		}
-		else super.aiStep();
 	}
 
 	/** Inventory **/
