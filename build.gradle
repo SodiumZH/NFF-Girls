@@ -25,11 +25,13 @@ apply plugin: 'org.spongepowered.mixin'
 mixin {
     add sourceSets.main, 'befriendmobs.refmap.json'
     add sourceSets.main, 'dummmmmmy.refmap.json'
+    add sourceSets.main, 'dwmg.refmap.json'
     config 'befriendmobs.mixins.json'
+    config 'dwmg.mixins.json'
 }
 
 
-version = '0.1.18'
+version = '0.1.19'
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'dwmg-1.19.2'
 

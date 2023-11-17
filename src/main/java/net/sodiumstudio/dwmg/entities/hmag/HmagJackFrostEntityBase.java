@@ -57,11 +57,10 @@ import net.sodiumstudio.nautils.function.MutablePredicate;
 /**
  * A re-implementation of HMaG Jack o'Frost, allowing to prevent damage in hot biomes.
  */
+@Deprecated
 public abstract class HmagJackFrostEntityBase extends Monster implements RangedAttackMob
 {
-	
-	public final MutablePredicate<HmagJackFrostEntityBase> immuneToHotBiomes = new MutablePredicate<>();
-	
+
 	public HmagJackFrostEntityBase(EntityType<? extends HmagJackFrostEntityBase> type, Level level)
 	{
 		super(type, level);
@@ -75,7 +74,7 @@ public abstract class HmagJackFrostEntityBase extends Monster implements RangedA
 
 		if (!this.level.isClientSide)
 		{
-			if (isMeltingBiome(this, this.level) && !immuneToHotBiomes.test(this))
+			if (isMeltingBiome(this, this.level)/* && !immuneToHotBiomes.test(this)*/)
 			{
 				this.hurt(DamageSource.ON_FIRE, 1.0F);
 			}
