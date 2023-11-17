@@ -6,9 +6,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.github.mechalopa.hmag.world.entity.JackFrostEntity;
-import com.google.j2objc.annotations.ReflectionSupport.Level;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.sodiumstudio.dwmg.events.hooks.DwmgHooks;
 import net.sodiumstudio.nautils.mixins.NaUtilsMixin;
