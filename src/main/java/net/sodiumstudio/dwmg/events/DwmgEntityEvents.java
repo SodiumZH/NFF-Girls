@@ -122,6 +122,7 @@ import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.Wrapped;
 import net.sodiumstudio.nautils.events.ItemEntityHurtEvent;
+import net.sodiumstudio.nautils.events.MobSunBurnTickEvent;
 
 @SuppressWarnings("removal")
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -1123,5 +1124,4 @@ public class DwmgEntityEvents
 		if (event.damageSource.getEntity() != null && event.damageSource.getEntity() instanceof IDwmgBefriendedMob mob)
 			event.setCanceled(false);
 	}
-	
 }

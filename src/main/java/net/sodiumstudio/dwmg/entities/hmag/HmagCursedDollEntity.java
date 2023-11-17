@@ -127,13 +127,7 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 	@Override
 	public void aiStep()
 	{
-		if (!this.level.isClientSide)
-		{
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
-			super.aiStep();
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, ItemStack.EMPTY);
-		}
-		else super.aiStep();
+		super.aiStep();
 		if (enhancingCooldown > 0)
 			enhancingCooldown--;
 	}

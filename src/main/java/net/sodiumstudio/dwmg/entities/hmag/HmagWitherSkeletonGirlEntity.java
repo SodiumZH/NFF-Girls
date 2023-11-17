@@ -38,7 +38,9 @@ import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
@@ -48,6 +50,7 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.nautils.NbtHelper;
+import net.sodiumstudio.nautils.events.MobSunBurnTickEvent;
 import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
@@ -67,7 +70,7 @@ import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 
-public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity implements IDwmgBefriendedMob, IBaubleEquipable
+public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity implements IDwmgBefriendedMob, IBaubleEquipable, IBefriendedSunSensitiveMob
 {
 	
 	public HmagWitherSkeletonGirlEntity(EntityType<? extends HmagWitherSkeletonGirlEntity> pEntityType, Level pLevel) {
@@ -156,25 +159,13 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 		justShot = true;
 	}
 
+	/* Behavior */
 	@Override
 	public void aiStep() {
 
 		if (!this.level.isClientSide)
 		{
-			// Wither skeletons don't burn under sun but still damage helmet, so cancel it
-			// Save no matter what, empty or not
-			NbtHelper.saveItemStack(this.getItemBySlot(EquipmentSlot.HEAD), this.getTempData().values().tag, "head_item");
-			// Block if not wearing anything on head
-			if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty())
-				DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, new ItemStack(BMItems.DUMMY_ITEM.get()));
-			else DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.getItemBySlot(EquipmentSlot.HEAD).copy());
-			super.aiStep();
-			// Set back
-			// Use reflect force set since normal set will cause repeat sound
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, NbtHelper.readItemStack(this.getTempData().values().tag, "head_item"));
-			this.getTempData().values().tag.remove("head_item");
-			this.setInventoryFromMob();
-			
+			super.aiStep();	
 			/* Handle combat AI */		
 			if (justShot)
 			{
@@ -220,6 +211,12 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 			}
 		}
 		else super.aiStep();
+	}
+	
+	@Override
+	public void setupSunImmunityRules()
+	{
+		this.getSunImmunity().putOptional("always_true", m -> true);
 	}
 	
 	// It's not needed here
