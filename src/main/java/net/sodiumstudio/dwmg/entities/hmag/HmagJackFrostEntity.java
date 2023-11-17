@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import com.github.mechalopa.hmag.world.entity.JackFrostEntity;
 import com.github.mechalopa.hmag.world.entity.projectile.HardSnowballEntity;
 
 import net.minecraft.nbt.CompoundTag;
@@ -13,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,6 +31,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
@@ -46,16 +50,18 @@ import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedRangedAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
+import net.sodiumstudio.dwmg.events.hooks.DwmgHooks;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
+import net.sodiumstudio.nautils.function.MutablePredicate;
 import net.sodiumstudio.nautils.math.GeometryUtil;
 import net.sodiumstudio.nautils.math.RndUtil;
 
-public class HmagJackFrostEntity extends HmagJackFrostEntityBase implements IDwmgBefriendedMob, ILivingDelayedActions {
+public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefriendedMob, ILivingDelayedActions {
 
 	/* Data sync */
 
@@ -88,11 +94,12 @@ public class HmagJackFrostEntity extends HmagJackFrostEntityBase implements IDwm
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
 		Arrays.fill(this.handDropChances, 0);
-		this.immuneToHotBiomes.putOptional("resis_amulet", m -> ((HmagJackFrostEntity)m).hasDwmgBauble("resistance_amulet"));
 	}
 	
 	/* Behavior */
 
+	public final MutablePredicate<HmagJackFrostEntityBase> immuneToHotBiomes = new MutablePredicate<>();
+	
 	@Override
 	protected void registerGoals() {
 		goalSelector.addGoal(1, new FloatGoal(this));
@@ -108,28 +115,9 @@ public class HmagJackFrostEntity extends HmagJackFrostEntityBase implements IDwm
 		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
 	
-	@Override
 	protected HardSnowballEntity getNewSnowball()
 	{
-		return new HardSnowballEntity(this.level, this)
-			{
-				@Override
-				public void onHitEntity(EntityHitResult result)
-				{
-					if (this.getOwner() instanceof HmagJackFrostEntity jf)
-					{
-						if (jf == result.getEntity())
-							return;
-						if (jf.isOwnerPresent() && jf.getOwnerUUID().equals(result.getEntity().getUUID()))
-							return;
-						if (result.getEntity() instanceof IBefriendedMob bm && bm.getOwnerUUID().equals(jf.getOwnerUUID()))
-							return;
-						if (result.getEntity() instanceof TamableAnimal ta && ta.isTame() && ta.getOwnerUUID().equals(jf.getOwnerUUID()))
-							return;
-					}
-					super.onHitEntity(result);
-				}
-			};
+		return new BefriendedJackFrostSnowball(this.level, this);
 	}
 	
 	protected int getThrowLevel()
@@ -191,16 +179,46 @@ public class HmagJackFrostEntity extends HmagJackFrostEntityBase implements IDwm
 		}
 	}
 	
-	@Override
 	protected float getShootInaccuracy()
 	{
 		return 5f;
 	}
 	
-	@Override
 	protected float getShootDamage()
 	{
 		return 3f + (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+	}
+	
+	public void throwSnowballTo(Vec3 targetPos)
+	{
+		HardSnowballEntity snowball = getNewSnowball();
+		double deltaX = targetPos.x() - snowball.getX();
+		double deltaY = targetPos.y() - snowball.getY();
+		double deltaZ = targetPos.z() - snowball.getZ();
+		double yOffset = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ) * 0.05D;
+		snowball.shoot(deltaX, deltaY + yOffset, deltaZ, getShootSpeed(), getShootInaccuracy());
+		snowball.setDamage(getShootDamage());
+		this.level.addFreshEntity(snowball);
+	}
+	
+	public void throwSnowball(Vec3 direction)
+	{
+		Vec3 n = direction.normalize();
+		//double yOffset = Math.sqrt(n.x * n.x + n.z * n.z) * 0.1D;
+		HardSnowballEntity snowball = getNewSnowball();
+		snowball.shoot(n.x, n.y, n.z, getShootSpeed(), getShootInaccuracy());
+		snowball.setDamage(getShootDamage());
+		this.level.addFreshEntity(snowball);
+	}
+	
+	public void playThrowingSound()
+	{
+		this.playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+	}
+	
+	protected float getShootSpeed()
+	{
+		return 1.5f;
 	}
 	
 	/* Interaction */
@@ -254,6 +272,13 @@ public class HmagJackFrostEntity extends HmagJackFrostEntityBase implements IDwm
 		} 
 		// Always pass when not owning this mob
 		return InteractionResult.PASS;
+	}
+	
+	@SubscribeEvent
+	public static void onCheckMeltingBiome(DwmgHooks.JackFrostCheckMeltingBiomeEvent event)
+	{
+		if (event.getEntity() instanceof HmagJackFrostEntity jf && jf.hasDwmgBauble("courage_amulet"))
+			event.setCanceled(true);
 	}
 	
 	/* Inventory */
@@ -363,6 +388,32 @@ public class HmagJackFrostEntity extends HmagJackFrostEntityBase implements IDwm
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 
+	public static class BefriendedJackFrostSnowball extends HardSnowballEntity
+	{
+
+		public BefriendedJackFrostSnowball(Level level, LivingEntity thrower)
+		{
+			super(level, thrower);
+		}
+
+		@Override
+		public void onHitEntity(EntityHitResult result)
+		{
+			if (this.getOwner() instanceof HmagJackFrostEntity jf)
+			{
+				if (jf == result.getEntity())
+					return;
+				if (jf.isOwnerPresent() && jf.getOwnerUUID().equals(result.getEntity().getUUID()))
+					return;
+				if (result.getEntity() instanceof IBefriendedMob bm && bm.getOwnerUUID().equals(jf.getOwnerUUID()))
+					return;
+				if (result.getEntity() instanceof TamableAnimal ta && ta.isTame() && ta.getOwnerUUID().equals(jf.getOwnerUUID()))
+					return;
+			}
+			super.onHitEntity(result);
+		}
+	}
+	
 }
 
 
