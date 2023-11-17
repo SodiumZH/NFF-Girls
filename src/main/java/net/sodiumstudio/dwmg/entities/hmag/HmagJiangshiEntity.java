@@ -48,6 +48,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuJiangshi;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -120,16 +121,7 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
 		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
-	
-	@Override
-	public void aiStep() {
-		if (!this.level.isClientSide)
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
-		super.aiStep();
-		if (!this.level.isClientSide)
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, ItemStack.EMPTY);
-	}
-	
+
 	/* Interaction */
 
 	// Map items that can heal the mob and healing values here.
@@ -224,7 +216,7 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuFourBaubles(containerId, playerInventory, container, this);
+		return new InventoryMenuJiangshi(containerId, playerInventory, container, this);
 	}
 
 	/* Save and Load */
