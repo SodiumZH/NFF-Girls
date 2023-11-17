@@ -9,6 +9,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.Event.HasResult;
+import net.sodiumstudio.nautils.events.NaUtilsLivingEvent;
 
 public class DwmgHooks
 {
@@ -29,19 +30,12 @@ public class DwmgHooks
 	}
 	
 	@Cancelable
-	public static class JackFrostCheckMeltingBiomeEvent extends LivingEvent
+	public static class JackFrostCheckMeltingBiomeEvent extends NaUtilsLivingEvent<JackFrostEntity>
 	{
 
-		public JackFrostCheckMeltingBiomeEvent(LivingEntity entity)
-		{
+		public JackFrostCheckMeltingBiomeEvent(JackFrostEntity entity) {
 			super(entity);
 		}
-		
-		@Override
-		public JackFrostEntity getEntity()
-		{
-			return ((JackFrostEntity)(super.getEntity()));
-		}
-		
+
 	}
 }
