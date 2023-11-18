@@ -98,7 +98,7 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 	
 	/* Behavior */
 
-	public final MutablePredicate<HmagJackFrostEntityBase> immuneToHotBiomes = new MutablePredicate<>();
+	public final MutablePredicate<HmagJackFrostEntity> immuneToHotBiomes = new MutablePredicate<>();
 	
 	@Override
 	protected void registerGoals() {
