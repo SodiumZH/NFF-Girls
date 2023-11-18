@@ -16,6 +16,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -74,8 +75,6 @@ import net.sodiumstudio.nautils.math.RndUtil;
 
 public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgBefriendedMob, ILivingDelayedActions {
 
-	protected int takingLavaCooldown = 0;
-	
 	/** Added in */
 	public static final ConditionalAttributeModifier MODIFIER_OWNER_SPEED_UP_IN_LAVA = 
 			new ConditionalAttributeModifier(ForgeMod.SWIM_SPEED.get(), 4d, AttributeModifier.Operation.MULTIPLY_BASE, living -> 
@@ -259,7 +258,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		fireballentity.setPos(fireballentity.getX(), this.getY(0.5D) + 0.5D, fireballentity.getZ());
 		return fireballentity;
 	}
-	
+
 	@Override
 	protected void customServerAiStep()
 	{
@@ -270,6 +269,13 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		if (this.takingLavaCooldown > 0)
 			this.takingLavaCooldown --;
 	}
+	
+	protected boolean shouldSetFire = true;
+	
+	public boolean shouldSetFire() {
+		return shouldSetFire;
+	}
+	
 	/* Interaction */
 
 	// Map items that can heal the mob and healing values here.
@@ -279,7 +285,9 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	{
 		return DwmgHealingItems.NONE;
 	}
-
+	
+	protected int takingLavaCooldown = 0;
+	
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
 	{
@@ -290,8 +298,9 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 				if (!player.level().isClientSide()) 
 				{
 					/* Put checks before healing item check */
+					// You can take a bucket of lava each 5 minutes
 					if (player.getItemInHand(hand).is(Items.BUCKET))
-					 {
+					{
 						if (this.takingLavaCooldown <= 0)
 						{
 							player.getItemInHand(hand).shrink(1);
@@ -302,7 +311,31 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 						{
 							NaParticleUtils.sendSmokeParticlesToEntityDefault(this);
 						}
-					 }
+					}
+					// Use water bucket to suppress setting fire
+					else if (player.getItemInHand(hand).is(Items.WATER_BUCKET) && this.shouldSetFire)
+					{
+						this.level.playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.GENERIC_EXTINGUISH_FIRE,
+								this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
+						player.getItemInHand(hand).shrink(1);
+						ItemHelper.giveOrDrop(player, new ItemStack(Items.BUCKET));
+						this.shouldSetFire = false;
+					}
+					// Use Flint and Steel to allow setting fire
+					else if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL) && !this.shouldSetFire)
+					{
+						this.level.playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE,
+								this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
+						if (!this.level.isClientSide)
+						{
+							player.getItemInHand(hand).hurtAndBreak(1, player, (p) ->
+							{
+								p.broadcastBreakEvent(hand);
+							});
+						}
+						this.shouldSetFire = true;
+					}
+					// Healing items
 					else if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
 						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
@@ -537,4 +570,5 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		}
 
 	}
+
 }
