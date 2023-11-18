@@ -65,6 +65,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -238,7 +239,9 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 			if (player.getUUID().equals(getOwnerUUID())) {
 				if (!player.level.isClientSide() && hand == InteractionHand.MAIN_HAND) 
 				{
-					if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL) && isFromSkeleton)
+					if (DwmgConfigs.ValueCache.Interaction.ALLOW_REVERSE_CONVERSION
+							&& player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)
+							&& (isFromSkeleton || DwmgConfigs.ValueCache.Interaction.ALL_STRAY_GIRLS_CAN_CONVERT_TO_SKELETONS))
 					{
 						// Use flint&steel
 						this.level.playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE,

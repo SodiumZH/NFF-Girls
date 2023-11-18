@@ -63,6 +63,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -318,6 +319,11 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 	
 	/* Conversion */
 	
+	@Override
+	public boolean isFreezeConverting()
+	{
+		return DwmgConfigs.ValueCache.Interaction.ALLOW_VANILLA_CONVERSION;
+	}
 	
 	@Override
 	protected void doFreezeConversion() {

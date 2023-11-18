@@ -61,6 +61,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerT
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -179,7 +180,9 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 				{
 					// If this zombie is converted from a husk,
 					// it can be converted back by using a sponge to it
-					if (player.getItemInHand(hand).is(Items.SPONGE) && isFromZombie) {
+					if (DwmgConfigs.ValueCache.Interaction.ALLOW_REVERSE_CONVERSION
+							&& player.getItemInHand(hand).is(Items.SPONGE) 
+							&& (isFromZombie || DwmgConfigs.ValueCache.Interaction.ALL_DROWNED_GIRLS_CAN_CONVERT_TO_ZOMBIES)) {
 						player.getItemInHand(hand).shrink(1);
 						this.spawnAtLocation(new ItemStack(Items.WET_SPONGE, 1));
 						HmagZombieGirlEntity z = this.convertToZombie();
