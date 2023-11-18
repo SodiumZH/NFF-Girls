@@ -23,6 +23,7 @@ import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerIte
 import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.Wrapped;
 import net.sodiumstudio.nautils.containers.MapPair;
@@ -71,7 +72,7 @@ public class HandlerCursedDoll extends BefriendingHandler
 			{
 				if (player.getMainHandItem().is(Items.STRING) || WOOL_MAP_REVERSE.containsKey(player.getMainHandItem().getItem()))
 				{
-					EntityHelper.sendAngryParticlesToLivingDefault(mob);
+					NaParticleUtils.sendAngryParticlesToEntityDefault(mob);
 					result.setHandled();
 				}
 			}
@@ -80,7 +81,7 @@ public class HandlerCursedDoll extends BefriendingHandler
 			{
 				if (WOOL_MAP_REVERSE.containsKey(player.getMainHandItem().getItem()))
 				{
-					EntityHelper.sendSmokeParticlesToLivingDefault(mob);
+					NaParticleUtils.sendSmokeParticlesToEntityDefault(mob);
 					result.setHandled();
 				}
 			}
@@ -94,12 +95,12 @@ public class HandlerCursedDoll extends BefriendingHandler
 						setWool(mob, player, WOOL_MAP_REVERSE.get(player.getMainHandItem().getItem()), true);
 						setPhase(mob, player, true);
 						player.getMainHandItem().shrink(1);
-						EntityHelper.sendGlintParticlesToLivingDefault(mob);
+						NaParticleUtils.sendGlintParticlesToEntityDefault(mob);
 					}
 					else
 					{
 						// Duplicate color, skip
-						EntityHelper.sendSmokeParticlesToLivingDefault(mob);
+						NaParticleUtils.sendSmokeParticlesToEntityDefault(mob);
 					}
 					result.setHandled();
 				}
@@ -113,7 +114,7 @@ public class HandlerCursedDoll extends BefriendingHandler
 					// Sewed 8 times, succeed
 					if (woolCount(mob, player) >= 8)
 					{
-						EntityHelper.sendHeartParticlesToLivingDefault(mob);
+						NaParticleUtils.sendHeartParticlesToEntityDefault(mob);
 						ATK_MOD.clear(player, Attributes.ATTACK_DAMAGE);
 						result.setHandled();
 						result.befriendedMob = befriend(player, mob);
@@ -123,7 +124,7 @@ public class HandlerCursedDoll extends BefriendingHandler
 					{
 						cap.setPlayerTimer(player, "giving_cooldown", 10 * 20);
 						setPhase(mob, player, false);
-						EntityHelper.sendGlintParticlesToLivingDefault(mob);
+						NaParticleUtils.sendGlintParticlesToEntityDefault(mob);
 					}
 				}
 			}
@@ -153,7 +154,7 @@ public class HandlerCursedDoll extends BefriendingHandler
 			CBefriendableMob.getCap(mob).removePlayerData(player, key);
 		if (inProcess && !isQuiet)
 		{
-			EntityHelper.sendAngryParticlesToLivingDefault(mob);
+			NaParticleUtils.sendAngryParticlesToEntityDefault(mob);
 		}
 	}
 
@@ -177,9 +178,9 @@ public class HandlerCursedDoll extends BefriendingHandler
 			String droppedColor = ContainerHelper.randomPick(getHoldingWools(mob, player));
 			mob.spawnAtLocation(new ItemStack(WOOL_MAP.get(droppedColor)));
 			setWool(mob, player, droppedColor, false);
-			setPhase(mob, player, false);
-			if (woolCount(mob, player) == 0)
-				interrupt(player, mob, true);
+			if (isInProcess(mob))
+				setPhase(mob, player, false);
+			else interrupt(player, mob, true);
 		}
 	}
 
