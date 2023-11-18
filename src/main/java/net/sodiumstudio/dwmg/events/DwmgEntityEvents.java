@@ -99,6 +99,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagDrownedGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagGhastlySeekerEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHornetEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHuskGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagJackFrostEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagMeltyMonsterEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSkeletonGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagStrayGirlEntity;
@@ -1116,6 +1117,9 @@ public class DwmgEntityEvents
 		event.mobBefriended.asMob().setCustomName(null);
 	}
 	
+	
+	// MIXIN EVENTS BELOW //
+	
 	@SubscribeEvent
 	public static void onItemEntityHurt(ItemEntityHurtEvent event)
 	{
@@ -1123,5 +1127,19 @@ public class DwmgEntityEvents
 			event.setCanceled(true);
 		if (event.damageSource.getEntity() != null && event.damageSource.getEntity() instanceof IDwmgBefriendedMob mob)
 			event.setCanceled(false);
+	}
+	
+	@SubscribeEvent
+	public static void onMeltyMonsterSetFire(DwmgHooks.MeltyMonsterSetFireEvent event)
+	{
+		if (event.getEntity() instanceof HmagMeltyMonsterEntity mm && !mm.shouldSetFire())
+			event.setCanceled(true);
+	}
+	
+	@SubscribeEvent
+	public static void onJackFrostCheckMeltingBiome(DwmgHooks.JackFrostCheckMeltingBiomeEvent event)
+	{
+		if (event.getEntity() instanceof HmagJackFrostEntity jf && jf.immuneToHotBiomes.test(jf))
+			event.setCanceled(true);
 	}
 }
