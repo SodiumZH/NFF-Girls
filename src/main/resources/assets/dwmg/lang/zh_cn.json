@@ -80,6 +80,7 @@
   "entity.dwmg.hmag_cursed_doll": "诅咒玩偶",
   "entity.dwmg.hmag_redcap": "小红帽",
   "entity.dwmg.hmag_jack_frost": "冰霜女巫",
+  "entity.dwmg.hmag_melty_monster": "岩浆娘",
   
   "info.dwmg.necrotic_reaper_not_controllable": "你需要拥有死灵巫师的帽子或死灵巫师之杖以指挥死灵收割者。",
   "info.dwmg.necrotic_reaper_not_controllable_inventory": "你需要拥有死灵巫师的帽子或死灵巫师之杖以打开死灵收割者的道具栏。",
@@ -93,6 +94,7 @@
   "info.dwmg.gui_level_and_exp" : "等级（经验）",
   "info.dwmg.gui_slime_color" : "颜色",
   "info.dwmg.gui_favorability": "好感度",
+  "info.dwmg.gui_melty_monster_stamina": "热量",
   "info.dwmg.bauble": "饰品", 
   "info.dwmg.item.duration": "耐久度： %1$s / %2$s",
   "info.dwmg.item.transferring_tag_mob": "生物: %1$s",

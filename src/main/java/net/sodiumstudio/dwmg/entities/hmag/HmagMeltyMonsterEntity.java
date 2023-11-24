@@ -16,7 +16,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -24,6 +24,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -42,7 +43,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
@@ -60,12 +60,13 @@ import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedRangedAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuMeltyMonster;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
-import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
+import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.ItemHelper;
 import net.sodiumstudio.nautils.NaParticleUtils;
@@ -75,8 +76,7 @@ import net.sodiumstudio.nautils.math.RndUtil;
 
 public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgBefriendedMob, ILivingDelayedActions {
 
-	/** Added in */
-	public static final ConditionalAttributeModifier MODIFIER_OWNER_SPEED_UP_IN_LAVA = 
+	/*public static final ConditionalAttributeModifier MODIFIER_OWNER_SPEED_UP_IN_LAVA = 
 			new ConditionalAttributeModifier(ForgeMod.SWIM_SPEED.get(), 4d, AttributeModifier.Operation.MULTIPLY_BASE, living -> 
 			(
 				living instanceof Player player 
@@ -96,6 +96,18 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 				living instanceof HmagMeltyMonsterEntity mm
 				&& BefriendedHelper.getOwnerInArea(mm, 16d, true).isPresent()
 				&& mm.isOnGround()
+			));*/
+	public static final ConditionalAttributeModifier MODIFIER_SLOWNESS_ON_LOW_STAMINA = 
+			new ConditionalAttributeModifier(Attributes.MOVEMENT_SPEED, -0.5d,  AttributeModifier.Operation.MULTIPLY_TOTAL, living ->
+			(
+					living instanceof HmagMeltyMonsterEntity mm
+					&& mm.getStamina() <= 0
+			));
+	public static final ConditionalAttributeModifier MODIFIER_SPEED_WITH_LAVA_BUCKET = 
+			new ConditionalAttributeModifier(Attributes.MOVEMENT_SPEED, 1.0d,  AttributeModifier.Operation.MULTIPLY_BASE, living ->
+			(
+					living instanceof HmagMeltyMonsterEntity mm
+					&& mm.getAdditionalInventory().getItem(4).is(Items.LAVA_BUCKET)
 			));
 	
 	/* Data sync */
@@ -104,12 +116,15 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 			.defineId(HmagMeltyMonsterEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
 			.defineId(HmagMeltyMonsterEntity.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> DATA_STAMINA = SynchedEntityData
+			.defineId(HmagMeltyMonsterEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(DATA_OWNERUUID, Optional.empty());
 		entityData.define(DATA_AISTATE, 0);
+		entityData.define(DATA_STAMINA, 10000);;
 	}
 	
 	@Override
@@ -131,13 +146,33 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		Arrays.fill(this.handDropChances, 0);
 	}
 	
-	public void onInit()
+	@Override
+	public void onInit(UUID playerUUID, Mob source)
 	{
-		
+		if (source != null && source.getClass().equals(MeltyMonsterEntity.class))
+			this.setStamina(10000);
+		MODIFIER_SLOWNESS_ON_LOW_STAMINA.apply(this);
+		MODIFIER_SPEED_WITH_LAVA_BUCKET.apply(this);
 	}
 	
 	/* Behavior */
-
+	
+	// Melty Monster consumes stamina when getting on the ground and firing, and gets stamina when in lava.
+	public int getStamina()
+	{
+		return this.getEntityData().get(DATA_STAMINA);
+	}
+	
+	public void setStamina(int value)
+	{
+		this.getEntityData().set(DATA_STAMINA, Mth.clamp(value, 0, getMaxStamina()));
+	}
+	
+	public int getMaxStamina()
+	{
+		return Math.min(10000 + this.getLevelHandler().getExpectedLevel() * 1000, 1000000);
+	}
+	
 	@Override
 	protected void registerGoals() {
 		goalSelector.addGoal(3, new GoToLavaGoal(this, 1.5D));
@@ -207,7 +242,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 					action.accept(GeometryUtil.randomVector().scale(RndUtil.rndRangedDouble(0, 3)));
 			};
 			action4.run();
-			this.addMultipleDelayedActions(action4, 2, 4, 6, 8, 10, 12, 14, 16, 18);
+			this.addMultipleDelayedActions(action4, ContainerHelper.intRangeArray(2, 20, 2));
 			break;
 		}
 		default: 
@@ -231,21 +266,26 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		this.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 	}
 
-	protected MMFireball fire(LivingEntity target)
+	protected Optional<MMFireball> fire(LivingEntity target)
 	{
 		return fire(target.position().subtract(this.position()));
 	}
 	
-	protected MMFireball fire(LivingEntity target, float distanceFactor)
+	protected Optional<MMFireball> fire(LivingEntity target, float distanceFactor)
 	{
 		return fire(target.position().subtract(this.position()));
 	}
 	
-	protected MMFireball fire(Vec3 targetPos)
+	protected Optional<MMFireball> fire(Vec3 targetPos)
 	{
-		MMFireball fireball = newFireball(targetPos);
-		this.level.addFreshEntity(fireball);
-		return fireball;
+		if (getStamina() > 5)
+		{
+			MMFireball fireball = newFireball(targetPos);
+			this.setStamina(this.getStamina() - 5);
+			this.level.addFreshEntity(fireball);
+			return Optional.of(fireball);
+		}
+		else return Optional.empty();
 	}
 	
 	protected MMFireball newFireball(Vec3 targetPos)
@@ -256,6 +296,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		//double d4 = Math.sqrt(d1 * d1 + d3 * d3) * 0.02D;
 		MMFireball fireballentity = new MMFireball(this.level, this, d1 /*+ this.getRandom().nextGaussian() * d4*/, d2, d3/* + this.getRandom().nextGaussian() * d4*/);
 		fireballentity.setPos(fireballentity.getX(), this.getY(0.5D) + 0.5D, fireballentity.getZ());
+		fireballentity.owner = this;
 		return fireballentity;
 	}
 
@@ -268,6 +309,38 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		}
 		if (this.takingLavaCooldown > 0)
 			this.takingLavaCooldown --;
+		if (this.isInLava())
+		{
+			// Add 5 each second
+			if (this.tickCount % 4 == 0 && this.getStamina() < this.getMaxStamina())
+				this.setStamina(this.getStamina() + 1 + getFireLevel() / 2);
+		}
+		else
+		{
+			// Consume 2 each second
+			if (this.tickCount % 10 == 0 && this.getStamina() > 0)
+			{
+				if (this.getAdditionalInventory().getItem(4).is(Items.LAVA_BUCKET))
+				{
+					if (this.tickCount % 20 == 0)
+						this.setStamina(this.getStamina() - 1);
+				}
+				else this.setStamina(this.getStamina() - 1);
+			}
+		}
+		// Lava bath with it can slowly increase the favorability
+		if (this.isInLava() 
+				&& this.level.getBlockState(new BlockPos(this.getEyePosition())).is(Blocks.AIR)
+				&& this.isOwnerPresent()
+				&& this.getOwner().isInLava()
+				&& this.level.getBlockState(new BlockPos(this.getOwner().getEyePosition())).is(Blocks.AIR)
+				&& this.getEyePosition().distanceToSqr(this.getOwner().getEyePosition()) < 9d
+				&& this.hasLineOfSight(this.getOwner())
+				&& this.tickCount % 5 == 0)	// Invoke 4 times per second
+			
+		{
+			this.getFavorability().addFavorability(1f / 240f);	// 1 per minute
+		}
 	}
 	
 	protected boolean shouldSetFire = true;
@@ -380,7 +453,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	@Override
 	public int getInventorySize()
 	{
-		return 4;
+		return 5; // 0 - 3: baubles; 4: lava bucket (to control if it should try returning to lava)
 	}
 
 	@Override
@@ -403,7 +476,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuFourBaubles(containerId, playerInventory, container, this);
+		return new InventoryMenuMeltyMonster(containerId, playerInventory, container, this);
 		// You can keep it null, but in this case never call openBefriendedInventory() or it will crash.
 	}
 
@@ -414,6 +487,9 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		super.addAdditionalSaveData(nbt);
 		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
 		// Add other data to save here
+		nbt.putInt("taking_lava_cooldown", this.takingLavaCooldown);
+		nbt.putInt("stamina", getStamina());
+		nbt.putBoolean("should_set_fire", shouldSetFire());
 	}
 
 	@Override
@@ -421,6 +497,9 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
 		// Add other data reading here
+		this.takingLavaCooldown = nbt.getInt("taking_lava_cooldown");
+		this.setStamina(nbt.getInt("stamina"));
+		this.shouldSetFire = nbt.getBoolean("should_set_fire");
 		setInit();
 	}
 
@@ -507,7 +586,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 						{
 						int i = living.getRemainingFireTicks();
 						living.setSecondsOnFire((int) Math.round(5.0d * (1d + owner.getAttributeValue(Attributes.ATTACK_DAMAGE))));
-						if (!living.hurt(DamageSource.fireball(this, this.owner), (float) (5.0d * (1d + owner.getAttributeValue(Attributes.ATTACK_DAMAGE)))))
+						if (!living.hurt(DamageSource.fireball(this, this.owner), (float) (owner.getAttributeValue(Attributes.ATTACK_DAMAGE))))
 						{
 							living.setRemainingFireTicks(i);
 						} else if (this.owner instanceof LivingEntity)
@@ -554,13 +633,13 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		@Override
 		public boolean canContinueToUse()
 		{
-			return !this.parent.isInLava() && this.isValidTarget(this.parent.level, this.blockPos);
+			return !this.parent.isInLava() && this.isValidTarget(this.parent.level, this.blockPos) && (!this.parent.getAdditionalInventory().getItem(4).is(Items.LAVA_BUCKET) || this.parent.getStamina() == 0);
 		}
 
 		@Override
 		public boolean canUse()
 		{
-			return !this.parent.isInLava() && super.canUse();
+			return !this.parent.isInLava() && super.canUse() && (!this.parent.getAdditionalInventory().getItem(4).is(Items.LAVA_BUCKET) || this.parent.getStamina() == 0);
 		}
 
 		@Override
