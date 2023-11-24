@@ -66,6 +66,7 @@ import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
 
@@ -181,7 +182,7 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 		{
 			if (enhancingCooldown > 0)
 			{
-				EntityHelper.sendSmokeParticlesToLivingDefault(this);
+				NaParticleUtils.sendSmokeParticlesToEntityDefault(this);
 				return true;
 			}
 			else
