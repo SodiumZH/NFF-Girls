@@ -143,10 +143,9 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.JACK_FROST.get(),
 				DwmgEntityTypes.HMAG_JACK_FROST.get(),
 				new HandlerJackFrost());
-		/*event.register(
+		event.register(
 				ModEntityTypes.MELTY_MONSTER.get(),
 				DwmgEntityTypes.HMAG_MELTY_MONSTER.get(),
 				new HandlerMeltyMonster());
-		*/
 	}
 }
