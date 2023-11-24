@@ -2,6 +2,22 @@
 
 ## 1.19.2
 
+### 0.1.19
+
+Added configs about zombies and skeletons inter-variant conversion.
+
+Now mobs will keep inventory on death if game rule `keepInventory` is `true`.
+
+Now befriended mobs will not be knocked back when getting sweep-attacked.
+
+Fixed undead mobs with sun-immune baubles but not wearing helmets still avoiding sun.
+
+Fixed only the last bauble of Jiangshi working.
+
+Fixed crash on getting attacked on befriending Cursed Dolls.
+
+Some internal implementation changes.
+
 ### 0.1.18
 
 - Added some configs:
