@@ -3,9 +3,11 @@ package net.sodiumstudio.dwmg.events.hooks;
 import com.github.mechalopa.hmag.world.entity.JackFrostEntity;
 import com.github.mechalopa.hmag.world.entity.MeltyMonsterEntity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
@@ -48,9 +50,14 @@ public class DwmgHooks
 	@Cancelable
 	public static class MeltyMonsterSetFireEvent extends NaUtilsLivingEvent<MeltyMonsterEntity>
 	{
-		public MeltyMonsterSetFireEvent(MeltyMonsterEntity entity)
+		public final BlockPos blockpos; 
+		public final BlockState blockstate;
+		
+		public MeltyMonsterSetFireEvent(MeltyMonsterEntity entity, BlockPos pos, BlockState blockstate)
 		{
 			super(entity);
+			this.blockpos = pos;
+			this.blockstate = blockstate;
 		}
 	}
 }
