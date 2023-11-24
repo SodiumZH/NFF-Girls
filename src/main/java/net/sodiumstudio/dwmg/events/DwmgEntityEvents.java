@@ -46,6 +46,7 @@ import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
@@ -123,7 +124,9 @@ import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.Wrapped;
 import net.sodiumstudio.nautils.events.ItemEntityHurtEvent;
+import net.sodiumstudio.nautils.events.LivingEntitySweepHurtEvent;
 import net.sodiumstudio.nautils.events.MobSunBurnTickEvent;
+import net.sodiumstudio.nautils.events.NonLivingEntityHurtEvent;
 
 @SuppressWarnings("removal")
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -285,9 +288,9 @@ public class DwmgEntityEvents
 	{
 		if (!event.getEntity().level.isClientSide)
 		{
-			event.getEntity().getCapability(BMCaps.CAP_BM_PLAYER).ifPresent(c -> {
+			/*event.getEntity().getCapability(BMCaps.CAP_BM_PLAYER).ifPresent(c -> {
 				c.getNbt().putUUID("directly_attacking", event.getTarget().getUUID());
-			});
+			});*/
 		}
 	}
 	
@@ -321,12 +324,12 @@ public class DwmgEntityEvents
 			{
 				player.getCapability(BMCaps.CAP_BM_PLAYER).ifPresent(cap -> 
 				{
-					if (cap.getNbt().hasUUID("directly_attacking") 
+					/*if (cap.getNbt().hasUUID("directly_attacking") 
 							&& !cap.getNbt().getUUID("directly_attacking").equals(bm.asMob().getUUID()))
 					{
 						event.setCanceled(true);
 						return;
-					}
+					}*/
 				});
 			}
 			
@@ -1005,7 +1008,7 @@ public class DwmgEntityEvents
 				}
 			}
 			/** Add ConditionalAttributeModifier */
-			if (event.getEntity() instanceof HmagMeltyMonsterEntity mm)
+			/*if (event.getEntity() instanceof HmagMeltyMonsterEntity mm)
 			{
 				HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_IN_LAVA.apply(mm);
 				HmagMeltyMonsterEntity.MODIFIER_SELF_SPEED_UP_ON_GROUND.apply(mm);
@@ -1013,7 +1016,7 @@ public class DwmgEntityEvents
 			if (event.getEntity() instanceof Player player)
 			{
 				HmagMeltyMonsterEntity.MODIFIER_OWNER_SPEED_UP_IN_LAVA.apply(player);
-			}
+			}*/
 		}
 	}
 	
@@ -1094,7 +1097,7 @@ public class DwmgEntityEvents
 		if (event.getEntity() instanceof Player player)
 		{
 			player.getCapability(BMCaps.CAP_BM_PLAYER).ifPresent(c -> {
-				c.getNbt().remove("directly_attacking");
+				//c.getNbt().remove("directly_attacking");
 				c.getNbt().remove("magical_gel_ball_no_use");
 			});
 		}
@@ -1126,7 +1129,14 @@ public class DwmgEntityEvents
 		if (event.getEntityItem().getItem().getItem() instanceof MobRespawnerItem item)
 			event.setCanceled(true);
 		if (event.damageSource.getEntity() != null && event.damageSource.getEntity() instanceof IDwmgBefriendedMob mob)
-			event.setCanceled(false);
+			event.setCanceled(true);
+	}
+	
+	@SubscribeEvent
+	public static void onSweepHurt(LivingEntitySweepHurtEvent event)
+	{
+		if (event.getEntity() instanceof IDwmgBefriendedMob)
+			event.setCanceled(true);
 	}
 	
 	@SubscribeEvent
