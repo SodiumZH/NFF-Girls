@@ -11,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.GameRules;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
@@ -134,6 +135,12 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleEquipable, IA
 	public default DeathRespawnerGenerationType getDeathRespawnerGenerationType()
 	{
 		return DeathRespawnerGenerationType.GIVE;
+	}
+	
+	@Override
+	public default boolean dropInventoryOnDeath()
+	{
+		return !this.asMob().level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
 	}
 	
 	// === IAttributeMonitor interface
