@@ -54,6 +54,7 @@ import net.sodiumstudio.dwmg.client.gui.screens.GuiHandItemsTwoBaubles;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiImp;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiJiangshi;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiKobold;
+import net.sodiumstudio.dwmg.client.gui.screens.GuiMeltyMonster;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiNecroticReaper;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiRedcap;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiSixBaubles;
@@ -76,6 +77,7 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuImp;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuJiangshi;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuKobold;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuMeltyMonster;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuRedcap;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSixBaubles;
@@ -172,6 +174,7 @@ public class DwmgClientSetupEvents
 		event.registerDefault(InventoryMenuSixBaubles.class, GuiSixBaubles::new);
 		event.registerDefault(InventoryMenuHandItemsSixBaubles.class, GuiHandItemsSixBaubles::new);
 		event.registerDefault(InventoryMenuRedcap.class, GuiRedcap::new);
+		event.registerDefault(InventoryMenuMeltyMonster.class, GuiMeltyMonster::new);
     }
 
 }
