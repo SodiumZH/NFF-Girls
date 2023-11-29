@@ -50,7 +50,7 @@ public class BefriendedFlyingFollowOwnerGoal extends BefriendedFlyingMoveGoal im
 	}
 	
 	@Override
-	public void tick() {
+	public void onTick() {
 		if (!mob.isOwnerPresent())
 			return;	// Prevent potential nullptr crash
 		goToOwnerPreset(getActualSpeed());

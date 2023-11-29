@@ -45,9 +45,9 @@ public class BefriendedLeapAtOwnerGoal extends BefriendedLeapAtGoal implements I
 	}
 	
 	@Override
-	public void start()
+	public void onStart()
 	{
-		super.start();
+		super.onStart();
 		teleportToOwner();
 		leap();
 	}

@@ -24,8 +24,8 @@ public class BefriendedDrownedTridentAttackGoal extends BefriendedRangedAttackGo
 	 * Execute a one shot task or start executing a continuous task
 	 */
 	@Override
-	public void start() {
-		super.start();
+	public void onStart() {
+		super.onStart();
 		this.mob.asMob().setAggressive(true);
 		this.mob.asMob().startUsingItem(InteractionHand.MAIN_HAND);
 	}
@@ -35,8 +35,8 @@ public class BefriendedDrownedTridentAttackGoal extends BefriendedRangedAttackGo
 	 * another one
 	 */
 	@Override
-	public void stop() {
-		super.stop();
+	public void onStop() {
+		super.onStop();
 		this.mob.asMob().stopUsingItem();
 		this.mob.asMob().setAggressive(false);
 	}
