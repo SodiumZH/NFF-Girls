@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import javax.annotation.Nullable;
+
 import com.github.mechalopa.hmag.world.entity.JackFrostEntity;
 import com.github.mechalopa.hmag.world.entity.projectile.HardSnowballEntity;
 
@@ -20,6 +22,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -87,6 +90,12 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 		return DATA_AISTATE;
 	}
 
+	@Override
+	public void onInit(UUID playerUUID, Mob from)
+	{
+		this.immuneToHotBiomes.putOptional("resistance_amulet", jf -> jf.hasDwmgBauble("resistance_amulet"));
+	}
+	
 	/* Initialization */
 
 	public HmagJackFrostEntity(EntityType<? extends HmagJackFrostEntity> pEntityType, Level pLevel) {
@@ -221,11 +230,9 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 		return 1.5f;
 	}
 	
-	@SubscribeEvent
-	public static void onCheckMeltingBiome(DwmgHooks.JackFrostCheckMeltingBiomeEvent event)
+	public boolean isImmuneToHotBiomes()
 	{
-		if (event.getEntity() instanceof HmagJackFrostEntity jf && jf.hasDwmgBauble("courage_amulet"))
-			event.setCanceled(true);
+		return this.immuneToHotBiomes.test(this);
 	}
 	
 	/* Interaction */
