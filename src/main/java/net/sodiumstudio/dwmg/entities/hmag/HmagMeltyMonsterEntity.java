@@ -104,7 +104,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 					&& mm.getStamina() <= 0
 			));
 	public static final ConditionalAttributeModifier MODIFIER_SPEED_WITH_LAVA_BUCKET = 
-			new ConditionalAttributeModifier(Attributes.MOVEMENT_SPEED, 1.0d,  AttributeModifier.Operation.MULTIPLY_BASE, living ->
+			new ConditionalAttributeModifier(Attributes.MOVEMENT_SPEED, 0.5d,  AttributeModifier.Operation.MULTIPLY_BASE, living ->
 			(
 					living instanceof HmagMeltyMonsterEntity mm
 					&& mm.getAdditionalInventory().getItem(4).is(Items.LAVA_BUCKET)
@@ -303,7 +303,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	@Override
 	protected void customServerAiStep()
 	{
-		if (this.isInLava() && this.isOwnerPresent() && this.getOwner().isInLava() && this.distanceToSqr(this.getOwner()) <= 64d)
+		if (this.isOwnerPresent() && this.getOwner().isInLava() && this.distanceToSqr(this.getOwner()) <= 64d)
 		{
 			EntityHelper.addEffectSafe(this.getOwner(), MobEffects.FIRE_RESISTANCE, 19);
 		}
