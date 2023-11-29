@@ -10,8 +10,6 @@ Added Melty Monster support.
 
 Added configs about zombies and skeletons inter-variant conversion.
 
-Now mobs will keep inventory on death if game rule `keepInventory` is `true`.
-
 Now befriended mobs will not be knocked back when getting sweep-attacked.
 
 Now befriended mobs' attacking targets expire after 30 s.
