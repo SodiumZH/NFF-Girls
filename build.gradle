@@ -80,6 +80,10 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', 'dwmg'
            // property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
             
+            property 'mixin.debug.export', 'true'
+			property 'mixin.debug.export.decompile', 'true'
+            
+            
             /** For Alex support */
             //arg "-mixin.config="+"citadel.mixins.json"
 
@@ -205,6 +209,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:gog4-228948:4683679")
 	implementation fg.deobf("curse.maven:moonlight-499980:4312303")
 	implementation fg.deobf("curse.maven:testdummy-225738:4410143")
+	//implementation fg.deobf("curse.maven:mobpets-941037:4907694")
 	//implementation fg.deobf("curse.maven:citadel-331936:4556677")
 	//implementation fg.deobf("curse.maven:am-426558:4159154")	
 	//implementation fg.deobf("curse.maven:patchouli-306770:4031402")
