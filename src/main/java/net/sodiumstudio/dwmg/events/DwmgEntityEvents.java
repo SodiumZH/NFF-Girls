@@ -1193,7 +1193,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onJackFrostCheckMeltingBiome(DwmgHooks.JackFrostCheckMeltingBiomeEvent event)
 	{
-		if (event.getEntity() instanceof HmagJackFrostEntity jf && jf.immuneToHotBiomes.test(jf))
+		if (event.getEntity() instanceof HmagJackFrostEntity jf && jf.isImmuneToHotBiomes())
 			event.setCanceled(true);
 	}
 }
