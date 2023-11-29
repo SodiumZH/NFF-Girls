@@ -4,11 +4,11 @@
 
 ### Current version: 
 
-#### 0.0.16 (1.18.2)
+#### 0.0.17 (1.18.2)
 
-#### 0.1.16 (1.19.2)
+#### 0.1.17 (1.19.2)
 
-#### 0.2.16 (1.20.1)
+#### 0.2.17 (1.20.1)
 
 
 
@@ -50,9 +50,9 @@ Kobold
 
 Imp
 
-Harpy (0.x.12)
+Harpy
 
-Slime Girl (0.x.13)
+Slime Girl
 
 Jiangshi (0.1.14) (1.19.2 only)
 
@@ -80,7 +80,9 @@ If giving succeeded, the mob will generate glint (green star) particles. If fail
 
 If other conditions are fulfilled but failed because of hostility (has ever been hostile recently), the mob will generate angry particles on given. (Some mobs ignore hostility.)
 
+### Item-Dropping Process
 
+Drop required items on the ground and it will try picking it up like Piglins. It will hold the item for a few seconds, consume it and increase the progress. The progress value mechanism is similar to item-giving process.
 
 #### Interruption
 
@@ -436,7 +438,7 @@ The base explosion power is 1. Each ATK point adds extra 0.1 to the power.
 
 **Befriending**
 
-Using Item-Dropping progress. Drop required items on the ground and it will try picking it up like Piglins. It will hold the item for a few seconds, consume it and increase the progress. The progress value mechanism is similar to item-giving process.
+Using Item-Dropping progress. 
 
 Accepted items:
 
@@ -516,7 +518,7 @@ It can be healed with Apple (5), Cookie (5), Pumpkin Pie (5), Lemon (10), Lemon 
 
 
 
-#### Harpy (HMaG) (0.x.12)
+#### Harpy (HMaG)
 
 ##### Befriending
 
@@ -544,7 +546,7 @@ It can be healed with Cookie (5), Cooked Chicken/Rabbit/Mutton (8), Cooked Beef/
 
 
 
-#### Snow Canine (HMaG) (0.x.12)
+#### Snow Canine (HMaG)
 
 ##### Befriending
 
@@ -770,6 +772,118 @@ Healing items: String (2), White/Light Gray/Gray/Black/Brown Wool (5), Lapis Laz
 
 
 
+#### Redcap (HMaG) (0.x.17)
+
+##### Befriending
+
+Using Item-Dropping process.
+
+Accepted Items:
+
+*Wheat*: 0.02 - 0.04
+
+*Bread*: 0.03 - 0.06
+
+HMaG berries: 0.08 - 0.12
+
+*Golden Apple* & *Golden Tropical Fish*: 0.10 - 0.15
+
+*Iron Axe*: 0.05 - 0.07
+
+*Golden Axe*: 0.07 - 0.10
+
+*Diamond Axe*: 0.12 - 0.18
+
+*Netherite Axe*: 0.50 - 1.00
+
+##### Interaction
+
+Its armor and hand items can be customized, but cannot equip helmets. Its main-hand only accepts axes.
+
+When the owner is less than 8 blocks away and holding an axe, it will provide Haste effect depending on the quality of the axe it's holding:
+
+Below Diamond: Haste I
+
+Diamond or equal: Haste II
+
+Above Diamond (including Netherite): Haste III (allowing to instantly break Logs with Netherite Axe)
+
+Healing items: Apple (5), Cookie (5), Pumpkin Pie (15), Lemon (10), Lemon Pie (20) and Golden Apple (to max).
+
+
+
+#### Jack o' Frost (HMaG) (0.x.17)
+
+##### Befriending
+
+Using Item-Dropping Process.
+
+Accepted items:
+
+*Blue Ice*: 0.03 - 0.06
+
+*Lapis Lazuli*: 0.03 - 0.06
+
+*Emerald*: 0.04 - 0.08
+
+*Diamond*:  0.06 -0.10
+
+HMaG berries: 0.08 -0.12
+
+*Golden Apple* & *Golden Tropical Fish*: 0.10 - 0.15
+
+##### Interaction
+
+It can only attack by throwing snowballs with damage (like the original mob). The base damage of each snowball is 3, and each ATK provided 1 extra damage.
+
+When it reaches Level 15, 30 and 60, it will throw more snowballs each attack.
+
+It has 4 bauble slots, and needs at least one Amulet of Resistance to be immune to hot biomes.
+
+Healing items: Snowball (2), Snow Block (5), Pumpkin Pie (15) and Golden Apple (to max).
+
+
+
+#### Melty Monster (0.x.19)
+
+##### Befriending
+
+Using Item-Giving Process.
+
+To give items, the player must be in lava or on fire **without Fire Resistance effect**.
+
+Accepted items:
+
+*Blaze Powder*: 0.02 - 0.04
+
+*Blaze Rod*: 0.03 - 0.06
+
+*Burning Core*: 0.03 - 0.06
+
+*Burning Core Block*: 0.12 - 0.24
+
+*Nether Star*: 30% for 1.00, 70% for 0.50
+
+##### Interaction
+
+It has 4 bauble slots.
+
+Equipping it with a lava bucket can change its behavior on the ground: speed-up, and not trying to return to lava.
+
+Using a water bucket will prevent it from igniting the standing blocks, while Flint and Steel will enable igniting.
+
+Having lava-bath with it will gradually boost the favorability, 1 per minute. (Both player and the mob are in lava, can see each other, and are less 3 blocks away.)
+
+##### Features
+
+It has a property of "heat". Getting out of lava will consume heat (2 / second; 1 / second when equipping lava bucket). Getting in lava will recover heat (5 / second). If heat runs out, it will not be able to fire, the movement speed will decrease, and will try returning to lava even if equipping lava bucket.
+
+The upper limit of heat is initially 10,000 and will increase by 1,000 each level-up.
+
+It can fire like Blaze, consuming 5 heat each fireball. When its level reaches 15, 30, 60 and 80, it will shoot more fireballs per firing action. (This also means it will consume heat more quickly.)
+
+
+
 ## Foods
 
 ### Soul Cake
@@ -812,7 +926,7 @@ It can be obtained by eating Ender Pie.
 
 ### Curse of Necromancy
 
-The harmful effect of Necromancer's Hat. This effect is same as Wither, but not causing the health bar turning black. Wither Skeletons are immune to this effect.
+The harmful effect of Necromancer's Hat. ~~This effect is same as Wither, but not causing the health bar turning black.~~ It causes 1 damage each 4 seconds, bypassing armor and enchantment (since 0.x.17). Wither Skeletons are immune to this effect.
 
 
 
@@ -892,7 +1006,7 @@ It's other properties are identical to Leather Helmet.
 
 #### Necromancer's Hat
 
-A helmet giving the wearer Effects Strength II, Haste II, Undead Affinity and ~~**Wither I**~~ **Curse of Necromancy**.  If the wearer is standing on the Soul Carpet, it will not catch ~~Wither~~ the curse effect.
+A helmet giving the wearer Effects Strength II, Haste II, Undead Affinity and **Curse of Necromancy**.  If the wearer is standing on the Soul Carpet, it will not catch the curse effect.
 
 It's durability is identical to Iron Helmet, and other properties are identical to Leather Helmet.
 
@@ -918,8 +1032,6 @@ It has 8 durability and can be repaired on anvil with Evil Crystal. Moving each 
 
 #### Necromancer's Wand
 
-~~On usage it can shoot a magic ball which adds Wither III for 5s on hitting living entity. If the user is wearing a Necromancer's Hat, it will add Wither IV instead of III. (Changed: 0.1.8 / 0.0.8)~~  
-
 On usage it shoots a magic ball which blasts on hitting blocks or entities, and give Wither III effect for 10 s to living entities within 1.5 blocks away. If the shooter is wearing Necromancer's Hat, it will apply Wither IV.
 
 If the magic ball hits a living entity directly, the Wither level will increase by 1.
@@ -928,11 +1040,11 @@ For owning befriended Necrotic Reapers, it doesn't give Wither but positive effe
 
 Each time used, the user will take a damage of 2.
 
-Durability: 64 ~~(accepting Unbreaking and Mending enchantment)(0.x.9)~~ Not accepting any enchantments.
+Durability: 64, not accepting any enchantments.
 
 It will be unable to use if leaving 0 durability, preventing it from breaking. 
 
-It can be repaired with Death Crystal Powder on Anvil. Each item repairs ~~16(0.x.9)~~ 32 durability.
+It can be repaired with Death Crystal Powder on Anvil. Each item repairs 32 durability.
 
 
 
@@ -948,7 +1060,7 @@ Right click the mob with this item to store the mob inside. This item is single-
 
 
 
-#### Transferring Tag (0.x.11)
+#### Transferring Tag
 
 A single-use tool to transfer the mob's ownership. 
 
@@ -964,7 +1076,7 @@ A throwable item.
 
 If a thrown Magical Gel Ball hits a large Vanilla Slime, it has a chance of 25% to generate a tiny Magical Slime with random color.
 
-If it hits a Slime Girl (HMaG, befriended or not), it has a chance of 25% to generate a tiny Magical Slime with the Slime Girl's complementary color. For example, a red Slime Girl will generate a cyan Magical Slime. (Since Magical Slimes and non-befriended Slime Girls has only 32 fixed colors, the real color is probably not absolutely identical to the calculated complementary color.)
+If it hits a Slime Girl (HMaG, befriended or not), it has a chance of 25% to generate a tiny Magical Slime with the Slime Girl's complementary color. For example, a red Slime Girl will generate a cyan Magical Slime. (Since Magical Slimes and non-befriended Slime Girls have only 32 fixed colors, the real color is probably not absolutely identical to the calculated complementary color.)
 
 If it hits non-slime mobs, it will make a non-damaging knockback like the Snow Ball, and give Slowness II effect of 30 s.
 
@@ -1078,3 +1190,13 @@ When the fishing hook hits an entity, right click to pull the entity without ret
  It can be repaired on the Anvil with Reinforcing Chain.
 
 *Note: A rare bug is observed in which the hook cannot be thrown. In this case Shift + right click may fix it.*
+
+
+
+## Collaboration with other mods
+
+### Twilight Forest
+
+Maze Map Focus can be used to befriend Redcap (0.15 - 0.30). (0.x.17)
+
+Ice Bomb can be used to befriend Jack o' Frost (0.10 - 0.15). (0.x.17)
