@@ -66,7 +66,7 @@ public class BefriendedFlyingRandomMoveGoal extends BefriendedFlyingMoveGoal
 	}
 
 	@Override
-	public void start()
+	public void onStart()
 	{
 		/*if (!(mob.asMob().getTarget() != null && mob.asMob().getTarget().isAlive()))
 		{
@@ -130,7 +130,7 @@ public class BefriendedFlyingRandomMoveGoal extends BefriendedFlyingMoveGoal
 	}
 	
 	@Override
-	public void tick()
+	public void onTick()
 	{
 		for (int i = 0; i < 6; ++i)
 		{

@@ -42,7 +42,7 @@ public class BefriendedCreeperGirlMeleeAttackGoal extends BefriendedMeleeAttackG
 	}
 	
 	@Override
-	public void stop() {
+	public void onStop() {
 		LivingEntity livingentity = getPathfinder().getTarget();
 		if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingentity))
 		{

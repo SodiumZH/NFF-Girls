@@ -155,7 +155,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 	@Override
 	public HealingItemTable getHealingItems()
 	{
-		return DwmgHealingItems.CREEPER;
+		return DwmgHealingItems.GHAST;
 	}
 
 	@Override
@@ -365,21 +365,21 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 		}
 		
 		@Override
-		public void start()
+		public void onStart()
 		{
 			this.attackTimer = 0;
 			this.parent.getTarget();
 		}
 
 		@Override
-		public void stop()
+		public void onStop()
 		{
 			ReflectHelper.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", 
 					int.class, -1);
 		}
 
 		@Override
-		public void tick()
+		public void onTick()
 		{
 			LivingEntity target = this.parent.getTarget();
 			double d0 = 24.0D;
@@ -457,7 +457,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 		
 		
 		@Override
-		public void tick() {
+		public void onTick() {
 			if (!mob.isOwnerPresent())
 				return;
 			this.teleportToOwner();

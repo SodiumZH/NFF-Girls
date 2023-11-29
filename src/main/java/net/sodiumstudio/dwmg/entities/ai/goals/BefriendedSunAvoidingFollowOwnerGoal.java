@@ -22,7 +22,7 @@ public class BefriendedSunAvoidingFollowOwnerGoal extends BefriendedFollowOwnerG
 
 	
 	@Override
-	public void tick() 
+	public void onTick() 
 	{
 		getPathfinder().getLookControl().setLookAt(mob.getOwner(), 10.0F, (float) getPathfinder().getMaxHeadXRot());
 		if (--this.timeToRecalcPath <= 0) {

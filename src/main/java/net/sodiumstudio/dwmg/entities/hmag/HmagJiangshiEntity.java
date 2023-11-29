@@ -337,9 +337,9 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 		}
 
 		@Override
-		public void start()
+		public void onStart()
 		{
-			super.start();
+			super.onStart();
 			this.mob.asMob().playSound(ModSoundEvents.JIANGSHI_JUMP.get(), 0.8F, 1.0F);
 		}
 
@@ -375,9 +375,9 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 		}
 
 		@Override
-		public void start()
+		public void onStart()
 		{
-			super.start();
+			super.onStart();
 			this.mob.asMob().playSound(ModSoundEvents.JIANGSHI_JUMP.get(), 0.8F, 1.0F);
 		}
 
