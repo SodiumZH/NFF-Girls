@@ -4,17 +4,23 @@
 
 ### 0.1.19
 
+Added Mixin-Extras dependency. (It's not a mod, so there's no extra steps to install, but dependents need this in `build.gradle`.)
+
+Added Melty Monster support.
+
 Added configs about zombies and skeletons inter-variant conversion.
 
 Now mobs will keep inventory on death if game rule `keepInventory` is `true`.
 
 Now befriended mobs will not be knocked back when getting sweep-attacked.
 
+Now befriended mobs' attacking targets expire after 30 s.
+
 Fixed undead mobs with sun-immune baubles but not wearing helmets still avoiding sun.
 
 Fixed only the last bauble of Jiangshi working.
 
-Fixed crash on getting attacked on befriending Cursed Dolls.
+Fixed crash on getting attacked when befriending Cursed Dolls.
 
 Some internal implementation changes.
 
