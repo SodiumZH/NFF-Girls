@@ -95,7 +95,7 @@ public interface HmagFlyingGoal
 		}
 
 		@Override
-		public void start()
+		public void onStart()
 		{
 			LivingEntity livingentity = getFlying().getTarget();
 
@@ -108,13 +108,13 @@ public interface HmagFlyingGoal
 		}
 
 		@Override
-		public void stop()
+		public void onStop()
 		{
 			getFlying().setAttackPhase((getFlying().getTarget() != null && getFlying().getTarget().isAlive()) ? 1 : 0);
 		}
 
 		@Override
-		public void tick()
+		public void onTick()
 		{
 			AbstractFlyingMonsterEntity attacker = getFlying();
 			LivingEntity livingentity = attacker.getTarget();
@@ -219,7 +219,7 @@ public interface HmagFlyingGoal
 		}
 
 		@Override
-		public void start()
+		public void onStart()
 		{
 			if (!(getFlying().getTarget() != null && getFlying().getTarget().isAlive()))
 			{
@@ -283,7 +283,7 @@ public interface HmagFlyingGoal
 		}
 		
 		@Override
-		public void tick()
+		public void onTick()
 		{
 			AbstractFlyingMonsterEntity flyingentity = getFlying();
 			BlockPos blockpos = flyingentity.getBoundOrigin();
@@ -355,7 +355,7 @@ public interface HmagFlyingGoal
 		}
 		
 		@Override
-		public void tick() {
+		public void onTick() {
 			if (!mob.isOwnerPresent())
 				return;	// Prevent potential nullptr crash
 			goToOwnerPreset(moveSpeed);

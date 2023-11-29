@@ -22,18 +22,18 @@ public class BefriendedLeapAtTargetGoal extends BefriendedLeapAtGoal
 	}
 	
 	@Override
-	public void start()
+	public void onStart()
 	{
 		
-		super.start();
+		super.onStart();
 		this.leap();
 		this.mob.asMob().setAggressive(true);
 	}
 
 	@Override
-	public void stop()
+	public void onStop()
 	{
-		super.stop();
+		super.onStop();
 		this.mob.asMob().setAggressive(false);
 	}
 }

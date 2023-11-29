@@ -10,14 +10,13 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
-import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.BefriendedGoal;
+import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.nautils.EntityHelper;
+import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.Wrapped;
 
 /**
@@ -100,16 +99,16 @@ public class BefriendedLocateBlockGoal extends BefriendedGoal
 			
 	
 	@Override
-	public void start()
+	public void onStart()
 	{
-		EntityHelper.sendGlintParticlesToLivingDefault(mob.asMob());
+		NaParticleUtils.sendGlintParticlesToEntityDefault(mob.asMob());
 		endTimestamp = mob.asMob().tickCount + maxDuration;
 		restartTimestamp = endTimestamp + cooldown;
 		loc.onStartLocating();
 	}
 	
 	@Override
-	public void tick()
+	public void onTick()
 	{
 		if (targetPos != null && loc.getLocatingBlocks().contains(mob.asMob().level().getBlockState(targetPos).getBlock()))
 		{
@@ -118,13 +117,13 @@ public class BefriendedLocateBlockGoal extends BefriendedGoal
 			mob.asMob().getLookControl().setLookAt(targetPos.getX(), targetPos.getY(), targetPos.getZ());
 			if (mob.asMob().tickCount % 5 == 0 && mob.asMob().distanceToSqr(targetPos.getX(), targetPos.getY(), targetPos.getZ()) < 6.25d)
 			{
-				EntityHelper.sendGlintParticlesToLivingDefault(mob.asMob());
+				NaParticleUtils.sendGlintParticlesToEntityDefault(mob.asMob());
 			}
 		}
 	}
 	
 	@Override
-	public void stop()
+	public void onStop()
 	{
 		targetPos = null;
 		mob.asMob().getNavigation().stop();

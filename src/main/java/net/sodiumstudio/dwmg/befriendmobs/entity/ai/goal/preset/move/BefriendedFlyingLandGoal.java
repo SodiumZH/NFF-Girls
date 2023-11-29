@@ -35,7 +35,7 @@ public class BefriendedFlyingLandGoal extends BefriendedFlyingMoveGoal
 	}
 
 	@Override
-	public void tick()
+	public void onTick()
 	{
 		if (!mob.isOwnerPresent())
 			return;	// Prevent potential nullptr crash

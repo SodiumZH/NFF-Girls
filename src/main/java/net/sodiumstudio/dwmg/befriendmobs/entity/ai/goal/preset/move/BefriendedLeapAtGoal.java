@@ -118,26 +118,26 @@ public abstract class BefriendedLeapAtGoal extends BefriendedMoveGoal
 	}
 
 	@Override
-	public void start()
+	public void onStart()
 	{
-		super.start();
+		super.onStart();
 	}
 
 	@Override
-	public void stop()
+	public void onStop()
 	{
-		super.stop();
+		super.onStop();
 	}
 
 	@Override
-	public void tick()
+	public void onTick()
 	{
 		if (this.targetPos.isPresent())
 		{
 			this.mob.asMob().getLookControl().setLookAt(this.targetPos.get().x, this.lookY.get(), this.targetPos.get().z, 30.0F, 30.0F);
 		}
 
-		super.tick();
+		super.onTick();
 	}
 	
 	protected boolean canLeap()

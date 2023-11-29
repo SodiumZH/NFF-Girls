@@ -25,7 +25,7 @@ public class BefriendedCreeperGirlSwellGoal extends BefriendedCreeperSwellGoal
 	
 	private boolean stoppedFlag = false;
 	@Override
-	public void tick()
+	public void onTick()
 	{
 		if (cg.getOwner() != null && cg.distanceToSqr(cg.getOwner()) <= cg.explodeSafeDistance * cg.explodeSafeDistance)
 		{

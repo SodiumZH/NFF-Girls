@@ -357,9 +357,9 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 		}
 		
 		@Override
-		public void start()
+		public void onStart()
 		{
-			super.start();
+			super.onStart();
 			this.sg.playSound(sg.getJumpSound(), 1.0F, ((this.sg.getRandom().nextFloat() - this.sg.getRandom().nextFloat()) * 0.2F + 1.0F) * 0.8F);
 		}
 	}
@@ -375,9 +375,9 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 		}
 		
 		@Override
-		public void start()
+		public void onStart()
 		{
-			super.start();
+			super.onStart();
 			this.sg.playSound(sg.getJumpSound(), 1.0F, ((this.sg.getRandom().nextFloat() - this.sg.getRandom().nextFloat()) * 0.2F + 1.0F) * 0.8F);
 		}
 	}

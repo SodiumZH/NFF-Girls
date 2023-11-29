@@ -32,17 +32,17 @@ public class DwmgMeltyMonsterFollowOwnerGoal extends DwmgBefriendedFollowOwnerGo
 	}
 	
 	@Override
-	public void start()
+	public void onStart()
 	{
-		super.start();
+		super.onStart();
 		this.oldLavaCost = getPathfinder().getPathfindingMalus(BlockPathTypes.LAVA);
 		getPathfinder().setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
 	}
 	
 	@Override
-	public void stop()
+	public void onStop()
 	{
-		super.stop();
+		super.onStop();
 		getPathfinder().setPathfindingMalus(BlockPathTypes.LAVA, oldLavaCost);
 	}
 	

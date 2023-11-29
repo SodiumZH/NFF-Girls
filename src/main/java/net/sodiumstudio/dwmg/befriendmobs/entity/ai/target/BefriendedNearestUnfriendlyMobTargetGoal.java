@@ -139,9 +139,9 @@ public class BefriendedNearestUnfriendlyMobTargetGoal extends BefriendedTargetGo
 	 * Execute a one shot task or start executing a continuous task
 	 */
 	@Override
-	public void start() {
+	public void onStart() {
 		this.mob.asMob().setTarget(this.target);
-		super.start();
+		super.onStart();
 	}
 
 	public void setTarget(@Nullable LivingEntity target) {
