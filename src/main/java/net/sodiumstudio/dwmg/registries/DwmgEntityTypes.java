@@ -51,6 +51,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagJiangshiEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagKoboldEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagMeltyMonsterEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagNecroticReaperEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagNightwalkerEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagRedcapEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSkeletonGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
@@ -342,6 +343,14 @@ public class DwmgEntityTypes {
 			.setUpdateInterval(3)
 			.setShouldReceiveVelocityUpdates(false));
 
+	public static final RegistryObject<EntityType<HmagNightwalkerEntity>> HMAG_NIGHTWALKER = 
+			registerBM("hmag_nightwalker", HmagNightwalkerEntity::new, (builder) -> builder
+			.sized(1.2F, 2.52F)
+			.setTrackingRange(8)
+			.setUpdateInterval(3)
+			.setShouldReceiveVelocityUpdates(false));
+
+	
 	// ================================================================================================= //
 	@SubscribeEvent
 	public static void onAttributeCreate(EntityAttributeCreationEvent event) {	
