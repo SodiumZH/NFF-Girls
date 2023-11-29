@@ -50,9 +50,9 @@ Kobold
 
 Imp
 
-Harpy (0.x.12)
+Harpy
 
-Slime Girl (0.x.13)
+Slime Girl
 
 Jiangshi (0.1.14) (1.19.2 only)
 
@@ -844,6 +844,44 @@ Healing items: Snowball (2), Snow Block (5), Pumpkin Pie (15) and Golden Apple (
 
 
 
+#### Melty Monster (0.x.19)
+
+##### Befriending
+
+Using Item-Giving Process.
+
+To give items, the player must be in lava or on fire **without Fire Resistance effect**.
+
+Accepted items:
+
+*Blaze Powder*: 0.02 - 0.04
+
+*Blaze Rod*: 0.03 - 0.06
+
+*Burning Core*: 0.03 - 0.06
+
+*Burning Core Block*: 0.12 - 0.24
+
+*Nether Star*: 30% for 1.00, 70% for 0.50
+
+##### Interaction
+
+It has 4 bauble slots.
+
+Equipping it with a lava bucket can change its behavior on the ground: speed-up, and not trying to return to lava.
+
+Using a water bucket will prevent it from igniting the standing blocks, while Flint and Steel will enable igniting.
+
+Having lava-bath with it will gradually boost the favorability, 1 per minute. (Both player and the mob are in lava, can see each other, and are less 3 blocks away.)
+
+##### Features
+
+It has a property of "heat". Getting out of lava will consume heat (2 / second; 1 / second when equipping lava bucket). Getting in lava will recover heat (5 / second). If heat runs out, it will not be able to fire, the movement speed will decrease, and will try returning to lava even if equipping lava bucket.
+
+The upper limit of heat is initially 10,000 and will increase by 1,000 each level-up.
+
+It can fire like Blaze, consuming 5 heat each fireball. When its level reaches 15, 30, 60 and 80, it will shoot more fireballs per firing action. (This also means it will consume heat more quickly.)
+
 
 
 ## Foods
@@ -1038,7 +1076,7 @@ A throwable item.
 
 If a thrown Magical Gel Ball hits a large Vanilla Slime, it has a chance of 25% to generate a tiny Magical Slime with random color.
 
-If it hits a Slime Girl (HMaG, befriended or not), it has a chance of 25% to generate a tiny Magical Slime with the Slime Girl's complementary color. For example, a red Slime Girl will generate a cyan Magical Slime. (Since Magical Slimes and non-befriended Slime Girls has only 32 fixed colors, the real color is probably not absolutely identical to the calculated complementary color.)
+If it hits a Slime Girl (HMaG, befriended or not), it has a chance of 25% to generate a tiny Magical Slime with the Slime Girl's complementary color. For example, a red Slime Girl will generate a cyan Magical Slime. (Since Magical Slimes and non-befriended Slime Girls have only 32 fixed colors, the real color is probably not absolutely identical to the calculated complementary color.)
 
 If it hits non-slime mobs, it will make a non-damaging knockback like the Snow Ball, and give Slowness II effect of 30 s.
 
