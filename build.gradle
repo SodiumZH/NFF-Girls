@@ -27,14 +27,20 @@ mixin {
     config 'befriendmobs.mixins.json'
 }
 
-version = '0.0.18'
+version = "${mod_version}"
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'dwmg-1.18.2'
+archivesBaseName = "dwmg-${mc_version}"
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+
+jarJar.enable()
+tasks.jarJar.configure {
+  archiveClassifier = ''
+}
+
 minecraft {
     // The mappings can be changed at any time and must be in the following format.
     // Channel:   Version:
@@ -180,8 +186,14 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.57'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.2.4'
 
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.2.1"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.2.1")) {
+        jarJar.ranged(it, "[0.2.1,)")
+    }
+	
     // Real mod deobf dependency examples - these get remapped to your current mappings
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
@@ -197,12 +209,14 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
 	implementation fg.deobf("net.sodiumstudio.befriendmobs:befriendmobs:${mc_version}-${bm_version}")
+	/*jarJar(group: 'net.sodiumstudio.befriendmobs', name: 'befriendmobs', version: "[${mc_version}-${bm_version}, ${mc_version}-${bm_version_next})"){
+		jarJar.pin(it, "${mc_version}-${bm_version}")
+	}*/
     implementation fg.deobf("curse.maven:hmag-537613:4757061")
 	implementation fg.deobf("curse.maven:gog4-228948:4525159")
 	//implementation fg.deobf("curse.maven:gog4-228948:4525159")
 	implementation fg.deobf("curse.maven:tf-227639:4337390")
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
