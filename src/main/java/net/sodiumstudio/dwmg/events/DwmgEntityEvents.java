@@ -107,6 +107,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagStrayGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagWitherSkeletonGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagZombieGirlEntity;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
+import net.sodiumstudio.dwmg.events.hooks.DwmgHooks;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgConfigs;
