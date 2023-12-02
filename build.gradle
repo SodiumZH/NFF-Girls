@@ -41,6 +41,8 @@ tasks.jarJar.configure {
   archiveClassifier = ''
 }
 
+jarJar.dependsOn 'reobfJarJar'
+
 minecraft {
     // The mappings can be changed at any time and must be in the following format.
     // Channel:   Version:
