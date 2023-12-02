@@ -356,7 +356,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	@Override
 	public HealingItemTable getHealingItems()
 	{
-		return DwmgHealingItems.NONE;
+		return DwmgHealingItems.BLAZE;
 	}
 	
 	protected int takingLavaCooldown = 0;

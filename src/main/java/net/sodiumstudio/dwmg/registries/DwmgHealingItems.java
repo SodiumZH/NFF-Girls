@@ -109,4 +109,10 @@ public class DwmgHealingItems
 		.add(ModItems.CUBIC_NUCLEUS.get(), mob -> mob.getMaxHealth())
 		.build();
 	
+	public static final HealingItemTable BLAZE = HealingItemTable.builder()
+		.add(Items.COAL, 5f)
+		.add(Items.FIRE_CHARGE, 10f)
+		.add(Items.BLAZE_POWDER, 15f)
+		.add(ModItems.BURNING_CORE.get(), mob -> mob.getMaxHealth())
+		.build();
 }
