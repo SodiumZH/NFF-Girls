@@ -68,6 +68,12 @@ Crimson Slaughterer (0.x.16)
 
 Cursed Doll (0.x.16)
 
+Redcap (0.x.17)
+
+Jack o'Frost (0.x.17)
+
+Melty Monster (0.x.19)
+
 ## General befriending methods
 
 ### Item-giving process
@@ -1072,7 +1078,7 @@ Give the unlocked written tag to the player you want transfer the ownership to, 
 
 
 
-#### Magical Gel Ball (0.x.13)
+#### Magical Gel Ball
 
 A throwable item.
 
@@ -1084,7 +1090,7 @@ If it hits non-slime mobs, it will make a non-damaging knockback like the Snow B
 
 
 
-#### Magical Gel Bottle (0.x.13)
+#### Magical Gel Bottle
 
 An item for befriending Slime Girls and change befriended Slime Girls' colors.
 
@@ -1202,3 +1208,4 @@ When the fishing hook hits an entity, right click to pull the entity without ret
 Maze Map Focus can be used to befriend Redcap (0.15 - 0.30). (0.x.17)
 
 Ice Bomb can be used to befriend Jack o' Frost (0.10 - 0.15). (0.x.17)
+
