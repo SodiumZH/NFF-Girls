@@ -4,11 +4,11 @@
 
 ### Current version: 
 
-#### 0.0.17 (1.18.2)
+#### 0.0.18 (1.18.2)
 
-#### 0.1.17 (1.19.2)
+#### 0.1.19 (1.19.2)
 
-#### 0.2.17 (1.20.1)
+#### 0.2.18 (1.20.1)
 
 
 
@@ -850,7 +850,7 @@ Healing items: Snowball (2), Snow Block (5), Pumpkin Pie (15) and Golden Apple (
 
 Using Item-Giving Process.
 
-To give items, the player must be in lava or on fire **without Fire Resistance effect**.
+To give items, the player must be in lava or on fire **without Fire Resistance effect**. Each time given, player will get **Combustion effect for 30 s**.
 
 Accepted items:
 
@@ -873,6 +873,8 @@ Equipping it with a lava bucket can change its behavior on the ground: speed-up,
 Using a water bucket will prevent it from igniting the standing blocks, while Flint and Steel will enable igniting.
 
 Having lava-bath with it will gradually boost the favorability, 1 per minute. (Both player and the mob are in lava, can see each other, and are less 3 blocks away.)
+
+It can be healed with Coal (5), Fire Charge (10), Blaze Powder (15) and Burning Core (to max).
 
 ##### Features
 
