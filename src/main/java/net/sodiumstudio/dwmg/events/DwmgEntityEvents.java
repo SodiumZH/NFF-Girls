@@ -1136,8 +1136,9 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onSweepHurt(LivingEntitySweepHurtEvent event)
 	{
-		if (event.getEntity() instanceof IDwmgBefriendedMob)
+		if (event.getEntity() instanceof IDwmgBefriendedMob) {
 			event.setCanceled(true);
+		}
 	}
 	
 	@SubscribeEvent
