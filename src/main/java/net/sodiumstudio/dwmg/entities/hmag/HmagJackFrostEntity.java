@@ -116,7 +116,8 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 	}
 	
 	protected HardSnowballEntity getNewSnowball()
-		return new BefriendedJackFrostSnowball(this.level, this);
+	{
+		return new BefriendedJackFrostSnowball(this.level(), this);
 	}
 	
 	protected int getThrowLevel()
@@ -197,7 +198,7 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 		double yOffset = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ) * 0.05D;
 		snowball.shoot(deltaX, deltaY + yOffset, deltaZ, getShootSpeed(), getShootInaccuracy());
 		snowball.setDamage(getShootDamage());
-		this.level.addFreshEntity(snowball);
+		this.level().addFreshEntity(snowball);
 	}
 	
 	public void throwSnowball(Vec3 direction)
@@ -207,7 +208,7 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 		HardSnowballEntity snowball = getNewSnowball();
 		snowball.shoot(n.x, n.y, n.z, getShootSpeed(), getShootInaccuracy());
 		snowball.setDamage(getShootDamage());
-		this.level.addFreshEntity(snowball);
+		this.level().addFreshEntity(snowball);
 	}
 	
 	public void playThrowingSound()

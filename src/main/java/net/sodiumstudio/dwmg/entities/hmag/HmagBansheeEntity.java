@@ -318,7 +318,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedM
 	@Override
 	public void aiStep() {
 		super.aiStep();
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 		{
 			applyAllyEffect();
 			FlowerBlock flower = this.getFlowerOnOffhand();

@@ -72,6 +72,7 @@ import net.sodiumstudio.nautils.ItemHelper;
 import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.entity.ConditionalAttributeModifier;
 import net.sodiumstudio.nautils.math.GeometryUtil;
+import net.sodiumstudio.nautils.math.MathUtil;
 import net.sodiumstudio.nautils.math.RndUtil;
 
 public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgBefriendedMob, ILivingDelayedActions {
@@ -330,10 +331,10 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		}
 		// Lava bath with it can slowly increase the favorability
 		if (this.isInLava() 
-				&& this.level.getBlockState(new BlockPos(this.getEyePosition())).is(Blocks.AIR)
+				&& this.level().getBlockState(MathUtil.getBlockPos(this.getEyePosition())).is(Blocks.AIR)
 				&& this.isOwnerPresent()
 				&& this.getOwner().isInLava()
-				&& this.level.getBlockState(new BlockPos(this.getOwner().getEyePosition())).is(Blocks.AIR)
+				&& this.level().getBlockState(MathUtil.getBlockPos(this.getOwner().getEyePosition())).is(Blocks.AIR)
 				&& this.getEyePosition().distanceToSqr(this.getOwner().getEyePosition()) < 9d
 				&& this.hasLineOfSight(this.getOwner())
 				&& this.tickCount % 5 == 0)	// Invoke 4 times per second
@@ -388,7 +389,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 					// Use water bucket to suppress setting fire
 					else if (player.getItemInHand(hand).is(Items.WATER_BUCKET) && this.shouldSetFire)
 					{
-						this.level.playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.GENERIC_EXTINGUISH_FIRE,
+						this.level().playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.GENERIC_EXTINGUISH_FIRE,
 								this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
 						player.getItemInHand(hand).shrink(1);
 						ItemHelper.giveOrDrop(player, new ItemStack(Items.BUCKET));
@@ -397,9 +398,9 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 					// Use Flint and Steel to allow setting fire
 					else if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL) && !this.shouldSetFire)
 					{
-						this.level.playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE,
+						this.level().playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE,
 								this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
-						if (!this.level.isClientSide)
+						if (!this.level().isClientSide)
 						{
 							player.getItemInHand(hand).hurtAndBreak(1, player, (p) ->
 							{
@@ -586,7 +587,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 						{
 						int i = living.getRemainingFireTicks();
 						living.setSecondsOnFire((int) Math.round(5.0d * (1d + owner.getAttributeValue(Attributes.ATTACK_DAMAGE))));
-						if (!living.hurt(this.level().damageSources().fireball(this, this.owner), (float) (owner.getAttributeValue(Attributes.ATTACK_DAMAGE)))))
+						if (!living.hurt(this.level().damageSources().fireball(this, this.owner), (float) (owner.getAttributeValue(Attributes.ATTACK_DAMAGE))))
 						{
 							living.setRemainingFireTicks(i);
 						} else if (this.owner instanceof LivingEntity)

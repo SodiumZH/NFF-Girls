@@ -139,7 +139,7 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleEquipable, IA
 	@Override
 	public default boolean dropInventoryOnDeath()
 	{
-		return !this.asMob().level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
+		return !this.asMob().level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
 	}
 	
 	// === IAttributeMonitor interface
