@@ -15,13 +15,16 @@ import com.github.mechalopa.hmag.world.entity.ImpEntity;
 import com.github.mechalopa.hmag.world.entity.JackFrostEntity;
 import com.github.mechalopa.hmag.world.entity.JiangshiEntity;
 import com.github.mechalopa.hmag.world.entity.KoboldEntity;
+import com.github.mechalopa.hmag.world.entity.NightwalkerEntity;
 import com.github.mechalopa.hmag.world.entity.RedcapEntity;
 import com.github.mechalopa.hmag.world.entity.SnowCanineEntity;
+import com.github.mechalopa.hmag.world.entity.projectile.MagicBulletEntity;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
@@ -58,12 +61,16 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
@@ -118,6 +125,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagZombieGirlEntity;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 import net.sodiumstudio.dwmg.events.hooks.DwmgHooks;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
+import net.sodiumstudio.dwmg.registries.DwmgBlocks;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.registries.DwmgDamageSources;
@@ -139,6 +147,7 @@ import net.sodiumstudio.nautils.events.ItemEntityHurtEvent;
 import net.sodiumstudio.nautils.events.LivingEntitySweepHurtEvent;
 import net.sodiumstudio.nautils.events.MobSunBurnTickEvent;
 import net.sodiumstudio.nautils.events.NonLivingEntityHurtEvent;
+import com.github.mechalopa.hmag.registry.*;
 
 @SuppressWarnings("removal")
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -764,11 +773,13 @@ public class DwmgEntityEvents
 			items[i > 1 ? i + 1 : i] = mob.getItemBySlot(ARMOR_AND_HANDS[i]);
 		}
 		// Sometimes head item is moved to the temp objects for handling sun immunity, so insert it in front of head items
-		if (mob instanceof IBefriendedMob bm && bm.getTempData().values().tag.contains("head_item"))
+		// This isn't used anymore
+		/*if (mob instanceof IBefriendedMob bm && bm.getData().getNbt().contains("head_item"))
 		{
-			items[2] = NbtHelper.readItemStack(bm.getTempData().values().tag, "head_item");
+			items[2] = NbtHelper.readItemStack(bm.getData().getNbt(), "head_item");
 		}
-		else items[2] = ItemStack.EMPTY;
+		else items[2] = ItemStack.EMPTY;*/
+		items[2] = ItemStack.EMPTY;	// TODO: fully refactor this and remove it
 		
 		for (int i = 0; i < 7; ++i)
 		{
@@ -1163,6 +1174,34 @@ public class DwmgEntityEvents
 	{
 		event.mobBefriended.asMob().setCustomName(null);
 	}
+	
+	@SubscribeEvent
+	public static void onProjectileImpact(ProjectileImpactEvent event)
+	{
+		if (!event.getProjectile().level.isClientSide)
+		{
+			if (event.getProjectile() instanceof MagicBulletEntity mb 
+					&& mb.getOwner() != null 
+					&& mb.getOwner() instanceof NightwalkerEntity ne
+					&& event.getRayTraceResult().getType() == HitResult.Type.BLOCK
+					&& event.getRayTraceResult() instanceof BlockHitResult bhr)
+			{
+				if (mb.level.getBlockState(bhr.getBlockPos()).is(DwmgTags.NIGHTWALKER_MAGIC_BALL_AFFECTS))
+				{
+					mb.level.setBlock(bhr.getBlockPos(), DwmgBlocks.LUMINOUS_TERRACOTTA.get().defaultBlockState(), 1 + 2);
+					EntityHelper.sendParticlesToEntity(ne, ParticleTypes.EXPLOSION, 0, 0, 1, 0);
+					mb.level.playSound(null, ne, SoundEvents.GENERIC_EXPLODE, ne.getSoundSource(), 2.0f, 0.7f);
+				}
+				else if (mb.level.getBlockState(bhr.getBlockPos()).is(DwmgBlocks.LUMINOUS_TERRACOTTA.get()))
+				{
+					mb.level.setBlock(bhr.getBlockPos(), DwmgBlocks.ENHANCED_LUMINOUS_TERRACOTTA.get().defaultBlockState(), 1 + 2);
+					EntityHelper.sendParticlesToEntity(ne, ParticleTypes.EXPLOSION, 0, 0, 1, 0);
+					mb.level.playSound(null, ne, SoundEvents.GENERIC_EXPLODE, ne.getSoundSource(), 2.0f, 0.7f);
+				}
+			}
+		}
+	}
+	
 	
 	
 	// MIXIN EVENTS BELOW //
