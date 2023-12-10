@@ -355,15 +355,6 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 	// Implementation is in aiStep()
 	@Override
 	public void setupSunImmunityRules() {
-		this.getSunImmunity().putOptional("sunhat", mob -> {			
-			if (mob.getMob().getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()))
-				return true;
-			// In AI steps it may be 
-			else if (mob.getBefriended().getTempData().values().tag.contains("head_item", NbtHelper.TAG_COMPOUND_ID)
-					&& NbtHelper.readItemStack(mob.getBefriended().getTempData().values().tag, "head_item").is(DwmgItems.SUNHAT.get()))
-				return true;
-			else return false;
-		});
 		this.getSunImmunity().putOptional("sunhat", mob -> mob.getMob().getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
 		this.getSunImmunity().putOptional("soul_amulet", mob -> ((IDwmgBefriendedMob)mob).hasDwmgBauble("soul_amulet"));
 		this.getSunImmunity().putOptional("resis_amulet", mob -> ((IDwmgBefriendedMob)mob).hasDwmgBauble("resistance_amulet"));

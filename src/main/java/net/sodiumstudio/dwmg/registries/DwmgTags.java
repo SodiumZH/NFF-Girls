@@ -11,6 +11,8 @@ import net.sodiumstudio.dwmg.Dwmg;
 public class DwmgTags
 {
 	public static final TagKey<Block> AFFECTS_CRIMSON_SLAUGHTERER = blockTag("affects_crimson_slaughterer");
+	public static final TagKey<Block> NIGHTWALKER_MAGIC_BALL_AFFECTS = blockTag("nightwalker_magic_ball_affects");
+	public static final TagKey<Block> CAN_BEFRIEND_NIGHTWALKERS_ON = blockTag("can_befriend_nightwalkers_on");
 	
 	public static final TagKey<Item> DEATH_CRYSTAL_INGREDIENTS = itemTag("death_crystal_ingredients");
 	public static final TagKey<Item> ENDER_FRUIT_JAM_OPTIONAL_FRUITS = itemTag("ender_fruit_jam_optional_fruits");

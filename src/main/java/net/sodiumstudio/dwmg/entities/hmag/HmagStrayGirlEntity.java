@@ -356,8 +356,8 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 			if (mob.getMob().getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()))
 				return true;
 			// In AI steps it may be 
-			else if (mob.getBefriended().getTempData().values().tag.contains("head_item", NbtHelper.TAG_COMPOUND_ID)
-					&& NbtHelper.readItemStack(mob.getBefriended().getTempData().values().tag, "head_item").is(DwmgItems.SUNHAT.get()))
+			else if (mob.getBefriended().getData().getNbt().contains("head_item", NbtHelper.TAG_COMPOUND_ID)
+					&& NbtHelper.readItemStack(mob.getBefriended().getData().getNbt(), "head_item").is(DwmgItems.SUNHAT.get()))
 				return true;
 			else return false;
 		});
