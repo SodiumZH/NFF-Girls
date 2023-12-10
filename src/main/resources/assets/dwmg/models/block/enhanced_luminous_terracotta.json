@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "dwmg:block/enhanced_luminous_terracotta"
+  }
+}

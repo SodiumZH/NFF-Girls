@@ -50,6 +50,8 @@
   
   "block.dwmg.soul_cake" : "Soul Cake",
   "block.dwmg.soul_carpet" : "Soul Carpet",
+  "block.dwmg.luminous_terracotta" : "Luminous Terracotta",
+  "block.dwmg.enhanced_luminous_terracotta" : "Enhanced Luminous Terracotta",
   
   "effect.dwmg.undead_affinity": "Undead Affinity",
   "effect.dwmg.ender_protection": "Protection of the End",
