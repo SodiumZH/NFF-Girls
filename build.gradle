@@ -31,9 +31,9 @@ mixin {
 }
 
 
-version = '0.1.19'
+version = "${mod_version}"
 group = 'net.sodiumstudio.dwmg' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'dwmg-1.19.2'
+archivesBaseName = "dwmg-${mod_version}"
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
