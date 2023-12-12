@@ -140,7 +140,7 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 	@Override
 	public HealingItemTable getHealingItems()
 	{
-		return DwmgHealingItems.CURSED_DOLL;
+		return DwmgHealingItems.CLOTH_DOLL;
 
 	}
 
