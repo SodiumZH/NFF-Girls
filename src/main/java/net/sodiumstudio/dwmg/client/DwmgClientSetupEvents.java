@@ -18,6 +18,7 @@ import com.github.mechalopa.hmag.client.renderer.MagicBulletRenderer;
 import com.github.mechalopa.hmag.client.renderer.MeltyMonsterRenderer;
 import com.github.mechalopa.hmag.client.renderer.ModThrownItemRenderer;
 import com.github.mechalopa.hmag.client.renderer.NecroticReaperRenderer;
+import com.github.mechalopa.hmag.client.renderer.NightwalkerRenderer;
 import com.github.mechalopa.hmag.client.renderer.RedcapRenderer;
 import com.github.mechalopa.hmag.client.renderer.SkeletonGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.SlimeGirlRenderer;
@@ -56,6 +57,7 @@ import net.sodiumstudio.dwmg.client.gui.screens.GuiJiangshi;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiKobold;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiMeltyMonster;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiNecroticReaper;
+import net.sodiumstudio.dwmg.client.gui.screens.GuiNightwalker;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiRedcap;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiSixBaubles;
 import net.sodiumstudio.dwmg.client.gui.screens.GuiSlimeGirl;
@@ -79,6 +81,7 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuJiangshi;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuKobold;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuMeltyMonster;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuNightwalker;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuRedcap;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSixBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
@@ -126,6 +129,7 @@ public class DwmgClientSetupEvents
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_REDCAP.get(), RedcapRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_JACK_FROST.get(), HmagJackFrostRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_MELTY_MONSTER.get(), MeltyMonsterRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_NIGHTWALKER.get(), NightwalkerRenderer::new);
         
         event.registerEntityRenderer(DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get(), MagicBulletRenderer::new); 
         event.registerEntityRenderer(DwmgEntityTypes.BEFRIENDED_GHAST_FIREBALL.get(), c -> new ThrownItemRenderer<>(c, 3.0F, true));
@@ -175,6 +179,7 @@ public class DwmgClientSetupEvents
 		event.registerDefault(InventoryMenuHandItemsSixBaubles.class, GuiHandItemsSixBaubles::new);
 		event.registerDefault(InventoryMenuRedcap.class, GuiRedcap::new);
 		event.registerDefault(InventoryMenuMeltyMonster.class, GuiMeltyMonster::new);
+		event.registerDefault(InventoryMenuNightwalker.class, GuiNightwalker::new);
     }
 
 }

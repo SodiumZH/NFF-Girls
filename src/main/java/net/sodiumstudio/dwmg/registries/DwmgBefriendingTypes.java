@@ -24,6 +24,7 @@ import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerJackFrost;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerKobold;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerMeltyMonster;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNecroticReaper;
+import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNightwalker;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerRedcap;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSlimeGirl;
@@ -142,5 +143,9 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.MELTY_MONSTER.get(),
 				DwmgEntityTypes.HMAG_MELTY_MONSTER.get(),
 				new HandlerMeltyMonster());
+		event.register(
+				ModEntityTypes.NIGHTWALKER.get(),
+				DwmgEntityTypes.HMAG_NIGHTWALKER.get(),
+				new HandlerNightwalker());
 	}
 }
