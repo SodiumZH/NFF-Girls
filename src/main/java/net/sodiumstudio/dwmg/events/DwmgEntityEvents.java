@@ -648,13 +648,28 @@ public class DwmgEntityEvents
 					int ampl = event.getEntity().getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier();
 					if (event.getEntity().tickCount % EffectNecromancerWither.deltaTickPerDamage(ampl) == 0)
 					{
-						if (!(/*event.getEntity() instanceof Player player && player.isCreative())
-							||*/ event.getEntity() instanceof WitherSkeleton
-							|| !event.getEntity().canBeAffected(new MobEffectInstance(MobEffects.WITHER))))
+						if (!(event.getEntity() instanceof Player player && (player.isCreative() || player.isSpectator()))
+							|| event.getEntity() instanceof WitherSkeleton
+							|| !event.getEntity().canBeAffected(new MobEffectInstance(MobEffects.WITHER)))
 						{
-							if (event.getEntity().getHealth() <= 1f)
-								event.getEntity().die(/*DwmgDamageSources.NECROMANCER_WITHER*/event.getEntity().damageSources().wither());
-							else event.getEntity().setHealth(event.getEntity().getHealth() - 1);
+							event.getEntity().getCombatTracker().recordDamage(DwmgDamageSources.NECROMANCER_WITHER, event.getEntity().getHealth(), 1f);
+							float amount = 1f;
+							if (event.getEntity().getAbsorptionAmount() > 1f)
+							{
+								event.getEntity().setAbsorptionAmount(event.getEntity().getAbsorptionAmount() - 1f);
+								amount = 0f;
+							}
+							else if (event.getEntity().getAbsorptionAmount() > 0f)
+							{
+								amount -= event.getEntity().getAbsorptionAmount();
+								event.getEntity().setAbsorptionAmount(0f);
+							}
+							if (amount > 0f)
+							{
+								event.getEntity().setHealth(event.getEntity().getHealth() - 1f);
+								if (event.getEntity().getHealth() <= 0f)
+									event.getEntity().die(DwmgDamageSources.NECROMANCER_WITHER);
+							}
 						}
 					}
 				}
@@ -1133,10 +1148,10 @@ public class DwmgEntityEvents
 			// Send msg if trying to interact other people's mob
 			if (!event.getEntity().getUUID().equals(bm.getOwnerUUID())) 
 			{
-				if (bm.isOwnerPresent()) 
+				if (bm.getData().getOwnerName() != null) 
 				{
 					MiscUtil.printToScreen(
-							InfoHelper.createTrans("info.dwmg.interact_not_owning", bm.getOwner().getName()), event.getEntity());
+							InfoHelper.createTrans("info.dwmg.interact_not_owning", bm.getData().getOwnerName()), event.getEntity());
 				} 
 				else 
 				{
@@ -1144,7 +1159,6 @@ public class DwmgEntityEvents
 				}
 			}			
 		}
-			
 	}
 	
 	@SubscribeEvent
