@@ -97,7 +97,7 @@ public class DwmgHealingItems
 		.add(Items.GOLDEN_APPLE, mob -> mob.getMaxHealth())
 		.build();
 	
-	public static final HealingItemTable CURSED_DOLL = HealingItemTable.builder()
+	public static final HealingItemTable CLOTH_DOLL = HealingItemTable.builder()
 		.add(Items.STRING, 2f)
 		.add(Items.WHITE_WOOL, 5f)
 		.add(Items.LIGHT_GRAY_WOOL, 5f)
@@ -115,4 +115,12 @@ public class DwmgHealingItems
 		.add(Items.BLAZE_POWDER, 15f)
 		.add(ModItems.BURNING_CORE.get(), mob -> mob.getMaxHealth())
 		.build();
+	
+	public static final HealingItemTable CLAY_DOLL = HealingItemTable.builder()
+		.add(Items.CLAY_BALL, 2f)
+		.add(Items.LAPIS_LAZULI, 5f)
+		.add(ModItems.ANCIENT_STONE.get(), 15f)
+		.add(Items.GOLDEN_APPLE, mob -> mob.getMaxHealth())
+		.build();
+	
 }

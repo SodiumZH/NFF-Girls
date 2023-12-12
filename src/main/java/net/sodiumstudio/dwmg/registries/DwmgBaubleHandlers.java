@@ -1,4 +1,3 @@
-
 package net.sodiumstudio.dwmg.registries;
 
 import java.util.function.Supplier;

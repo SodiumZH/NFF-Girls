@@ -5,23 +5,36 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.github.mechalopa.hmag.registry.ModEntityTypes;
+import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.NightwalkerEntity;
+import com.github.mechalopa.hmag.world.entity.projectile.MagicBulletEntity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.network.PlayMessages;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtTargetGoal;
@@ -33,20 +46,23 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
-import net.sodiumstudio.dwmg.entities.template.DwmgMobTemplate;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
+import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
+import net.sodiumstudio.dwmg.registries.DwmgBlocks;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
-
+import net.sodiumstudio.nautils.block.ColoredBlocks;
 public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBefriendedMob {
 
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagNightwalkerEntity.class/* CHANGE TO YOUR CLASS */, EntityDataSerializers.OPTIONAL_UUID);
+			.defineId(HmagNightwalkerEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagNightwalkerEntity.class/* CHANGE TO YOUR CLASS */, EntityDataSerializers.INT);
+			.defineId(HmagNightwalkerEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
@@ -85,6 +101,36 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
 	}
 	
+	
+	@Override
+	public void performRangedAttack(LivingEntity target, float distance)
+	{
+		double d1 = target.getX() - this.getX();
+		double d2 = target.getY() + target.getEyeHeight() * 0.5D - this.getY(0.4D);
+		double d3 = target.getZ() - this.getZ();
+		double d4 = Math.sqrt(d1 * d1 + d3 * d3) * 0.04D;
+		BefriendedNightwalkerMagicBallEntity bullet = 
+				new BefriendedNightwalkerMagicBallEntity(this.level, this, d1 + this.getRandom().nextGaussian() * d4, d2, d3 + this.getRandom().nextGaussian() * d4);
+		bullet.setPos(bullet.getX(), this.getY(0.4D) + 0.25D, bullet.getZ());
+		bullet.setDamage(4.0F + (float)(this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+		bullet.setEffectLevel((byte)1);
+		bullet.setVariant(3);
+		if (this.getAdditionalInventory().getItem(4).is(ModItems.ANCIENT_STONE.get()))
+		{
+			bullet.setTransformsBlocks();
+			this.getAdditionalInventory().getItem(4).shrink(1);
+			bullet.setDamage(bullet.getDamage() * 1.5f);
+		}
+		else if (this.getAdditionalInventory().getItem(4).is(Items.CLAY_BALL))
+		{
+			this.getAdditionalInventory().getItem(4).shrink(1);
+			bullet.setDamage(bullet.getDamage() * 1.2f);
+		}
+		this.level.addFreshEntity(bullet);
+		this.playSound(SoundEvents.SHULKER_SHOOT, 2.0F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);	
+	}
+	
+	
 	/* Interaction */
 
 	// Map items that can heal the mob and healing values here.
@@ -92,7 +138,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 	@Override
 	public HealingItemTable getHealingItems()
 	{
-		return DwmgHealingItems.NONE;
+		return DwmgHealingItems.CLAY_DOLL;
 	}
 
 	@Override
@@ -142,7 +188,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 
 	// This enables mob armor and hand items by default.
 	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
+	protected BefriendedInventory additionalInventory = new BefriendedInventory(getInventorySize(), this);
 
 	@Override
 	public BefriendedInventory getAdditionalInventory()
@@ -153,14 +199,12 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 	@Override
 	public int getInventorySize()
 	{
-		return 8;
+		return 5;	// 0 - 3: bauble; 4 - clay
 	}
 
 	@Override
 	public void updateFromInventory() {
 		if (!this.level.isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.setMobEquipment(this);
 		}
 	}
 
@@ -168,16 +212,13 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 	public void setInventoryFromMob()
 	{
 		if (!this.level.isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.getFromMob(this);
 		}
 		return;
 	}
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return null; // new YourInventoryMenuClass(containerId, playerInventory, container, this);
-		// You can keep it null, but in this case never call openBefriendedInventory() or it will crash.
+		return new InventoryMenuFourBaubles(containerId, playerInventory, container, this);
 	}
 
 	/* Save and Load */
@@ -199,14 +240,12 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
-		/* Set here */
-		return null;
+		return this.continuousBaubleSlots(0, 4);
 	}
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		/* Set here */
-		return null;
+		return DwmgBaubleHandlers.GENERAL;
 	}
 
 	// Sounds
@@ -260,4 +299,103 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 
+	protected static class BefriendedNightwalkerMagicBallEntity extends MagicBulletEntity
+	{
+		
+		protected boolean shouldTransformBlocks = false;
+		
+		public BefriendedNightwalkerMagicBallEntity(EntityType<? extends MagicBulletEntity> type, Level level)
+		{
+			super(type, level);
+		}
+
+		public BefriendedNightwalkerMagicBallEntity(Level level, LivingEntity shooter, double accelX, double accelY, double accelZ)
+		{
+			super(level, shooter, accelX, accelY, accelZ);
+		}
+
+		public BefriendedNightwalkerMagicBallEntity(Level level, double x, double y, double z, double accelX, double accelY, double accelZ)
+		{
+			super(level, x, y, z, accelX, accelY, accelZ);
+		}
+
+		public BefriendedNightwalkerMagicBallEntity(PlayMessages.SpawnEntity spawnEntity, Level level)
+		{
+			this(ModEntityTypes.MAGIC_BULLET.get(), level);
+		}
+		
+		@Override
+		public HmagNightwalkerEntity getOwner()
+		{
+			return (HmagNightwalkerEntity)(super.getOwner());
+		}
+		
+		public void setTransformsBlocks()
+		{
+			shouldTransformBlocks = true;
+		}
+		
+		@Override
+		public void addAdditionalSaveData(CompoundTag nbt) {
+			super.addAdditionalSaveData(nbt);
+			nbt.putBoolean("transforms_blocks", shouldTransformBlocks);
+		}
+
+		@Override
+		public void readAdditionalSaveData(CompoundTag nbt) {
+			super.readAdditionalSaveData(nbt);
+			this.shouldTransformBlocks = nbt.getBoolean("transforms_blocks");
+		}
+		
+		@Override
+		public void onHitBlock(BlockHitResult result)
+		{
+			super.onHitBlock(result);
+			if (!this.level.isClientSide)
+			{
+				if (this.shouldTransformBlocks
+						&& this.level.getBlockState(result.getBlockPos()).getBlock() != null
+						&& (
+							this.level.getBlockState(result.getBlockPos()).is(DwmgBlocks.LUMINOUS_TERRACOTTA.get())
+							|| ColoredBlocks.GLAZED_TERRACOTTA_BLOCKS.contains(this.level.getBlockState(result.getBlockPos()).getBlock())
+							|| this.level.getBlockState(result.getBlockPos()).is(DwmgBlocks.ENHANCED_LUMINOUS_TERRACOTTA.get())
+							)
+						)
+				{
+					transformBlocks(this.level, result.getBlockPos());
+					transformBlocks(this.level, result.getBlockPos().above());
+					transformBlocks(this.level, result.getBlockPos().below());
+					transformBlocks(this.level, result.getBlockPos().east());
+					transformBlocks(this.level, result.getBlockPos().west());
+					transformBlocks(this.level, result.getBlockPos().south());
+					transformBlocks(this.level, result.getBlockPos().north());
+				}
+			}
+		}
+		
+		@Override
+		public void onHitEntity(EntityHitResult result)
+		{
+			if (!this.level.isClientSide 
+					&& result.getEntity() instanceof LivingEntity living 
+					&& DwmgEntityHelper.isAlly(getOwner(), living) 
+					&& !DwmgConfigs.ValueCache.Combat.ENABLE_PROJECTILE_FRIENDLY_DAMAGE)
+			{
+				return;
+			}
+			super.onHitEntity(result);
+		}
+		
+		
+		protected static void transformBlocks(Level level, BlockPos pos)
+		{
+			BlockState blockstate = level.getBlockState(pos);
+			if (blockstate.getBlock() == null) return;
+			if (blockstate.is(DwmgBlocks.LUMINOUS_TERRACOTTA.get()))
+				level.setBlock(pos, DwmgBlocks.ENHANCED_LUMINOUS_TERRACOTTA.get().defaultBlockState(), 1 | 2);
+			else if (ColoredBlocks.GLAZED_TERRACOTTA_BLOCKS.contains(blockstate.getBlock()))
+				level.setBlock(pos, DwmgBlocks.LUMINOUS_TERRACOTTA.get().defaultBlockState(), 1 | 2);
+		}
+		
+	}
 }
