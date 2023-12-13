@@ -28,6 +28,9 @@ mixin {
     add sourceSets.main, 'dwmg.refmap.json'
     config 'befriendmobs.mixins.json'
     config 'dwmg.mixins.json'
+
+	// Only for Citadel support    
+    //add sourceSets.main, "citadel.refmap.json"
 }
 
 
@@ -174,6 +177,10 @@ repositories {
 		dirs "libs"
 	}
 	
+	/*maven {
+		url uri("libs")
+	}*/
+	
 	maven {
         url "https://www.cursemaven.com"
         content {
@@ -209,6 +216,7 @@ dependencies {
 	runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
 	implementation fg.deobf("net.sodiumstudio.befriendmobs:befriendmobs:${mc_version}-${bm_version}")
     implementation fg.deobf("curse.maven:jade-324717:4433884")
+
 
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
 

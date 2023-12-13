@@ -2,6 +2,20 @@
 
 ## 1.19.2
 
+### 0.1.20
+
+Added Nightwalker support.
+
+Added Luminous Terracotta and Enhanced Luminous Terracotta.
+
+Now damage of Necromancer's Hat will not bypass Absorption effect.
+
+Now EXP Modifier's max amount is 2^20 instead of 2^10.
+
+Fixed Necromancer's Hat still damaging creative and spectator players.
+
+Fixed Alraune and Glaryad Bauble slots wrong display.
+
 ### 0.1.19
 
 Added Mixin-Extras dependency. (It's not a mod, so there's no extra steps to install, but dependents need this in `build.gradle`.)
