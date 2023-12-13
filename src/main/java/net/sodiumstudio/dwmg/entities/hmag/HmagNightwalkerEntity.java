@@ -102,7 +102,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 	
 	protected int getAttackInterval()
 	{
-		int expected = Math.round(60f * ((float)(this.getLevelHandler().getExpectedLevel())) / 100f);
+		int expected = Math.round(60f * (100f / (float)(this.getLevelHandler().getExpectedLevel())));
 		return Math.max(20, expected);
 	}
 	
