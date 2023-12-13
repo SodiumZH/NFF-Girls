@@ -58,7 +58,9 @@ import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -138,6 +140,7 @@ import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.Wrapped;
+import net.sodiumstudio.nautils.block.ColoredBlocks;
 import net.sodiumstudio.nautils.events.ItemEntityHurtEvent;
 import net.sodiumstudio.nautils.events.LivingEntitySweepHurtEvent;
 import net.sodiumstudio.nautils.events.MobSunBurnTickEvent;
@@ -1198,18 +1201,18 @@ public class DwmgEntityEvents
 			if (event.getProjectile() instanceof MagicBulletEntity mb 
 					&& mb.getOwner() != null 
 					&& mb.getOwner() instanceof NightwalkerEntity ne
+					&& mb.getOwner().getClass() == NightwalkerEntity.class
 					&& event.getRayTraceResult().getType() == HitResult.Type.BLOCK
 					&& event.getRayTraceResult() instanceof BlockHitResult bhr)
 			{
-				if (mb.level.getBlockState(bhr.getBlockPos()).is(DwmgTags.NIGHTWALKER_MAGIC_BALL_AFFECTS))
+				if (nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos()))
 				{
-					mb.level.setBlock(bhr.getBlockPos(), DwmgBlocks.LUMINOUS_TERRACOTTA.get().defaultBlockState(), 1 + 2);
-					EntityHelper.sendParticlesToEntity(ne, ParticleTypes.EXPLOSION, 0, 0, 1, 0);
-					mb.level.playSound(null, ne, SoundEvents.GENERIC_EXPLODE, ne.getSoundSource(), 2.0f, 0.7f);
-				}
-				else if (mb.level.getBlockState(bhr.getBlockPos()).is(DwmgBlocks.LUMINOUS_TERRACOTTA.get()))
-				{
-					mb.level.setBlock(bhr.getBlockPos(), DwmgBlocks.ENHANCED_LUMINOUS_TERRACOTTA.get().defaultBlockState(), 1 + 2);
+					nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos().above());
+					nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos().below());
+					nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos().east());
+					nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos().west());
+					nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos().north());
+					nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos().south());
 					EntityHelper.sendParticlesToEntity(ne, ParticleTypes.EXPLOSION, 0, 0, 1, 0);
 					mb.level.playSound(null, ne, SoundEvents.GENERIC_EXPLODE, ne.getSoundSource(), 2.0f, 0.7f);
 				}
@@ -1217,7 +1220,22 @@ public class DwmgEntityEvents
 		}
 	}
 	
-	
+	private static boolean nightwalkerTerracottaUpgrade(Level level, BlockPos pos)
+	{
+		BlockState blockstate = level.getBlockState(pos);
+		if (blockstate.getBlock() == null) return false;
+		if (blockstate.is(DwmgBlocks.LUMINOUS_TERRACOTTA.get()))
+		{
+			level.setBlock(pos, DwmgBlocks.ENHANCED_LUMINOUS_TERRACOTTA.get().defaultBlockState(), 1 | 2);
+			return true;
+		}
+		else if (ColoredBlocks.GLAZED_TERRACOTTA_BLOCKS.contains(blockstate.getBlock()))
+		{
+			level.setBlock(pos, DwmgBlocks.LUMINOUS_TERRACOTTA.get().defaultBlockState(), 1 | 2);
+			return true;
+		}
+		else return false;
+	}
 	
 	// MIXIN EVENTS BELOW //
 	
