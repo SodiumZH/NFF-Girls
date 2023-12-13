@@ -72,79 +72,15 @@ public class ExpModifierItem extends Item
     	{
     		if (!player.isShiftKeyDown())
     		{
-	    		switch (this.getValue(player.getItemInHand(hand)))
-	    		{
-	    		case 1:
-	    		{
-	    			this.setValue(player.getItemInHand(hand), 4);
-	    			break;
-	    		}
-	    		case 4:
-	    		{
-	    			this.setValue(player.getItemInHand(hand), 16);
-	    			break;
-	    		}
-	    		case 16:
-	    		{
-	    			this.setValue(player.getItemInHand(hand), 64);
-	    			break;
-	    		}
-	    		case 64:
-	    		{
-	    			this.setValue(player.getItemInHand(hand), 256);
-	    			break;
-	    		}
-	    		case 256:
-	    		{
-	    			this.setValue(player.getItemInHand(hand), 1024);
-	    			break;
-	    		}
-	    		case 1024:
-	    		{
-	    			this.setValue(player.getItemInHand(hand), 1);
-	    			break;
-	    		}
-	    		default:
-	    			throw new RuntimeException();
-	    		}
+    			if (this.getValue(player.getItemInHand(hand)) < (1 << 20)/* 2^20 */)
+    					this.setValue(player.getItemInHand(hand), this.getValue(player.getItemInHand(hand)) * 4);
+    			else this.setValue(player.getItemInHand(hand), 1);
     		}
     		else
     		{
-    			switch (this.getValue(player.getItemInHand(hand)))
-	    		{
-	    		case 1:
-	    		{
-	    			this.setValue(player.getItemInHand(hand), 1024);
-	    			break;
-	    		}
-	    		case 4:
-	    		{
-	    			this.setValue(player.getItemInHand(hand), 1);
-	    			break;
-	    		}
-	    		case 16:
-	    		{
-	    			this.setValue(player.getItemInHand(hand), 4);
-	    			break;
-	    		}
-	    		case 64:
-	    		{
-	    			this.setValue(player.getItemInHand(hand), 16);
-	    			break;
-	    		}
-	    		case 256:
-	    		{
-	    			this.setValue(player.getItemInHand(hand), 64);
-	    			break;
-	    		}
-	    		case 1024:
-	    		{
-	    			this.setValue(player.getItemInHand(hand), 256);
-	    			break;
-	    		}
-	    		default:
-	    			throw new RuntimeException();
-	    		}
+    			if (this.getValue(player.getItemInHand(hand)) > 1)
+					this.setValue(player.getItemInHand(hand), this.getValue(player.getItemInHand(hand)) / 4);
+    			else this.setValue(player.getItemInHand(hand), 1 << 20 /* 2^20 */);
     		}
     		MiscUtil.printToScreen("EXP: " + Integer.toString(this.getValue(player.getItemInHand(hand))), player);
     	}
