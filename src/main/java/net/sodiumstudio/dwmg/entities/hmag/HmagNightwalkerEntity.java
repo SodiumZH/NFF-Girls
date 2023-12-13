@@ -23,6 +23,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -54,6 +55,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedRangedAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuNightwalker;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgBlocks;
 import net.sodiumstudio.dwmg.registries.DwmgConfigs;
@@ -62,8 +64,12 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.block.ColoredBlocks;
+import net.sodiumstudio.nautils.entity.RepeatableAttributeModifier;
 public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBefriendedMob {
 
+
+	private static final RepeatableAttributeModifier ARMOR_MODIFIER = new RepeatableAttributeModifier(0.1d, AttributeModifier.Operation.ADDITION, 300);
+	
 	/* Data sync */
 
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
@@ -102,8 +108,8 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 	
 	protected int getAttackInterval()
 	{
-		int expected = Math.round(60f * (100f / (float)(this.getLevelHandler().getExpectedLevel())));
-		return Math.max(20, expected);
+		int expected = 60 - (this.getLevelHandler().getExpectedLevel() / 2);
+		return Math.max(10, expected);
 	}
 	
 	@Override
@@ -150,6 +156,14 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 		this.playSound(SoundEvents.SHULKER_SHOOT, 2.0F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);	
 	}
 	
+	@Override
+	public void customServerAiStep()
+	{
+		super.customServerAiStep();
+		// It may be applied > 100 times, so update per 0.5s to reduce cost
+		if (this.tickCount % 10 == 2)
+			ARMOR_MODIFIER.apply(this, Attributes.ARMOR, Math.min(200, this.getLevelHandler().getExpectedLevel()), true);
+	}
 	
 	/* Interaction */
 
@@ -238,7 +252,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuFourBaubles(containerId, playerInventory, container, this);
+		return new InventoryMenuNightwalker(containerId, playerInventory, container, this);
 	}
 
 	/* Save and Load */

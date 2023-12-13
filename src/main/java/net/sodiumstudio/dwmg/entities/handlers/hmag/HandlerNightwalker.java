@@ -6,11 +6,14 @@ import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
@@ -19,11 +22,12 @@ import net.sodiumstudio.dwmg.registries.DwmgBlocks;
 import net.sodiumstudio.dwmg.registries.DwmgTags;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.block.ColoredBlocks;
+import net.sodiumstudio.nautils.entity.RepeatableAttributeModifier;
 import net.sodiumstudio.nautils.math.RndUtil;
 
 public class HandlerNightwalker extends HandlerItemGivingProgress
 {
-
+	
 	@Override
 	protected double getProcValueToAdd(ItemStack itemstack, Player player, Mob mob, double oldProc) {
 		if (itemstack.is(Items.CLAY_BALL))
@@ -100,6 +104,8 @@ public class HandlerNightwalker extends HandlerItemGivingProgress
 			convertTo = ColoredBlocks.GLAZED_TERRACOTTA_BLOCKS.ofRandomColor();
 		else if (ColoredBlocks.GLAZED_TERRACOTTA_BLOCKS.contains(blockstate.getBlock()))
 			convertTo = ColoredBlocks.TERRACOTTA_BLOCKS.ofColor(ColoredBlocks.GLAZED_TERRACOTTA_BLOCKS.getColor(blockstate.getBlock()));
+		else if (ColoredBlocks.TERRACOTTA_BLOCKS.contains(blockstate.getBlock()))
+			convertTo = Blocks.CLAY;
 		if (convertTo != null)
 			level.setBlock(pos, convertTo.defaultBlockState(), 1 | 2);
 	}
