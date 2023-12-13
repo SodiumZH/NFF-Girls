@@ -4,11 +4,11 @@
 
 ### Current version: 
 
-#### 0.0.18 (1.18.2)
+#### 0.0.19 (1.18.2)
 
-#### 0.1.19 (1.19.2)
+#### 0.1.20 (1.19.2)
 
-#### 0.2.18 (1.20.1)
+#### 0.2.19 (1.20.1)
 
 
 
@@ -54,15 +54,15 @@ Harpy
 
 Slime Girl
 
-Jiangshi (0.1.14) (1.19.2 only)
+Jiangshi (1.19.2 only)
 
-Dullahan (0.x.14)
+Dullahan
 
-Dodomeki (0.x.14)
+Dodomeki
 
-Alraune (0.x.15)
+Alraune
 
-Glaryad (0.x.15)
+Glaryad
 
 Crimson Slaughterer (0.x.16)
 
@@ -73,6 +73,8 @@ Redcap (0.x.17)
 Jack o'Frost (0.x.17)
 
 Melty Monster (0.x.19)
+
+Nightwalker (0.x.20) (1.19.2+ only)
 
 ## General befriending methods
 
@@ -564,7 +566,7 @@ Identical to Harpy.
 
 
 
-#### Slime Girl (HMaG) (0.x.13)
+#### Slime Girl (HMaG)
 
 ##### Befriending
 
@@ -588,7 +590,7 @@ It can be healed with Slimeball(5), Magical Gel Ball (15, not spawning Magical S
 
  
 
-#### Dullahan (HMaG) (0.x.14)
+#### Dullahan (HMaG)
 
 ##### Befriending
 
@@ -604,7 +606,7 @@ It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as van
 
 
 
-#### Dodomeki (HMaG) (0.x.14)
+#### Dodomeki (HMaG)
 
 ##### Befriending
 
@@ -620,7 +622,7 @@ It can be healed by using *Soul Powder* (+5) or *Soul Apple* (+15). (Same as van
 
 
 
-#### Jiangshi (HMaG) (0.1.14) (1.19.2+ only)
+#### Jiangshi (HMaG) (1.19.2+ only)
 
 ##### Befriending
 
@@ -670,7 +672,7 @@ Healing items: Wheat Seeds (2), Bone Meal (5), Spore Blossom (15), Mysterious Pe
 
 
 
-#### Glaryad (0.x.15)
+#### Glaryad (HMaG) 
 
 ##### Befriending
 
@@ -892,6 +894,44 @@ It can fire like Blaze, consuming 5 heat each fireball. When its level reaches 1
 
 
 
+#### Nightwalker (0.x.20) (1.19.2+ only)
+
+##### Befriending
+
+Using Item-Giving Process.
+
+To give items, it must be standing on a Luminous Terracotta or Enhanced Luminous Terracotta (See Luminous Terracotta). After giving, it will decay the block it's standing and the surrounding blocks: 
+
+Enhanced Luminous Terracotta => Luminous Terracotta
+
+Luminous Terracotta => Glazed Terracotta (of random color)
+
+Glazed Terracotta => Terracotta (of the same color)
+
+Terracotta => Clay
+
+Accepted items:
+
+*Clay Ball*: 0.03 - 0.06
+
+*Ancient Stone*: 0.05 - 0.10
+
+HMaG berries: 0.06 - 0.14
+
+##### Interaction
+
+It has 4 Bauble slots.
+
+It has a "Clay" slot which can add Clay Balls or Ancient Stones as ammo. When using Clay Balls, the magic ball will have 1.2x damage. When using Ancient Stones, it will have 1.5x damage and can transform blocks like "wild" ones.
+
+##### Features
+
+It's shooting interval is initially 3 s. It will be reduced by 0.05 s each 2 level-ups (no less than 0.5 s).
+
+It's armor increases by 0.1 each level-up (no more than 20 added overall).
+
+
+
 ## Foods
 
 ### Soul Cake
@@ -944,7 +984,15 @@ The harmful effect of Necromancer's Hat. ~~This effect is same as Wither, but no
 
 A variation of Carpet. Player/mob standing on it will get Undead Affinity effect which immediately expires once player steps out, including jumping up. It will also remove the curse effect of Necromancer's Hat.
 
+### Luminous Terracotta
 
+A terracotta-like decorative block emitting lv.7 light. It can be obtained when a "wild" Nightwalker's magic ball hits a Glazed Terracotta, or by crafting (a little expensive). For befriended Nightwalkers, they must equip Ancient Stones to enable transforming.
+
+Nightwalkers must be standing on this block to be befriended.
+
+#### Enhanced Luminous Terracotta
+
+A variant of Luminous Terracotta which can emit lv.15 light. It can be obtained when a Nightwalker's magic ball hits a normal Luminous Terracotta (befriended ones need Ancient Stones). It cannot be obtained by crafting.
 
 ## Items
 
