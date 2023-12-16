@@ -4,9 +4,7 @@ import com.github.mechalopa.hmag.registry.ModEntityTypes;
 
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.sodiumstudio.befriendmobs.bmevents.setup.RegisterBefriendingTypeEvent;
-import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerAlraune;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerBanshee;
@@ -15,7 +13,6 @@ import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerCrimsonSlaughterer;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerCursedDoll;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerEnderExecutor;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerGhastlySeeker;
-import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerGlaryad;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHarpy;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHornet;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerHuskGirl;
@@ -24,7 +21,6 @@ import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerJackFrost;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerKobold;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerMeltyMonster;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNecroticReaper;
-import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNightwalker;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerRedcap;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSkeletonGirl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerSlimeGirl;
@@ -143,9 +139,9 @@ public class DwmgBefriendingTypes {
 				ModEntityTypes.MELTY_MONSTER.get(),
 				DwmgEntityTypes.HMAG_MELTY_MONSTER.get(),
 				new HandlerMeltyMonster());
-		event.register(
+		/*event.register(
 				ModEntityTypes.NIGHTWALKER.get(),
 				DwmgEntityTypes.HMAG_NIGHTWALKER.get(),
-				new HandlerNightwalker());
+				new HandlerNightwalker());*/
 	}
 }

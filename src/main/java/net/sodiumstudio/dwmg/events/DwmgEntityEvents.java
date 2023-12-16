@@ -12,16 +12,13 @@ import com.github.mechalopa.hmag.world.entity.HarpyEntity;
 import com.github.mechalopa.hmag.world.entity.ImpEntity;
 import com.github.mechalopa.hmag.world.entity.JackFrostEntity;
 import com.github.mechalopa.hmag.world.entity.KoboldEntity;
-import com.github.mechalopa.hmag.world.entity.NightwalkerEntity;
 import com.github.mechalopa.hmag.world.entity.RedcapEntity;
 import com.github.mechalopa.hmag.world.entity.SnowCanineEntity;
-import com.github.mechalopa.hmag.world.entity.projectile.MagicBulletEntity;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
@@ -49,24 +46,19 @@ import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -83,7 +75,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.bmevents.entity.MobBefriendedEvent;
 import net.sodiumstudio.befriendmobs.bmevents.entity.ai.BefriendedChangeAiStateEvent;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
-import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
@@ -116,7 +107,6 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagZombieGirlEntity;
 import net.sodiumstudio.dwmg.entities.projectile.NecromancerMagicBulletEntity;
 import net.sodiumstudio.dwmg.events.hooks.DwmgHooks;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
-import net.sodiumstudio.dwmg.registries.DwmgBlocks;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.registries.DwmgDamageSources;
@@ -132,12 +122,8 @@ import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
 import net.sodiumstudio.nautils.Wrapped;
-import net.sodiumstudio.nautils.block.ColoredBlocks;
 import net.sodiumstudio.nautils.events.ItemEntityHurtEvent;
 import net.sodiumstudio.nautils.events.LivingEntitySweepHurtEvent;
-import net.sodiumstudio.nautils.events.MobSunBurnTickEvent;
-import net.sodiumstudio.nautils.events.NonLivingEntityHurtEvent;
-import com.github.mechalopa.hmag.registry.*;
 
 @SuppressWarnings("removal")
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -635,25 +621,25 @@ public class DwmgEntityEvents
 					{
 						if (!(event.getEntity() instanceof Player player && (player.isCreative() || player.isSpectator()))
 							|| event.getEntity() instanceof WitherSkeleton
-							|| !event.getEntity().canBeAffected(new MobEffectInstance(MobEffects.WITHER)))
+							|| !event.getEntityLiving().canBeAffected(new MobEffectInstance(MobEffects.WITHER)))
 						{
-							event.getEntity().getCombatTracker().recordDamage(DwmgDamageSources.NECROMANCER_WITHER, event.getEntity().getHealth(), 1f);
+							event.getEntityLiving().getCombatTracker().recordDamage(DwmgDamageSources.NECROMANCER_WITHER, event.getEntityLiving().getHealth(), 1f);
 							float amount = 1f;
-							if (event.getEntity().getAbsorptionAmount() > 1f)
+							if (event.getEntityLiving().getAbsorptionAmount() > 1f)
 							{
-								event.getEntity().setAbsorptionAmount(event.getEntity().getAbsorptionAmount() - 1f);
+								event.getEntityLiving().setAbsorptionAmount(event.getEntityLiving().getAbsorptionAmount() - 1f);
 								amount = 0f;
 							}
-							else if (event.getEntity().getAbsorptionAmount() > 0f)
+							else if (event.getEntityLiving().getAbsorptionAmount() > 0f)
 							{
-								amount -= event.getEntity().getAbsorptionAmount();
-								event.getEntity().setAbsorptionAmount(0f);
+								amount -= event.getEntityLiving().getAbsorptionAmount();
+								event.getEntityLiving().setAbsorptionAmount(0f);
 							}
 							if (amount > 0f)
 							{
-								event.getEntity().setHealth(event.getEntity().getHealth() - 1f);
-								if (event.getEntity().getHealth() <= 0f)
-									event.getEntity().die(DwmgDamageSources.NECROMANCER_WITHER);
+								event.getEntityLiving().setHealth(event.getEntityLiving().getHealth() - 1f);
+								if (event.getEntityLiving().getHealth() <= 0f)
+									event.getEntityLiving().die(DwmgDamageSources.NECROMANCER_WITHER);
 							}
 						}
 					}
@@ -1108,7 +1094,7 @@ public class DwmgEntityEvents
 				if (bm.getData().getOwnerName() != null) 
 				{
 					MiscUtil.printToScreen(
-							InfoHelper.createTrans("info.dwmg.interact_not_owning", bm.getData().getOwnerName()), event.getEntity());
+							InfoHelper.createTrans("info.dwmg.interact_not_owning", bm.getData().getOwnerName()), event.getPlayer());
 				} 
 				else 
 				{
@@ -1147,7 +1133,7 @@ public class DwmgEntityEvents
 		event.mobBefriended.asMob().setCustomName(null);
 	}
 	
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public static void onProjectileImpact(ProjectileImpactEvent event)
 	{
 		if (!event.getProjectile().level.isClientSide)
@@ -1172,9 +1158,9 @@ public class DwmgEntityEvents
 				}
 			}
 		}
-	}
+	}*/
 	
-	private static boolean nightwalkerTerracottaUpgrade(Level level, BlockPos pos)
+	/*private static boolean nightwalkerTerracottaUpgrade(Level level, BlockPos pos)
 	{
 		BlockState blockstate = level.getBlockState(pos);
 		if (blockstate.getBlock() == null) return false;
@@ -1189,7 +1175,7 @@ public class DwmgEntityEvents
 			return true;
 		}
 		else return false;
-	}
+	}*/
 	
 	// MIXIN EVENTS BELOW //
 	

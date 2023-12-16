@@ -18,7 +18,6 @@ import com.github.mechalopa.hmag.client.renderer.MagicBulletRenderer;
 import com.github.mechalopa.hmag.client.renderer.MeltyMonsterRenderer;
 import com.github.mechalopa.hmag.client.renderer.ModThrownItemRenderer;
 import com.github.mechalopa.hmag.client.renderer.NecroticReaperRenderer;
-import com.github.mechalopa.hmag.client.renderer.NightwalkerRenderer;
 import com.github.mechalopa.hmag.client.renderer.RedcapRenderer;
 import com.github.mechalopa.hmag.client.renderer.SkeletonGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.SlimeGirlRenderer;
@@ -129,7 +128,7 @@ public class DwmgClientSetupEvents
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_REDCAP.get(), RedcapRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_JACK_FROST.get(), HmagJackFrostRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_MELTY_MONSTER.get(), MeltyMonsterRenderer::new);
-        event.registerEntityRenderer(DwmgEntityTypes.HMAG_NIGHTWALKER.get(), NightwalkerRenderer::new);
+        //event.registerEntityRenderer(DwmgEntityTypes.HMAG_NIGHTWALKER.get(), NightwalkerRenderer::new);
         
         event.registerEntityRenderer(DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get(), MagicBulletRenderer::new); 
         event.registerEntityRenderer(DwmgEntityTypes.BEFRIENDED_GHAST_FIREBALL.get(), c -> new ThrownItemRenderer<>(c, 3.0F, true));

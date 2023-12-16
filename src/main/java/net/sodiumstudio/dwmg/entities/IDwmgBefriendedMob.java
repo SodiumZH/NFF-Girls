@@ -14,6 +14,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameRules;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
+import net.sodiumstudio.befriendmobs.entity.befriended.CBefriendedMobData;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.entity.capability.wrapper.IAttributeMonitor;
@@ -193,5 +194,6 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleEquipable, IA
 		}
 		return map;
 	}
+
 	
 }
