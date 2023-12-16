@@ -924,6 +924,8 @@ It has 4 Bauble slots.
 
 It has a "Clay" slot which can add Clay Balls or Ancient Stones as ammo. When using Clay Balls, the magic ball will have 1.2x damage. When using Ancient Stones, it will have 1.5x damage and can transform blocks like "wild" ones.
 
+It can be healed with Clay Ball (2), Lapis Lazuli (5), Ancient Stone (15) and Golden Apple (to max).
+
 ##### Features
 
 It's shooting interval is initially 3 s. It will be reduced by 0.05 s each 2 level-ups (no less than 0.5 s).
@@ -984,13 +986,13 @@ The harmful effect of Necromancer's Hat. ~~This effect is same as Wither, but no
 
 A variation of Carpet. Player/mob standing on it will get Undead Affinity effect which immediately expires once player steps out, including jumping up. It will also remove the curse effect of Necromancer's Hat.
 
-### Luminous Terracotta
+### Luminous Terracotta (1.19+)
 
 A terracotta-like decorative block emitting lv.7 light. It can be obtained when a "wild" Nightwalker's magic ball hits a Glazed Terracotta, or by crafting (a little expensive). For befriended Nightwalkers, they must equip Ancient Stones to enable transforming.
 
 Nightwalkers must be standing on this block to be befriended.
 
-#### Enhanced Luminous Terracotta
+#### Enhanced Luminous Terracotta (1.19+)
 
 A variant of Luminous Terracotta which can emit lv.15 light. It can be obtained when a Nightwalker's magic ball hits a normal Luminous Terracotta (befriended ones need Ancient Stones). It cannot be obtained by crafting.
 
@@ -1256,4 +1258,3 @@ When the fishing hook hits an entity, right click to pull the entity without ret
 Maze Map Focus can be used to befriend Redcap (0.15 - 0.30). (0.x.17)
 
 Ice Bomb can be used to befriend Jack o' Frost (0.10 - 0.15). (0.x.17)
-
