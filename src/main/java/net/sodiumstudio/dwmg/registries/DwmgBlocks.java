@@ -47,7 +47,7 @@ public class DwmgBlocks {
 				(Material.CAKE)
 				.strength(0.5F)
 				.sound(SoundType.WOOL)));
-	public static final RegistryObject<Block> LUMINOUS_TERRACOTTA = DwmgBlocks.BLOCKS.register("luminous_terracotta", () -> 
+/*	public static final RegistryObject<Block> LUMINOUS_TERRACOTTA = DwmgBlocks.BLOCKS.register("luminous_terracotta", () -> 
 		new Block(BlockBehaviour.Properties.of
 				(Material.STONE, 
 				MaterialColor.TERRACOTTA_WHITE)
@@ -62,15 +62,15 @@ public class DwmgBlocks {
 				.requiresCorrectToolForDrops()
 				.strength(1.25F, 4.2F)
 				.lightLevel(bs -> 15)));
-	
+*/	
 	
 	/* Block Items */
 	//public static final RegistryObject<Item> ITEM_EXAMPLE_BLOCK = regBlockItem("example_block", EXAMPLE_BLOCK, new Item.Properties());
 	public static final RegistryObject<BlockItem> ITEM_SOUL_CARPET = regBlockItem("soul_carpet", SOUL_CARPET, new Item.Properties());
 	public static final RegistryObject<BlockItem> ITEM_SOUL_CAKE = regBlockItem("soul_cake", SOUL_CAKE, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
-	public static final RegistryObject<BlockItem> ITEM_LUMINOUS_TERRACOTTA = regBlockItem("luminous_terracotta", LUMINOUS_TERRACOTTA, new Item.Properties());
+/*	public static final RegistryObject<BlockItem> ITEM_LUMINOUS_TERRACOTTA = regBlockItem("luminous_terracotta", LUMINOUS_TERRACOTTA, new Item.Properties());
 	public static final RegistryObject<BlockItem> ITEM_ENHANCED_LUMINOUS_TERRACOTTA = regBlockItem("enhanced_luminous_terracotta", ENHANCED_LUMINOUS_TERRACOTTA, new Item.Properties());
-	
+*/	
 	// Register to event bus
 	public static void register(IEventBus eventBus) {
 	    BLOCKS.register(eventBus);
