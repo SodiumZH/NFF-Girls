@@ -324,7 +324,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 	@Override
 	public boolean isFreezeConverting()
 	{
-		return DwmgConfigs.ValueCache.Interaction.ALLOW_VANILLA_CONVERSION;
+		return super.isFreezeConverting() && DwmgConfigs.ValueCache.Interaction.ALLOW_VANILLA_CONVERSION;
 	}
 	
 	@Override

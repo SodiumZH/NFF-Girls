@@ -29,6 +29,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedMeleeAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedZombieAttackGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedFleeSunGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedRestrictSunGoal;
@@ -95,9 +96,7 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 
 	@Override
 	protected void registerGoals() {
-		goalSelector.addGoal(1, new BefriendedRestrictSunGoal(this));
-		goalSelector.addGoal(2, new BefriendedFleeSunGoal(this, 1));
-		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0d, true));
+		goalSelector.addGoal(3, new BefriendedMeleeAttackGoal(this, 1.0d, true));
 		goalSelector.addGoal(4, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
 		goalSelector.addGoal(5, new BefriendedWaterAvoidingRandomStrollGoal(this, 1.0d));
 		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));

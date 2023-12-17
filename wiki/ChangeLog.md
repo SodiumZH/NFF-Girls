@@ -14,6 +14,10 @@ Now EXP Modifier's max amount is 2^20 instead of 2^10.
 
 Fixed Necromancer's Hat still damaging creative and spectator players.
 
+Fixed Skeleton Girls converting to Stray Girls immediately on befriended.
+
+Fixed Crimson Slaughterers restricting sun.
+
 Fixed Alraune and Glaryad Bauble slots wrong display.
 
 ### 0.1.19
