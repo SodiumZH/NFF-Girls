@@ -25,6 +25,16 @@ base {
     archivesName = archive_base_name
 }
 
+jarJar.enable()
+tasks.named('jarJar') {
+	archiveClassifier = ''
+}
+compileJava.options.encoding = 'UTF-8'
+java {
+	withSourcesJar()
+	//withJavadocJar()
+}
+
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -160,13 +170,17 @@ dependencies {
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-	implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.1"))
+	implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:${mixinextras_version}")) {
+        jarJar.ranged(it, "[${mixinextras_min_version},)")
+    }
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
 	implementation fg.deobf("net.sodiumstudio.befriendmobs:befriendmobs:${mc_version}-${bm_version}")
+
     //implementation fg.deobf("curse.maven:jade-324717:4711195")
     
     implementation fg.deobf("curse.maven:hmag-537613:4787067")
@@ -199,6 +213,7 @@ tasks.named('processResources', ProcessResources).configure {
 
 // Example for how to get properties into the manifest for reading at runtime.
 tasks.named('jar', Jar).configure {
+	archiveClassifier = 'slim'
     manifest {
         attributes([
                 'Specification-Title'     : mod_id,
@@ -219,6 +234,17 @@ tasks.named('jar', Jar).configure {
 // tasks.named('publish').configure {
 //     dependsOn 'reobfJar'
 // }
+artifacts {
+	//archives javadocJar
+	archives sourcesJar
+}
+
+reobf {
+    jarJar {}
+}
+
+tasks.build.dependsOn tasks.jarJar
+jar.finalizedBy('reobfJarJar')
 
 mixin {
     add sourceSets.main, "befriendmobs.refmap.json"
