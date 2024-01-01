@@ -46,17 +46,13 @@ public class DwmgBlocks {
 				.strength(0.5F)
 				.sound(SoundType.WOOL)));
 	public static final RegistryObject<Block> LUMINOUS_TERRACOTTA = DwmgBlocks.BLOCKS.register("luminous_terracotta", () -> 
-		new Block(BlockBehaviour.Properties.of
-				(Material.STONE, 
-				MaterialColor.TERRACOTTA_WHITE)
+		new Block(BlockMaterial.STONE.properties(MapColor.TERRACOTTA_WHITE)
 				.requiresCorrectToolForDrops()
 				.strength(1.25F, 4.2F)
 				.lightLevel(bs -> 7)));
 	
 	public static final RegistryObject<Block> ENHANCED_LUMINOUS_TERRACOTTA = DwmgBlocks.BLOCKS.register("enhanced_luminous_terracotta", () -> 
-		new Block(BlockBehaviour.Properties.of
-				(Material.STONE, 
-				MaterialColor.TERRACOTTA_WHITE)
+		new Block(BlockMaterial.STONE.properties(MapColor.TERRACOTTA_WHITE)
 				.requiresCorrectToolForDrops()
 				.strength(1.25F, 4.2F)
 				.lightLevel(bs -> 15)));

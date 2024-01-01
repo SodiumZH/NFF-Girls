@@ -136,7 +136,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 		double d3 = target.getZ() - this.getZ();
 		double d4 = Math.sqrt(d1 * d1 + d3 * d3) * 0.04D;
 		BefriendedNightwalkerMagicBallEntity bullet = 
-				new BefriendedNightwalkerMagicBallEntity(this.level, this, d1 + this.getRandom().nextGaussian() * d4, d2, d3 + this.getRandom().nextGaussian() * d4);
+				new BefriendedNightwalkerMagicBallEntity(this.level(), this, d1 + this.getRandom().nextGaussian() * d4, d2, d3 + this.getRandom().nextGaussian() * d4);
 		bullet.setPos(bullet.getX(), this.getY(0.4D) + 0.25D, bullet.getZ());
 		bullet.setDamage(4.0F + (float)(this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
 		bullet.setEffectLevel((byte)1);
@@ -152,7 +152,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 			this.getAdditionalInventory().getItem(4).shrink(1);
 			bullet.setDamage(bullet.getDamage() * 1.2f);
 		}
-		this.level.addFreshEntity(bullet);
+		this.level().addFreshEntity(bullet);
 		this.playSound(SoundEvents.SHULKER_SHOOT, 2.0F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);	
 	}
 	
@@ -182,7 +182,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 			// For normal interaction
 			if (!player.isShiftKeyDown())
 			{
-				if (!player.level.isClientSide()) 
+				if (!player.level().isClientSide()) 
 				{
 					/* Put checks before healing item check */
 					/* if (....)
@@ -190,7 +190,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 					 	....
 					 }
 					else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
+						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
 					else if (hand == InteractionHand.MAIN_HAND
 							&& DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
@@ -201,7 +201,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 					else return InteractionResult.PASS;
 				}
 				// Interacted
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			}
 			// For interaction with shift key down
 			else
@@ -210,7 +210,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
-					return InteractionResult.sidedSuccess(player.level.isClientSide);
+					return InteractionResult.sidedSuccess(player.level().isClientSide);
 				}
 			}
 		} 
@@ -238,14 +238,14 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 
 	@Override
 	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 		}
 	}
 
 	@Override
 	public void setInventoryFromMob()
 	{
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 		}
 		return;
 	}
@@ -384,24 +384,24 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 		public void onHitBlock(BlockHitResult result)
 		{
 			super.onHitBlock(result);
-			if (!this.level.isClientSide)
+			if (!this.level().isClientSide)
 			{
 				if (this.shouldTransformBlocks
-						&& this.level.getBlockState(result.getBlockPos()).getBlock() != null
+						&& this.level().getBlockState(result.getBlockPos()).getBlock() != null
 						&& (
-							this.level.getBlockState(result.getBlockPos()).is(DwmgBlocks.LUMINOUS_TERRACOTTA.get())
-							|| ColoredBlocks.GLAZED_TERRACOTTA_BLOCKS.contains(this.level.getBlockState(result.getBlockPos()).getBlock())
-							|| this.level.getBlockState(result.getBlockPos()).is(DwmgBlocks.ENHANCED_LUMINOUS_TERRACOTTA.get())
+							this.level().getBlockState(result.getBlockPos()).is(DwmgBlocks.LUMINOUS_TERRACOTTA.get())
+							|| ColoredBlocks.GLAZED_TERRACOTTA_BLOCKS.contains(this.level().getBlockState(result.getBlockPos()).getBlock())
+							|| this.level().getBlockState(result.getBlockPos()).is(DwmgBlocks.ENHANCED_LUMINOUS_TERRACOTTA.get())
 							)
 						)
 				{
-					transformBlocks(this.level, result.getBlockPos());
-					transformBlocks(this.level, result.getBlockPos().above());
-					transformBlocks(this.level, result.getBlockPos().below());
-					transformBlocks(this.level, result.getBlockPos().east());
-					transformBlocks(this.level, result.getBlockPos().west());
-					transformBlocks(this.level, result.getBlockPos().south());
-					transformBlocks(this.level, result.getBlockPos().north());
+					transformBlocks(this.level(), result.getBlockPos());
+					transformBlocks(this.level(), result.getBlockPos().above());
+					transformBlocks(this.level(), result.getBlockPos().below());
+					transformBlocks(this.level(), result.getBlockPos().east());
+					transformBlocks(this.level(), result.getBlockPos().west());
+					transformBlocks(this.level(), result.getBlockPos().south());
+					transformBlocks(this.level(), result.getBlockPos().north());
 				}
 			}
 		}
@@ -409,7 +409,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 		@Override
 		public void onHitEntity(EntityHitResult result)
 		{
-			if (!this.level.isClientSide 
+			if (!this.level().isClientSide 
 					&& result.getEntity() instanceof LivingEntity living 
 					&& DwmgEntityHelper.isAlly(getOwner(), living) 
 					&& !DwmgConfigs.ValueCache.Combat.ENABLE_PROJECTILE_FRIENDLY_DAMAGE)

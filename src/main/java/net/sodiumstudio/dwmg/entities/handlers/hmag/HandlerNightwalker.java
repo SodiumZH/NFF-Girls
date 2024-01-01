@@ -41,7 +41,7 @@ public class HandlerNightwalker extends HandlerItemGivingProgress
 
 	@Override
 	public boolean additionalConditions(Player player, Mob mob) {
-		return mob.level.getBlockState(mob.blockPosition().below()).is(DwmgTags.CAN_BEFRIEND_NIGHTWALKERS_ON);
+		return mob.level().getBlockState(mob.blockPosition().below()).is(DwmgTags.CAN_BEFRIEND_NIGHTWALKERS_ON);
 	}
 
 	@Override
@@ -76,12 +76,12 @@ public class HandlerNightwalker extends HandlerItemGivingProgress
 	@Override
 	public void afterItemGiven(Player player, Mob mob, ItemStack item) 
 	{
-		convertBlockOnGiven(mob.level, mob.blockPosition().below());
-		convertBlockOnGiven(mob.level, mob.blockPosition().below().east());
-		convertBlockOnGiven(mob.level, mob.blockPosition().below().west());
-		convertBlockOnGiven(mob.level, mob.blockPosition().below().south());
-		convertBlockOnGiven(mob.level, mob.blockPosition().below().north());
-		convertBlockOnGiven(mob.level, mob.blockPosition().below(2));
+		convertBlockOnGiven(mob.level(), mob.blockPosition().below());
+		convertBlockOnGiven(mob.level(), mob.blockPosition().below().east());
+		convertBlockOnGiven(mob.level(), mob.blockPosition().below().west());
+		convertBlockOnGiven(mob.level(), mob.blockPosition().below().south());
+		convertBlockOnGiven(mob.level(), mob.blockPosition().below().north());
+		convertBlockOnGiven(mob.level(), mob.blockPosition().below(2));
 	}
 	
 	@Override

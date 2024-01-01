@@ -1,3 +1,4 @@
+
 package net.sodiumstudio.dwmg.entities.hmag;
 
 import java.util.HashMap;

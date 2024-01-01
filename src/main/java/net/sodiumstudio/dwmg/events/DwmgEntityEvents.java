@@ -655,7 +655,7 @@ public class DwmgEntityEvents
 							|| event.getEntity() instanceof WitherSkeleton
 							|| !event.getEntity().canBeAffected(new MobEffectInstance(MobEffects.WITHER)))
 						{
-							event.getEntity().getCombatTracker().recordDamage(DwmgDamageSources.NECROMANCER_WITHER, event.getEntity().getHealth(), 1f);
+							event.getEntity().getCombatTracker().recordDamage(event.getEntity().level().damageSources().wither(), 1f);
 							float amount = 1f;
 							if (event.getEntity().getAbsorptionAmount() > 1f)
 							{
@@ -671,7 +671,7 @@ public class DwmgEntityEvents
 							{
 								event.getEntity().setHealth(event.getEntity().getHealth() - 1f);
 								if (event.getEntity().getHealth() <= 0f)
-									event.getEntity().die(DwmgDamageSources.NECROMANCER_WITHER);
+									event.getEntity().die(event.getEntity().level().damageSources().wither());
 							}
 						}
 					}
@@ -1196,7 +1196,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onProjectileImpact(ProjectileImpactEvent event)
 	{
-		if (!event.getProjectile().level.isClientSide)
+		if (!event.getProjectile().level().isClientSide)
 		{
 			if (event.getProjectile() instanceof MagicBulletEntity mb 
 					&& mb.getOwner() != null 
@@ -1205,16 +1205,16 @@ public class DwmgEntityEvents
 					&& event.getRayTraceResult().getType() == HitResult.Type.BLOCK
 					&& event.getRayTraceResult() instanceof BlockHitResult bhr)
 			{
-				if (nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos()))
+				if (nightwalkerTerracottaUpgrade(event.getProjectile().level(), bhr.getBlockPos()))
 				{
-					nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos().above());
-					nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos().below());
-					nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos().east());
-					nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos().west());
-					nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos().north());
-					nightwalkerTerracottaUpgrade(event.getProjectile().level, bhr.getBlockPos().south());
+					nightwalkerTerracottaUpgrade(event.getProjectile().level(), bhr.getBlockPos().above());
+					nightwalkerTerracottaUpgrade(event.getProjectile().level(), bhr.getBlockPos().below());
+					nightwalkerTerracottaUpgrade(event.getProjectile().level(), bhr.getBlockPos().east());
+					nightwalkerTerracottaUpgrade(event.getProjectile().level(), bhr.getBlockPos().west());
+					nightwalkerTerracottaUpgrade(event.getProjectile().level(), bhr.getBlockPos().north());
+					nightwalkerTerracottaUpgrade(event.getProjectile().level(), bhr.getBlockPos().south());
 					EntityHelper.sendParticlesToEntity(ne, ParticleTypes.EXPLOSION, 0, 0, 1, 0);
-					mb.level.playSound(null, ne, SoundEvents.GENERIC_EXPLODE, ne.getSoundSource(), 2.0f, 0.7f);
+					mb.level().playSound(null, ne, SoundEvents.GENERIC_EXPLODE, ne.getSoundSource(), 2.0f, 0.7f);
 				}
 			}
 		}
