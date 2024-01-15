@@ -12,6 +12,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
 import net.sodiumstudio.nautils.InfoHelper;
+import net.sodiumstudio.nautils.info.ComponentBuilder;
 import net.sodiumstudio.nautils.math.HtmlColors;
 import net.sodiumstudio.nautils.math.IntVec2;
 import net.sodiumstudio.nautils.math.LinearColor;
@@ -57,8 +58,8 @@ public class GuiSlimeGirl extends GuiPreset0
 		Vec3i rgb = color.toRGB();
 		String colorKey = "color.dwmg.html." + HtmlColors.getNearestHtmlColor(color);
 		String rgbInfo = " (R" + Integer.toString(rgb.getX()) + ", G" + Integer.toString(rgb.getY()) + ", B" + Integer.toString(rgb.getZ()) +")";
-		return InfoHelper.builder().putTrans("info.dwmg.gui_slime_color").putText(": ")
-				.putTrans(colorKey).putText(rgbInfo).build().withStyle(Style.EMPTY.withColor(color.toCode()));
+		return ComponentBuilder.create().appendTranslatable("info.dwmg.gui_slime_color").appendText(": ")
+				.appendTranslatable(colorKey).appendText(rgbInfo).build().withStyle(Style.EMPTY.withColor(color.toCode()));
 	}
 	
 	@Override

@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.nautils.EntityHelper;
-import net.sodiumstudio.nautils.MiscUtil;
+import net.sodiumstudio.nautils.NaMiscUtils;
 import net.sodiumstudio.nautils.NbtHelper;
 
 public class ExpModifierItem extends Item
@@ -82,7 +82,7 @@ public class ExpModifierItem extends Item
 					this.setValue(player.getItemInHand(hand), this.getValue(player.getItemInHand(hand)) / 4);
     			else this.setValue(player.getItemInHand(hand), 1 << 20 /* 2^20 */);
     		}
-    		MiscUtil.printToScreen("EXP: " + Integer.toString(this.getValue(player.getItemInHand(hand))), player);
+    		NaMiscUtils.printToScreen("EXP: " + Integer.toString(this.getValue(player.getItemInHand(hand))), player);
     	}
     	return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide);
     }

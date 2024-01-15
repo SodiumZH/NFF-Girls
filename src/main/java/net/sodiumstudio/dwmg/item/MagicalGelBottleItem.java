@@ -301,20 +301,20 @@ public class MagicalGelBottleItem extends Item
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag)
 	{
 		super.appendHoverText(stack, level, list, tooltipFlag);
-		list.add(InfoHelper.createTrans("item.dwmg.magical_gel_bottle.amount", Integer.toString(this.getAmount(stack))));
+		list.add(InfoHelper.createTranslatable("item.dwmg.magical_gel_bottle.amount", Integer.toString(this.getAmount(stack))));
 		if (this.getShowColor(stack))
 		{
 			Vec3i rgb = getColor(stack).toRGB();
 			String rgbInfo = " (R" + Integer.toString(rgb.getX()) + ", G" + Integer.toString(rgb.getY()) + ", B" + Integer.toString(rgb.getZ()) +")";
-			list.add(InfoHelper.createTrans("item.dwmg.magical_gel_bottle.color")
-					.append(InfoHelper.createTrans("color.dwmg.html." + HtmlColors.getNearestHtmlColor(this.getColor(stack))))
+			list.add(InfoHelper.createTranslatable("item.dwmg.magical_gel_bottle.color")
+					.append(InfoHelper.createTranslatable("color.dwmg.html." + HtmlColors.getNearestHtmlColor(this.getColor(stack))))
 					.append(InfoHelper.createText(rgbInfo))
 					.withStyle(Style.EMPTY.withColor(this.getColor(stack).toCode())));
 		}
 		else
 		{
-			list.add(InfoHelper.createTrans("item.dwmg.magical_gel_bottle.color_unknown"));
-			list.add(InfoHelper.createTrans("item.dwmg.magical_gel_bottle.check_color"));
+			list.add(InfoHelper.createTranslatable("item.dwmg.magical_gel_bottle.color_unknown"));
+			list.add(InfoHelper.createTranslatable("item.dwmg.magical_gel_bottle.check_color"));
 		}
 	}
 }

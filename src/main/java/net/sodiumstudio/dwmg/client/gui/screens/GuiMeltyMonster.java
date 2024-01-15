@@ -4,13 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.entities.hmag.HmagMeltyMonsterEntity;
-import net.sodiumstudio.nautils.InfoHelper;
-import net.sodiumstudio.nautils.MiscUtil;
+import net.sodiumstudio.nautils.NaMiscUtils;
+import net.sodiumstudio.nautils.info.ComponentBuilder;
 import net.sodiumstudio.nautils.math.IntVec2;
 
 public class GuiMeltyMonster extends GuiPreset0 {
@@ -49,10 +48,11 @@ public class GuiMeltyMonster extends GuiPreset0 {
 	
 	public void addStaminaInfo(GuiGraphics graphics, IntVec2 position, int color, int textRowWidth)
 	{
-		Component staminaComp = InfoHelper.builder().putTrans("info.dwmg.gui_melty_monster_stamina")
-				.putText(": ").putText(Integer.toString(MiscUtil.cast(mob, HmagMeltyMonsterEntity.class).getStamina())).putText(" / ")
-				.putText(Integer.toString(MiscUtil.cast(mob, HmagMeltyMonsterEntity.class).getMaxStamina())).build();
+		Component staminaComp = ComponentBuilder.create().appendTranslatable("info.dwmg.gui_melty_monster_stamina")
+				.appendText(": ").appendText(Integer.toString(NaMiscUtils.cast(mob, HmagMeltyMonsterEntity.class).getStamina())).appendText(" / ")
+				.appendText(Integer.toString(NaMiscUtils.cast(mob, HmagMeltyMonsterEntity.class).getMaxStamina())).build();
 		graphics.drawString(font, staminaComp, position.x, position.y, color);
+
 	}
 	
 	@Override
