@@ -50,12 +50,14 @@ import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.IDwmgSunSensitiveBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEquipmentTwoBaubles;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuZombieGirlNewBaubleTest;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
@@ -64,7 +66,7 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
-public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob {
+public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgSunSensitiveBefriendedMob {
 
 	/* Initialization */
 
@@ -205,7 +207,8 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
-		return new InventoryMenuEquipmentTwoBaubles(containerId, playerInventory, container, this);
+		//return new InventoryMenuEquipmentTwoBaubles(containerId, playerInventory, container, this);
+		return new InventoryMenuZombieGirlNewBaubleTest(containerId, playerInventory, container, this);
 	}
 
 	// Fix an unknown bug that mob spawned from 
@@ -291,21 +294,6 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 	@Override
 	public EntityDataAccessor<Integer> getAIStateData() {
 		return DATA_AISTATE;
-	}
-
-	/* IBefriendedSunSensitiveMob interface */
-
-	@Override
-	public void setupSunImmunityRules() {
-		this.getSunImmunity().putOptional("sunhat", mob -> mob.getMob().getItemBySlot(EquipmentSlot.HEAD).is(DwmgItems.SUNHAT.get()));
-		this.getSunImmunity().putOptional("soul_amulet", mob -> ((IDwmgBefriendedMob)mob).hasDwmgBauble("soul_amulet"));
-		this.getSunImmunity().putOptional("resis_amulet", mob -> ((IDwmgBefriendedMob)mob).hasDwmgBauble("resistance_amulet"));
-	}
-
-	@Override
-	protected boolean isSunSensitive()
-	{
-		return !this.isSunImmune();
 	}	
 
 	/* IBaubleEquipable interface */
@@ -322,7 +310,6 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.UNDEAD;
 	}
-	
 	
 	// Sounds
 	@Override

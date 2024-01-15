@@ -86,6 +86,7 @@ import net.sodiumstudio.dwmg.inventory.InventoryMenuSixBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSlimeGirl;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuThreeBaubles;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuZombieGirlNewBaubleTest;
 import net.sodiumstudio.dwmg.item.ReinforcedFishingRodItem;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -179,6 +180,8 @@ public class DwmgClientSetupEvents
 		event.registerDefault(InventoryMenuRedcap.class, GuiRedcap::new);
 		event.registerDefault(InventoryMenuMeltyMonster.class, GuiMeltyMonster::new);
 		event.registerDefault(InventoryMenuNightwalker.class, GuiNightwalker::new);
+		
+		event.registerDefault(InventoryMenuZombieGirlNewBaubleTest.class, GuiEquipmentTwoBaubles::new);
     }
 
 }

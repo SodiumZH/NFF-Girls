@@ -13,6 +13,7 @@ import net.sodiumstudio.befriendmobs.client.gui.screens.BefriendedGuiScreen;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.nautils.InfoHelper;
+import net.sodiumstudio.nautils.info.ComponentBuilder;
 import net.sodiumstudio.nautils.math.IntVec2;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
@@ -106,15 +107,15 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 		String lv = Integer.toString(bm.getLevelHandler().getExpectedLevel());
 		String exp = Long.toString(bm.getLevelHandler().getExpInThisLevel());
 		String expup = Long.toString(bm.getLevelHandler().getRequiredExpInThisLevel());
-		return InfoHelper.builder().putTrans("info.dwmg.gui_level_and_exp")
-				.putText(": " + lv + " (" + exp + " / " + expup + ")").build();
+		return ComponentBuilder.create().appendTranslatable("info.dwmg.gui_level_and_exp")
+				.appendText(": " + lv + " (" + exp + " / " + expup + ")").build();
 	}
 	
 	protected MutableComponent getDefaultLevelInfo()
 	{
 		IDwmgBefriendedMob bm = (IDwmgBefriendedMob)mob;		
 		String lv = Integer.toString(bm.getLevelHandler().getExpectedLevel());
-		return InfoHelper.createTrans("info.dwmg.gui_level")
+		return InfoHelper.createTranslatable("info.dwmg.gui_level")
 				.append(InfoHelper.createText(": " + lv));	
 	}
 	
@@ -123,7 +124,7 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 		IDwmgBefriendedMob bm = (IDwmgBefriendedMob)mob;
 		String exp = Long.toString(bm.getLevelHandler().getExpInThisLevel());
 		String expup = Long.toString(bm.getLevelHandler().getRequiredExpInThisLevel());
-		return InfoHelper.createTrans("info.dwmg.gui_exp")
+		return InfoHelper.createTranslatable("info.dwmg.gui_exp")
 				.append(InfoHelper.createText(": " + exp + " / " + expup));
 		
 	}
@@ -133,7 +134,7 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 		IDwmgBefriendedMob bm = (IDwmgBefriendedMob)mob;	
 		String fav = Integer.toString(Mth.floor(bm.getFavorability().getFavorability()));
 		String favmax = Integer.toString(Mth.floor(bm.getFavorability().getMaxFavorability()));
-		return InfoHelper.createTrans("info.dwmg.gui_favorability")
+		return InfoHelper.createTranslatable("info.dwmg.gui_favorability")
 				.append(InfoHelper.createText(": " + fav + " / " + favmax));
 	}
 	

@@ -11,7 +11,7 @@ import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerIte
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.befriendmobs.registry.BMCaps;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerItemDropping;
-import net.sodiumstudio.nautils.MiscUtil;
+import net.sodiumstudio.nautils.NaMiscUtils;
 
 public class BefriendingProgressProbeItem extends Item
 {
@@ -30,12 +30,12 @@ public class BefriendingProgressProbeItem extends Item
 			{
 				if (BefriendingTypeRegistry.getHandler(mob) instanceof HandlerItemGivingProgress prog)
 				{
-					MiscUtil.printToScreen("Progress: " + Double.toString(prog.getProgressValue(mob, player)), player);
+					NaMiscUtils.printToScreen("Progress: " + Double.toString(prog.getProgressValue(mob, player)), player);
 					return InteractionResult.CONSUME;
 				}
 				else if (BefriendingTypeRegistry.getHandler(mob) instanceof HandlerItemDropping dropping)
 				{
-					MiscUtil.printToScreen("Progress: " + Double.toString(dropping.getProgress(mob, player)), player);
+					NaMiscUtils.printToScreen("Progress: " + Double.toString(dropping.getProgress(mob, player)), player);
 					return InteractionResult.CONSUME;
 				}
 			}

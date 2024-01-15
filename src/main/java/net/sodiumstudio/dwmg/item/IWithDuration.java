@@ -68,6 +68,6 @@ public interface IWithDuration {
 	
 	public default MutableComponent getDurationDescription(ItemStack stack)
 	{
-		return InfoHelper.createTrans("info.dwmg.item.duration", Integer.toString(getDuration(stack)), Integer.toString(getMaxDuration())).withStyle(ChatFormatting.GRAY);
+		return InfoHelper.createTranslatable("info.dwmg.item.duration", Integer.toString(getDuration(stack)), Integer.toString(getMaxDuration())).withStyle(ChatFormatting.GRAY);
 	}
 }

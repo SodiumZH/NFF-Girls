@@ -30,11 +30,11 @@ public class TransferringTagItem extends MobOwnershipTransfererItem
 		super.appendHoverText(stack, level, list, tooltipFlag);
 		if (this.isWritten(stack))
 		{
-			list.add(InfoHelper.createTrans("info.dwmg.item.transferring_tag_mob", this.getMobName(stack)).withStyle(ChatFormatting.GRAY));
-			list.add(InfoHelper.createTrans("info.dwmg.item.transferring_tag_owner", this.getOldOwnerName(stack)).withStyle(ChatFormatting.GRAY));
+			list.add(InfoHelper.createTranslatable("info.dwmg.item.transferring_tag_mob", this.getMobName(stack)).withStyle(ChatFormatting.GRAY));
+			list.add(InfoHelper.createTranslatable("info.dwmg.item.transferring_tag_owner", this.getOldOwnerName(stack)).withStyle(ChatFormatting.GRAY));
 			if (this.isLocked(stack))
 			{
-				list.add(InfoHelper.createTrans("info.dwmg.item.transferring_tag_locked").withStyle(ChatFormatting.GRAY));
+				list.add(InfoHelper.createTranslatable("info.dwmg.item.transferring_tag_locked").withStyle(ChatFormatting.GRAY));
 			}
 		}
 	}

@@ -6,15 +6,12 @@ import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
-import net.sodiumstudio.nautils.MiscUtil;
-import net.sodiumstudio.nautils.math.RndUtil;
 import net.sodiumstudio.dwmg.registries.DwmgEffects;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.nautils.math.RndUtil;
 
 public class HandlerZombieGirl extends HandlerItemGivingProgress
 {
