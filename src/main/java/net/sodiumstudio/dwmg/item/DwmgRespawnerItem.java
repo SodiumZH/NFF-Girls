@@ -33,8 +33,8 @@ public class DwmgRespawnerItem extends MobRespawnerItem
 			
 			if (name != null && type != null)
 			{
-				list.add(InfoHelper.createTrans("item.dwmg.respawner.name").append(name));
-				list.add(InfoHelper.createTrans("item.dwmg.respawner.type").append(type));
+				list.add(InfoHelper.createTranslatable("item.dwmg.respawner.name").append(name));
+				list.add(InfoHelper.createTranslatable("item.dwmg.respawner.type").append(type));
 			}
 		}
 	}

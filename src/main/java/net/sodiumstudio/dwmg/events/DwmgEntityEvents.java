@@ -139,7 +139,7 @@ import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.AiHelper;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.InfoHelper;
-import net.sodiumstudio.nautils.MiscUtil;
+import net.sodiumstudio.nautils.NaMiscUtils;
 import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.ReflectHelper;
@@ -381,8 +381,8 @@ public class DwmgEntityEvents
 							// failed, add slow falling
 							if (living instanceof Player p)
 							{
-								MiscUtil.printToScreen(
-										InfoHelper.createTrans("info.dwmg.ender_protection_lift_teleport_failed")
+								NaMiscUtils.printToScreen(
+										InfoHelper.createTranslatable("info.dwmg.ender_protection_lift_teleport_failed")
 										/*"You're lifted from the void because of the Ender Protection, but..."*/, p);
 							}
 							living.setDeltaMovement(new Vec3(0, 0, 0)); // Velocity
@@ -393,8 +393,8 @@ public class DwmgEntityEvents
 							// succeeded
 							if (living instanceof Player p)
 							{
-								MiscUtil.printToScreen(/*""*/
-										InfoHelper.createTrans("info.dwmg.ender_protection_lift"), p);
+								NaMiscUtils.printToScreen(/*""*/
+										InfoHelper.createTranslatable("info.dwmg.ender_protection_lift"), p);
 							}
 						}
 					}
@@ -697,7 +697,7 @@ public class DwmgEntityEvents
 	{
 		if (event.getMob().getModId().equals(Dwmg.MOD_ID) && !event.getMob().asMob().level.isClientSide)
 		{
-			MiscUtil.printToScreen(InfoHelper.createText("")
+			NaMiscUtils.printToScreen(InfoHelper.createText("")
 					.append(event.getMob().asMob().getName())
 					.append(InfoHelper.createText(" "))
 					.append(event.getStateAfter().getDisplayInfo()), event.getMob().getOwner());
@@ -1152,12 +1152,12 @@ public class DwmgEntityEvents
 			{
 				if (bm.getData().getOwnerName() != null) 
 				{
-					MiscUtil.printToScreen(
-							InfoHelper.createTrans("info.dwmg.interact_not_owning", bm.getData().getOwnerName()), event.getEntity());
+					NaMiscUtils.printToScreen(
+							InfoHelper.createTranslatable("info.dwmg.interact_not_owning", bm.getData().getOwnerName()), event.getEntity());
 				} 
 				else 
 				{
-					MiscUtil.printToScreen(InfoHelper.createTrans("info.dwmg.interact_not_owning_unpresent"), event.getEntity());
+					NaMiscUtils.printToScreen(InfoHelper.createTranslatable("info.dwmg.interact_not_owning_unpresent"), event.getEntity());
 				}
 			}			
 		}
