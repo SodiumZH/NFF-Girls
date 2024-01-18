@@ -1,12 +1,34 @@
-package net.sodiumstudio.dwmg.subsystem.baublesystem.baubles;
+package net.sodiumstudio.dwmg.subsystem.baublesystem;
+
+import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleSystem;
+import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.containers.MapPair;
+import net.sodiumstudio.nautils.containers.MapPair;
 
 public class DwmgBaubleStatics
 {
+	
+	private static final Map<Integer, String> ROMAN_NUMERALS = ContainerHelper.mapOf(
+			MapPair.of(0, "0"),
+			MapPair.of(1, "i"),
+			MapPair.of(2, "ii"),
+			MapPair.of(3, "ii"),
+			MapPair.of(4, "iv"),
+			MapPair.of(5, "v"),
+			MapPair.of(6, "vi"),
+			MapPair.of(7, "vii"),
+			MapPair.of(8, "viii"),
+			MapPair.of(9, "ix"),
+			MapPair.of(10, "x")
+			);
+	
 	/**
 	 * Count how many bauble of given key the mob has within the tier range.
 	 */
@@ -16,7 +38,8 @@ public class DwmgBaubleStatics
 		int count = 0;
 		for (ItemStack stack: equipped)
 		{
-			var prop = DwmgBaubleAdditionalRegistry.getRegistry().get(key);
+			if (stack.getItem() == null) continue;
+			var prop = DwmgBaubleAdditionalRegistry.getRegistry().get(stack.getItem());;
 			if (prop != null && prop.getA().equals(key) && prop.getB() >= minTier && prop.getB() < maxTierExcluding)
 				count++;
 		}
@@ -38,4 +61,19 @@ public class DwmgBaubleStatics
 	{
 		return countBaublesWithMinTier(mob, key, 0); 
 	}
+	
+	/**
+	 * Get a value as Roman numerals.
+	 * Supports 0-10 now.
+	 */
+	@Nullable
+	public static String getRomanNumeral(int value, boolean isUpperCase)
+	{
+		if (value > 10 || value < 0)
+			throw new UnsupportedOperationException("getRomanNumeral support only 0-10.");
+		String out = ROMAN_NUMERALS.get(value);
+		if (isUpperCase) out = out.toUpperCase();
+		return out;
+	}
+	
 }
