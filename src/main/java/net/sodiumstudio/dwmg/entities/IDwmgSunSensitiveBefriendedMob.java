@@ -4,7 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
-import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.DwmgBaubleStatics;
+import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgBaubleStatics;
 
 public interface IDwmgSunSensitiveBefriendedMob extends IDwmgBefriendedMob, IBefriendedSunSensitiveMob
 {

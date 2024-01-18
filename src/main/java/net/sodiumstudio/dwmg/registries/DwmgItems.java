@@ -99,7 +99,7 @@ public class DwmgItems {
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.atk", "+3").withStyle(ChatFormatting.GRAY))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
 	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET_II = ITEMS.register("soul_amulet_ii", () -> new SoulAmuletBaubleItem(
-			"dwmg:soul_amulet", 2, new Item.Properties().rarity(Rarity.RARE).tab(TAB))
+			"dwmg:soul_amulet", 2, new Item.Properties().rarity(Rarity.RARE).tab(TAB)).alwaysFoil()
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.soul_amulet").withStyle(ChatFormatting.GRAY))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.hpmax", "+15").withStyle(ChatFormatting.GRAY))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.atk", "+5").withStyle(ChatFormatting.GRAY))
