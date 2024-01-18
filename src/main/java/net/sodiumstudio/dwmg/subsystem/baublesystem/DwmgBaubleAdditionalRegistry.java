@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.subsystem.baublesystem.baubles;
+package net.sodiumstudio.dwmg.subsystem.baublesystem;
 
 import java.util.HashMap;
 
