@@ -6,8 +6,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleAttributeModifier;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCondition;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
+import net.sodiumstudio.befriendmobs.subsystems.baublesystem.CBaubleEquippableMob;
 import net.sodiumstudio.dwmg.entities.IDwmgSunSensitiveBefriendedMob;
 import net.sodiumstudio.dwmg.registries.DwmgTags;
+import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgDedicatedBaubleItem;
 
 public class SoulAmuletBaubleItem extends DwmgDedicatedBaubleItem
 {
@@ -64,8 +66,13 @@ public class SoulAmuletBaubleItem extends DwmgDedicatedBaubleItem
 	}
 
 	@Override
-	public ResourceLocation getBaubleRegistryKey() {
+	public ResourceLocation getBaubleRegistryKeyUnsuffixed() {
 		return new ResourceLocation("dwmg:soul_amulet");
+	}
+
+	@Override
+	public BaubleAttributeModifier[] getNonDuplicatableModifiers(CBaubleEquippableMob mob) {
+		return null;
 	}
 
 }
