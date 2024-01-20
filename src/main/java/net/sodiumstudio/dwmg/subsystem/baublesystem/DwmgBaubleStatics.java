@@ -19,7 +19,7 @@ public class DwmgBaubleStatics
 			MapPair.of(0, "0"),
 			MapPair.of(1, "i"),
 			MapPair.of(2, "ii"),
-			MapPair.of(3, "ii"),
+			MapPair.of(3, "iii"),
 			MapPair.of(4, "iv"),
 			MapPair.of(5, "v"),
 			MapPair.of(6, "vi"),
@@ -52,6 +52,14 @@ public class DwmgBaubleStatics
 	public static int countBaublesWithMinTier(Mob mob, ResourceLocation key, int minTier)
 	{
 		return countBaublesWithTierRange(mob, key, minTier, Integer.MAX_VALUE);
+	}
+	
+	/**
+	 * Count how many bauble of given key the mob has with the exact tier.
+	 */
+	public static int countBaublesWithTier(Mob mob, ResourceLocation key, int tier)
+	{
+		return countBaublesWithTierRange(mob, key, tier, tier + 1);
 	}
 	
 	/**
