@@ -7,7 +7,7 @@ import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleAttributeModi
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCondition;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.CBaubleEquippableMob;
-import net.sodiumstudio.dwmg.entities.IDwmgSunSensitiveBefriendedMob;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedSunSensitiveMob;
 import net.sodiumstudio.dwmg.registries.DwmgTags;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgDedicatedBaubleItem;
 
@@ -25,27 +25,33 @@ public class SoulAmuletBaubleItem extends DwmgDedicatedBaubleItem
 		{
 		case 1:
 		{
-			return new BaubleAttributeModifier[] {
+			return BaubleAttributeModifier.makeModifiers(
+					Attributes.MAX_HEALTH, 10d,
+					Attributes.ATTACK_DAMAGE, 3d);
+			/*return new BaubleAttributeModifier[] {
 				new BaubleAttributeModifier(Attributes.MAX_HEALTH, 10d, AttributeModifier.Operation.ADDITION),
-				new BaubleAttributeModifier(Attributes.ATTACK_DAMAGE, 3d, AttributeModifier.Operation.ADDITION)};
+				new BaubleAttributeModifier(Attributes.ATTACK_DAMAGE, 3d, AttributeModifier.Operation.ADDITION)};*/
 		}
 		case 2:
 		{
-			return new BaubleAttributeModifier[] {
+			return BaubleAttributeModifier.makeModifiers(
+					Attributes.MAX_HEALTH, 15d,
+					Attributes.ATTACK_DAMAGE, 5d);
+			/*return new BaubleAttributeModifier[] {
 				new BaubleAttributeModifier(Attributes.MAX_HEALTH, 15d, AttributeModifier.Operation.ADDITION),
-				new BaubleAttributeModifier(Attributes.ATTACK_DAMAGE, 5d, AttributeModifier.Operation.ADDITION)};
+				new BaubleAttributeModifier(Attributes.ATTACK_DAMAGE, 5d, AttributeModifier.Operation.ADDITION)};*/
 		}
 		default:
 		{
-			throw new IllegalStateException("Unsupported bauble tier.");
+			throw this.unsupportedTier();
 		}
 		}
 	}
 
 	@Override
 	public BaubleEquippingCondition getEquippingCondition() {
-		return BaubleEquippingCondition.always().and(args -> (
-				args.user().getMob() instanceof IDwmgSunSensitiveBefriendedMob 
+		return BaubleEquippingCondition.of(args -> (
+				args.user().getMob() instanceof IDwmgBefriendedSunSensitiveMob 
 				|| args.user().getMob().getType().is(DwmgTags.CAN_EQUIP_SOUL_AMULET)));
 	}
 

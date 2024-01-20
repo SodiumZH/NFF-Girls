@@ -43,6 +43,8 @@ public class DwmgTags
 			Dwmg.MOD_ID, "affected_by_undead_affinity");
 	public static final TagKey<EntityType<?>> CAN_EQUIP_SOUL_AMULET = TagHelper.createEntityTypeTag(
 			Dwmg.MOD_ID, "can_equip_soul_amulet");
+	public static final TagKey<EntityType<?>> CAN_EQUIP_POISONOUS_THORN = TagHelper.createEntityTypeTag(
+			Dwmg.MOD_ID, "can_equip_poisonous_thorn");
 	
 	/*
 	protected static TagKey<Block> blockTag(String name)

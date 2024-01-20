@@ -1,14 +1,7 @@
 package net.sodiumstudio.dwmg.subsystem.baublesystem;
 
-import java.util.Map;
-
 import net.minecraft.resources.ResourceLocation;
-import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleAttributeModifier;
-import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCondition;
-import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.DedicatedBaubleItem;
-import net.sodiumstudio.nautils.ContainerHelper;
-import net.sodiumstudio.nautils.containers.MapPair;
 
 public abstract class DwmgDedicatedBaubleItem extends DedicatedBaubleItem
 {
@@ -44,4 +37,13 @@ public abstract class DwmgDedicatedBaubleItem extends DedicatedBaubleItem
 	 * Bauble registry key, no suffix. (Will be auto-added)
 	 */
 	public abstract ResourceLocation getBaubleRegistryKeyUnsuffixed();
+	
+	/**
+	 * Create an exception that this item's tier is not supported. Needs to manually throw.
+	 */
+	protected UnsupportedOperationException unsupportedTier()
+	{
+		return new UnsupportedOperationException("Unsupported bauble tier ( " +  Integer.toString(this.tier) + ").");
+	}
+	
 }
