@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
+import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleSystem;
 import net.sodiumstudio.nautils.math.IntVec2;
 
 /**
@@ -132,6 +133,22 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 		return done ? stack.copy() : ItemStack.EMPTY;
 	}
 	
+	// ===== 0.x.21 new bauble changed
 	
+	@Override
+	protected void addBaubleSlot(int slot, IntVec2 pos, String key)
+	{
+		addSlot(new Slot(container, slot, pos.x, pos.y) {			
+			@Override
+			public boolean mayPlace(ItemStack stack) {
+				//return BaubleHandler.shouldBaubleSlotAccept(stack, this, mob, key);
+				return BaubleSystem.canEquipOn(stack, mob.asMob(), key);
+			}			
+			@Override
+			public int getMaxStackSize() {
+	            return 1;
+	        }			
+		});
+	}
 	
 }

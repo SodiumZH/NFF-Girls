@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.nautils.math.IntVec2;
 
-public class InventoryMenuFourBaubles extends InventoryMenuPreset0
+public class InventoryMenuFourBaubles extends InventoryMenuNewBaubleTest
 {
 	public InventoryMenuFourBaubles(int containerId, Inventory playerInventory, Container container,
 			IBefriendedMob mob) {

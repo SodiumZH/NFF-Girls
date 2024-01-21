@@ -10,13 +10,22 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCondition;
+import net.sodiumstudio.befriendmobs.subsystems.baublesystem.ModifyBaubleEquippableMobsEvent;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.RegisterBaubleEquippableMobsEvent;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.RegisterBaublesEvent;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.hmag.HmagAlrauneEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagBansheeEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagCrimsonSlaughtererEntity;
-import net.sodiumstudio.dwmg.entities.hmag.HmagZombieGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagCursedDollEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagDodomekiEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagDrownedGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagHuskGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagSkeletonGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.*;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.InsomniaFruitBaubleBehavior;
+import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.NecroticReaperMainHandHoeBaubleBehavior;
 
 @EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgBaubleRegistrations
@@ -50,8 +59,38 @@ public class DwmgBaubleRegistrations
 	@SubscribeEvent
 	public static void baubleEquippableRegistration(RegisterBaubleEquippableMobsEvent event)
 	{
+		registerWithContinuousSlotSequence(event, HmagDrownedGirlEntity.class, 6, 8);
 		registerWithContinuousSlotSequence(event, HmagZombieGirlEntity.class, 6, 8);
+		registerWithContinuousSlotSequence(event, HmagHuskGirlEntity.class, 6, 8);
+		
+		registerWithContinuousSlotSequence(event, HmagSkeletonGirlEntity.class, 6, 7);
+		registerWithContinuousSlotSequence(event, HmagStrayGirlEntity.class, 6, 7);
+		registerWithContinuousSlotSequence(event, HmagWitherSkeletonGirlEntity.class, 6, 7);
+		
+		registerWithContinuousSlotSequence(event, HmagEnderExecutorEntity.class, 3, 5);
+		
+		registerWithContinuousSlotSequence(event, HmagAlrauneEntity.class, 0, 3);
+		registerWithContinuousSlotSequence(event, HmagBansheeEntity.class, 2, 5);
 		registerWithContinuousSlotSequence(event, HmagCrimsonSlaughtererEntity.class, 0, 4);
+		registerWithContinuousSlotSequence(event, HmagCursedDollEntity.class, 2, 8);
+		registerWithContinuousSlotSequence(event, HmagDodomekiEntity.class, 0, 4);
+		registerWithContinuousSlotSequence(event, HmagDullahanEntity.class, 0, 4);
+		registerWithContinuousSlotSequence(event, HmagGhastlySeekerEntity.class, 0, 4);
+		registerWithContinuousSlotSequence(event, HmagGlaryadEntity.class, 0, 3);
+		registerWithContinuousSlotSequence(event, HmagHarpyEntity.class, 0, 4);
+		registerWithContinuousSlotSequence(event, HmagHornetEntity.class, 2, 4);
+		registerWithContinuousSlotSequence(event, HmagImpEntity.class, 2, 4);
+		registerWithContinuousSlotSequence(event, HmagJackFrostEntity.class, 0, 4);
+		registerWithContinuousSlotSequence(event, HmagJiangshiEntity.class, 3, 7);
+		registerWithContinuousSlotSequence(event, HmagKoboldEntity.class, 2, 4);
+		registerWithContinuousSlotSequence(event, HmagMeltyMonsterEntity.class, 0, 4);
+		registerWithContinuousSlotSequence(event, HmagNecroticReaperEntity.class, 2, 6)
+			.addSpecialSlot("main_hand", accessMobAdditionalInventory(0)).addSpecialSlotItem("dwmg:necrotic_reaper_hoe");
+		registerWithContinuousSlotSequence(event, HmagNightwalkerEntity.class, 0, 4);
+		registerWithContinuousSlotSequence(event, HmagRedcapEntity.class, 6, 7);
+		registerWithContinuousSlotSequence(event, HmagSlimeGirlEntity.class, 0, 4);
+		registerWithContinuousSlotSequence(event, HmagSnowCanineEntity.class, 0, 4);
+		
 	}
 	
 	@SubscribeEvent
@@ -69,8 +108,14 @@ public class DwmgBaubleRegistrations
 		event.register(DwmgItems.LIFE_JADE_II.get());
 		event.register(DwmgItems.AQUA_JADE.get());
 		event.register(DwmgItems.POISONOUS_THORN.get());
+		event.register(new NecroticReaperMainHandHoeBaubleBehavior(new ResourceLocation("dwmg:necrotic_reaper_hoe")));
 		
 	}
+	/*
+	public static void modifyBaubleEquippable(ModifyBaubleEquippableMobsEvent event)
+	{
+		event.addSpecialSlotAccepted(HmagNecroticReaperEntity.class, "main_hand", "dwmg:necrotic_reaper_hoe");
+	}*/
 	
 	// ========= Utils ==============
 	/**

@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.nautils.ContainerHelper;
 
+@Deprecated
 public class DwmgBaubleSlotGetter
 {
 	protected HashMap<String, Integer> map = new HashMap<String, Integer>();

@@ -10,6 +10,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 
+@Deprecated
 public class BaubleHandlerNecroticReaper extends BaubleHandlerUndead
 {
 
@@ -41,7 +42,7 @@ public class BaubleHandlerNecroticReaper extends BaubleHandlerUndead
 		{
 			if (bauble.getItem() instanceof HoeItem hoe)
 			{
-				int lv = Math.round(hoe.getTier().getAttackDamageBonus());
+				int lv = Math.round(hoe.getTier().getLevel());
 				@SuppressWarnings("deprecation")
 				double atk = (double)getHoeAtk(lv) * (1d + (double)EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, bauble) * 0.1d);
 				owner.addBaubleModifier(slotKey, "hoe_atk", Attributes.ATTACK_DAMAGE, atk, Operation.ADDITION);

@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
+@Deprecated
 public class BaubleHandlerUndead extends BaubleHandlerGeneral
 {
 	
