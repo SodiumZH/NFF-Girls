@@ -14,6 +14,7 @@ import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
+@Deprecated
 public class BaubleHandlerGeneral extends BaubleHandler
 {
 	

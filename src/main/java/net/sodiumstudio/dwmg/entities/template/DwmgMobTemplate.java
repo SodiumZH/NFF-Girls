@@ -197,18 +197,6 @@ public class DwmgMobTemplate extends Monster implements IDwmgBefriendedMob {
 		setInit();
 	}
 
-	@Override
-	public HashMap<String, ItemStack> getBaubleSlots() {
-		/* Set here */
-		return null;
-	}
-
-	@Override
-	public BaubleHandler getBaubleHandler() {
-		/* Set here */
-		return null;
-	}
-
 	// Sounds
 	
 	@Override

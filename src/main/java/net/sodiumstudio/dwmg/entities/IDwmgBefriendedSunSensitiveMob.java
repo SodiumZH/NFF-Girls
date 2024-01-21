@@ -6,7 +6,7 @@ import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMo
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgBaubleStatics;
 
-public interface IDwmgSunSensitiveBefriendedMob extends IDwmgBefriendedMob, IBefriendedSunSensitiveMob
+public interface IDwmgBefriendedSunSensitiveMob extends IDwmgBefriendedMob, IBefriendedSunSensitiveMob
 {
 	@Override
 	public default void setupSunImmunityRules()
