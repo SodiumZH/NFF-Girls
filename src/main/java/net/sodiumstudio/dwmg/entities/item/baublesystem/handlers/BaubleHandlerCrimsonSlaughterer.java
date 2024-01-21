@@ -8,6 +8,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagCrimsonSlaughtererEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHornetEntity;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
+@Deprecated
 public class BaubleHandlerCrimsonSlaughterer extends BaubleHandlerGeneral
 {
 	

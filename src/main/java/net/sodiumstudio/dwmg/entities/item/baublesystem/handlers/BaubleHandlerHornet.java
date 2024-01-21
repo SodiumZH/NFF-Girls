@@ -7,6 +7,7 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHornetEntity;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
+@Deprecated
 public class BaubleHandlerHornet extends BaubleHandlerGeneral
 {
 	

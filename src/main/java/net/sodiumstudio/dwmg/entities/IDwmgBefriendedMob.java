@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -31,8 +32,9 @@ import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
 import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleItem;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgBaubleStatics;
 
-public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleEquipable, IAttributeMonitor, IItemStackMonitor
+public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, */IAttributeMonitor, IItemStackMonitor
 {
 	
 	@DontOverride
@@ -90,29 +92,44 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleEquipable, IA
 	}
 
 	/* Bauble related */
+	
+	/**
+	 * @deprecated Use {@code DwmgBaubleStatics#countBaubles} instead
+	 */
+	@Deprecated
 	public default boolean hasDwmgBauble(String typeName)
 	{
-		for (ItemStack stack: this.getBaubleSlots().values())
+		/*for (ItemStack stack: this.getBaubleSlots().values())
 		{
 			if (!stack.isEmpty() && stack.getItem() instanceof DwmgBaubleItem bauble && bauble.is(typeName))
 				return true;
 		}
-		return false;
+		return false;*/
+		return DwmgBaubleStatics.countBaubles(this.asMob(), new ResourceLocation(typeName)) > 0;
 	}
 	
+	/**
+	 * @deprecated Use {@code DwmgBaubleStatics#countBaublesWithTier} instead
+	 */
+	@Deprecated
 	public default boolean hasDwmgBaubleWithLevel(String typeName, int level)
 	{
-		for (ItemStack stack: this.getBaubleSlots().values())
+		/*for (ItemStack stack: this.getBaubleSlots().values())
 		{
 			if (!stack.isEmpty() && stack.getItem() instanceof DwmgBaubleItem bauble && bauble.is(typeName, level))
 				return true;
 		}
-		return false;
+		return false;*/
+		return DwmgBaubleStatics.countBaublesWithTier(this.asMob(), new ResourceLocation(typeName), level) > 0;
 	}
 	
+	/**
+	 * @deprecated Use {@code DwmgBaubleStatics#countBaublesWithMinTier} instead
+	 */
+	@Deprecated
 	public default boolean hasDwmgBaubleWithMinLevel(String typeName, int minLevel)
 	{
-		for (ItemStack stack: this.getBaubleSlots().values())
+		/*for (ItemStack stack: this.getBaubleSlots().values())
 		{
 			if (!stack.isEmpty() 
 				&& stack.getItem() instanceof DwmgBaubleItem bauble 
@@ -122,7 +139,8 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleEquipable, IA
 				return true;
 			}
 		}
-		return false;
+		return false;*/
+		return DwmgBaubleStatics.countBaublesWithMinTier(this.asMob(), new ResourceLocation(typeName), minLevel) > 0;
 	}
 	
 	// === IBefriendedMob interface
@@ -181,8 +199,30 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleEquipable, IA
 		}
 	}
 	
+	// ===================== Dwmg gamerules related ===================
+	
+	/**
+	 * True if this mob should proactively attack mobs hostile to itself.
+	 */
+	public default boolean shouldAttackMobsHostileToSelf()
+	{
+		return DwmgBaubleStatics.countBaubles(this.asMob(), new ResourceLocation("dwmg:courage_amulet")) > 0;
+	}
+	
+	/**
+	 * True if this mob should proactively attack mobs hostile to its owner.
+	 */
+	public default boolean shouldAttackMobsHostileToOwner()
+	{
+		return DwmgBaubleStatics.countBaublesWithMinTier(this.asMob(), new ResourceLocation("dwmg:courage_amulet"), 2) > 0;
+	}
+	
 	// ===== Util ===
 	
+	/**
+	 * @deprecated Only for old bauble system.
+	 */
+	@Deprecated
 	public default HashMap<String, ItemStack> continuousBaubleSlots(int startIndex, int endIndexExclude)
 	{
 		HashMap<String, ItemStack> map = new HashMap<>();
@@ -194,6 +234,4 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, IBaubleEquipable, IA
 		}
 		return map;
 	}
-
-	
 }

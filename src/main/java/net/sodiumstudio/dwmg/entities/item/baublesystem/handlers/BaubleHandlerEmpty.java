@@ -12,6 +12,8 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 /**
  * A bauble handler that doesn't do anything
 */
+
+@Deprecated
 public class BaubleHandlerEmpty extends BaubleHandler
 {
 

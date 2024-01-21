@@ -8,6 +8,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
+@Deprecated
 public class BaubleHandlerDrowned extends BaubleHandlerUndead
 {
 

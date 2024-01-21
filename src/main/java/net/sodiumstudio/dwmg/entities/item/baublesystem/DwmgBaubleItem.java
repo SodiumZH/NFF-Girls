@@ -3,6 +3,7 @@ package net.sodiumstudio.dwmg.entities.item.baublesystem;
 import net.minecraft.network.chat.MutableComponent;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleItem;
 
+@Deprecated
 public class DwmgBaubleItem extends BaubleItem
 {
 
