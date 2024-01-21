@@ -1,5 +1,19 @@
 # Change Log
 
+
+
+
+
+
+
+### 0.x.21
+
+Now Bauble items are stackable.
+
+Now Amulet of Resistance will add extra Max HP.
+
+# Earlier versions
+
 ## 1.19.2
 
 ### 0.1.20

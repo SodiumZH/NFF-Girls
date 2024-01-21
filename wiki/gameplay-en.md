@@ -1020,9 +1020,9 @@ Lv. 2: Max HP +15, ATK +5, sun immunity
 
 #### Amulet of Resistance
 
-Lv. 1: Armor +4, Speed -10%, sun immunity for undead mobs
+Lv. 1: Armor +4, Speed -10%, sun immunity for undead mobs, Max HP +15 (0.x.21)
 
-Lv. 2: Armor +6, Speed -10%, sun immunity for undead mobs
+Lv. 2: Armor +6, Speed -10%, sun immunity for undead mobs, Max HP +25 (0.x.21)
 
 #### Amulet of Courage
 
