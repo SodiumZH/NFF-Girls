@@ -46,11 +46,15 @@ import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedSunSensitiveMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoalLegacy;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoalLegacy;
+import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsFourBaublesDefault;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsSixBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
@@ -62,7 +66,7 @@ import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.ReflectHelper;
 
-public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob {
+public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefriendedSunSensitiveMob {
 
 	/* Data sync */
 
@@ -121,8 +125,8 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 		targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
-		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
-		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
+		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoalLegacy(this));
+		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoalLegacy(this));
 	}
 	
 	@Override
@@ -326,7 +330,7 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 		// Add other data reading here
 		setInit();
 	}
-
+/*
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
 		return this.continuousBaubleSlots(2, 8);
@@ -336,7 +340,7 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.UNDEAD;
 	}
-	
+	*/
 	// IBefriendedSunSensitiveMob interface
 
 	@Override
