@@ -60,8 +60,8 @@ import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonRangedBowAttack
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoalLegacy;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoalLegacy;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
@@ -70,7 +70,7 @@ import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 
-public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity implements IDwmgBefriendedMob, IBaubleEquipable, IBefriendedSunSensitiveMob
+public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
 {
 	
 	public HmagWitherSkeletonGirlEntity(EntityType<? extends HmagWitherSkeletonGirlEntity> pEntityType, Level pLevel) {
@@ -123,8 +123,8 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 		targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
-		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
-		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
+		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoalLegacy(this));
+		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoalLegacy(this));
 	}	
 	
 	/* Bow shooting related */
@@ -320,7 +320,7 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 	}
 
 	/* IBaubleEquipable interface */
-	
+	/*
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
 		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
@@ -332,7 +332,7 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.UNDEAD;
 	}
-
+*/
 	// Sounds
 	
 	@Override

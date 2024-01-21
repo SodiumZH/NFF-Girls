@@ -42,8 +42,8 @@ import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoalLegacy;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoalLegacy;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuThreeBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
@@ -104,8 +104,8 @@ public class HmagGlaryadEntity extends GlaryadEntity implements IDwmgBefriendedM
 		targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
-		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
-		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
+		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoalLegacy(this));
+		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoalLegacy(this));
 	}
 	
 	@Override
@@ -227,7 +227,7 @@ public class HmagGlaryadEntity extends GlaryadEntity implements IDwmgBefriendedM
 		// Add other data reading here
 		setInit();
 	}
-
+/*
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
 		return ContainerHelper.mapOf(
@@ -240,7 +240,7 @@ public class HmagGlaryadEntity extends GlaryadEntity implements IDwmgBefriendedM
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.GENERAL;
 	}
-	
+	*/
 	// Sounds
 	
 	@Override

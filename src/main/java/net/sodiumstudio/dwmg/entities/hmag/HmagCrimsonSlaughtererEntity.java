@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -45,13 +46,14 @@ import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoalLegacy;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoalLegacy;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
+import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgBaubleStatics;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.EntityHelper;
@@ -104,11 +106,14 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 		targetSelector.addGoal(1, new DwmgBefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new DwmgBefriendedOwnerHurtTargetGoal(this));
-		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
-		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
+		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoalLegacy(this));
+		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoalLegacy(this));
 	}
 	
+	@Deprecated
 	public int poisonLevel = 0;
+	
+	
 	
 	@Override
 	public boolean doHurtTarget(Entity target)
@@ -117,10 +122,14 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 		{
 			if (target instanceof LivingEntity living)
 			{
-				EntityHelper.addEffectSafe(living, MobEffects.MOVEMENT_SLOWDOWN, (20 + 10 * poisonLevel) * 20, poisonLevel == 0 ? 0 : 1);
+				/*EntityHelper.addEffectSafe(living, MobEffects.MOVEMENT_SLOWDOWN, (20 + 10 * poisonLevel) * 20, poisonLevel == 0 ? 0 : 1);
 				if (poisonLevel > 0)
-					EntityHelper.addEffectSafe(living, MobEffects.POISON, 5 * Math.min(poisonLevel, 3) * 20, Math.min(poisonLevel, 3) - 1);
+					EntityHelper.addEffectSafe(living, MobEffects.POISON, 5 * Math.min(poisonLevel, 3) * 20, Math.min(poisonLevel, 3) - 1);*/
+				int thornCount = DwmgBaubleStatics.countBaubles(this, new ResourceLocation("dwmg:poisonous_thorn"));
+				EntityHelper.addEffectSafe(living, MobEffects.MOVEMENT_SLOWDOWN, (20 + 10 * thornCount) * 20, thornCount == 0 ? 0 : 1);
+				// Poison is handled in bauble impl event listener
 			}
+
 			return true;
 		}
 		else return false;
@@ -250,7 +259,7 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 		// Add other data reading here
 		setInit();
 	}
-
+/*
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
 		return continuousBaubleSlots(0, 4);
@@ -258,9 +267,10 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 
 	@Override
 	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.CRIMSON_SLAUGHTERER;
+		//return DwmgBaubleHandlers.CRIMSON_SLAUGHTERER;
+		return DwmgBaubleHandlers.EMPTY;
 	}
-	
+	*/
 	// Sounds
 	
 	@Override

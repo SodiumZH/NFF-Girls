@@ -47,13 +47,15 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
 import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
+import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedSunSensitiveMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoalLegacy;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoalLegacy;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuNecroticReaper;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
@@ -63,7 +65,7 @@ import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.NaMiscUtils;
 
-public class HmagNecroticReaperEntity extends NecroticReaperEntity implements IDwmgBefriendedMob, IBefriendedSunSensitiveMob
+public class HmagNecroticReaperEntity extends NecroticReaperEntity implements IDwmgBefriendedSunSensitiveMob
 {
 
 	/* Data sync */
@@ -159,8 +161,8 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 				return super.checkCanUse() && ((HmagNecroticReaperEntity)mob).controllable();
 			}
 		});
-		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
-		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
+		//targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoalLegacy(this));
+		//targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoalLegacy(this));
 	}
 	
 	@Override
@@ -307,7 +309,7 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 		// Add other data reading here
 		setInit();
 	}
-
+/*
 	// IBaubleEquipable interface
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
@@ -324,7 +326,7 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.NECROTIC_REAPER;
 	}
-	
+	*/
 	// IBefriendedSunSensitiveMob interface
 	
 	@Override
