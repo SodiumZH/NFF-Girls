@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
@@ -48,14 +49,15 @@ import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedRangedAttackGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoalLegacy;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoalLegacy;
 import net.sodiumstudio.dwmg.events.hooks.DwmgHooks;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
+import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgBaubleStatics;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.function.MutablePredicate;
 import net.sodiumstudio.nautils.math.GeometryUtil;
@@ -87,6 +89,12 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 		return DATA_AISTATE;
 	}
 
+	@Override
+	public void onInit(UUID playerUUID, Mob from)
+	{
+		this.immuneToHotBiomes.putOptional("resistance_amulet", 
+				jf -> DwmgBaubleStatics.countBaubles(jf, new ResourceLocation("dwmg:resistance_amulet")) > 0);
+	}
 	/* Initialization */
 
 	public HmagJackFrostEntity(EntityType<? extends HmagJackFrostEntity> pEntityType, Level pLevel) {
@@ -111,8 +119,8 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
-		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
-		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
+		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoalLegacy(this));
+		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoalLegacy(this));
 	}
 	
 	protected HardSnowballEntity getNewSnowball()
@@ -340,7 +348,7 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 		// Add other data reading here
 		setInit();
 	}
-
+/*
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
 		return this.continuousBaubleSlots(0, 4);
@@ -349,7 +357,7 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 	@Override
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.GENERAL;
-	}
+	}*/
 
 	// Sounds
 	

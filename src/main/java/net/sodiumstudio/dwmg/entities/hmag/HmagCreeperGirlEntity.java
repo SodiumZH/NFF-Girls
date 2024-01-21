@@ -344,7 +344,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 
 	// IBaubleEquipable interface
 	// Actually it doesn't have bauble
-	
+	/*
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
 		return new HashMap<String, ItemStack>();
@@ -354,7 +354,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 	public BaubleHandler getBaubleHandler() {
 		return DwmgBaubleHandlers.EMPTY;
 	}
-	
+	*/
 	// Sounds
 	
 	@Override
