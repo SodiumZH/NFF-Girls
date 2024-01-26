@@ -23,10 +23,10 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 
 mixin {
-    add sourceSets.main, 'befriendmobs.refmap.json'
-    add sourceSets.main, 'dummmmmmy.refmap.json'
+    //add sourceSets.main, 'befriendmobs.refmap.json'
+    //add sourceSets.main, 'dummmmmmy.refmap.json'
     add sourceSets.main, 'dwmg.refmap.json'
-    config 'befriendmobs.mixins.json'
+    //config 'befriendmobs.mixins.json'
     config 'dwmg.mixins.json'
 
 	// Only for Citadel support    
@@ -44,10 +44,10 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 
 //jarJar.enable()
-tasks.jarJar.configure {
+/*tasks.jarJar.configure {
   archiveClassifier = ''
 }
-
+*/
 minecraft {
     // The mappings can be changed at any time and must be in the following format.
     // Channel:   Version:
@@ -208,9 +208,9 @@ dependencies {
 	// Mixin required
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 	    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.2.1"))
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.2.1")) {
+    /*implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.2.1")) {
         jarJar.ranged(it, "[0.2,)")
-    }
+    }*/
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
 	compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
 	runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
@@ -234,7 +234,7 @@ dependencies {
 
 // Example for how to get properties into the manifest for reading at runtime.
 jar {
-	archiveClassifier = 'slim'
+	archiveClassifier = ''
     manifest {
         attributes([
                 "Specification-Title"     : "dwmg",
