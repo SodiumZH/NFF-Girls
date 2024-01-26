@@ -16,7 +16,7 @@ import net.sodiumstudio.nautils.mixins.NaUtilsMixin;
 @Mixin(JackFrostEntity.class)
 public class DwmgJackFrostEntityMixin implements NaUtilsMixin<JackFrostEntity>
 {
-	@Inject(method = "isMeltingBiome(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/level/Level;)Z", at = @At("HEAD"), cancellable = true, remap = false)
+	@Inject(method = "isMeltingBiome(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/level/Level;)Z", at = @At("HEAD"), cancellable = true, remap = false, expect = -1)
 	private static void isMeltingBiome(Entity e, Level level, CallbackInfoReturnable<Boolean> cir)
 	{
 		if (e instanceof JackFrostEntity jf)

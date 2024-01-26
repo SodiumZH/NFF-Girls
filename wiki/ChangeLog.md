@@ -1,5 +1,25 @@
 # Change Log
 
+
+
+
+
+
+
+### 0.x.21
+
+Because the Bauble System in BefriendMobs Framework is fully remade, it's probably **very unstable**. Ensure to keep your data backed up before updating to this version!!!
+
+Now Bauble items are stackable.
+
+Now Amulet of Resistance will add extra Max HP.
+
+Fixed an issue that missing BefriendMobs dependency causes a pre-launch crash without information. Now it will show an error screen like other mods.
+
+Now DWMG will not provide -slim files. To fix possible compat issues, follow the instruction on Curseforge or Github.
+
+# Earlier versions
+
 ## 1.19.2
 
 ### 0.1.20

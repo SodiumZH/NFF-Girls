@@ -1,12 +1,11 @@
 package net.sodiumstudio.dwmg.subsystem.baublesystem.baubles;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleAttributeModifier;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCondition;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
-import net.sodiumstudio.befriendmobs.subsystems.baublesystem.CBaubleEquippableMob;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedSunSensitiveMob;
 import net.sodiumstudio.dwmg.registries.DwmgTags;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgDedicatedBaubleItem;
@@ -51,8 +50,8 @@ public class SoulAmuletBaubleItem extends DwmgDedicatedBaubleItem
 	@Override
 	public BaubleEquippingCondition getEquippingCondition() {
 		return BaubleEquippingCondition.of(args -> (
-				args.user().getMob() instanceof IDwmgBefriendedSunSensitiveMob 
-				|| args.user().getMob().getType().is(DwmgTags.CAN_EQUIP_SOUL_AMULET)));
+				args.user() instanceof IDwmgBefriendedSunSensitiveMob 
+				|| args.user().getType().is(DwmgTags.CAN_EQUIP_SOUL_AMULET)));
 	}
 
 	@Override
@@ -77,7 +76,7 @@ public class SoulAmuletBaubleItem extends DwmgDedicatedBaubleItem
 	}
 
 	@Override
-	public BaubleAttributeModifier[] getNonDuplicatableModifiers(CBaubleEquippableMob mob) {
+	public BaubleAttributeModifier[] getNonDuplicatableModifiers(Mob mob) {
 		return null;
 	}
 

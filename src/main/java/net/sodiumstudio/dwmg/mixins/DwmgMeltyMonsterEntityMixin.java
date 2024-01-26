@@ -18,7 +18,7 @@ public class DwmgMeltyMonsterEntityMixin implements NaUtilsMixin<MeltyMonsterEnt
 {
 
 	@WrapWithCondition(method = "aiStep()V", at = @At(value = "INVOKE", 
-			target = "Lnet/minecraft/world/level/Level;setBlockAndUpdate(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z"))
+			target = "Lnet/minecraft/world/level/Level;setBlockAndUpdate(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z"), expect = -1)
 	private boolean canSetFire(Level instance, BlockPos pos, BlockState blockstate)
 	{
 		return !MinecraftForge.EVENT_BUS.post(new DwmgHooks.MeltyMonsterSetFireEvent(get(), pos, blockstate));	

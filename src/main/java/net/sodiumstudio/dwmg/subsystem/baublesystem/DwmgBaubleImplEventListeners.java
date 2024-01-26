@@ -19,7 +19,7 @@ public class DwmgBaubleImplEventListeners
 	{
 		if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof Mob mob && event.getAmount() >= 0.01)
 		{
-			BaubleSystem.ifCapabilityPresent(mob, cap -> 
+			BaubleSystem.ifCapabilityPresent(mob, () -> 
 			{
 				int poisonLevel = DwmgBaubleStatics.countBaubles(mob, new ResourceLocation("dwmg:poisonous_thorn"));
 				if (poisonLevel > 0)

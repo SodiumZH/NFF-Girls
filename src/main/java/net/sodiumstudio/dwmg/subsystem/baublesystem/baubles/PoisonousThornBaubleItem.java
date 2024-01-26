@@ -32,7 +32,7 @@ public class PoisonousThornBaubleItem extends DwmgDedicatedBaubleItem
 	@Override
 	public BaubleEquippingCondition getEquippingCondition()
 	{
-		return BaubleEquippingCondition.of(args -> args.user().getMob().getType().is(DwmgTags.CAN_EQUIP_POISONOUS_THORN));
+		return BaubleEquippingCondition.of(args -> args.user().getType().is(DwmgTags.CAN_EQUIP_POISONOUS_THORN));
 	}
 
 }

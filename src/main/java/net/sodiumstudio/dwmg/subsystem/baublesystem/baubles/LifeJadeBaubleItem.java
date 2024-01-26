@@ -20,12 +20,12 @@ public class LifeJadeBaubleItem extends DwmgDedicatedBaubleItem
 		{
 		case 1:
 		{
-			args.user().getMob().heal(0.15f / 20f);
+			args.user().heal(0.15f / 20f);
 			break;
 		}
 		case 2:
 		{
-			args.user().getMob().heal(0.2f / 20f);
+			args.user().heal(0.2f / 20f);
 			break;
 		}
 		default:
