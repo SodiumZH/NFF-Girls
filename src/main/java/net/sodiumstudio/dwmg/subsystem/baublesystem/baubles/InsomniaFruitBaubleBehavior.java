@@ -3,14 +3,13 @@ package net.sodiumstudio.dwmg.subsystem.baublesystem.baubles;
 import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleAttributeModifier;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleBehavior;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCondition;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
-import net.sodiumstudio.befriendmobs.subsystems.baublesystem.CBaubleEquippableMob;
 
 public class InsomniaFruitBaubleBehavior extends BaubleBehavior
 {
@@ -42,12 +41,12 @@ public class InsomniaFruitBaubleBehavior extends BaubleBehavior
 	}
 
 	@Override
-	public BaubleAttributeModifier[] getNonDuplicatableModifiers(CBaubleEquippableMob mob) {
+	public BaubleAttributeModifier[] getNonDuplicatableModifiers(Mob mob) {
 		return new BaubleAttributeModifier[] {
 				new BaubleAttributeModifier(Attributes.ATTACK_DAMAGE, 8d, AttributeModifier.Operation.ADDITION)
-					.setAdditionalCondition(args -> args.user().getMob().getLevel().isNight()),
+					.setAdditionalCondition(args -> args.user().getLevel().isNight()),
 				new BaubleAttributeModifier(Attributes.MAX_HEALTH, 60d, AttributeModifier.Operation.ADDITION)
-					.setAdditionalCondition(args -> args.user().getMob().getLevel().isNight())
+					.setAdditionalCondition(args -> args.user().getLevel().isNight())
 		};
 	}
 

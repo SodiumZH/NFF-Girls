@@ -1,21 +1,16 @@
 package net.sodiumstudio.dwmg.subsystem.baublesystem.baubles;
 
-import java.util.function.BiPredicate;
-
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleAttributeModifier;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleBehavior;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCondition;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
-import net.sodiumstudio.befriendmobs.subsystems.baublesystem.CBaubleEquippableMob;
 import net.sodiumstudio.dwmg.entities.hmag.HmagNecroticReaperEntity;
 
 public class NecroticReaperMainHandHoeBaubleBehavior extends BaubleBehavior
@@ -24,7 +19,7 @@ public class NecroticReaperMainHandHoeBaubleBehavior extends BaubleBehavior
 	public NecroticReaperMainHandHoeBaubleBehavior(ResourceLocation key)
 	{
 		super((item, itemstack) -> (item instanceof HoeItem), key, BaubleEquippingCondition.of(
-				args -> args.user().getMob() instanceof HmagNecroticReaperEntity && args.slotKey().equals("main_hand")));
+				args -> args.user() instanceof HmagNecroticReaperEntity && args.slotKey().equals("main_hand")));
 	}
 
 	@Override
@@ -46,7 +41,7 @@ public class NecroticReaperMainHandHoeBaubleBehavior extends BaubleBehavior
 	}
 
 	@Override
-	public BaubleAttributeModifier[] getNonDuplicatableModifiers(CBaubleEquippableMob mob) {
+	public BaubleAttributeModifier[] getNonDuplicatableModifiers(Mob mob) {
 		return null;
 	}
 

@@ -1,5 +1,25 @@
 # Change Log
 
+
+
+
+
+
+
+### 0.x.21
+
+Because the Bauble System in BefriendMobs Framework is fully remade, it's probably **very unstable**. Ensure to keep your data backed up before updating to this version!!!
+
+Now Bauble items are stackable.
+
+Now Amulet of Resistance will add extra Max HP.
+
+Fixed an issue that missing BefriendMobs dependency causes a pre-launch crash without information. Now it will show an error screen like other mods.
+
+Now DWMG will not provide -slim files. To fix possible compat issues, follow the instruction on Curseforge or Github.
+
+# Earlier versions
+
 ## 1.19.2
 
 ### 0.1.20
@@ -22,17 +42,21 @@ Fixed Alraune and Glaryad Bauble slots wrong display.
 
 ### 0.1.19
 
+Added Mixin-Extras dependency. (It's not a mod, so there's no extra steps to install, but dependents need this in `build.gradle`.)
+
+Added Melty Monster support.
+
 Added configs about zombies and skeletons inter-variant conversion.
 
-Now mobs will keep inventory on death if game rule `keepInventory` is `true`.
-
 Now befriended mobs will not be knocked back when getting sweep-attacked.
+
+Now befriended mobs' attacking targets expire after 30 s.
 
 Fixed undead mobs with sun-immune baubles but not wearing helmets still avoiding sun.
 
 Fixed only the last bauble of Jiangshi working.
 
-Fixed crash on getting attacked on befriending Cursed Dolls.
+Fixed crash on getting attacked when befriending Cursed Dolls.
 
 Some internal implementation changes.
 

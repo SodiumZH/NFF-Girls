@@ -10,7 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.dwmg.entities.hmag.HmagJackFrostEntity;
-import net.sodiumstudio.dwmg.entities.hmag.HmagJackFrostEntityBase;
 
 @OnlyIn(Dist.CLIENT)
 public class HmagJackFrostRenderer extends AbstractGirlRenderer<HmagJackFrostEntity, JackFrostModel<HmagJackFrostEntity>>

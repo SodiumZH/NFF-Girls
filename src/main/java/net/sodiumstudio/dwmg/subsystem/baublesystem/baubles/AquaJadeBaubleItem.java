@@ -28,7 +28,7 @@ public class AquaJadeBaubleItem extends DwmgDedicatedBaubleItem
 	public BaubleAttributeModifier[] getDuplicatableModifiers(BaubleProcessingArgs args) {
 		return new BaubleAttributeModifier[] {
 				new BaubleAttributeModifier(Attributes.MOVEMENT_SPEED, 3.0d, AttributeModifier.Operation.MULTIPLY_BASE)
-					.setAdditionalCondition(a -> a.user().getMob().isInWater())
+					.setAdditionalCondition(a -> a.user().isInWater())
 				};
 	}
 
@@ -40,7 +40,7 @@ public class AquaJadeBaubleItem extends DwmgDedicatedBaubleItem
 	@Override
 	public BaubleEquippingCondition getEquippingCondition()
 	{
-		return BaubleEquippingCondition.of(args -> (args.user().getMob() instanceof HmagDrownedGirlEntity));
+		return BaubleEquippingCondition.of(args -> (args.user() instanceof HmagDrownedGirlEntity));
 	}
 	
 }

@@ -63,7 +63,9 @@ import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedSunSensitiveMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFlyingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.HmagFlyingGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoalLegacy;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoalLegacy;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
 import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
@@ -144,8 +146,8 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedS
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
-		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoalLegacy(this));
-		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoalLegacy(this));
+		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
+		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
 
 	/* Interaction */
@@ -391,11 +393,11 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedS
 		return DwmgBaubleHandlers.UNDEAD;
 	}
 */
-	@Override
+	/*@Override
 	public void setupSunImmunityRules() {
 		this.getSunImmunity().putOptional("soul_amulet", mob -> ((IDwmgBefriendedMob)mob).hasDwmgBauble("soul_amulet"));
 		this.getSunImmunity().putOptional("resis_amulet", mob -> ((IDwmgBefriendedMob)mob).hasDwmgBauble("resistance_amulet"));
-	}
+	}*/
 
 	/* Save and Load */
 

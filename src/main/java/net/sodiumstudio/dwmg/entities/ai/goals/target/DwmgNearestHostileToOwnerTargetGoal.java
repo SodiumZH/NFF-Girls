@@ -6,7 +6,6 @@ import net.minecraft.world.entity.Mob;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 
-@Deprecated
 public class DwmgNearestHostileToOwnerTargetGoal extends BefriendedNearestUnfriendlyMobTargetGoal
 {
 	public DwmgNearestHostileToOwnerTargetGoal(IDwmgBefriendedMob mob, Predicate<Mob> condition)
