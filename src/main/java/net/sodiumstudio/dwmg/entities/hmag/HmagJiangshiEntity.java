@@ -46,7 +46,9 @@ import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedL
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedSunSensitiveMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoalLegacy;
+import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoalLegacy;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuJiangshi;
@@ -119,8 +121,8 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 		targetSelector.addGoal(1, new BefriendedOwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new BefriendedHurtByTargetGoal(this));
 		targetSelector.addGoal(3, new BefriendedOwnerHurtTargetGoal(this));
-		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoalLegacy(this));
-		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoalLegacy(this));
+		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
+		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
 
 	/* Interaction */
@@ -268,11 +270,11 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 		this.getLevelHandler().addExp(20);
 	}
 	
-	@Override
+	/*@Override
 	public void setupSunImmunityRules() {
 		this.getSunImmunity().putOptional("soul_amulet", mob -> ((IDwmgBefriendedMob)mob).hasDwmgBauble("soul_amulet"));
 		this.getSunImmunity().putOptional("resis_amulet", mob -> ((IDwmgBefriendedMob)mob).hasDwmgBauble("resistance_amulet"));
-	}
+	}*/
 	
 	// Indicates which mod this mob belongs to
 	@Override

@@ -1,13 +1,11 @@
 package net.sodiumstudio.dwmg.subsystem.baublesystem.baubles;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleAttributeModifier;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCondition;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
-import net.sodiumstudio.befriendmobs.subsystems.baublesystem.CBaubleEquippableMob;
-import net.sodiumstudio.befriendmobs.subsystems.baublesystem.DedicatedBaubleItem;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgDedicatedBaubleItem;
 
 public class ResistanceAmuletBaubleItem extends DwmgDedicatedBaubleItem
@@ -41,7 +39,7 @@ public class ResistanceAmuletBaubleItem extends DwmgDedicatedBaubleItem
 	}
 
 	@Override
-	public BaubleAttributeModifier[] getNonDuplicatableModifiers(CBaubleEquippableMob mob) {
+	public BaubleAttributeModifier[] getNonDuplicatableModifiers(Mob mob) {
 		return null;
 	}
 
