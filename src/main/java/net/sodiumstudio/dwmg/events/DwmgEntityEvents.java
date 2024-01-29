@@ -1094,11 +1094,11 @@ public class DwmgEntityEvents
 				if (bm.getData().getOwnerName() != null) 
 				{
 					NaMiscUtils.printToScreen(
-							InfoHelper.createTranslatable("info.dwmg.interact_not_owning", bm.getData().getOwnerName()), event.getEntity());
+							InfoHelper.createTranslatable("info.dwmg.interact_not_owning", bm.getData().getOwnerName()), event.getPlayer());
 				} 
 				else 
 				{
-					NaMiscUtils.printToScreen(InfoHelper.createTranslatable("info.dwmg.interact_not_owning_unpresent"), event.getEntity());
+					NaMiscUtils.printToScreen(InfoHelper.createTranslatable("info.dwmg.interact_not_owning_unpresent"), event.getPlayer());
 				}
 			}			
 		}

@@ -25,9 +25,9 @@ public class DwmgBaubleImplEventListeners
 				if (poisonLevel > 0)
 				{
 					if (poisonLevel > 0)
-						EntityHelper.addEffectSafe(event.getEntity(), MobEffects.POISON, 5 * Math.min(poisonLevel, 3) * 20, Math.min(poisonLevel, 3) - 1);
+						EntityHelper.addEffectSafe(event.getEntityLiving(), MobEffects.POISON, 5 * Math.min(poisonLevel, 3) * 20, Math.min(poisonLevel, 3) - 1);
 					if (mob instanceof HmagCrimsonSlaughtererEntity cs)
-						EntityHelper.addEffectSafe(event.getEntity(), MobEffects.MOVEMENT_SLOWDOWN, (20 + 10 * poisonLevel) * 20, 1);
+						EntityHelper.addEffectSafe(event.getEntityLiving(), MobEffects.MOVEMENT_SLOWDOWN, (20 + 10 * poisonLevel) * 20, 1);
 				}
 			});
 		}
