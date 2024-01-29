@@ -24,7 +24,8 @@ apply plugin: 'org.spongepowered.mixin'
 mixin {
     add sourceSets.main, 'befriendmobs.refmap.json'
     add sourceSets.main, 'dummmmmmy.refmap.json'
-    config 'befriendmobs.mixins.json'
+   // config 'befriendmobs.mixins.json'
+   	config "dwmg.mixins.json"
 }
 
 version = "${mod_version}"

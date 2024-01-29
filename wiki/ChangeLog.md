@@ -16,6 +16,8 @@ Now Amulet of Resistance will add extra Max HP.
 
 Fixed an issue that missing BefriendMobs dependency causes a pre-launch crash without information. Now it will show an error screen like other mods.
 
+Fixed some features of Jack o' Frost and Melty Monster not working due to wrong mixin setup. (1.18.2)
+
 Now DWMG will not provide -slim files. To fix possible compat issues, follow the instruction on Curseforge or Github.
 
 # Earlier versions
