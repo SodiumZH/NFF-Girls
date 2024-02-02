@@ -8,7 +8,7 @@
 
 ### 0.x.21
 
-Because the Bauble System in BefriendMobs Framework is fully remade, the current Bauble System is possibly **very unstable**. Ensure to keep your data backed up before updating to this version!!!
+Because the Bauble System in BefriendMobs Framework is fully remade, the current Bauble System is possibly **unstable**. Ensure to keep your data backed up before updating to this version!!!
 
 Now Bauble items are stackable.
 
