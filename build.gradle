@@ -248,7 +248,8 @@ jar.finalizedBy('reobfJarJar')
 
 mixin {
     add sourceSets.main, "befriendmobs.refmap.json"
-    config 'befriendmobs.mixins.json'
+    //config 'befriendmobs.mixins.json'
+    config 'dwmg.mixins.json'
 }
 
 // Example configuration to allow publishing using the maven-publish plugin
