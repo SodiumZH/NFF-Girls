@@ -1,7 +1,5 @@
 package net.sodiumstudio.dwmg.entities.hmag;
 
-import java.util.HashMap;
-
 import javax.annotation.Nullable;
 
 import com.github.mechalopa.hmag.ModConfigs;
@@ -32,39 +30,31 @@ import net.minecraft.world.entity.monster.Endermite;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedNearestAttackableTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.entity.vanillapreset.enderman.AbstractBefriendedEnderMan;
 import net.sodiumstudio.befriendmobs.entity.vanillapreset.enderman.BefriendedEnderManGoals;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoalLegacy;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoalLegacy;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEnderExecutor;
-import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
-import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 
 // Adjusted from EnderExcutor in HMaG
 public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implements IBeamAttackMob, IDwmgBefriendedMob
@@ -178,15 +168,8 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 			setItemSlot(EquipmentSlot.MAINHAND, getAdditionalInventory().getItem(0));
 			setItemSlot(EquipmentSlot.OFFHAND, getAdditionalInventory().getItem(1));
 			
-			if (getAdditionalInventory().getItem(2).isEmpty())
-			{
-				this.setCarriedBlock((BlockState) null);
-			}			
-			else if (getAdditionalInventory().getItem(2).getItem() instanceof BlockItem bi)
-			{
-				this.setCarriedBlock(bi.getBlock().defaultBlockState());
-			}
-			else throw new IllegalStateException("Ender Executor can only carry block items. Attempt to carry: " + getAdditionalInventory().getItem(2).getDisplayName());
+			updateHoldingBlock();
+			
 			setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
 			setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
 			setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
@@ -213,6 +196,20 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	{
 		return new InventoryMenuEnderExecutor(containerId, playerInventory, container, this);
 	}
+	
+	protected void updateHoldingBlock()
+	{
+		if (getAdditionalInventory().getItem(2).isEmpty())
+		{
+			this.setCarriedBlock(null);
+		}			
+		else if (getAdditionalInventory().getItem(2).getItem() instanceof BlockItem bi)
+		{
+			this.setCarriedBlock(bi.getBlock().defaultBlockState());
+		}
+		else throw new IllegalStateException("Ender Executor can only carry block items. Attempt to carry: " + getAdditionalInventory().getItem(2).getDisplayName());;
+	}
+	
 	
 	// Inventory end
 
@@ -347,7 +344,12 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	{
 		enderExecutorAiStep();
 		super.aiStep();
-
+	}
+	
+	@Override
+	public void customServerAiStep()
+	{
+		updateHoldingBlock();
 	}
 	
 	@Override
