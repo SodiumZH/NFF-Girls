@@ -84,7 +84,7 @@ public class DwmgEntityHelper
 	/**
 	 * Check if a befriended undead mob will burn under sun.
 	 * @param mobUndead Mob to test.
-	 * @return Whether this mob is sun-sensitive, or always true if it doesn't implement {@link IBefriendedSunSensitiveMob}/
+	 * @return Whether this mob is sun-sensitive, or always false if it doesn't implement {@link IBefriendedSunSensitiveMob}/
 	 */
 	public static boolean isSunSensitive(IBefriendedMob mobUndead)
 	{
