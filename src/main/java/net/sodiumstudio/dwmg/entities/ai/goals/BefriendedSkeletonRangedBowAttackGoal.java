@@ -1,5 +1,6 @@
 package net.sodiumstudio.dwmg.entities.ai.goals;
 
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Items;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedRangedBowAttackGoal;
@@ -16,9 +17,11 @@ public class BefriendedSkeletonRangedBowAttackGoal extends BefriendedRangedBowAt
 	
 	@Override
 	public boolean checkCanUse() {
-		if (!mob.getAdditionalInventory().getItem(4).is(Items.BOW))
+		if (mob.getAdditionalInventory().getItem(4).isEmpty())
 			return false;
 		else if (mob.getAdditionalInventory().getItem(8).isEmpty())
+			return false;
+		else if (!(mob.getAdditionalInventory().getItem(4).getItem() instanceof BowItem))
 			return false;
 		else
 			return super.checkCanUse();

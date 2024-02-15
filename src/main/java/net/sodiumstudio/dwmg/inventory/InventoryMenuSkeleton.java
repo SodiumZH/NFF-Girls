@@ -3,6 +3,7 @@ package net.sodiumstudio.dwmg.inventory;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
@@ -27,7 +28,7 @@ public class InventoryMenuSkeleton extends InventoryMenuPreset0
 		this.addGeneralSlot(5, rightRowPos().slotBelow(2), null);
 		this.addBaubleSlot(6, rightRowPos(), "0");
 		this.addGeneralSlot(7, rightRowPos().slotBelow(), null);
-		this.addGeneralSlot(8, rightRowPos().slotLeft().addX(-3), (stack) -> stack.is(Items.ARROW));
+		this.addGeneralSlot(8, rightRowPos().slotLeft().addX(-3), (stack) -> stack.getItem() != null && stack.getItem() instanceof ArrowItem);
 	}
 	
 	@Override

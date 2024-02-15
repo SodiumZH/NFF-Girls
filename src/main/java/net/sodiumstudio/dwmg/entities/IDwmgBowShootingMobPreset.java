@@ -39,10 +39,10 @@ public interface IDwmgBowShootingMobPreset
 		if (getBowType() == null)
 			return null;
 		
-        ArrowItem arrowItem = (ArrowItem) (usingArrow.is(DwmgTags.USES_VANILLA_ARROWS) ? Items.ARROW : usingArrow.getItem());
+        ArrowItem arrowItem = (ArrowItem) (getEquippingBow().is(DwmgTags.USES_VANILLA_ARROWS) ? Items.ARROW : usingArrow.getItem());
         AbstractArrow arrowEntity = arrowItem.createArrow(mob.getLevel(), usingArrow, mob);	// TippedArrow is involved here
         
-        if (!usingArrow.is(DwmgTags.USES_VANILLA_ARROWS))
+        if (!getEquippingBow().is(DwmgTags.USES_VANILLA_ARROWS))
         {
         	arrowEntity = getBowType().customArrow(arrowEntity);
         }
