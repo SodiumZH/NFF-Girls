@@ -20,7 +20,7 @@ public class InventoryMenuEnderExecutor extends InventoryMenuPreset0{
 	{
 		this.addGeneralSlot(0, leftRowPos().addY(4), null);
 		this.addGeneralSlot(1, leftRowPos().slotBelow().addY(8), s -> mob.getAdditionalInventory().getItem(2).isEmpty());
-		this.addGeneralSlot(2, leftRowPos().slotBelow(2).addY(12), s -> s.getItem() instanceof BlockItem && mob.getAdditionalInventory().getItem(1).isEmpty());	
+		this.addBaubleSlot(2, leftRowPos().slotBelow(2), "");	
 		this.addBaubleSlot(3, rightRowPos().addY(10), "0");
 		this.addBaubleSlot(4, rightRowPos().slotBelow().addY(20), "1");
 	}

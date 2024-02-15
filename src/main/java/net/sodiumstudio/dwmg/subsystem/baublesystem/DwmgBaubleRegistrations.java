@@ -24,6 +24,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagHuskGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSkeletonGirlEntity;
 import net.sodiumstudio.dwmg.entities.hmag.*;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.EnderManHandBlockBaubleBehavior;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.InsomniaFruitBaubleBehavior;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.NecroticReaperMainHandHoeBaubleBehavior;
 
@@ -67,7 +68,8 @@ public class DwmgBaubleRegistrations
 		registerWithContinuousSlotSequence(event, HmagStrayGirlEntity.class, 6, 7);
 		registerWithContinuousSlotSequence(event, HmagWitherSkeletonGirlEntity.class, 6, 7);
 		
-		registerWithContinuousSlotSequence(event, HmagEnderExecutorEntity.class, 3, 5);
+		registerWithContinuousSlotSequence(event, HmagEnderExecutorEntity.class, 3, 5)
+		.addSpecialSlot("enderman_hand_block", accessMobAdditionalInventory(2)).addSpecialSlotItem("dwmg:enderman_hand_block");
 		
 		registerWithContinuousSlotSequence(event, HmagAlrauneEntity.class, 0, 3);
 		registerWithContinuousSlotSequence(event, HmagBansheeEntity.class, 2, 5);
@@ -109,7 +111,7 @@ public class DwmgBaubleRegistrations
 		event.register(DwmgItems.AQUA_JADE.get());
 		event.register(DwmgItems.POISONOUS_THORN.get());
 		event.register(new NecroticReaperMainHandHoeBaubleBehavior(new ResourceLocation("dwmg:necrotic_reaper_hoe")));
-		
+		event.register(new EnderManHandBlockBaubleBehavior(new ResourceLocation("dwmg:enderman_hand_block")));
 	}
 	/*
 	public static void modifyBaubleEquippable(ModifyBaubleEquippableMobsEvent event)
