@@ -290,7 +290,6 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 
 	/* Inventory */
 
-
 	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize());
 
 	@Override
