@@ -135,7 +135,6 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 	
 	// ===== 0.x.21 new bauble changed
 	
-	@Override
 	protected void addBaubleSlot(int slot, IntVec2 pos, String key)
 	{
 		addSlot(new Slot(container, slot, pos.x, pos.y) {			
@@ -151,4 +150,18 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 		});
 	}
 	
+	protected void addBaubleSlotWithAdditionalCondition(int slot, IntVec2 pos, String key, Predicate<ItemStack> additionalCondition)
+	{
+		addSlot(new Slot(container, slot, pos.x, pos.y) {			
+			@Override
+			public boolean mayPlace(ItemStack stack) {
+				//return BaubleHandler.shouldBaubleSlotAccept(stack, this, mob, key);
+				return BaubleSystem.canEquipOn(stack, mob.asMob(), key) && additionalCondition.test(stack);
+			}			
+			@Override
+			public int getMaxStackSize() {
+	            return 1;
+	        }			
+		});
+	}
 }
