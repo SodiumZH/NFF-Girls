@@ -2,7 +2,11 @@
 
 
 
+### 0.x.22
 
+Now skeletons can use non-vanilla bows, tipped arrows and spectral arrow.
+
+Now Ender Executor can equip blocks on its left hand.
 
 
 
@@ -48,13 +52,13 @@ Fixed Alraune and Glaryad Bauble slots wrong display.
 
 ### 0.1.19
 
-Added Mixin-Extras dependency. (It's not a mod, so there's no extra steps to install, but dependents need this in `build.gradle`.)
+Added Mixin-Extras dependency. (There's no extra steps to install, but dependents need this in `build.gradle`.)
 
 Added Melty Monster support.
 
 Added configs about zombies and skeletons inter-variant conversion.
 
-Now befriended mobs will not be knocked back when getting sweep-attacked.
+Now befriended mobs will not be knocked back when getting sweep-attacked by the owner.
 
 Now befriended mobs' attacking targets expire after 30 s.
 
