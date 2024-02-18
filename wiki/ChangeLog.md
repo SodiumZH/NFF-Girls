@@ -4,9 +4,11 @@
 
 ### 0.x.22
 
-Now skeletons can use non-vanilla bows, tipped arrows and spectral arrow.
+Now skeletons can use non-vanilla bows, tipped arrows and spectral arrows.
 
 Now Ender Executor can equip blocks on its left hand.
+
+Some compatibility issues may be solved that befriended mobs not recognized as allies since `IBefriendedMob` in BefriendMobs Framework now implements vanilla `OwnableEntity` interface.
 
 
 
