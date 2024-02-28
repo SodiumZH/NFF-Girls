@@ -1,12 +1,9 @@
 package net.sodiumstudio.dwmg.entities.hmag;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.HornetEntity;
 
 import net.minecraft.nbt.CompoundTag;
@@ -33,39 +30,31 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithHandItems;
-import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingLandGoal;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.BefriendedFlyingRandomMoveGoal;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFlyingFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.HmagFlyingGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoalLegacy;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoalLegacy;
 import net.sodiumstudio.dwmg.entities.ai.movecontrol.BefriendedFlyingMoveControl;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuHandItemsTwoBaubles;
-import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
-import net.sodiumstudio.nautils.ItemHelper;
-import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
+import net.sodiumstudio.nautils.NaItemUtils;
 public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 {
 	public HmagHornetEntity(EntityType<? extends HornetEntity> pEntityType, Level pLevel) {
@@ -173,7 +162,7 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 					if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS) 
 					{
 						if (isHoneyBottle)
-							ItemHelper.giveOrDropDefault(player, Items.GLASS_BOTTLE);
+							NaItemUtils.giveOrDropDefault(player, Items.GLASS_BOTTLE);
 						return InteractionResult.sidedSuccess(player.level().isClientSide);
 					}
 					// The function above returns PASS when the items are not correct. So when not PASS it should stop here

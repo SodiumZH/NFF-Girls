@@ -18,7 +18,7 @@ import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractA
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
 import net.sodiumstudio.nautils.EntityHelper;
-import net.sodiumstudio.nautils.ItemHelper;
+import net.sodiumstudio.nautils.NaItemUtils;
 import net.sodiumstudio.nautils.math.RndUtil;
 
 public class HandlerHornet extends HandlerItemGivingProgress
@@ -53,7 +53,7 @@ public class HandlerHornet extends HandlerItemGivingProgress
 		// If consumed honey bottle, drop a glass bottle
 		if (!args.isClient() && args.getPlayer().getItemInHand(args.getHand()).getCount() != count && flag)
 		{
-			ItemHelper.giveOrDropDefault(args.getPlayer(), Items.GLASS_BOTTLE);
+			NaItemUtils.giveOrDropDefault(args.getPlayer(), Items.GLASS_BOTTLE);
 		}
 		return res;
 	}

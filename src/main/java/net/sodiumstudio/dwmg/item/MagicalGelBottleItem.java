@@ -32,7 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.nautils.InfoHelper;
-import net.sodiumstudio.nautils.ItemHelper;
+import net.sodiumstudio.nautils.NaItemUtils;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.math.HtmlColors;
 import net.sodiumstudio.nautils.math.LinearColor;
@@ -207,7 +207,7 @@ public class MagicalGelBottleItem extends Item
 			if (this.getAmount(stack) <= 0)
 			{
 				stack.shrink(1);
-				player.spawnAtLocation(DwmgItems.EMPTY_MAGICAL_GEL_BOTTLE.get().getDefaultInstance()).setNoPickUpDelay();//ItemHelper.giveOrDropDefault(player, DwmgItems.EMPTY_MAGICAL_GEL_BOTTLE.get());
+				player.spawnAtLocation(DwmgItems.EMPTY_MAGICAL_GEL_BOTTLE.get().getDefaultInstance()).setNoPickUpDelay();//NaItemUtils.giveOrDropDefault(player, DwmgItems.EMPTY_MAGICAL_GEL_BOTTLE.get());
 			}
 			// Action type: 0 => no action; 1 => collecting; 2 => staining
 			int action = 0;
