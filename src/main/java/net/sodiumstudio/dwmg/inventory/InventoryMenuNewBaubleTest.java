@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
-import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
+
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleSystem;
 import net.sodiumstudio.nautils.math.IntVec2;
 

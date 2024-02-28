@@ -1,7 +1,6 @@
 package net.sodiumstudio.dwmg.entities.hmag;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -52,25 +51,20 @@ import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.entity.capability.wrapper.ILivingDelayedActions;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.goal.preset.move.DwmgMeltyMonsterFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedRangedAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoalLegacy;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoalLegacy;
-import net.sodiumstudio.dwmg.inventory.InventoryMenuFourBaubles;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuMeltyMonster;
-import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.ContainerHelper;
 import net.sodiumstudio.nautils.EntityHelper;
-import net.sodiumstudio.nautils.ItemHelper;
+import net.sodiumstudio.nautils.NaItemUtils;
 import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.entity.ConditionalAttributeModifier;
 import net.sodiumstudio.nautils.math.GeometryUtil;
@@ -379,7 +373,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 						if (this.takingLavaCooldown <= 0)
 						{
 							player.getItemInHand(hand).shrink(1);
-							ItemHelper.giveOrDrop(player, new ItemStack(Items.LAVA_BUCKET, 1));
+							NaItemUtils.giveOrDrop(player, new ItemStack(Items.LAVA_BUCKET, 1));
 							this.takingLavaCooldown = 5 * 60 * 20;	// 5 min
 						}
 						else
@@ -393,7 +387,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 						this.level.playSound(player, this.getX(), this.getY(), this.getZ(), SoundEvents.GENERIC_EXTINGUISH_FIRE,
 								this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
 						player.getItemInHand(hand).shrink(1);
-						ItemHelper.giveOrDrop(player, new ItemStack(Items.BUCKET));
+						NaItemUtils.giveOrDrop(player, new ItemStack(Items.BUCKET));
 						this.shouldSetFire = false;
 					}
 					// Use Flint and Steel to allow setting fire
