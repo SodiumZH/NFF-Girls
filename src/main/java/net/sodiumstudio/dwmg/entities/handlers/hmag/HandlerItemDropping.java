@@ -24,7 +24,7 @@ import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteracti
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendingHandler;
 import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
 import net.sodiumstudio.nautils.EntityHelper;
-import net.sodiumstudio.nautils.ItemHelper;
+import net.sodiumstudio.nautils.NaItemUtils;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.debug.Debug;
 import net.sodiumstudio.dwmg.events.DwmgItemEvents;
@@ -81,8 +81,8 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 		Map<Item, Supplier<Double>> out = new HashMap<Item, Supplier<Double>>();
 		for (String str: procMap.keySet())
 		{
-			if (ItemHelper.getItem(str) != null)
-				out.put(ItemHelper.getItem(str), procMap.get(str));
+			if (NaItemUtils.getItem(str) != null)
+				out.put(NaItemUtils.getItem(str), procMap.get(str));
 		}
 		return out;
 	}
@@ -94,7 +94,7 @@ public abstract class HandlerItemDropping extends BefriendingHandler
 	public boolean canPickUpItem(Mob mob, ItemEntity itemEntity)
 	{
 		// If item type not matching, pass
-		if (!getDeltaProc().keySet().contains(ItemHelper.getRegistryKeyStr(itemEntity.getItem())))
+		if (!getDeltaProc().keySet().contains(NaItemUtils.getRegistryKeyStr(itemEntity.getItem())))
 			return false;
 		// If item not thrown by player, pass
 		if (itemEntity.getThrower() == null || mob.level.getPlayerByUUID(itemEntity.getThrower()) == null)

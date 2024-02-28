@@ -1,6 +1,5 @@
 package net.sodiumstudio.dwmg.registries;
 
-import com.github.mechalopa.hmag.HMaG;
 import com.github.mechalopa.hmag.world.item.ModSwordItem;
 
 import net.minecraft.ChatFormatting;
@@ -17,15 +16,11 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.sodiumstudio.nautils.InfoHelper;
-import net.sodiumstudio.nautils.item.NaUtilsItem;
 import net.sodiumstudio.befriendmobs.item.MobCatcherItem;
-import net.sodiumstudio.befriendmobs.item.MobOwnershipTransfererItem;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerItem;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.DwmgTab;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
-import net.sodiumstudio.dwmg.entities.item.baublesystem.DwmgBaubleItem;
 import net.sodiumstudio.dwmg.item.BefriendingProgressProbeItem;
 import net.sodiumstudio.dwmg.item.DwmgRespawnerItem;
 import net.sodiumstudio.dwmg.item.EmptyMagicalGelBottleItem;
@@ -40,7 +35,6 @@ import net.sodiumstudio.dwmg.item.PeachWoodSwordItem;
 import net.sodiumstudio.dwmg.item.ReinforcedFishingRodItem;
 import net.sodiumstudio.dwmg.item.TaoistTalismanItem;
 import net.sodiumstudio.dwmg.item.TransferringTagItem;
-import net.sodiumstudio.dwmg.item.UnsweepableSwordItem;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.AquaJadeBaubleItem;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.CourageAmuletBaubleItem;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.HealingJadeBaubleItem;
@@ -48,6 +42,7 @@ import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.LifeJadeBaubleItem;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.PoisonousThornBaubleItem;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.ResistanceAmuletBaubleItem;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.SoulAmuletBaubleItem;
+import net.sodiumstudio.nautils.InfoHelper;
 
 public class DwmgItems {
 	
@@ -67,14 +62,7 @@ public class DwmgItems {
 	{
 		return regItem(name, new Item.Properties());
 	}
-	
-	@Deprecated
-	public static DwmgBaubleItem newBauble(Item.Properties prop)
-	{
-		return new DwmgBaubleItem(prop.tab(TAB))
-				.description(InfoHelper.createTranslatable("info.dwmg.bauble"));
-	}
-	
+
 	/************************************/
 	/* Item Registering, with constants */ 
 	/************************************/	
