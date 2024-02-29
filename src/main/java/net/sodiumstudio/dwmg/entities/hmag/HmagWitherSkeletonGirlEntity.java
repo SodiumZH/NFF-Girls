@@ -249,6 +249,7 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 					{
 						switchAIState();
 					}	
+					else return InteractionResult.PASS;
 				}		
 				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			}
