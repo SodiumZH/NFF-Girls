@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.entities.ai.goals;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TridentItem;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.BefriendedRangedAttackGoal;
 
@@ -17,7 +18,12 @@ public class BefriendedDrownedTridentAttackGoal extends BefriendedRangedAttackGo
 	 */
 	@Override
 	public boolean checkCanUse() {
-		return super.checkCanUse() && this.mob.asMob().getMainHandItem().is(Items.TRIDENT);
+		return super.checkCanUse() 
+				&& this.mob.asMob().getMainHandItem().getItem() != null 
+				&& this.mob.asMob().getMainHandItem().getItem() instanceof TridentItem
+				&& this.mob.asMob().getTarget() != null
+				&& this.mob.asMob().hasLineOfSight(this.mob.asMob().getTarget())
+				&& this.mob.asMob().distanceToSqr(this.mob.asMob().getTarget()) > 9.0d;
 	}
 
 	/**
