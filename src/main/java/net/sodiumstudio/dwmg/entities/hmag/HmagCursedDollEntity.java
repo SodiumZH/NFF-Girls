@@ -334,12 +334,6 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 	*/
 	// IBefriendedSunSensitiveMob interface
 
-	@Override
-	public void setupSunImmunityRules() {
-		this.getSunImmunity().putOptional("soul_amulet", mob -> ((IDwmgBefriendedMob)mob).hasDwmgBauble("soul_amulet"));
-		this.getSunImmunity().putOptional("resis_amulet", mob -> ((IDwmgBefriendedMob)mob).hasDwmgBauble("resistance_amulet"));
-	}
-	
 	// Misc
 	
 	// Indicates which mod this mob belongs to

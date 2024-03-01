@@ -117,10 +117,12 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 		if (!level.isClientSide)
 		{			
 			if (!this.getMainHandItem().isEmpty() 
-			&& this.isOwnerPresent()
+			&& this.isOwnerInDimension()
 			&& !this.getOwner().getMainHandItem().isEmpty()
 			&& this.getOwner().getMainHandItem().getItem() instanceof AxeItem
-			&& this.getMainHandItem().getItem() instanceof AxeItem axe)
+			&& this.getMainHandItem().getItem() instanceof AxeItem axe
+			&& this.distanceToSqr(this.getOwner()) < 64d
+			&& this.hasLineOfSight(this.getOwner()))
 			{
 				int ampl = 0;
 				AxeItem diamondAxe = (AxeItem)Items.DIAMOND_AXE;
