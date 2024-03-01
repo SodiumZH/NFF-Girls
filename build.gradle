@@ -220,7 +220,7 @@ dependencies {
 
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
 
-    implementation fg.deobf("curse.maven:hmag-537613:4745980")
+    implementation fg.deobf("curse.maven:hmag-537613:5134486")
 	implementation fg.deobf("curse.maven:tf-227639:4389567")
 	implementation fg.deobf("curse.maven:gog4-228948:4683679")
 	implementation fg.deobf("curse.maven:moonlight-499980:4312303")
