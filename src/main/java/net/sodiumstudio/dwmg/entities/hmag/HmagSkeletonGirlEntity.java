@@ -55,6 +55,7 @@ import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedSunSensitiveMob;
+import net.sodiumstudio.dwmg.entities.IDwmgBowShootingMobUtils;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
@@ -73,7 +74,7 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
-public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgBefriendedSunSensitiveMob
+public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgBefriendedSunSensitiveMob, IDwmgBowShootingMobUtils
 {
 
 	
@@ -216,6 +217,51 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Optionally switch the main and backup weapons
+	 */
+	protected void checkSwitchingWeapons()
+	{
+		// When too close, switch to melee mode if possible
+		if (this.distanceToSqr(this.getTarget()) < 6.25d) {
+			if (isBow(additionalInventory.getItem(4)) && isMeleeWeapon(additionalInventory.getItem(7))) {
+				additionalInventory.swapItem(4, 7);
+				updateFromInventory();
+			}
+		}
+		// When run out arrows, try taking weapon from backup-weapon slot
+		if (isBow(additionalInventory.getItem(4)) && isMeleeWeapon(additionalInventory.getItem(7))
+				&& additionalInventory.getItem(8).isEmpty()) {
+			additionalInventory.swapItem(4, 7);
+			updateFromInventory();
+		}
+		// When too far and having a bow on backup-weapon, switch to bow mode
+		// Don't switch if don't have arrows
+		else if (this.distanceToSqr(this.getTarget()) > 16d) {
+			if (!isBow(additionalInventory.getItem(4)) && !isBow(getAdditionalInventory().getItem(7))
+					&& !additionalInventory.getItem(8).isEmpty()) {
+				additionalInventory.swapItem(4, 7);
+				updateFromInventory();
+			}
+		}
+		// When in melee mode without a weapon but having one on backup slot, change to it
+		else if (!isBow(this.getInventoryItemStack(4))
+				&& !isBow(this.getInventoryItemStack(7))
+				&& (this.getInventoryItemStack(4).isEmpty() || !isMeleeWeapon(this.getInventoryItemStack(4)))
+				&& !this.getInventoryItemStack(7).isEmpty()
+				&& isMeleeWeapon(this.getInventoryItemStack(7))
+				)
+		{
+			additionalInventory.swapItem(4, 7);
+			updateFromInventory();
+		}
+	}
+	
+	@Override
+	public ItemStack getEquippingBow() {
+		return this.getAdditionalInventory().getItem(4);
 	}
 	
 	// It's not needed here
