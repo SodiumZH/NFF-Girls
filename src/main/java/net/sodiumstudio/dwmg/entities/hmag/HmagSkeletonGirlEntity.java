@@ -57,8 +57,9 @@ import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
+import net.sodiumstudio.nautils.NaItemUtils;
 
-public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgBefriendedSunSensitiveMob, IDwmgBowShootingMobPreset
+public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgBefriendedSunSensitiveMob, IDwmgBowShootingMobUtils
 {
 
 	
@@ -145,7 +146,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 		double d2 = pTarget.getZ() - this.getZ();
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
 		arrowEntity.setBaseDamage(arrowEntity.getBaseDamage() * this.getAttributeValue(Attributes.ATTACK_DAMAGE) / this.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
-		boolean canPickUp = this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0
+		boolean canPickUp = NaItemUtils.getItemEnchantmentLevel(this.getAdditionalInventory().getItem(4), Enchantments.INFINITY_ARROWS) <= 0
 				|| this.getInventoryItemStack(8).is(Items.TIPPED_ARROW) || this.getInventoryItemStack(8).is(Items.SPECTRAL_ARROW);
 		arrowEntity.pickup = canPickUp ? AbstractArrow.Pickup.ALLOWED : AbstractArrow.Pickup.DISALLOWED;
 		arrowEntity.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);
@@ -163,7 +164,7 @@ public class HmagSkeletonGirlEntity extends SkeletonGirlEntity implements IDwmgB
 		{
 			if (justShot)
 			{
-				if (this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0
+				if (NaItemUtils.getItemEnchantmentLevel(this.getAdditionalInventory().getItem(4), Enchantments.INFINITY_ARROWS) <= 0
 						|| this.getInventoryItemStack(8).is(Items.TIPPED_ARROW) || this.getInventoryItemStack(8).is(Items.SPECTRAL_ARROW))
 					this.getAdditionalInventory().consumeItem(8);
 				justShot = false;
