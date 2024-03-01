@@ -39,7 +39,7 @@ public class DwmgBaubleStatics
 		for (ItemStack stack: equipped)
 		{
 			if (stack.getItem() == null) continue;
-			var prop = DwmgBaubleAdditionalRegistry.getRegistry().get(stack.getItem());;
+			var prop = DwmgBaubleAdditionalRegistry.getRegistry().get(stack.getItem());
 			if (prop != null && prop.getA().equals(key) && prop.getB() >= minTier && prop.getB() < maxTierExcluding)
 				count++;
 		}

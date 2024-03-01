@@ -13,6 +13,7 @@ import com.github.mechalopa.hmag.client.renderer.HarpyRenderer;
 import com.github.mechalopa.hmag.client.renderer.HornetRenderer;
 import com.github.mechalopa.hmag.client.renderer.HuskGirlRenderer;
 import com.github.mechalopa.hmag.client.renderer.ImpRenderer;
+import com.github.mechalopa.hmag.client.renderer.JackFrostRenderer;
 import com.github.mechalopa.hmag.client.renderer.JiangshiRenderer;
 import com.github.mechalopa.hmag.client.renderer.KoboldRenderer;
 import com.github.mechalopa.hmag.client.renderer.MagicBulletRenderer;
@@ -64,7 +65,6 @@ import net.sodiumstudio.dwmg.client.gui.screens.GuiThreeBaubles;
 import net.sodiumstudio.dwmg.client.particles.MagicalGelBallParticle;
 import net.sodiumstudio.dwmg.client.renderer.BefriendedCreeperGirlRenderer;
 import net.sodiumstudio.dwmg.client.renderer.BefriendedEnderExecutorRenderer;
-import net.sodiumstudio.dwmg.client.renderer.HmagJackFrostRenderer;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuBanshee;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuCreeper;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuDodomeki;
@@ -127,7 +127,7 @@ public class DwmgClientSetupEvents
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_CRIMSON_SLAUGHTERER.get(), CrimsonSlaughtererRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_CURSED_DOLL.get(), CursedDollRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_REDCAP.get(), RedcapRenderer::new);
-        event.registerEntityRenderer(DwmgEntityTypes.HMAG_JACK_FROST.get(), HmagJackFrostRenderer::new);
+        event.registerEntityRenderer(DwmgEntityTypes.HMAG_JACK_FROST.get(), JackFrostRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_MELTY_MONSTER.get(), MeltyMonsterRenderer::new);
         event.registerEntityRenderer(DwmgEntityTypes.HMAG_NIGHTWALKER.get(), NightwalkerRenderer::new);
         
