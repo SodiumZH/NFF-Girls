@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
 import net.sodiumstudio.dwmg.item.MagicalGelBottleItem;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.registries.DwmgRecipes;
-import net.sodiumstudio.nautils.ItemHelper;
+import net.sodiumstudio.nautils.NaItemUtils;
 import net.sodiumstudio.nautils.TagHelper;
 import net.sodiumstudio.nautils.math.HtmlColors;
 import net.sodiumstudio.nautils.math.LinearColor;
@@ -91,7 +91,7 @@ public class MagicalGelStainRecipe extends SimpleModificationRecipe
 			}
 			else
 			{
-				if (ItemHelper.getItem(key) == stack.getItem())
+				if (NaItemUtils.getItem(key) == stack.getItem())
 					return Optional.of(STAINS.get(key));
 			}
 		}

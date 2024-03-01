@@ -32,6 +32,9 @@ public class DwmgTags
 	public static final TagKey<Item> HMAG_BERRIES = TagHelper.createItemTag(Dwmg.MOD_ID, "hmag_berries");
 	public static final TagKey<Item> SOUL_CLOTH_INGREDIENTS = TagHelper.createItemTag(
 			Dwmg.MOD_ID, "soul_cloth_ingredients");
+	/** Bow-shooting mobs shoot vanilla arrows instead of custom arrows when using bow items with this tag. */
+	public static final TagKey<Item> USES_VANILLA_ARROWS = TagHelper.createItemTag(
+			Dwmg.MOD_ID, "uses_vanilla_arrows");
 
 	public static final TagKey<EntityType<?>> IGNORES_UNDEAD_AFFINITY = TagHelper.createEntityTypeTag(
 			Dwmg.MOD_ID, "ignores_undead_affinity");

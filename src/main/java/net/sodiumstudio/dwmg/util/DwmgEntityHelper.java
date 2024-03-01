@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.Tags;
+import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
@@ -84,7 +85,7 @@ public class DwmgEntityHelper
 	/**
 	 * Check if a befriended undead mob will burn under sun.
 	 * @param mobUndead Mob to test.
-	 * @return Whether this mob is sun-sensitive, or always true if it doesn't implement {@link IBefriendedSunSensitiveMob}/
+	 * @return Whether this mob is sun-sensitive, or always false if it doesn't implement {@link IBefriendedSunSensitiveMob}/
 	 */
 	public static boolean isSunSensitive(IBefriendedMob mobUndead)
 	{
@@ -105,63 +106,15 @@ public class DwmgEntityHelper
 	}
 	
 	/**
+	 * @deprecated Use {@link BefriendedHelper#isLivingAlliedToBM} instead
 	 * Check if a LivingEntity is ally to the given befriended mob.
 	 * <p> Rule: Owner, owner's other befriended mobs, owner's tamed animals; other players and their befriended mobs & tamed animals if no PVP
 	 * <p> Only on server. On client always false.
 	 */
+	@Deprecated
 	public static boolean isAlly(IDwmgBefriendedMob allyTo, LivingEntity test)
 	{
-		if (allyTo.asMob().level.isClientSide)
-			return false;
-		if ((LivingEntity)(allyTo.asMob()) == test)
-			return true;
-		boolean allowPvp = allyTo.asMob().level.getServer().isPvpAllowed();
-		if (!allowPvp)
-		{
-			return (test instanceof Player || (test instanceof TamableAnimal ta && ta.getOwnerUUID() != null) || test instanceof IBefriendedMob);
-		}
-		else
-		{
-			UUID ownerUUID = allyTo.getOwnerUUID();
-			if (test.getUUID().equals(ownerUUID))
-				return true;
-			else if (test instanceof TamableAnimal ta && ta.getOwnerUUID() != null && ta.getOwnerUUID().equals(ownerUUID))
-				return true;
-			else if (test instanceof IBefriendedMob bm && bm.getOwnerUUID() != null && bm.getOwnerUUID().equals(ownerUUID))
-				return true;
-			else return false;
-		}
+		return BefriendedHelper.isLivingAlliedToBM(allyTo, test);
 	}
-	
-	/**
-	 * Check if a LivingEntity is ally to the given tamable animal.
-	 * <p> Rule: Owner, owner's other befriended mobs, owner's tamed animals; other players and their befriended mobs & tamed animals if no PVP
-	 * <p> Only on server. On client always false.
-	 */
-	public static boolean isAlly(TamableAnimal allyTo, LivingEntity test)
-	{
-		if (allyTo.level.isClientSide)
-			return false;
-		if (allyTo == test)
-			return true;
-		if (allyTo.getOwnerUUID() == null)
-			return false;
-		boolean allowPvp = allyTo.level.getServer().isPvpAllowed();
-		if (!allowPvp)
-		{
-			return (test instanceof Player || (test instanceof TamableAnimal ta && ta.getOwnerUUID() != null) || test instanceof IBefriendedMob);
-		}
-		else
-		{
-			UUID ownerUUID = allyTo.getOwnerUUID();
-			if (test.getUUID().equals(ownerUUID))
-				return true;
-			else if (test instanceof TamableAnimal ta && ta.getOwnerUUID() != null && ta.getOwnerUUID().equals(ownerUUID))
-				return true;
-			else if (test instanceof IBefriendedMob bm && bm.getOwnerUUID() != null && bm.getOwnerUUID().equals(ownerUUID))
-				return true;
-			else return false;
-		}
-	}
-	
+
 }

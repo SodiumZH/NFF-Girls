@@ -1,11 +1,9 @@
 package net.sodiumstudio.dwmg.entities.hmag;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.github.mechalopa.hmag.registry.ModItems;
 import com.github.mechalopa.hmag.world.entity.WitherSkeletonGirlEntity;
 
 import net.minecraft.nbt.CompoundTag;
@@ -19,7 +17,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -29,31 +26,19 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
-import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
+import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
+import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
-import net.sodiumstudio.befriendmobs.item.baublesystem.BaubleHandler;
-import net.sodiumstudio.befriendmobs.item.baublesystem.IBaubleEquipable;
-import net.sodiumstudio.befriendmobs.registry.BMItems;
-import net.sodiumstudio.nautils.NbtHelper;
-import net.sodiumstudio.nautils.events.MobSunBurnTickEvent;
-import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.befriendmobs.entity.ai.target.BefriendedNearestUnfriendlyMobTargetGoal;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.IDwmgBowShootingMobUtils;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
@@ -62,11 +47,8 @@ import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoalLegacy;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
-import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoalLegacy;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuSkeleton;
-import net.sodiumstudio.dwmg.registries.DwmgBaubleHandlers;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
@@ -140,23 +122,25 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 		if (this.getAdditionalInventory().getItem(8).isEmpty())
 			return;
 		
-		// Copied from vanilla skeleton, removed difficulty factor
-		ItemStack itemstack = this.getProjectile(this.getItemInHand(
-				ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof BowItem)));
-		AbstractArrow abstractarrow = this.getArrow(itemstack, pVelocity);
+		AbstractArrow arrowEntity = this.createArrowEntity(this.getAdditionalInventory().getItem(8));
+		if (arrowEntity == null) return;
 		if (this.getMainHandItem().getItem() instanceof net.minecraft.world.item.BowItem)
-			abstractarrow = ((net.minecraft.world.item.BowItem) this.getMainHandItem().getItem())
-					.customArrow(abstractarrow);
+			arrowEntity = ((net.minecraft.world.item.BowItem) this.getMainHandItem().getItem())
+					.customArrow(arrowEntity);
+		// Vanilla Wither Skeleton feature
+		arrowEntity.setSecondsOnFire(100);
+		
 		double d0 = pTarget.getX() - this.getX();
-		double d1 = pTarget.getY(0.3333333333333333D) - abstractarrow.getY();
+		double d1 = pTarget.getY(0.3333333333333333D) - arrowEntity.getY();
 		double d2 = pTarget.getZ() - this.getZ();
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-		abstractarrow.setBaseDamage(abstractarrow.getBaseDamage() * this.getAttributeValue(Attributes.ATTACK_DAMAGE) / this.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
-		boolean canPickUp = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, this.getAdditionalInventory().getItem(4)) <= 0;
-		abstractarrow.pickup = canPickUp ? AbstractArrow.Pickup.ALLOWED : AbstractArrow.Pickup.DISALLOWED;
-		abstractarrow.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);
+		arrowEntity.setBaseDamage(arrowEntity.getBaseDamage() * this.getAttributeValue(Attributes.ATTACK_DAMAGE) / this.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
+		boolean canPickUp = this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0
+				|| this.getInventoryItemStack(8).is(Items.TIPPED_ARROW) || this.getInventoryItemStack(8).is(Items.SPECTRAL_ARROW);
+		arrowEntity.pickup = canPickUp ? AbstractArrow.Pickup.ALLOWED : AbstractArrow.Pickup.DISALLOWED;
+		arrowEntity.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);
 		this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-		this.level.addFreshEntity(abstractarrow);
+		this.level.addFreshEntity(arrowEntity);
 		
 		justShot = true;
 	}
@@ -170,45 +154,14 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 		{
 			if (justShot)
 			{
-				if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, this.getAdditionalInventory().getItem(4)) <= 0)
+				if (this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0
+						|| this.getInventoryItemStack(8).is(Items.TIPPED_ARROW) || this.getInventoryItemStack(8).is(Items.SPECTRAL_ARROW))
 					this.getAdditionalInventory().consumeItem(8);
 				justShot = false;
 			}
 			
 			if (this.getTarget() != null) {
-				// When too close, switch to melee mode if possible
-				if (this.distanceTo(this.getTarget()) < 2.5) {
-					if (additionalInventory.getItem(4).is(Items.BOW) && additionalInventory.getItem(7).getItem() instanceof TieredItem) {
-						additionalInventory.swapItem(4, 7);
-						updateFromInventory();
-					}
-				}
-				// When run out arrows, try taking weapon from backup-weapon slot
-				if (additionalInventory.getItem(4).is(Items.BOW) && additionalInventory.getItem(7).getItem() instanceof TieredItem
-						&& additionalInventory.getItem(8).isEmpty()) {
-					additionalInventory.swapItem(4, 7);
-					updateFromInventory();
-				}
-				// When too far and having a bow on backup-weapon, switch to bow mode
-				// Don't switch if don't have arrows
-				else if (this.distanceTo(this.getTarget()) > 4) {
-					if (!additionalInventory.getItem(4).is(Items.BOW) && getAdditionalInventory().getItem(7).is(Items.BOW)
-							&& !additionalInventory.getItem(8).isEmpty()) {
-						additionalInventory.swapItem(4, 7);
-						updateFromInventory();
-					}
-				}
-				// When in melee mode without a weapon but having one on backup slot, change to it
-				else if (!this.getInventoryItemStack(4).is(Items.BOW)
-						&& !this.getInventoryItemStack(7).is(Items.BOW)
-						&& (this.getInventoryItemStack(4).isEmpty() || !(this.getInventoryItem(4) instanceof TieredItem))
-						&& !this.getInventoryItemStack(7).isEmpty()
-						&& (this.getInventoryItem(7) instanceof TieredItem)
-						)
-				{
-					additionalInventory.swapItem(4, 7);
-					updateFromInventory();
-				}			
+				checkSwitchingWeapons();
 			}
 		}
 	}
@@ -258,6 +211,51 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 		return this.getAdditionalInventory().getItem(4);
 	}
 	
+	/**
+	 * Optionally switch the main and backup weapons
+	 */
+	protected void checkSwitchingWeapons()
+	{
+		// When too close, switch to melee mode if possible
+		if (this.distanceTo(this.getTarget()) < 2.5) {
+			if (additionalInventory.getItem(4).is(Items.BOW) && additionalInventory.getItem(7).getItem() instanceof TieredItem) {
+				additionalInventory.swapItem(4, 7);
+				updateFromInventory();
+			}
+		}
+		// When run out arrows, try taking weapon from backup-weapon slot
+		if (additionalInventory.getItem(4).is(Items.BOW) && additionalInventory.getItem(7).getItem() instanceof TieredItem
+				&& additionalInventory.getItem(8).isEmpty()) {
+			additionalInventory.swapItem(4, 7);
+			updateFromInventory();
+		}
+		// When too far and having a bow on backup-weapon, switch to bow mode
+		// Don't switch if don't have arrows
+		else if (this.distanceTo(this.getTarget()) > 4) {
+			if (!additionalInventory.getItem(4).is(Items.BOW) && getAdditionalInventory().getItem(7).is(Items.BOW)
+					&& !additionalInventory.getItem(8).isEmpty()) {
+				additionalInventory.swapItem(4, 7);
+				updateFromInventory();
+			}
+		}
+		// When in melee mode without a weapon but having one on backup slot, change to it
+		else if (!this.getInventoryItemStack(4).is(Items.BOW)
+				&& !this.getInventoryItemStack(7).is(Items.BOW)
+				&& (this.getInventoryItemStack(4).isEmpty() || !(this.getInventoryItem(4) instanceof TieredItem))
+				&& !this.getInventoryItemStack(7).isEmpty()
+				&& (this.getInventoryItem(7) instanceof TieredItem)
+				)
+		{
+			additionalInventory.swapItem(4, 7);
+			updateFromInventory();
+		}
+	}
+	
+	@Override
+	public ItemStack getEquippingBow() {
+		return this.getAdditionalInventory().getItem(4);
+	}
+		
 	/*@Override
 	public void setupSunImmunityRules()
 	{
@@ -294,6 +292,7 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 					{
 						switchAIState();
 					}	
+					else return InteractionResult.PASS;
 				}		
 				return InteractionResult.sidedSuccess(player.level.isClientSide);
 			}
