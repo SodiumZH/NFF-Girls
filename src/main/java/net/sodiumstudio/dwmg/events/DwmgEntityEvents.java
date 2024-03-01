@@ -150,6 +150,8 @@ import net.sodiumstudio.nautils.events.ItemEntityHurtEvent;
 import net.sodiumstudio.nautils.events.LivingEntitySweepHurtEvent;
 import net.sodiumstudio.nautils.events.MobSunBurnTickEvent;
 import net.sodiumstudio.nautils.events.NonLivingEntityHurtEvent;
+import net.sodiumstudio.nautils.events.ThrownTridentSetBaseDamageEvent;
+
 import com.github.mechalopa.hmag.registry.*;
 
 @SuppressWarnings("removal")
@@ -1236,7 +1238,7 @@ public class DwmgEntityEvents
 		else return false;
 	}
 	
-	// MIXIN EVENTS BELOW //
+	// NAUTILS MIXIN EVENTS BELOW //
 	
 	@SubscribeEvent
 	public static void onItemEntityHurt(ItemEntityHurtEvent event)
@@ -1268,4 +1270,14 @@ public class DwmgEntityEvents
 		if (event.getEntity() instanceof HmagJackFrostEntity jf && jf.isImmuneToHotBiomes())
 			event.setCanceled(true);
 	}
+	
+	@SubscribeEvent
+	public static void onThrownTridentSetBaseDamage(ThrownTridentSetBaseDamageEvent event)
+	{
+		if (event.getEntity().getOwner() != null && event.getEntity().getOwner() instanceof IDwmgBefriendedMob dbm)
+		{
+			event.setDamage((float) (event.getOriginalDamage() - dbm.asMob().getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue() + dbm.asMob().getAttribute(Attributes.ATTACK_DAMAGE).getValue()));
+		}
+	}
+	
 }

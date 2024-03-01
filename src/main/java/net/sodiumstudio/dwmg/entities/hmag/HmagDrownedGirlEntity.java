@@ -152,6 +152,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
 		throwntrident.shoot(d0, d1 + d3 * 0.2F, d2, 1.6F, 2.0F);	// Inaccuracy is fixed at hard mode (i.e. 2.0)
 		this.playSound(SoundEvents.DROWNED_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+		this.swing(InteractionHand.MAIN_HAND);
 		this.level.addFreshEntity(throwntrident);
 	}
 	
