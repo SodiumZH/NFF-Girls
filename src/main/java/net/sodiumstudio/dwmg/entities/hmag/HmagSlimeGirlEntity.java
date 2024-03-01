@@ -282,7 +282,7 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	@DontCallManually
-	public float[] getColor()
+	public float[] getColors()
 	{
 		LinearColor color = getColorLinear();
 		float[] res = {(float) color.r, (float) color.g, (float) color.b};

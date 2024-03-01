@@ -42,6 +42,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.move.BefriendedWaterAvoidingRandomStrollGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurtByTargetGoal;
 import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedOwnerHurtByTargetGoal;
@@ -629,13 +630,17 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		@Override
 		public boolean canContinueToUse()
 		{
+			if (parent.getAIState() == BefriendedAIState.FOLLOW && this.parent.getStamina() > this.parent.getMaxStamina() / 5)
+				return false;
 			return !this.parent.isInLava() && this.isValidTarget(this.parent.level, this.blockPos) && (!this.parent.getAdditionalInventory().getItem(4).is(Items.LAVA_BUCKET) || this.parent.getStamina() == 0);
 		}
 
 		@Override
 		public boolean canUse()
 		{
-			return !this.parent.isInLava() && super.canUse() && (!this.parent.getAdditionalInventory().getItem(4).is(Items.LAVA_BUCKET) || this.parent.getStamina() == 0);
+			if (parent.getAIState() == BefriendedAIState.FOLLOW && this.parent.getStamina() > this.parent.getMaxStamina() / 5)
+				return false;
+			return !this.parent.isInLava() && super.canUse() && (!this.parent.getAdditionalInventory().getItem(4).is(Items.LAVA_BUCKET) || this.parent.getStamina() == 0) && this.parent.getStamina() < this.parent.getMaxStamina() / 5;
 		}
 
 		@Override

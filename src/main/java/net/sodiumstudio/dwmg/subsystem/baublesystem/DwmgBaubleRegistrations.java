@@ -75,8 +75,8 @@ public class DwmgBaubleRegistrations
 		registerWithContinuousSlotSequence(event, HmagBansheeEntity.class, 2, 5);
 		registerWithContinuousSlotSequence(event, HmagCrimsonSlaughtererEntity.class, 0, 4);
 		registerWithContinuousSlotSequence(event, HmagCursedDollEntity.class, 2, 8);
-		registerWithContinuousSlotSequence(event, HmagDodomekiEntity.class, 0, 4);
-		registerWithContinuousSlotSequence(event, HmagDullahanEntity.class, 0, 4);
+		registerWithContinuousSlotSequence(event, HmagDodomekiEntity.class, 2, 6);
+		registerWithContinuousSlotSequence(event, HmagDullahanEntity.class, 2, 6);
 		registerWithContinuousSlotSequence(event, HmagGhastlySeekerEntity.class, 0, 4);
 		registerWithContinuousSlotSequence(event, HmagGlaryadEntity.class, 0, 3);
 		registerWithContinuousSlotSequence(event, HmagHarpyEntity.class, 0, 4);
