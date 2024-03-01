@@ -8,11 +8,15 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.sodiumstudio.dwmg.registries.DwmgTags;
 
-public interface IDwmgBowShootingMobPreset
+/**
+ * Utilities for bow-shooting mob behaviors.
+ */
+public interface IDwmgBowShootingMobUtils
 {
 
 	public ItemStack getEquippingBow();
@@ -62,6 +66,18 @@ public interface IDwmgBowShootingMobPreset
         }
         
 		return arrowEntity;
+	}
+	
+	/** Check if an ItemStack is a bow. No need to perform null-check. */
+	public default boolean isBow(ItemStack test)
+	{
+		return test != null && test.getItem() != null && test.getItem() instanceof BowItem;
+	}
+	
+	/** Check if an ItemStack is a melee weapon (TieredItem). No need to perform null-check. */
+	public default boolean isMeleeWeapon(ItemStack test)
+	{
+		return test != null && test.getItem() != null && test.getItem() instanceof TieredItem;
 	}
 	
 }
