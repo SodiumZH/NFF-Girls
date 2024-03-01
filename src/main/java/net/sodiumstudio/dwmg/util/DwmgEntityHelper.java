@@ -116,5 +116,5 @@ public class DwmgEntityHelper
 	{
 		return BefriendedHelper.isLivingAlliedToBM(allyTo, test);
 	}
-	
+
 }
