@@ -217,7 +217,8 @@ dependencies {
 	implementation fg.deobf("curse.maven:gog4-228948:4525159")
 	//implementation fg.deobf("curse.maven:gog4-228948:4525159")
 	implementation fg.deobf("curse.maven:tf-227639:4337390")
-
+	implementation fg.deobf("curse.maven:testdummy-225738:3820503")
+	
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
