@@ -4,11 +4,27 @@
 
 ### 0.x.22
 
+Updated HMaG version to 6.2.15.
+
+Modified Drowned Girl trident damage and related behaviors.
+
 Now skeletons can use non-vanilla bows, tipped arrows and spectral arrows.
 
 Now Ender Executor can equip blocks on its left hand.
 
+Now Melty Monster will attempt to return to lava only when heat is <20% in follow mode.
+
 Some compatibility issues may be solved that befriended mobs not recognized as allies since `IBefriendedMob` in BefriendMobs Framework now implements vanilla `OwnableEntity` interface.
+
+Fixed some items not working on using to Wither Skeleton Girls.
+
+Fixed Redcap providing Haste even if the owner is over 8 blocks away or cannot be seen.
+
+Fixed wrong bauble slots of Dullahan and Dodomeki.
+
+Fixed Cursed Doll not sun-immune with corresponding baubles.
+
+
 
 
 
