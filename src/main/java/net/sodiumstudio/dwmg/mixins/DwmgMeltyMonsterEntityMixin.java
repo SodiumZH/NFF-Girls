@@ -16,7 +16,6 @@ import net.sodiumstudio.nautils.mixins.NaUtilsMixin;
 @Mixin(MeltyMonsterEntity.class)
 public class DwmgMeltyMonsterEntityMixin implements NaUtilsMixin<MeltyMonsterEntity>
 {
-
 	@WrapWithCondition(method = "aiStep()V", at = @At(value = "INVOKE", 
 			target = "Lnet/minecraft/world/level/Level;setBlockAndUpdate(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z"), expect = -1)
 	private boolean canSetFire(Level instance, BlockPos pos, BlockState blockstate)
