@@ -1,6 +1,30 @@
 # Change Log
 
+### 0.x.22
 
+Updated HMaG version to 5.1.22/6.2.15.
+
+Modified Drowned Girl trident damage and related behaviors.
+
+Now skeletons can use non-vanilla bows, tipped arrows and spectral arrows.
+
+Now Ender Executor can equip blocks on its left hand.
+
+Now Melty Monster will attempt to return to lava only when heat is <20% in follow mode.
+
+Some compatibility issues may be solved that befriended mobs not recognized as allies since `IBefriendedMob` in BefriendMobs Framework now implements vanilla `OwnableEntity` interface.
+
+Fixed some items not working on using to Wither Skeleton Girls.
+
+Fixed Redcap providing Haste even if the owner is over 8 blocks away or cannot be seen.
+
+Fixed wrong bauble slots of Dullahan and Dodomeki.
+
+Fixed Cursed Doll not sun-immune with corresponding baubles.
+
+Fixed Jack o' Frost not immune to hot biomes with Resistance Amulet. (1.18.2)
+
+Fixed Melty Monster unable to switch whether to set fire with Water Bucket / Flint and Steel. (1.18.2)
 
 
 
@@ -8,7 +32,7 @@
 
 ### 0.x.21
 
-Because the Bauble System in BefriendMobs Framework is fully remade, it's probably **very unstable**. Ensure to keep your data backed up before updating to this version!!!
+Because the Bauble System in BefriendMobs Framework is fully remade, the current Bauble System is possibly **unstable**. Ensure to keep your data backed up before updating to this version!!!
 
 Now Bauble items are stackable.
 
@@ -16,9 +40,13 @@ Now Amulet of Resistance will add extra Max HP.
 
 Fixed an issue that missing BefriendMobs dependency causes a pre-launch crash without information. Now it will show an error screen like other mods.
 
-Fixed some features of Jack o' Frost and Melty Monster not working due to wrong mixin setup. (1.18.2)
+Fixed some features of Jack o' Frost and Melty Monster not working due to wrong mixin setup. (1.18.2 & 1.20.1)
+
+Fixed Nightwalkers causing crash. (1.20.1)
 
 Now DWMG will not provide -slim files. To fix possible compat issues, follow the instruction on Curseforge or Github.
+
+Added tag: `befriendmobs:neutral_to_bm_mobs`. Mobs with this tag will not proactively attack befriended mobs unless being attacked.
 
 # Earlier versions
 
@@ -44,13 +72,13 @@ Fixed Alraune and Glaryad Bauble slots wrong display.
 
 ### 0.1.19
 
-Added Mixin-Extras dependency. (It's not a mod, so there's no extra steps to install, but dependents need this in `build.gradle`.)
+Added Mixin-Extras dependency. (There's no extra steps to install, but dependents need this in `build.gradle`.)
 
 Added Melty Monster support.
 
 Added configs about zombies and skeletons inter-variant conversion.
 
-Now befriended mobs will not be knocked back when getting sweep-attacked.
+Now befriended mobs will not be knocked back when getting sweep-attacked by the owner.
 
 Now befriended mobs' attacking targets expire after 30 s.
 
