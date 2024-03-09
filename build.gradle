@@ -22,10 +22,11 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 
 mixin {
-    add sourceSets.main, 'befriendmobs.refmap.json'
-    add sourceSets.main, 'dummmmmmy.refmap.json'
-   // config 'befriendmobs.mixins.json'
+    add sourceSets.main, 'dwmg.refmap.json'
    	config "dwmg.mixins.json"
+   	debug.verbose = true
+    debug.export = true
+    dumpTargetOnFailure = true
 }
 
 version = "${mod_version}"
@@ -38,9 +39,9 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 
 //jarJar.enable()
-/*tasks.jarJar.configure {
+tasks.jarJar.configure {
   archiveClassifier = ''
-}*/
+}
 
 minecraft {
     // The mappings can be changed at any time and must be in the following format.
@@ -188,12 +189,12 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.18.2-40.2.4'
-
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.2.1"))
-    /*implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.2.1")) {
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.2.1")) {
         jarJar.ranged(it, "[0.2,)")
-    }*/
+    }
 	
     // Real mod deobf dependency examples - these get remapped to your current mappings
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -210,12 +211,11 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
 	implementation fg.deobf("net.sodiumstudio.befriendmobs:befriendmobs:${mc_version}-${bm_version}")
-	/*jarJar(group: 'net.sodiumstudio.befriendmobs', name: 'befriendmobs', version: "[${mc_version}-${bm_version}, ${mc_version}-${bm_version_next})"){
+	jarJar(group: 'net.sodiumstudio.befriendmobs', name: 'befriendmobs', version: "[${mc_version}-${bm_version}, ${mc_version}-${bm_version_next})"){
 		jarJar.pin(it, "${mc_version}-${bm_version}")
-	}*/
+	}
     implementation fg.deobf("curse.maven:hmag-537613:5134543")
 	implementation fg.deobf("curse.maven:gog4-228948:4525159")
-	//implementation fg.deobf("curse.maven:gog4-228948:4525159")
 	implementation fg.deobf("curse.maven:tf-227639:4337390")
 	implementation fg.deobf("curse.maven:testdummy-225738:3820503")
 	
@@ -223,7 +223,7 @@ dependencies {
 
 // Example for how to get properties into the manifest for reading at runtime.
 jar {
-	archiveClassifier = ""
+	archiveClassifier = "slim"
     manifest {
         attributes([
                 "Specification-Title"     : "dwmg",
