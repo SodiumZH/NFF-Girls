@@ -9,6 +9,7 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 public interface IDwmgBowShootingMob extends IDwmgBefriendedMob, IDwmgBowShootingMobUtils
@@ -28,7 +29,7 @@ public interface IDwmgBowShootingMob extends IDwmgBefriendedMob, IDwmgBowShootin
 		double d2 = pTarget.getZ() - this.asMob().getZ();
 		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
 		arrowEntity.setBaseDamage(arrowEntity.getBaseDamage() * this.asMob().getAttributeValue(Attributes.ATTACK_DAMAGE) / this.asMob().getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
-		boolean canPickUp = this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0
+		boolean canPickUp = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, this.getAdditionalInventory().getItem(4)) <= 0
 				|| this.getInventoryItemStack(8).is(Items.TIPPED_ARROW) || this.getInventoryItemStack(8).is(Items.SPECTRAL_ARROW);
 		arrowEntity.pickup = canPickUp ? AbstractArrow.Pickup.ALLOWED : AbstractArrow.Pickup.DISALLOWED;
 		arrowEntity.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);
@@ -39,7 +40,7 @@ public interface IDwmgBowShootingMob extends IDwmgBefriendedMob, IDwmgBowShootin
 
 	public default void postShoot()
 	{
-		if (this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0
+		if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, this.getAdditionalInventory().getItem(4)) <= 0
 				|| this.getInventoryItemStack(8).is(Items.TIPPED_ARROW) || this.getInventoryItemStack(8).is(Items.SPECTRAL_ARROW))
 			this.getAdditionalInventory().consumeItem(8);
 	}
