@@ -40,6 +40,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
+import net.sodiumstudio.dwmg.entities.IDwmgBowShootingMob;
 import net.sodiumstudio.dwmg.entities.IDwmgBowShootingMobUtils;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonMeleeAttackGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendedSkeletonRangedBowAttackGoal;
@@ -55,7 +56,7 @@ import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 
-public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity implements IDwmgBefriendedMob, IDwmgBowShootingMobUtils
+public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity implements IDwmgBefriendedMob, IDwmgBowShootingMob
 {
 	
 	public HmagWitherSkeletonGirlEntity(EntityType<? extends HmagWitherSkeletonGirlEntity> pEntityType, Level pLevel) {
@@ -117,32 +118,9 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 	private boolean justShot = false;
 
 	@Override
-	public void performRangedAttack(LivingEntity pTarget, float pVelocity) {
-		
-		// Filter again to avoid it shoot without arrow
-		if (this.getAdditionalInventory().getItem(8).isEmpty())
-			return;
-		
-		AbstractArrow arrowEntity = this.createArrowEntity(this.getAdditionalInventory().getItem(8));
-		if (arrowEntity == null) return;
-		if (this.getMainHandItem().getItem() instanceof net.minecraft.world.item.BowItem)
-			arrowEntity = ((net.minecraft.world.item.BowItem) this.getMainHandItem().getItem())
-					.customArrow(arrowEntity);
-		// Vanilla Wither Skeleton feature
-		arrowEntity.setSecondsOnFire(100);
-		
-		double d0 = pTarget.getX() - this.getX();
-		double d1 = pTarget.getY(0.3333333333333333D) - arrowEntity.getY();
-		double d2 = pTarget.getZ() - this.getZ();
-		double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-		arrowEntity.setBaseDamage(arrowEntity.getBaseDamage() * this.getAttributeValue(Attributes.ATTACK_DAMAGE) / this.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
-		boolean canPickUp = this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0
-				|| this.getInventoryItemStack(8).is(Items.TIPPED_ARROW) || this.getInventoryItemStack(8).is(Items.SPECTRAL_ARROW);
-		arrowEntity.pickup = canPickUp ? AbstractArrow.Pickup.ALLOWED : AbstractArrow.Pickup.DISALLOWED;
-		arrowEntity.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);
-		this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-		this.level.addFreshEntity(arrowEntity);
-		
+	public void performRangedAttack(LivingEntity pTarget, float pVelocity) {	
+		var arrowEntity = this.shoot(pTarget, pVelocity);
+		arrowEntity.setSecondsOnFire(100);	
 		justShot = true;
 	}
 
@@ -155,9 +133,7 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 		{
 			if (justShot)
 			{
-				if (this.getAdditionalInventory().getItem(4).getEnchantmentLevel(Enchantments.INFINITY_ARROWS) <= 0
-						|| this.getInventoryItemStack(8).is(Items.TIPPED_ARROW) || this.getInventoryItemStack(8).is(Items.SPECTRAL_ARROW))
-					this.getAdditionalInventory().consumeItem(8);
+				this.postShoot();
 				justShot = false;
 			}
 			
@@ -166,57 +142,6 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 			}
 		}
 	}
-	
-	/**
-	 * Optionally switch the main and backup weapons
-	 */
-	protected void checkSwitchingWeapons()
-	{
-		// When too close, switch to melee mode if possible
-		if (this.distanceToSqr(this.getTarget()) < 6.25d) {
-			if (isBow(additionalInventory.getItem(4)) && isMeleeWeapon(additionalInventory.getItem(7))) {
-				additionalInventory.swapItem(4, 7);
-				updateFromInventory();
-			}
-		}
-		// When run out arrows, try taking weapon from backup-weapon slot
-		if (isBow(additionalInventory.getItem(4)) && isMeleeWeapon(additionalInventory.getItem(7))
-				&& additionalInventory.getItem(8).isEmpty()) {
-			additionalInventory.swapItem(4, 7);
-			updateFromInventory();
-		}
-		// When too far and having a bow on backup-weapon, switch to bow mode
-		// Don't switch if don't have arrows
-		else if (this.distanceToSqr(this.getTarget()) > 16d) {
-			if (!isBow(additionalInventory.getItem(4)) && !isBow(getAdditionalInventory().getItem(7))
-					&& !additionalInventory.getItem(8).isEmpty()) {
-				additionalInventory.swapItem(4, 7);
-				updateFromInventory();
-			}
-		}
-		// When in melee mode without a weapon but having one on backup slot, change to it
-		else if (!isBow(this.getInventoryItemStack(4))
-				&& !isBow(this.getInventoryItemStack(7))
-				&& (this.getInventoryItemStack(4).isEmpty() || !isMeleeWeapon(this.getInventoryItemStack(4)))
-				&& !this.getInventoryItemStack(7).isEmpty()
-				&& isMeleeWeapon(this.getInventoryItemStack(7))
-				)
-		{
-			additionalInventory.swapItem(4, 7);
-			updateFromInventory();
-		}
-	}
-	
-	@Override
-	public ItemStack getEquippingBow() {
-		return this.getAdditionalInventory().getItem(4);
-	}
-		
-	/*@Override
-	public void setupSunImmunityRules()
-	{
-		this.getSunImmunity().putOptional("always_true", m -> true);
-	}*/
 	
 	// It's not needed here
 	@Override
