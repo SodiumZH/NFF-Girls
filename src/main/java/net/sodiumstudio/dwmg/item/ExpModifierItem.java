@@ -51,11 +51,15 @@ public class ExpModifierItem extends Item
 	    			if (!player.isShiftKeyDown())
 	    			{
 	    				cap.setExp(cap.getExp() + this.getValue(stack));
+	    				NaMiscUtils.printToScreen("Mob [" + target.getName().getString() + "] EXP +" + this.getValue(stack) + "." , player);
+	    				NaMiscUtils.printToScreen("Current: Lv " + Integer.toString(cap.getExpectedLevel()) + ", EXP " + Long.toString(cap.getExpInThisLevel()) , player);
 	    				EntityHelper.sendGlintParticlesToLivingDefault(target);
 	    			}
 	    			else 
 	    			{
 	    				cap.setExp(Math.max(0, cap.getExp() - this.getValue(stack)));
+	    				NaMiscUtils.printToScreen("Mob [" + target.getName().getString() + "] EXP -" + this.getValue(stack) + "." , player);
+	    				NaMiscUtils.printToScreen("Current: Lv " + Integer.toString(cap.getExpectedLevel()) + ", EXP " + Long.toString(cap.getExpInThisLevel()) , player);
 	    				EntityHelper.sendSmokeParticlesToLivingDefault(target);
 	    			}
     			}
@@ -82,7 +86,7 @@ public class ExpModifierItem extends Item
 					this.setValue(player.getItemInHand(hand), this.getValue(player.getItemInHand(hand)) / 4);
     			else this.setValue(player.getItemInHand(hand), 1 << 20 /* 2^20 */);
     		}
-    		NaMiscUtils.printToScreen("EXP: " + Integer.toString(this.getValue(player.getItemInHand(hand))), player);
+    		NaMiscUtils.printToScreen("EXP per operation: " + Integer.toString(this.getValue(player.getItemInHand(hand))), player);
     	}
     	return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide);
     }

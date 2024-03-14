@@ -176,9 +176,9 @@ public class DwmgItems {
 	
 	// Debug
 	public static final RegistryObject<BefriendingProgressProbeItem> BEFRIENDING_PROGRESS_PROBE = 
-			ITEMS.register("befriending_progress_probe", () -> new BefriendingProgressProbeItem(new Item.Properties()));
+			ITEMS.register("befriending_progress_probe", () -> new BefriendingProgressProbeItem(new Item.Properties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<ExpModifierItem> EXP_MODIFIER = 
-			ITEMS.register("exp_modifier", () -> new ExpModifierItem(new Item.Properties()));
+			ITEMS.register("exp_modifier", () -> new ExpModifierItem(new Item.Properties().rarity(Rarity.EPIC)));
 	
 	/* Item register end */
 	
