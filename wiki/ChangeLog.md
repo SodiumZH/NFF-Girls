@@ -2,6 +2,8 @@
 
 ### 0.x.22
 
+Since this version until the final release, BefriendMobs Framework will be embedded in the dwmg jar. Now there's no need to manually add BefriendMobs into the modpack.
+
 Updated HMaG version to 5.1.22/6.2.15.
 
 Modified Drowned Girl trident damage and related behaviors.
@@ -22,7 +24,7 @@ Fixed wrong bauble slots of Dullahan and Dodomeki.
 
 Fixed Cursed Doll not sun-immune with corresponding baubles.
 
-Fixed Jack o' Frost not immune to hot biomes with Resistance Amulet. (1.18.2)
+Fixed Jack o' Frost not immune to hot biomes wearing Resistance Amulet. (1.18.2)
 
 Fixed Melty Monster unable to switch whether to set fire with Water Bucket / Flint and Steel. (1.18.2)
 
