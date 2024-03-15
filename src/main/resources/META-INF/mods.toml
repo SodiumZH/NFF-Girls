@@ -30,13 +30,13 @@ description='''Enjoy your Minecraft days with monster girls!'''
 [[dependencies.dwmg]]
     modId="befriendmobs"
     mandatory=true
-    versionRange="[0.2.21, 0.2.22)"
+    versionRange="[0.2.22, 0.2.23)"
     ordering="NONE"
     side="BOTH"  
     
 [[dependencies.dwmg]]
     modId="hmag"
     mandatory=true
-    versionRange="[9.0.2, 10.0)"
+    versionRange="[9.0.17, 10.0)"
     ordering="NONE"
     side="BOTH"
