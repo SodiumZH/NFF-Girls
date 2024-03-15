@@ -98,7 +98,7 @@ public class MagicalGelBallEntity extends ThrowableItemProjectile
 	            // For vanilla slime, the color is random
 	            if (living.getType() == EntityType.SLIME)
 	            {
-	            	slime.setVariant(-1);
+	            	slime.setVariant(SlimeGirlEntity.ColorVariant.byId(rnd.nextInt(0, SlimeGirlEntity.ColorVariant.values().length)));
 	            }
 	            // For slime girl, the color is the complementary
 	            else if (living instanceof SlimeGirlEntity sg)
@@ -113,7 +113,7 @@ public class MagicalGelBallEntity extends ThrowableItemProjectile
 	            		sgColorCompl = MagicalGelColorUtils.getSlimeColor(sg).getComplementary();
 	            	}
 	            	SlimeGirlEntity.ColorVariant v = MagicalGelColorUtils.closestVariant(sgColorCompl);
-	            	slime.setVariant(v.getId());
+	            	slime.setVariant(v);
 	            }
 	            slime.moveTo(living.getX() + RndUtil.rndRangedDouble(-0.5, 0.5), living.getY() + 0.5D, living.getZ() + RndUtil.rndRangedDouble(-0.5, 0.5), this.random.nextFloat() * 360.0F, 0.0F);
 	            this.level().addFreshEntity(slime);

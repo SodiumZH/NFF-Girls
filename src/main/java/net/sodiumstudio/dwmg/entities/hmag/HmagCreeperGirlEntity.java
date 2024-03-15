@@ -111,7 +111,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 	{
 		super.init(playerUUID, from);
 		if (from != null && from instanceof CreeperGirlEntity c)
-			this.setVariant(c.getVariant());
+			this.setVariant(c.getVariant().getId());
 		else if (from != null)
 			this.setVariant(this.getRandom().nextInt(3));
 	}
@@ -128,9 +128,9 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 
 	public void setVariant(int typeIn)
 	{
-		if (typeIn < 0 || typeIn >= 3)
+		if (typeIn < 0 || typeIn >= CreeperGirlEntity.Variant.values().length)
 		{
-			typeIn = this.getRandom().nextInt(3);
+			typeIn = this.getRandom().nextInt(CreeperGirlEntity.Variant.values().length);
 		}
 
 		this.entityData.set(DATA_VARIANT_ID, typeIn);

@@ -36,14 +36,14 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 	public NecromancerMagicBulletEntity(EntityType<? extends NecromancerMagicBulletEntity> type, Level worldIn)
 	{
 		super(type, worldIn);
-		this.setVariant(1);
+		this.setVariant(MagicBulletEntity.Variant.DYSSOMNIA);
 	}
 
 	public NecromancerMagicBulletEntity(Level worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ)
 	{
 		super(worldIn, shooter, accelX, accelY, accelZ);
 		ReflectHelper.forceSet(this, Entity.class, "f_19847_", DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get());	// Entity.type
-		this.setVariant(1);
+		this.setVariant(MagicBulletEntity.Variant.DYSSOMNIA);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -51,13 +51,13 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 	{
 		super(worldIn, x, y, z, accelX, accelY, accelZ);
 		ReflectHelper.forceSet(this, Entity.class, "f_19847_", DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get());	// Entity.type
-		this.setVariant(1);
+		this.setVariant(MagicBulletEntity.Variant.DYSSOMNIA);
 	}
 
 	public NecromancerMagicBulletEntity(PlayMessages.SpawnEntity spawnEntity, Level level)
 	{
 		this(DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get(), level);
-		this.setVariant(1);
+		this.setVariant(MagicBulletEntity.Variant.DYSSOMNIA);
 	}
 	
 	@Override
@@ -188,9 +188,9 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 	}
 	
 	@Override
-	public int getVariant()
+	public MagicBulletEntity.Variant getVariant()
 	{
-		return 1;
+		return MagicBulletEntity.Variant.DYSSOMNIA;
 	}
 	
 	@Override

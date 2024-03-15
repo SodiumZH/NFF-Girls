@@ -284,11 +284,4 @@ public class HmagHarpyEntity extends HarpyEntity implements IDwmgBefriendedMob {
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 
-	
-	// misc //
-	public void setVariant(int type)
-	{
-		ReflectHelper.forceInvoke(this, HarpyEntity.class, "setVariant", int.class, type);
-	}
-	
 }

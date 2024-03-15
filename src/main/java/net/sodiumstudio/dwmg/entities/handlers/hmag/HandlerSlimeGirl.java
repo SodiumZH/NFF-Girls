@@ -148,7 +148,7 @@ public class HandlerSlimeGirl extends HandlerItemGivingProgress
 	            slime.setSize(1, true);
             	LinearColor sgColorCompl = MagicalGelColorUtils.getSlimeColor(sg).getComplementary();
             	SlimeGirlEntity.ColorVariant v = MagicalGelColorUtils.closestVariant(sgColorCompl);
-            	slime.setVariant(v.getId());
+            	slime.setVariant(v);
             	slime.moveTo(mob.getX() + RndUtil.rndRangedDouble(-0.5, 0.5), mob.getY() + 0.5D, mob.getZ() + RndUtil.rndRangedDouble(-0.5, 0.5), rnd.nextFloat() * 360.0F, 0.0F);
             	mob.level().addFreshEntity(slime);
             }

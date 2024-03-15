@@ -13,13 +13,13 @@ public class HandlerHarpy extends HandlerSnowCanine
 	@Override
 	public IBefriendedMob befriend(Player player, Mob target)
 	{
-		int variant = -1;
+		HarpyEntity.Variant variant = HarpyEntity.Variant.byId(0);
 		if (target instanceof HarpyEntity h)
 		{
 			variant = h.getVariant();
 		}
 		IBefriendedMob mob = super.befriend(player, target);
-		if (mob instanceof HmagHarpyEntity h && variant >= 0)
+		if (mob instanceof HmagHarpyEntity h && variant.getId() >= 0)
 		{
 			h.setVariant(variant);
 		}

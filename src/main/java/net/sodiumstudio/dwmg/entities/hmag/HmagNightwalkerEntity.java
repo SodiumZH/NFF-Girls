@@ -132,7 +132,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 		bullet.setPos(bullet.getX(), this.getY(0.4D) + 0.25D, bullet.getZ());
 		bullet.setDamage(4.0F + (float)(this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
 		bullet.setEffectLevel((byte)1);
-		bullet.setVariant(3);
+		bullet.setVariant(MagicBulletEntity.Variant.NIGHTWALKER);
 		if (this.getAdditionalInventory().getItem(4).is(ModItems.ANCIENT_STONE.get()))
 		{
 			bullet.setTransformsBlocks();

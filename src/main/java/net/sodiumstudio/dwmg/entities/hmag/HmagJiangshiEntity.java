@@ -269,11 +269,6 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 		return Dwmg.MOD_ID;
 	}
 	
-	public void setVariant(int type)
-	{
-		ReflectHelper.forceInvoke(this, JiangshiEntity.class, "setVariant", int.class, type);
-	}
-	
 	// Sounds
 	
 	@Override

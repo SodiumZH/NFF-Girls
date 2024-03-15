@@ -33,7 +33,7 @@ public interface IDwmgBowShootingMob extends IDwmgBefriendedMob, IDwmgBowShootin
 		arrowEntity.pickup = canPickUp ? AbstractArrow.Pickup.ALLOWED : AbstractArrow.Pickup.DISALLOWED;
 		arrowEntity.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, 2.0F);
 		this.asMob().playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.asMob().getRandom().nextFloat() * 0.4F + 0.8F));
-		this.asMob().level.addFreshEntity(arrowEntity);
+		this.asMob().level().addFreshEntity(arrowEntity);
 		return arrowEntity;
 	}
 
