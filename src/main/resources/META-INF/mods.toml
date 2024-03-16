@@ -37,6 +37,6 @@ description='''Enjoy your Minecraft days with monster girls!'''
 [[dependencies.dwmg]]
     modId="hmag"
     mandatory=true
-    versionRange="[5.1.22, 6.0)"
+    versionRange="[5.1.23, 6.0)"
     ordering="NONE"
     side="BOTH"
