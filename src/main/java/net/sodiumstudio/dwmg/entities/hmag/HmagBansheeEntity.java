@@ -422,11 +422,6 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedS
 	public String getModId() {
 		return Dwmg.MOD_ID;
 	}
-
-	public void setVariant(int type)
-	{
-		ReflectHelper.forceInvoke(this, BansheeEntity.class, "setVariant", int.class, type);
-	}
 	
 	// ==================================================================== //
 	// ========================= General Settings ========================= //

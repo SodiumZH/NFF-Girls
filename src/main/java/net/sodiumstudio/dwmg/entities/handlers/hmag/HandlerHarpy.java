@@ -19,10 +19,6 @@ public class HandlerHarpy extends HandlerSnowCanine
 			variant = h.getVariant();
 		}
 		IBefriendedMob mob = super.befriend(player, target);
-		if (mob instanceof HmagHarpyEntity h && variant >= 0)
-		{
-			h.setVariant(variant);
-		}
 		return mob;
 	}
 	
