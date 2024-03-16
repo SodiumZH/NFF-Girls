@@ -4,13 +4,13 @@
 
 Since this version until the final release, BefriendMobs Framework will be embedded in the dwmg jar. Now there's no need to manually add BefriendMobs into the modpack.
 
-Updated HMaG version to 5.1.22/6.2.15.
+Updated HMaG version to 5.1.22/6.2.15/9.0.17.
 
 Modified Drowned Girl trident damage and related behaviors.
 
 Now skeletons can use non-vanilla bows, tipped arrows and spectral arrows.
 
-Now Ender Executor can equip blocks on its left hand.
+Now Ender Executor can equip blocks.
 
 Now Melty Monster will attempt to return to lava only when heat is <20% in follow mode.
 
@@ -24,11 +24,15 @@ Fixed wrong bauble slots of Dullahan and Dodomeki.
 
 Fixed Cursed Doll not sun-immune with corresponding baubles.
 
-Fixed Jack o' Frost not immune to hot biomes wearing Amulet of Resistance. (1.18.2)
+Fixed all sun-sensitive mobs not sun-immune with corresponding baubles. (1.20.1)
 
-Fixed Melty Monster unable to switch whether to set fire with Water Bucket / Flint and Steel. (1.18.2)
+Fixed Jack o' Frost not immune to hot biomes wearing Amulet of Resistance. (1.18.2/1.20.1)
 
+Fixed Melty Monster unable to switch whether to set fire with Water Bucket / Flint and Steel. (1.18.2/1.20.1)
 
+Fixed Harpy and flyable befriended mobs unexpectedly taking falling damage. (1.20.1)
+
+Fixed crash on Harpy and Slime Girl befriended. (1.20.1)
 
 
 
