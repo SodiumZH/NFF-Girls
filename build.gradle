@@ -184,7 +184,7 @@ dependencies {
 		jarJar.pin(it, "${mc_version}-${bm_version}")
 	}
 
-    //implementation fg.deobf("curse.maven:jade-324717:4711195")
+    implementation fg.deobf("curse.maven:jade-324717:4986594")
     
     implementation fg.deobf("curse.maven:hmag-537613:5170892")
 	implementation fg.deobf("curse.maven:tf-227639:4755494")
@@ -250,8 +250,7 @@ tasks.build.dependsOn tasks.jarJar
 jar.finalizedBy('reobfJarJar')
 
 mixin {
-    add sourceSets.main, "befriendmobs.refmap.json"
-    //config 'befriendmobs.mixins.json'
+    add sourceSets.main, "dwmg.refmap.json"
     config 'dwmg.mixins.json'
 }
 
