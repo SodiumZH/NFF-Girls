@@ -4,7 +4,7 @@
 
 Since this version until the final release, BefriendMobs Framework will be embedded in the dwmg jar. Now there's no need to manually add BefriendMobs into the modpack.
 
-Updated HMaG version to 5.1.22/6.2.15/9.0.17.
+Updated HMaG version to 5.1.23/6.2.16/9.0.17.
 
 Modified Drowned Girl trident damage and related behaviors.
 
