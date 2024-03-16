@@ -51,7 +51,7 @@ public class GuiMeltyMonster extends GuiPreset0 {
 		Component staminaComp = ComponentBuilder.create().appendTranslatable("info.dwmg.gui_melty_monster_stamina")
 				.appendText(": ").appendText(Integer.toString(NaMiscUtils.cast(mob, HmagMeltyMonsterEntity.class).getStamina())).appendText(" / ")
 				.appendText(Integer.toString(NaMiscUtils.cast(mob, HmagMeltyMonsterEntity.class).getMaxStamina())).build();
-		graphics.drawString(font, staminaComp, position.x, position.y, color);
+		graphics.drawString(font, staminaComp, position.x, position.y, color, false);
 
 	}
 	
