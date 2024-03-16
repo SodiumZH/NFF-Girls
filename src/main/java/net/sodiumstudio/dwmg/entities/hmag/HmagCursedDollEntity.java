@@ -341,12 +341,7 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 	public String getModId() {
 		return Dwmg.MOD_ID;
 	}
-	
-	public void setVariant(int type)
-	{
-		ReflectHelper.forceInvoke(this, CursedDollEntity.class, "setVariant", int.class, type);
-	}
-	
+
 	// Sounds
 	
 	@Override
