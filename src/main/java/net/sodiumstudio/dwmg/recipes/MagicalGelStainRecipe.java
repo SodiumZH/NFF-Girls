@@ -8,34 +8,28 @@ import java.util.function.Supplier;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.level.Level;
-import net.sodiumstudio.dwmg.item.MagicalGelBottleItem;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.registries.DwmgRecipes;
 import net.sodiumstudio.nautils.NaItemUtils;
 import net.sodiumstudio.nautils.TagHelper;
 import net.sodiumstudio.nautils.math.HtmlColors;
 import net.sodiumstudio.nautils.math.LinearColor;
-import net.sodiumstudio.nautils.math.StandardColor;
 
 public class MagicalGelStainRecipe extends SimpleModificationRecipe
 {
 	protected static final HashMap<String, StainInfo> STAINS = new HashMap<>();
 	
-	protected static void putStandardColorStain(String itemKey, StandardColor color, Supplier<Double> strength)
+	protected static void putDyeColorStain(String itemKey, DyeColor color, Supplier<Double> strength)
 	{
-		STAINS.put(itemKey, StainInfo.of(color.get(), strength));
+		STAINS.put(itemKey, StainInfo.of(LinearColor.fromCode(color.getTextColor()), strength));
 	}
 	
-	protected static void putStandardColorStain(String itemKey, StandardColor color, double strength)
+	protected static void putDyeColorStain(String itemKey, DyeColor color, double strength)
 	{
-		STAINS.put(itemKey, StainInfo.of(color.get(), () -> strength));
+		STAINS.put(itemKey, StainInfo.of(LinearColor.fromCode(color.getTextColor()), () -> strength));
 	}
 	
 	protected static void putHtmlColorStain(String itemKey, String colorKey, Supplier<Double> strength)
@@ -59,23 +53,23 @@ public class MagicalGelStainRecipe extends SimpleModificationRecipe
 	{
 		// 16 minecraft standard colors
 		// Vanilla / forge common items
-		putStandardColorStain("hmag:sharp_fang",  StandardColor.WHITE, 0.5);
-		putStandardColorStain("hmag:ogre_horn",  StandardColor.LIGHT_GRAY, 1.0);
-		putStandardColorStain("hmag:evil_crystal_fragment", StandardColor.GRAY, 0.5);
-		putStandardColorStain("hmag:ancient_stone", StandardColor.BLACK, 0.5);
-		putStandardColorStain("hmag:crimson_cuticula", StandardColor.RED, 1.0);
-		putStandardColorStain("hmag:cureberry", StandardColor.RED, 1.0);
-		putStandardColorStain("hmag:kobold_leather", StandardColor.BLUE, 0.5);
-		putStandardColorStain("hmag:dyssomnia_skin", StandardColor.BLUE, 1.2);
-		putStandardColorStain("hmag:randomberry", StandardColor.PURPLE, 1.0);
-		putStandardColorStain("hmag:necrofiber", StandardColor.PURPLE, 0.5);
-		putStandardColorStain("hmag:lich_cloth", StandardColor.BROWN, 1.0);
-		putStandardColorStain("hmag:soul_apple", StandardColor.LIGHT_BLUE, 0.5);
-		putStandardColorStain("hmag:mysterious_petal", StandardColor.PINK, 0.5);
-		putStandardColorStain("hmag:cubic_nucleus", StandardColor.PINK, 0.5);
-		putStandardColorStain("hmag:ender_plasm", StandardColor.MAGENTA, 0.5);
-		putStandardColorStain("hmag:exp_berry", StandardColor.LIME, 1.0);
-		putStandardColorStain("hmag:burning_core", StandardColor.ORANGE, 0.5);
+		putDyeColorStain("hmag:sharp_fang",  DyeColor.WHITE, 0.5);
+		putDyeColorStain("hmag:ogre_horn",  DyeColor.LIGHT_GRAY, 1.0);
+		putDyeColorStain("hmag:evil_crystal_fragment", DyeColor.GRAY, 0.5);
+		putDyeColorStain("hmag:ancient_stone", DyeColor.BLACK, 0.5);
+		putDyeColorStain("hmag:crimson_cuticula", DyeColor.RED, 1.0);
+		putDyeColorStain("hmag:cureberry", DyeColor.RED, 1.0);
+		putDyeColorStain("hmag:kobold_leather", DyeColor.BLUE, 0.5);
+		putDyeColorStain("hmag:dyssomnia_skin", DyeColor.BLUE, 1.2);
+		putDyeColorStain("hmag:randomberry", DyeColor.PURPLE, 1.0);
+		putDyeColorStain("hmag:necrofiber", DyeColor.PURPLE, 0.5);
+		putDyeColorStain("hmag:lich_cloth", DyeColor.BROWN, 1.0);
+		putDyeColorStain("hmag:soul_apple", DyeColor.LIGHT_BLUE, 0.5);
+		putDyeColorStain("hmag:mysterious_petal", DyeColor.PINK, 0.5);
+		putDyeColorStain("hmag:cubic_nucleus", DyeColor.PINK, 0.5);
+		putDyeColorStain("hmag:ender_plasm", DyeColor.MAGENTA, 0.5);
+		putDyeColorStain("hmag:exp_berry", DyeColor.LIME, 1.0);
+		putDyeColorStain("hmag:burning_core", DyeColor.ORANGE, 0.5);
 	}
 	
 	protected static Optional<StainInfo> getStainInfo(ItemStack stack)
