@@ -5,7 +5,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.math.GuiPos;
 
 public class InventoryMenuFourBaubles extends InventoryMenuNewBaubleTest
 {
@@ -30,9 +30,9 @@ public class InventoryMenuFourBaubles extends InventoryMenuNewBaubleTest
 	}
 	
 	@Override
-	protected IntVec2 getPlayerInventoryPosition()
+	protected GuiPos getPlayerInventoryPosition()
 	{
-		return IntVec2.valueOf(32, 101);
+		return GuiPos.valueOf(32, 101);
 	}
 	
 }

@@ -13,7 +13,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
 import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.info.ComponentBuilder;
 import net.sodiumstudio.nautils.math.HtmlColors;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.math.GuiPos;
 import net.sodiumstudio.nautils.math.LinearColor;
 
 public class GuiSlimeGirl extends GuiPreset0
@@ -45,10 +45,10 @@ public class GuiSlimeGirl extends GuiPreset0
 	@Override
 	public void addInfoBox(PoseStack poseStack)
 	{
-		//this.blit(poseStack, absPos(99, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(120, 72));
-		this.drawSprite(poseStack, absPos(81, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(2, 72));
-		this.drawSprite(poseStack, absPos(83, 17), IntVec2.valueOf(2, 183), IntVec2.valueOf(18, 72));
-		this.drawSprite(poseStack, absPos(101, 17), IntVec2.valueOf(2, 183), IntVec2.valueOf(118, 72));
+		//this.blit(poseStack, absPos(99, 17), GuiPos.valueOf(0, 183), GuiPos.valueOf(120, 72));
+		this.drawSprite(poseStack, absPos(81, 17), GuiPos.valueOf(0, 183), GuiPos.valueOf(2, 72));
+		this.drawSprite(poseStack, absPos(83, 17), GuiPos.valueOf(2, 183), GuiPos.valueOf(18, 72));
+		this.drawSprite(poseStack, absPos(101, 17), GuiPos.valueOf(2, 183), GuiPos.valueOf(118, 72));
 	}
 	
 	public MutableComponent getDefaultColorInfo()
@@ -62,7 +62,7 @@ public class GuiSlimeGirl extends GuiPreset0
 	}
 	
 	@Override
-	public void addFavorabilityAndLevelInfo(PoseStack poseStack, IntVec2 position, int color, int textRowWidth)
+	public void addFavorabilityAndLevelInfo(PoseStack poseStack, GuiPos position, int color, int textRowWidth)
 	{
 		font.draw(poseStack, getDefaultLevelAndExpInfo(), position.x, position.y, color);
 		position.addY(textRowWidth);
@@ -72,7 +72,7 @@ public class GuiSlimeGirl extends GuiPreset0
 	}
 
 	@Override
-	public IntVec2 infoPos()
+	public GuiPos infoPos()
 	{
 		return absPos(85, 21);
 	}

@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.math.GuiPos;
 
 public class InventoryMenuNightwalker extends InventoryMenuPreset0
 {
