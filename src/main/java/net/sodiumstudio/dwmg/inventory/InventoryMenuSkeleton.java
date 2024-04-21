@@ -7,7 +7,7 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.math.GuiPos;
 
 public class InventoryMenuSkeleton extends InventoryMenuPreset0
 {
@@ -38,8 +38,8 @@ public class InventoryMenuSkeleton extends InventoryMenuPreset0
 	}
 
 	@Override
-	protected IntVec2 getPlayerInventoryPosition() {
-		return IntVec2.valueOf(32, 101);
+	protected GuiPos getPlayerInventoryPosition() {
+		return GuiPos.valueOf(32, 101);
 	}
 
 	@Override

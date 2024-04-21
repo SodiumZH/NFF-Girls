@@ -9,7 +9,7 @@ import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.entities.hmag.HmagMeltyMonsterEntity;
 import net.sodiumstudio.nautils.NaMiscUtils;
 import net.sodiumstudio.nautils.info.ComponentBuilder;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.math.GuiPos;
 
 public class GuiMeltyMonster extends GuiPreset0 {
 	
@@ -34,7 +34,7 @@ public class GuiMeltyMonster extends GuiPreset0 {
 	}
 	
 	@Override
-	public IntVec2 getEntityRenderPosition()
+	public GuiPos getEntityRenderPosition()
 	{
 		return super.getEntityRenderPosition().addY(0);
 	}
@@ -45,7 +45,7 @@ public class GuiMeltyMonster extends GuiPreset0 {
 		return 18;
 	}
 	
-	public void addStaminaInfo(PoseStack poseStack, IntVec2 position, int color, int textRowWidth)
+	public void addStaminaInfo(PoseStack poseStack, GuiPos position, int color, int textRowWidth)
 	{
 		Component staminaComp = ComponentBuilder.create().appendTranslatable("info.dwmg.gui_melty_monster_stamina")
 				.appendText(": ").appendText(Integer.toString(NaMiscUtils.cast(mob, HmagMeltyMonsterEntity.class).getStamina())).appendText(" / ")
@@ -54,7 +54,7 @@ public class GuiMeltyMonster extends GuiPreset0 {
 	}
 	
 	@Override
-	public void addAttributeInfo(PoseStack poseStack, IntVec2 position, int color, int textRowWidth)
+	public void addAttributeInfo(PoseStack poseStack, GuiPos position, int color, int textRowWidth)
 	{
 		this.addBasicAttributeInfo(poseStack, position, color, textRowWidth);
 		position.addY(textRowWidth * 3);
@@ -64,7 +64,7 @@ public class GuiMeltyMonster extends GuiPreset0 {
 	}
 	
 	@Override
-	public void addAttributeInfo(PoseStack poseStack, IntVec2 position)
+	public void addAttributeInfo(PoseStack poseStack, GuiPos position)
 	{
 		addAttributeInfo(poseStack, position, 0x404040, 9);
 	}

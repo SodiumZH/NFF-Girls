@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleSystem;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.math.GuiPos;
 
 public abstract class InventoryMenuNewBaubleTest extends InventoryMenuPreset0
 {
@@ -21,7 +21,7 @@ public abstract class InventoryMenuNewBaubleTest extends InventoryMenuPreset0
 	}
 
 	@Override
-	protected void addBaubleSlot(int slot, IntVec2 pos, String key)
+	protected void addBaubleSlot(int slot, GuiPos pos, String key)
 	{
 		addSlot(new Slot(container, slot, pos.x, pos.y) {			
 			@Override

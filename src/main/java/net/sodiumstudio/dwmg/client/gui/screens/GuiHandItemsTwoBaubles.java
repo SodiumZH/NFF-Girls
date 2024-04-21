@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.entity.player.Inventory;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.math.GuiPos;
 
 public class GuiHandItemsTwoBaubles extends GuiPreset0 {
 
@@ -29,7 +29,7 @@ public class GuiHandItemsTwoBaubles extends GuiPreset0 {
 	}
 	
 	@Override
-	public IntVec2 getEntityRenderPosition()
+	public GuiPos getEntityRenderPosition()
 	{
 		return super.getEntityRenderPosition().addY(0);
 	}
@@ -40,14 +40,14 @@ public class GuiHandItemsTwoBaubles extends GuiPreset0 {
 		return 18;
 	}
 
-	public IntVec2 getMainHandIconPos()
+	public GuiPos getMainHandIconPos()
 	{
-		return IntVec2.valueOf(1, 1);
+		return GuiPos.valueOf(1, 1);
 	}
 	
-	public IntVec2 getOffHandIconPos()
+	public GuiPos getOffHandIconPos()
 	{
-		return IntVec2.valueOf(1, 0);
+		return GuiPos.valueOf(1, 0);
 	}
 	
 }

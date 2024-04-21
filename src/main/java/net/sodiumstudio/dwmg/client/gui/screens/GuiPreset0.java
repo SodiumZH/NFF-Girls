@@ -14,7 +14,7 @@ import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.info.ComponentBuilder;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.math.GuiPos;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 
@@ -35,9 +35,9 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	}
 	
 	@Override
-	public IntVec2 getTextureSize()
+	public GuiPos getTextureSize()
 	{
-		return new IntVec2(512, 256);
+		return new GuiPos(512, 256);
 	}
 	
 	public GuiPreset0(BefriendedInventoryMenu menu, Inventory playerInventory, IBefriendedMob mob) {
@@ -53,9 +53,9 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 		//this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
 	}
 
-	public IntVec2 getEntityRenderPosition()
+	public GuiPos getEntityRenderPosition()
 	{
-		return new IntVec2(52, 80);
+		return new GuiPos(52, 80);
 	}
 	
 	public int getMobRenderScale()
@@ -87,12 +87,12 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	}
 	
 	// Add hp, atk and armor only
-	public void addBasicAttributeInfo(PoseStack poseStack, IntVec2 position, int color, int textRowWidth)
+	public void addBasicAttributeInfo(PoseStack poseStack, GuiPos position, int color, int textRowWidth)
 	{
 		super.addAttributeInfo(poseStack, position, color, textRowWidth);
 	}
 	
-	public void addFavorabilityAndLevelInfo(PoseStack poseStack, IntVec2 position, int color, int textRowWidth)
+	public void addFavorabilityAndLevelInfo(PoseStack poseStack, GuiPos position, int color, int textRowWidth)
 	{
 		font.draw(poseStack, getDefaultLevelInfo(), position.x, position.y, color);
 		position.addY(textRowWidth);
@@ -139,7 +139,7 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	}
 	
 	@Override
-	public void addAttributeInfo(PoseStack poseStack, IntVec2 position, int color, int textRowWidth)
+	public void addAttributeInfo(PoseStack poseStack, GuiPos position, int color, int textRowWidth)
 	{
 		this.addBasicAttributeInfo(poseStack, position, color, textRowWidth);
 		position.addY(textRowWidth * 3);
@@ -147,57 +147,57 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	}
 
 	@Override
-	public void addAttributeInfo(PoseStack poseStack, IntVec2 position)
+	public void addAttributeInfo(PoseStack poseStack, GuiPos position)
 	{
 		addAttributeInfo(poseStack, position, 0x404040, 11);
 	}
 	
 	/** Below are texture-specific, must using gui_preset_0.png */
 	
-	protected IntVec2 screenSize()
+	protected GuiPos screenSize()
 	{
-		return IntVec2.valueOf(224, 183);
+		return GuiPos.valueOf(224, 183);
 	}
 	
-	protected IntVec2 basePos()
+	protected GuiPos basePos()
 	{
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
-		return IntVec2.valueOf(i, j); 
+		return GuiPos.valueOf(i, j); 
 	}
 	
 	// Absolute position from relative position of screen
-	protected IntVec2 absPos(int x, int y)
+	protected GuiPos absPos(int x, int y)
 	{
 		return basePos().add(x, y);
 	}
 	
-	protected IntVec2 absPos(IntVec2 xy)
+	protected GuiPos absPos(GuiPos xy)
 	{
 		return basePos().add(xy);
 	}
 	
-	protected IntVec2 leftRowPos()
+	protected GuiPos leftRowPos()
 	{
 		return absPos(7, 17);
 	}
 	
-	protected IntVec2 rightRowPos()
+	protected GuiPos rightRowPos()
 	{
 		return absPos(79, 17);
 	}
 	
 	protected void addMainScreen(PoseStack poseStack)
 	{
-		this.drawSprite(poseStack, basePos(), IntVec2.zero(), screenSize());
+		this.drawSprite(poseStack, basePos(), GuiPos.zero(), screenSize());
 	}
 	
-	protected void addSlotBg(PoseStack poseStack, int slotIndex, IntVec2 pos, int slotIndexX, int slotIndexY)
+	protected void addSlotBg(PoseStack poseStack, int slotIndex, GuiPos pos, int slotIndexX, int slotIndexY)
 	{
-		this.addSlotBg(poseStack, slotIndex, pos, IntVec2.valueOf(256, 0).coord(slotIndexX, slotIndexY), IntVec2.valueOf(256, 0));
+		this.addSlotBg(poseStack, slotIndex, pos, GuiPos.valueOf(256, 0).coord(slotIndexX, slotIndexY), GuiPos.valueOf(256, 0));
 	}
 
-	protected void addBaubleSlotBg(PoseStack poseStack, int slotIndex, IntVec2 pos)
+	protected void addBaubleSlotBg(PoseStack poseStack, int slotIndex, GuiPos pos)
 	{
 		this.addSlotBg(poseStack, slotIndex, pos, 1, 2);
 	}
@@ -205,39 +205,39 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	@Deprecated
 	public void addMobRenderBox(PoseStack poseStack, int variation)
 	{
-		this.drawSprite(poseStack, absPos(27, 17), IntVec2.valueOf(120 + variation * 50, 183), IntVec2.valueOf(50, 72));
+		this.drawSprite(poseStack, absPos(27, 17), GuiPos.valueOf(120 + variation * 50, 183), GuiPos.valueOf(50, 72));
 	}
 	
 	public void addMobRenderBox(PoseStack poseStack)
 	{
-		this.drawSprite(poseStack, absPos(27, 17), IntVec2.valueOf(120 + this.mobRenderBoxStyle.getIndex() * 50, 183), IntVec2.valueOf(50, 72));
+		this.drawSprite(poseStack, absPos(27, 17), GuiPos.valueOf(120 + this.mobRenderBoxStyle.getIndex() * 50, 183), GuiPos.valueOf(50, 72));
 	}
 	
 	public void addMobRenderBox(PoseStack poseStack, MobRenderBoxStyle style)
 	{
-		this.drawSprite(poseStack, absPos(27, 17), IntVec2.valueOf(120 + style.getIndex() * 50, 183), IntVec2.valueOf(50, 72));
+		this.drawSprite(poseStack, absPos(27, 17), GuiPos.valueOf(120 + style.getIndex() * 50, 183), GuiPos.valueOf(50, 72));
 	}
 	
 	public void addInfoBox(PoseStack poseStack)
 	{
-		this.drawSprite(poseStack, absPos(99, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(120, 72));
+		this.drawSprite(poseStack, absPos(99, 17), GuiPos.valueOf(0, 183), GuiPos.valueOf(120, 72));
 	}
 
-	public IntVec2 infoPos()
+	public GuiPos infoPos()
 	{
 		return absPos(103, 21);
 	}
 	
-	public void renderMob(IntVec2 offset)
+	public void renderMob(GuiPos offset)
 	{
-		IntVec2 pos = absPos(getEntityRenderPosition().add(offset));
+		GuiPos pos = absPos(getEntityRenderPosition().add(offset));
 		InventoryScreen.renderEntityInInventory(pos.x, pos.y, getMobRenderScale(), 
 				(float) pos.x - this.xMouse, (float) (pos.y - 50) - this.yMouse, mob.asMob());
 	}
 	
 	public void renderMob()
 	{
-		renderMob(IntVec2.valueOf(0));
+		renderMob(GuiPos.valueOf(0));
 	}
 	
 	public static enum MobRenderBoxStyle

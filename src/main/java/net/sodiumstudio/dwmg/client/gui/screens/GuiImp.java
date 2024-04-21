@@ -3,7 +3,7 @@ package net.sodiumstudio.dwmg.client.gui.screens;
 import net.minecraft.world.entity.player.Inventory;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.math.GuiPos;
 
 public class GuiImp extends GuiHandItemsTwoBaubles
 {
@@ -14,14 +14,14 @@ public class GuiImp extends GuiHandItemsTwoBaubles
 	}
 
 	@Override
-	public IntVec2 getMainHandIconPos()
+	public GuiPos getMainHandIconPos()
 	{
-		return IntVec2.valueOf(3, 2);
+		return GuiPos.valueOf(3, 2);
 	}
 	
 	@Override
-	public IntVec2 getOffHandIconPos()
+	public GuiPos getOffHandIconPos()
 	{
-		return IntVec2.valueOf(3, 4);
+		return GuiPos.valueOf(3, 4);
 	}
 }
