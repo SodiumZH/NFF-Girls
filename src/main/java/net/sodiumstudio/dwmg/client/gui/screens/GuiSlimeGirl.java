@@ -14,7 +14,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
 import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.info.ComponentBuilder;
 import net.sodiumstudio.nautils.math.HtmlColors;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.math.GuiPos;
 import net.sodiumstudio.nautils.math.LinearColor;
 
 public class GuiSlimeGirl extends GuiPreset0
@@ -47,9 +47,9 @@ public class GuiSlimeGirl extends GuiPreset0
 	public void addInfoBox(GuiGraphics graphics)
 	{
 		//this.blit(graphics, absPos(99, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(120, 72));
-		this.drawSprite(graphics, absPos(81, 17), IntVec2.valueOf(0, 183), IntVec2.valueOf(2, 72));
-		this.drawSprite(graphics, absPos(83, 17), IntVec2.valueOf(2, 183), IntVec2.valueOf(18, 72));
-		this.drawSprite(graphics, absPos(101, 17), IntVec2.valueOf(2, 183), IntVec2.valueOf(118, 72));
+		this.drawSprite(graphics, absPos(81, 17), GuiPos.valueOf(0, 183), GuiPos.valueOf(2, 72));
+		this.drawSprite(graphics, absPos(83, 17), GuiPos.valueOf(2, 183), GuiPos.valueOf(18, 72));
+		this.drawSprite(graphics, absPos(101, 17), GuiPos.valueOf(2, 183), GuiPos.valueOf(118, 72));
 	}
 	
 	public MutableComponent getDefaultColorInfo()
@@ -63,7 +63,7 @@ public class GuiSlimeGirl extends GuiPreset0
 	}
 	
 	@Override
-	public void addFavorabilityAndLevelInfo(GuiGraphics graphics, IntVec2 position, int color, int textRowWidth)
+	public void addFavorabilityAndLevelInfo(GuiGraphics graphics, GuiPos position, int color, int textRowWidth)
 	{
 		graphics.drawString(font, getDefaultLevelAndExpInfo(), position.x, position.y, color, false);
 		position.addY(textRowWidth);
@@ -73,7 +73,7 @@ public class GuiSlimeGirl extends GuiPreset0
 	}
 
 	@Override
-	public IntVec2 infoPos()
+	public GuiPos infoPos()
 	{
 		return absPos(85, 21);
 	}

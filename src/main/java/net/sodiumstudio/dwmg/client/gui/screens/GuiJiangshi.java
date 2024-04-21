@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Inventory;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.math.GuiPos;
 
 public class GuiJiangshi extends GuiPreset0 {
 
@@ -30,7 +30,7 @@ public class GuiJiangshi extends GuiPreset0 {
 	}
 	
 	@Override
-	public IntVec2 getEntityRenderPosition()
+	public GuiPos getEntityRenderPosition()
 	{
 		return super.getEntityRenderPosition().addY(0);
 	}

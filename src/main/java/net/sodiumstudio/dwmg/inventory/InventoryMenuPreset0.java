@@ -13,7 +13,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleSystem;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.math.GuiPos;
 
 /**
  * The inventory menu adapting GuiPreset0
@@ -34,21 +34,21 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 	}
 	
 	@Override
-	protected IntVec2 getPlayerInventoryPosition() {
-		return IntVec2.valueOf(32, 101);
+	protected GuiPos getPlayerInventoryPosition() {
+		return GuiPos.valueOf(32, 101);
 	}
 	
-	protected IntVec2 leftRowPos()
+	protected GuiPos leftRowPos()
 	{
-		return IntVec2.valueOf(8, 18);
+		return GuiPos.valueOf(8, 18);
 	}
 	
-	protected IntVec2 rightRowPos()
+	protected GuiPos rightRowPos()
 	{
-		return IntVec2.valueOf(80, 18);
+		return GuiPos.valueOf(80, 18);
 	}
 	
-	protected void addGeneralSlot(int slotIndex, IntVec2 pos, Predicate<ItemStack> additionalCondition)
+	protected void addGeneralSlot(int slotIndex, GuiPos pos, Predicate<ItemStack> additionalCondition)
 	{
 		addSlot(new Slot(container, slotIndex, pos.x, pos.y) {
 			@Override
@@ -58,7 +58,7 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 		});
 	}
 	
-	protected void addGeneralSlot(int slotIndex, IntVec2 pos, Predicate<ItemStack> additionalCondition, int maxStackSize)
+	protected void addGeneralSlot(int slotIndex, GuiPos pos, Predicate<ItemStack> additionalCondition, int maxStackSize)
 	{
 		addSlot(new Slot(container, slotIndex, pos.x, pos.y) {
 			@Override
@@ -73,7 +73,7 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 		});
 	}
 	
-	protected void addArmorSlot(int slotIndex, IntVec2 pos, EquipmentSlot ArmorType, Predicate<ItemStack> additionalCondition)
+	protected void addArmorSlot(int slotIndex, GuiPos pos, EquipmentSlot ArmorType, Predicate<ItemStack> additionalCondition)
 	{
 		addSlot(new Slot(container, slotIndex, pos.x, pos.y) {
 			@Override
@@ -135,7 +135,7 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 	
 	// ===== 0.x.21 new bauble changed
 	
-	protected void addBaubleSlot(int slot, IntVec2 pos, String key)
+	protected void addBaubleSlot(int slot, GuiPos pos, String key)
 	{
 		addSlot(new Slot(container, slot, pos.x, pos.y) {			
 			@Override
@@ -150,7 +150,7 @@ public abstract class InventoryMenuPreset0 extends BefriendedInventoryMenu
 		});
 	}
 	
-	protected void addBaubleSlotWithAdditionalCondition(int slot, IntVec2 pos, String key, Predicate<ItemStack> additionalCondition)
+	protected void addBaubleSlotWithAdditionalCondition(int slot, GuiPos pos, String key, Predicate<ItemStack> additionalCondition)
 	{
 		addSlot(new Slot(container, slot, pos.x, pos.y) {			
 			@Override

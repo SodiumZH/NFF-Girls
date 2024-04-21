@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Inventory;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.math.GuiPos;
 
 // Gui for mobs with bow shooting attack + secondary weapon + one bouble
 public class GuiBowSecWeaponOneBauble extends GuiPreset0 {
@@ -32,7 +32,7 @@ public class GuiBowSecWeaponOneBauble extends GuiPreset0 {
 		this.addSlotBg(graphics, 8, rightRowPos().slotLeft(1).addX(-2), 2, 0);
 		this.addInfoBox(graphics);
 		this.addAttributeInfo(graphics, infoPos());
-		this.renderMob(graphics, IntVec2.valueOf(0, 3));
+		this.renderMob(graphics, GuiPos.valueOf(0, 3));
 	}
 
 }
