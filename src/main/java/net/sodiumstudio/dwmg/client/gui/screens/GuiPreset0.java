@@ -28,6 +28,8 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	protected int mobRenderScale = 25;
 	@Deprecated
 	protected MobRenderBoxStyle mobRenderBoxStyle = MobRenderBoxStyle.DARK;
+	protected int page = 0;
+	protected int maxPage = 1;
 	
 	@Override
 	public ResourceLocation getTextureLocation() {
@@ -96,9 +98,9 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	public void addFavorabilityAndLevelInfo(GuiGraphics graphics, GuiPos position, int color, int textRowWidth)
 	{
 		graphics.drawString(font, getDefaultLevelInfo(), position.x, position.y, color, false);
-		position.addY(textRowWidth);
+		position = position.addY(textRowWidth);
 		graphics.drawString(font, getDefaultExpInfo(), position.x, position.y, color, false);
-		position.addY(textRowWidth);
+		position = position.addY(textRowWidth);
 		graphics.drawString(font, getDefaultFavInfo(), position.x, position.y, color, false);
 	}
 	
@@ -133,8 +135,8 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	protected MutableComponent getDefaultFavInfo()
 	{
 		IDwmgBefriendedMob bm = (IDwmgBefriendedMob)mob;	
-		String fav = Integer.toString(Mth.floor(bm.getFavorability().getFavorability()));
-		String favmax = Integer.toString(Mth.floor(bm.getFavorability().getMaxFavorability()));
+		String fav = Integer.toString(Mth.floor(bm.getFavorabilityHandler().getFavorability()));
+		String favmax = Integer.toString(Mth.floor(bm.getFavorabilityHandler().getMaxFavorability()));
 		return InfoHelper.createTranslatable("info.dwmg.gui_favorability")
 				.append(InfoHelper.createText(": " + fav + " / " + favmax));
 	}
@@ -143,7 +145,7 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	public void addAttributeInfo(GuiGraphics graphics, GuiPos position, int color, int textRowWidth)
 	{
 		this.addBasicAttributeInfo(graphics, position, color, textRowWidth);
-		position.addY(textRowWidth * 3);
+		position = position.addY(textRowWidth * 3);
 		this.addFavorabilityAndLevelInfo(graphics, position, color, textRowWidth);
 	}
 
