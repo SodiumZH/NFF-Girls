@@ -1,6 +1,5 @@
 package net.sodiumstudio.dwmg.registries;
 
-
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -27,6 +26,7 @@ public class DwmgCapabilities
 		event.register(CUndeadMob.class);
 		event.register(CFavorabilityHandler.class);
 		event.register(CLevelHandler.class);
+		//event.register(CTradeHandler.class);
 	}
 	
 	
