@@ -35,7 +35,7 @@ public class DwmgLevelEvents
 							&& bm.getOwnerUUID().equals(player.getUUID())
 							&& entity.distanceToSqr(player) < 64f)
 					{
-						bm.getFavorability().addFavorability(2f);
+						bm.getFavorabilityHandler().addFavorability(2f);
 					}
 				}
 			}

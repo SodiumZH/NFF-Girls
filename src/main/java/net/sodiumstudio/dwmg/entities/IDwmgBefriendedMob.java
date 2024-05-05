@@ -32,7 +32,7 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 {
 	
 	@DontOverride
-	public default CFavorabilityHandler getFavorability()
+	public default CFavorabilityHandler getFavorabilityHandler()
 	{
 		Wrapped<CFavorabilityHandler> cap = new Wrapped<CFavorabilityHandler>(null);
 		asMob().getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).ifPresent((c) -> 
