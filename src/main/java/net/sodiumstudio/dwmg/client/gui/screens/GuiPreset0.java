@@ -25,31 +25,28 @@ import net.sodiumstudio.nautils.math.IntVec2;
 @OnlyIn(Dist.CLIENT)
 public class GuiPreset0 extends BefriendedGuiScreen {
 	
+	protected static final ResourceLocation DEFAULT_TEXTURE_LOCATION 
+		= new ResourceLocation(Dwmg.MOD_ID, "textures/gui/container/gui_preset_0.png");
+	protected static final GuiPos DEFAULT_TEXTURE_SIZE = new GuiPos(512, 256);
 	protected int mobRenderScale = 25;
 	@Deprecated
 	protected MobRenderBoxStyle mobRenderBoxStyle = MobRenderBoxStyle.DARK;
 	protected int page = 0;
 	protected int maxPage = 1;
 	
-	@Override
-	public ResourceLocation getTextureLocation() {
-		return new ResourceLocation(Dwmg.MOD_ID,
-			"textures/gui/container/gui_preset_0.png");
-	}
-	
-	@Override
-	public GuiPos getTextureSize()
-	{
-		return new GuiPos(512, 256);
-	}
-	
 	public GuiPreset0(BefriendedInventoryMenu menu, Inventory playerInventory, IBefriendedMob mob) {
 		super(menu, playerInventory, mob, true);
 		imageWidth = 224;
 		imageHeight = 183;
 		inventoryLabelY = imageHeight - 93;
+		this.setToDefaultTexture();
 	}
 
+	protected void setToDefaultTexture()
+	{
+		this.setTexture(DEFAULT_TEXTURE_LOCATION, DEFAULT_TEXTURE_SIZE);
+	}
+	
 	@Override
 	protected void init() {
 		super.init();
