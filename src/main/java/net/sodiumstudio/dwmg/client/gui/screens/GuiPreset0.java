@@ -27,6 +27,8 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	protected int mobRenderScale = 25;
 	@Deprecated
 	protected MobRenderBoxStyle mobRenderBoxStyle = MobRenderBoxStyle.DARK;
+	protected int page = 0;
+	protected int maxPage = 1;
 	
 	@Override
 	public ResourceLocation getTextureLocation() {
@@ -94,11 +96,12 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	
 	public void addFavorabilityAndLevelInfo(PoseStack poseStack, GuiPos position, int color, int textRowWidth)
 	{
-		font.draw(poseStack, getDefaultLevelInfo(), position.x, position.y, color);
-		position.addY(textRowWidth);
-		font.draw(poseStack, getDefaultExpInfo(), position.x, position.y, color);
-		position.addY(textRowWidth);
-		font.draw(poseStack, getDefaultFavInfo(), position.x, position.y, color);
+		GuiPos pos = position;
+		font.draw(poseStack, getDefaultLevelInfo(), pos.x, pos.y, color);
+		pos = pos.addY(textRowWidth);
+		font.draw(poseStack, getDefaultExpInfo(), pos.x, pos.y, color);
+		pos = pos.addY(textRowWidth);
+		font.draw(poseStack, getDefaultFavInfo(), pos.x, pos.y, color);
 	}
 	
 	protected MutableComponent getDefaultLevelAndExpInfo()
@@ -132,8 +135,8 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	protected MutableComponent getDefaultFavInfo()
 	{
 		IDwmgBefriendedMob bm = (IDwmgBefriendedMob)mob;	
-		String fav = Integer.toString(Mth.floor(bm.getFavorability().getFavorability()));
-		String favmax = Integer.toString(Mth.floor(bm.getFavorability().getMaxFavorability()));
+		String fav = Integer.toString(Mth.floor(bm.getFavorabilityHandler().getFavorability()));
+		String favmax = Integer.toString(Mth.floor(bm.getFavorabilityHandler().getMaxFavorability()));
 		return InfoHelper.createTranslatable("info.dwmg.gui_favorability")
 				.append(InfoHelper.createText(": " + fav + " / " + favmax));
 	}
@@ -142,7 +145,7 @@ public class GuiPreset0 extends BefriendedGuiScreen {
 	public void addAttributeInfo(PoseStack poseStack, GuiPos position, int color, int textRowWidth)
 	{
 		this.addBasicAttributeInfo(poseStack, position, color, textRowWidth);
-		position.addY(textRowWidth * 3);
+		position = position.addY(textRowWidth * 3);
 		this.addFavorabilityAndLevelInfo(poseStack, position, color, textRowWidth);
 	}
 
