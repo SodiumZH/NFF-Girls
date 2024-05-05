@@ -620,9 +620,9 @@ public class DwmgEntityEvents
 					}
 				}
 				// Sync trade
-				mob.getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(cap -> {
+				/*mob.getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(cap -> {
 					cap.sync();
-				});
+				});*/
 			}
 			/** Send overlap event */
 			if (event.getEntity() instanceof IDwmgBefriendedMob bm)
@@ -1196,6 +1196,10 @@ public class DwmgEntityEvents
 	public static void onBefriended(MobBefriendedEvent event)
 	{
 		event.mobBefriended.asMob().setCustomName(null);
+		/*event.mobBefriended.asMob().getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(c -> 
+		{
+			c.generateEntries();
+		});*/ 
 	}
 	
 	@SubscribeEvent
