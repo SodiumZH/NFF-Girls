@@ -296,11 +296,11 @@ public class DwmgEntityEvents
 			if (event.getDamageSource().getEntity() != null
 					&& event.getDamageSource().getEntity() == bm.getOwner()
 					&& event.getDamageSource() != DamageSource.OUT_OF_WORLD)
-				bm.getFavorability().setFavorability(0);
+				bm.getFavorabilityHandler().setFavorability(0);
 			else if (bm.asMob().distanceToSqr(bm.getOwner()) < 64d 
 					&& bm.asMob().hasLineOfSight(bm.getOwner())
 					&& event.getDamageSource() != DamageSource.OUT_OF_WORLD)
-				bm.getFavorability().addFavorability(-20);
+				bm.getFavorabilityHandler().addFavorability(-20);
 			// EXP loses by a half on death
 			// As respawner construction (in befriendmobs) is after posting BefriendedDeathEvent, it can be set here
 			bm.getLevelHandler().setExp(bm.getLevelHandler().getExp() / 2);
@@ -721,7 +721,7 @@ public class DwmgEntityEvents
 					&& mob.getTarget() != null
 					&& mob.getTarget() == bm.getOwner())
 			{
-				bm.getFavorability().addFavorability(0.5f);
+				bm.getFavorabilityHandler().addFavorability(0.5f);
 			}
 			// When player killed a mob targeting BM, fav + 1
 			if (event.getSource().getEntity() != null
@@ -730,7 +730,7 @@ public class DwmgEntityEvents
 					&& mob.getTarget() instanceof IDwmgBefriendedMob bm
 					&& bm.getOwner() == player)
 			{
-				bm.getFavorability().addFavorability(1f);
+				bm.getFavorabilityHandler().addFavorability(1f);
 			}
 			
 		}
@@ -892,7 +892,7 @@ public class DwmgEntityEvents
 						&& bm.asMob().isAlive()
 						&& bm.getOwner() == player)
 				{
-					bm.getFavorability().addFavorability(event.getAmount() / 50f);
+					bm.getFavorabilityHandler().addFavorability(event.getAmount() / 50f);
 				}
 				// On BM attack a mob attacking the player
 				if (source instanceof IDwmgBefriendedMob bm
@@ -901,7 +901,7 @@ public class DwmgEntityEvents
 						&& bm.asMob().isAlive()
 						&& bm.getOwner() == player)
 				{
-					bm.getFavorability().addFavorability(event.getAmount() / 100f);
+					bm.getFavorabilityHandler().addFavorability(event.getAmount() / 100f);
 				}
 				// If owner attacked friendly mob, lose favorability depending on damage; no lost if < 0.5
 				if (event.getEntity() instanceof IDwmgBefriendedMob bm 

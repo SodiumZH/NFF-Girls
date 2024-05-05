@@ -336,7 +336,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 				&& this.tickCount % 5 == 0)	// Invoke 4 times per second
 			
 		{
-			this.getFavorability().addFavorability(1f / 240f);	// 1 per minute
+			this.getFavorabilityHandler().addFavorability(1f / 240f);	// 1 per minute
 		}
 	}
 	

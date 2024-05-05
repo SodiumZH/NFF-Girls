@@ -8,7 +8,7 @@ import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
-public class ClientGamePacketHandler
+public class DwmgClientGamePacketHandler
 {
 
 	public static void handleFavorabilityHandlerSync(CFavorabilityHandler.SyncPacket packet, ClientGamePacketListener listener)

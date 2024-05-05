@@ -15,7 +15,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.network.PacketDistributor;
-import net.sodiumstudio.dwmg.network.ClientGamePacketHandler;
+import net.sodiumstudio.dwmg.network.DwmgClientGamePacketHandler;
 import net.sodiumstudio.dwmg.network.DwmgChannels;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
@@ -285,7 +285,7 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 		@Override
 		public void handle(ClientGamePacketListener handler) 
 		{
-			ClientGamePacketHandler.handleLevelHandlerSync(this, handler);	
+			DwmgClientGamePacketHandler.handleLevelHandlerSync(this, handler);	
 		}	
 	}
 	
