@@ -47,7 +47,7 @@ public class DwmgSubsystemEvents
 	{
 		if (event.living instanceof IDwmgBefriendedMob bm)
 		{
-			bm.getFavorability().addFavorability(event.healedValue / 50);
+			bm.getFavorabilityHandler().addFavorability(event.healedValue / 50);
 		}
 	}
 	

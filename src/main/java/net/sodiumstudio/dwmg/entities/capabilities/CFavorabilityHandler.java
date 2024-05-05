@@ -20,7 +20,7 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.network.PacketDistributor;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.nautils.Wrapped;
-import net.sodiumstudio.dwmg.network.ClientGamePacketHandler;
+import net.sodiumstudio.dwmg.network.DwmgClientGamePacketHandler;
 import net.sodiumstudio.dwmg.network.DwmgChannels;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
@@ -297,7 +297,7 @@ public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 		@Override
 		public void handle(ClientGamePacketListener handler) 
 		{
-			ClientGamePacketHandler.handleFavorabilityHandlerSync(this, handler);
+			DwmgClientGamePacketHandler.handleFavorabilityHandlerSync(this, handler);
 		}	
 	}
 	
