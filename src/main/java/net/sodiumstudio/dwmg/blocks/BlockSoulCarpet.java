@@ -29,7 +29,7 @@ public class BlockSoulCarpet extends CarpetBlock
 		if (!level.isClientSide && entityIn != null && entityIn instanceof LivingEntity)
 		{
 			LivingEntity livingentity = (LivingEntity) entityIn;
-			EntityHelper.addEffectIfNotHaving(livingentity, new MobEffectInstance(DwmgEffects.UNDEAD_AFFINITY.get(), 3, 0, true, true));
+			EntityHelper.addEffectIfNotHaving(livingentity, new MobEffectInstance(DwmgEffects.UNDEAD_AFFINITY.get(), 20, 0, true, true));
 			// If player has <2s Wither I (usually brought by Necromancer's Hat), remove it
 			if (livingentity.hasEffect(DwmgEffects.NECROMANCER_WITHER.get()) 
 					&& livingentity.getEffect(DwmgEffects.NECROMANCER_WITHER.get()).getAmplifier() == 0
