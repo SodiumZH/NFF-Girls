@@ -144,7 +144,7 @@ public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 		@Override
 		public void sync(ServerPlayer toPlayer)
 		{
-			SyncPacket packet = new SyncPacket(mob.getId(), getFavorability(), getMaxFavorability());
+			ClientboundSyncPacket packet = new ClientboundSyncPacket(mob.getId(), getFavorability(), getMaxFavorability());
 			DwmgChannels.SYNC_CHANNEL.send(PacketDistributor.PLAYER.with(() -> toPlayer), packet);
 		}
 	}
@@ -266,19 +266,19 @@ public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 	
 	// ====================================
 	
-	public static class SyncPacket implements Packet<ClientGamePacketListener>
+	public static class ClientboundSyncPacket implements Packet<ClientGamePacketListener>
 	{
 		public final int entityId;
 		public final float favorability;
 		public final float maxFavorability;
 		
-		public SyncPacket(int entityId, float favorability, float maxFavorability) {
+		public ClientboundSyncPacket(int entityId, float favorability, float maxFavorability) {
 			this.entityId = entityId;
 			this.favorability = favorability;
 			this.maxFavorability = maxFavorability;
 		}
 
-		public SyncPacket(FriendlyByteBuf buffer) {
+		public ClientboundSyncPacket(FriendlyByteBuf buffer) {
 			this.entityId = buffer.readInt();
 			this.favorability = buffer.readFloat();
 			this.maxFavorability = buffer.readFloat();
