@@ -153,7 +153,7 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 
 		@Override
 		public void sync(ServerPlayer toPlayer) {
-			SyncPacket packet = new SyncPacket(mob.getId(), getExp());
+			ClientboundSyncPacket packet = new ClientboundSyncPacket(mob.getId(), getExp());
 			DwmgChannels.SYNC_CHANNEL.send(PacketDistributor.PLAYER.with(() -> toPlayer), packet);
 		}		
 	}
@@ -259,17 +259,17 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 
 	// ====================================
 	
-	public static class SyncPacket implements Packet<ClientGamePacketListener>
+	public static class ClientboundSyncPacket implements Packet<ClientGamePacketListener>
 	{
 		public final int entityId;
 		public final long exp;
 		
-		public SyncPacket(int entityId, long exp) {
+		public ClientboundSyncPacket(int entityId, long exp) {
 			this.entityId = entityId;
 			this.exp = exp;
 		}
 
-		public SyncPacket(FriendlyByteBuf buffer) {
+		public ClientboundSyncPacket(FriendlyByteBuf buffer) {
 			this.entityId = buffer.readInt();
 			this.exp = buffer.readLong();
 		}
