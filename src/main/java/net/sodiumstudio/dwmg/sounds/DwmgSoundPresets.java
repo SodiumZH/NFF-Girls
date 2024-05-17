@@ -13,14 +13,14 @@ public class DwmgSoundPresets
 	
 	public static SoundEvent generalAmbient(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.Sound.AMBIENT_SOUND_CHANCE > rnd.nextDouble())
+		if (rnd.nextDouble() > DwmgConfigs.ValueCache.Sound.AMBIENT_SOUND_CHANCE)
 			return null;
 		return defaultSound;
 	}
 	
 	public static SoundEvent zombieAmbient(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.Sound.AMBIENT_SOUND_CHANCE < rnd.nextDouble())
+		if (rnd.nextDouble() > DwmgConfigs.ValueCache.Sound.AMBIENT_SOUND_CHANCE)
 			return null;
 		if (DwmgConfigs.ValueCache.Sound.ZOMBIES_NO_AMBIENT_SOUND)
 			return null;
@@ -45,7 +45,7 @@ public class DwmgSoundPresets
 	
 	public static SoundEvent skeletonAmbient(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.Sound.AMBIENT_SOUND_CHANCE > rnd.nextDouble())
+		if (rnd.nextDouble() > DwmgConfigs.ValueCache.Sound.AMBIENT_SOUND_CHANCE)
 			return null;
 		if (DwmgConfigs.ValueCache.Sound.SKELETONS_NO_AMBIENT_SOUND)
 			return null;
@@ -70,7 +70,7 @@ public class DwmgSoundPresets
 	
 	public static SoundEvent ghastAmbient(SoundEvent defaultSound)
 	{
-		if (DwmgConfigs.ValueCache.Sound.AMBIENT_SOUND_CHANCE > rnd.nextDouble())
+		if (rnd.nextDouble() > DwmgConfigs.ValueCache.Sound.AMBIENT_SOUND_CHANCE)
 			return null;
 		if (DwmgConfigs.ValueCache.Sound.GHASTS_NO_AMBIENT_SOUND)
 			return null;
