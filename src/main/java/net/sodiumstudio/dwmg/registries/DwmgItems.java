@@ -147,14 +147,14 @@ public class DwmgItems {
 	/************************************/
 	/* Item Registering, with constants */ 
 	/************************************/	
-	
-	
+
 	// Crafting intermediates
 	public static final RegistryObject<Item> DEATH_CRYSTAL = registerItem("death_crystal", new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final RegistryObject<Item> DEATH_CRYSTAL_POWDER = registerItem("death_crystal_powder");
 	public static final RegistryObject<Item> SOUL_FLOUR = registerItem("soul_flour");
 	public static final RegistryObject<Item> SOUL_CLOTH = registerItem("soul_cloth");
 	public static final RegistryObject<Item> ENDER_FRUIT_JAM = registerItem("ender_fruit_jam", new Item.Properties().rarity(Rarity.RARE));
+	public static final RegistryObject<Item> EVIL_GEM = ITEMS.register("evil_gem", () -> new Item(new Item.Properties()));
 
 	// Foods
 	public static final RegistryObject<Item> SOUL_CAKE_SLICE = registerItem("soul_cake_slice", new Item.Properties().food(DwmgFoodProperties.SOUL_CAKE_SLICE).rarity(Rarity.UNCOMMON));
@@ -258,7 +258,8 @@ public class DwmgItems {
 	public static final RegistryObject<MobRespawnerItem> MOB_STORAGE_POD = ITEMS.register("mob_storage_pod", () -> new DwmgRespawnerItem(new Item.Properties()));
 	public static final RegistryObject<MobCatcherItem> EMPTY_MOB_STORAGE_POD = ITEMS.register("empty_mob_storage_pod", () -> new MobCatcherItem(new Item.Properties(), MOB_STORAGE_POD.get()).canCatchCondition(
 			((m, p) -> (m instanceof IDwmgBefriendedMob bm && bm.getOwnerUUID().equals(p.getUUID())))));
-
+	
+	
 	// Technical
 	public static final RegistryObject<Item> TAB_ICON = ITEMS.register("tab_icon", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> GIFT_UNKNOWN_ICON = ITEMS.register("gift_unknown_icon", () -> new Item(new Item.Properties()));
@@ -276,6 +277,7 @@ public class DwmgItems {
 		NO_TAB.add(MOB_STORAGE_POD);
 		NO_TAB.add(TAB_ICON);
 		NO_TAB.add(BEFRIENDING_PROGRESS_PROBE);
+		NO_TAB.add(EXP_MODIFIER);
     }
 
 	/* Item register end */
