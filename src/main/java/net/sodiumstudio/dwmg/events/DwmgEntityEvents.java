@@ -590,10 +590,6 @@ public class DwmgEntityEvents
 						});
 					}
 				}
-				// Sync trade
-				mob.getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(cap -> {
-					cap.sync();
-				});
 			}
 			/** Send overlap event */
 			if (event.getEntity() instanceof IDwmgBefriendedMob bm)
