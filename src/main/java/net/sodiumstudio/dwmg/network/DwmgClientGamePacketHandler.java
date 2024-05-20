@@ -11,7 +11,7 @@ import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 public class DwmgClientGamePacketHandler
 {
 
-	public static void handleFavorabilityHandlerSync(CFavorabilityHandler.ClientboundSyncPacket packet, ClientGamePacketListener listener)
+	public static void handleFavorabilityHandlerSync(CFavorabilityHandler.SyncPacket packet, ClientGamePacketListener listener)
 	{
 		@SuppressWarnings("resource")
 		Minecraft mc = Minecraft.getInstance();
@@ -28,7 +28,7 @@ public class DwmgClientGamePacketHandler
 		}
 	}
 	
-	public static void handleLevelHandlerSync(CLevelHandler.ClientboundSyncPacket packet, ClientGamePacketListener listener) 
+	public static void handleLevelHandlerSync(CLevelHandler.SyncPacket packet, ClientGamePacketListener listener) 
 	{
 		@SuppressWarnings("resource")
 		Minecraft mc = Minecraft.getInstance();
