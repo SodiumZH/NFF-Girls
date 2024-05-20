@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.capability.CAttributeMonitor;
 import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
+import net.sodiumstudio.nautils.TagHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
@@ -40,8 +41,6 @@ public class DwmgCapabilityAttachment {
 			{
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_favorability"), new CFavorabilityHandler.Prvd(bm.asMob()));
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_level"), new CLevelHandler.Prvd(bm.asMob()));
-				/*if (DwmgTradeAPI.containsMob(bm.asMob()))
-					event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_trade"), new CTradeHandler.Prvd(bm.asMob()));	*/
 			}
 		}
 	}
