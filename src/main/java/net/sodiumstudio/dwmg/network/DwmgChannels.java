@@ -22,8 +22,8 @@ public class DwmgChannels {
     @SuppressWarnings("resource")
 	public static void registerMessage() {
     	SYNC_CHANNEL = NetworkHelper.newChannel(Dwmg.MOD_ID, "dwmg_sync_channel");
-    	NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, CFavorabilityHandler.SyncPacket.class);
-    	NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, CLevelHandler.SyncPacket.class);
+    	NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, CFavorabilityHandler.ClientboundSyncPacket.class);
+    	NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, CLevelHandler.ClientboundSyncPacket.class);
     }
     
     @SubscribeEvent
