@@ -42,7 +42,7 @@ import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
-import net.sodiumstudio.nautils.ReflectHelper;
+import net.sodiumstudio.nautils.NaReflectionUtils;
 
 public class HmagGlaryadEntity extends GlaryadEntity implements IDwmgBefriendedMob 
 {
@@ -102,7 +102,7 @@ public class HmagGlaryadEntity extends GlaryadEntity implements IDwmgBefriendedM
 	{
 		if (!this.level().isClientSide)
 			// This blocks alerting others
-			ReflectHelper.forceSet(this, GlaryadEntity.class, "ticksUntilNextAlert", 999);
+			NaReflectionUtils.forceSet(this, GlaryadEntity.class, "ticksUntilNextAlert", 999);
 		super.aiStep();
 	}
 	

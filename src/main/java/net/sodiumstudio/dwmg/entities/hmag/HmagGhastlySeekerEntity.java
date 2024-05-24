@@ -54,7 +54,7 @@ import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
-import net.sodiumstudio.nautils.ReflectHelper;
+import net.sodiumstudio.nautils.NaReflectionUtils;
 
 /**
  * NOT IMPLEMENTED YET
@@ -115,7 +115,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 
 	public void setExplosionPower(int value)
 	{
-		ReflectHelper.forceSet(this, GhastlySeekerEntity.class, "explosionPower", value);
+		NaReflectionUtils.forceSet(this, GhastlySeekerEntity.class, "explosionPower", value);
 	}
 	
 	/* AI */
@@ -370,7 +370,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 		@Override
 		public void onStop()
 		{
-			ReflectHelper.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", 
+			NaReflectionUtils.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", 
 					int.class, -1);
 		}
 
@@ -432,7 +432,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 			{
 				--this.attackTimer;
 			}
-			ReflectHelper.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", int.class, this.attackTimer < 0 ? -1 : this.attackTimer);
+			NaReflectionUtils.forceInvoke(parent, GhastlySeekerEntity.class, "setAttackingTime", int.class, this.attackTimer < 0 ? -1 : this.attackTimer);
 		}
 	}
 

@@ -2,7 +2,7 @@ package net.sodiumstudio.dwmg.util;
 
 import java.util.function.Supplier;
 
-import net.sodiumstudio.nautils.ReflectHelper;
+import net.sodiumstudio.nautils.NaReflectionUtils;
 
 public class DwmgMiscUtil
 {
