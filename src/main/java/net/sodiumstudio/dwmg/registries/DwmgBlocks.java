@@ -64,6 +64,7 @@ public class DwmgBlocks {
 				.lightLevel(bs -> 15)));
 */	
 
+
 	/* Block Items */
 	public static final RegistryObject<BlockItem> ITEM_SOUL_CARPET = regBlockItem("soul_carpet", SOUL_CARPET, new Item.Properties());
 	public static final RegistryObject<BlockItem> ITEM_SOUL_CAKE = regBlockItem("soul_cake", SOUL_CAKE, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
