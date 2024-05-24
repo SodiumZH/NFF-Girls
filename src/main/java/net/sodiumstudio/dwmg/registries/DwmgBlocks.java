@@ -59,16 +59,13 @@ public class DwmgBlocks {
 				.lightLevel(bs -> 15)));
 	
 	// Technical
-	public static final RegistryObject<Block> GIFT_BOX_ICON_BLOCK = DwmgBlocks.BLOCKS.register("gift_box_icon_block", () -> new Block(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_GREEN)));
+	//public static final RegistryObject<Block> GIFT_BOX_ICON_BLOCK = DwmgBlocks.BLOCKS.register("gift_box_icon_block", () -> new Block(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_GREEN)));
 
 	/* Block Items */
 	public static final RegistryObject<BlockItem> ITEM_SOUL_CARPET = regBlockItem("soul_carpet", SOUL_CARPET, new Item.Properties());
 	public static final RegistryObject<BlockItem> ITEM_SOUL_CAKE = regBlockItem("soul_cake", SOUL_CAKE, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
 	public static final RegistryObject<BlockItem> ITEM_LUMINOUS_TERRACOTTA = regBlockItem("luminous_terracotta", LUMINOUS_TERRACOTTA, new Item.Properties());
 	public static final RegistryObject<BlockItem> ITEM_ENHANCED_LUMINOUS_TERRACOTTA = regBlockItem("enhanced_luminous_terracotta", ENHANCED_LUMINOUS_TERRACOTTA, new Item.Properties());
-	// Technical
-	public static final RegistryObject<BlockItem> GIFT_BOX_ICON = DwmgItems.ITEMS.register("gift_box_icon", () -> new BlockItem(GIFT_BOX_ICON_BLOCK.get(), new Item.Properties()));
-	
 	
 	// Register to event bus
 	public static void register(IEventBus eventBus) {
