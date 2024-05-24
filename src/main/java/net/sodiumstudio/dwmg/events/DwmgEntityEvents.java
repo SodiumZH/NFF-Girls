@@ -120,7 +120,8 @@ import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.NaMiscUtils;
 import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.NbtHelper;
-import net.sodiumstudio.nautils.ReflectHelper;
+import net.sodiumstudio.nautils.NaReflectionUtils;
+import net.sodiumstudio.nautils.TagHelper;
 import net.sodiumstudio.nautils.Wrapped;
 import net.sodiumstudio.nautils.events.ItemEntityHurtEvent;
 import net.sodiumstudio.nautils.events.LivingEntitySweepHurtEvent;
@@ -659,7 +660,7 @@ public class DwmgEntityEvents
 		{
 		      if (!slime.isTiny() && slime.isEffectiveAi() && slime.getTarget() == event.thisMob.asMob()) 
 		      {
-		    	  ReflectHelper.forceInvoke(slime, Slime.class, "m_33637_", 	// Slime#dealDamage()
+		    	  NaReflectionUtils.forceInvoke(slime, Slime.class, "m_33637_", 	// Slime#dealDamage()
 		    			  LivingEntity.class, event.thisMob.asMob());
 		      }
 		}
@@ -719,7 +720,7 @@ public class DwmgEntityEvents
 		{
 			/** After this, vanilla will use LivingEntity#lastHurtByPlayerTime to check if it's killed by player
 			 * so force set this to make it drop player-kill loot */
-			ReflectHelper.forceSet(event.getEntityLiving(), LivingEntity.class, "f_20889_",  1);	// LivingEntity.lastHurtByPlayerTime
+			NaReflectionUtils.forceSet(event.getEntityLiving(), LivingEntity.class, "f_20889_",  1);	// LivingEntity.lastHurtByPlayerTime
 			/** For mobs with tag "use_fortune_as_looting", Fortune enchantment is applied in place of Looting */
 			if (bm.asMob().getType().is(DwmgTags.USES_FORTUNE_AS_LOOTING) && !bm.asMob().getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
 			{

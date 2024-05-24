@@ -23,7 +23,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.PlayMessages;
 import net.sodiumstudio.befriendmobs.entity.befriending.registry.BefriendingTypeRegistry;
 import net.sodiumstudio.nautils.EntityHelper;
-import net.sodiumstudio.nautils.ReflectHelper;
+import net.sodiumstudio.nautils.NaReflectionUtils;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerNecroticReaper;
 import net.sodiumstudio.dwmg.entities.hmag.HmagNecroticReaperEntity;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
@@ -42,7 +42,7 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 	public NecromancerMagicBulletEntity(Level worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ)
 	{
 		super(worldIn, shooter, accelX, accelY, accelZ);
-		ReflectHelper.forceSet(this, Entity.class, "f_19847_", DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get());	// Entity.type
+		NaReflectionUtils.forceSet(this, Entity.class, "f_19847_", DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get());	// Entity.type
 		this.setVariant(1);
 	}
 
@@ -50,7 +50,7 @@ public class NecromancerMagicBulletEntity extends MagicBulletEntity
 	public NecromancerMagicBulletEntity(Level worldIn, double x, double y, double z, double accelX, double accelY, double accelZ)
 	{
 		super(worldIn, x, y, z, accelX, accelY, accelZ);
-		ReflectHelper.forceSet(this, Entity.class, "f_19847_", DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get());	// Entity.type
+		NaReflectionUtils.forceSet(this, Entity.class, "f_19847_", DwmgEntityTypes.NECROMANCER_MAGIC_BULLET.get());	// Entity.type
 		this.setVariant(1);
 	}
 
