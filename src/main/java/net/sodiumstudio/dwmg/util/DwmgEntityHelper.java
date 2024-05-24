@@ -22,7 +22,7 @@ import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedSunSensitiveMob;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.nautils.EntityHelper;
-import net.sodiumstudio.nautils.ReflectHelper;
+import net.sodiumstudio.nautils.NaReflectionUtils;
 import net.sodiumstudio.nautils.TagHelper;
 
 public class DwmgEntityHelper
@@ -73,10 +73,10 @@ public class DwmgEntityHelper
 		switch (slot.getType())
 		{
 		case HAND:
-			slotList = (NonNullList<ItemStack>) ReflectHelper.forceGet(mob, Mob.class, "f_21350_");	// Mob.handItems
+			slotList = NaReflectionUtils.forceGet(mob, Mob.class, "f_21350_").cast();	// Mob.handItems
 			break;
 		case ARMOR:
-			slotList = (NonNullList<ItemStack>) ReflectHelper.forceGet(mob, Mob.class, "f_21351_");	// Mob.armorItems
+			slotList = NaReflectionUtils.forceGet(mob, Mob.class, "f_21351_").cast();	// Mob.armorItems
 		}
 		if (slotList != null)
 			slotList.set(slot.getIndex(), item);

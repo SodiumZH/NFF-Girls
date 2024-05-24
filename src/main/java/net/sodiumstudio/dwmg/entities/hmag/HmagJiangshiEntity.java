@@ -47,7 +47,7 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.EntityHelper;
-import net.sodiumstudio.nautils.ReflectHelper;
+import net.sodiumstudio.nautils.NaReflectionUtils;
 
 public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriendedSunSensitiveMob
 {

@@ -66,7 +66,6 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.EntityHelper;
-import net.sodiumstudio.nautils.ReflectHelper;
 
 public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedSunSensitiveMob
 {
