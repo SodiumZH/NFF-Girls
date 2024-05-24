@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "dwmg:evil_gem"
+    }
+  ],
+  "result": {
+    "item": "hmag:evil_crystal_fragment",
+    "count": 4
+  }
+}
