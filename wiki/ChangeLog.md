@@ -1,5 +1,13 @@
 # Change Log
 
+### 0.x.23
+
+Rearranged the info of Slime Girls in the GUI to prevent from getting out of the box.
+
+Increased the durability of Undead Affinity from Soul Carpet from 0.15 s to 1.00 s, so that jumping will not interrupt the effect.
+
+Fixed some mobs getting silent when the configured ambient sound chance is 1.0. Now for all mobs 0.0 is complete silence and 1.0 is normal.
+
 ### 0.x.22
 
 Since this version until the final release, BefriendMobs Framework will be embedded in the dwmg jar. Now there's no need to manually add BefriendMobs into the modpack.
