@@ -17,6 +17,7 @@ import net.sodiumstudio.nautils.TagHelper;
 import net.sodiumstudio.nautils.entity.vanillatrade.CVanillaMerchant;
 import net.sodiumstudio.nautils.entity.vanillatrade.VanillaTradeRegistry;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobProvider;
@@ -48,10 +49,10 @@ public class DwmgCapabilityAttachment {
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_favorability"), new CFavorabilityHandler.Prvd(bm.asMob()));
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_level"), new CLevelHandler.Prvd(bm.asMob()));
 			}
-			if (living instanceof Mob mob && VanillaTradeRegistry.contains(mob.getType()))
+			if (living instanceof IDwmgBefriendedMob bm && VanillaTradeRegistry.contains(bm.asMob().getType()))
 			{
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_trade"), 
-						new CDwmgTradeHandler.Prvd(mob, DwmgCapabilities.CAP_TRADE_HANDLER));
+						new CDwmgTradeHandler.Prvd(bm, DwmgCapabilities.CAP_TRADE_HANDLER));
 			}
 		}
 	}
