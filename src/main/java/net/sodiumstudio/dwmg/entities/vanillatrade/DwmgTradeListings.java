@@ -9,28 +9,55 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 public abstract class DwmgTradeListings
 {
 
-	public static VillagerTrades.ItemListing listing(ItemStack baseCostA, int minCostCount, int maxCostCountExclude, ItemStack costB, ItemStack result, int maxUses, int xp, float priceMultiplier)
+	/** Full listing */
+	public static VillagerTrades.ItemListing listing(
+			ItemStack baseCostA, int minCostA, int maxCostAEx, 
+			ItemStack costB, int minCostB, int maxCostBEx,
+			ItemStack result, int minResult, int maxResultEx,
+			int maxUses, int xp, float priceMultiplier)
 	{
 		return (entity, rnd) -> {
-			ItemStack costA = baseCostA.copy();
-			costA.setCount(rnd.nextInt(minCostCount, maxCostCountExclude));
-			return new MerchantOffer(costA, costB, result, 0, maxUses, xp, priceMultiplier);
+			ItemStack a = baseCostA.copy();
+			a.setCount(rnd.nextInt(minCostA, maxCostAEx));
+			ItemStack b = costB.copy();
+			if (!b.isEmpty())
+				b.setCount(rnd.nextInt(minCostB, maxCostBEx));
+			ItemStack r = result.copy();
+			r.setCount(rnd.nextInt(minResult, maxResultEx));
+			return new MerchantOffer(a, b, r, 0, maxUses, xp, priceMultiplier);
 		};
 	}
 	
-	public static VillagerTrades.ItemListing buys(Item buys, int minCount, int maxCountEx, int maxUses)
+	/** Listing without B */
+	public static VillagerTrades.ItemListing listing(
+			ItemStack baseCostA, int minCostA, int maxCostAEx, 
+			ItemStack result, int minResult, int maxResultEx,
+			int maxUses, int xp, float priceMultiplier)
 	{
-		return listing(buys.getDefaultInstance(), minCount, maxCountEx, ItemStack.EMPTY, new ItemStack(DwmgItems.EVIL_GEM.get()), maxUses, 0, 0.05f);
+		return listing(baseCostA, minCostA, maxCostAEx, ItemStack.EMPTY, 0, 1, result, minResult, maxResultEx, maxUses, xp, priceMultiplier);
 	}
 	
-	public static VillagerTrades.ItemListing sells(ItemStack sells, int minCount, int maxCountEx, int maxUses)
+	/** Buys player's item with Evil Gem */
+	public static VillagerTrades.ItemListing buys(ItemStack buys, int minCount, int maxCountEx, int minPrice, int maxPriceEx, int maxUses)
 	{
-		return listing(DwmgItems.EVIL_GEM.get().getDefaultInstance(), minCount, maxCountEx, ItemStack.EMPTY, sells.copy(), maxUses, 0, 0.05f);
+		return listing(buys, minCount, maxCountEx, new ItemStack(DwmgItems.EVIL_GEM.get()), minPrice, maxPriceEx, maxUses, 0, 0.05f);
 	}
 	
-	public static VillagerTrades.ItemListing sells(Item sells, int minCount, int maxCountEx, int maxUses)
+	/** Buys player's item with Evil Gem */
+	public static VillagerTrades.ItemListing buys(Item buys, int minCount, int maxCountEx, int minPrice, int maxPriceEx, int maxUses)
 	{
-		return sells(sells.getDefaultInstance(), minCount, maxCountEx, maxUses);
+		return buys(buys.getDefaultInstance(), minCount, maxCountEx, minPrice, maxPriceEx, maxUses);
+	}
+	
+	/** Sell item to player with Evil Gem */
+	public static VillagerTrades.ItemListing sells(ItemStack sells, int minCount, int maxCountEx, int minPrice, int maxPriceEx, int maxUses)
+	{
+		return listing(DwmgItems.EVIL_GEM.get().getDefaultInstance(), minPrice, maxPriceEx, sells, minCount, maxCountEx, maxUses, 0, 0.05f);
+	}
+	
+	public static VillagerTrades.ItemListing sells(Item sells, int minCount, int maxCountEx, int minPrice, int maxPriceEx, int maxUses)
+	{
+		return sells(sells.getDefaultInstance(), minCount, maxCountEx, minPrice, maxPriceEx, maxUses);
 	}
 	
 }
