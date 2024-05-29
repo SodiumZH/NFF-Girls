@@ -2,6 +2,7 @@ package net.sodiumstudio.dwmg.entities.vanillatrade;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -35,5 +36,12 @@ public class DwmgTradeEventHandlers
 		event.getEntity().getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(cap -> {
 			cap.setTradingPlayer(null);
 		});
+	}
+	
+	@SubscribeEvent
+	public static void onTick(LivingTickEvent event)
+	{
+		if (!event.getEntity().getLevel().isClientSide)
+			event.getEntity().getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(CDwmgTradeHandler::serverTick);
 	}
 }
