@@ -49,7 +49,7 @@ import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.TagHelper;
 
 public class HmagImpEntity extends ImpEntity implements IDwmgBefriendedMob, IBlockLocator
@@ -213,11 +213,11 @@ public class HmagImpEntity extends ImpEntity implements IDwmgBefriendedMob, IBlo
 	@Override
 	public Collection<Block> getLocatingBlocks() {
 		if (!this.getAdditionalInventory().getItem(0).is(DwmgItems.NETHERITE_FORK.get()))
-			return ContainerHelper.listOf();
+			return NaContainerUtils.listOf();
 		Item offhand = this.getOffhandItem().getItem();
 		if (TagHelper.hasTag(offhand, "forge:nuggets/netherite_scrap"))
 			return TagHelper.getAllBlocksUnderTag("forge:ores/netherite_scrap");
-		return ContainerHelper.listOf();
+		return NaContainerUtils.listOf();
 	}
 
 	@Override

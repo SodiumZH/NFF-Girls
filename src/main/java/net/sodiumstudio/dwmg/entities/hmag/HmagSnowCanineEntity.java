@@ -223,7 +223,7 @@ public class HmagSnowCanineEntity extends SnowCanineEntity implements IDwmgBefri
 	@SuppressWarnings("unchecked")
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
-		return ContainerHelper.mapOf(
+		return NaContainerUtils.mapOf(
 				MapPair.of("0", this.getAdditionalInventory().getItem(0)),
 				MapPair.of("1", this.getAdditionalInventory().getItem(1)),
 				MapPair.of("2", this.getAdditionalInventory().getItem(2)),

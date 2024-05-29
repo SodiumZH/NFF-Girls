@@ -13,7 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.math.RndUtil;
 
 public class HandlerAlraune extends HandlerItemGivingProgress
@@ -59,7 +59,7 @@ public class HandlerAlraune extends HandlerItemGivingProgress
 
 	@Override
 	public HashSet<BefriendableAddHatredReason> getAddHatredReasons() {
-		return ContainerHelper.setOf(BefriendableAddHatredReason.ATTACKED);
+		return NaContainerUtils.setOf(BefriendableAddHatredReason.ATTACKED);
 	}
 
 }

@@ -3,7 +3,7 @@ package net.sodiumstudio.dwmg.entities.handlers.hmag;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.containers.MapPair;
 import net.sodiumstudio.nautils.math.RndUtil;
 
@@ -13,7 +13,7 @@ public class HandlerRedcap extends HandlerItemDropping
 	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Supplier<Double>> getDeltaProc() {
-		return ContainerHelper.<String, Supplier<Double>>mapOf(
+		return NaContainerUtils.<String, Supplier<Double>>mapOf(
 				MapPair.of("minecraft:wheat", () -> RndUtil.rndRangedDouble(0.02, 0.04)),
 				MapPair.of("minecraft:bread", () -> RndUtil.rndRangedDouble(0.03, 0.06)),
 				MapPair.of("hmag:cureberry", () -> RndUtil.rndRangedDouble(0.08, 0.12)),

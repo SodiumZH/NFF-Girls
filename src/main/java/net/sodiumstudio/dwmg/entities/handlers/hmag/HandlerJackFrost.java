@@ -3,7 +3,7 @@ package net.sodiumstudio.dwmg.entities.handlers.hmag;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.containers.MapPair;
 import net.sodiumstudio.nautils.math.RndUtil;
 
@@ -12,7 +12,7 @@ public class HandlerJackFrost extends HandlerItemDropping
 
 	@Override
 	public Map<String, Supplier<Double>> getDeltaProc() {
-		return ContainerHelper.<String, Supplier<Double>>mapOf(
+		return NaContainerUtils.<String, Supplier<Double>>mapOf(
 				MapPair.of("minecraft:blue_ice", () -> RndUtil.rndRangedDouble(0.03, 0.06)),
 				MapPair.of("minecraft:lapis_lazuli", () -> RndUtil.rndRangedDouble(0.03, 0.06)),
 				MapPair.of("minecraft:emerald", () -> RndUtil.rndRangedDouble(0.04, 0.08)),

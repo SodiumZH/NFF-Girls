@@ -20,7 +20,7 @@ import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredRea
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
 import net.sodiumstudio.dwmg.registries.DwmgBlocks;
 import net.sodiumstudio.dwmg.registries.DwmgTags;
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.block.ColoredBlocks;
 import net.sodiumstudio.nautils.entity.RepeatableAttributeModifier;
 import net.sodiumstudio.nautils.math.RndUtil;
@@ -56,7 +56,7 @@ public class HandlerNightwalker extends HandlerItemGivingProgress
 
 	@Override
 	public HashSet<BefriendableAddHatredReason> getAddHatredReasons() {
-		return ContainerHelper.setOf(BefriendableAddHatredReason.ATTACKED, BefriendableAddHatredReason.ATTACKING);
+		return NaContainerUtils.setOf(BefriendableAddHatredReason.ATTACKED, BefriendableAddHatredReason.ATTACKING);
 	}
 
 	@Override

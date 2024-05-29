@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import net.minecraft.world.item.Items;
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.containers.MapPair;
 import net.sodiumstudio.nautils.math.RandomSelection;
 import net.sodiumstudio.nautils.math.RndUtil;
@@ -16,7 +16,7 @@ public class HandlerKobold extends HandlerItemDropping
 	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Supplier<Double>> getDeltaProc() {
-		return ContainerHelper.<String, Supplier<Double>>mapOf(
+		return NaContainerUtils.<String, Supplier<Double>>mapOf(
 				MapPair.of("minecraft:iron_ingot", () -> RndUtil.rndRangedDouble(0.02, 0.04)),
 				MapPair.of("minecraft:gold_ingot", () -> RndUtil.rndRangedDouble(0.03, 0.05)),
 				MapPair.of("minecraft:emerald", () -> RndUtil.rndRangedDouble(0.03, 0.05)),

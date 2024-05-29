@@ -10,7 +10,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.containers.MapPair;
 import net.sodiumstudio.nautils.math.RndUtil;
@@ -28,7 +28,7 @@ public class HandlerSnowCanine extends HandlerItemDropping
 	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Supplier<Double>> getDeltaProc() {
-		return ContainerHelper.<String, Supplier<Double>>mapOf(
+		return NaContainerUtils.<String, Supplier<Double>>mapOf(
 				MapPair.of("minecraft:cooked_chicken", () -> RndUtil.rndRangedDouble(0.04, 0.06)),
 				MapPair.of("minecraft:cooked_rabbit", () -> RndUtil.rndRangedDouble(0.04, 0.06)),
 				MapPair.of("minecraft:cooked_mutton", () -> RndUtil.rndRangedDouble(0.04, 0.06)),
