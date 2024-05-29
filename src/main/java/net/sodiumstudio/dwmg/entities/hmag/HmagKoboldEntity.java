@@ -50,7 +50,7 @@ import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.TagHelper;
 
 public class HmagKoboldEntity extends KoboldEntity implements IDwmgBefriendedMob, IBlockLocator
@@ -262,7 +262,7 @@ public class HmagKoboldEntity extends KoboldEntity implements IDwmgBefriendedMob
 			return TagHelper.getAllBlocksUnderTag("forge:ores/redstone");
 		if (offhand == Items.COAL)
 			return TagHelper.getAllBlocksUnderTag("forge:ores/coal");
-		return ContainerHelper.listOf();
+		return NaContainerUtils.listOf();
 	}
 
 	@Override

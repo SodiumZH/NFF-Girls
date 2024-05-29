@@ -214,7 +214,7 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 /*
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
-		return ContainerHelper.mapOf(
+		return NaContainerUtils.mapOf(
 				MapPair.of("0", getAdditionalInventory().getItem(2)),
 				MapPair.of("1", getAdditionalInventory().getItem(3)),
 				MapPair.of("2", getAdditionalInventory().getItem(4)),

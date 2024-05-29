@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableAddHatredReason;
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.math.RandomSelection;
 import net.sodiumstudio.nautils.math.RndUtil;
@@ -61,7 +61,7 @@ public class HandlerMeltyMonster extends HandlerItemGivingProgress
 	
 	@Override
 	public HashSet<BefriendableAddHatredReason> getAddHatredReasons() {
-		return ContainerHelper.setOf(BefriendableAddHatredReason.ATTACKED);
+		return NaContainerUtils.setOf(BefriendableAddHatredReason.ATTACKED);
 	}
 
 }

@@ -63,7 +63,7 @@ import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.NaItemUtils;
 import net.sodiumstudio.nautils.NaParticleUtils;
@@ -240,7 +240,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 					action.accept(GeometryUtil.randomVector().scale(RndUtil.rndRangedDouble(0, 3)));
 			};
 			action4.run();
-			this.addMultipleDelayedActions(action4, ContainerHelper.intRangeArray(2, 20, 2));
+			this.addMultipleDelayedActions(action4, NaContainerUtils.intRangeArray(2, 20, 2));
 			break;
 		}
 		default: 

@@ -8,14 +8,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleSystem;
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.containers.MapPair;
 import net.sodiumstudio.nautils.containers.MapPair;
 
 public class DwmgBaubleStatics
 {
 	
-	private static final Map<Integer, String> ROMAN_NUMERALS = ContainerHelper.mapOf(
+	private static final Map<Integer, String> ROMAN_NUMERALS = NaContainerUtils.mapOf(
 			MapPair.of(0, "0"),
 			MapPair.of(1, "i"),
 			MapPair.of(2, "ii"),

@@ -228,7 +228,7 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 /*
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
-		return ContainerHelper.mapOf(
+		return NaContainerUtils.mapOf(
 				MapPair.of("0", this.getAdditionalInventory().getItem(3)),
 				MapPair.of("1", this.getAdditionalInventory().getItem(4)),
 				MapPair.of("2", this.getAdditionalInventory().getItem(5)),

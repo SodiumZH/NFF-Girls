@@ -32,7 +32,7 @@ import net.sodiumstudio.dwmg.entities.ai.goals.JiangshiMutableLeapGoal;
 import net.sodiumstudio.dwmg.item.TaoistTalismanItem;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.entity.AttributeModifierSwitch;
@@ -61,6 +61,7 @@ public class HandlerJiangshi extends BefriendingHandler
 	public void initCap(CBefriendableMob cap)
 	{
 		cap.getNbt().put("progress", new CompoundTag());
+		//this.updateModifiers(cap.getOwner());
 	}	
 	
 	@Override
@@ -95,7 +96,7 @@ public class HandlerJiangshi extends BefriendingHandler
 
 	@Override
 	public HashSet<BefriendableAddHatredReason> getAddHatredReasons() {
-		return ContainerHelper.setOf();
+		return NaContainerUtils.setOf();
 	}
 
 	@Override
@@ -264,6 +265,7 @@ public class HandlerJiangshi extends BefriendingHandler
 
 	public void updateModifiers(Mob mob)
 	{
+		if (mob == null) return;
 		MODIFIERS.apply(mob, getAngerPhase(mob));
 	}
 	
