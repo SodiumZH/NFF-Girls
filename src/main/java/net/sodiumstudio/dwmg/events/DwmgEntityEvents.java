@@ -576,8 +576,8 @@ public class DwmgEntityEvents
 				{
 					((CUndeadMobImpl)l).updateForgivingTimers();
 				});
-				// Sync favorability and level
-				for (Player player: mob.level.players())
+				
+				/*for (Player player: mob.level.players())
 				{
 					if (player instanceof ServerPlayer sp)
 					{
@@ -589,8 +589,12 @@ public class DwmgEntityEvents
 						{
 							cap.sync(sp);
 						});
+						
 					}
-				}
+				}*/
+				// Sync mobs
+				if (mob instanceof IDwmgBefriendedMob bm)
+					bm.doSync();
 			}
 			/** Send overlap event */
 			if (event.getEntity() instanceof IDwmgBefriendedMob bm)
