@@ -5,7 +5,9 @@
 	"refmap": "dwmg.refmap.json",
 	"mixins": [
 		"DwmgJackFrostEntityMixin",
-		"DwmgMeltyMonsterEntityMixin"
+		"DwmgMeltyMonsterEntityMixin",
+		"DwmgMerchantScreenMixin",
+		"DwmgMerchantMenuMixin"
 	],
 	"client": [
 	],
