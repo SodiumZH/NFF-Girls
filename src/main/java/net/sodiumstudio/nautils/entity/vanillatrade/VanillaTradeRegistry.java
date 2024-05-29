@@ -68,7 +68,7 @@ public class VanillaTradeRegistry
 		}
 	}
 	
-	static List<VillagerTrades.ItemListing> getTrades(EntityType<? extends Mob> mobType, VillagerProfession profession, int xpLevel)
+	static List<VillagerTrades.ItemListing> getTrades(EntityType<?> mobType, VillagerProfession profession, int xpLevel)
 	{
 		if (!TABLE.containsKey(mobType))
 			throw new IllegalArgumentException("mob type not registered");
@@ -85,7 +85,7 @@ public class VanillaTradeRegistry
 		return getTrades((EntityType<? extends Mob>) mob.getType(), profession, xpLevel);
 	}
 	
-	static Int2ObjectMap<List<VillagerTrades.ItemListing>> getAllTrades(EntityType<? extends Mob> mobType, VillagerProfession profession)
+	static Int2ObjectMap<List<VillagerTrades.ItemListing>> getAllTrades(EntityType<?> mobType, VillagerProfession profession)
 	{
 		if (!TABLE.containsKey(mobType))
 			throw new IllegalArgumentException("mob type not registered");
@@ -94,7 +94,7 @@ public class VanillaTradeRegistry
 		return TABLE.get(mobType).get(profession);
 	}
 	
-	public static ImmutableList<VillagerTrades.ItemListing> getTradesImmutable(EntityType<? extends Mob> mobType, VillagerProfession profession, int xpLevel)
+	public static ImmutableList<VillagerTrades.ItemListing> getTradesImmutable(EntityType<?> mobType, VillagerProfession profession, int xpLevel)
 	{
 		if (!TABLE.containsKey(mobType) || !TABLE.get(mobType).containsKey(profession) || !TABLE.get(mobType).get(profession).containsKey(xpLevel))
 			return ImmutableList.of();
