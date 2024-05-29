@@ -3,6 +3,10 @@ package net.sodiumstudio.dwmg.entities;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.apache.commons.lang3.mutable.MutableObject;
+
+import com.mojang.logging.LogUtils;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -21,10 +25,10 @@ import net.sodiumstudio.befriendmobs.item.MobRespawnerItem;
 import net.sodiumstudio.befriendmobs.item.capability.wrapper.IItemStackMonitor;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
+import net.sodiumstudio.dwmg.network.ClientboundDwmgMobGeneralSyncPacket;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgBaubleStatics;
-import net.sodiumstudio.nautils.Wrapped;
 import net.sodiumstudio.nautils.annotation.DontCallManually;
 import net.sodiumstudio.nautils.annotation.DontOverride;
 
@@ -34,30 +38,60 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 	@DontOverride
 	public default CFavorabilityHandler getFavorabilityHandler()
 	{
-		Wrapped<CFavorabilityHandler> cap = new Wrapped<CFavorabilityHandler>(null);
+		MutableObject<CFavorabilityHandler> cap = new MutableObject<CFavorabilityHandler>(null);
 		asMob().getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).ifPresent((c) -> 
 		{
-			cap.set(c);
+			cap.setValue(c);
 		});
-		if (cap.get() == null)
-			throw new IllegalStateException("Missing CFavorabilityHandler capability");
-		return cap.get();
+		if (cap.getValue() == null)
+		{
+			LogUtils.getLogger().error("Missing CFavorabilityHandler capability");
+			return new CFavorabilityHandler.Impl(this.asMob());
+		}
+		return cap.getValue();
 	}
 	
 	@DontOverride
 	public default CLevelHandler getLevelHandler()
 	{
-		Wrapped<CLevelHandler> cap = new Wrapped<CLevelHandler>(null);
+		MutableObject<CLevelHandler> cap = new MutableObject<CLevelHandler>(null);
 		asMob().getCapability(DwmgCapabilities.CAP_LEVEL_HANDLER).ifPresent((c) -> 
 		{
-			cap.set(c);
+			cap.setValue(c);
 		});
-		if (cap.get() == null)
-			throw new IllegalStateException("Missing CLevelHandler capability");
-		return cap.get();
+		if (cap.getValue() == null)
+		{
+			LogUtils.getLogger().error("Missing CLevelHandler capability");
+			return new CLevelHandler.Impl(this.asMob());
+		}
+		return cap.getValue();
 	}
 
 
+	@DontOverride
+	public default float getFavorability()
+	{
+		return this.getFavorabilityHandler().getFavorability();
+	}
+	
+	@DontOverride
+	public default float getXpLevel()
+	{
+		return this.getLevelHandler().getExpectedLevel();
+	}
+	
+	@DontOverride
+	public default float getOverallXp()
+	{
+		return this.getLevelHandler().getExp();
+	}
+	
+	@DontOverride
+	public default float getXpInThisLevel()
+	{
+		return this.getLevelHandler().getExpInThisLevel();
+	}
+	
 	@DontOverride
 	@DontCallManually
 	public default void touchEntity(Entity other)
@@ -150,6 +184,7 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 		return DeathRespawnerGenerationType.GIVE;
 	}
 	
+	@Deprecated
 	@Override
 	public default boolean dropInventoryOnDeath()
 	{
@@ -193,6 +228,17 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 		}
 	}
 	
+	// == Trade interface ==
+	
+	/**
+	 * Ticks after sending a trade restock event.
+	 * Note: a restock event doesn't necessarily restock all offers. The probability depends on the required level.
+	 */
+	public default int getRestockTicks()
+	{
+		return 600 * 20;
+	}
+	
 	// ===================== Dwmg gamerules related ===================
 	
 	/**
@@ -210,6 +256,14 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 	{
 		return DwmgBaubleStatics.countBaublesWithMinTier(this.asMob(), new ResourceLocation("dwmg:courage_amulet"), 2) > 0;
 	}
+	
+	// ===== Network =========== //
+	
+	public default void doSync()
+	{
+		ClientboundDwmgMobGeneralSyncPacket.doSync(this);
+	}
+	
 	
 	// ===== Util ===
 	
