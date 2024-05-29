@@ -21,7 +21,7 @@ import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteracti
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendingHandler;
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGiving;
 import net.sodiumstudio.befriendmobs.entity.capability.CBefriendableMob;
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.NbtHelper;
@@ -34,7 +34,7 @@ public class HandlerCursedDoll extends BefriendingHandler
 
 	protected static final RepeatableAttributeModifier ATK_MOD = new RepeatableAttributeModifier(2.5d, AttributeModifier.Operation.ADDITION);
 	
-	protected static final HashMap<String, Item> WOOL_MAP = ContainerHelper.mapOf(
+	protected static final HashMap<String, Item> WOOL_MAP = NaContainerUtils.mapOf(
 			MapPair.of("white", Items.WHITE_WOOL),
 			MapPair.of("light_gray", Items.LIGHT_GRAY_WOOL),
 			MapPair.of("gray", Items.GRAY_WOOL),
@@ -167,7 +167,7 @@ public class HandlerCursedDoll extends BefriendingHandler
 
 	@Override
 	public HashSet<BefriendableAddHatredReason> getAddHatredReasons() {
-		return ContainerHelper.setOf(BefriendableAddHatredReason.ATTACKED);
+		return NaContainerUtils.setOf(BefriendableAddHatredReason.ATTACKED);
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class HandlerCursedDoll extends BefriendingHandler
 	{
 		if (woolCount(mob, player) > 0 && damageGiven)
 		{
-			String droppedColor = ContainerHelper.randomPick(getHoldingWools(mob, player));
+			String droppedColor = NaContainerUtils.randomPick(getHoldingWools(mob, player));
 			mob.spawnAtLocation(new ItemStack(WOOL_MAP.get(droppedColor)));
 			setWool(mob, player, droppedColor, false);
 			if (isInProcess(mob))

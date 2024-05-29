@@ -52,7 +52,7 @@ import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.NaParticleUtils;
 
@@ -139,7 +139,7 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 	}
 
 	protected int enhancingCooldown = 0;
-	protected static final HashSet<Item> ENHANCING_ITEMS = ContainerHelper.setOf(
+	protected static final HashSet<Item> ENHANCING_ITEMS = NaContainerUtils.setOf(
 			Items.ORANGE_WOOL, Items.YELLOW_WOOL, Items.RED_WOOL, Items.PURPLE_WOOL,
 			Items.MAGENTA_WOOL, Items.LIGHT_BLUE_WOOL, Items.BLUE_WOOL, Items.PINK_WOOL,
 			Items.CYAN_WOOL, Items.LIME_WOOL, Items.GREEN_WOOL);

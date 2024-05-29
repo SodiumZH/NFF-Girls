@@ -243,7 +243,7 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 /*
 	@Override
 	public HashMap<String, ItemStack> getBaubleSlots() {
-		return ContainerHelper.mapOf(MapPair.of("0", getAdditionalInventory().getItem(6)));
+		return NaContainerUtils.mapOf(MapPair.of("0", getAdditionalInventory().getItem(6)));
 	}
 
 	@Override

@@ -3,7 +3,7 @@ package net.sodiumstudio.dwmg.entities.handlers.hmag;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import net.sodiumstudio.nautils.ContainerHelper;
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.containers.MapPair;
 import net.sodiumstudio.nautils.math.RndUtil;
 import net.sodiumstudio.nautils.math.RandomSelection;
@@ -14,7 +14,7 @@ public class HandlerImp extends HandlerItemDropping
 	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Supplier<Double>> getDeltaProc() {
-		return ContainerHelper.<String, Supplier<Double>>mapOf(
+		return NaContainerUtils.<String, Supplier<Double>>mapOf(
 			MapPair.of("minecraft:apple", () -> RndUtil.rndRangedDouble(0.02, 0.04)),
 			MapPair.of("minecraft:warped_fungus", () -> RndUtil.rndRangedDouble(0.03, 0.05)), 
 			MapPair.of("minecraft:crimson_fungus", () -> RndUtil.rndRangedDouble(0.03, 0.05)), 
