@@ -8,6 +8,7 @@ import net.sodiumstudio.nautils.NetworkHelper;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
+import net.sodiumstudio.dwmg.entities.vanillatrade.ClientboundDwmgTradeSyncPacket;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgChannels {
@@ -22,8 +23,10 @@ public class DwmgChannels {
     @SuppressWarnings("resource")
 	public static void registerMessage() {
     	SYNC_CHANNEL = NetworkHelper.newChannel(Dwmg.MOD_ID, "dwmg_sync_channel");
-    	NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, CFavorabilityHandler.ClientboundSyncPacket.class);
-    	NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, CLevelHandler.ClientboundSyncPacket.class);
+    	//NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, CFavorabilityHandler.ClientboundSyncPacket.class);
+    	//NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, CLevelHandler.ClientboundSyncPacket.class);
+    	NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, ClientboundDwmgMobGeneralSyncPacket.class);
+    	NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, ClientboundDwmgTradeSyncPacket.class);
     }
     
     @SubscribeEvent

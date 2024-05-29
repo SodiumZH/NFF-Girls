@@ -56,10 +56,8 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 	 * Get the additional exp required to upgrade from this level to next level.
 	 */
 	public long getRequiredExpInThisLevel();
-	/**
-	 * Sync the data to client.
-	 * executed on server every tick
-	 */
+
+	@Deprecated
 	public void sync(ServerPlayer toPlayer);
 	// ===========
 	
@@ -151,6 +149,7 @@ public interface CLevelHandler extends INBTSerializable<LongTag>
 			return CLevelHandler.getExpRequiredForLevelUp(lvl);
 		}
 
+		@Deprecated
 		@Override
 		public void sync(ServerPlayer toPlayer) {
 			ClientboundSyncPacket packet = new ClientboundSyncPacket(mob.getId(), getExp());
