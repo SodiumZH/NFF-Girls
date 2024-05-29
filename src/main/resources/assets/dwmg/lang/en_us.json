@@ -44,6 +44,7 @@
   "item.dwmg.magical_gel_bottle.color_unknown": "Color: unknown",
   "item.dwmg.magical_gel_bottle.check_color": "Right click to check color",
   "item.dwmg.taoist_talisman": "Taoist Talisman",
+  "item.dwmg.evil_gem": "Evil Gem",
   
   "item.dwmg.befriending_progress_probe": "Befriending Progress Probe (Debug)",
   "item.dwmg.exp_modifier": "EXP Modifier (Debug)",
@@ -118,6 +119,9 @@
   "info.dwmg.bauble.aqua_jade": "For Drowned Girls only",
   "info.dwmg.bauble.poisonous_thorn": "For arthropod mobs only",
   "info.dwmg.bauble.poisonous_thorn_1": "Adding & enhancing Poison effect on attacking",
+  "info.dwmg.open_trade": "Trade",
+  "info.dwmg.trade_level_not_satisfied": "This offer requires Level %1$d.",
+  "info.dwmg.trade_out_of_stock": "This offer is out-of-stock.",
   "death.attack.necromancer_wither": "%1$s failed to bear the curse of necromancy.",
   
   "color.dwmg.html.alice_blue": "Alice Blue",
