@@ -20,7 +20,7 @@ public class DwmgTradeClientEventHandlers
 			{
 				if (tradingMob.getMeta().get(event.activeOfferIndex).requiredMerchantLevel > tradingMob.getMerchantLevel())
 				{
-					int lvlRequired = CDwmgTradeHandler.LEVEL_REQUIREMENTS[tradingMob.getMeta().get(event.activeOfferIndex).requiredMerchantLevel];
+					int lvlRequired = CDwmgTradeHandler.LEVEL_REQUIREMENTS[tradingMob.getMeta().get(event.activeOfferIndex).requiredMerchantLevel - 1];
 					event.setInfo(InfoHelper.createTranslatable("info.dwmg.trade_level_not_satisfied", lvlRequired));
 				}
 				else event.setInfo(InfoHelper.createTranslatable("info.dwmg.trade_out_of_stock"));
