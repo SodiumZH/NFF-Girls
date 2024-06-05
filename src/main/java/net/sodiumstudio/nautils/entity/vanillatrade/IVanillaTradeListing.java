@@ -3,7 +3,7 @@ package net.sodiumstudio.nautils.entity.vanillatrade;
 import net.minecraft.world.entity.npc.VillagerTrades;
 
 /**
- * NaUtils' extension of vanilla {@link VillagerTrades.ItemListing}.
+ * NaUtils' extension of vanilla {@code VillagerTrades.ItemListing}.
  * A Listing is a registry entry that can generate a randomized {@code MerchantOffer} for a vanilla merchant.
  */
 public interface IVanillaTradeListing extends VillagerTrades.ItemListing

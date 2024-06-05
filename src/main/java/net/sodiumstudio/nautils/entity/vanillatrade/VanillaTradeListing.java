@@ -522,4 +522,5 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	{
 		return item != null ? item.getDefaultInstance() : ItemStack.EMPTY;
 	}
+
 }

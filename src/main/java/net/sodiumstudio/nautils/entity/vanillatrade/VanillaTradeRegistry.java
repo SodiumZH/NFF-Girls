@@ -1,113 +1,382 @@
 package net.sodiumstudio.nautils.entity.vanillatrade;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import com.mojang.logging.LogUtils;
+
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.registries.ForgeRegistries;
+import potionstudios.byg.reg.RegistryObject;
 
-/**
- * The registry for NaUtils Vanilla-Merchant interface.
- */
-public class VanillaTradeRegistry
+public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTradeListing>
 {
-
-	private static final Map<EntityType<? extends Mob>, Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>>> TABLE = new HashMap<>();
+	private ItemStack currency = Items.EMERALD.getDefaultInstance();	// Used on calling buys(), sells() and transforms().
+	private boolean randomizeUsesPoisson = false;	// If true, the randomization should use Poisson distribution.
+	private double poissonFactor = 0.5d;
 	
-	static Int2ObjectMap<List<VillagerTrades.ItemListing>> getTrades(EntityType<? extends Mob> mobType, VillagerProfession profession)
+	// Registration
+	
+	public Registering push(@Nonnull ResourceLocation key)
 	{
-		if (!TABLE.containsKey(mobType))
-			throw new IllegalArgumentException("NaUtils Vanila Merchant: mob type not registered: " + mobType.getDescriptionId());
-		if (!TABLE.get(mobType).containsKey(profession))
-			throw new IllegalArgumentException("NaUtils Vanila Merchant: mob profession not registered: " + profession.name());
-		return TABLE.get(mobType).get(profession);
+		if (!this.getRaw().containsKey(key))
+			this.getRaw().put(key, new HashMap<>());
+		return new Registering(this, key);
 	}
 	
-	static Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> getRaw(EntityType<? extends Mob> type)
+	public Registering push(@Nonnull String key)
 	{
-		return TABLE.get(type);
+		return this.push(new ResourceLocation(key));
 	}
 	
-	static void putRaw(EntityType<? extends Mob> type, Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> listings)
+	public Registering push(@Nonnull EntityType<?> key)
 	{
-		TABLE.put(type, listings);
+		return this.push(ForgeRegistries.ENTITY_TYPES.getKey(key));
 	}
 	
-	static void putTrades(EntityType<? extends Mob> mobType, VillagerProfession profession, int xpLevel, VillagerTrades.ItemListing... listings)
+	public Registering push(@Nonnull RegistryObject<EntityType<?>> key)
 	{
-		if (!TABLE.containsKey(mobType))
-			TABLE.put(mobType, new HashMap<>());
-		if (!TABLE.get(mobType).containsKey(profession))
-			TABLE.get(mobType).put(profession, new Int2ObjectOpenHashMap<>());
-		if (!TABLE.get(mobType).get(profession).containsKey(xpLevel))
-			TABLE.get(mobType).get(profession).put(xpLevel, new ArrayList<>());
-		if (listings.length > 0)
-			for (int i = 0; i < listings.length; ++i)
-			{
-				TABLE.get(mobType).get(profession).get(xpLevel).add(listings[i]);
-			}
+		return this.push(key.get());
 	}
 	
-	static void putTrades(EntityType<? extends Mob> mobType, VillagerProfession profession, int xpLevel, Collection<VillagerTrades.ItemListing> listings)
+	public VanillaTradeRegistry setCurrency(ItemStack currency)
 	{
-		putTrades(mobType, profession, xpLevel);
-		for (var listing: listings)
+		if (currency == null || currency.isEmpty())
+			throw new IllegalArgumentException("currency requires non-null & non-empty.");
+		this.currency = currency;
+		return this;
+	}
+	
+	public VanillaTradeRegistry setCurrency(Item currency)
+	{
+		return this.setCurrency(currency.getDefaultInstance());
+	}
+	
+	/**
+	 * Set if the random count selection should use Poisson distribution. False(default) = uniform distribution.
+	 * <p>If this value is set, the added listings will apply the corresponding distribution by default. If different distributions
+	 * must be used in a single listing, you have to use raw {@code addListing} which requires a constructed listing input.
+	 */
+	public VanillaTradeRegistry setRandomizationDistribution(boolean usesPoisson)
+	{
+		this.randomizeUsesPoisson = usesPoisson;
+		return this;
+	}
+	
+	public VanillaTradeRegistry setPoissonFactor(double value)
+	{
+		this.poissonFactor = value;
+		return this;
+	}
+	
+	public static class Registering
+	{
+		private VanillaTradeRegistry registry;
+		private ResourceLocation key;
+		private VillagerProfession profession = VillagerProfession.NONE;
+		private int level = 1;
+		private VanillaTradeListing lastListing = null;
+		
+		private Registering(VanillaTradeRegistry registry, ResourceLocation key)
 		{
-			TABLE.get(mobType).get(profession).get(xpLevel).add(listing);
+			this.registry = registry;
+			this.key = key;
 		}
-	}
-	
-	static List<VillagerTrades.ItemListing> getTrades(EntityType<?> mobType, VillagerProfession profession, int xpLevel)
-	{
-		if (!TABLE.containsKey(mobType))
-			throw new IllegalArgumentException("mob type not registered");
-		if (!TABLE.get(mobType).containsKey(profession))
-			throw new IllegalArgumentException("profession not registered");
-		if (!TABLE.get(mobType).get(profession).containsKey(xpLevel))
-			throw new IllegalArgumentException("xp level invalid");
-		return TABLE.get(mobType).get(profession).get(xpLevel);
-	}
-	
-	@SuppressWarnings("unchecked")
-	static List<VillagerTrades.ItemListing> getTrades(Mob mob, VillagerProfession profession, int xpLevel)
-	{
-		return getTrades((EntityType<? extends Mob>) mob.getType(), profession, xpLevel);
-	}
-	
-	static Int2ObjectMap<List<VillagerTrades.ItemListing>> getAllTrades(EntityType<?> mobType, VillagerProfession profession)
-	{
-		if (!TABLE.containsKey(mobType))
-			throw new IllegalArgumentException("mob type not registered");
-		if (!TABLE.get(mobType).containsKey(profession))
-			throw new IllegalArgumentException("profession not registered");
-		return TABLE.get(mobType).get(profession);
-	}
-	
-	public static ImmutableList<VillagerTrades.ItemListing> getTradesImmutable(EntityType<?> mobType, VillagerProfession profession, int xpLevel)
-	{
-		if (!TABLE.containsKey(mobType) || !TABLE.get(mobType).containsKey(profession) || !TABLE.get(mobType).get(profession).containsKey(xpLevel))
-			return ImmutableList.of();
-		return ImmutableList.copyOf(getTrades(mobType, profession, xpLevel));
-	}
-	
-	public static ImmutableList<VillagerTrades.ItemListing> getTradesImmutable(Mob mob, VillagerProfession profession, int xpLevel)
-	{
-		return ImmutableList.copyOf(getTrades(mob, profession, xpLevel));
-	}
-	
-	public static boolean contains(EntityType<?> type)
-	{
-		return TABLE.containsKey(type);
+		
+		public Registering forLevel(int level)
+		{
+			if (level <= 0)
+				throw new IllegalArgumentException(String.format("AbstractVanillaTradeRegistry#Registering: level starts from 1. Input: %d", level));
+			this.level = level;
+			return this;
+		}
+		
+		public Registering forProfession(@Nullable VillagerProfession profession)
+		{
+			if (profession == null)
+				profession = VillagerProfession.NONE;
+			this.profession = profession;
+			return this;
+		}
+		
+		public Registering setCurrency(ItemStack currency)
+		{
+			this.registry.setCurrency(currency);
+			return this;
+		}
+		
+		public Registering setCurrency(Item currency)
+		{
+			this.registry.setCurrency(currency);
+			return this;
+		}
+		
+		public Registering setRandomizationDistribution(boolean value)
+		{
+			this.registry.setRandomizationDistribution(value);
+			return this;
+		}
+		
+		public Registering setPoissonFactor(double value)
+		{
+			this.registry.setPoissonFactor(value);
+			return this;
+		}
+		
+		@Nonnull
+		private VanillaTradeListings<VanillaTradeListing> getActiveListings()
+		{
+			if (!this.registry.getRaw().get(this.key).containsKey(this.profession))
+				this.registry.getRaw().get(this.key).put(this.profession, new VanillaTradeListings<>());
+			return this.registry.getRaw().get(this.key).get(this.profession);
+		}
+		
+		private ItemStack getCurrency()
+		{
+			return this.registry.currency;
+		}
+		
+		private boolean usesPoisson()
+		{
+			return this.registry.randomizeUsesPoisson;
+		}
+		
+		private double getPoissonFactor()
+		{
+			return this.registry.poissonFactor;
+		}
+		
+		public Registering addListing(VanillaTradeListing listing)
+		{
+			this.getActiveListings().add(listing);
+			this.lastListing = listing;
+			return this;
+		}
+		
+		public Registering linkListings(@Nonnull ResourceLocation key, @Nullable VillagerProfession profession)
+		{
+			if (profession == null) profession = VillagerProfession.NONE;
+			if (this.registry.hasListings(key, profession))
+				this.getActiveListings().linkExternal(this.registry.getListings(key, profession));
+			else throw new IllegalArgumentException(String.format("AbstractVanillaTradeRegistry#Registering#linkListing: input key doesn't exist. Input: key = %s, profession = %s", key.toString(), profession.toString()));
+			return this;
+		}
+		
+		public Registering linkListings(@Nonnull String key, @Nullable VillagerProfession profession)
+		{
+			return this.linkListings(new ResourceLocation(key), profession);
+		}
+		
+		public Registering linkListings(@Nonnull EntityType<?> type, @Nullable VillagerProfession profession)
+		{
+			return this.linkListings(ForgeRegistries.ENTITY_TYPES.getKey(type), profession);
+		}
+		
+		public Registering mergeListings(@Nonnull ResourceLocation key, @Nullable VillagerProfession profession)
+		{
+			if (profession == null) profession = VillagerProfession.NONE;
+			if (this.registry.hasListings(key, profession))
+				this.getActiveListings().addAll(this.registry.getListings(key, profession).getValidSet());
+			else throw new IllegalArgumentException(String.format("AbstractVanillaTradeRegistry#Registering#linkListing: input key doesn't exist. Input: key = %s, profession = %s", key.toString(), profession.toString()));
+			return this;
+		}
+		
+		public Registering mergeListings(@Nonnull String key, @Nullable VillagerProfession profession)
+		{
+			return this.mergeListings(new ResourceLocation(key), profession);
+		}
+		
+		public Registering mergeListings(@Nonnull EntityType<?> type, @Nullable VillagerProfession profession)
+		{
+			return this.mergeListings(ForgeRegistries.ENTITY_TYPES.getKey(type), profession);
+		}
+		
+		/**
+		 * Add an generic exchanging listing.
+		 */
+		public Registering addExchanges(ItemStack costA, int costAMin, int costAMax, @Nullable ItemStack costB, int costBMin, int costBMax,
+				ItemStack result, int resultMin, int resultMax, int maxUses)
+		{
+			VanillaTradeListing l = VanillaTradeListing.create(costA, result).setACountRange(costAMin, costAMax).addB(costB)
+					.setBCountRange(costBMin, costBMax).setResultCountRange(resultMin, maxUses).setMaxUses(maxUses);
+			if (this.usesPoisson())
+				l.setAllPoisson(this.getPoissonFactor());
+			this.addListing(l);
+			return this;
+		}
+		
+		/**
+		 * Add an generic exchanging listing.
+		 */
+		public Registering addExchanges(Item costA, int costAMin, int costAMax, @Nullable Item costB, int costBMin, int costBMax,
+				Item result, int resultMin, int resultMax, int maxUses)
+		{
+			return this.addExchanges(costA.getDefaultInstance(), costAMin, costAMax, costB == null ? ItemStack.EMPTY : costB.getDefaultInstance(),
+					costBMin, costBMax, result.getDefaultInstance(), resultMin, resultMax, maxUses);
+		}
+		
+		/**
+		 * Add an generic exchanging listing without costB.
+		 */
+		public Registering addExchanges(ItemStack costA, int costAMin, int costAMax, ItemStack result, int resultMin, int resultMax, int maxUses)
+		{
+			return this.addExchanges(costA, costAMin, costAMax, null, 1, 1, result, resultMin, resultMax, maxUses);
+		}
+		
+		/**
+		 * Add an generic exchanging listing without costB.
+		 */
+		public Registering addExchanges(Item costA, int costAMin, int costAMax, Item result, int resultMin, int resultMax, int maxUses)
+		{
+			return this.addExchanges(costA, costAMin, costAMax, null, 1, 1, result, resultMin, resultMax, maxUses);
+		}
+		
+		/**
+		 * Add a listing that the mob buys item from player with currency.
+		 */
+		public Registering addBuys(ItemStack buys, int buysMin, int buysMax, int priceMin, int priceMax, int maxUses)
+		{
+			return this.addExchanges(buys, buysMin, buysMax, this.getCurrency(), priceMin, priceMax, maxUses);
+		}
+		
+		/**
+		 * Add a listing that the mob buys item from player with currency.
+		 */
+		public Registering addBuys(Item buys, int buysMin, int buysMax, int priceMin, int priceMax, int maxUses)
+		{
+			return this.addExchanges(buys.getDefaultInstance(), buysMin, buysMax, this.getCurrency(), priceMin, priceMax, maxUses);
+		}
+		
+		/**
+		 * Add a listing that the mob buys one random item from the buys list from player with currency.
+		 */
+		public Registering addBuys(ItemStack[] buys, int buysMin, int buysMax, int priceMin, int priceMax, int maxUses)
+		{
+			VanillaTradeListing l = VanillaTradeListing.invalidWithAmounts(buysMin, buysMax, priceMin, priceMax).addA(buys).addResult(this.getCurrency()).setMaxUses(maxUses);
+			if (this.usesPoisson()) l.setAllPoisson(this.getPoissonFactor());
+			this.addListing(l);
+			return this;
+		}
+		
+		/**
+		 * Add a listing that the mob buys one random item from the buys list from player with currency.
+		 */
+		public Registering addBuys(Item[] buys, int buysMin, int buysMax, int priceMin, int priceMax, int maxUses)
+		{
+			VanillaTradeListing l = VanillaTradeListing.invalidWithAmounts(buysMin, buysMax, priceMin, priceMax).addA(buys).addResult(this.getCurrency()).setMaxUses(maxUses);
+			if (this.usesPoisson()) l.setAllPoisson(this.getPoissonFactor());
+			this.addListing(l);
+			return this;
+		}
+		
+		/**
+		 * Add a listing that the mob sells item to player with currency.
+		 */
+		public Registering addSells(int priceMin, int priceMax, ItemStack sells, int sellsMin, int sellsMax, int maxUses)
+		{
+			return this.addExchanges(this.getCurrency(), priceMin, priceMax, sells, sellsMin, sellsMax, maxUses);
+		}
+		
+		/**
+		 * Add a listing that the mob sells item to player with currency.
+		 */
+		public Registering addSells(int priceMin, int priceMax, Item sells, int sellsMin, int sellsMax, int maxUses)
+		{
+			return this.addExchanges(this.getCurrency(), priceMin, priceMax, sells.getDefaultInstance(), sellsMin, sellsMax, maxUses);
+		}
+		
+		/**
+		 * Add a listing that the mob sells one random item from the sells list to player with currency.
+		 */
+		public Registering addSells(int priceMin, int priceMax, ItemStack[] sells, int sellsMin, int sellsMax, int maxUses)
+		{
+			VanillaTradeListing l = VanillaTradeListing.invalidWithAmounts(priceMin, priceMax, sellsMin, sellsMax)
+					.addA(this.getCurrency()).addResult(sells).setMaxUses(maxUses);
+			if (this.usesPoisson()) l.setAllPoisson(this.getPoissonFactor());
+			this.addListing(l);
+			return this;
+		}
+
+		/**
+		 * Add a listing that the mob sells one random item from the sells list to player with currency.
+		 */
+		public Registering addSells(int priceMin, int priceMax, Item[] sells, int sellsMin, int sellsMax, int maxUses)
+		{
+			VanillaTradeListing l = VanillaTradeListing.invalidWithAmounts(priceMin, priceMax, sellsMin, sellsMax)
+					.addA(this.getCurrency()).addResult(sells).setMaxUses(maxUses);
+			if (this.usesPoisson()) l.setAllPoisson(this.getPoissonFactor());
+			this.addListing(l);
+			return this;
+		}
+		
+		/**
+		 * Add a listing that mobs receives some cost ({@code extraCost}) and converts some amount of an item to another.
+		 * (e.g. vanilla paid cooking)
+		 */
+		public Registering addConverts(ItemStack extraCost, int costMin, int costMax, ItemStack from, ItemStack to, int convertsMin, int convertsMax, int maxUses)
+		{
+			VanillaTradeListing l = VanillaTradeListing.converts(extraCost, costMin, costMax, from, to, convertsMin, convertsMax).setMaxUses(maxUses);
+			if (this.usesPoisson())
+				l.setAllPoisson(this.getPoissonFactor());
+			this.addListing(l);
+			return this;
+		}
+		
+		/**
+		 * Add a listing that mobs receives some cost ({@code extraCost}) and converts some amount of an item to another.
+		 * (e.g. vanilla paid cooking)
+		 */
+		public Registering addConverts(Item extraCost, int costMin, int costMax, Item from, Item to, int convertsMin, int convertsMax, int maxUses)
+		{
+			return this.addConverts(extraCost.getDefaultInstance(), costMin, costMax, 
+					from.getDefaultInstance(), to.getDefaultInstance(), convertsMin, convertsMax, maxUses);
+		}
+		
+		/**
+		 * Add a listing that mobs receives currency and converts some amount of an item to another.
+		 * (e.g. vanilla paid cooking)
+		 */
+		public Registering addConverts(int costMin, int costMax, ItemStack from, ItemStack to, int convertsMin, int convertsMax, int maxUses)
+		{
+			return this.addConverts(this.getCurrency(), costMin, costMax, from, to, convertsMin, convertsMax, maxUses);
+		}
+		
+		/**
+		 * Add a listing that mobs receives currency and converts some amount of an item to another.
+		 * (e.g. vanilla paid cooking)
+		 */
+		public Registering addConverts(int costMin, int costMax, Item from, Item to, int convertsMin, int convertsMax, int maxUses)
+		{
+			return this.addConverts(costMin, costMax, from.getDefaultInstance(), to.getDefaultInstance(), convertsMin, convertsMax, maxUses);
+		}
+		
+		/**
+		 * Set selection weight of the last added listing.
+		 */
+		public Registering weight(double value)
+		{
+			if (this.lastListing != null)
+				this.lastListing.setSelectionWeight(value);
+			else LogUtils.getLogger().error("VanillaTradeRegistry#Registering#weight: no listing registered. Skipped.");
+			return this;
+		}
+		
+		/**
+		 * Set selection weight of the last added listing.
+		 */
+		public Registering maxUses(int value)
+		{
+			if (this.lastListing != null)
+				this.lastListing.setMaxUses(value);
+			else LogUtils.getLogger().error("VanillaTradeRegistry#Registering#maxUses: no listing registered. Skipped.");
+			return this;
+		}
 	}
 }
