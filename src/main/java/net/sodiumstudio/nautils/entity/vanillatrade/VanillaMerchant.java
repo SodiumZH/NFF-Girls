@@ -16,25 +16,21 @@ import net.sodiumstudio.nautils.NaReflectionUtils;
 /**
  * <b>Abstract</b> implementation of {@code CVanillaMerchant}. This class doesn't allow to instantiate directly. 
  * To create custom implementation, first create an interface extending {@code CVanillaMerchant}, then use:
- * <p>{@code public class YourImplementation extends VanillaMerchantImpl implements YourInterface}
+ * <p>{@code public class YourImplementation extends VanillaMerchant implements YourInterface}
  * <p>to create an instantiatable subclass.
  */
-public abstract class VanillaMerchantImpl implements CVanillaMerchant
+public abstract class VanillaMerchant implements CVanillaMerchant
 {
-
-
 	private final Mob mob;
-	private CompoundTag tag;
 	@Nullable
 	private Player tradingPlayer = null;
 	private MerchantOffers offers;
 	private int xp;
 	protected RandomSource rnd = RandomSource.create();
 	
-	public VanillaMerchantImpl(Mob mob)
+	public VanillaMerchant(Mob mob)
 	{
 		this.mob = mob;
-		this.tag = new CompoundTag();
 		xp = 1;
 	}
 	
@@ -157,5 +153,14 @@ public abstract class VanillaMerchantImpl implements CVanillaMerchant
 	protected void decreaseOfferUses(int index)
 	{
 		this.setOfferUses(index, Math.max(0, this.getOffers().get(index).getUses() - 1));
+	}
+	
+	/**
+	 * Redirect the offers. Only called on error processing.
+	 */
+	@Nullable
+	protected final void setOffers(MerchantOffers newOffers)
+	{
+		this.offers = newOffers;
 	}
 }
