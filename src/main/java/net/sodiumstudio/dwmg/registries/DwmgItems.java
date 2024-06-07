@@ -35,6 +35,7 @@ import net.sodiumstudio.dwmg.item.MagicalGelBottleItem;
 import net.sodiumstudio.dwmg.item.PeachWoodSwordItem;
 import net.sodiumstudio.dwmg.item.ReinforcedFishingRodItem;
 import net.sodiumstudio.dwmg.item.TaoistTalismanItem;
+import net.sodiumstudio.dwmg.item.TradeIntroductionLetterItem;
 import net.sodiumstudio.dwmg.item.TransferringTagItem;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.AquaJadeBaubleItem;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.CourageAmuletBaubleItem;
@@ -252,6 +253,8 @@ public class DwmgItems {
 	public static final RegistryObject<MagicalGelBallItem> MAGICAL_GEL_BALL = ITEMS.register("magical_gel_ball", () -> new MagicalGelBallItem(new Item.Properties()));
 	public static final RegistryObject<MagicalGelBottleItem> MAGICAL_GEL_BOTTLE = ITEMS.register("magical_gel_bottle", () -> new MagicalGelBottleItem(new Item.Properties()));
 	public static final RegistryObject<Item> TAOIST_TALISMAN = ITEMS.register("taoist_talisman", () -> new TaoistTalismanItem(new Item.Properties()));
+	public static final RegistryObject<TradeIntroductionLetterItem> TRADE_INTRODUCTION_LETTER = ITEMS.register("trade_introduction_letter",
+			() -> new TradeIntroductionLetterItem(new Item.Properties().stacksTo(1)));
 	
 	// Misc
 	public static final RegistryObject<MobRespawnerItem> MOB_RESPAWNER = ITEMS.register("mob_respawner", () -> new DwmgRespawnerItem(new Item.Properties()).setRetainBefriendedMobInventory(false));
