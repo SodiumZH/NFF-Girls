@@ -87,6 +87,10 @@ public abstract class AbstractVanillaTradeRegistry<T extends IVanillaTradeListin
 	
 	/**
 	 * Check if the listings exists for a given key and profession.
+	 * <p>
+	 * Note: this method returning true only represents the key/profession has a
+	 * Listings instance object, but not guarantees there're valid Listing instances
+	 * in the Listings.
 	 */
 	public boolean hasListings(ResourceLocation key, VillagerProfession prof)
 	{
@@ -95,6 +99,10 @@ public abstract class AbstractVanillaTradeRegistry<T extends IVanillaTradeListin
 	
 	/**
 	 * Check if the listings exists for a given key and profession.
+	 * <p>
+	 * Note: this method returning true only represents the key/profession has a
+	 * Listings instance object, but not guarantees there're valid Listing instances
+	 * in the Listings.
 	 */
 	public boolean hasListings(String key, VillagerProfession prof)
 	{
@@ -102,7 +110,11 @@ public abstract class AbstractVanillaTradeRegistry<T extends IVanillaTradeListin
 	}
 	
 	/**
-	 * Check if the listings exists for a given entity type and profession.
+	 * Check if the listings exists for a given key and profession.
+	 * <p>
+	 * Note: this method returning true only represents the key/profession has a
+	 * Listings instance object, but not guarantees there're valid Listing instances
+	 * in the Listings.
 	 */
 	public boolean hasListings(EntityType<?> type, VillagerProfession prof)
 	{
