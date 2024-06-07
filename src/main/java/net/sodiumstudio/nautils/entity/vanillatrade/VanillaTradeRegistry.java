@@ -56,7 +56,7 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 	
 	public VanillaTradeRegistry setCurrency(Item currency)
 	{
-		return this.setCurrency(currency.getDefaultInstance());
+		return this.setCurrency(getNonnullInstance(currency));
 	}
 	
 	/**
@@ -179,12 +179,27 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 			return this.linkListings(ForgeRegistries.ENTITY_TYPES.getKey(type), profession);
 		}
 		
+		public Registering linkListings(@Nonnull ResourceLocation key)
+		{
+			return this.linkListings(key, null);
+		}
+		
+		public Registering linkListings(@Nonnull String key)
+		{
+			return this.linkListings(key, null);
+		}
+		
+		public Registering linkListings(@Nonnull EntityType<?> type)
+		{
+			return this.linkListings(type, null);
+		}
+		
 		public Registering mergeListings(@Nonnull ResourceLocation key, @Nullable VillagerProfession profession)
 		{
 			if (profession == null) profession = VillagerProfession.NONE;
 			if (this.registry.hasListings(key, profession))
 				this.getActiveListings().addAll(this.registry.getListings(key, profession).getValidSet());
-			else throw new IllegalArgumentException(String.format("AbstractVanillaTradeRegistry#Registering#linkListing: input key doesn't exist. Input: key = %s, profession = %s", key.toString(), profession.toString()));
+			else throw new IllegalArgumentException(String.format("AbstractVanillaTradeRegistry#Registering#mergeListing: input key doesn't exist. Input: key = %s, profession = %s", key.toString(), profession.toString()));
 			return this;
 		}
 		
@@ -196,6 +211,21 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 		public Registering mergeListings(@Nonnull EntityType<?> type, @Nullable VillagerProfession profession)
 		{
 			return this.mergeListings(ForgeRegistries.ENTITY_TYPES.getKey(type), profession);
+		}
+	
+		public Registering mergeListings(@Nonnull ResourceLocation key)
+		{
+			return this.mergeListings(key, null);
+		}
+		
+		public Registering mergeListings(@Nonnull String key)
+		{
+			return this.mergeListings(key, null);
+		}
+		
+		public Registering mergeListings(@Nonnull EntityType<?> type)
+		{
+			return this.mergeListings(type, null);
 		}
 		
 		/**
@@ -218,8 +248,8 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 		public Registering addExchanges(Item costA, int costAMin, int costAMax, @Nullable Item costB, int costBMin, int costBMax,
 				Item result, int resultMin, int resultMax, int maxUses)
 		{
-			return this.addExchanges(costA.getDefaultInstance(), costAMin, costAMax, costB == null ? ItemStack.EMPTY : costB.getDefaultInstance(),
-					costBMin, costBMax, result.getDefaultInstance(), resultMin, resultMax, maxUses);
+			return this.addExchanges(getNonnullInstance(costA), costAMin, costAMax, costB == null ? ItemStack.EMPTY : getNonnullInstance(costB),
+					costBMin, costBMax, getNonnullInstance(result), resultMin, resultMax, maxUses);
 		}
 		
 		/**
@@ -251,7 +281,7 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 		 */
 		public Registering addBuys(Item buys, int buysMin, int buysMax, int priceMin, int priceMax, int maxUses)
 		{
-			return this.addExchanges(buys.getDefaultInstance(), buysMin, buysMax, this.getCurrency(), priceMin, priceMax, maxUses);
+			return this.addExchanges(getNonnullInstance(buys), buysMin, buysMax, this.getCurrency(), priceMin, priceMax, maxUses);
 		}
 		
 		/**
@@ -289,7 +319,7 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 		 */
 		public Registering addSells(int priceMin, int priceMax, Item sells, int sellsMin, int sellsMax, int maxUses)
 		{
-			return this.addExchanges(this.getCurrency(), priceMin, priceMax, sells.getDefaultInstance(), sellsMin, sellsMax, maxUses);
+			return this.addExchanges(this.getCurrency(), priceMin, priceMax, getNonnullInstance(sells), sellsMin, sellsMax, maxUses);
 		}
 		
 		/**
@@ -335,8 +365,8 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 		 */
 		public Registering addConverts(Item extraCost, int costMin, int costMax, Item from, Item to, int convertsMin, int convertsMax, int maxUses)
 		{
-			return this.addConverts(extraCost.getDefaultInstance(), costMin, costMax, 
-					from.getDefaultInstance(), to.getDefaultInstance(), convertsMin, convertsMax, maxUses);
+			return this.addConverts(getNonnullInstance(extraCost), costMin, costMax, 
+					getNonnullInstance(from), getNonnullInstance(to), convertsMin, convertsMax, maxUses);
 		}
 		
 		/**
@@ -354,7 +384,7 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 		 */
 		public Registering addConverts(int costMin, int costMax, Item from, Item to, int convertsMin, int convertsMax, int maxUses)
 		{
-			return this.addConverts(costMin, costMax, from.getDefaultInstance(), to.getDefaultInstance(), convertsMin, convertsMax, maxUses);
+			return this.addConverts(costMin, costMax, getNonnullInstance(from), getNonnullInstance(to), convertsMin, convertsMax, maxUses);
 		}
 		
 		/**
@@ -387,4 +417,13 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 			return this.registry;
 		}
 	}
+	
+	// Utilities
+	
+	@Nonnull
+	private static ItemStack getNonnullInstance(@Nullable Item item)
+	{
+		return item != null ? item.getDefaultInstance() : ItemStack.EMPTY;
+	}
+	
 }

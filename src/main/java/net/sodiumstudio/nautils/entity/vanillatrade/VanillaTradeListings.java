@@ -1,4 +1,4 @@
-package net.sodiumstudio.nautils.entity.vanillatrade;
+ package net.sodiumstudio.nautils.entity.vanillatrade;
 
 import java.util.ArrayList;
 import java.util.Collection;

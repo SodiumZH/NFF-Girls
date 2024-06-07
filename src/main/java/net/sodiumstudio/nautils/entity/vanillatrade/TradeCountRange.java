@@ -147,7 +147,9 @@ public class TradeCountRange
 	@Override
 	public String toString()
 	{
-		return String.format("(%d, %d)%s", this.minValue, this.maxValue, this.rndType.getName());
+		if (this.rndType == RandomizationType.FIXED_VALUE || this.minValue == this.maxValue)
+			return String.format("%d", this.minValue);
+		return String.format("[%d, %d]%s", this.minValue, this.maxValue, this.rndType.getName());
 	}
 	
 	private static enum RandomizationType
