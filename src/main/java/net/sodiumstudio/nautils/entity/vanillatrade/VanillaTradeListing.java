@@ -11,6 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.sodiumstudio.nautils.NaContainerUtils;
 
 public class VanillaTradeListing implements IVanillaTradeListing
 {
@@ -56,7 +57,7 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	 */
 	public static VanillaTradeListing create(Item costA, Item result)
 	{
-		return create(costA.getDefaultInstance(), result.getDefaultInstance());
+		return create(getNonnullInstance(costA), getNonnullInstance(result));
 	}
 	
 	/**
@@ -332,6 +333,15 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	}
 	
 	/**
+	 * Declares this Listing should have B. After doing this, if this Listing is missing B, it will be regarded as invalid.
+	 */
+	public VanillaTradeListing setHasB()
+	{
+		this.hasB = true;
+		return this;
+	}
+	
+	/**
 	 * Declare that the count of cost B and result should always be the same.
 	 * This is mainly for paid transformations (e.g. Emerald + Raw Fish -> Cooked Fish).
 	 */
@@ -375,14 +385,14 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	@Override
 	public boolean isValid() {
 		this.clearInvalidEntries();
-		return !this.baseCostA.isEmpty() && !this.result.isEmpty() && !(this.hasB && this.costB.isEmpty());
+		return this.baseCostA == null && !this.baseCostA.isEmpty() && this.result != null && !this.result.isEmpty() && !(this.hasB && (this.costB == null || this.costB.isEmpty()));
 	}
 
 	protected void clearInvalidEntries()
 	{
-		this.baseCostA.removeIf(ItemStack::isEmpty);
-		this.costB.removeIf(ItemStack::isEmpty);
-		this.result.removeIf(ItemStack::isEmpty);
+		if (this.baseCostA != null) this.baseCostA.removeIf(ItemStack::isEmpty);
+		if (this.costB != null) this.costB.removeIf(ItemStack::isEmpty);
+		if (this.result != null) this.result.removeIf(ItemStack::isEmpty);
 	}
 	
 	@Nullable
@@ -429,8 +439,8 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	 */
 	public static VanillaTradeListing exchanges(Item cost, int costMin, int costMax, Item result, int resultMin, int resultMax)
 	{
-		return VanillaTradeListing.exchanges(cost.getDefaultInstance(), costMin, costMax, 
-				result.getDefaultInstance(), resultMin, resultMax);
+		return VanillaTradeListing.exchanges(getNonnullInstance(cost), costMin, costMax, 
+				getNonnullInstance(result), resultMin, resultMax);
 	}
 	
 	/**
@@ -440,7 +450,7 @@ public class VanillaTradeListing implements IVanillaTradeListing
 			int amountMin, int amountMax)
 	{
 		return VanillaTradeListing.create(cost, transformsTo).addB(transformsFrom).setACountRange(costMin, costMax)
-				.setBCountRange(amountMin, amountMax).linkBCountToResult();
+				.setBCountRange(amountMin, amountMax).linkBCountToResult().setHasB();
 	}
 	
 	/**
@@ -449,8 +459,8 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	public static VanillaTradeListing converts(Item cost, int costMin, int costMax, Item transformsFrom, Item transformsTo,
 			int amountMin, int amountMax)
 	{
-		return VanillaTradeListing.converts(cost.getDefaultInstance(), costMin, costMax, transformsFrom.getDefaultInstance(), 
-				transformsTo.getDefaultInstance(), amountMin, amountMax);
+		return VanillaTradeListing.converts(getNonnullInstance(cost), costMin, costMax, getNonnullInstance(transformsFrom), 
+				getNonnullInstance(transformsTo), amountMin, amountMax);
 	}
 	
 	/**
@@ -464,11 +474,11 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	@Override
 	public String toString()
 	{
-		String res = String.format("VanillaTradeListing%s:{costA = ", this.isValid() ? "" : "(Invalid)");
+		String res = String.format("VanillaTradeListing%s{costA = ", this.isValid() ? "" : "(Invalid)");
 		
 		if (this.baseCostA.size() == 1)
-			res = res + this.baseCostA.get(0).toString();
-		else res = res + this.baseCostA.toString();
+			res = res + this.baseCostA.get(0).getItem().toString();
+		else res = res + NaContainerUtils.castList(this.baseCostA, stack -> stack.getItem()).toString();
 		res = res + ", countA = " + this.aCount.toString() + ", ";
 		if (this.hasB)
 			res = res + "hasB, ";
@@ -477,22 +487,30 @@ public class VanillaTradeListing implements IVanillaTradeListing
 		{
 			res = res + "costB = ";
 			if (this.costB.size() == 1)
-				res = res + this.costB.get(0).toString();
-			else res = res + this.costB.toString();
+				res = res + this.costB.get(0).getItem().toString();
+			else res = res +  NaContainerUtils.castList(this.costB, stack -> stack.getItem()).toString();
 			res = res + ", countB = " + this.bCount.toString() + ", ";
 		}
 		
 		res = res + " result = ";
 		if (this.result.size() == 1)
-			res = res + this.result.get(0).toString();
-		else res = res + this.result.toString();
+			res = res + this.result.get(0).getItem().toString();
+		else res = res +  NaContainerUtils.castList(this.result, stack -> stack.getItem()).toString();
 		res = res + ", countResult = " + this.resCount.toString();
 		
 		res = res + String.format(", requiredLevel = %d, maxUses = %d", this.requiredLevel, this.maxUses);
 		if (this.mapBToResult) res = res + ", mapBToResult";
 		if (this.linkBCountToResult) res = res + ", linkBCountToResult";
-		res = res + String.format(", xpReward = %d, selectionWeight = %d, priceMultiplier = %d}", this.xpReward, this.selectionWeight, this.priceMultiplier);
+		if (this.xpReward != 0) res = res + String.format(", xpReward = %d", this.xpReward);
+		if (this.selectionWeight != 1d) res = res + String.format(", selectionWeight = %f", this.selectionWeight);
+		if (this.priceMultiplier != 0d) res = res + String.format(", priceMultiplier = %f", this.priceMultiplier);
+		res = res + "}\n";
 		return res;
 	}
 	
+	// Utilities
+	protected static ItemStack getNonnullInstance(@Nullable Item item)
+	{
+		return item != null ? item.getDefaultInstance() : ItemStack.EMPTY;
+	}
 }
