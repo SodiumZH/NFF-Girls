@@ -19,11 +19,13 @@ public class ClientboundDwmgTradeSyncPacket implements Packet<ClientGamePacketLi
 	public final int id;
 	public final MerchantOffers offers;
 	public final List<DwmgTradeOfferMetaData> meta;
+	public final int points;
 	
 	public ClientboundDwmgTradeSyncPacket(CDwmgTradeHandler handler)
 	{
 		this.id = handler.getMob().getId();
 		this.offers = handler.getOffers();
+		this.points = handler.getPoints();
 		this.meta = handler.getMeta();
 	}
 	
@@ -31,6 +33,7 @@ public class ClientboundDwmgTradeSyncPacket implements Packet<ClientGamePacketLi
 	{
 		this.id = buf.readInt();
 		this.offers = MerchantOffers.createFromStream(buf);
+		this.points = buf.readInt();
 		this.meta = new ArrayList<>();
 		int size = buf.readInt();
 		for (int i = 0; i < size; ++i)
@@ -43,6 +46,7 @@ public class ClientboundDwmgTradeSyncPacket implements Packet<ClientGamePacketLi
 	public void write(FriendlyByteBuf buf) {
 		buf.writeInt(id);
 		this.offers.writeToStream(buf);
+		buf.writeInt(this.points);
 		buf.writeInt(meta.size());
 		for (int i = 0; i < meta.size(); ++i)
 		{
@@ -65,6 +69,7 @@ public class ClientboundDwmgTradeSyncPacket implements Packet<ClientGamePacketLi
 				{
 					cap.getOffers().add(this.offers.get(i));
 					cap.getMeta().add(this.meta.get(i));
+					cap.setPoints(this.points);
 				}
 			});
 		}
