@@ -2,10 +2,16 @@ package net.sodiumstudio.nautils.entity.vanillatrade;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.containers.CompoundSet;
 import net.sodiumstudio.nautils.math.RandomSelection;
 
@@ -74,7 +80,7 @@ public class VanillaTradeListings<T extends IVanillaTradeListing>
 			if (!res.contains(t.getMerchantLevel()))
 				res.add(t.getMerchantLevel());
 		});
-		return res.stream().sorted().toList();
+		return NaContainerUtils.toArrayList(res.stream().sorted().toList());
 	}
 	
 	/**
@@ -117,5 +123,84 @@ public class VanillaTradeListings<T extends IVanillaTradeListing>
 			}
 		}
 		return out;
+	}
+	
+	/**
+	 * Pick listing instances for all present levels.
+	 * @param amountForEachLevel How many Listing instances it should pick for each level.
+	 * Null input or absent level value will be picked 1 instance.
+	 * @return A list of Listing instances with ascending order in level. 
+	 */
+	public List<T> pickListingForAllLevels(@Nullable Map<Integer, Integer> amountForEachLevel)
+	{
+		List<T> res = new ArrayList<>();
+		for (int lv: this.allLevels())
+		{
+			int amount = (amountForEachLevel != null && amountForEachLevel.containsKey(lv)) ? amountForEachLevel.get(lv) : 1;
+			res.addAll(this.pickListings(amount, lv));
+		}
+		res.removeIf(t -> t == null || !t.isValid());
+		return res;
+	}
+	
+	/**
+	 * Pick listing instances for all present levels.
+	 * @param amountForEachLevel How many Listing instances it should pick for each level.
+	 * input[i] for level i+1.
+	 * @return A list of Listing instances with ascending order in level. 
+	 */
+	public List<T> pickListingsForAllLevels(int... amountForEachLevel)
+	{
+		if (amountForEachLevel == null || amountForEachLevel.length == 0) return this.pickListingForAllLevels((Map<Integer, Integer>)null); 
+		Map<Integer, Integer> map = new HashMap<>();
+		for (int i = 0; i < amountForEachLevel.length; ++i)
+		{
+			map.put(i + 1, amountForEachLevel[i]);
+		}
+		return this.pickListingForAllLevels(map);
+	}
+	
+	/**
+	 * Pick listing instances for all specified levels in the input map keys.
+	 * @param amountForEachLevel How many Listing instances it should pick for each level.
+	 * Null input or absent level value will be picked 1 instance.
+	 * @return A list of Listing instances with ascending order in level. 
+	 */
+	public List<T> pickListingForSpecifiedLevels(@Nonnull Map<Integer, Integer> amountForEachLevel)
+	{
+		List<Integer> validLevels = this.allLevels();
+		validLevels.removeIf(i -> !amountForEachLevel.containsKey(i));
+		List<T> res = new ArrayList<>();
+		for (int lv: validLevels)
+		{
+			res.addAll(this.pickListings(amountForEachLevel.get(lv), lv));
+		}
+		res.removeIf(t -> t == null || !t.isValid());
+		return res;
+	}
+	
+	/**
+	 * Pick listing instances for levels from 1 to input length.
+	 * @param amountForEachLevel How many Listing instances it should pick for each level.
+	 * input[i] for level i+1.
+	 * @return A list of Listing instances with ascending order in level. 
+	 */
+	public List<T> pickListingForSpecifiedLevels(int... amountForEachLevel)
+	{
+		if (amountForEachLevel.length == 0) return new ArrayList<>(); 
+		Map<Integer, Integer> map = new HashMap<>();
+		for (int i = 0; i < amountForEachLevel.length; ++i)
+		{
+			map.put(i + 1, amountForEachLevel[i]);
+		}
+		var res = this.pickListingForSpecifiedLevels(map);
+		res.removeIf(t -> t == null || !t.isValid());
+		return res;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "VanillaTradeListings{" + this.set.toHashSet().toString() + "}";
 	}
 }

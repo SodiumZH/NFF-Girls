@@ -389,9 +389,9 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	@Override
 	public MerchantOffer getOffer(Entity trader, RandomSource rnd) {
 		if (!this.isValid()) return null;	// Invalid entries have been cleared here
-		ItemStack a = this.baseCostA.get(rnd.nextInt(this.baseCostA.size()));
+		ItemStack a = this.baseCostA.isEmpty() ? ItemStack.EMPTY : this.baseCostA.get(rnd.nextInt(this.baseCostA.size()));
 		int ca = this.aCount.getValue();
-		int bIndex = rnd.nextInt(this.costB.size());
+		int bIndex = this.costB.isEmpty() ? 0 : rnd.nextInt(this.costB.size());
 		ItemStack b = this.costB.isEmpty() ? ItemStack.EMPTY : this.costB.get(bIndex);
 		int cb = this.bCount.getValue();
 		ItemStack r;
@@ -401,7 +401,7 @@ public class VanillaTradeListing implements IVanillaTradeListing
 				throw new IllegalStateException("NaUtils#VanillaTradeListing: set mapping B to result, but B size is larger than result size"); 
 			else r = this.result.get(bIndex);
 		}
-		else r = this.result.get(rnd.nextInt(this.result.size()));
+		else r = this.result.isEmpty() ? ItemStack.EMPTY : this.result.get(rnd.nextInt(this.result.size()));
 		int cr = this.linkBCountToResult ? cb : this.resCount.getValue();
 		a.setCount(ca);
 		b.setCount(cb);
@@ -459,6 +459,40 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	public static VanillaTradeListing invalidWithAmounts(int costAMin, int costAMax, int resultMin, int resultMax)
 	{
 		return VanillaTradeListing.createInvalid().setACountRange(costAMin, costAMax).setResultCountRange(resultMin, resultMax);
+	}
+	
+	@Override
+	public String toString()
+	{
+		String res = String.format("VanillaTradeListing%s:{costA = ", this.isValid() ? "" : "(Invalid)");
+		
+		if (this.baseCostA.size() == 1)
+			res = res + this.baseCostA.get(0).toString();
+		else res = res + this.baseCostA.toString();
+		res = res + ", countA = " + this.aCount.toString() + ", ";
+		if (this.hasB)
+			res = res + "hasB, ";
+		
+		if (this.costB.size() > 0)
+		{
+			res = res + "costB = ";
+			if (this.costB.size() == 1)
+				res = res + this.costB.get(0).toString();
+			else res = res + this.costB.toString();
+			res = res + ", countB = " + this.bCount.toString() + ", ";
+		}
+		
+		res = res + " result = ";
+		if (this.result.size() == 1)
+			res = res + this.result.get(0).toString();
+		else res = res + this.result.toString();
+		res = res + ", countResult = " + this.resCount.toString();
+		
+		res = res + String.format(", requiredLevel = %d, maxUses = %d", this.requiredLevel, this.maxUses);
+		if (this.mapBToResult) res = res + ", mapBToResult";
+		if (this.linkBCountToResult) res = res + ", linkBCountToResult";
+		res = res + String.format(", xpReward = %d, selectionWeight = %d, priceMultiplier = %d}", this.xpReward, this.selectionWeight, this.priceMultiplier);
+		return res;
 	}
 	
 }

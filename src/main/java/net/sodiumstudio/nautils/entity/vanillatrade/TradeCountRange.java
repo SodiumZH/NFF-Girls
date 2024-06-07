@@ -102,6 +102,7 @@ public class TradeCountRange
 		}
 		case UNIFORM:
 		{
+			if (this.minValue == this.maxValue) return this.minValue;
 			int val = rnd.nextInt(minValue, maxValue + 1);
 			this.lastValue = val;
 			this.lastValueValid = true;
@@ -109,6 +110,7 @@ public class TradeCountRange
 		}
 		case POISSON:
 		{
+			if (this.minValue == this.maxValue) return this.minValue;
 			int res = minValue;
 			for (int i = minValue; i < maxValue; ++i)
 			{
@@ -142,10 +144,27 @@ public class TradeCountRange
 		return this.lastValue;
 	}
 	
+	@Override
+	public String toString()
+	{
+		return String.format("(%d, %d)%s", this.minValue, this.maxValue, this.rndType.getName());
+	}
+	
 	private static enum RandomizationType
 	{
-		FIXED_VALUE,
-		POISSON,
-		UNIFORM
+		FIXED_VALUE("Fixed"),
+		POISSON("Poisson"),
+		UNIFORM("Uniform");
+		
+		private String name;
+		private RandomizationType(String name)
+		{
+			this.name = name;
+		}
+		
+		public String getName()
+		{
+			return name;
+		}
 	}
 }
