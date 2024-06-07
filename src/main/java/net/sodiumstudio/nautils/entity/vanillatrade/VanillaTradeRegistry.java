@@ -90,7 +90,7 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 			this.key = key;
 		}
 		
-		public Registering forLevel(int level)
+		public Registering setRequiredLevel(int level)
 		{
 			if (level <= 0)
 				throw new IllegalArgumentException(String.format("AbstractVanillaTradeRegistry#Registering: level starts from 1. Input: %d", level));
@@ -98,7 +98,7 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 			return this;
 		}
 		
-		public Registering forProfession(@Nullable VillagerProfession profession)
+		public Registering setProfession(@Nullable VillagerProfession profession)
 		{
 			if (profession == null)
 				profession = VillagerProfession.NONE;
@@ -155,7 +155,7 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 		
 		public Registering addListing(VanillaTradeListing listing)
 		{
-			this.getActiveListings().add(listing);
+			this.getActiveListings().add(listing.setRequiredLevel(this.level));
 			this.lastListing = listing;
 			return this;
 		}
@@ -205,7 +205,7 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 				ItemStack result, int resultMin, int resultMax, int maxUses)
 		{
 			VanillaTradeListing l = VanillaTradeListing.create(costA, result).setACountRange(costAMin, costAMax).addB(costB)
-					.setBCountRange(costBMin, costBMax).setResultCountRange(resultMin, maxUses).setMaxUses(maxUses);
+					.setBCountRange(costBMin, costBMax).setResultCountRange(resultMin, resultMax).setMaxUses(maxUses);
 			if (this.usesPoisson())
 				l.setAllPoisson(this.getPoissonFactor());
 			this.addListing(l);
@@ -377,6 +377,14 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 				this.lastListing.setMaxUses(value);
 			else LogUtils.getLogger().error("VanillaTradeRegistry#Registering#maxUses: no listing registered. Skipped.");
 			return this;
+		}
+		
+		/**
+		 * End registering under this key and return to the registry.
+		 */
+		public VanillaTradeRegistry pop()
+		{
+			return this.registry;
 		}
 	}
 }
