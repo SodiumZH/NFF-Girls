@@ -1,41 +1,46 @@
 package net.sodiumstudio.dwmg.entities.vanillatrade;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.network.PacketDistributor;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
-import net.sodiumstudio.dwmg.entities.vanillatrade.registry.DwmgTradeRegistry;
-import net.sodiumstudio.dwmg.network.ClientboundDwmgMobGeneralSyncPacket;
 import net.sodiumstudio.dwmg.network.DwmgChannels;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.registries.DwmgTrades;
 import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.NaMiscUtils;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.capability.SerializableCapabilityProvider;
 import net.sodiumstudio.nautils.entity.vanillatrade.CVanillaMerchant;
-import net.sodiumstudio.nautils.entity.vanillatrade.VanillaMerchantImpl;
+import net.sodiumstudio.nautils.entity.vanillatrade.VanillaMerchant;
+import net.sodiumstudio.nautils.entity.vanillatrade.VanillaTradeListing;
 
 public interface CDwmgTradeHandler extends CVanillaMerchant
 {
 	public static final int[] LEVEL_REQUIREMENTS = {0, 5, 15, 30, 45};
+	public static final int[] OFFER_COUNT_FOR_LEVEL = {2, 2, 2, 2, 1};
+	public static final ItemListing INTRODUCTION = (e, rnd) -> 
+	{
+		ItemStack res = new ItemStack(DwmgItems.TRADE_INTRODUCTION_LETTER.get());
+		DwmgItems.TRADE_INTRODUCTION_LETTER.get().write(res, IDwmgBefriendedMob.getBM(e));
+		return new MerchantOffer(new ItemStack(DwmgItems.EVIL_GEM.get()), res, 1, 0, 0);
+	};
+	
 	
 	public void serverTick();
 
@@ -45,6 +50,21 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 	
 	public boolean isValidOffers();
 
+	/**
+	 * How many points it needs to get an introduction letter
+	 */
+	public int getPointsPerIntroduction();
+	
+	/**
+	 * Current trade points
+	 */
+	public int getPoints();
+	
+	/**
+	 * Set current trade points
+	 */
+	public void setPoints(int val);
+	
 	/**
 	 * Remove all offers and regenerate. This happens in game when specific item is used.
 	 * @param setOutOfStock If true, the new offers will be out-of-stock, otherwise all available.
@@ -57,7 +77,7 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 	 */
 	public int getRestockTicks();
 	
-	public static class Impl extends VanillaMerchantImpl implements CDwmgTradeHandler
+	public static class Impl extends VanillaMerchant implements CDwmgTradeHandler
 	{
 		protected static final RandomSource RND = RandomSource.create();
 		private List<DwmgTradeOfferMetaData> meta = new ArrayList<>();
@@ -66,7 +86,7 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 		private boolean triedRegenerate = false;	// When tick encounters an error, it will try regenerating the offers. If it still errors, the offers will be set back and throw the error/exception.
 		private MerchantOffers backupOffers = null;
 		private List<DwmgTradeOfferMetaData> backupMeta = null;
-		private int tradeCount = 0;
+		private int tradePoints = 0;
 		
 		public Impl(IDwmgBefriendedMob bm)
 		{
@@ -86,21 +106,42 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 		}
 		
 		@Override
+		public int getPointsPerIntroduction()
+		{
+			return IDwmgBefriendedMob.isBM(this.getMob()) ? IDwmgBefriendedMob.getBM(this.getMob()).pointsPerIntroductionLetter() : 128;
+		}
+		
+		@Override
+		public int getPoints()
+		{
+			return this.tradePoints;
+		}
+		
+		@Override
+		public void setPoints(int val)
+		{
+			this.tradePoints = val;
+		}
+		
+		@Override
 		public void generateTrades(){
 			this.getOffersRaw().clear();
 			this.getMeta().clear();
-			for (int i = 1; i <= getMaxMerchantLevel(); ++i)
-			{
-				var trades = DwmgTradeRegistry.getTradesImmutable(this.getMob().getType(), getProfession(), i);
+			List<VanillaTradeListing> trades = 
+					DwmgTrades.TRADES.getListings(this.getMob().getType()).pickListingForSpecifiedLevels(OFFER_COUNT_FOR_LEVEL);
+				/*var trades = DwmgTradeRegistry.getTradesImmutable(this.getMob().getType(), getProfession(), i);
 				Collection<ItemListing> picked = NaContainerUtils.getRandomSubset
-						(NaContainerUtils.iterableToSet(trades), Math.min(2, trades.size()));
-				for (ItemListing offer: picked)
-				{
-					this.getOffersRaw().add(offer.getOffer(getMob(), RND));
-					this.meta.add(new DwmgTradeOfferMetaData(i, 0, !this.getOffersRaw().get(this.getOffersRaw().size() - 1).getCostB().isEmpty()));
-				}
+						(NaContainerUtils.iterableToSet(trades), Math.min(2, trades.size()));*/
+			for (VanillaTradeListing listing: trades)
+			{
+				this.getOffersRaw().add(listing.getOffer(getMob(), RND));
+				this.meta.add(new DwmgTradeOfferMetaData(listing.getMerchantLevel(), 0, !this.getOffersRaw().get(this.getOffersRaw().size() - 1).getCostB().isEmpty()));
 			}
-			this.tradeCount = 0;
+			
+			this.tradePoints = 0;
+			// Finally add introduction letter entry
+			this.getOffersRaw().add(INTRODUCTION.getOffer(getMob(), RND));
+			this.getMeta().add(new DwmgTradeOfferMetaData(1, 0, false));
 		}
 
 		@Override
@@ -128,6 +169,9 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 			var meta = this.getMeta(offer);
 			if (meta != null)
 				this.getBM().getFavorabilityHandler().addFavorability(meta.requiredMerchantLevel * 0.1f);
+			if (offer.getResult().is(DwmgItems.TRADE_INTRODUCTION_LETTER.get()))
+				tradePoints = 0;
+			else tradePoints += meta.requiredMerchantLevel;
 		}
 
 		
@@ -139,7 +183,7 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 		@Override
 		public void serverTick() 
 		{
-			boolean tryingRegenerate = false;
+			//boolean tryingRegenerate = false;
 			try {
 				this.serverTickInternal();
 			} catch (Throwable t) {
@@ -153,7 +197,7 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 					this.setOffers(new MerchantOffers());
 					this.meta = new ArrayList<>();
 					this.generateTrades();
-					tryingRegenerate = true;
+					//tryingRegenerate = true;
 				}
 				else 
 				{
@@ -183,7 +227,7 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 			}
 			MerchantOffers offers = this.getOffers();
 			// Cache available offer count, then set unavailable offer count to max
-			for (int i = 0; i < this.getOffers().size(); ++i)
+			for (int i = 0; i < this.getOffers().size() - 1; ++i)	// The last element is introduction, no tick
 			{
 				if (meta.get(i).requiredMerchantLevel <= level)
 					meta.get(i).cachedUse = offers.get(i).getUses();
@@ -195,7 +239,7 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 			this.restockTimer --;
 			if (this.restockTimer <= 0)
 			{
-				for (int i = 0; i < this.getOffers().size(); ++i)
+				for (int i = 0; i < this.getOffers().size() - 1; ++i)	// The last element is introduction, no tick
 				{
 					if (this.getMeta(i).requiredMerchantLevel <= this.getMerchantLevel())
 					{
@@ -209,8 +253,14 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 			}
 			/*if (restockTimer % 200 == 0)
 				if (getBM().isOwnerInDimension())
-					NaMiscUtils.printToScreen(String.format("Restock time left: %d s", restockTimer / 20) , getBM().getOwner());*/
 			
+			NaMiscUtils.printToScreen(String.format("Restock time left: %d s", restockTimer / 20) , getBM().getOwner());*/
+			
+			// Update introduction letter entry
+			if (this.tradePoints < this.getPointsPerIntroduction())
+				this.getOffers().get(this.getOffers().size() - 1).setToOutOfStock();
+			else this.getOffers().get(this.getOffers().size() - 1).resetUses();
+
 			// Update discount
 			for (var offer: this.getOffers())
 			{
@@ -234,7 +284,7 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 			tag.put("meta", tagMeta);
 			tag.putInt("cached_level", this.cachedLevel);
 			tag.putInt("restock_timer", this.restockTimer);
-			tag.putInt("trade_count", this.tradeCount);
+			tag.putInt("points", this.tradePoints);
 			return tag;
 		}
 		
@@ -250,13 +300,14 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 			}
 			this.cachedLevel = tag.getInt("cached_level");
 			this.restockTimer = tag.getInt("restock_timer");
+			this.tradePoints = tag.getInt("points");
 			this.checkAndRemoveInvalidOffers();
 		}
 
 		protected void onMerchantLevelChange(int from, int to)
 		{
 			if (!isValidOffers()) return;
-			for (int i = 0; i < this.getOffers().size(); ++i)
+			for (int i = 0; i < this.getOffers().size() - 1; ++i)	// The last element is introduction, skip
 			{
 				if (this.meta.get(i).requiredMerchantLevel <= to)
 				{

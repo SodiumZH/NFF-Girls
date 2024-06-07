@@ -45,6 +45,7 @@
   "item.dwmg.magical_gel_bottle.check_color": "Right click to check color",
   "item.dwmg.taoist_talisman": "Taoist Talisman",
   "item.dwmg.evil_gem": "Evil Gem",
+  "item.dwmg.trade_introduction_letter": "Trade Introduction Letter",
   
   "item.dwmg.befriending_progress_probe": "Befriending Progress Probe (Debug)",
   "item.dwmg.exp_modifier": "EXP Modifier (Debug)",
@@ -122,6 +123,13 @@
   "info.dwmg.open_trade": "Trade",
   "info.dwmg.trade_level_not_satisfied": "This offer requires Level %1$d.",
   "info.dwmg.trade_out_of_stock": "This offer is out-of-stock.",
+  "info.dwmg.introduction_using_to_self": "You can't send an Introduction Letter to the signer themselves.",
+  "info.dwmg.introduction_used": "Sent the Introduction Letter to %1$s.",
+  "info.dwmg.introduction_letter_desc": "Send to another befriended mob to refresh their trade offers.",
+  "info.dwmg.introduction_letter_writer": "Signed by: %1$s",
+  "info.dwmg.introduction_letter_player": "For: %1$s",
+  "info.dwmg.introduction_letter_invalid": "Not signed",
+  "info.dwmg.introduction_unavailable": "Required points: %1$d; current points: %2$d",
   "death.attack.necromancer_wither": "%1$s failed to bear the curse of necromancy.",
   
   "color.dwmg.html.alice_blue": "Alice Blue",
