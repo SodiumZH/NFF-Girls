@@ -1,28 +1,23 @@
 package net.sodiumstudio.dwmg.registries;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.capability.CAttributeMonitor;
 import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
-import net.sodiumstudio.nautils.TagHelper;
-import net.sodiumstudio.nautils.entity.vanillatrade.CVanillaMerchant;
-import net.sodiumstudio.nautils.entity.vanillatrade.VanillaTradeRegistry;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobProvider;
 import net.sodiumstudio.dwmg.entities.vanillatrade.CDwmgTradeHandler;
-import net.sodiumstudio.nautils.capability.*;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgCapabilityAttachment {
@@ -49,7 +44,8 @@ public class DwmgCapabilityAttachment {
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_favorability"), new CFavorabilityHandler.Prvd(bm.asMob()));
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_level"), new CLevelHandler.Prvd(bm.asMob()));
 			}
-			if (living instanceof IDwmgBefriendedMob bm && VanillaTradeRegistry.contains(bm.asMob().getType()))
+			if (living instanceof IDwmgBefriendedMob bm 
+					&& DwmgTrades.TRADES.hasListings(bm.asMob().getType(), VillagerProfession.NONE))
 			{
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_trade"), 
 						new CDwmgTradeHandler.Prvd(bm, DwmgCapabilities.CAP_TRADE_HANDLER));

@@ -125,6 +125,7 @@
   "info.dwmg.introduction_letter_writer": "签署者：%1$s",
   "info.dwmg.introduction_letter_player": "被介绍人：%1$s",
   "info.dwmg.introduction_letter_invalid": "未签署",
-  "info.dwmg.introduction_unavailable": "需求点数：%1$d；当前点数：%2$d",
+  "info.dwmg.introduction_unavailable": "需求点数：%2$d；当前点数：%1$d",
+  "info.dwmg.introduction_written": "%1$s签署了交易介绍信。",
   "death.attack.necromancer_wither": "%1$s没能承受住死灵巫术的诅咒"
 }

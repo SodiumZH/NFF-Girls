@@ -1,4 +1,4 @@
-package net.sodiumstudio.dwmg.events;
+ package net.sodiumstudio.dwmg.events;
 
 import java.util.UUID;
 
