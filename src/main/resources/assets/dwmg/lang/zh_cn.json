@@ -114,5 +114,16 @@
   "info.dwmg.bauble.aqua_jade": "溺尸娘可装备",
   "info.dwmg.bauble.poisonous_thorn": "节肢生物可装备",
   "info.dwmg.bauble.poisonous_thorn_1": "攻击付与中毒效果强化",
+  "info.dwmg.open_trade": "交易",
+  "info.dwmg.trade_level_not_satisfied": "这个交易需求等级%1$d。",
+  "info.dwmg.trade_out_of_stock": "这个交易暂时缺货。",
+  "info.dwmg.introduction_using_to_self": "交易介绍信不能送给签署者本人。",
+  "info.dwmg.introduction_used": "向%1$s送出了交易介绍信。",
+  "info.dwmg.introduction_letter_desc": "送达另一个友好生物以刷新其交易。",
+  "info.dwmg.introduction_letter_writer": "签署者：%1$s",
+  "info.dwmg.introduction_letter_player": "被介绍人：%1$s",
+  "info.dwmg.introduction_letter_invalid": "未签署",
+  "info.dwmg.introduction_unavailable": "需求点数：%2$d；当前点数：%1$d",
+  "info.dwmg.introduction_written": "%1$s签署了交易介绍信。",
   "death.attack.necromancer_wither": "%1$s没能承受住死灵巫术的诅咒"
 }
