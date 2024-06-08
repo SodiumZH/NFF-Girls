@@ -213,14 +213,14 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 				if (!this.level.isClientSide && hand == InteractionHand.MAIN_HAND)
 				{
 					// Power with a lightning particle
-					if (player.getItemInHand(hand).is(ModItems.LIGHTNING_PARTICLE.get()) && !this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
+					if (player.getItemInHand(hand).is(ModItems.LIGHTNING_PARTICLE.get()) && !this.isPowered() && hand.equals(InteractionHand.MAIN_HAND) && player.isShiftKeyDown())
 					{
 						this.setPowered(true);
 						player.getItemInHand(hand).shrink(1);
 						return InteractionResult.sidedSuccess(player.level.isClientSide);
 					}
 					// Unpower with empty hand )and get a lightning particle
-					else if (player.getItemInHand(hand).isEmpty() && this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
+					else if (player.getItemInHand(hand).isEmpty() && this.isPowered() && hand.equals(InteractionHand.MAIN_HAND) && player.isShiftKeyDown())
 					{
 						this.setPowered(false);
 						this.spawnAtLocation(new ItemStack(ModItems.LIGHTNING_PARTICLE.get(), 1));

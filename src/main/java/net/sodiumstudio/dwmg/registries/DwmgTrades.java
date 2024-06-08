@@ -55,6 +55,7 @@ public class DwmgTrades
 		.addBuys(Items.SKELETON_SKULL, 1, 1, 6, 8, 2)
 		.addBuys(gaiaItem("rotten_heart"), 1, 1, 1, 1, 2)
 		.addBuys(byKey("iceandfire:ectoplasm"), 10, 14, 1, 1, 4)
+		.addBuys(byKey("alexsmobs:soul_heart"), 1, 1, 1, 1, 4)
 		.setRequiredLevel(5)
 		.addBuys(Items.CRYING_OBSIDIAN, 4, 6, 1, 1, 4)
 		.addBuys(ModItems.DYSSOMNIA_SKIN.get(), 2, 2, 1, 1, 4)
@@ -62,18 +63,22 @@ public class DwmgTrades
 		.addBuys(byKey("iceandfire:dread_shard"), 16, 20, 1, 1, 4)
 		
 		.pop().push("dwmg:hmag_zombie_girl")
-		.linkListings(COMMON_UNDEAD, null)
+		.linkListings(COMMON_UNDEAD)
 		.setRequiredLevel(5)
 		.addSells(60, 64, Items.ZOMBIE_SPAWN_EGG, 1, 1, 1).weight(0.2d)
 		
 		.pop().push("dwmg:hmag_husk_girl")
-		.linkListings(COMMON_UNDEAD, null)
+		.linkListings(COMMON_UNDEAD)
+		.setRequiredLevel(3)
+		.addBuys(byKey("alexsmobs:rattlesnake_rattle"), 5, 8, 1, 1, 4)
+		.setRequiredLevel(4)
+		.addBuys(byKey("alexsmobs:tarantura_hawk_wing_fragment"), 2, 3, 1, 1, 4)
 		.setRequiredLevel(5)
-		.addSells(1, 1, Items.HUSK_SPAWN_EGG, 56, 64, 1).weight(0.2d)
+		.addSells(60, 64, Items.HUSK_SPAWN_EGG, 1, 1, 1).weight(0.2d)
 		.addSells(1, 1, byKey("alexsmobs:guster_eye"), 1, 1, 2)
 
 		.pop().push("dwmg:hmag_drowned_girl")
-		.linkListings(COMMON_UNDEAD, null)
+		.linkListings(COMMON_UNDEAD)
 		.setRequiredLevel(2)
 		.addSells(1, 1, Items.PRISMARINE_CRYSTALS, 12, 16, 4)
 		.addSells(1, 1, Items.PRISMARINE_SHARD, 8, 12, 4)
@@ -91,30 +96,36 @@ public class DwmgTrades
 		.addSells(60, 64, Items.ZOMBIE_SPAWN_EGG, 1, 1, 1).weight(0.2d)
 		
 		.pop().push("dwmg:hmag_skeleton_girl")
-		.linkListings(COMMON_UNDEAD, null)
+		.linkListings(COMMON_UNDEAD)
 		.setRequiredLevel(5)
 		.addSells(60, 64, Items.SKELETON_SPAWN_EGG, 1, 1, 1).weight(0.2d)
-		.addSells(1, 1, byKey("invalid:random_stuff"), 1, 1, 1)
 		
-		.pop().push("dwmg:hmag_stray_girl");
+		.pop().push("dwmg:hmag_stray_girl")
+		.linkListings(COMMON_UNDEAD)
+		.setRequiredLevel(4)
+		.addBuys(byKey("twilightforest:arctic_fur"), 16, 20, 1, 1, 4)
+		.addBuys(byKey("alexsmobs:froststalker_horn"), 3, 4, 1, 1, 4)
+		
+		.setRequiredLevel(5)
+		.addSells(60, 64, Items.SKELETON_SPAWN_EGG, 1, 1, 1).weight(0.2d)
+		
+		.pop().push("dwmg:hmag_wither_skeleton_girl")
+		.linkListings(COMMON_UNDEAD)
+		.setRequiredLevel(3)
+		.addSells(1, 1, Items.OBSIDIAN, 8, 12, 4)
+		.addBuys(byKey("iceandfire:witherbone"), 12, 16, 1, 1, 4)
+		.setRequiredLevel(4)
+		.addBuys(Items.WITHER_SKELETON_SKULL, 1, 1, 6, 8, 2)
+		.addSells(1, 1, Items.WITHER_ROSE, 3, 4, 4)
+		.addBuys(gaiaItem("withered_brain"), 1, 1, 1, 1, 2)
+		.setRequiredLevel(5)
+		.addBuys(byKey("iceandfire:cocatrice_eye"), 1, 1, 3, 5, 2)
+		.addSells(12, 16, ModItems.NETHER_STAR_FRAGMENT.get(), 1, 1, 2).weight(0.5d)
+		.pop();
+		
 		//String str = TRADES.getListings(COMMON_UNDEAD).toString();
 /*
-
-				.linkAppendable("dwmg:hmag_skeleton_girl", COMMON_UNDEAD)
-				.addListings(5, .addSells(Items.SKELETON_SPAWN_EGG, 1, 2, 56, 64, 1)).pop()
-
-				
-				.linkAppendable("dwmg:hmag_wither_skeleton_girl", COMMON_UNDEAD
-				.setRequiredLevel(3,
-					.addSells(Items.OBSIDIAN, 8, 12, 1, 2, 4),
-					.addBuys(byKey("iceandfire:witherbone"), 8, 12, 1, 2, 4)
-				.setRequiredLevel(4, 
-					.addBuys(Items.WITHER_SKELETON_SKULL, 1, 2, 6, 8, 2),
-					.addSells(Items.WITHER_ROSE, 3, 5, 1, 2, 4)
-					.addBuys(gaiaItem("withered_brain"), 1, 2, 1, 2, 4)
-				.setRequiredLevel(5,
-					.addBuys(byKey("iceandfire:cocatrice_eye"), 1, 2, 3, 5, 2)
-				).pop()*/;
+		).pop()*/;
 		} catch(Throwable t) {
 			t.printStackTrace();
 			throw t;

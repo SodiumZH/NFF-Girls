@@ -2,6 +2,9 @@ package net.sodiumstudio.dwmg.entities;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.function.Consumer;
+
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.mutable.MutableObject;
 
@@ -9,6 +12,7 @@ import com.mojang.logging.LogUtils;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -33,6 +37,54 @@ import net.sodiumstudio.nautils.annotation.DontOverride;
 
 public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, */IAttributeMonitor, IItemStackMonitor
 {
+	
+	/**
+	 * Check if a mob has a Dwmg BM interface.
+	 * <p>
+	 * As IBefriendedMob could also be implemented in capabilities instead of the mob class in the future,
+	 * always use this instead of {@code instanceof} check.
+	 */
+	public static boolean isBM(Object o)
+	{
+		if (o == null) return false;
+		if (o instanceof IDwmgBefriendedMob bm)
+			return true;
+		else return false;
+	}
+	
+	/**
+	 * Cast a mob to the Dwmg BM interface. Null if failed.
+	 * <p>
+	 * As IBefriendedMob could also be implemented in capabilities instead of the mob class in the future,
+	 * always use this to cast a mob to BM.
+	 */
+	@Nullable
+	public static IDwmgBefriendedMob getBM(Object o)
+	{
+		if (o == null) return null;
+		if (o instanceof IDwmgBefriendedMob bm)
+			return bm;
+		else return null;
+	}
+	
+	/**
+	 * Do an action if a mob has a Dwmg BM interface.
+	 * <p>
+	 * As IBefriendedMob could also be implemented in capabilities instead of the mob class in the future,
+	 * you can use this to safely cast and do things to BM.
+	 * @return Whether the action is invoked.
+	 */
+	public static boolean ifBM(Object o, Consumer<IDwmgBefriendedMob> action)
+	{
+		if (o == null) return false;
+		if (IDwmgBefriendedMob.isBM(o))
+		{
+			action.accept(IDwmgBefriendedMob.getBM(o));
+			return true;
+		}
+		else return false;
+	}
+	
 	
 	@DontOverride
 	public default CFavorabilityHandler getFavorabilityHandler()
@@ -70,6 +122,14 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 	public default float getFavorability()
 	{
 		return this.getFavorabilityHandler().getFavorability();
+	}
+	
+	/** Get the proportion of fav/maxfav, ranged 0-1 */
+	@DontOverride
+	public default float getNormalizedFavorability()
+	{
+		var cap = this.getFavorabilityHandler();
+		return cap.getFavorability() / cap.getMaxFavorability();
 	}
 	
 	@DontOverride
@@ -236,6 +296,20 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 	{
 		return 600 * 20;
 	}
+	
+	/**
+	 * Get amount of trade entries for each level. Result[i] = level i+1.
+	 */
+	public default int[] getTradeEntryCountEachLevel()
+	{
+		return new int[] {2, 2, 2, 2, 1};
+	}
+	
+	public default int pointsPerIntroductionLetter()
+	{
+		return 128;
+	}
+	
 	
 	// ===================== Dwmg gamerules related ===================
 	

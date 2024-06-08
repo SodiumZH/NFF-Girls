@@ -129,7 +129,8 @@
   "info.dwmg.introduction_letter_writer": "Signed by: %1$s",
   "info.dwmg.introduction_letter_player": "For: %1$s",
   "info.dwmg.introduction_letter_invalid": "Not signed",
-  "info.dwmg.introduction_unavailable": "Required points: %1$d; current points: %2$d",
+  "info.dwmg.introduction_unavailable": "Required points: %2$d; current points: %1$d",
+  "info.dwmg.introduction_written": "%1$s signed on the Trade Introduction Letter.",
   "death.attack.necromancer_wither": "%1$s failed to bear the curse of necromancy.",
   
   "color.dwmg.html.alice_blue": "Alice Blue",

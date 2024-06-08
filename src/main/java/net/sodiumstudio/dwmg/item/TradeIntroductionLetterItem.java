@@ -78,7 +78,7 @@ public class TradeIntroductionLetterItem extends NaUtilsItem
 		{
 			if (!player.level.isClientSide)
 			{
-				UUID targetId = IDwmgBefriendedMob.getBM(player).getIdentifier();
+				UUID targetId = IDwmgBefriendedMob.getBM(living).getIdentifier();
 				if (this.isValid(stack) && this.getPlayerUUID(stack).equals(player.getUUID()))
 				{
 					if (this.getWriterId(stack).equals(targetId))
@@ -89,7 +89,8 @@ public class TradeIntroductionLetterItem extends NaUtilsItem
 					{
 						living.getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(c -> c.regenerateTrades(true));
 						NaMiscUtils.printToScreen(InfoHelper.createTranslatable("info.dwmg.introduction_used", living.getName().getString()), player);
-						stack.shrink(1);
+						if (!player.isCreative())
+							stack.shrink(1);
 					}
 				}
 				else if (!this.isValid(stack))

@@ -134,11 +134,13 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 						(NaContainerUtils.iterableToSet(trades), Math.min(2, trades.size()));*/
 			for (VanillaTradeListing listing: trades)
 			{
-				this.getOffersRaw().add(listing.getOffer(getMob(), RND));
-				this.meta.add(new DwmgTradeOfferMetaData(listing.getMerchantLevel(), 0, !this.getOffersRaw().get(this.getOffersRaw().size() - 1).getCostB().isEmpty()));
+				MerchantOffer offer = listing.getOffer(getMob(), RND);
+				this.getOffersRaw().add(offer);
+				DwmgTradeOfferMetaData meta = new DwmgTradeOfferMetaData(listing.getMerchantLevel(), 0, !this.getOffersRaw().get(this.getOffersRaw().size() - 1).getCostB().isEmpty());
+				this.meta.add(meta);
 			}
 			
-			this.tradePoints = 0;
+
 			// Finally add introduction letter entry
 			this.getOffersRaw().add(INTRODUCTION.getOffer(getMob(), RND));
 			this.getMeta().add(new DwmgTradeOfferMetaData(1, 0, false));
@@ -248,8 +250,8 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 					}
 				}
 				this.restockTimer = this.getBM().getRestockTicks();
-				if (getBM().isOwnerInDimension())
-					NaMiscUtils.printToScreen("Restocked", getBM().getOwner());
+				/*if (getBM().isOwnerInDimension())
+					NaMiscUtils.printToScreen("Restocked", getBM().getOwner());*/
 			}
 			/*if (restockTimer % 200 == 0)
 				if (getBM().isOwnerInDimension())
