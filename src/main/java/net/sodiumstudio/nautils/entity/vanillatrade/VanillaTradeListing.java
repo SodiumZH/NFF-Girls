@@ -47,8 +47,8 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	public static VanillaTradeListing create(ItemStack costA, ItemStack result)
 	{
 		VanillaTradeListing res = new VanillaTradeListing();
-		res.baseCostA.add(costA);
-		res.result.add(result);
+		res.baseCostA.add(costA.copy());
+		res.result.add(result.copy());
 		return res;
 	}
 	
@@ -67,7 +67,7 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	public VanillaTradeListing addA(ItemStack... stacks)
 	{
 		for (ItemStack stack: stacks)
-			if (stack != null && !stack.isEmpty()) baseCostA.add(stack);
+			if (stack != null && !stack.isEmpty()) baseCostA.add(stack.copy());
 		return this;
 	}
 	
@@ -78,7 +78,7 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	public VanillaTradeListing addA(Item... items)
 	{
 		for (Item item: items)
-			if (item != null && item != Items.AIR) baseCostA.add(item.getDefaultInstance());
+			if (item != null && item != Items.AIR) baseCostA.add(item.getDefaultInstance().copy());
 		return this;
 	}
 	
@@ -91,7 +91,7 @@ public class VanillaTradeListing implements IVanillaTradeListing
 		for (ItemStack stack: stacks)
 			if (stack != null && !stack.isEmpty()) 
 			{
-				costB.add(stack);
+				costB.add(stack.copy());
 				hasB = true;
 			}
 		return this;
@@ -106,7 +106,7 @@ public class VanillaTradeListing implements IVanillaTradeListing
 		for (Item item: items)
 			if (item != null && item != Items.AIR) 
 			{
-				costB.add(item.getDefaultInstance());
+				costB.add(item.getDefaultInstance().copy());
 				hasB = true;
 			}
 		return this;
@@ -119,7 +119,7 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	public VanillaTradeListing addResult(ItemStack... stacks)
 	{
 		for (ItemStack stack: stacks)
-			if (stack != null && !stack.isEmpty()) result.add(stack);
+			if (stack != null && !stack.isEmpty()) result.add(stack.copy());
 		return this;
 	}
 	
@@ -130,7 +130,7 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	public VanillaTradeListing addResult(Item... items)
 	{
 		for (Item item: items)
-			if (item != null && item != Items.AIR) result.add(item.getDefaultInstance());
+			if (item != null && item != Items.AIR) result.add(item.getDefaultInstance().copy());
 		return this;
 	}
 	
@@ -385,7 +385,7 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	@Override
 	public boolean isValid() {
 		this.clearInvalidEntries();
-		return this.baseCostA == null && !this.baseCostA.isEmpty() && this.result != null && !this.result.isEmpty() && !(this.hasB && (this.costB == null || this.costB.isEmpty()));
+		return this.baseCostA != null && !this.baseCostA.isEmpty() && this.result != null && !this.result.isEmpty() && !(this.hasB && (this.costB == null || this.costB.isEmpty()));
 	}
 
 	protected void clearInvalidEntries()
@@ -395,14 +395,21 @@ public class VanillaTradeListing implements IVanillaTradeListing
 		if (this.result != null) this.result.removeIf(ItemStack::isEmpty);
 	}
 	
+	/**
+	 * Be cautious that {@code ItemStack}s in the output offer should be decoupled to those stored in 
+	 * the Listing instance (i.e. using {@code copy()}), otherwise it may unexpectedly modify the Listing
+	 * itself and cause problems that are hard to locate.
+	 */
 	@Nullable
 	@Override
 	public MerchantOffer getOffer(Entity trader, RandomSource rnd) {
 		if (!this.isValid()) return null;	// Invalid entries have been cleared here
 		ItemStack a = this.baseCostA.isEmpty() ? ItemStack.EMPTY : this.baseCostA.get(rnd.nextInt(this.baseCostA.size()));
+		a = a.copy();
 		int ca = this.aCount.getValue();
 		int bIndex = this.costB.isEmpty() ? 0 : rnd.nextInt(this.costB.size());
 		ItemStack b = this.costB.isEmpty() ? ItemStack.EMPTY : this.costB.get(bIndex);
+		b = b.copy();
 		int cb = this.bCount.getValue();
 		ItemStack r;
 		if (!costB.isEmpty() && this.mapBToResult)
@@ -412,11 +419,13 @@ public class VanillaTradeListing implements IVanillaTradeListing
 			else r = this.result.get(bIndex);
 		}
 		else r = this.result.isEmpty() ? ItemStack.EMPTY : this.result.get(rnd.nextInt(this.result.size()));
+		r = r.copy();
 		int cr = this.linkBCountToResult ? cb : this.resCount.getValue();
 		a.setCount(ca);
 		b.setCount(cb);
 		r.setCount(cr);
-		return new MerchantOffer(a, b, r, 0, this.maxUses, this.xpReward, this.priceMultiplier, this.demand);
+		MerchantOffer offer = new MerchantOffer(a, b, r, 0, this.maxUses, this.xpReward, this.priceMultiplier, this.demand);
+		return offer;
 	}
 
 	@Override
