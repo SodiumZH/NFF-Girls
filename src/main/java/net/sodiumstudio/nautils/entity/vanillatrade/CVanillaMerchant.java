@@ -27,6 +27,9 @@ public interface CVanillaMerchant extends Merchant, INBTSerializable<CompoundTag
 	 */
 	public VillagerProfession getProfession();
 	
+	/**
+	 * Get information from the registries and make a {@link MerchantOffers} for this merchant.
+	 */
 	public void generateTrades();
 	
 	/**
