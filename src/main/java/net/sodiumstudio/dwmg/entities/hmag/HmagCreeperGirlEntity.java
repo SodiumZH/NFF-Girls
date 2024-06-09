@@ -213,21 +213,7 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 			{
 				if (!this.level.isClientSide && hand == InteractionHand.MAIN_HAND)
 				{
-					// Power with a lightning particle
-					if (player.getItemInHand(hand).is(ModItems.LIGHTNING_PARTICLE.get()) && !this.isPowered() && hand.equals(InteractionHand.MAIN_HAND) && player.isShiftKeyDown())
-					{
-						this.setPowered(true);
-						player.getItemInHand(hand).shrink(1);
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
-					}
-					// Unpower with empty hand )and get a lightning particle
-					else if (player.getItemInHand(hand).isEmpty() && this.isPowered() && hand.equals(InteractionHand.MAIN_HAND) && player.isShiftKeyDown())
-					{
-						this.setPowered(false);
-						this.spawnAtLocation(new ItemStack(ModItems.LIGHTNING_PARTICLE.get(), 1));
-						return InteractionResult.sidedSuccess(player.level.isClientSide);
-					} 
-					else if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)
+					if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)
 							&& this.canIgnite
 							&& (!this.isPowered() || this.getAdditionalInventory().getItem(6).getCount() >= 2)
 							&& this.getSwell() == 0)
@@ -252,8 +238,22 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 		}
 		else
 		{
-			if (player.getUUID().equals(getOwnerUUID())) {		
-				if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
+			if (player.getUUID().equals(getOwnerUUID())) {	
+				// Power with a lightning particle
+				if (player.getItemInHand(hand).is(ModItems.LIGHTNING_PARTICLE.get()) && !this.isPowered())
+				{
+					this.setPowered(true);
+					player.getItemInHand(hand).shrink(1);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
+				}
+				// Unpower with empty hand )and get a lightning particle
+				else if (player.getItemInHand(hand).isEmpty() && this.isPowered() && hand.equals(InteractionHand.MAIN_HAND))
+				{
+					this.setPowered(false);
+					this.spawnAtLocation(new ItemStack(ModItems.LIGHTNING_PARTICLE.get(), 1));
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
+				} 
+				else if (hand == InteractionHand.MAIN_HAND && DwmgEntityHelper.isOnEitherHand(player, DwmgItems.COMMANDING_WAND.get()))
 				{
 					BefriendedHelper.openBefriendedInventory(player, this);
 					return InteractionResult.sidedSuccess(player.level.isClientSide);

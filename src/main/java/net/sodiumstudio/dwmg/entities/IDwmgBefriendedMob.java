@@ -29,6 +29,7 @@ import net.sodiumstudio.befriendmobs.item.MobRespawnerItem;
 import net.sodiumstudio.befriendmobs.item.capability.wrapper.IItemStackMonitor;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
+import net.sodiumstudio.dwmg.entities.vanillatrade.CDwmgTradeHandler;
 import net.sodiumstudio.dwmg.network.ClientboundDwmgMobGeneralSyncPacket;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -304,12 +305,12 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 	 */
 	public default int[] getTradeEntryCountEachLevel()
 	{
-		return new int[] {2, 2, 2, 2, 1};
+		return CDwmgTradeHandler.OFFER_COUNT_FOR_LEVEL;
 	}
 	
 	public default int pointsPerIntroductionLetter()
 	{
-		return 128;
+		return 12;
 	}
 	
 	

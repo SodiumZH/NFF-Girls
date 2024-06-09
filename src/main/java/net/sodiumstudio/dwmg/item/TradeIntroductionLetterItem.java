@@ -28,6 +28,7 @@ public class TradeIntroductionLetterItem extends NaUtilsItem
 	public TradeIntroductionLetterItem(Properties pProperties)
 	{
 		super(pProperties);
+		this.foilCondition(i -> this.isValid(i));
 	}
 	
 	public void write(ItemStack stack, IBefriendedMob writer)
