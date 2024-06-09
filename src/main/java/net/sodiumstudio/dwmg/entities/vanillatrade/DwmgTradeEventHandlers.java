@@ -20,10 +20,15 @@ public class DwmgTradeEventHandlers
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onMobInteract(EntityInteract event)
 	{
-		if (event.getTarget() instanceof IDwmgBefriendedMob mob && event.getEntity().getItemInHand(InteractionHand.MAIN_HAND).is(DwmgItems.EVIL_GEM.get())
-				&& !event.getTarget().getLevel().isClientSide())
+		if (IDwmgBefriendedMob.isBM(event.getTarget())
+				&& !event.getTarget().getLevel().isClientSide()
+				&& IDwmgBefriendedMob.getBM(event.getTarget()).getOwnerUUID().equals(event.getEntity().getUUID())
+				&& (event.getEntity().getItemInHand(InteractionHand.MAIN_HAND).isEmpty() || event.getEntity().getItemInHand(InteractionHand.MAIN_HAND).is(DwmgItems.EVIL_GEM.get()))
+				&& IDwmgBefriendedMob.getBM(event.getTarget()).asMob().getTarget() == null
+				&& !event.getEntity().isShiftKeyDown()
+				)
 		{
-			mob.asMob().getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(cap -> {
+			IDwmgBefriendedMob.getBM(event.getTarget()).asMob().getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(cap -> {
 				cap.openTradingScreen(event.getEntity(), InfoHelper.createTranslatable("info.dwmg.open_trade"), 1);
 				event.setCanceled(true);
 			});

@@ -97,12 +97,12 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 	{
 		// Occupy the main hand to block the ignition action in super.doHurtTarget
 		// See Zombie class
-		if (this.getMainHandItem().isEmpty())
-			this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(BMItems.DUMMY_ITEM.get(), 1));
+		/*if (this.getMainHandItem().isEmpty())
+			this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(BMItems.DUMMY_ITEM.get(), 1));*/
 		boolean res = super.doHurtTarget(target);
 		// Remove dummy item
-		if (!this.getMainHandItem().isEmpty() && this.getMainHandItem().is(BMItems.DUMMY_ITEM.get()))
-			this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);		
+		/*if (!this.getMainHandItem().isEmpty() && this.getMainHandItem().is(BMItems.DUMMY_ITEM.get()))
+			this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);	*/	
 		// Overwrite ignition here
 		if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < 0.8f)
 			target.setSecondsOnFire(10);
