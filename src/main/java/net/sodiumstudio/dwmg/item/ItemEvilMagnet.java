@@ -7,16 +7,21 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.github.mechalopa.hmag.registry.ModBlocks;
+import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -26,11 +31,13 @@ import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerInstance;
 import net.sodiumstudio.befriendmobs.registry.BMItems;
 import net.sodiumstudio.nautils.InfoHelper;
+import net.sodiumstudio.nautils.NaItemUtils;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.math.RndUtil;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 
+@Deprecated
 public class ItemEvilMagnet extends Item implements IWithDuration
 {
 
@@ -44,7 +51,7 @@ public class ItemEvilMagnet extends Item implements IWithDuration
 	@SuppressWarnings("resource")
 	public InteractionResult useOn(UseOnContext context)
 	{
-		if (context.getLevel().getBlockState(context.getClickedPos()).is(ModBlocks.EVIL_CRYSTAL_BLOCK.get()))
+		/*if (context.getLevel().getBlockState(context.getClickedPos()).is(ModBlocks.EVIL_CRYSTAL_BLOCK.get()))
 		{
 			if (!context.getLevel().isClientSide && context.getLevel() instanceof ServerLevel sl)
 			{
@@ -79,7 +86,20 @@ public class ItemEvilMagnet extends Item implements IWithDuration
 			}
 			return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
 		}
-		return InteractionResult.PASS;
+		return InteractionResult.PASS;*/
+		return super.useOn(context);
+	}
+	
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand pUsedHand)
+	{
+		if (!player.level.isClientSide)
+		{
+			player.getItemInHand(pUsedHand).shrink(1);
+			NaItemUtils.giveOrDrop(player, new ItemStack(Items.NETHERITE_INGOT, 1));
+			NaItemUtils.giveOrDrop(player, new ItemStack(ModItems.EVIL_CRYSTAL.get(), 4));
+			NaItemUtils.giveOrDrop(player, new ItemStack(Items.IRON_INGOT, 2));
+		}
+		return InteractionResultHolder.sidedSuccess(player.getItemInHand(pUsedHand), player.level.isClientSide);
 	}
 	
 	// ======== IWithDuration interface
@@ -94,7 +114,8 @@ public class ItemEvilMagnet extends Item implements IWithDuration
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag)
 	{
 		super.appendHoverText(stack, level, list, tooltipFlag);
-		list.add(this.getDurationDescription(stack));
+		//list.add(this.getDurationDescription(stack));
+		list.add(InfoHelper.createText("Deprecated. Right click to uncraft to ingredients."));
 	}
 
 	

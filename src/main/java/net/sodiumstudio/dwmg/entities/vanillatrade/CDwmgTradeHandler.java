@@ -14,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraftforge.common.capabilities.Capability;
@@ -33,12 +34,12 @@ import net.sodiumstudio.nautils.entity.vanillatrade.VanillaTradeListing;
 public interface CDwmgTradeHandler extends CVanillaMerchant
 {
 	public static final int[] LEVEL_REQUIREMENTS = {0, 5, 15, 30, 45};
-	public static final int[] OFFER_COUNT_FOR_LEVEL = {2, 2, 2, 2, 1};
+	public static final int[] OFFER_COUNT_FOR_LEVEL = {2, 2, 2, 2, 2};
 	public static final ItemListing INTRODUCTION = (e, rnd) -> 
 	{
 		ItemStack res = new ItemStack(DwmgItems.TRADE_INTRODUCTION_LETTER.get());
 		DwmgItems.TRADE_INTRODUCTION_LETTER.get().write(res, IDwmgBefriendedMob.getBM(e));
-		return new MerchantOffer(new ItemStack(DwmgItems.EVIL_GEM.get()), res, 1, 0, 0);
+		return new MerchantOffer(new ItemStack(Items.WRITABLE_BOOK), res, 1, 0, 0);
 	};
 	
 	
@@ -128,7 +129,7 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 			this.getOffersRaw().clear();
 			this.getMeta().clear();
 			List<VanillaTradeListing> trades = 
-					DwmgTrades.TRADES.getListings(this.getMob().getType()).pickListingForSpecifiedLevels(OFFER_COUNT_FOR_LEVEL);
+					DwmgTrades.TRADES.getListings(this.getMob().getType()).pickListingForSpecifiedLevels(IDwmgBefriendedMob.getBM(this.getMob()).getTradeEntryCountEachLevel());
 				/*var trades = DwmgTradeRegistry.getTradesImmutable(this.getMob().getType(), getProfession(), i);
 				Collection<ItemListing> picked = NaContainerUtils.getRandomSubset
 						(NaContainerUtils.iterableToSet(trades), Math.min(2, trades.size()));*/
@@ -160,12 +161,6 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 			return 1;
 		}
 
-		@Override
-		public int getMaxMerchantLevel()
-		{
-			return 5;
-		}
-		
 		@Override
 		public void onTrade(MerchantOffer offer) {
 			var meta = this.getMeta(offer);
