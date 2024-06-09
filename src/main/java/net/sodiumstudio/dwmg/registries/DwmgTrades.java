@@ -40,7 +40,7 @@ public class DwmgTrades
 		.setRequiredLevel(2)
 		.addBuys(Items.ROTTEN_FLESH, 56, 64, 1, 1, 2)
 		.addBuys(Items.BONE, 56, 64, 1, 1, 2)
-		.addSells(1, 1, Items.QUARTZ, 9, 12, 4)
+		.addSells(1, 1, Items.QUARTZ, 18, 24, 4)
 		.addSells(1, 1, DwmgItems.DEATH_CRYSTAL_POWDER.get(), 2, 2, 4)
 		.setRequiredLevel(3)
 		.addBuys(ModItems.SOUL_APPLE.get(), 3, 4, 1, 1, 4)
