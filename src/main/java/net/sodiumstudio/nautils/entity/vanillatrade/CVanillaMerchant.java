@@ -54,13 +54,7 @@ public interface CVanillaMerchant extends Merchant, INBTSerializable<CompoundTag
 	 * <p>Tip: you can also use other mechanisms to define the level besides xp.
 	 */
 	public int getMerchantLevel();
-	
-	/**
-	 * Get the max merchant level. Note: this isn't the player level or the merchant xp.
-	 * <p>Tip: you can also use other mechanisms to define the level besides xp.
-	 */
-	public int getMaxMerchantLevel();
-	
+
 	@Override
 	default void openTradingScreen(Player pPlayer, Component pDisplayName, int pLevel)
 	{
