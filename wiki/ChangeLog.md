@@ -2,6 +2,12 @@
 
 ### 0.x.23
 
+Updated HMaG versions to 6.2.19.
+
+Added trades to Zombie/Skeleton-derived mobs (6 types overall). Interact with empty hand or Evil Gem to open the trade window. 
+
+Now Creeper Girl charging & uncharging requires Shift+Right Click.
+
 Rearranged the info of Slime Girls in the GUI to prevent from getting out of the box.
 
 Increased the durability of Undead Affinity from Soul Carpet from 0.15 s to 1.00 s, so that jumping will not interrupt the effect.

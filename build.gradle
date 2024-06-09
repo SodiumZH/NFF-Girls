@@ -192,11 +192,11 @@ repositories {
   		name = "Jared Maven"
   		url = "https://maven.blamejared.com/"
   			}
- 	 maven {
+ 	/* maven {
   		  // location of a maven mirror for JEI files, as a fallback
     	name = "ModMaven"
    		url = "https://modmaven.dev"
-  	}
+  	}*/
 
 	//maven { url = 'https://maven.parchmentmc.org' }
 }
@@ -223,16 +223,23 @@ dependencies {
 
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
 
-    implementation fg.deobf("curse.maven:hmag-537613:5170955")
+    implementation fg.deobf("curse.maven:hmag-537613:5391696")
 	implementation fg.deobf("curse.maven:tf-227639:4389567")
 	implementation fg.deobf("curse.maven:gog4-228948:4683679")
-	implementation fg.deobf("curse.maven:moonlight-499980:4312303")
-	implementation fg.deobf("curse.maven:testdummy-225738:4410143")
 	//implementation fg.deobf("curse.maven:mobpets-941037:4907694")
-	//implementation fg.deobf("curse.maven:citadel-331936:4556677")
-	//implementation fg.deobf("curse.maven:am-426558:4159154")	
 	implementation fg.deobf("curse.maven:patchouli-306770:4031402")
 	
+	// Testing compat mods
+	implementation fg.deobf("curse.maven:moonlight-499980:4312303")
+	implementation fg.deobf("curse.maven:testdummy-225738:4410143")
+	implementation fg.deobf("curse.maven:citadel-331936:4556677")
+	implementation fg.deobf("curse.maven:am-426558:4159154")	
+	implementation fg.deobf("curse.maven:iaf-264231:5037952")
+	implementation fg.deobf("curse.maven:bop-220318:4473556")
+	implementation fg.deobf("curse.maven:terrablender-563928:4618490")
+	implementation fg.deobf("curse.maven:corgilib-693313:4554111")
+	implementation fg.deobf("curse.maven:geckolib-388172:4407241")
+	implementation fg.deobf("curse.maven:byg-247560:5116293")
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
