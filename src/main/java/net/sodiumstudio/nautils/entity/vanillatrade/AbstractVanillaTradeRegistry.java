@@ -41,7 +41,7 @@ public abstract class AbstractVanillaTradeRegistry<T extends IVanillaTradeListin
 	public Map<VillagerProfession, VanillaTradeListings<T>> getAllListings(EntityType<?> ofType)
 	{
 		if (ofType == null) return null;
-		return getAllListings(ForgeRegistries.ENTITY_TYPES.getKey(ofType));
+		return getAllListings(ForgeRegistries.ENTITIES.getKey(ofType));
 	}
 	
 	@Nullable
@@ -64,7 +64,7 @@ public abstract class AbstractVanillaTradeRegistry<T extends IVanillaTradeListin
 	public VanillaTradeListings<T> getListings(EntityType<?> ofType, @Nullable VillagerProfession profession)
 	{
 		if (ofType == null) return null;
-		return this.getListings(ForgeRegistries.ENTITY_TYPES.getKey(ofType), profession);
+		return this.getListings(ForgeRegistries.ENTITIES.getKey(ofType), profession);
 	}
 	
 	@Nullable
@@ -118,7 +118,7 @@ public abstract class AbstractVanillaTradeRegistry<T extends IVanillaTradeListin
 	 */
 	public boolean hasListings(EntityType<?> type, VillagerProfession prof)
 	{
-		return this.hasListings(ForgeRegistries.ENTITY_TYPES.getKey(type), prof);
+		return this.hasListings(ForgeRegistries.ENTITIES.getKey(type), prof);
 	}
 	
 	public void putIfAbsent(ResourceLocation key, @Nullable VillagerProfession prof)

@@ -31,7 +31,6 @@ import net.sodiumstudio.dwmg.item.ItemNecromancerWand;
 import net.sodiumstudio.dwmg.item.MagicalGelBallItem;
 import net.sodiumstudio.dwmg.item.MagicalGelBottleItem;
 import net.sodiumstudio.dwmg.item.ReinforcedFishingRodItem;
-import net.sodiumstudio.dwmg.item.TaoistTalismanItem;
 import net.sodiumstudio.dwmg.item.TradeIntroductionLetterItem;
 import net.sodiumstudio.dwmg.item.TransferringTagItem;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.AquaJadeBaubleItem;

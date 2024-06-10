@@ -2,8 +2,6 @@ package net.sodiumstudio.nautils.entity.vanillatrade;
 
 import java.util.Random;
 
-import net.minecraft.util.RandomSource;
-
 /**
  * A {@code TradeCountRange} is an integer range for generating
  * {@code MerchantOffer} from {@code VanillaTradeListing}. It can randomly
@@ -17,7 +15,7 @@ import net.minecraft.util.RandomSource;
  */
 public class TradeCountRange
 {
-	private static final RandomSource RND = RandomSource.create();
+	private static final Random RND = new Random();
 	private final int minValue;	// Included
 	private final int maxValue;	// Included
 	private final double p;
@@ -91,7 +89,7 @@ public class TradeCountRange
 	/**
 	 * Get a random value using the given RandomSource.
 	 */
-	public int getValue(RandomSource rnd)
+	public int getValue(Random rnd)
 	{
 		switch (rndType)
 		{

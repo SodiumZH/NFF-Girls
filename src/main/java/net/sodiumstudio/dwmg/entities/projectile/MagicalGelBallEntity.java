@@ -14,7 +14,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
@@ -26,11 +25,9 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
 import net.sodiumstudio.dwmg.item.MagicalGelColorUtils;
 import net.sodiumstudio.dwmg.registries.DwmgEntityTypes;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
-import net.sodiumstudio.dwmg.registries.DwmgParticleTypes;
 import net.sodiumstudio.dwmg.registries.DwmgTags;
 import net.sodiumstudio.nautils.EntityHelper;
-import net.sodiumstudio.nautils.ReflectHelper;
-import net.sodiumstudio.nautils.TagHelper;
+import net.sodiumstudio.nautils.NaReflectionUtils;
 import net.sodiumstudio.nautils.math.LinearColor;
 import net.sodiumstudio.nautils.math.RndUtil;
 
@@ -96,12 +93,12 @@ public class MagicalGelBallEntity extends ThrowableItemProjectile
 	            MagicalSlimeEntity slime = ModEntityTypes.MAGICAL_SLIME.get().create(this.level);
 	            try
 	            {
-	            	ReflectHelper.forceInvoke(slime, MagicalSlimeEntity.class, "setSize", 1);
+	            	NaReflectionUtils.forceInvoke(slime, MagicalSlimeEntity.class, "setSize", 1);
 	            }
 	            catch (Exception e)
 	            {
 	            	e.printStackTrace();
-	            	ReflectHelper.forceInvoke(slime, Slime.class, "m_7839_", 1);//setSize
+	            	NaReflectionUtils.forceInvoke(slime, Slime.class, "m_7839_", 1);//setSize
 	            }
 	            
 	            // For vanilla slime, the color is random

@@ -1,10 +1,11 @@
 package net.sodiumstudio.nautils.entity.vanillatrade;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
@@ -26,7 +27,7 @@ public abstract class VanillaMerchant implements CVanillaMerchant
 	private Player tradingPlayer = null;
 	private MerchantOffers offers;
 	private int xp;
-	protected RandomSource rnd = RandomSource.create();
+	protected Random rnd = new Random()	;
 	
 	public VanillaMerchant(Mob mob)
 	{

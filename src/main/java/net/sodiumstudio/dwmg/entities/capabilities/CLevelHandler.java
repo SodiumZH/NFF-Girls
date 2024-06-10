@@ -14,10 +14,9 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
-import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler.SyncPacket;
 import net.minecraftforge.network.PacketDistributor;
-import net.sodiumstudio.dwmg.network.DwmgClientGamePacketHandler;
 import net.sodiumstudio.dwmg.network.DwmgChannels;
+import net.sodiumstudio.dwmg.network.DwmgClientGamePacketHandler;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
 public interface CLevelHandler extends INBTSerializable<LongTag>

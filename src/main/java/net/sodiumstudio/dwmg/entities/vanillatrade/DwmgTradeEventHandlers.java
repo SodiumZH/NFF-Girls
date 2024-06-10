@@ -2,7 +2,7 @@ package net.sodiumstudio.dwmg.entities.vanillatrade;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,13 +23,13 @@ public class DwmgTradeEventHandlers
 		if (IDwmgBefriendedMob.isBM(event.getTarget())
 				&& !event.getTarget().getLevel().isClientSide()
 				&& IDwmgBefriendedMob.getBM(event.getTarget()).getOwnerUUID().equals(event.getEntity().getUUID())
-				&& (event.getEntity().getItemInHand(InteractionHand.MAIN_HAND).isEmpty() || event.getEntity().getItemInHand(InteractionHand.MAIN_HAND).is(DwmgItems.EVIL_GEM.get()))
+				&& (event.getPlayer().getItemInHand(InteractionHand.MAIN_HAND).isEmpty() || event.getPlayer().getItemInHand(InteractionHand.MAIN_HAND).is(DwmgItems.EVIL_GEM.get()))
 				&& IDwmgBefriendedMob.getBM(event.getTarget()).asMob().getTarget() == null
 				&& !event.getEntity().isShiftKeyDown()
 				)
 		{
 			IDwmgBefriendedMob.getBM(event.getTarget()).asMob().getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(cap -> {
-				cap.openTradingScreen(event.getEntity(), InfoHelper.createTranslatable("info.dwmg.open_trade"), 1);
+				cap.openTradingScreen(event.getPlayer(), InfoHelper.createTranslatable("info.dwmg.open_trade"), 1);
 				event.setCanceled(true);
 			});
 		}
@@ -45,7 +45,7 @@ public class DwmgTradeEventHandlers
 	
 	@SuppressWarnings("resource")
 	@SubscribeEvent
-	public static void onTick(LivingTickEvent event)
+	public static void onTick(LivingUpdateEvent event)
 	{
 		if (!event.getEntity().getLevel().isClientSide)
 			event.getEntity().getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(CDwmgTradeHandler::serverTick);

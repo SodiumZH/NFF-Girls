@@ -9,7 +9,6 @@ import com.github.mechalopa.hmag.world.entity.SlimeGirlEntity;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
@@ -19,11 +18,10 @@ import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractA
 import net.sodiumstudio.befriendmobs.entity.befriending.BefriendableMobInteractionResult;
 import net.sodiumstudio.befriendmobs.entity.befriending.handlerpreset.HandlerItemGivingProgress;
 import net.sodiumstudio.befriendmobs.registry.BMCaps;
-import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
 import net.sodiumstudio.dwmg.item.MagicalGelColorUtils;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.nautils.EntityHelper;
-import net.sodiumstudio.nautils.ReflectHelper;
+import net.sodiumstudio.nautils.NaReflectionUtils;
 import net.sodiumstudio.nautils.math.LinearColor;
 import net.sodiumstudio.nautils.math.RndUtil;
 
@@ -149,12 +147,12 @@ public class HandlerSlimeGirl extends HandlerItemGivingProgress
 	            MagicalSlimeEntity slime = ModEntityTypes.MAGICAL_SLIME.get().create(mob.level);
 	            try
 	            {
-	            	ReflectHelper.forceInvoke(slime, MagicalSlimeEntity.class, "setSize", 1);
+	            	NaReflectionUtils.forceInvoke(slime, MagicalSlimeEntity.class, "setSize", 1);
 	            }
 	            catch (Exception e)
 	            {
 	            	e.printStackTrace();
-	            	ReflectHelper.forceInvoke(slime, Slime.class, "m_7839_", 1);//setSize
+	            	NaReflectionUtils.forceInvoke(slime, Slime.class, "m_7839_", 1);//setSize
 	            }
             	LinearColor sgColorCompl = MagicalGelColorUtils.getSlimeColor(sg).getComplementary();
             	SlimeGirlEntity.ColorVariant v = MagicalGelColorUtils.closestVariant(sgColorCompl);

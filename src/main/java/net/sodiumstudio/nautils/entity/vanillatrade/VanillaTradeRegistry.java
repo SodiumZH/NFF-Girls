@@ -14,7 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
-import potionstudios.byg.reg.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTradeListing>
 {
@@ -38,7 +38,7 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 	
 	public Registering push(@Nonnull EntityType<?> key)
 	{
-		return this.push(ForgeRegistries.ENTITY_TYPES.getKey(key));
+		return this.push(ForgeRegistries.ENTITIES.getKey(key));
 	}
 	
 	public Registering push(@Nonnull RegistryObject<EntityType<?>> key)
@@ -176,7 +176,7 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 		
 		public Registering linkListings(@Nonnull EntityType<?> type, @Nullable VillagerProfession profession)
 		{
-			return this.linkListings(ForgeRegistries.ENTITY_TYPES.getKey(type), profession);
+			return this.linkListings(ForgeRegistries.ENTITIES.getKey(type), profession);
 		}
 		
 		public Registering linkListings(@Nonnull ResourceLocation key)
@@ -210,7 +210,7 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 		
 		public Registering mergeListings(@Nonnull EntityType<?> type, @Nullable VillagerProfession profession)
 		{
-			return this.mergeListings(ForgeRegistries.ENTITY_TYPES.getKey(type), profession);
+			return this.mergeListings(ForgeRegistries.ENTITIES	.getKey(type), profession);
 		}
 	
 		public Registering mergeListings(@Nonnull ResourceLocation key)

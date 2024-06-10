@@ -1,16 +1,16 @@
 package net.sodiumstudio.nautils.entity.vanillatrade;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
 import net.sodiumstudio.nautils.NaContainerUtils;
 
 public class VanillaTradeListing implements IVanillaTradeListing
@@ -402,7 +402,7 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	 */
 	@Nullable
 	@Override
-	public MerchantOffer getOffer(Entity trader, RandomSource rnd) {
+	public MerchantOffer getOffer(Entity trader, Random rnd) {
 		if (!this.isValid()) return null;	// Invalid entries have been cleared here
 		ItemStack a = this.baseCostA.isEmpty() ? ItemStack.EMPTY : this.baseCostA.get(rnd.nextInt(this.baseCostA.size()));
 		a = a.copy();
