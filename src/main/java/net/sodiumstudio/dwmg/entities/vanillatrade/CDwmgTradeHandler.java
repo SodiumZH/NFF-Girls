@@ -89,7 +89,7 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 			this.getOffersRaw().clear();
 			this.getMeta().clear();
 			List<VanillaTradeListing> trades = 
-					DwmgTrades.TRADES.getListings(this.getMob().getType()).pickListingForSpecifiedLevels(IDwmgBefriendedMob.getBM(this.getMob()).getTradeEntryCountEachLevel());
+					DwmgTrades.TRADES.getListings(IDwmgBefriendedMob.getBM(this.getMob()).getData().getInitialEntityType()).pickListingForSpecifiedLevels(IDwmgBefriendedMob.getBM(this.getMob()).getTradeEntryCountEachLevel());
 				/*var trades = DwmgTradeRegistry.getTradesImmutable(this.getMob().getType(), getProfession(), i);
 				Collection<ItemListing> picked = NaContainerUtils.getRandomSubset
 						(NaContainerUtils.iterableToSet(trades), Math.min(2, trades.size()));*/
