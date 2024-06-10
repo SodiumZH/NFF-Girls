@@ -132,6 +132,12 @@ Each level increases the mob's max HP by 1 and attack damage by 0.1.
 
 If the mob dies, it will lose a half of all its EXP accumulated.
 
+## Trade (0.x.23)
+
+Mobs can trade similarly like Villagers by interacting with empty hand.
+
+Each mob will have 10 trade offers, 2 offers each for level 1-5. Offer level 1-5 requires EXP level 0, 5, 15, 30, 45 respectively.
+
 ## Mob details
 
 #### Zombie Girl (HMaG)
@@ -364,7 +370,7 @@ It has 2 bauble slots.
 
 
 
-#### Necrotic Reaper (HMaG)
+#### Necrostalker (previous Necrotic Reaper) (HMaG)
 
 ##### Befriending
 
