@@ -281,6 +281,7 @@ public class DwmgItems {
 		NO_TAB.add(TAB_ICON);
 		NO_TAB.add(BEFRIENDING_PROGRESS_PROBE);
 		NO_TAB.add(EXP_MODIFIER);
+		NO_TAB.add(MAGICAL_GEL_BOTTLE);
     }
 
 	/* Item register end */

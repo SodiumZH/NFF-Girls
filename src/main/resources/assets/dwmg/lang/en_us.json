@@ -44,6 +44,8 @@
   "item.dwmg.magical_gel_bottle.color_unknown": "Color: unknown",
   "item.dwmg.magical_gel_bottle.check_color": "Right click to check color",
   "item.dwmg.taoist_talisman": "Taoist Talisman",
+  "item.dwmg.evil_gem": "Evil Gem",
+  "item.dwmg.trade_introduction_letter": "Trade Introduction Letter",
   
   "item.dwmg.befriending_progress_probe": "Befriending Progress Probe (Debug)",
   "item.dwmg.exp_modifier": "EXP Modifier (Debug)",
