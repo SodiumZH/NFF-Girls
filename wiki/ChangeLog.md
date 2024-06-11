@@ -1,8 +1,12 @@
 # Change Log
 
+### 0.1.23.1
+
+Fixed wrong point requirement for introduction letter.
+
 ### 0.x.23
 
-Updated HMaG versions to 6.2.19.
+Updated HMaG versions to 5.1.26/6.2.19/9.0.20.
 
 Added trades to Zombie/Skeleton-derived mobs (6 types overall). Interact with empty hand or Evil Gem to open the trade window. 
 
