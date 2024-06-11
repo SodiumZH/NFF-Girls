@@ -43,6 +43,7 @@ public class DwmgTradeEventHandlers
 		});
 	}
 	
+	@SuppressWarnings("resource")
 	@SubscribeEvent
 	public static void onTick(LivingTickEvent event)
 	{
