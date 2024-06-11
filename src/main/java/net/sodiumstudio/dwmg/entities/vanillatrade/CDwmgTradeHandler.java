@@ -1,19 +1,14 @@
 package net.sodiumstudio.dwmg.entities.vanillatrade;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -22,15 +17,16 @@ import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.network.PacketDistributor;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
-import net.sodiumstudio.dwmg.network.ClientboundDwmgMobGeneralSyncPacket;
 import net.sodiumstudio.dwmg.network.DwmgChannels;
+import net.sodiumstudio.dwmg.registries.DwmgItems;
+import net.sodiumstudio.dwmg.registries.DwmgTrades;
 import net.sodiumstudio.nautils.NaContainerUtils;
 import net.sodiumstudio.nautils.NaMiscUtils;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.capability.SerializableCapabilityProvider;
 import net.sodiumstudio.nautils.entity.vanillatrade.CVanillaMerchant;
-import net.sodiumstudio.nautils.entity.vanillatrade.VanillaMerchantImpl;
-import net.sodiumstudio.nautils.entity.vanillatrade.VanillaTradeRegistry;
+import net.sodiumstudio.nautils.entity.vanillatrade.VanillaMerchant;
+import net.sodiumstudio.nautils.entity.vanillatrade.VanillaTradeListing;
 
 public interface CDwmgTradeHandler extends CVanillaMerchant
 {
@@ -58,7 +54,7 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 	 */
 	public void setTicksRestock(int value);
 	
-	public static class Impl extends VanillaMerchantImpl implements CDwmgTradeHandler
+	public static class Impl extends VanillaMerchant implements CDwmgTradeHandler
 	{
 		protected static final RandomSource RND = RandomSource.create();
 		private List<DwmgTradeOfferMetaData> meta = new ArrayList<>();

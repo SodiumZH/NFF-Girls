@@ -134,7 +134,7 @@ public class DwmgHooks
 		@Nullable
 		public CDwmgTradeHandler searchOngoingDwmgTrader(double range)
 		{
-			List<Entity> list = this.player.level.getEntities(player, player.getBoundingBox().inflate(range)).stream().filter(entity -> 
+			List<Entity> list = this.player.level().getEntities(player, player.getBoundingBox().inflate(range)).stream().filter(entity -> 
 				NaMiscUtils.getValueFromCapability(entity, DwmgCapabilities.CAP_TRADE_HANDLER, CDwmgTradeHandler::getTradingPlayer) == player
 			).toList();
 			return list.isEmpty() ? null : NaMiscUtils.getValueFromCapability(list.get(0), DwmgCapabilities.CAP_TRADE_HANDLER, cap -> cap);

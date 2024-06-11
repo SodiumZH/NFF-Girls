@@ -21,7 +21,7 @@ public class DwmgTradeEventHandlers
 	public static void onMobInteract(EntityInteract event)
 	{
 		if (IDwmgBefriendedMob.isBM(event.getTarget())
-				&& !event.getTarget().getLevel().isClientSide()
+				&& !event.getTarget().level().isClientSide()
 				&& IDwmgBefriendedMob.getBM(event.getTarget()).getOwnerUUID().equals(event.getEntity().getUUID())
 				&& (event.getEntity().getItemInHand(InteractionHand.MAIN_HAND).isEmpty() || event.getEntity().getItemInHand(InteractionHand.MAIN_HAND).is(DwmgItems.EVIL_GEM.get()))
 				&& IDwmgBefriendedMob.getBM(event.getTarget()).asMob().getTarget() == null
@@ -46,7 +46,7 @@ public class DwmgTradeEventHandlers
 	@SubscribeEvent
 	public static void onTick(LivingTickEvent event)
 	{
-		if (!event.getEntity().getLevel().isClientSide)
+		if (!event.getEntity().level().isClientSide)
 			event.getEntity().getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(CDwmgTradeHandler::serverTick);
 	}
 }

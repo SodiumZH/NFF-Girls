@@ -15,7 +15,7 @@ public class DwmgTabs{
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Dwmg.MOD_ID);
 	
 	public static final RegistryObject<CreativeModeTab> TAB = CREATIVE_TABS.register("tab", () -> CreativeModeTab.builder()
-			.title(InfoHelper.createTrans("item_group.dwmg_tab"))
+			.title(InfoHelper.createTranslatable("item_group.dwmg_tab"))
 			.icon(() -> DwmgItems.TAB_ICON.get().getDefaultInstance())
 			.displayItems((features, output) ->
 			{
