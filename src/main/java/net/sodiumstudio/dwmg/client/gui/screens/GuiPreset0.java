@@ -11,13 +11,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.sodiumstudio.befriendmobs.client.gui.screens.BefriendedGuiScreen;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
-import net.sodiumstudio.nautils.InfoHelper;
-import net.sodiumstudio.nautils.info.ComponentBuilder;
-import net.sodiumstudio.nautils.math.GuiPos;
 import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.nautils.InfoHelper;
-import net.sodiumstudio.nautils.math.IntVec2;
+import net.sodiumstudio.nautils.info.ComponentBuilder;
+import net.sodiumstudio.nautils.math.GuiPos;
 
 /** GUI template for all vanilla-undead-mob-like befriended mobs.
 */

@@ -71,15 +71,15 @@ public class GuiSlimeGirl extends GuiPreset0
 	}
 	
 	@Override
-	public void addAttributeInfo(PoseStack poseStack, GuiPos position, int color, int textRowWidth)
+	public void addAttributeInfo(GuiGraphics graphics, GuiPos position, int color, int textRowWidth)
 	{
-		this.addBasicAttributeInfo(poseStack, position, color, textRowWidth);
+		this.addBasicAttributeInfo(graphics, position, color, textRowWidth);
 		position = position.addY(textRowWidth * 2);
-		this.addFavorabilityAndLevelInfo(poseStack, position, color, textRowWidth);
+		this.addFavorabilityAndLevelInfo(graphics, position, color, textRowWidth);
 	}
 	
 	@Override
-	public void addBasicAttributeInfo(PoseStack poseStack, GuiPos position, int color, int textRowWidth)
+	public void addBasicAttributeInfo(GuiGraphics graphics, GuiPos position, int color, int textRowWidth)
 	{
 		GuiPos pos = position;
 		String hp = Integer.toString(Math.round(mob.asMob().getHealth()));
@@ -94,9 +94,9 @@ public class GuiSlimeGirl extends GuiPreset0
 				.append(InfoHelper.createText(": " + def));
 		Component atkDefComp = ComponentBuilder.create().append(atkcomp).appendText(" | ")
 				.append(defcomp).build();
-		font.draw(poseStack, hpcomp, pos.x, pos.y, color);
+		graphics.drawString(font, hpcomp, pos.x, pos.y, color);
 		pos = pos.addY(textRowWidth);
-		font.draw(poseStack, atkDefComp, pos.x, pos.y, color);
+		graphics.drawString(font, atkDefComp, pos.x, pos.y, color);
 	}
 	
 	@Override
