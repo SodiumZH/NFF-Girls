@@ -14,7 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
-import potionstudios.byg.reg.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTradeListing>
 {

@@ -77,7 +77,7 @@ public class TradeIntroductionLetterItem extends NaUtilsItem
 				&& living.getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).isPresent()
 				&& IDwmgBefriendedMob.getBM(living).getOwnerUUID().equals(player.getUUID()))
 		{
-			if (!player.level.isClientSide)
+			if (!player.level().isClientSide)
 			{
 				UUID targetId = IDwmgBefriendedMob.getBM(living).getIdentifier();
 				if (this.isValid(stack) && this.getPlayerUUID(stack).equals(player.getUUID()))
@@ -100,7 +100,7 @@ public class TradeIntroductionLetterItem extends NaUtilsItem
 					NaMiscUtils.printToScreen(InfoHelper.createTranslatable("info.dwmg.introduction_written", living.getName().getString()), player);
 				}
 				else return InteractionResult.PASS;
-				return InteractionResult.sidedSuccess(player.level.isClientSide);
+				return InteractionResult.sidedSuccess(player.level().isClientSide);
 			}
 		}
 		return InteractionResult.PASS;

@@ -55,7 +55,7 @@ public abstract class VanillaMerchant implements CVanillaMerchant
 		{
 			this.offers = new MerchantOffers();
 		}
-		if (this.offers.isEmpty() && !this.getMob().getLevel().isClientSide)
+		if (this.offers.isEmpty() && !this.getMob().level().isClientSide)
 		{
 			this.generateTrades();
 		}
@@ -110,7 +110,7 @@ public abstract class VanillaMerchant implements CVanillaMerchant
 
 	@Override
 	public boolean isClientSide() {
-		return this.getMob().getLevel().isClientSide();
+		return this.getMob().level().isClientSide();
 	}
 
 	@Override

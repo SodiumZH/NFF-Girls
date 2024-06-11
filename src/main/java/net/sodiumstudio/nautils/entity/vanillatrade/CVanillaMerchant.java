@@ -73,7 +73,7 @@ public interface CVanillaMerchant extends Merchant, INBTSerializable<CompoundTag
 	public default void playTradeSound()
 	{
 		Mob mob = getMob();
-		mob.getLevel().playLocalSound(mob.getX(), mob.getY(), mob.getZ(), this.getNotifyTradeSound(), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+		mob.level().playLocalSound(mob.getX(), mob.getY(), mob.getZ(), this.getNotifyTradeSound(), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
 	}
 
 }
