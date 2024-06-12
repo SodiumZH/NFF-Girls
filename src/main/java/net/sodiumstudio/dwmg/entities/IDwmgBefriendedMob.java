@@ -310,7 +310,7 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 	
 	public default int pointsPerIntroductionLetter()
 	{
-		return 12;
+		return 128;
 	}
 	
 	
