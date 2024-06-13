@@ -4,11 +4,11 @@
 
 ### Current version: 
 
-#### 0.0.21 (1.18.2)
+#### 0.0.22 (1.18.2)
 
-#### 0.1.21 (1.19.2)
+#### 0.1.23 (1.19.2)
 
-#### 0.2.21 (1.20.1)
+#### 0.2.22 (1.20.1)
 
 
 
@@ -17,64 +17,6 @@
 ##### Note: the wiki update may lag behind the game. Check which version the wiki is supporting. You could also check the wiki/gameplay_en.md file, but it may contain information and changes that haven't been published.
 
 
-
-## Supported mobs
-
-### HMaG
-
-Zombie Girl
-
-Skeleton Girl
-
-Husk Girl
-
-Creeper Girl
-
-Ender Executor
-
-Stray Girl
-
-Wither Skeleton Girl
-
-Drowned Girl
-
-Hornet
-
-Necrotic Reaper
-
-Banshee
-
-Ghastly Seeker
-
-Kobold
-
-Imp
-
-Harpy
-
-Slime Girl
-
-Jiangshi (1.19.2 only)
-
-Dullahan
-
-Dodomeki
-
-Alraune
-
-Glaryad
-
-Crimson Slaughterer (0.x.16)
-
-Cursed Doll (0.x.16)
-
-Redcap (0.x.17)
-
-Jack o'Frost (0.x.17)
-
-Melty Monster (0.x.19)
-
-Nightwalker (0.x.20) (1.19.2+ only)
 
 ## General befriending methods
 
@@ -134,9 +76,13 @@ If the mob dies, it will lose a half of all its EXP accumulated.
 
 ## Trade (0.x.23)
 
-Mobs can trade similarly like Villagers by interacting with empty hand.
+Mobs can trade similarly like Villagers by interacting with empty hand or Evil Gem. They uses Evil Gem as currency, just like Emerald for Villagers.
 
-Each mob will have 10 trade offers, 2 offers each for level 1-5. Offer level 1-5 requires EXP level 0, 5, 15, 30, 45 respectively.
+Each mob will have 10 trade offers, 2 offers each for tier 1-5. Offer tier 1-5 requires EXP level 0, 5, 15, 30, 45 respectively. The specific offers depend on their types.
+
+Each mob has a "Trade Introduction Letter" offer, and you can consume "trade points" to get it. Trade points can be accumulated by trading with a specific mob. The Trade Introduction Letter can be used to **another** mob (not the mob from whom you got the letter) to refresh all its trade offers.
+
+
 
 ## Mob details
 
@@ -1252,6 +1198,22 @@ When the fishing hook hits an entity, right click to pull the entity without ret
  It can be repaired on the Anvil with Reinforcing Chain.
 
 *Note: A rare bug is observed in which the hook cannot be thrown. In this case Shift + right click may fix it.*
+
+
+
+#### Evil Gem
+
+A currency for trading with the mobs.
+
+It can be crafted with 8 * Evil Crystal Fragments + Emerald, but can only be broken down to 4 * Evil Crystal Fragments.
+
+
+
+#### Trade Introduction Letter
+
+An item obtainable by trading, consuming "trade points". (See **Trade** section.)
+
+It can be used to **another** mob (not the mob from whom you got the letter) to refresh all its trade offers.
 
 
 
