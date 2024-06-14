@@ -11,6 +11,7 @@ import org.apache.commons.lang3.mutable.MutableObject;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -21,6 +22,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.network.PacketDistributor;
+import net.sodiumstudio.befriendmobs.entity.befriended.CBefriendedMobData;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.entity.capability.wrapper.IAttributeMonitor;
@@ -30,6 +33,7 @@ import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
 import net.sodiumstudio.dwmg.entities.vanillatrade.CDwmgTradeHandler;
 import net.sodiumstudio.dwmg.network.ClientboundDwmgMobGeneralSyncPacket;
+import net.sodiumstudio.dwmg.network.DwmgChannels;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgBaubleStatics;
@@ -334,7 +338,9 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 	
 	public default void doSync()
 	{
-		ClientboundDwmgMobGeneralSyncPacket.doSync(this);
+		ClientboundDwmgMobGeneralSyncPacket packet = new ClientboundDwmgMobGeneralSyncPacket(this);
+		if (this.isOwnerInDimension() && this.getOwner() instanceof ServerPlayer toPlayer)
+			DwmgChannels.SYNC_CHANNEL.send(PacketDistributor.PLAYER.with(() -> toPlayer), packet);
 	}
 	
 	

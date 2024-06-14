@@ -5,11 +5,11 @@
 	"refmap": "dwmg.refmap.json",
 	"mixins": [
 		"DwmgJackFrostEntityMixin",
-		"DwmgMeltyMonsterEntityMixin",
-		"DwmgMerchantScreenMixin",
-		"DwmgMerchantMenuMixin"
+		"DwmgMeltyMonsterEntityMixin"
 	],
 	"client": [
+		"DwmgMerchantScreenMixin",
+		"DwmgMerchantMenuMixin"
 	],
 	"minVersion": "0.8"
 }
