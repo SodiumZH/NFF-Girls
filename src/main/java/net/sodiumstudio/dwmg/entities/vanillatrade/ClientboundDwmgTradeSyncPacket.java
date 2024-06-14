@@ -12,6 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.sodiumstudio.dwmg.network.DwmgClientGamePacketHandler;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 
 public class ClientboundDwmgTradeSyncPacket implements Packet<ClientGamePacketListener>
@@ -57,22 +58,7 @@ public class ClientboundDwmgTradeSyncPacket implements Packet<ClientGamePacketLi
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void handle(ClientGamePacketListener pHandler) {
-		Minecraft mc = Minecraft.getInstance();
-		PacketUtils.ensureRunningOnSameThread(this, pHandler, mc);
-		Entity entity = mc.level.getEntity(id);
-		if (entity != null)
-		{
-			entity.getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(cap -> {
-				cap.getOffers().clear();
-				cap.getMeta().clear();
-				for (int i = 0; i < this.offers.size(); ++i)
-				{
-					cap.getOffers().add(this.offers.get(i));
-					cap.getMeta().add(this.meta.get(i));
-					cap.setPoints(this.points);
-				}
-			});
-		}
+		DwmgClientGamePacketHandler.handleTradeSync(this, pHandler);
 	}
 
 }
