@@ -16,12 +16,11 @@ import net.sodiumstudio.nautils.NaMiscUtils;
 
 public class ClientboundDwmgMobGeneralSyncPacket implements Packet<ClientGamePacketListener>
 {
-	private final int entityId;
-	
-	private final int tradingPlayerId;	// -1 for null
-	private float favorability;
-	private float maxFavorability;
-	private long xp;
+	public final int entityId;
+	public final int tradingPlayerId;	// -1 for null
+	public final float favorability;
+	public final float maxFavorability;
+	public final long xp;
 	
 	public ClientboundDwmgMobGeneralSyncPacket(IDwmgBefriendedMob mob)
 	{
@@ -56,32 +55,7 @@ public class ClientboundDwmgMobGeneralSyncPacket implements Packet<ClientGamePac
 
 	@Override
 	public void handle(ClientGamePacketListener handler) {
-		Minecraft mc = Minecraft.getInstance();
-		PacketUtils.ensureRunningOnSameThread(this, handler, mc);
-		IDwmgBefriendedMob bm = (IDwmgBefriendedMob) mc.level.getEntity(entityId);
-		
-		bm.asMob().getCapability(DwmgCapabilities.CAP_TRADE_HANDLER).ifPresent(cap -> 
-		{
-			cap.setTradingPlayer(tradingPlayerId == -1 ? null : (Player) mc.level.getEntity(tradingPlayerId));
-		});
-		bm.asMob().getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).ifPresent(cap ->
-		{
-			cap.setFavorability(favorability);
-		});
-		bm.asMob().getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).ifPresent(cap ->
-		{
-			cap.setMaxFavorability(maxFavorability);
-		});
-		bm.asMob().getCapability(DwmgCapabilities.CAP_LEVEL_HANDLER).ifPresent(cap ->
-		{
-			cap.setExp(xp);
-		});
+		DwmgClientGamePacketHandler.handleBMGeneralSync(this, handler);
 	}
-	
-	public static void doSync(IDwmgBefriendedMob mob)
-	{
-		ClientboundDwmgMobGeneralSyncPacket packet = new ClientboundDwmgMobGeneralSyncPacket(mob);
-		if (mob.isOwnerInDimension() && mob.getOwner() instanceof ServerPlayer toPlayer)
-			DwmgChannels.SYNC_CHANNEL.send(PacketDistributor.PLAYER.with(() -> toPlayer), packet);
-	}
+
 }
