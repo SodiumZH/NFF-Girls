@@ -1,5 +1,19 @@
 # Change Log
 
+### 0.2.23.1
+
+Fixed dedicated server crash.
+
+### 0.1.23.2
+
+Fixed dedicated server crash.
+
+### 0.0.23.1
+
+Fixed dedicated server crash.
+
+Fixed wrong BefriendMobs Framework version.
+
 ### 0.1.23.1
 
 Fixed wrong point requirement for introduction letter.
