@@ -7,6 +7,7 @@ import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleAttributeModi
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCondition;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedSunSensitiveMob;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.registries.DwmgTags;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgDedicatedBaubleItem;
 
@@ -25,8 +26,8 @@ public class SoulAmuletBaubleItem extends DwmgDedicatedBaubleItem
 		case 1:
 		{
 			return BaubleAttributeModifier.makeModifiers(
-					Attributes.MAX_HEALTH, 10d,
-					Attributes.ATTACK_DAMAGE, 3d);
+					Attributes.MAX_HEALTH, 10d * DwmgConfigs.ValueCache.Baubles.BAUBLE_MAX_HP_BOOSTING_SCALE,
+					Attributes.ATTACK_DAMAGE, 3d * DwmgConfigs.ValueCache.Baubles.BAUBLE_ATK_BOOSTING_SCALE);
 			/*return new BaubleAttributeModifier[] {
 				new BaubleAttributeModifier(Attributes.MAX_HEALTH, 10d, AttributeModifier.Operation.ADDITION),
 				new BaubleAttributeModifier(Attributes.ATTACK_DAMAGE, 3d, AttributeModifier.Operation.ADDITION)};*/
@@ -34,8 +35,8 @@ public class SoulAmuletBaubleItem extends DwmgDedicatedBaubleItem
 		case 2:
 		{
 			return BaubleAttributeModifier.makeModifiers(
-					Attributes.MAX_HEALTH, 15d,
-					Attributes.ATTACK_DAMAGE, 5d);
+					Attributes.MAX_HEALTH, 15d * DwmgConfigs.ValueCache.Baubles.BAUBLE_MAX_HP_BOOSTING_SCALE,
+					Attributes.ATTACK_DAMAGE, 5d * DwmgConfigs.ValueCache.Baubles.BAUBLE_ATK_BOOSTING_SCALE);
 			/*return new BaubleAttributeModifier[] {
 				new BaubleAttributeModifier(Attributes.MAX_HEALTH, 15d, AttributeModifier.Operation.ADDITION),
 				new BaubleAttributeModifier(Attributes.ATTACK_DAMAGE, 5d, AttributeModifier.Operation.ADDITION)};*/

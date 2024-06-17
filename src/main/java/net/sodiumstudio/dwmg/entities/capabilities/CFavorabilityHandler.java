@@ -2,6 +2,8 @@ package net.sodiumstudio.dwmg.entities.capabilities;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.mutable.MutableObject;
+
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -304,11 +306,11 @@ public interface CFavorabilityHandler extends INBTSerializable<CompoundTag>
 	
 	public static boolean isLowFavorability(Mob mob, float threshold)
 	{
-		Wrapped<Boolean> res = new Wrapped<Boolean>(true);
+		MutableObject<Boolean> res = new MutableObject<Boolean>(true);
 		mob.getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).ifPresent((cap) -> {
-			res.set(cap.getFavorability() < threshold);
+			res.setValue(cap.getFavorability() < threshold);
 		});
-		return res.get();
+		return res.getValue();
 	}
 	
 	public static boolean isLowFavorability(Mob mob)

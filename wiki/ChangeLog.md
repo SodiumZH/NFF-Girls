@@ -1,5 +1,23 @@
 # Change Log
 
+### 0.x.24
+
+Config changes:
+
+​	-Added configs for max HP and ATK increase on level upgrade.
+
+​	-Added configs for scaling some bauble effects.
+
+​	-Renamed some configs:
+
+​		-`maxHealthBoostByLevel` => `maxHealthIncreaseByLevel`
+
+​		-`maxAtkIncreaseByLevel` => `maxAtkIncreaseByLevel`
+
+Fixed Nightwalker armor increase by level-up not taking effect.
+
+
+
 ### 0.2.23.1
 
 Fixed dedicated server crash.
