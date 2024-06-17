@@ -5,13 +5,20 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.sodiumstudio.nautils.NaContainerUtils;
+import net.sodiumstudio.nautils.NbtHelper;
 
 public class VanillaTradeListing implements IVanillaTradeListing
 {
@@ -522,4 +529,11 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	{
 		return item != null ? item.getDefaultInstance() : ItemStack.EMPTY;
 	}
+
+	/*public static VanillaTradeListing readJson(ResourceLocation location)
+	{
+		MinecraftServer.
+	}*/
+	
+	
 }
