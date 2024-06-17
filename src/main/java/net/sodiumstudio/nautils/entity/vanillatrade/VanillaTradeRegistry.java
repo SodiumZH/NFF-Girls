@@ -13,6 +13,7 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.ForgeRegistries;
 import potionstudios.byg.reg.RegistryObject;
 
@@ -341,6 +342,17 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 		{
 			VanillaTradeListing l = VanillaTradeListing.invalidWithAmounts(priceMin, priceMax, sellsMin, sellsMax)
 					.addA(this.getCurrency()).addResult(sells).setMaxUses(maxUses);
+			if (this.usesPoisson()) l.setAllPoisson(this.getPoissonFactor());
+			this.addListing(l);
+			return this;
+		}
+		
+		public Registering addSellsEnchantment(int priceMin, int priceMax, Enchantment enc, int lvl, int maxUses)
+		{
+			ItemStack book = Items.ENCHANTED_BOOK.getDefaultInstance();
+			book.enchant(enc, lvl);
+			VanillaTradeListing l = VanillaTradeListing.invalidWithAmounts(priceMin, priceMax, 1, 1)
+					.addA(this.getCurrency()).addResult(book).setMaxUses(maxUses);
 			if (this.usesPoisson()) l.setAllPoisson(this.getPoissonFactor());
 			this.addListing(l);
 			return this;
