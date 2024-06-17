@@ -6,6 +6,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleAttributeModifier;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCondition;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgDedicatedBaubleItem;
 
 public class ResistanceAmuletBaubleItem extends DwmgDedicatedBaubleItem
@@ -50,8 +51,8 @@ public class ResistanceAmuletBaubleItem extends DwmgDedicatedBaubleItem
 		case 1:
 		{
 			return BaubleAttributeModifier.makeModifiers(				 
-					Attributes.MAX_HEALTH, 15d, 
-					Attributes.ARMOR, 4d,
+					Attributes.MAX_HEALTH, 15d * DwmgConfigs.ValueCache.Baubles.BAUBLE_MAX_HP_BOOSTING_SCALE, 
+					Attributes.ARMOR, 4d * DwmgConfigs.ValueCache.Baubles.BAUBLE_ARMOR_BOOSTING_SCALE,
 					Attributes.MOVEMENT_SPEED, -0.1d, "mb");
 			/*return new BaubleAttributeModifier[] {
 				new BaubleAttributeModifier(Attributes.ARMOR, 4d, AttributeModifier.Operation.ADDITION),
@@ -61,8 +62,8 @@ public class ResistanceAmuletBaubleItem extends DwmgDedicatedBaubleItem
 		case 2:
 		{
 			return BaubleAttributeModifier.makeModifiers(
-					Attributes.ARMOR, 6d,
-					Attributes.MAX_HEALTH, 25d, 
+					Attributes.ARMOR, 6d * DwmgConfigs.ValueCache.Baubles.BAUBLE_ARMOR_BOOSTING_SCALE,
+					Attributes.MAX_HEALTH, 25d * DwmgConfigs.ValueCache.Baubles.BAUBLE_MAX_HP_BOOSTING_SCALE, 
 					Attributes.MOVEMENT_SPEED, -0.15d, "mb");
 			/*return new BaubleAttributeModifier[] {
 					new BaubleAttributeModifier(Attributes.ARMOR, 6d, AttributeModifier.Operation.ADDITION),

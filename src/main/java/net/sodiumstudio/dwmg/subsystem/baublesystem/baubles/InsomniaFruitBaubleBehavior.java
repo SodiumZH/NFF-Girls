@@ -10,6 +10,7 @@ import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleAttributeModi
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleBehavior;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCondition;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 
 public class InsomniaFruitBaubleBehavior extends BaubleBehavior
 {
@@ -43,10 +44,10 @@ public class InsomniaFruitBaubleBehavior extends BaubleBehavior
 	@Override
 	public BaubleAttributeModifier[] getNonDuplicatableModifiers(Mob mob) {
 		return new BaubleAttributeModifier[] {
-				new BaubleAttributeModifier(Attributes.ATTACK_DAMAGE, 8d, AttributeModifier.Operation.ADDITION)
-					.setAdditionalCondition(args -> args.user().getLevel().isNight()),
-				new BaubleAttributeModifier(Attributes.MAX_HEALTH, 60d, AttributeModifier.Operation.ADDITION)
-					.setAdditionalCondition(args -> args.user().getLevel().isNight())
+				new BaubleAttributeModifier(Attributes.ATTACK_DAMAGE, 8d * DwmgConfigs.ValueCache.Baubles.BAUBLE_ATK_BOOSTING_SCALE,
+						 AttributeModifier.Operation.ADDITION).setAdditionalCondition(args -> args.user().getLevel().isNight()),
+				new BaubleAttributeModifier(Attributes.MAX_HEALTH, 60d * DwmgConfigs.ValueCache.Baubles.BAUBLE_MAX_HP_BOOSTING_SCALE,
+						 AttributeModifier.Operation.ADDITION).setAdditionalCondition(args -> args.user().getLevel().isNight())
 		};
 	}
 

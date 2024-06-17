@@ -7,6 +7,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
@@ -18,9 +19,18 @@ import net.minecraftforge.network.PacketDistributor;
 import net.sodiumstudio.dwmg.network.DwmgChannels;
 import net.sodiumstudio.dwmg.network.DwmgClientGamePacketHandler;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
+import net.sodiumstudio.nautils.entity.RepeatableAttributeModifier;
 
 public interface CLevelHandler extends INBTSerializable<LongTag>
 {
+	/** Attribute modifier for HP increase by level upgrading, called in {@code DwmgSubsystemEvents} */
+	public static final RepeatableAttributeModifier LVL_HP_MODIFIER = new RepeatableAttributeModifier(
+			DwmgConfigs.ValueCache.Combat.HEALTH_BOOST_PER_LEVEL, AttributeModifier.Operation.ADDITION, Integer.MAX_VALUE);
+	/** Attribute modifier for ATK increase by level upgrading, called in {@code DwmgSubsystemEvents} */
+	public static final RepeatableAttributeModifier LVL_ATK_MODIFIER = new RepeatableAttributeModifier(
+			DwmgConfigs.ValueCache.Combat.ATK_BOOST_PER_LEVEL, AttributeModifier.Operation.ADDITION, Integer.MAX_VALUE);
+	
 	
 	public Mob getMob();
 	

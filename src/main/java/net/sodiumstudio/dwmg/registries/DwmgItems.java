@@ -1,8 +1,11 @@
 package net.sodiumstudio.dwmg.registries;
 
+import java.util.function.Supplier;
+
 import com.github.mechalopa.hmag.world.item.ModSwordItem;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ChorusFruitItem;
@@ -78,64 +81,71 @@ public class DwmgItems {
 	public static final RegistryObject<Item> SOUL_CAKE_SLICE = regItem("soul_cake_slice", new Item.Properties().food(DwmgFoodProperties.SOUL_CAKE_SLICE).rarity(Rarity.UNCOMMON));
 	public static final RegistryObject<Item> ENDERBERRY = ITEMS.register("enderberry", () -> new ChorusFruitItem(new Item.Properties().tab(TAB).food(DwmgFoodProperties.ENDERBERRY).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> ENDER_PIE = ITEMS.register("ender_pie", () -> new Item(new Item.Properties().tab(TAB).food(DwmgFoodProperties.ENDER_PIE).rarity(Rarity.RARE)));
+	
 	// Baubles
-	/*public static final RegistryObject<DwmgBaubleItem> SOUL_AMULET = ITEMS.register("soul_amulet", () -> newBauble(new Item.Properties().rarity(Rarity.UNCOMMON))
-			.typeName("soul_amulet")
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.soul_amulet").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.hpmax", "+10").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.atk", "+3").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)));
-	public static final RegistryObject<DwmgBaubleItem> SOUL_AMULET_II = ITEMS.register("soul_amulet_ii", () -> newBauble(new Item.Properties().rarity(Rarity.RARE)).foil()
-			.typeName("soul_amulet").level(2)
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.soul_amulet").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.hpmax", "+15").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.atk", "+5").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)));*/
+	// Desc utils
+	private static Supplier<MutableComponent> baubleHPRecovery(double rawValue) { 
+		return () -> InfoHelper.createTranslatable("info.dwmg.bauble.healing_per_second", 
+				String.format("%.2f", DwmgConfigs.ValueCache.Baubles.BAUBLE_HEALTH_RECOVERY_SCALE * rawValue)).withStyle(ChatFormatting.GRAY); 
+	}
+	private static Supplier<MutableComponent> baubleHPMax(double rawValue) { 
+		return () -> InfoHelper.createTranslatable("info.dwmg.bauble.hpmax", 
+			String.format("+%.1f", DwmgConfigs.ValueCache.Baubles.BAUBLE_MAX_HP_BOOSTING_SCALE * rawValue)).withStyle(ChatFormatting.GRAY); 
+	}
+	private static Supplier<MutableComponent> baubleAtk(double rawValue) { 
+		return () -> InfoHelper.createTranslatable("info.dwmg.bauble.atk", 
+				String.format("+%.1f", DwmgConfigs.ValueCache.Baubles.BAUBLE_ATK_BOOSTING_SCALE * rawValue)).withStyle(ChatFormatting.GRAY); 
+	}
+	private static Supplier<MutableComponent> baubleArmor(double rawValue) { 
+		return () -> InfoHelper.createTranslatable("info.dwmg.bauble.armor", 
+				String.format("+%.1f", DwmgConfigs.ValueCache.Baubles.BAUBLE_ARMOR_BOOSTING_SCALE * rawValue)).withStyle(ChatFormatting.GRAY); 
+	}
+	// Registry
 	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET = ITEMS.register("soul_amulet", () -> new SoulAmuletBaubleItem(
 			"dwmg:soul_amulet", 1, new Item.Properties().rarity(Rarity.UNCOMMON).tab(TAB))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.soul_amulet").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.hpmax", "+10").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.atk", "+3").withStyle(ChatFormatting.GRAY))
+			.description(baubleHPMax(10.0))
+			.description(baubleAtk(3.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
 	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET_II = ITEMS.register("soul_amulet_ii", () -> new SoulAmuletBaubleItem(
 			"dwmg:soul_amulet", 2, new Item.Properties().rarity(Rarity.RARE).tab(TAB)).alwaysFoil()
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.soul_amulet").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.hpmax", "+15").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.atk", "+5").withStyle(ChatFormatting.GRAY))
+			.description(baubleHPMax(15.0))
+			.description(baubleAtk(5.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
 	public static final RegistryObject<CourageAmuletBaubleItem> COURAGE_AMULET = ITEMS.register("courage_amulet", () -> new CourageAmuletBaubleItem(
 			"dwmg:courage_amulet", 1, new Item.Properties().rarity(Rarity.UNCOMMON).tab(TAB))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.proactive_attack").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.atk", "+4").withStyle(ChatFormatting.GRAY))
+			.description(baubleAtk(4.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.speed", "+20%").withStyle(ChatFormatting.GRAY)).cast());
 	public static final RegistryObject<CourageAmuletBaubleItem> COURAGE_AMULET_II = ITEMS.register("courage_amulet_ii", () -> new CourageAmuletBaubleItem(
 			"dwmg:courage_amulet", 2, new Item.Properties().rarity(Rarity.RARE).tab(TAB)).alwaysFoil()
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.proactive_attack").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.atk", "+6").withStyle(ChatFormatting.GRAY))
+			.description(baubleAtk(6.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.speed", "+30%").withStyle(ChatFormatting.GRAY)).cast());
 	public static final RegistryObject<ResistanceAmuletBaubleItem> RESISTANCE_AMULET = ITEMS.register("resistance_amulet", () -> new ResistanceAmuletBaubleItem(
 			"dwmg:resistance_amulet", 1, new Item.Properties().rarity(Rarity.UNCOMMON).tab(TAB))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.armor", "+4").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.hpmax", "+15").withStyle(ChatFormatting.GRAY))
+			.description(baubleArmor(4.0))
+			.description(baubleHPMax(15.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.speed", "-10%").withStyle(ChatFormatting.GRAY))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
 	public static final RegistryObject<ResistanceAmuletBaubleItem> RESISTANCE_AMULET_II = ITEMS.register("resistance_amulet_ii", () -> new ResistanceAmuletBaubleItem(
 			"dwmg:resistance_amulet", 2, new Item.Properties().rarity(Rarity.UNCOMMON).tab(TAB)).alwaysFoil()
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.armor", "+6").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.hpmax", "+25").withStyle(ChatFormatting.GRAY))
+			.description(baubleArmor(6.0))
+			.description(baubleHPMax(25.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.speed", "-10%").withStyle(ChatFormatting.GRAY))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
 	public static final RegistryObject<HealingJadeBaubleItem> HEALING_JADE = ITEMS.register("healing_jade", () -> new HealingJadeBaubleItem(
 			"dwmg:healing_jade", 1, new Item.Properties().rarity(Rarity.UNCOMMON).tab(TAB))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.healing_per_second", "0.1").withStyle(ChatFormatting.GRAY)).cast());
+			.description(baubleHPRecovery(0.1)).cast());
 	public static final RegistryObject<LifeJadeBaubleItem> LIFE_JADE = ITEMS.register("life_jade", () -> new LifeJadeBaubleItem(
 			"dwmg:life_jade", 1, new Item.Properties().rarity(Rarity.UNCOMMON).tab(TAB))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.healing_per_second", "0.15").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.hpmax", "+5").withStyle(ChatFormatting.GRAY)).cast());
+			.description(baubleHPRecovery(0.15))
+			.description(baubleHPMax(5.0)).cast());
 	public static final RegistryObject<LifeJadeBaubleItem> LIFE_JADE_II = ITEMS.register("life_jade_ii", () -> new LifeJadeBaubleItem(
 			"dwmg:life_jade", 2, new Item.Properties().rarity(Rarity.RARE).tab(TAB)).alwaysFoil()
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.healing_per_second", "0.2").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.hpmax", "+10").withStyle(ChatFormatting.GRAY)).cast());
+			.description(baubleHPRecovery(0.2))
+			.description(baubleHPMax(10.0)).cast());
 	public static final RegistryObject<AquaJadeBaubleItem> AQUA_JADE = ITEMS.register("aqua_jade", () -> new AquaJadeBaubleItem(
 			"dwmg:aqua_jade", 2, new Item.Properties().rarity(Rarity.RARE).tab(TAB)).alwaysFoil()
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.aqua_jade").withStyle(ChatFormatting.GRAY))

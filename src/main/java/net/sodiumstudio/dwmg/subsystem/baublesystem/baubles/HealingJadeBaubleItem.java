@@ -3,6 +3,7 @@ package net.sodiumstudio.dwmg.subsystem.baublesystem.baubles;
 import net.minecraft.resources.ResourceLocation;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleAttributeModifier;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgDedicatedBaubleItem;
 
 public class HealingJadeBaubleItem extends DwmgDedicatedBaubleItem
@@ -15,7 +16,7 @@ public class HealingJadeBaubleItem extends DwmgDedicatedBaubleItem
 
 	@Override
 	public void slotTick(BaubleProcessingArgs args) {
-		args.user().heal(0.1f / 20f);
+		args.user().heal(DwmgConfigs.ValueCache.Baubles.BAUBLE_HEALTH_RECOVERY_SCALE * 0.1f / 20f);
 	}
 
 	@Override
