@@ -8,12 +8,15 @@ import javax.annotation.Nullable;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -347,11 +350,20 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 			return this;
 		}
 		
-		public Registering addSellsEnchantment(int priceMin, int priceMax, Enchantment enc, int lvl, int maxUses)
+		public Registering addSellsEnchantmentBook(int priceMin, int priceMax, Enchantment enc, int lvl, int maxUses)
 		{
 			ItemStack book = Items.ENCHANTED_BOOK.getDefaultInstance();
-			book.enchant(enc, lvl);
-			VanillaTradeListing l = VanillaTradeListing.invalidWithAmounts(priceMin, priceMax, 1, 1)
+			VanillaTradeListing l = new VanillaTradeListingEnchanted(enc, lvl).setACountRange(priceMin, priceMax).setResultCountRange(1, 1)
+					.addA(this.getCurrency()).addResult(book).setMaxUses(maxUses);
+			if (this.usesPoisson()) l.setAllPoisson(this.getPoissonFactor());
+			this.addListing(l);
+			return this;
+		}
+		
+		public Registering addSellsEnchantmentBook(int priceMin, int priceMax, RandomEnchantmentSelector enchantmentSelector, int maxUses)
+		{
+			ItemStack book = Items.ENCHANTED_BOOK.getDefaultInstance();
+			VanillaTradeListing l = new VanillaTradeListingEnchanted(enchantmentSelector).setACountRange(priceMin, priceMax).setResultCountRange(1, 1)
 					.addA(this.getCurrency()).addResult(book).setMaxUses(maxUses);
 			if (this.usesPoisson()) l.setAllPoisson(this.getPoissonFactor());
 			this.addListing(l);
