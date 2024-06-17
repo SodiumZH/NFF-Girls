@@ -152,9 +152,8 @@ public class DwmgTrades
 		.addSells(1, 1, ModItems.LICH_CLOTH.get(), 2, 2, 2)
 		.setRequiredLevel(4)
 		.addSells(1, 1, ModItems.DYSSOMNIA_SKIN.get(), 2, 2, 2)
-		
-		
 		;
+
 		} catch(Throwable t) {
 			t.printStackTrace();
 			throw t;
