@@ -17,12 +17,14 @@ public class VanillaTradeListingEnchanted extends VanillaTradeListing
 	
 	public VanillaTradeListingEnchanted(Enchantment e, int level) 
 	{
+		super();
 		this.enc = new Tuple<>(e, level);
 		this.sel = null;
 	}
 	
 	public VanillaTradeListingEnchanted(RandomEnchantmentSelector sel)
 	{
+		super();
 		this.enc = null;
 		this.sel = sel;
 	}
@@ -40,5 +42,4 @@ public class VanillaTradeListingEnchanted extends VanillaTradeListing
 		}
 		return offer;
 	}
-	
 }

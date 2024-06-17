@@ -38,7 +38,7 @@ public class VanillaTradeListing implements IVanillaTradeListing
 	protected boolean linkBCountToResult = false;	// If true, the count of B is always same to the result.
 	protected boolean hasB = false;		// To indicate whether this listing is expected to have B. If it's true but the B is missing, it will be counted as invalid.
 	
-	private VanillaTradeListing() {}
+	protected VanillaTradeListing() {}
 	
 	/**
 	 * Create an invalid instance. You must add costA and result manually.
