@@ -25,4 +25,6 @@ public interface CUndeadMob extends INBTSerializable<CompoundTag>{
 	 * */
 	public void addHatred(LivingEntity entity, int forgiveTime);
 
+	public void updateForgivingTimers();
+	
 }
