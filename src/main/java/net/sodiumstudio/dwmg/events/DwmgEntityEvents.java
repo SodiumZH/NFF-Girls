@@ -240,10 +240,10 @@ public class DwmgEntityEvents
 			{
 				if (event.isCanceled())
 					return;
-				LivingEntity target = event.getNewTarget();
-				if (target != null)
+				LivingEntity target = mob.getTarget();
+				if (target != null && mob.getLastHurtByMob() == target)
 				{
-					l.addHatred(target, 300 * 20);
+					l.addHatred(target, 295 * 20);
 				}		
 			});	        
 		}
@@ -602,9 +602,11 @@ public class DwmgEntityEvents
 			if (event.getEntity() instanceof Mob mob)
 			{
 				// Undead mob forgiving player
-				mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent((l) -> 
+				mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent(cap -> 
 				{
-					((CUndeadMobImpl)l).updateForgivingTimers();
+					cap.updateForgivingTimers();
+					if (mob.getTarget().hasEffect(DwmgEffects.UNDEAD_AFFINITY.get()) && !cap.getHatred().contains(mob.getTarget().getUUID()))
+						mob.setTarget(null);
 				});
 				
 				/*for (Player player: mob.level.players())
