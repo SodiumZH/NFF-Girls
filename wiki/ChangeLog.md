@@ -1,10 +1,60 @@
 # Change Log
 
+### 0.x.24
+
+Config changes:
+
+​	-Added configs for max HP and ATK increase on level upgrade.
+
+​	-Added configs for scaling some bauble effects.
+
+​	-Renamed some configs:
+
+​		-`maxHealthBoostByLevel` => `maxHealthIncreaseByLevel`
+
+​		-`maxAtkIncreaseByLevel` => `maxAtkIncreaseByLevel`
+
+Fixed Nightwalker armor increase by level-up not taking effect.
+
+
+
+### 0.2.23.1
+
+Fixed dedicated server crash.
+
+### 0.1.23.2
+
+Fixed dedicated server crash.
+
+### 0.0.23.1
+
+Fixed dedicated server crash.
+
+Fixed wrong BefriendMobs Framework version.
+
+### 0.1.23.1
+
+Fixed wrong point requirement for introduction letter.
+
+### 0.x.23
+
+Updated HMaG versions to 5.1.26/6.2.19/9.0.20.
+
+Added trades to Zombie/Skeleton-derived mobs (6 types overall). Interact with empty hand or Evil Gem to open the trade window. 
+
+Now Creeper Girl charging & uncharging requires Shift+Right Click.
+
+Rearranged the info of Slime Girls in the GUI to prevent from getting out of the box.
+
+Increased the durability of Undead Affinity from Soul Carpet from 0.15 s to 1.00 s, so that jumping will not interrupt the effect.
+
+Fixed some mobs getting silent when the configured ambient sound chance is 1.0. Now for all mobs 0.0 is complete silence and 1.0 is normal.
+
 ### 0.x.22
 
 Since this version until the final release, BefriendMobs Framework will be embedded in the dwmg jar. Now there's no need to manually add BefriendMobs into the modpack.
 
-Updated HMaG version to 5.1.22/6.2.15/9.0.17.
+Updated HMaG version to 5.1.23/6.2.16/9.0.17.
 
 Modified Drowned Girl trident damage and related behaviors.
 

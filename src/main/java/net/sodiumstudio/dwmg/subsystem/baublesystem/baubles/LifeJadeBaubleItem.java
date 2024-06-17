@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleAttributeModifier;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgDedicatedBaubleItem;
 
 public class LifeJadeBaubleItem extends DwmgDedicatedBaubleItem
@@ -20,12 +21,12 @@ public class LifeJadeBaubleItem extends DwmgDedicatedBaubleItem
 		{
 		case 1:
 		{
-			args.user().heal(0.15f / 20f);
+			args.user().heal(DwmgConfigs.ValueCache.Baubles.BAUBLE_HEALTH_RECOVERY_SCALE * 0.15f / 20f);
 			break;
 		}
 		case 2:
 		{
-			args.user().heal(0.2f / 20f);
+			args.user().heal(DwmgConfigs.ValueCache.Baubles.BAUBLE_HEALTH_RECOVERY_SCALE * 0.2f / 20f);
 			break;
 		}
 		default:
@@ -41,11 +42,11 @@ public class LifeJadeBaubleItem extends DwmgDedicatedBaubleItem
 		{
 		case 1:
 		{
-			return BaubleAttributeModifier.makeModifiers(Attributes.MAX_HEALTH, 5d);
+			return BaubleAttributeModifier.makeModifiers(Attributes.MAX_HEALTH, 5d * DwmgConfigs.ValueCache.Baubles.BAUBLE_MAX_HP_BOOSTING_SCALE);
 		}
 		case 2:
 		{
-			return BaubleAttributeModifier.makeModifiers(Attributes.MAX_HEALTH, 10d);
+			return BaubleAttributeModifier.makeModifiers(Attributes.MAX_HEALTH, 10d * DwmgConfigs.ValueCache.Baubles.BAUBLE_MAX_HP_BOOSTING_SCALE);
 		}
 		default:
 		{
