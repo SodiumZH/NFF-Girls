@@ -3,6 +3,7 @@ package net.sodiumstudio.dwmg.registries;
 import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -58,14 +59,14 @@ public class DwmgTrades
 		.addBuys(byKey("alexsmobs:soul_heart"), 1, 1, 1, 1, 4)
 		.setRequiredLevel(5)
 		.addBuys(Items.CRYING_OBSIDIAN, 12, 16, 1, 1, 4)
-		.addBuys(ModItems.DYSSOMNIA_SKIN.get(), 2, 2, 1, 1, 4)
+		//.addBuys(ModItems.DYSSOMNIA_SKIN.get(), 2, 2, 1, 1, 4)
 		.addBuys(Items.TOTEM_OF_UNDYING, 1, 1, 4, 7, 1)
 		.addBuys(byKey("iceandfire:dread_shard"), 16, 20, 1, 1, 4)
 		
 		.pop().push("dwmg:hmag_zombie_girl")
 		.linkListings(COMMON_UNDEAD)
 		.setRequiredLevel(5)
-		.addSells(60, 64, Items.ZOMBIE_SPAWN_EGG, 1, 1, 1).weight(0.2d)
+		.addSells(128, 128, Items.ZOMBIE_SPAWN_EGG, 1, 1, 1).weight(0.2d)
 		
 		.pop().push("dwmg:hmag_husk_girl")
 		.linkListings(COMMON_UNDEAD)
@@ -74,7 +75,7 @@ public class DwmgTrades
 		.setRequiredLevel(4)
 		.addBuys(byKey("alexsmobs:tarantura_hawk_wing_fragment"), 2, 3, 1, 1, 4)
 		.setRequiredLevel(5)
-		.addSells(60, 64, Items.ZOMBIE_SPAWN_EGG, 1, 1, 1).weight(0.2d)
+		.addSells(128, 128, Items.ZOMBIE_SPAWN_EGG, 1, 1, 1).weight(0.2d)
 		.addSells(1, 1, byKey("alexsmobs:guster_eye"), 1, 1, 2)
 
 		.pop().push("dwmg:hmag_drowned_girl")
@@ -93,21 +94,20 @@ public class DwmgTrades
 		.addSells(16, 20, Items.TRIDENT, 0, 1, 1)
 		.addSells(24, 33, Items.HEART_OF_THE_SEA, 1, 1, 1)
 		.addBuys(byKey("iceandfire:seaserpent_skull"), 1, 1, 3, 4, 2)
-		.addSells(60, 64, Items.ZOMBIE_SPAWN_EGG, 1, 1, 1).weight(0.2d)
+		.addSells(128, 128, Items.ZOMBIE_SPAWN_EGG, 1, 1, 1).weight(0.2d)
 		
 		.pop().push("dwmg:hmag_skeleton_girl")
 		.linkListings(COMMON_UNDEAD)
 		.setRequiredLevel(5)
-		.addSells(60, 64, Items.SKELETON_SPAWN_EGG, 1, 1, 1).weight(0.2d)
+		.addSells(128, 128, Items.SKELETON_SPAWN_EGG, 1, 1, 1).weight(0.2d)
 		
 		.pop().push("dwmg:hmag_stray_girl")
 		.linkListings(COMMON_UNDEAD)
 		.setRequiredLevel(4)
 		.addBuys(byKey("twilightforest:arctic_fur"), 16, 20, 1, 1, 4)
 		.addBuys(byKey("alexsmobs:froststalker_horn"), 3, 4, 1, 1, 4)
-		
 		.setRequiredLevel(5)
-		.addSells(60, 64, Items.SKELETON_SPAWN_EGG, 1, 1, 1).weight(0.2d)
+		.addSells(128, 128, Items.SKELETON_SPAWN_EGG, 1, 1, 1).weight(0.2d)
 		
 		.pop().push("dwmg:hmag_wither_skeleton_girl")
 		.linkListings(COMMON_UNDEAD)
@@ -121,11 +121,40 @@ public class DwmgTrades
 		.setRequiredLevel(5)
 		.addBuys(byKey("iceandfire:cocatrice_eye"), 1, 1, 3, 5, 2)
 		.addSells(12, 16, ModItems.NETHER_STAR_FRAGMENT.get(), 1, 1, 2).weight(0.5d)
-		.pop();
 		
-		//String str = TRADES.getListings(COMMON_UNDEAD).toString();
-/*
-		).pop()*/;
+		.pop().push("dwmg:hmag_creeper_girl")
+		.setRequiredLevel(1)
+		.addBuys(Items.GUNPOWDER, 28, 36, 1, 1, 4)
+		.addBuys(Items.COAL, 28, 36, 1, 1, 4)
+		.addBuys(Items.FIRE_CHARGE, 28, 36, 1, 1, 4)
+		.addBuys(byKey("byg:anthracite"), 28, 36, 1, 1, 4)
+		.setRequiredLevel(2)
+		.addBuys(Items.FLINT, 40, 48, 1, 1, 4)
+		.addSells(1, 1, Items.TNT, 3, 5, 4)
+		.addSells(1, 1, ModItems.BLASTING_BOTTLE.get(), 5, 8, 4)
+		.addBuys(byKey("byg:brim_powder"), 56, 64, 1, 1, 4)
+		.setRequiredLevel(3)
+		.addBuys(Items.REDSTONE, 40, 48, 1, 1, 4)
+		.addSells(1, 1, Items.REPEATER, 3, 4, 4)
+		.addSells(1, 1, Items.COMPARATOR, 2, 3, 4)
+		.setRequiredLevel(4)
+		.addSells(1, 1, ModItems.LIGHTNING_PARTICLE.get(), 1, 1, 4)
+		.addSells(1, 1, ModItems.EXP_BERRY.get(), 2, 2, 4)
+		.addSells(1, 1, ModItems.RANDOMBERRY.get(), 2, 2, 4)
+		.addSells(1, 1, ModItems.CUREBERRY.get(), 2, 2, 4)
+		.setRequiredLevel(5)
+		.addSells(3, 5, byKey("twilightforest:charm_of_keeping_1"), 1, 1, 2)
+		
+		.pop().push("dwmg:hmag_necrotic_reaper")
+		.linkListings(COMMON_UNDEAD)
+		.setRequiredLevel(3)
+		.addSells(1, 1, ModItems.NECROFIBER.get(), 2, 2, 2)
+		.addSells(1, 1, ModItems.LICH_CLOTH.get(), 2, 2, 2)
+		.setRequiredLevel(4)
+		.addSells(1, 1, ModItems.DYSSOMNIA_SKIN.get(), 2, 2, 2)
+		
+		
+		;
 		} catch(Throwable t) {
 			t.printStackTrace();
 			throw t;
