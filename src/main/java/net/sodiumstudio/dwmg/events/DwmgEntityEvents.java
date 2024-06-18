@@ -603,7 +603,7 @@ public class DwmgEntityEvents
 				mob.getCapability(DwmgCapabilities.CAP_UNDEAD_MOB).ifPresent(cap -> 
 				{
 					cap.updateForgivingTimers();
-					if (mob.getTarget().hasEffect(DwmgEffects.UNDEAD_AFFINITY.get()) && !cap.getHatred().contains(mob.getTarget().getUUID()))
+					if (mob.getTarget() != null && mob.getTarget().hasEffect(DwmgEffects.UNDEAD_AFFINITY.get()) && !cap.getHatred().contains(mob.getTarget().getUUID()))
 						mob.setTarget(null);
 				});
 				
