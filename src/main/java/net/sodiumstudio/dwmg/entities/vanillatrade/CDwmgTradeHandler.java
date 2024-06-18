@@ -168,7 +168,11 @@ public interface CDwmgTradeHandler extends CVanillaMerchant
 				this.getBM().getFavorabilityHandler().addFavorability(meta.requiredMerchantLevel * 0.1f);
 			if (offer.getResult().is(DwmgItems.TRADE_INTRODUCTION_LETTER.get()))
 				tradePoints = 0;
-			else tradePoints += meta.requiredMerchantLevel;
+			else 
+			{
+				tradePoints += meta.requiredMerchantLevel;
+				this.getBM().getLevelHandler().addExp((1 + meta.requiredMerchantLevel) * meta.requiredMerchantLevel / 2 );
+			}
 		}
 
 		
