@@ -3,11 +3,12 @@ package net.sodiumstudio.dwmg.registries;
 import com.github.mechalopa.hmag.registry.ModItems;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.nautils.NaUtils;
 import net.sodiumstudio.nautils.entity.vanillatrade.VanillaTradeRegistry;
 
 public class DwmgTrades
@@ -144,6 +145,7 @@ public class DwmgTrades
 		.addSells(1, 1, ModItems.CUREBERRY.get(), 2, 2, 4)
 		.setRequiredLevel(5)
 		.addSells(3, 5, byKey("twilightforest:charm_of_keeping_1"), 1, 1, 2)
+		.addSellsEnchantmentBook(4, 6, Enchantments.BLAST_PROTECTION, 4, 2)
 		
 		.pop().push("dwmg:hmag_necrotic_reaper")
 		.linkListings(COMMON_UNDEAD)
@@ -152,8 +154,21 @@ public class DwmgTrades
 		.addSells(1, 1, ModItems.LICH_CLOTH.get(), 2, 2, 2)
 		.setRequiredLevel(4)
 		.addSells(1, 1, ModItems.DYSSOMNIA_SKIN.get(), 2, 2, 2)
+		.setRequiredLevel(5)
+		.addSellsEnchantmentBook(4, 6, Enchantments.SHARPNESS, 5, 2)
+		
+		.pop().push("dwmg:hmag_banshee")
+		.linkListings(COMMON_UNDEAD)
+		.setRequiredLevel(3)
+		
 		;
 
+		
+		if (NaUtils.getServer() != null)
+		{
+			
+		}
+		
 		} catch(Throwable t) {
 			t.printStackTrace();
 			throw t;
