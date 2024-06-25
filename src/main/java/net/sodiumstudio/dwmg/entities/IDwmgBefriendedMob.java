@@ -3,6 +3,7 @@ package net.sodiumstudio.dwmg.entities;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
@@ -13,7 +14,6 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -23,7 +23,6 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.network.PacketDistributor;
-import net.sodiumstudio.befriendmobs.entity.befriended.CBefriendedMobData;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.entity.capability.wrapper.IAttributeMonitor;
@@ -90,6 +89,17 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 		else return false;
 	}
 	
+	/**
+	 * Check if a mob has a Dwmg BM interface and satisfied the given condition.
+	 * <p>
+	 * As IBefriendedMob could also be implemented in capabilities instead of the mob class in the future,
+	 * always use this instead of {@code instanceof} check and followed checks of the cast BM.
+	 */
+	public static boolean isBMAnd(Object o, Predicate<IDwmgBefriendedMob> cond)
+	{
+		if (!isBM(o)) return false;
+		return cond.test(getBM(o));
+	}
 	
 	@DontOverride
 	public default CFavorabilityHandler getFavorabilityHandler()
