@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCondition;
-import net.sodiumstudio.befriendmobs.subsystems.baublesystem.ModifyBaubleEquippableMobsEvent;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.RegisterBaubleEquippableMobsEvent;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.RegisterBaublesEvent;
 import net.sodiumstudio.dwmg.Dwmg;
@@ -20,9 +19,27 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagCrimsonSlaughtererEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagCursedDollEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagDodomekiEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagDrownedGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagDullahanEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagEnderExecutorEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagGhastlySeekerEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagGlaryadEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagHarpyEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagHornetEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagHuskGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagImpEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagJackFrostEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagJiangshiEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagKoboldEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagMeltyMonsterEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagNecroticReaperEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagNightwalkerEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagRedcapEntity;
 import net.sodiumstudio.dwmg.entities.hmag.HmagSkeletonGirlEntity;
-import net.sodiumstudio.dwmg.entities.hmag.*;
+import net.sodiumstudio.dwmg.entities.hmag.HmagSlimeGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagSnowCanineEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagStrayGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagWitherSkeletonGirlEntity;
+import net.sodiumstudio.dwmg.entities.hmag.HmagZombieGirlEntity;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.EnderManHandBlockBaubleBehavior;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.InsomniaFruitBaubleBehavior;
@@ -48,7 +65,7 @@ public class DwmgBaubleRegistrations
 		event.register(DwmgItems.POISONOUS_THORN.get());
 	}
 	
-	private static Function<Mob, ItemStack> accessMobAdditionalInventory(int position)
+	public static Function<Mob, ItemStack> accessMobAdditionalInventory(int position)
 	{
 		return mob -> {
 			if (mob instanceof IBefriendedMob bm)
