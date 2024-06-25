@@ -4,10 +4,8 @@ import java.util.List;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.level.SleepFinishedTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,12 +28,10 @@ public class DwmgLevelEvents
 				List<Entity> entities = level.getEntities(player, bound);
 				for (Entity entity: entities)
 				{
-					if (entity instanceof IDwmgBefriendedMob bm
-							&& bm.getModId().equals(Dwmg.MOD_ID)
-							&& bm.getOwnerUUID().equals(player.getUUID())
+					if (IDwmgBefriendedMob.isBMAnd(entity, bm -> bm.getOwnerUUID().equals(player.getUUID()))
 							&& entity.distanceToSqr(player) < 64f)
 					{
-						bm.getFavorabilityHandler().addFavorability(2f);
+						IDwmgBefriendedMob.getBM(entity).getFavorabilityHandler().addFavorability(2f);
 					}
 				}
 			}

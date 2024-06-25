@@ -22,8 +22,6 @@ import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -52,7 +50,6 @@ import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
@@ -66,7 +63,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
@@ -106,7 +102,6 @@ import net.sodiumstudio.dwmg.entities.ai.goals.BefriendablePickItemGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.BefriendableWatchHandItemGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.GhastlySeekerRandomFlyGoalDwmgAdjusted;
 import net.sodiumstudio.dwmg.entities.ai.goals.JiangshiMutableLeapGoal;
-import net.sodiumstudio.dwmg.entities.capabilities.CUndeadMobImpl;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerItemDropping;
 import net.sodiumstudio.dwmg.entities.handlers.hmag.HandlerJiangshi;
 import net.sodiumstudio.dwmg.entities.hmag.HmagCreeperGirlEntity;
@@ -137,19 +132,15 @@ import net.sodiumstudio.nautils.EntityHelper;
 import net.sodiumstudio.nautils.InfoHelper;
 import net.sodiumstudio.nautils.NaMiscUtils;
 import net.sodiumstudio.nautils.NaParticleUtils;
-import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.NaReflectionUtils;
-import net.sodiumstudio.nautils.TagHelper;
+import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.Wrapped;
 import net.sodiumstudio.nautils.block.ColoredBlocks;
 import net.sodiumstudio.nautils.events.ItemEntityHurtEvent;
 import net.sodiumstudio.nautils.events.LivingEntitySweepHurtEvent;
-import net.sodiumstudio.nautils.events.MobSunBurnTickEvent;
-import net.sodiumstudio.nautils.events.NonLivingEntityHurtEvent;
 import net.sodiumstudio.nautils.events.ThrownTridentSetBaseDamageEvent;
 
-import com.github.mechalopa.hmag.registry.*;
-
+@SuppressWarnings("removal")
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgEntityEvents
 {
@@ -194,8 +185,7 @@ public class DwmgEntityEvents
 	        // Befriendable mobs don't attack their befriended variation
 	        if (BefriendingTypeRegistry.contains(mob) 
 	        		&& BefriendingTypeRegistry.getConvertTo(mob) == target.getType()
-	        		&& target instanceof IBefriendedMob bef
-	        		&& bef.getModId().equals(Dwmg.MOD_ID))
+	        		&& IDwmgBefriendedMob.isBM(target))
 	        {
 				event.setCanceled(true);
 	        }
@@ -420,24 +410,24 @@ public class DwmgEntityEvents
 
 			/** Durability */
 			// Weapon durability
-			if (event.getSource().getEntity() != null 
-					&& event.getSource().getEntity() instanceof IDwmgBefriendedMob bm 
-					&& bm.getModId().equals(Dwmg.MOD_ID))
+			if (event.getSource().getEntity() != null)
 			{
-				if (!bm.asMob().getMainHandItem().isEmpty() && bm.asMob().getMainHandItem().getItem() instanceof DiggerItem dg)
-				{
-					bm.asMob().getMainHandItem().hurtAndBreak(2, bm.asMob(), (mob) ->
+				IDwmgBefriendedMob.ifBM(event.getSource().getEntity(), bm -> {
+					if (!bm.asMob().getMainHandItem().isEmpty() && bm.asMob().getMainHandItem().getItem() instanceof DiggerItem dg)
 					{
-						mob.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-					});			
-				}
-				if (!bm.asMob().getMainHandItem().isEmpty() && bm.asMob().getMainHandItem().getItem() instanceof SwordItem sw)
-				{
-					bm.asMob().getMainHandItem().hurtAndBreak(1, bm.asMob(), (mob) ->
+						bm.asMob().getMainHandItem().hurtAndBreak(2, bm.asMob(), (mob) ->
+						{
+							mob.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+						});			
+					}
+					if (!bm.asMob().getMainHandItem().isEmpty() && bm.asMob().getMainHandItem().getItem() instanceof SwordItem sw)
 					{
-						mob.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-					});
-				}
+						bm.asMob().getMainHandItem().hurtAndBreak(1, bm.asMob(), (mob) ->
+						{
+							mob.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+						});
+					}
+				});
 			}
 			// Armor durability
 			if (event.getEntity() instanceof IDwmgBefriendedMob bm
@@ -705,7 +695,7 @@ public class DwmgEntityEvents
 	@SubscribeEvent
 	public static void onBefriendedSwitchAiState(BefriendedChangeAiStateEvent event)
 	{
-		if (event.getMob().getModId().equals(Dwmg.MOD_ID) && !event.getMob().asMob().level().isClientSide)
+		if (IDwmgBefriendedMob.isBM(event.getMob()) && !event.getMob().asMob().level().isClientSide)
 		{
 			NaMiscUtils.printToScreen(InfoHelper.createText("")
 					.append(event.getMob().asMob().getName())
@@ -912,12 +902,10 @@ public class DwmgEntityEvents
 					bm.getFavorabilityHandler().addFavorability(event.getAmount() / 100f);
 				}
 				// If owner attacked friendly mob, lose favorability depending on damage; no lost if < 0.5
-				if (event.getEntity() instanceof IDwmgBefriendedMob bm 
-						&& bm.getModId().equals(Dwmg.MOD_ID)
-						&& event.getSource().getEntity() != null
+				if (event.getSource().getEntity() != null
 						&& event.getSource().getEntity() instanceof Player player
-						&& bm.getOwnerUUID().equals(player.getUUID())
-						&& !event.getSource().is(DamageTypes.FELL_OUT_OF_WORLD)
+						&& IDwmgBefriendedMob.isBMAnd(event.getEntity(), bm -> bm.getOwnerUUID().equals(player.getUUID()))
+						&& !event.getSource().equals(DamageSource.OUT_OF_WORLD)
 						&& !event.getSource().isCreativePlayer())
 				{
 					if (event.getAmount() >= 0.5f)
@@ -929,9 +917,9 @@ public class DwmgEntityEvents
 								loseValue = 10f;
 							cap.addFavorability(-loseValue);
 							if (loseValue < 1.0f)
-								NaParticleUtils.sendSmokeParticlesToEntityDefault(bm.asMob());
+								NaParticleUtils.sendSmokeParticlesToEntityDefault(event.getEntity());
 							else
-								NaParticleUtils.sendAngryParticlesToEntityDefault(bm.asMob());
+								NaParticleUtils.sendAngryParticlesToEntityDefault(event.getEntity());
 						});
 					}
 				}
