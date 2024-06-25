@@ -39,16 +39,16 @@ public class DwmgCapabilityAttachment {
 			{
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_undead"), new CUndeadMobProvider());
 			}
-			if (living instanceof IBefriendedMob bm && bm.getModId().equals(Dwmg.MOD_ID))
+			IDwmgBefriendedMob bm;
+			if ((bm = IDwmgBefriendedMob.getBM(living)) != null)
 			{
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_favorability"), new CFavorabilityHandler.Prvd(bm.asMob()));
 				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_level"), new CLevelHandler.Prvd(bm.asMob()));
-			}
-			if (living instanceof IDwmgBefriendedMob bm 
-					&& DwmgTrades.TRADES.hasListings(bm.asMob().getType(), VillagerProfession.NONE))
-			{
-				event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_trade"), 
-						new CDwmgTradeHandler.Prvd(bm, DwmgCapabilities.CAP_TRADE_HANDLER));
+				if (DwmgTrades.TRADES.hasListings(bm.asMob().getType(), VillagerProfession.NONE))
+				{
+					event.addCapability(new ResourceLocation(Dwmg.MOD_ID, "cap_trade"), 
+							new CDwmgTradeHandler.Prvd(bm, DwmgCapabilities.CAP_TRADE_HANDLER));
+				}
 			}
 		}
 	}
@@ -56,7 +56,7 @@ public class DwmgCapabilityAttachment {
 	@SubscribeEvent
 	public static void setupAttributeMonitor(CAttributeMonitor.SetupEvent event)
 	{
-		if (event.living instanceof IBefriendedMob b && b.getModId().equals(Dwmg.MOD_ID))
+		if (IDwmgBefriendedMob.isBM(event.living))
 		{
 			event.monitor.listen(Attributes.MAX_HEALTH);
 		}
