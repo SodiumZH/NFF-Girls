@@ -1,6 +1,5 @@
 package net.sodiumstudio.dwmg.registries;
 
-
 import java.util.function.Function;
 
 import net.minecraft.resources.ResourceLocation;
@@ -399,7 +398,7 @@ public class DwmgEntityTypes {
 	
 	// ========== Utilities ============ //
 	
-	public static <T extends LivingEntity> RegistryObject<EntityType<T>> registerBM(DeferredRegister<EntityType<?>> registry, String modId, String regName, 
+	protected static <T extends LivingEntity> RegistryObject<EntityType<T>> registerBM(DeferredRegister<EntityType<?>> registry, String modId, String regName, 
 			EntityType.EntityFactory<T> creator, MobCategory category, Function<EntityType.Builder<T>, EntityType.Builder<T>> builderModifier)
 	{
 		return registry.register(regName, () -> builderModifier.apply(EntityType.Builder
