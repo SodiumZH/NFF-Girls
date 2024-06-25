@@ -1,6 +1,9 @@
 package net.sodiumstudio.nautils.entity.vanillatrade;
 
-import java.util.Random;
+import java.util.List;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 
 /**
  * A {@code TradeCountRange} is an integer range for generating
@@ -37,7 +40,9 @@ public class TradeCountRange
 	 */
 	public static TradeCountRange fixed(int value)
 	{
+		if (value < 0) throw new IllegalArgumentException();
 		var res = new TradeCountRange(value, value, 0.5d, RandomizationType.FIXED_VALUE);
+		res.lastValue = value;
 		res.lastValueValid = true;
 		return res;
 	}
@@ -47,7 +52,8 @@ public class TradeCountRange
 	 */
 	public static TradeCountRange poisson(int min, int max, double p)
 	{
-		if (min > max) throw new IllegalArgumentException();
+		if (min > max || p < 0 || p > 1) throw new IllegalArgumentException();
+		if (min == max) return fixed(min);
 		return new TradeCountRange(min, max, p, RandomizationType.POISSON);
 	}
 	
@@ -65,6 +71,7 @@ public class TradeCountRange
 	public static TradeCountRange uniform(int min, int max)
 	{
 		if (min > max) throw new IllegalArgumentException();
+		if (min == max) return fixed(min);
 		return new TradeCountRange(min, max, 0.5, RandomizationType.UNIFORM);
 	}
 
@@ -167,4 +174,40 @@ public class TradeCountRange
 			return name;
 		}
 	}
+	
+	// Using value list: 1 element = fixed, 2 elements = uniform, 3 elements = Poisson (the 3rd value is Poisson factor p).
+	public static final Codec<TradeCountRange> CODEC = Codec.DOUBLE.listOf().comapFlatMap(inst ->
+	{
+		try
+		{
+			switch (inst.size())
+			{
+			case 1:
+				return DataResult.success(TradeCountRange.fixed((int) Math.round(inst.get(0))));
+			case 2:
+				return DataResult
+						.success(TradeCountRange.uniform((int) Math.round(inst.get(0)), (int) Math.round(inst.get(1))));
+			case 3:
+				return DataResult.success(TradeCountRange.poisson((int) Math.round(inst.get(0)),
+						(int) Math.round(inst.get(1)), inst.get(2)));
+			default:
+				return DataResult.error("TradeCountRange: invalid length. Size 1 = fixed, 2 = uniform, 3 = poisson.");
+			}
+		} catch (IllegalArgumentException e)
+		{
+			return DataResult.error("TradeCountRange: invalid value.");
+		}
+	}, inst ->
+	{
+		switch (inst.rndType)
+		{
+		case FIXED_VALUE:
+			return List.of((double) inst.minValue);
+		case UNIFORM:
+			return List.of((double) inst.minValue, (double) inst.maxValue);
+		case POISSON:
+			return List.of((double) inst.minValue, (double) inst.maxValue, inst.p);
+		}
+		throw new RuntimeException();
+	});
 }
