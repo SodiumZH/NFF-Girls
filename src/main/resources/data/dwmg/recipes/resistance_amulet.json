@@ -3,9 +3,9 @@
 	
 	"pattern": 
 	[ 
-	"RNR",
+	"ROR",
 	"DSD",
-	"RNR"	
+	"ROR"	
 	],
 	
 	"key":{ 
@@ -14,8 +14,8 @@
 		"item": "hmag:reinforcing_chain"
 		},
 		
-		"N":{
-		"tag": "forge:ingots/netherite"
+		"O":{
+		"item": "minecraft:obsidian"
 		},
 		
 		"D":{ 
@@ -23,7 +23,7 @@
 		},
 		
 		"S":{ 
-		"item": "minecraft:nether_star"
+		"item": "hmag:burning_core"
 		}
 		
 	},
