@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.events.ServerEntityTickEvent;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerInstance;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerItem;
-import net.sodiumstudio.befriendmobs.item.capability.CItemStackMonitor;
 import net.sodiumstudio.befriendmobs.item.event.MobRespawnerStartRespawnEvent;
 import net.sodiumstudio.befriendmobs.item.event.RespawnerConstructEvent;
 import net.sodiumstudio.dwmg.Dwmg;
@@ -22,7 +21,7 @@ import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.item.IWithDuration;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.nautils.NbtHelper;
-import net.sodiumstudio.nautils.events.ItemEntityHurtEvent;
+import net.sodiumstudio.nautils.events.entity.ItemEntityHurtEvent;
 
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
