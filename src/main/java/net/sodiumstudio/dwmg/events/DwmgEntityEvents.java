@@ -119,9 +119,11 @@ import net.sodiumstudio.nautils.NaParticleUtils;
 import net.sodiumstudio.nautils.NaReflectionUtils;
 import net.sodiumstudio.nautils.NbtHelper;
 import net.sodiumstudio.nautils.Wrapped;
-import net.sodiumstudio.nautils.events.ItemEntityHurtEvent;
-import net.sodiumstudio.nautils.events.LivingEntitySweepHurtEvent;
-import net.sodiumstudio.nautils.events.ThrownTridentSetBaseDamageEvent;
+import net.sodiumstudio.nautils.block.ColoredBlocks;
+import net.sodiumstudio.nautils.events.entity.ItemEntityHurtEvent;
+import net.sodiumstudio.nautils.events.entity.LivingEntitySweepHurtEvent;
+import net.sodiumstudio.nautils.events.entity.MobPickUpItemEvent;
+import net.sodiumstudio.nautils.events.entity.ThrownTridentSetBaseDamageEvent;
 
 @SuppressWarnings("removal")
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -1220,4 +1222,10 @@ public class DwmgEntityEvents
 		}
 	}
 	
+	@SubscribeEvent
+	public static void onMobPickUpItem(MobPickUpItemEvent event)
+	{
+		if (IDwmgBefriendedMob.isBM(event.getEntity()))
+			event.setCanceled(true);
+	}
 }
