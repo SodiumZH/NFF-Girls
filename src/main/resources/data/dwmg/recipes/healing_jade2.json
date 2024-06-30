@@ -4,7 +4,7 @@
 	"pattern": 
 	[ 
 	"EC ",
-	"PEE"	
+	"PEE"
 	],
 	
 	"key":{ 
@@ -14,9 +14,9 @@
 		},
 		
 		"C":{ 
-		"item": "hmag:cubic_nucleus"
+		"item": "hmag:mysterious_petal"
 		},
-
+		
 		"P":{ 
 		"item": "hmag:purification_cloth"
 		}

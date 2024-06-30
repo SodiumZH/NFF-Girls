@@ -3,7 +3,7 @@
 	
 	"pattern": 
 	[ 
-	"NHN",
+	"DHD",
 	"HSH",
 	"EHE"	
 	],
@@ -14,8 +14,8 @@
 		"item": "hmag:ogre_horn"
 		},
 		
-		"N":{
-		"tag": "forge:ingots/netherite"
+		"D":{
+		"tag": "forge:gems/diamond"
 		},
 		
 		"E":{ 
@@ -23,7 +23,7 @@
 		},
 		
 		"S":{ 
-		"item": "minecraft:nether_star"
+		"item": "hmag:lightning_particle"
 		}
 		
 	},

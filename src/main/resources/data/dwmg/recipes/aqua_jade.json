@@ -1,15 +1,26 @@
 {
-  "type": "minecraft:smithing_transform",
-  "base": {
-    "item": "dwmg:healing_jade"
-  },
-  "addition": {
-    "item": "minecraft:conduit"
-  },
-  "result": {
-    "item": "dwmg:aqua_jade"
-  },
-  "template": {
-    "item": "hmag:evil_crystal_upgrade_smithing_template"
-  }
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"NNN",
+	"NJN",
+	"NNN"	
+	],
+	
+	"key":{ 
+	
+		"N":{
+		"item": "minecraft:nautilus_shell"
+		},
+		
+		"J":{ 
+		"item": "dwmg:healing_jade"
+		}		
+	},
+	
+	"result":{ 
+		"item": "dwmg:aqua_jade",
+		"count": 1
+	}
 }
