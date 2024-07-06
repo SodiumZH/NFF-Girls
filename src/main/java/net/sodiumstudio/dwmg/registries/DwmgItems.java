@@ -200,6 +200,19 @@ public class DwmgItems {
 			.description(baubleHPMax(15.0))
 			.description(baubleAtk(5.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
+	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET_III = ITEMS.register("soul_amulet_iii", () -> new SoulAmuletBaubleItem(
+			"dwmg:soul_amulet", 3, new Item.Properties().rarity(Rarity.RARE).tab(TAB))
+			.description(InfoHelper.createTranslatable("info.dwmg.bauble.soul_amulet").withStyle(ChatFormatting.GRAY))
+			.description(baubleHPMax(25.0))
+			.description(baubleAtk(8.0))
+			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
+	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET_IV = ITEMS.register("soul_amulet_iv", () -> new SoulAmuletBaubleItem(
+			"dwmg:soul_amulet", 4, new Item.Properties().rarity(Rarity.EPIC).tab(TAB)).alwaysFoil()
+			.description(InfoHelper.createTranslatable("info.dwmg.bauble.soul_amulet").withStyle(ChatFormatting.GRAY))
+			.description(baubleHPMax(40.0))
+			.description(baubleAtk(12.0))
+			.description(baubleHPRecovery(0.1))
+			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
 	public static final RegistryObject<CourageAmuletBaubleItem> COURAGE_AMULET = ITEMS.register("courage_amulet", () -> new CourageAmuletBaubleItem(
 			"dwmg:courage_amulet", 1, new Item.Properties().rarity(Rarity.UNCOMMON))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.proactive_attack").withStyle(ChatFormatting.GRAY))
@@ -234,9 +247,11 @@ public class DwmgItems {
 			.description(baubleHPRecovery(0.2))
 			.description(baubleHPMax(10.0)).cast());
 	public static final RegistryObject<AquaJadeBaubleItem> AQUA_JADE = ITEMS.register("aqua_jade", () -> new AquaJadeBaubleItem(
-			"dwmg:aqua_jade", 2, new Item.Properties().rarity(Rarity.RARE)).alwaysFoil()
+			"dwmg:aqua_jade", 1, new Item.Properties().rarity(Rarity.UNCOMMON).tab(TAB))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.aqua_jade").withStyle(ChatFormatting.GRAY))
-			.description(InfoHelper.createTranslatable("info.dwmg.bauble.speed_in_water", "4x").withStyle(ChatFormatting.GRAY)).cast());
+			.description(InfoHelper.createTranslatable("info.dwmg.bauble.in_water").withStyle(ChatFormatting.GRAY))
+			.description(InfoHelper.createTranslatable("info.dwmg.bauble.speed", "4x").withStyle(ChatFormatting.GRAY))
+			.description(baubleHPRecovery(0.25)).cast());
 	public static final RegistryObject<PoisonousThornBaubleItem> POISONOUS_THORN = ITEMS.register("poisonous_thorn", () -> new PoisonousThornBaubleItem(
 			"dwmg:poisonous_thorn", 1, new Item.Properties().rarity(Rarity.UNCOMMON))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.poisonous_thorn").withStyle(ChatFormatting.GRAY))

@@ -22,5 +22,8 @@ public class InventoryMenuNecroticReaper extends InventoryMenuHandItemsFourBaubl
 		return !(stack.getItem() instanceof TieredItem) || (stack.getItem() instanceof HoeItem);
 	}
 	
-	
+	protected boolean shouldOffHandAccept(ItemStack stack)
+	{
+		return !(stack.getItem() instanceof TieredItem) || (stack.getItem() instanceof HoeItem);
+	}
 }
