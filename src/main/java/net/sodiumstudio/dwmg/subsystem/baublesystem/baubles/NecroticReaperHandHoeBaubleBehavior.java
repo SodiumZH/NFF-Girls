@@ -13,13 +13,13 @@ import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCond
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
 import net.sodiumstudio.dwmg.entities.hmag.HmagNecroticReaperEntity;
 
-public class NecroticReaperMainHandHoeBaubleBehavior extends BaubleBehavior
+public class NecroticReaperHandHoeBaubleBehavior extends BaubleBehavior
 {
 
-	public NecroticReaperMainHandHoeBaubleBehavior(ResourceLocation key)
+	public NecroticReaperHandHoeBaubleBehavior(ResourceLocation key)
 	{
 		super((item, itemstack) -> (item instanceof HoeItem), key, BaubleEquippingCondition.of(
-				args -> args.user() instanceof HmagNecroticReaperEntity && args.slotKey().equals("main_hand")));
+				args -> args.user() instanceof HmagNecroticReaperEntity && (args.slotKey().equals("main_hand") || args.slotKey().equals("off_hand"))));
 	}
 
 	@Override

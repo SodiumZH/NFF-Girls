@@ -28,18 +28,24 @@ public class SoulAmuletBaubleItem extends DwmgDedicatedBaubleItem
 			return BaubleAttributeModifier.makeModifiers(
 					Attributes.MAX_HEALTH, 10d * DwmgConfigs.ValueCache.Baubles.BAUBLE_MAX_HP_BOOSTING_SCALE,
 					Attributes.ATTACK_DAMAGE, 3d * DwmgConfigs.ValueCache.Baubles.BAUBLE_ATK_BOOSTING_SCALE);
-			/*return new BaubleAttributeModifier[] {
-				new BaubleAttributeModifier(Attributes.MAX_HEALTH, 10d, AttributeModifier.Operation.ADDITION),
-				new BaubleAttributeModifier(Attributes.ATTACK_DAMAGE, 3d, AttributeModifier.Operation.ADDITION)};*/
 		}
 		case 2:
 		{
 			return BaubleAttributeModifier.makeModifiers(
 					Attributes.MAX_HEALTH, 15d * DwmgConfigs.ValueCache.Baubles.BAUBLE_MAX_HP_BOOSTING_SCALE,
 					Attributes.ATTACK_DAMAGE, 5d * DwmgConfigs.ValueCache.Baubles.BAUBLE_ATK_BOOSTING_SCALE);
-			/*return new BaubleAttributeModifier[] {
-				new BaubleAttributeModifier(Attributes.MAX_HEALTH, 15d, AttributeModifier.Operation.ADDITION),
-				new BaubleAttributeModifier(Attributes.ATTACK_DAMAGE, 5d, AttributeModifier.Operation.ADDITION)};*/
+		}
+		case 3:
+		{
+			return BaubleAttributeModifier.makeModifiers(
+					Attributes.MAX_HEALTH, 25d * DwmgConfigs.ValueCache.Baubles.BAUBLE_MAX_HP_BOOSTING_SCALE,
+					Attributes.ATTACK_DAMAGE, 8d * DwmgConfigs.ValueCache.Baubles.BAUBLE_ATK_BOOSTING_SCALE);
+		}
+		case 4:
+		{
+			return BaubleAttributeModifier.makeModifiers(
+					Attributes.MAX_HEALTH, 35d * DwmgConfigs.ValueCache.Baubles.BAUBLE_MAX_HP_BOOSTING_SCALE,
+					Attributes.ATTACK_DAMAGE, 12d * DwmgConfigs.ValueCache.Baubles.BAUBLE_ATK_BOOSTING_SCALE);
 		}
 		default:
 		{
@@ -69,6 +75,21 @@ public class SoulAmuletBaubleItem extends DwmgDedicatedBaubleItem
 
 	@Override
 	public void slotTick(BaubleProcessingArgs arg0) {
+		switch (this.tier)
+		{
+		case 1:
+		case 2:
+		case 3: break;
+		case 4:
+		{
+			arg0.user().heal(DwmgConfigs.ValueCache.Baubles.BAUBLE_HEALTH_RECOVERY_SCALE * 0.1f / 20f);
+			break;
+		}
+		default:
+		{
+			throw this.unsupportedTier();
+		}
+		}
 	}
 
 	@Override

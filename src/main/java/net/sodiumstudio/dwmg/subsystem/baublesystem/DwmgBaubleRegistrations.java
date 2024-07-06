@@ -43,7 +43,7 @@ import net.sodiumstudio.dwmg.entities.hmag.HmagZombieGirlEntity;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.EnderManHandBlockBaubleBehavior;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.InsomniaFruitBaubleBehavior;
-import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.NecroticReaperMainHandHoeBaubleBehavior;
+import net.sodiumstudio.dwmg.subsystem.baublesystem.baubles.NecroticReaperHandHoeBaubleBehavior;
 
 @EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgBaubleRegistrations
@@ -54,6 +54,8 @@ public class DwmgBaubleRegistrations
 	{
 		event.register(DwmgItems.SOUL_AMULET.get());
 		event.register(DwmgItems.SOUL_AMULET_II.get());
+		event.register(DwmgItems.SOUL_AMULET_III.get());
+		event.register(DwmgItems.SOUL_AMULET_IV.get());
 		event.register(DwmgItems.RESISTANCE_AMULET.get());
 		event.register(DwmgItems.RESISTANCE_AMULET_II.get());
 		event.register(DwmgItems.COURAGE_AMULET.get());
@@ -104,8 +106,8 @@ public class DwmgBaubleRegistrations
 		registerWithContinuousSlotSequence(event, HmagKoboldEntity.class, 2, 4);
 		registerWithContinuousSlotSequence(event, HmagMeltyMonsterEntity.class, 0, 4);
 		registerWithContinuousSlotSequence(event, HmagNecroticReaperEntity.class, 2, 6)
-			.addSpecialSlot("main_hand", accessMobAdditionalInventory(0)).addSpecialSlotItem("dwmg:necrotic_reaper_hoe");
-		//registerWithContinuousSlotSequence(event, HmagNightwalkerEntity.class, 0, 4);
+			.addSpecialSlot("main_hand", accessMobAdditionalInventory(0)).addSpecialSlotItem("dwmg:necrotic_reaper_hoe")
+			.addSpecialSlot("off_hand", accessMobAdditionalInventory(1)).addSpecialSlotItem("dwmg:necrotic_reaper_hoe");
 		registerWithContinuousSlotSequence(event, HmagRedcapEntity.class, 6, 7);
 		registerWithContinuousSlotSequence(event, HmagSlimeGirlEntity.class, 0, 4);
 		registerWithContinuousSlotSequence(event, HmagSnowCanineEntity.class, 0, 4);
@@ -117,6 +119,8 @@ public class DwmgBaubleRegistrations
 	{
 		event.register(DwmgItems.SOUL_AMULET.get());
 		event.register(DwmgItems.SOUL_AMULET_II.get());
+		event.register(DwmgItems.SOUL_AMULET_III.get());
+		event.register(DwmgItems.SOUL_AMULET_IV.get());
 		event.register(new InsomniaFruitBaubleBehavior(new ResourceLocation("dwmg:insomnia_fruit"), BaubleEquippingCondition.always()));
 		event.register(DwmgItems.RESISTANCE_AMULET.get());
 		event.register(DwmgItems.RESISTANCE_AMULET_II.get());
@@ -127,7 +131,7 @@ public class DwmgBaubleRegistrations
 		event.register(DwmgItems.LIFE_JADE_II.get());
 		event.register(DwmgItems.AQUA_JADE.get());
 		event.register(DwmgItems.POISONOUS_THORN.get());
-		event.register(new NecroticReaperMainHandHoeBaubleBehavior(new ResourceLocation("dwmg:necrotic_reaper_hoe")));
+		event.register(new NecroticReaperHandHoeBaubleBehavior(new ResourceLocation("dwmg:necrotic_reaper_hoe")));
 		event.register(new EnderManHandBlockBaubleBehavior(new ResourceLocation("dwmg:enderman_hand_block")));
 	}
 	/*

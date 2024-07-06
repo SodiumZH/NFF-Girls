@@ -7,6 +7,7 @@ import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleAttributeModi
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleEquippingCondition;
 import net.sodiumstudio.befriendmobs.subsystems.baublesystem.BaubleProcessingArgs;
 import net.sodiumstudio.dwmg.entities.hmag.HmagDrownedGirlEntity;
+import net.sodiumstudio.dwmg.registries.DwmgConfigs;
 import net.sodiumstudio.dwmg.subsystem.baublesystem.DwmgDedicatedBaubleItem;
 
 public class AquaJadeBaubleItem extends DwmgDedicatedBaubleItem
@@ -20,8 +21,8 @@ public class AquaJadeBaubleItem extends DwmgDedicatedBaubleItem
 
 	@Override
 	public void slotTick(BaubleProcessingArgs args) {
-		// TODO Auto-generated method stub
-
+		if (args.user().isInWater())
+			args.user().heal(DwmgConfigs.ValueCache.Baubles.BAUBLE_HEALTH_RECOVERY_SCALE * 0.25f / 20f);
 	}
 
 	@Override

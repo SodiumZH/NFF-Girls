@@ -3,27 +3,27 @@
 	
 	"pattern": 
 	[ 
-	"ISF",
-	"SCS",
-	"ISI"	
+	" PF",
+	"PCP",
+	"IP "	
 	],
 	
 	"key":{ 
 	
-		"I":{ 
-		"tag": "forge:nuggets/nether_star"
-		},
-		
-		"S":{ 
-		"item": "minecraft:netherite_scrap"
-		},
-		
 		"F":{ 
 		"item": "hmag:necrofiber"
 		},
 		
 		"C":{ 
-		"item": "dwmg:death_crystal"
+		"item": "minecraft:netherite_scrap"
+		},
+		
+		"P":{ 
+		"item": "dwmg:death_crystal_powder"
+		},
+		
+		"I":{ 
+		"item": "hmag:lightning_particle"
 		}
 		
 	},
