@@ -154,7 +154,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 		super.customServerAiStep();
 		// It may be applied > 100 times, so update per 0.5s to reduce cost
 		if (this.tickCount % 10 == 2)
-			ARMOR_MODIFIER.apply(this, Attributes.ARMOR, Math.min(200, this.getLevelHandler().getExpectedLevel()), true);
+			ARMOR_MODIFIER.apply(this, Attributes.ARMOR, Math.min(200, this.getLevelHandler().getExpectedLevel()));
 	}
 	
 	/* Interaction */

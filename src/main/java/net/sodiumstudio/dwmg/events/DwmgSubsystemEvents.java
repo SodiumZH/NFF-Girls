@@ -14,14 +14,17 @@ import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgConfigs;
+import net.sodiumstudio.nautils.entity.AttributeModifierSwitch;
 import net.sodiumstudio.nautils.entity.RepeatableAttributeModifier;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgSubsystemEvents
 {
 
+	@Deprecated
 	protected static final UUID FAV_ATK_MODIFIER_UUID = UUID.fromString("0e570979-9f96-4559-b31e-93500e69da07");
-
+	
+	
 	@SubscribeEvent
 	public static void onFavorabilityChangeValue(CFavorabilityHandler.ChangeValueEvent event)
 	{
@@ -79,7 +82,7 @@ public class DwmgSubsystemEvents
 	}
 	
 	/**
-	 * Update level once for each mob.
+	 * Update xplevel once for each mob.
 	 * @deprecated This is only for porting old {@code onLevelChange} implementation to
 	 * new {@code RepeatableAttributeModifier}-based impl.
 	 */

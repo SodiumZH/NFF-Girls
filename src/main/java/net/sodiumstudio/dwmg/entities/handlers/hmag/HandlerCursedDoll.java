@@ -6,6 +6,8 @@ import java.util.HashSet;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.mutable.MutableObject;
+
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Mob;
@@ -136,14 +138,14 @@ public class HandlerCursedDoll extends BefriendingHandler
 	public void serverTick(Mob mob)
 	{
 		super.serverTick(mob);
-		Wrapped<Integer> strengthLevel = new Wrapped<>(0);
+		MutableObject<Integer> strengthLevel = new MutableObject<>(0);
 		this.forAllPlayersInProcess(mob, player -> 
 		{
 			int i = woolCount(mob, player);
-			if (i > strengthLevel.get())
-				strengthLevel.set(i);
+			if (i > strengthLevel.getValue())
+				strengthLevel.setValue(i);
 		});
-		ATK_MOD.apply(mob, Attributes.ATTACK_DAMAGE, strengthLevel.get(), false);
+		ATK_MOD.apply(mob, Attributes.ATTACK_DAMAGE, strengthLevel.getValue());
 	}
 	
 	@Override
