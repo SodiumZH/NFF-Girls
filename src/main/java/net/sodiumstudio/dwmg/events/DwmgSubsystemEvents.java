@@ -14,14 +14,17 @@ import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgConfigs;
+import net.sodiumstudio.nautils.entity.AttributeModifierSwitch;
 import net.sodiumstudio.nautils.entity.RepeatableAttributeModifier;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgSubsystemEvents
 {
 
+	@Deprecated
 	protected static final UUID FAV_ATK_MODIFIER_UUID = UUID.fromString("0e570979-9f96-4559-b31e-93500e69da07");
-
+	
+	
 	@SubscribeEvent
 	public static void onFavorabilityChangeValue(CFavorabilityHandler.ChangeValueEvent event)
 	{
@@ -73,13 +76,13 @@ public class DwmgSubsystemEvents
 				lv : Math.min((int)Math.round(DwmgConfigs.ValueCache.Combat.MAX_ATK_BOOST_BY_LEVEL / DwmgConfigs.ValueCache.Combat.ATK_BOOST_PER_LEVEL), lv);
 		if (!event.mob.level.isClientSide && event.mob instanceof IDwmgBefriendedMob bm)
 		{
-			CLevelHandler.LVL_HP_MODIFIER.apply(event.mob, Attributes.MAX_HEALTH, hpLevel, true);
-			CLevelHandler.LVL_ATK_MODIFIER.apply(event.mob, Attributes.ATTACK_DAMAGE, atkLevel, true);
+			CLevelHandler.LVL_HP_MODIFIER.apply(event.mob, Attributes.MAX_HEALTH, hpLevel);
+			CLevelHandler.LVL_ATK_MODIFIER.apply(event.mob, Attributes.ATTACK_DAMAGE, atkLevel);
 		}
 	}
 	
 	/**
-	 * Update level once for each mob.
+	 * Update xplevel once for each mob.
 	 * @deprecated This is only for porting old {@code onLevelChange} implementation to
 	 * new {@code RepeatableAttributeModifier}-based impl.
 	 */
