@@ -157,9 +157,9 @@ public class DwmgTrades
 		.setRequiredLevel(5)
 		.addSellsEnchantmentBook(4, 6, Enchantments.SHARPNESS, 5, 2)
 		
-		.pop().push("dwmg:hmag_banshee")
+		/*.pop().push("dwmg:hmag_banshee")
 		.linkListings(COMMON_UNDEAD)
-		.setRequiredLevel(3)
+		.setRequiredLevel(3)*/
 		
 		;
 
