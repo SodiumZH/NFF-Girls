@@ -7,7 +7,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.trading.MerchantOffer;
 
 /**
- * A {@code VanillaTradeListingEnchanted} is a {@code VanillaTradeListingEnchanted} of which the result is enchanted. 
+ * A {@code VanillaTradeListingEnchanted} is a {@code VanillaTradeListing} of which the result is enchanted. 
  * The enchantment source can be either (Enchantment+level) or {@code RandomEnchantmentSelector}.
  */
 public class VanillaTradeListingEnchanted extends VanillaTradeListing
