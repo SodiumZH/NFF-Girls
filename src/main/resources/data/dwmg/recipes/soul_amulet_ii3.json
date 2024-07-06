@@ -4,7 +4,7 @@
     "item": "dwmg:soul_amulet"
   },
   "addition": {
-    "item": "minecraft:zombie_head"
+    "item": "minecraft:wither_skeleton_skull"
   },
   "result": {
     "item": "dwmg:soul_amulet_ii"

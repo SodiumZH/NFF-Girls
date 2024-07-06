@@ -27,6 +27,8 @@
   "item.dwmg.courage_amulet_ii": "勇气护符 II",
   "item.dwmg.soul_amulet": "灵魂护符",
   "item.dwmg.soul_amulet_ii": "灵魂护符 II",
+  "item.dwmg.soul_amulet_iii": "灵魂护符 III",
+  "item.dwmg.soul_amulet_iv": "灵魂护符 IV",
   "item.dwmg.resistance_amulet": "抵抗护符",
   "item.dwmg.resistance_amulet_ii": "抵抗护符 II",
   
@@ -109,7 +111,7 @@
   "info.dwmg.bauble.armor": "护甲 %1$s",
   "info.dwmg.bauble.speed": "移动速度 %1$s",
   "info.dwmg.bauble.healing_per_second": "每秒回复 %1$s 生命",
-  "info.dwmg.bauble.speed_in_water": "水中移动速度 %1$s",
+    "info.dwmg.bauble.in_water": "在水中时：",
   "info.dwmg.bauble.sun_immune": "不会在太阳下着火",
   "info.dwmg.bauble.proactive_attack": "主动攻击敌对生物",
   "info.dwmg.bauble.soul_amulet": "亡灵生物可装备",
