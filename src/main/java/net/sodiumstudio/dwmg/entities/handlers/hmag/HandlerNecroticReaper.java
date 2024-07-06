@@ -33,18 +33,18 @@ import net.sodiumstudio.dwmg.registries.DwmgItems;
 public class HandlerNecroticReaper extends BefriendingHandler
 {
 
-	protected UUID[] modifierUUIDs = {
+	protected static final UUID[] MODIFIER_UUIDS = {
 			UUID.fromString("86750cf1-7597-4a24-bcae-b3f95886428a"),
 			UUID.fromString("d0c6d0bc-3480-40c1-9d45-7fe0414d9eb0"),
 			UUID.fromString("dbc4f9a3-e79f-4634-ba1e-4173c394a86a"),
 			UUID.fromString("c0c5c069-860b-432a-81b0-42961fb47ab2"),
 			UUID.fromString("47d74e17-c1b8-4f59-bd03-8d7a539f20b6")};
-	protected AttributeModifier[] modifiers = {
-			new AttributeModifier(modifierUUIDs[0], "nr_atk_boost_1", 5d, AttributeModifier.Operation.ADDITION),
-			new AttributeModifier(modifierUUIDs[1], "nr_atk_boost_2", 10d, AttributeModifier.Operation.ADDITION),
-			new AttributeModifier(modifierUUIDs[2], "nr_atk_boost_3", 15d, AttributeModifier.Operation.ADDITION),
-			new AttributeModifier(modifierUUIDs[3], "nr_atk_boost_4", 20d, AttributeModifier.Operation.ADDITION),
-			new AttributeModifier(modifierUUIDs[4], "nr_atk_boost_5", 25d, AttributeModifier.Operation.ADDITION)};
+	protected static final AttributeModifier[] MODIFIERS = {
+			new AttributeModifier(MODIFIER_UUIDS[0], "nr_atk_boost_1", 5d, AttributeModifier.Operation.ADDITION),
+			new AttributeModifier(MODIFIER_UUIDS[1], "nr_atk_boost_2", 10d, AttributeModifier.Operation.ADDITION),
+			new AttributeModifier(MODIFIER_UUIDS[2], "nr_atk_boost_3", 15d, AttributeModifier.Operation.ADDITION),
+			new AttributeModifier(MODIFIER_UUIDS[3], "nr_atk_boost_4", 20d, AttributeModifier.Operation.ADDITION),
+			new AttributeModifier(MODIFIER_UUIDS[4], "nr_atk_boost_5", 25d, AttributeModifier.Operation.ADDITION)};
 		
 
 	/**
@@ -57,7 +57,6 @@ public class HandlerNecroticReaper extends BefriendingHandler
 		{
 			cap.getNbt().putInt("already_hits", 0);
 		}
-		//updateModifier(cap);
 	}	
 	
 	/**
@@ -74,13 +73,13 @@ public class HandlerNecroticReaper extends BefriendingHandler
 		{
 			if (i != expectedModifierIndex)
 			{
-				cap.getOwner().getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(modifiers[i]);
+				cap.getOwner().getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(MODIFIERS[i]);
 			}
 		}
 		// Add right modifier
-		if (expectedModifierIndex >= 0 && !cap.getOwner().getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(modifiers[expectedModifierIndex]))
+		if (expectedModifierIndex >= 0 && !cap.getOwner().getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(MODIFIERS[expectedModifierIndex]))
 		{
-			cap.getOwner().getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(modifiers[expectedModifierIndex]);
+			cap.getOwner().getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(MODIFIERS[expectedModifierIndex]);
 		}
 	}
 	
@@ -88,7 +87,7 @@ public class HandlerNecroticReaper extends BefriendingHandler
 	{
 		for (int i = 0; i < 5; ++i)
 		{
-			cap.getOwner().getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(modifiers[i]);
+			cap.getOwner().getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(MODIFIERS[i]);
 		}
 	}
 	
@@ -204,6 +203,9 @@ public class HandlerNecroticReaper extends BefriendingHandler
 	public void serverTick(Mob mob)
 	{
 		CBefriendableMob cap = CBefriendableMob.getCap(mob);
+		// TODO Add an init hook to remove this
+		if (mob.tickCount == 20)
+			updateModifier(cap);
 		boolean isAlwaysHostile = false;
 		if (	// Is in player process
 			cap.getNbt().contains("ongoing_player_uuid", NbtHelper.TAG_INT_ARRAY_ID)
