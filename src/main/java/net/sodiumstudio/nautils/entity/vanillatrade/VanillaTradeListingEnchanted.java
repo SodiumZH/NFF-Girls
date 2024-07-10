@@ -34,11 +34,11 @@ public class VanillaTradeListingEnchanted extends VanillaTradeListing
 	{
 		MerchantOffer offer = super.getOffer(trader, rnd);
 		if (this.enc != null)
-			offer.getCostB().enchant(enc.getA(), enc.getB());
+			offer.getResult().enchant(enc.getA(), enc.getB());
 		else
 		{
 			Tuple<Enchantment, Integer> e = sel.getValue();
-			offer.getCostB().enchant(e.getA(), e.getB());
+			offer.getResult().enchant(e.getA(), e.getB());
 		}
 		return offer;
 	}
