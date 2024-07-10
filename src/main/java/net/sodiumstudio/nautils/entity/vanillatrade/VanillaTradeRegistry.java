@@ -354,7 +354,7 @@ public class VanillaTradeRegistry extends AbstractVanillaTradeRegistry<VanillaTr
 		{
 			ItemStack book = Items.ENCHANTED_BOOK.getDefaultInstance();
 			VanillaTradeListing l = new VanillaTradeListingEnchanted(enc, lvl).setACountRange(priceMin, priceMax).setResultCountRange(1, 1)
-					.addA(this.getCurrency()).addResult(book).setMaxUses(maxUses);
+					.addA(this.getCurrency()).addB(Items.BOOK).addResult(book).setMaxUses(maxUses);
 			if (this.usesPoisson()) l.setAllPoisson(this.getPoissonFactor());
 			this.addListing(l);
 			return this;
