@@ -14,6 +14,20 @@ Config changes:
 
 ​		-`maxAtkIncreaseByLevel` => `maxAtkIncreaseByLevel`
 
+Bauble changes:
+
+​	-Added Soul Amulet III and IV.
+
+​	-Reduced the costs of baubles.
+
+​	-Modified the effect of Aqua Jade.
+
+​	-Now the off-hand of Necrostalker (previouly Necrotic Reaper) can equip hoes and increase ATK.
+
+Added trades for Creeper Girl and Necrostalker.
+
+Fixed Necrostalker unable to keep the attack-boosting effect after restarting the game during befriending process.
+
 Fixed Nightwalker armor increase by level-up not taking effect.
 
 
