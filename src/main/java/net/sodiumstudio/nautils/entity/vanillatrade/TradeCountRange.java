@@ -1,6 +1,7 @@
 package net.sodiumstudio.nautils.entity.vanillatrade;
 
 import java.util.List;
+import java.util.Random;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;

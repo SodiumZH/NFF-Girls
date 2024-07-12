@@ -54,6 +54,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
@@ -884,9 +885,9 @@ public class DwmgEntityEvents
 								loseValue = 10f;
 							cap.addFavorability(-loseValue);
 							if (loseValue < 1.0f)
-								NaParticleUtils.sendSmokeParticlesToEntityDefault(event.getEntity());
+								NaParticleUtils.sendSmokeParticlesToEntityDefault(event.getEntityLiving());
 							else
-								NaParticleUtils.sendAngryParticlesToEntityDefault(event.getEntity());
+								NaParticleUtils.sendAngryParticlesToEntityDefault(event.getEntityLiving());
 						});
 					}
 				}

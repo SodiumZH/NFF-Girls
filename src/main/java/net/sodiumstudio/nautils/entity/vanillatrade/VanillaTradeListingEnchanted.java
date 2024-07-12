@@ -1,6 +1,7 @@
 package net.sodiumstudio.nautils.entity.vanillatrade;
 
-import net.minecraft.util.RandomSource;
+import java.util.Random;
+
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -30,7 +31,7 @@ public class VanillaTradeListingEnchanted extends VanillaTradeListing
 	}
 	
 	@Override
-	public MerchantOffer getOffer(Entity trader, RandomSource rnd)
+	public MerchantOffer getOffer(Entity trader, Random rnd)
 	{
 		MerchantOffer offer = super.getOffer(trader, rnd);
 		if (this.enc != null)

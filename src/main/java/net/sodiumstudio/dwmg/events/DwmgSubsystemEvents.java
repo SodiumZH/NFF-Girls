@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.entity.capability.CHealingHandler;
@@ -88,7 +88,7 @@ public class DwmgSubsystemEvents
 	 */
 	@SubscribeEvent
 	@Deprecated
-	public static void onLivingTick_LEGACY(LivingTickEvent event)
+	public static void onLivingTick_LEGACY(LivingUpdateEvent event)
 	{
 		if (event.getEntity().tickCount == 20)
 		{
