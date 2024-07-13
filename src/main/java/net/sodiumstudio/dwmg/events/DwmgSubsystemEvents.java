@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sodiumstudio.befriendmobs.entity.capability.CHealingHandler;
@@ -14,8 +14,6 @@ import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
 import net.sodiumstudio.dwmg.registries.DwmgCapabilities;
 import net.sodiumstudio.dwmg.registries.DwmgConfigs;
-import net.sodiumstudio.nautils.entity.AttributeModifierSwitch;
-import net.sodiumstudio.nautils.entity.RepeatableAttributeModifier;
 
 @Mod.EventBusSubscriber(modid = Dwmg.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DwmgSubsystemEvents
@@ -74,7 +72,7 @@ public class DwmgSubsystemEvents
 				lv : Math.min((int)Math.round(DwmgConfigs.ValueCache.Combat.MAX_HEALTH_BOOST_BY_LEVEL / DwmgConfigs.ValueCache.Combat.HEALTH_BOOST_PER_LEVEL), lv);
 		int atkLevel = DwmgConfigs.ValueCache.Combat.MAX_ATK_BOOST_BY_LEVEL <= 0 ?
 				lv : Math.min((int)Math.round(DwmgConfigs.ValueCache.Combat.MAX_ATK_BOOST_BY_LEVEL / DwmgConfigs.ValueCache.Combat.ATK_BOOST_PER_LEVEL), lv);
-		if (!event.mob.level.isClientSide && event.mob instanceof IDwmgBefriendedMob bm)
+		if (!event.mob.level().isClientSide && event.mob instanceof IDwmgBefriendedMob bm)
 		{
 			CLevelHandler.LVL_HP_MODIFIER.apply(event.mob, Attributes.MAX_HEALTH, hpLevel);
 			CLevelHandler.LVL_ATK_MODIFIER.apply(event.mob, Attributes.ATTACK_DAMAGE, atkLevel);

@@ -23,6 +23,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -906,7 +907,7 @@ public class DwmgEntityEvents
 				if (event.getSource().getEntity() != null
 						&& event.getSource().getEntity() instanceof Player player
 						&& IDwmgBefriendedMob.isBMAnd(event.getEntity(), bm -> bm.getOwnerUUID().equals(player.getUUID()))
-						&& !event.getSource().equals(DamageSource.OUT_OF_WORLD)
+						&& !event.getSource().is(DamageTypes.FELL_OUT_OF_WORLD)
 						&& !event.getSource().isCreativePlayer())
 				{
 					if (event.getAmount() >= 0.5f)

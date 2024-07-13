@@ -193,13 +193,13 @@ public class TradeCountRange
 				return DataResult.success(TradeCountRange.poisson((int) Math.round(inst.get(0)),
 						(int) Math.round(inst.get(1)), inst.get(2)));
 			default:
-				return DataResult.error("TradeCountRange: invalid length. Size 1 = fixed, 2 = uniform, 3 = poisson.");
+				return DataResult.error(() -> "TradeCountRange: invalid length. Size 1 = fixed, 2 = uniform, 3 = poisson.");
 			}
 		} catch (IllegalArgumentException e)
 		{
-			return DataResult.error("TradeCountRange: invalid value.");
+			return DataResult.error(() -> "TradeCountRange: invalid value.");
 		}
-	}, inst ->
+	}, (TradeCountRange inst) ->
 	{
 		switch (inst.rndType)
 		{

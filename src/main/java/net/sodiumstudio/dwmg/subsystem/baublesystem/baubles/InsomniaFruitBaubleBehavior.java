@@ -45,9 +45,9 @@ public class InsomniaFruitBaubleBehavior extends BaubleBehavior
 	public BaubleAttributeModifier[] getNonDuplicatableModifiers(Mob mob) {
 		return new BaubleAttributeModifier[] {
 				new BaubleAttributeModifier(Attributes.ATTACK_DAMAGE, 8d * DwmgConfigs.ValueCache.Baubles.BAUBLE_ATK_BOOSTING_SCALE,
-						 AttributeModifier.Operation.ADDITION).setAdditionalCondition(args -> args.user().getLevel().isNight()),
+						 AttributeModifier.Operation.ADDITION).setAdditionalCondition(args -> args.user().level().isNight()),
 				new BaubleAttributeModifier(Attributes.MAX_HEALTH, 60d * DwmgConfigs.ValueCache.Baubles.BAUBLE_MAX_HP_BOOSTING_SCALE,
-						 AttributeModifier.Operation.ADDITION).setAdditionalCondition(args -> args.user().getLevel().isNight())
+						 AttributeModifier.Operation.ADDITION).setAdditionalCondition(args -> args.user().level().isNight())
 		};
 	}
 
