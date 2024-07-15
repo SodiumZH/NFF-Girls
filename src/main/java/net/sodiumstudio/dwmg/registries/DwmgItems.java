@@ -79,93 +79,43 @@ public class DwmgItems {
 	{
 		return registerItem(name, clazz, true, supplier);
 	}
-	
-	/**
-	 * Register an item using default constructor (with Item.Properties).
-	 * @param name Registry name.
-	 * @param properties Init properties.
-	 * @param clazz Item class.
-	 * @param tab If true, it will be added to the creative tab.
-	 * @return Registry object.
-	 */
-	@Deprecated
-	public static <T extends Item> RegistryObject<T> registerItem(String name, Item.Properties properties, Class<T> clazz, boolean tab)
-	{
-		var res = ITEMS.register(name, () ->
-		{
-			try
-			{
-				return clazz.getConstructor(Item.Properties.class).newInstance(properties);
 
-			} catch (Exception e)
-			{
-				e.printStackTrace();
-				return null;
-			}
-		});
-		if (!tab)
-			NO_TAB.add(res);
+	protected static <T extends Item> RegistryObject<T> register(String name, Supplier<T> itemSupplier)
+	{
+		return ITEMS.register(name, itemSupplier);
+	}
+	
+	protected static <T extends Item> RegistryObject<T> registerNoTab(String name, Supplier<T> itemSupplier)
+	{
+		RegistryObject<T> res = ITEMS.register(name, itemSupplier);
+		NO_TAB.add(res);
 		return res;
+	}
 
-	}
-	
-	/**
-	 * Register an item and add to the creative tab.
-	 * @param name Registry name.
-	 * @param properties Init properties.
-	 * @param clazz Item class.
-	 * @return Registry object.
-	 */
-	@Deprecated
-	public static <T extends Item> RegistryObject<T> registerItem(String name, Item.Properties properties, Class<T> clazz)
+	public static RegistryObject<Item> registerDefault(String name)
 	{
-		return registerItem(name, properties, clazz, true);
+		return register(name, () -> new Item(new Item.Properties()));
 	}
-	
-	/**
-	 * Register a default item and add to the creative tab.
-	 * @param name Registry name.
-	 * @param properties Init properties.
-	 * @return Registry object.
-	 */
-	@Deprecated
-	public static RegistryObject<Item> registerItem(String name, Item.Properties properties)
+
+	public static RegistryObject<Item> registerDefaultNoTab(String name)
 	{
-		return registerItem(name, properties, Item.class);
+		return registerNoTab(name, () -> new Item(new Item.Properties()));
 	}
-	
-	/**
-	 * Register a default item with default properties and add to the creative tab.
-	 * @param name Registry name.
-	 * @return Registry object.
-	 */
-	@Deprecated
-	public static RegistryObject<Item> registerItem(String name)
-	{
-		return registerItem(name, new Item.Properties());
-	}
-	
-	// Register basic item using default properties
-	@Deprecated
-	public static RegistryObject<Item> regItemDefault(String name)
-	{
-		return regItem(name, new Item.Properties());
-	}
-	
+		
 	/************************************/
 	/* Item Registering, with constants */ 
 	/************************************/	
 
 	// Crafting intermediates
-	public static final RegistryObject<Item> DEATH_CRYSTAL = registerItem("death_crystal", new Item.Properties().rarity(Rarity.UNCOMMON));
-	public static final RegistryObject<Item> DEATH_CRYSTAL_POWDER = registerItem("death_crystal_powder");
-	public static final RegistryObject<Item> SOUL_FLOUR = registerItem("soul_flour");
-	public static final RegistryObject<Item> SOUL_CLOTH = registerItem("soul_cloth");
-	public static final RegistryObject<Item> ENDER_FRUIT_JAM = registerItem("ender_fruit_jam", new Item.Properties().rarity(Rarity.RARE));
-	public static final RegistryObject<Item> EVIL_GEM = ITEMS.register("evil_gem", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> DEATH_CRYSTAL = register("death_crystal", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> DEATH_CRYSTAL_POWDER = registerDefault("death_crystal_powder");
+	public static final RegistryObject<Item> SOUL_FLOUR = registerDefault("soul_flour");
+	public static final RegistryObject<Item> SOUL_CLOTH = registerDefault("soul_cloth");
+	public static final RegistryObject<Item> ENDER_FRUIT_JAM = register("ender_fruit_jam", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> EVIL_GEM = registerDefault("evil_gem");
 
 	// Foods
-	public static final RegistryObject<Item> SOUL_CAKE_SLICE = registerItem("soul_cake_slice", new Item.Properties().food(DwmgFoodProperties.SOUL_CAKE_SLICE).rarity(Rarity.UNCOMMON));
+	public static final RegistryObject<Item> SOUL_CAKE_SLICE = register("soul_cake_slice", () -> new Item(new Item.Properties().food(DwmgFoodProperties.SOUL_CAKE_SLICE).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> ENDERBERRY = ITEMS.register("enderberry", () -> new ChorusFruitItem(new Item.Properties().food(DwmgFoodProperties.ENDERBERRY).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> ENDER_PIE = ITEMS.register("ender_pie", () -> new Item(new Item.Properties().food(DwmgFoodProperties.ENDER_PIE).rarity(Rarity.RARE)));
 
@@ -188,71 +138,71 @@ public class DwmgItems {
 				String.format("+%.1f", DwmgConfigs.ValueCache.Baubles.BAUBLE_ARMOR_BOOSTING_SCALE * rawValue)).withStyle(ChatFormatting.GRAY); 
 	}
 	// Registry
-	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET = ITEMS.register("soul_amulet", () -> new SoulAmuletBaubleItem(
+	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET = register("soul_amulet", () -> new SoulAmuletBaubleItem(
 			"dwmg:soul_amulet", 1, new Item.Properties().rarity(Rarity.UNCOMMON))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.soul_amulet").withStyle(ChatFormatting.GRAY))
 			.description(baubleHPMax(10.0))
 			.description(baubleAtk(3.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
-	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET_II = ITEMS.register("soul_amulet_ii", () -> new SoulAmuletBaubleItem(
+	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET_II = register("soul_amulet_ii", () -> new SoulAmuletBaubleItem(
 			"dwmg:soul_amulet", 2, new Item.Properties().rarity(Rarity.RARE)).alwaysFoil()
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.soul_amulet").withStyle(ChatFormatting.GRAY))
 			.description(baubleHPMax(15.0))
 			.description(baubleAtk(5.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
-	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET_III = ITEMS.register("soul_amulet_iii", () -> new SoulAmuletBaubleItem(
+	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET_III = register("soul_amulet_iii", () -> new SoulAmuletBaubleItem(
 			"dwmg:soul_amulet", 3, new Item.Properties().rarity(Rarity.RARE))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.soul_amulet").withStyle(ChatFormatting.GRAY))
 			.description(baubleHPMax(25.0))
 			.description(baubleAtk(8.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
-	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET_IV = ITEMS.register("soul_amulet_iv", () -> new SoulAmuletBaubleItem(
+	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET_IV = register("soul_amulet_iv", () -> new SoulAmuletBaubleItem(
 			"dwmg:soul_amulet", 4, new Item.Properties().rarity(Rarity.EPIC)).alwaysFoil()
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.soul_amulet").withStyle(ChatFormatting.GRAY))
 			.description(baubleHPMax(40.0))
 			.description(baubleAtk(12.0))
 			.description(baubleHPRecovery(0.1))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
-	public static final RegistryObject<CourageAmuletBaubleItem> COURAGE_AMULET = ITEMS.register("courage_amulet", () -> new CourageAmuletBaubleItem(
+	public static final RegistryObject<CourageAmuletBaubleItem> COURAGE_AMULET = register("courage_amulet", () -> new CourageAmuletBaubleItem(
 			"dwmg:courage_amulet", 1, new Item.Properties().rarity(Rarity.UNCOMMON))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.proactive_attack").withStyle(ChatFormatting.GRAY))
 			.description(baubleAtk(4.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.speed", "+20%").withStyle(ChatFormatting.GRAY)).cast());
-	public static final RegistryObject<CourageAmuletBaubleItem> COURAGE_AMULET_II = ITEMS.register("courage_amulet_ii", () -> new CourageAmuletBaubleItem(
+	public static final RegistryObject<CourageAmuletBaubleItem> COURAGE_AMULET_II = register("courage_amulet_ii", () -> new CourageAmuletBaubleItem(
 			"dwmg:courage_amulet", 2, new Item.Properties().rarity(Rarity.RARE)).alwaysFoil()
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.proactive_attack").withStyle(ChatFormatting.GRAY))
 			.description(baubleAtk(6.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.speed", "+30%").withStyle(ChatFormatting.GRAY)).cast());
-	public static final RegistryObject<ResistanceAmuletBaubleItem> RESISTANCE_AMULET = ITEMS.register("resistance_amulet", () -> new ResistanceAmuletBaubleItem(
+	public static final RegistryObject<ResistanceAmuletBaubleItem> RESISTANCE_AMULET = register("resistance_amulet", () -> new ResistanceAmuletBaubleItem(
 			"dwmg:resistance_amulet", 1, new Item.Properties().rarity(Rarity.UNCOMMON))
 			.description(baubleArmor(4.0))
 			.description(baubleHPMax(15.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.speed", "-10%").withStyle(ChatFormatting.GRAY))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
-	public static final RegistryObject<ResistanceAmuletBaubleItem> RESISTANCE_AMULET_II = ITEMS.register("resistance_amulet_ii", () -> new ResistanceAmuletBaubleItem(
+	public static final RegistryObject<ResistanceAmuletBaubleItem> RESISTANCE_AMULET_II = register("resistance_amulet_ii", () -> new ResistanceAmuletBaubleItem(
 			"dwmg:resistance_amulet", 2, new Item.Properties().rarity(Rarity.UNCOMMON)).alwaysFoil()
 			.description(baubleArmor(6.0))
 			.description(baubleHPMax(25.0))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.speed", "-10%").withStyle(ChatFormatting.GRAY))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.sun_immune").withStyle(ChatFormatting.GRAY)).cast());
-	public static final RegistryObject<HealingJadeBaubleItem> HEALING_JADE = ITEMS.register("healing_jade", () -> new HealingJadeBaubleItem(
+	public static final RegistryObject<HealingJadeBaubleItem> HEALING_JADE = register("healing_jade", () -> new HealingJadeBaubleItem(
 			"dwmg:healing_jade", 1, new Item.Properties().rarity(Rarity.UNCOMMON))
 			.description(baubleHPRecovery(0.1)).cast());
-	public static final RegistryObject<LifeJadeBaubleItem> LIFE_JADE = ITEMS.register("life_jade", () -> new LifeJadeBaubleItem(
+	public static final RegistryObject<LifeJadeBaubleItem> LIFE_JADE = register("life_jade", () -> new LifeJadeBaubleItem(
 			"dwmg:life_jade", 1, new Item.Properties().rarity(Rarity.UNCOMMON))
 			.description(baubleHPRecovery(0.15))
 			.description(baubleHPMax(5.0)).cast());
-	public static final RegistryObject<LifeJadeBaubleItem> LIFE_JADE_II = ITEMS.register("life_jade_ii", () -> new LifeJadeBaubleItem(
+	public static final RegistryObject<LifeJadeBaubleItem> LIFE_JADE_II = register("life_jade_ii", () -> new LifeJadeBaubleItem(
 			"dwmg:life_jade", 2, new Item.Properties().rarity(Rarity.RARE)).alwaysFoil()
 			.description(baubleHPRecovery(0.2))
 			.description(baubleHPMax(10.0)).cast());
-	public static final RegistryObject<AquaJadeBaubleItem> AQUA_JADE = ITEMS.register("aqua_jade", () -> new AquaJadeBaubleItem(
+	public static final RegistryObject<AquaJadeBaubleItem> AQUA_JADE = register("aqua_jade", () -> new AquaJadeBaubleItem(
 			"dwmg:aqua_jade", 1, new Item.Properties().rarity(Rarity.UNCOMMON))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.aqua_jade").withStyle(ChatFormatting.GRAY))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.in_water").withStyle(ChatFormatting.GRAY))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.speed", "4x").withStyle(ChatFormatting.GRAY))
 			.description(baubleHPRecovery(0.25)).cast());
-	public static final RegistryObject<PoisonousThornBaubleItem> POISONOUS_THORN = ITEMS.register("poisonous_thorn", () -> new PoisonousThornBaubleItem(
+	public static final RegistryObject<PoisonousThornBaubleItem> POISONOUS_THORN = register("poisonous_thorn", () -> new PoisonousThornBaubleItem(
 			"dwmg:poisonous_thorn", 1, new Item.Properties().rarity(Rarity.UNCOMMON))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.poisonous_thorn").withStyle(ChatFormatting.GRAY))
 			.description(InfoHelper.createTranslatable("info.dwmg.bauble.poisonous_thorn_1").withStyle(ChatFormatting.GRAY)).cast());
@@ -260,58 +210,46 @@ public class DwmgItems {
 
 	
 	// Equipment & tools
-	public static final RegistryObject<Item> NECROMANCER_HAT = ITEMS.register("necromancer_hat", () -> new ItemNecromancerArmor(
+	public static final RegistryObject<Item> NECROMANCER_HAT = register("necromancer_hat", () -> new ItemNecromancerArmor(
 			DwmgArmorMaterials.NECROMANCER,
 			EquipmentSlot.HEAD,
 			new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> SUNHAT = ITEMS.register("sunhat", () -> new ArmorItem(
+	public static final RegistryObject<Item> SUNHAT = register("sunhat", () -> new ArmorItem(
 			DwmgArmorMaterials.SUNHAT,
 			ArmorItem.Type.HELMET, 
 			new Item.Properties()));
-	public static final RegistryObject<Item> NETHERITE_FORK = ITEMS.register("netherite_fork", () -> new ModSwordItem(Tiers.NETHERITE, 2.0F, -2.4F, new Item.Properties().fireResistant()));
-	public static final RegistryObject<Item> NECROMANCER_WAND = ITEMS.register("necromancer_wand", () -> new ItemNecromancerWand(		new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1)));
-	public static final RegistryObject<Item> COMMANDING_WAND = ITEMS.register("commanding_wand", () -> new ItemCommandWand(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> NETHERITE_FORK = register("netherite_fork", () -> new ModSwordItem(Tiers.NETHERITE, 2.0F, -2.4F, new Item.Properties().fireResistant()));
+	public static final RegistryObject<Item> NECROMANCER_WAND = register("necromancer_wand", () -> new ItemNecromancerWand(		new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1)));
+	public static final RegistryObject<Item> COMMANDING_WAND = register("commanding_wand", () -> new ItemCommandWand(new Item.Properties().stacksTo(1)));
 	@Deprecated
-	public static final RegistryObject<Item> EVIL_MAGNET = ITEMS.register("evil_magnet", () -> new ItemEvilMagnet(new Item.Properties().stacksTo(1)));
-	public static final RegistryObject<SwordItem> PEACH_WOOD_SWORD = ITEMS.register("peach_wood_sword", () -> new PeachWoodSwordItem(Tiers.WOOD, 3, -2.4F, (new Item.Properties()).rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<ReinforcedFishingRodItem> REINFORCED_FISHING_ROD = ITEMS.register("reinforced_fishing_rod", () -> new ReinforcedFishingRodItem(new Item.Properties().durability(256)));
+	public static final RegistryObject<Item> EVIL_MAGNET = register("evil_magnet", () -> new ItemEvilMagnet(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<SwordItem> PEACH_WOOD_SWORD = register("peach_wood_sword", () -> new PeachWoodSwordItem(Tiers.WOOD, 3, -2.4F, (new Item.Properties()).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<ReinforcedFishingRodItem> REINFORCED_FISHING_ROD = register("reinforced_fishing_rod", () -> new ReinforcedFishingRodItem(new Item.Properties().durability(256)));
 	
 	// Utility items
-	public static final RegistryObject<TransferringTagItem> TRANSFERRING_TAG = ITEMS.register("transferring_tag", () -> new TransferringTagItem(new Item.Properties()));
-	public static final RegistryObject<EmptyMagicalGelBottleItem> EMPTY_MAGICAL_GEL_BOTTLE = ITEMS.register("empty_magical_gel_bottle", () -> new EmptyMagicalGelBottleItem(new Item.Properties()));
-	public static final RegistryObject<MagicalGelBallItem> MAGICAL_GEL_BALL = ITEMS.register("magical_gel_ball", () -> new MagicalGelBallItem(new Item.Properties()));
-	public static final RegistryObject<MagicalGelBottleItem> MAGICAL_GEL_BOTTLE = ITEMS.register("magical_gel_bottle", () -> new MagicalGelBottleItem(new Item.Properties()));
-	public static final RegistryObject<TaoistTalismanItem> TAOIST_TALISMAN = ITEMS.register("taoist_talisman", () -> new TaoistTalismanItem(new Item.Properties()));
-	public static final RegistryObject<TradeIntroductionLetterItem> TRADE_INTRODUCTION_LETTER = ITEMS.register("trade_introduction_letter",
+	public static final RegistryObject<TransferringTagItem> TRANSFERRING_TAG = register("transferring_tag", () -> new TransferringTagItem(new Item.Properties()));
+	public static final RegistryObject<EmptyMagicalGelBottleItem> EMPTY_MAGICAL_GEL_BOTTLE = register("empty_magical_gel_bottle", () -> new EmptyMagicalGelBottleItem(new Item.Properties()));
+	public static final RegistryObject<MagicalGelBallItem> MAGICAL_GEL_BALL = register("magical_gel_ball", () -> new MagicalGelBallItem(new Item.Properties()));
+	public static final RegistryObject<MagicalGelBottleItem> MAGICAL_GEL_BOTTLE = registerNoTab("magical_gel_bottle", () -> new MagicalGelBottleItem(new Item.Properties()));
+	public static final RegistryObject<TaoistTalismanItem> TAOIST_TALISMAN = register("taoist_talisman", () -> new TaoistTalismanItem(new Item.Properties()));
+	public static final RegistryObject<TradeIntroductionLetterItem> TRADE_INTRODUCTION_LETTER = register("trade_introduction_letter",
 			() -> new TradeIntroductionLetterItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
 	
 	// Misc
-	public static final RegistryObject<MobRespawnerItem> MOB_RESPAWNER = ITEMS.register("mob_respawner", () -> new DwmgRespawnerItem(new Item.Properties()).setRetainBefriendedMobInventory(false));
-	public static final RegistryObject<MobRespawnerItem> MOB_STORAGE_POD = ITEMS.register("mob_storage_pod", () -> new DwmgRespawnerItem(new Item.Properties()));
-	public static final RegistryObject<MobCatcherItem> EMPTY_MOB_STORAGE_POD = ITEMS.register("empty_mob_storage_pod", () -> new MobCatcherItem(new Item.Properties(), MOB_STORAGE_POD.get()).canCatchCondition(
+	public static final RegistryObject<MobRespawnerItem> MOB_RESPAWNER = registerNoTab("mob_respawner", () -> new DwmgRespawnerItem(new Item.Properties()).setRetainBefriendedMobInventory(false));
+	public static final RegistryObject<MobRespawnerItem> MOB_STORAGE_POD = registerNoTab("mob_storage_pod", () -> new DwmgRespawnerItem(new Item.Properties()));
+	public static final RegistryObject<MobCatcherItem> EMPTY_MOB_STORAGE_POD = register("empty_mob_storage_pod", () -> new MobCatcherItem(new Item.Properties(), MOB_STORAGE_POD.get()).canCatchCondition(
 			((m, p) -> (m instanceof IDwmgBefriendedMob bm && bm.getOwnerUUID().equals(p.getUUID())))));
 	
 	
 	// Technical
-	public static final RegistryObject<Item> TAB_ICON = ITEMS.register("tab_icon", () -> new Item(new Item.Properties()));
-	//public static final RegistryObject<Item> GIFT_UNKNOWN_ICON = ITEMS.register("gift_unknown_icon", () -> new Item(new Item.Properties()));
-	//public static final RegistryObject<Item> MOB_PROFILE_ICON = ITEMS.register("mob_profile_icon", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> TAB_ICON = registerDefaultNoTab("tab_icon");
 	
 	// Debug
 	public static final RegistryObject<BefriendingProgressProbeItem> BEFRIENDING_PROGRESS_PROBE = 
-			ITEMS.register("befriending_progress_probe", () -> new BefriendingProgressProbeItem(new Item.Properties().rarity(Rarity.EPIC)));
+			registerNoTab("befriending_progress_probe", () -> new BefriendingProgressProbeItem(new Item.Properties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<ExpModifierItem> EXP_MODIFIER = 
-			ITEMS.register("exp_modifier", () -> new ExpModifierItem(new Item.Properties().rarity(Rarity.EPIC)));
-	
-	static
-	{
-		NO_TAB.add(MOB_RESPAWNER);
-		NO_TAB.add(MOB_STORAGE_POD);
-		NO_TAB.add(TAB_ICON);
-		NO_TAB.add(BEFRIENDING_PROGRESS_PROBE);
-		NO_TAB.add(EXP_MODIFIER);
-		NO_TAB.add(MAGICAL_GEL_BOTTLE);
-    }
+			registerNoTab("exp_modifier", () -> new ExpModifierItem(new Item.Properties().rarity(Rarity.EPIC)));
 
 	/* Item register end */
 	
