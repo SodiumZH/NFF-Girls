@@ -96,7 +96,10 @@ minecraft {
             // You can set various levels here.
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
-
+            
+            property 'mixin.debug.export', 'true'
+			property 'mixin.debug.export.decompile', 'true'
+			
             mods {
                 "${mod_id}" {
                     source sourceSets.main
