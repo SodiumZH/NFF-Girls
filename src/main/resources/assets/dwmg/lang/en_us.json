@@ -51,7 +51,8 @@
   
   "item.dwmg.befriending_progress_probe": "Befriending Progress Probe (Debug)",
   "item.dwmg.exp_modifier": "EXP Modifier (Debug)",
-  
+  "item.dwmg.favorability_modifier": "Favorability Modifier (Debug)",
+    
   "block.dwmg.soul_cake" : "Soul Cake",
   "block.dwmg.soul_carpet" : "Soul Carpet",
   "block.dwmg.luminous_terracotta" : "Luminous Terracotta",
