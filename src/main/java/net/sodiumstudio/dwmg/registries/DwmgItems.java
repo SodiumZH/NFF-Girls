@@ -28,6 +28,7 @@ import net.sodiumstudio.dwmg.item.BefriendingProgressProbeItem;
 import net.sodiumstudio.dwmg.item.DwmgRespawnerItem;
 import net.sodiumstudio.dwmg.item.EmptyMagicalGelBottleItem;
 import net.sodiumstudio.dwmg.item.ExpModifierItem;
+import net.sodiumstudio.dwmg.item.FavorabilityModifierItem;
 import net.sodiumstudio.dwmg.item.ItemCommandWand;
 import net.sodiumstudio.dwmg.item.ItemEvilMagnet;
 import net.sodiumstudio.dwmg.item.ItemNecromancerArmor;
@@ -219,6 +220,8 @@ public class DwmgItems {
 			ITEMS.register("befriending_progress_probe", () -> new BefriendingProgressProbeItem(new Item.Properties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<ExpModifierItem> EXP_MODIFIER = 
 			ITEMS.register("exp_modifier", () -> new ExpModifierItem(new Item.Properties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<FavorabilityModifierItem> FAVORABILITY_MODIFIER =
+			ITEMS.register("favorability_modifier", () -> new FavorabilityModifierItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
 	
 	/* Item register end */
 	
