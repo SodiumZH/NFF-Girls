@@ -28,7 +28,7 @@ public class DwmgRespawnerItem extends MobRespawnerItem
 		if (stack.getTag() != null)
 		{
 			MobRespawnerInstance inst = MobRespawnerInstance.create(stack);
-			MutableComponent name = inst.getName();
+			MutableComponent name = (MutableComponent) inst.getName();
 			MutableComponent type = (MutableComponent) inst.getType().getDescription();
 			
 			if (name != null && type != null)

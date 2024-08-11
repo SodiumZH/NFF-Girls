@@ -41,30 +41,6 @@ import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
  */
 public class DwmgMobTemplate extends Monster implements IDwmgBefriendedMob {
 
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(DwmgMobTemplate.class/* CHANGE TO YOUR CLASS */, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(DwmgMobTemplate.class/* CHANGE TO YOUR CLASS */, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-
 	/* Initialization */
 
 	public DwmgMobTemplate(EntityType<? extends DwmgMobTemplate> pEntityType, Level pLevel) {
@@ -133,45 +109,16 @@ public class DwmgMobTemplate extends Monster implements IDwmgBefriendedMob {
 					return InteractionResult.sidedSuccess(player.level.isClientSide);
 				}
 			}
-		} 
+		}
 		// Always pass when not owning this mob
 		return InteractionResult.PASS;
 	}
 	
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	@Override
-	public int getInventorySize()
-	{
-		return 8;
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level.isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.getFromMob(this);
-		}
-		return;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventoryWithEquipment(8, this);
 	}
 
 	@Override
@@ -181,13 +128,6 @@ public class DwmgMobTemplate extends Monster implements IDwmgBefriendedMob {
 	}
 
 	/* Save and Load */
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		// Add other data to save here
-	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
