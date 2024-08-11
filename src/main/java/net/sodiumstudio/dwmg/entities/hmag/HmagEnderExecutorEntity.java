@@ -44,12 +44,14 @@ import net.sodiumstudio.befriendmobs.entity.vanillapreset.enderman.BefriendedEnd
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.dwmg.Dwmg;
+import net.sodiumstudio.dwmg.entities.ICarriesBlock;
 import net.sodiumstudio.dwmg.entities.IDwmgBefriendedMob;
 import net.sodiumstudio.dwmg.entities.ai.goals.DwmgBefriendedFollowOwnerGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtByTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgBefriendedOwnerHurtTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToOwnerTargetGoal;
 import net.sodiumstudio.dwmg.entities.ai.goals.target.DwmgNearestHostileToSelfTargetGoal;
+import net.sodiumstudio.dwmg.inventory.EnderExecutorInventory;
 import net.sodiumstudio.dwmg.inventory.InventoryMenuEnderExecutor;
 import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
@@ -57,7 +59,7 @@ import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 
 // Adjusted from EnderExcutor in HMaG
-public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implements IBeamAttackMob, IDwmgBefriendedMob
+public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implements IBeamAttackMob, IDwmgBefriendedMob, ICarriesBlock
 {
 
 	protected static final EntityDataAccessor<Integer> ATTACKING_TIME = SynchedEntityData.defineId(HmagEnderExecutorEntity.class, EntityDataSerializers.INT);
@@ -71,22 +73,15 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 		super.defineSynchedData();
 		entityData.define(ATTACKING_TIME, -20);
 		entityData.define(ATTACK_TARGET, 0);
-		this.entityData.set(DATA_AISTATE, 1);
 	}
 	
 	public HmagEnderExecutorEntity(EntityType<? extends HmagEnderExecutorEntity> type, Level worldIn)
 	{
 		super(type, worldIn);
 		this.xpReward = 0;
-		this.befriendedInventory = new BefriendedInventory(getInventorySize());
 		this.modId = Dwmg.MOD_ID;
 	}
-	
-	@Deprecated
-	public static Builder createAttributes() {
-		return EnderMan.createAttributes().add(Attributes.MAX_HEALTH, 120.0D).add(Attributes.MOVEMENT_SPEED, 0.3D).add(Attributes.ATTACK_DAMAGE, 8.0D).add(Attributes.ARMOR, 4.0D);
-	}
-	
+
 	@Override
 	protected void registerGoals() {
 	      this.goalSelector.addGoal(1, new FloatGoal(this));
@@ -155,12 +150,12 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	// Interaction end
 
 	// No armor, hand items(0, 1), holding block(2) and 2 baubles(3, 4)
-	@Override
-	public int getInventorySize()
-	{
-		return 5;
-	}
 
+	@Override
+	public BefriendedInventory createAdditionalInventory() {
+		return new EnderExecutorInventory(5, this);
+	}
+	/*
 	@Override
 	public void updateFromInventory() {
 		super.updateFromInventory();
@@ -190,6 +185,18 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 			else getAdditionalInventory().setItem(2, ItemStack.EMPTY);
 		}
 	}
+*/
+
+	@Override
+	public void setCarryingBlock(BlockState newBlock) {
+		this.setCarriedBlock(newBlock);
+		
+	}
+
+	@Override
+	public BlockState getCarryingBlock() {
+		return this.getCarriedBlock();
+	}
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container)
@@ -207,7 +214,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 		{
 			this.setCarriedBlock(bi.getBlock().defaultBlockState());
 		}
-		else throw new IllegalStateException("Ender Executor can only carry block items. Attempt to carry: " + getAdditionalInventory().getItem(2).getDisplayName());;
+		else this.setCarriedBlock(null);
 	}
 	
 	
@@ -496,13 +503,6 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	}
 	
 	// save&load
-
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		/* Add more save data... */
-	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
