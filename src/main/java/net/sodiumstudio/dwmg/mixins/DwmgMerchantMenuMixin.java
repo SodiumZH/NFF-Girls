@@ -34,7 +34,7 @@ public class DwmgMerchantMenuMixin implements NaUtilsMixin<MerchantMenu>
 			at = @At("HEAD"), cancellable = true)
 	private void handleCapability(CallbackInfo callback)
 	{
-		Merchant trader = NaReflectionUtils.forceGet(get(), MerchantMenu.class, "f_40027_").cast();		// MerchantMenu#trader
+		Merchant trader = NaReflectionUtils.forceGet(caller(), MerchantMenu.class, "f_40027_").cast();		// MerchantMenu#trader
 		if (trader instanceof CVanillaMerchant cap && !cap.isClientSide())
 		{
 			cap.playTradeSound();

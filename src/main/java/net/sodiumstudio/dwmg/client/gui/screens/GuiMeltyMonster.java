@@ -59,9 +59,9 @@ public class GuiMeltyMonster extends GuiPreset0 {
 	public void addAttributeInfo(GuiGraphics graphics, GuiPos position, int color, int textRowWidth)
 	{
 		this.addBasicAttributeInfo(graphics, position, color, textRowWidth);
-		position.addY(textRowWidth * 3);
+		position = position.addY(textRowWidth * 3);
 		this.addStaminaInfo(graphics, position, color, textRowWidth);
-		position.addY(textRowWidth);
+		position = position.addY(textRowWidth);
 		this.addFavorabilityAndLevelInfo(graphics, position, color, textRowWidth);
 	}
 	
