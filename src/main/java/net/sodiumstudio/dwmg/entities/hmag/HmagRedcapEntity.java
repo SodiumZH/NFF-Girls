@@ -50,28 +50,6 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 
 	/* Data sync */
 
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagRedcapEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagRedcapEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-
 	/* Initialization */
 
 	public HmagRedcapEntity(EntityType<? extends HmagRedcapEntity> pEntityType, Level pLevel) {
@@ -185,38 +163,9 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 	
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	@Override
-	public int getInventorySize()
-	{
-		return 7;	// 0 - helmet is invalid; 6 - bauble
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level().isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.getFromMob(this);
-		}
-		return;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventoryWithEquipment(7, this);
 	}
 
 	@Override
@@ -225,13 +174,6 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 	}
 
 	/* Save and Load */
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		// Add other data to save here
-	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
@@ -240,17 +182,7 @@ public class HmagRedcapEntity extends RedcapEntity implements IDwmgBefriendedMob
 		// Add other data reading here
 		setInit();
 	}
-/*
-	@Override
-	public HashMap<String, ItemStack> getBaubleSlots() {
-		return NaContainerUtils.mapOf(MapPair.of("0", getAdditionalInventory().getItem(6)));
-	}
 
-	@Override
-	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.GENERAL;
-	}
-	*/
 	// Sounds
 	
 	@Override

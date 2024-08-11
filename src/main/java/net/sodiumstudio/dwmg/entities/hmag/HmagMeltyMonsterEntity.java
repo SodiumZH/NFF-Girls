@@ -74,27 +74,6 @@ import net.sodiumstudio.nautils.math.RndUtil;
 
 public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgBefriendedMob, ILivingDelayedActions {
 
-	/*public static final ConditionalAttributeModifier MODIFIER_OWNER_SPEED_UP_IN_LAVA = 
-			new ConditionalAttributeModifier(ForgeMod.SWIM_SPEED.get(), 4d, AttributeModifier.Operation.MULTIPLY_BASE, living -> 
-			(
-				living instanceof Player player 
-				&& BefriendedHelper.getOwningMobsInArea(player, DwmgEntityTypes.HMAG_MELTY_MONSTER.get(), 16d, true).size() > 0
-				&& player.isInLava())
-			);
-	public static final ConditionalAttributeModifier MODIFIER_SELF_SPEED_UP_IN_LAVA = 
-			new ConditionalAttributeModifier(Attributes.MOVEMENT_SPEED, 0d, AttributeModifier.Operation.MULTIPLY_BASE, living -> 
-			(
-				living instanceof HmagMeltyMonsterEntity mm
-				&& BefriendedHelper.getOwnerInArea(mm, 16d, true).isPresent()
-				&& mm.isInLava()
-			));
-	public static final ConditionalAttributeModifier MODIFIER_SELF_SPEED_UP_ON_GROUND = 
-			new ConditionalAttributeModifier(Attributes.MOVEMENT_SPEED, 0d, AttributeModifier.Operation.MULTIPLY_BASE, living -> 
-			(
-				living instanceof HmagMeltyMonsterEntity mm
-				&& BefriendedHelper.getOwnerInArea(mm, 16d, true).isPresent()
-				&& mm.isOnGround()
-			));*/
 	public static final ConditionalAttributeModifier MODIFIER_SLOWNESS_ON_LOW_STAMINA = 
 			new ConditionalAttributeModifier(Attributes.MOVEMENT_SPEED, -0.5d,  AttributeModifier.Operation.MULTIPLY_TOTAL, living ->
 			(
@@ -110,29 +89,13 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	
 	/* Data sync */
 
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagMeltyMonsterEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagMeltyMonsterEntity.class, EntityDataSerializers.INT);
 	protected static final EntityDataAccessor<Integer> DATA_STAMINA = SynchedEntityData
 			.defineId(HmagMeltyMonsterEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
 		entityData.define(DATA_STAMINA, 10000);;
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
 	}
 
 	/* Initialization */
@@ -301,7 +264,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	@Override
 	protected void customServerAiStep()
 	{
-		if (this.isOwnerPresent() && this.getOwner().isInLava() && this.distanceToSqr(this.getOwner()) <= 64d)
+		if (this.isOwnerInDimension() && this.getOwner().isInLava() && this.distanceToSqr(this.getOwner()) <= 64d)
 		{
 			EntityHelper.addEffectSafe(this.getOwner(), MobEffects.FIRE_RESISTANCE, 19);
 		}
@@ -329,7 +292,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 		// Lava bath with it can slowly increase the favorability
 		if (this.isInLava() 
 				&& this.level().getBlockState(MathUtil.getBlockPos(this.getEyePosition())).is(Blocks.AIR)
-				&& this.isOwnerPresent()
+				&& this.isOwnerInDimension()
 				&& this.getOwner().isInLava()
 				&& this.level().getBlockState(MathUtil.getBlockPos(this.getOwner().getEyePosition())).is(Blocks.AIR)
 				&& this.getEyePosition().distanceToSqr(this.getOwner().getEyePosition()) < 9d
@@ -438,38 +401,9 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventory additionalInventory = new BefriendedInventory(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	@Override
-	public int getInventorySize()
-	{
-		return 5; // 0 - 3: baubles; 4: lava bucket (to control if it should try returning to lava)
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			//additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level().isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			//additionalInventory.getFromMob(this);
-		}
-		return;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventory(5, this);
 	}
 
 	@Override
@@ -483,7 +417,6 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
 		// Add other data to save here
 		nbt.putInt("taking_lava_cooldown", this.takingLavaCooldown);
 		nbt.putInt("stamina", getStamina());
@@ -580,7 +513,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements IDwmgB
 			{
 				if (!this.level().isClientSide)
 				{
-					if (!DwmgEntityHelper.isAlly(owner, living))
+					if (!BefriendedHelper.isLivingAlliedToBM(owner, living))
 						{
 						int i = living.getRemainingFireTicks();
 						living.setSecondsOnFire((int) Math.round(5.0d * (1d + owner.getAttributeValue(Attributes.ATTACK_DAMAGE))));

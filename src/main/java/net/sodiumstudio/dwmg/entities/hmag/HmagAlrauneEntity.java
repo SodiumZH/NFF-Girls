@@ -53,30 +53,6 @@ import net.sodiumstudio.nautils.EntityHelper;
 
 public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedMob {
 
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagAlrauneEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagAlrauneEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-
 	/* Initialization */
 
 	public HmagAlrauneEntity(EntityType<? extends HmagAlrauneEntity> pEntityType, Level pLevel) {
@@ -203,20 +179,9 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 	
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventory additionalInventory = new BefriendedInventory(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	@Override
-	public int getInventorySize()
-	{
-		return 3;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventory(3, this);
 	}
 
 	@Override
@@ -248,7 +213,6 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
 		// Add other data to save here
 	}
 
@@ -342,7 +306,7 @@ public class HmagAlrauneEntity extends AlrauneEntity implements IDwmgBefriendedM
 		@Override
 		protected LivingEntity updateTarget() {
 			List<LivingEntity> visible = 
-					mob.asMob().level().getEntitiesOfClass(LivingEntity.class, EntityHelper.getNeighboringArea(mob.asMob(), 8d))
+					mob.asMob().level().getEntitiesOfClass(LivingEntity.class, mob.asMob().getBoundingBox().inflate(8d))
 					.stream().filter((LivingEntity living) -> mob.asMob().hasLineOfSight(living)).toList();
 					
 			List<LivingEntity> owner = visible.stream().filter((LivingEntity living) -> living.getUUID().equals(mob.getOwnerUUID())).toList();			

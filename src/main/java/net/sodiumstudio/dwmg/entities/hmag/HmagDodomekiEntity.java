@@ -47,30 +47,6 @@ import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriendedSunSensitiveMob
 {
 
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagDodomekiEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagDodomekiEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-
 	/* Initialization */
 
 	public HmagDodomekiEntity(EntityType<? extends HmagDodomekiEntity> pEntityType, Level pLevel) {
@@ -155,39 +131,9 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 	
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithHandItems additionalInventory = new BefriendedInventoryWithHandItems(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	@Override
-	public int getInventorySize()
-	{
-		// 0-mainhand 1-offhand 2-5 baubles 6-9 stolen items
-		return 10;
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level().isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.getFromMob(this);
-		}
-		return;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventoryWithHandItems(10, this);
 	}
 
 	@Override
@@ -197,13 +143,6 @@ public class HmagDodomekiEntity extends DodomekiEntity implements IDwmgBefriende
 
 	/* Save and Load */
 	
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		// Add other data to save here
-	}
-
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);

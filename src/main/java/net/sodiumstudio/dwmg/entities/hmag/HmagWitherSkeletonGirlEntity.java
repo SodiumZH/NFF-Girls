@@ -66,36 +66,6 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 		Arrays.fill(this.handDropChances, 0);
 	}
 
-	@Deprecated
-	public static Builder createAttributes() 
-	{
-		return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 36.0D).add(Attributes.MOVEMENT_SPEED, 0.26D).add(Attributes.ATTACK_DAMAGE, 4.5D).add(Attributes.ARMOR, 4.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.25D);
-	}
-
-	// ------------------ Data sync ------------------ //
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagWitherSkeletonGirlEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagWitherSkeletonGirlEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 1);
-	}
-
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-
 	/* AI */
 
 	@Override
@@ -195,48 +165,16 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 
 	/* Inventory */
 
-
-	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize());
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	// 6->bauble, 7->backup weapon 8->arrow
-	@Override
-	public int getInventorySize()
-	{
-		return 9;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventoryWithEquipment(9, this);
 	}
 
-	@Override
-	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
-			additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob() {
-		if (!this.level().isClientSide) {
-			additionalInventory.getFromMob(this);
-		}
-	}
-	
-	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuSkeleton(containerId, playerInventory, container, this);
 	}
 	
 	/* Save and Load */
-
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
@@ -245,20 +183,6 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 		setInit();
 	}
 
-	/* IBaubleEquipable interface */
-	/*
-	@Override
-	public HashMap<String, ItemStack> getBaubleSlots() {
-		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
-		map.put("0", this.getAdditionalInventory().getItem(6));
-		return map;
-	}
-	
-	@Override
-	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.UNDEAD;
-	}
-*/
 	// Sounds
 	
 	@Override

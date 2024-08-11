@@ -49,30 +49,6 @@ import net.sodiumstudio.nautils.EntityHelper;
 
 public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity implements IDwmgBefriendedMob {
 
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagCrimsonSlaughtererEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagCrimsonSlaughtererEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-
 	/* Initialization */
 
 	public HmagCrimsonSlaughtererEntity(EntityType<? extends HmagCrimsonSlaughtererEntity> pEntityType, Level pLevel) {
@@ -196,34 +172,9 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 
 	// This enables mob armor and hand items by default.
 	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventory additionalInventory = new BefriendedInventory(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	@Override
-	public int getInventorySize()
-	{
-		return 4;
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
-
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level().isClientSide) {
-
-		}
-		return;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventory(4, this);
 	}
 
 	@Override
@@ -232,13 +183,6 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 	}
 
 	/* Save and Load */
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		// Add other data to save here
-	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {

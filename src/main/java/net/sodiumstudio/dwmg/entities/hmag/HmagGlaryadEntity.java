@@ -47,30 +47,6 @@ import net.sodiumstudio.nautils.NaReflectionUtils;
 public class HmagGlaryadEntity extends GlaryadEntity implements IDwmgBefriendedMob 
 {
 
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagGlaryadEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagGlaryadEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-
 	/* Initialization */
 
 	public HmagGlaryadEntity(EntityType<? extends HmagGlaryadEntity> pEntityType, Level pLevel) {
@@ -161,53 +137,17 @@ public class HmagGlaryadEntity extends GlaryadEntity implements IDwmgBefriendedM
 	
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventory additionalInventory = new BefriendedInventory(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventory(3, this);
 	}
 	
-	@Override
-	public int getInventorySize()
-	{
-		return 3;
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			//additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level().isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			//additionalInventory.getFromMob(this);
-		}
-		return;
-	}
-
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuThreeBaubles(containerId, playerInventory, container, this);
 	}
 
 	/* Save and Load */
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		// Add other data to save here
-	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
@@ -272,6 +212,7 @@ public class HmagGlaryadEntity extends GlaryadEntity implements IDwmgBefriendedM
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
+
 
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //

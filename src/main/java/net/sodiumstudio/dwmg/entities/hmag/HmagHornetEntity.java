@@ -64,16 +64,7 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 		Arrays.fill(this.handDropChances, 0);
 		this.moveControl = new BefriendedFlyingMoveControl(this);
 	}
-
-	@Deprecated
-	public static Builder createAttributes() {
-		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 60.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 5.0D)
-				.add(Attributes.FOLLOW_RANGE, 24.0D);
-	}
-
+	
 	/* AI */
 
 	@Override
@@ -195,37 +186,9 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithHandItems additionalInventory 
-		= new BefriendedInventoryWithHandItems(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	@Override
-	public int getInventorySize()
-	{
-		return 4;
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
-			additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level().isClientSide) {
-			additionalInventory.getFromMob(this);
-		}
-		return;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventoryWithHandItems(4, this);
 	}
 
 	@Override
@@ -234,13 +197,6 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 	}
 
 	/* Save and Load */
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		// Add other data to save here
-	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
@@ -250,46 +206,6 @@ public class HmagHornetEntity extends HornetEntity implements IDwmgBefriendedMob
 		setInit();
 	}
 
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagHornetEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagHornetEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 1);
-	}
-
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-
-	/* IBaubleEquipable interface */
-/*
-	@Override
-	public HashMap<String, ItemStack> getBaubleSlots() {
-		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
-		map.put("0", this.getAdditionalInventory().getItem(2));
-		map.put("1", this.getAdditionalInventory().getItem(3));
-		return map;
-	}
-	@Override
-	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.HORNET;
-	}
-	*/
-	// Sounds
-	
 	@Override
 	protected SoundEvent getAmbientSound()
 	{

@@ -61,30 +61,6 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 
 
 	private static final RepeatableAttributeModifier ARMOR_MODIFIER = new RepeatableAttributeModifier(0.1d, AttributeModifier.Operation.ADDITION, 300);
-	
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagNightwalkerEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagNightwalkerEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
 
 	/* Initialization */
 
@@ -212,49 +188,16 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 	
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventory additionalInventory = new BefriendedInventory(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventory(5, this);
 	}
 	
-	@Override
-	public int getInventorySize()
-	{
-		return 5;	// 0 - 3: bauble; 4 - clay
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level().isClientSide) {
-		}
-		return;
-	}
-
-	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuNightwalker(containerId, playerInventory, container, this);
 	}
 
 	/* Save and Load */
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		// Add other data to save here
-	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
@@ -263,17 +206,7 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 		// Add other data reading here
 		setInit();
 	}
-/*
-	@Override
-	public HashMap<String, ItemStack> getBaubleSlots() {
-		return this.continuousBaubleSlots(0, 4);
-	}
 
-	@Override
-	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.GENERAL;
-	}
-*/
 	// Sounds
 	
 	@Override
@@ -423,4 +356,5 @@ public class HmagNightwalkerEntity extends NightwalkerEntity implements IDwmgBef
 		}
 		
 	}
+
 }

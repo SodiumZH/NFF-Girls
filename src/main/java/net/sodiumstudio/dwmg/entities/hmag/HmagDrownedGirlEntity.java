@@ -75,35 +75,6 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 		Arrays.fill(this.handDropChances, 0);
 
 	}
-
-	@Deprecated
-	public static Builder createAttributes() {
-		return Zombie.createAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.245D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.ARMOR, 3.0D);
-	}
-
-	// ------------------ Data sync ------------------ //
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagDrownedGirlEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagDrownedGirlEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 1);
-	}
-
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
 	
 	/* AI */
 
@@ -116,7 +87,6 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 		goalSelector.addGoal(3, new BefriendedZombieAttackGoal(this, 1.0D, false));
 		goalSelector.addGoal(4, new DwmgBefriendedFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false).amphibious()
 				.avoidSunCondition(DwmgEntityHelper::isSunSensitive));
-		//goalSelector.addGoal(4, new BefriendedInWaterFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f));
 		goalSelector.addGoal(5, new BefriendedAmphibiousGoals.GoToBeachGoal(this, 1.0D));
 		goalSelector.addGoal(6, new BefriendedAmphibiousGoals.SwimUpGoal(this, 1.0D, this.level().getSeaLevel()));
 		goalSelector.addGoal(7, new BefriendedRandomStrollGoal(this, 1.0d));
@@ -212,35 +182,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 
 	/* Inventory */
 
-	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(
-			getInventorySize(), this);
-
-	@Override
-	public BefriendedInventory getAdditionalInventory() {
-		return additionalInventory;
-	}
-	
-	@Override
-	public int getInventorySize() {
-		return 8;
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level().isClientSide)
-		{
-			additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob() {
-		if (!this.level().isClientSide)
-		{
-			additionalInventory.getFromMob(this);
-		}
-		return;
-	}
+	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(8, this);
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
@@ -252,7 +194,6 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
 		nbt.put("is_from_husk", ByteTag.valueOf(isFromHusk));
 		nbt.put("is_from_zombie", ByteTag.valueOf(isFromZombie));
 	}
@@ -376,6 +317,12 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 	@Override
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
+	}
+
+	@Override
+	public BefriendedInventory createAdditionalInventory() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

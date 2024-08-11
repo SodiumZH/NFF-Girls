@@ -52,35 +52,20 @@ import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
 import net.sodiumstudio.nautils.annotation.DontCallManually;
 import net.sodiumstudio.nautils.math.LinearColor;
+import net.sodiumstudio.nautils.registries.NaUtilsEntityDataSerializers;
 
 public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefriendedMob {
 
 	/* Data sync */
 
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagSlimeGirlEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagSlimeGirlEntity.class, EntityDataSerializers.INT);
 	protected static final EntityDataAccessor<LinearColor> DATA_COLOR = SynchedEntityData
-			.defineId(HmagSlimeGirlEntity.class, LinearColor.ENTITY_DATA_SERIALIZER);
+			.defineId(HmagSlimeGirlEntity.class, NaUtilsEntityDataSerializers.LINEAR_COLOR.get());
 	
 	
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
 		entityData.define(DATA_COLOR, LinearColor.fromNormalized(0.5d, 0.5d, 0.5d));
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
 	}
 
 	/* Initialization */
@@ -90,16 +75,6 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
 		Arrays.fill(this.handDropChances, 0);
-	}
-
-	@Deprecated
-	public static Builder createAttributes() {
-		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 60.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.19D)
-				.add(Attributes.ATTACK_DAMAGE, 7.0D)
-				.add(Attributes.ARMOR, 8.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
 	}
 
 	@Override
@@ -185,34 +160,9 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 	
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventory additionalInventory = new BefriendedInventory(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	@Override
-	public int getInventorySize()
-	{
-		return 4;
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level().isClientSide) {
-		}
-		return;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventory(4, this);
 	}
 
 	@Override
@@ -225,7 +175,6 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
 		nbt.putDouble("sg_color_r", this.getColorLinear().r);
 		nbt.putDouble("sg_color_g", this.getColorLinear().g);
 		nbt.putDouble("sg_color_b", this.getColorLinear().b);
@@ -238,17 +187,7 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 		this.setColorLinear(LinearColor.fromNormalized(nbt.getDouble("sg_color_r"), nbt.getDouble("sg_color_g"), nbt.getDouble("sg_color_b")));
 		setInit();
 	}
-/*
-	@Override
-	public HashMap<String, ItemStack> getBaubleSlots() {
-		return DwmgBaubleSlotGetter.NO_EQUIPMENT_FOUR_BAUBLES.get(this);
-	}
 
-	@Override
-	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.GENERAL;
-	}
-	*/
 	// Sound
 	
 	protected SoundEvent getJumpSound()
@@ -370,4 +309,5 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 			this.sg.playSound(sg.getJumpSound(), 1.0F, ((this.sg.getRandom().nextFloat() - this.sg.getRandom().nextFloat()) * 0.2F + 1.0F) * 0.8F);
 		}
 	}
+
 }

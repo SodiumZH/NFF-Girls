@@ -56,30 +56,6 @@ import net.sodiumstudio.nautils.TagHelper;
 public class HmagKoboldEntity extends KoboldEntity implements IDwmgBefriendedMob, IBlockLocator
 {
 
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagKoboldEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagKoboldEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 1);
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-
 	/* Initialization */
 
 	public HmagKoboldEntity(EntityType<? extends HmagKoboldEntity> pEntityType, Level pLevel) {
@@ -87,17 +63,6 @@ public class HmagKoboldEntity extends KoboldEntity implements IDwmgBefriendedMob
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
 		Arrays.fill(this.handDropChances, 0);
-	}
-
-	@Deprecated
-	public static Builder createAttributes() {
-		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 40.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.3D)
-				.add(Attributes.ATTACK_DAMAGE, 6.0D)
-				.add(Attributes.ARMOR, 2.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 0.25D)
-				.add(Attributes.FOLLOW_RANGE, 20.0D);
 	}
 
 	/* AI */
@@ -122,7 +87,6 @@ public class HmagKoboldEntity extends KoboldEntity implements IDwmgBefriendedMob
 
 	// Map items that can heal the mob and healing values here.
 	// Leave it empty if you don't need healing features.
-	@SuppressWarnings("unchecked")
 	@Override
 	public HealingItemTable getHealingItems()
 	{
@@ -174,36 +138,9 @@ public class HmagKoboldEntity extends KoboldEntity implements IDwmgBefriendedMob
 	
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithHandItems additionalInventory = new BefriendedInventoryWithHandItems(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	@Override
-	public int getInventorySize()
-	{
-		return 4;	// 0 - mainhand, 1 - offhand, 23 - baubles
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
-			additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level().isClientSide) {
-			additionalInventory.getFromMob(this);
-		}
-		return;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventoryWithHandItems(4, this);
 	}
 
 	@Override
@@ -212,12 +149,6 @@ public class HmagKoboldEntity extends KoboldEntity implements IDwmgBefriendedMob
 	}
 
 	/* Save and Load */
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {

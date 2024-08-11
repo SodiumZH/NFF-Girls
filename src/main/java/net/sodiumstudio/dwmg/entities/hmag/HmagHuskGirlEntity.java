@@ -62,35 +62,6 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 
 	}
 
-	@Deprecated
-	public static Builder createAttributes() {
-		return Zombie.createAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.28D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.ARMOR, 5.0D);
-	}
-	
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagHuskGirlEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagHuskGirlEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 1);
-	}
-
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-	
 	/* AI */
 
 	@Override
@@ -156,33 +127,9 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 
 	/* Inventory */
 
-	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-
-	@Override
-	public int getInventorySize()
-	{
-		return 8;
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
-			additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level().isClientSide) {
-			additionalInventory.getFromMob(this);
-		}
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventoryWithEquipment(8, this);
 	}
 
 	@Override
@@ -191,12 +138,6 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 	}
 
 	/* Save and Load */
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {

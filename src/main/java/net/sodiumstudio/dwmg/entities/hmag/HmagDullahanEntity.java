@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.github.mechalopa.hmag.world.entity.DullahanEntity;
+import com.github.mechalopa.hmag.world.entity.HarpyEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -15,6 +16,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -49,31 +51,6 @@ import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
  */
 public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriendedSunSensitiveMob
 {
-
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagDullahanEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagDullahanEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-
 	/* Initialization */
 
 	public HmagDullahanEntity(EntityType<? extends HmagDullahanEntity> pEntityType, Level pLevel) {
@@ -83,6 +60,15 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 		Arrays.fill(this.handDropChances, 0);
 	}
 
+	@Override
+	public void onInit(UUID playerUUID, Mob from)
+	{
+		if (from instanceof DullahanEntity d)
+		{
+			this.setVariant(d.getVariant());
+		}
+	}
+	
 	/* AI */
 
 	@Override
@@ -158,39 +144,9 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithHandItems additionalInventory = new BefriendedInventoryWithHandItems(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	@Override
-	public int getInventorySize()
-	{
-		// Hand items + 4 baubles
-		return 6;
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level().isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level().isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.getFromMob(this);
-		}
-		return;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventoryWithHandItems(6, this);
 	}
 
 	@Override
@@ -199,13 +155,6 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 	}
 
 	/* Save and Load */
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		// Add other data to save here
-	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
