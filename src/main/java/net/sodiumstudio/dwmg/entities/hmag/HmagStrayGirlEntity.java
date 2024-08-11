@@ -74,36 +74,6 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 		Arrays.fill(this.handDropChances, 0);
 	}
 
-	@Deprecated
-	public static Builder createAttributes() 
-	{
-		 return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ATTACK_DAMAGE, 3.25D).add(Attributes.ARMOR, 1.0D);
-	}
-
-	// ------------------ Data sync ------------------ //
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagStrayGirlEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagStrayGirlEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 1);
-	}
-
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-	
 	/* AI */
 
 	@Override
@@ -223,36 +193,12 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 
 	/* Inventory */
 
-
-	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize());
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	// 6->bauble, 7->backup weapon 8->arrow
-	@Override
-	public int getInventorySize()
-	{
-		return 9;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventoryWithEquipment(9, this);
 	}
 
-	@Override
-	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
-			additionalInventory.setMobEquipment(this);
-		}
-	}
 
-	@Override
-	public void setInventoryFromMob() {
-		if (!this.level.isClientSide) {
-			additionalInventory.getFromMob(this);
-		}
-	}
-	
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuSkeleton(containerId, playerInventory, container, this);
@@ -263,7 +209,6 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
 		nbt.put("is_from_skeleton", ByteTag.valueOf(isFromSkeleton));
 	}
 
@@ -364,7 +309,6 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
 
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //

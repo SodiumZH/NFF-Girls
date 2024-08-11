@@ -61,30 +61,6 @@ import net.sodiumstudio.nautils.NaMiscUtils;
 public class HmagNecroticReaperEntity extends NecroticReaperEntity implements IDwmgBefriendedSunSensitiveMob
 {
 
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagNecroticReaperEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagNecroticReaperEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 1);
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-
 	/* Initialization */
 
 	public HmagNecroticReaperEntity(EntityType<? extends HmagNecroticReaperEntity> pEntityType, Level pLevel) {
@@ -92,17 +68,6 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
 		Arrays.fill(this.handDropChances, 0);
-	}
-
-	@Deprecated
-	public static Builder createAttributes() {
-		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 60.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.31D)
-				.add(Attributes.ATTACK_DAMAGE, 9.0D)
-				.add(Attributes.ARMOR, 5.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 0.25D)
-				.add(Attributes.FOLLOW_RANGE, 24.0D);
 	}
 
 	/* AI */
@@ -157,30 +122,7 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 		targetSelector.addGoal(5, new DwmgNearestHostileToSelfTargetGoal(this));
 		targetSelector.addGoal(6, new DwmgNearestHostileToOwnerTargetGoal(this));
 	}
-	
-	@Override
-	public void aiStep()
-	{
-		/*if (!this.level.isClientSide)
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, this.isSunImmune() ? BMItems.DUMMY_ITEM.get().getDefaultInstance() : ItemStack.EMPTY);
-*/		super.aiStep();
-/*		if (!this.level.isClientSide)
-			DwmgEntityHelper.setMobEquipmentWithoutSideEffect(this, EquipmentSlot.HEAD, ItemStack.EMPTY);*/
-	}
-	
-	/* Combat */
-	@SubscribeEvent
-	public static void onAttack(LivingHurtEvent event)
-	{/*
-		if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof HmagNecroticReaperEntity nr)
-		{
-			if (!nr.getAdditionalInventory().getItem(0).isEmpty() && nr.getAdditionalInventory().getItem(0).getItem() instanceof HoeItem hoe)
-			{
-				if (nr.level.random.nextDouble() < 1d / EnchantmentHelper.getItemEnchantmentLevel(Enchantments., null))
-			}
-		}*/
-	}
-	
+
 	/* Interaction */
 
 	// Map items that can heal the mob and healing values here.
@@ -249,38 +191,12 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 	
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithHandItems additionalInventory = new BefriendedInventoryWithHandItems(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
+	public BefriendedInventory createAdditionalInventory() {
+		// TODO Auto-generated method stub
+		return new BefriendedInventoryWithHandItems(6, this);
 	}
 	
-	@Override
-	public int getInventorySize()
-	{
-		return 6;
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
-			additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level.isClientSide) {
-			additionalInventory.getFromMob(this);
-		}
-		return;
-	}
-
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuNecroticReaper(containerId, playerInventory, container, this);
@@ -291,7 +207,6 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
 		// Add other data to save here
 	}
 
@@ -404,5 +319,5 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 		}
 		return count;
 	}
-	
+
 }

@@ -57,30 +57,6 @@ import net.sodiumstudio.nautils.NaParticleUtils;
 
 public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefriendedSunSensitiveMob {
 
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagCursedDollEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagCursedDollEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-
 	/* Initialization */
 
 	public HmagCursedDollEntity(EntityType<? extends HmagCursedDollEntity> pEntityType, Level pLevel) {
@@ -263,41 +239,12 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 	
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithHandItems additionalInventory = new BefriendedInventoryWithHandItems(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
+	public BefriendedInventory createAdditionalInventory()
 	{
-		return additionalInventory;
+		return new BefriendedInventoryWithHandItems(8, this);
 	}
 	
-	@Override
-	public int getInventorySize()
-	{
-		// 0 - mainhand, 1 - offhand, 2-7 baubles
-		return 8;
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level.isClientSide) {
-			// Sync inventory with mob equipments. If it's not BefriendedInventoryWithEquipment, remove it
-			additionalInventory.getFromMob(this);
-		}
-		return;
-	}
-
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuHandItemsSixBaubles(containerId, playerInventory, container, this);
@@ -305,13 +252,6 @@ public class HmagCursedDollEntity extends CursedDollEntity implements IDwmgBefri
 
 	/* Save and Load */
 	
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		// Add other data to save here
-	}
-
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
