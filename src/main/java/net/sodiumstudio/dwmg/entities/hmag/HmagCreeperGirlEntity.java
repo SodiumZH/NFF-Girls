@@ -41,7 +41,7 @@ import net.sodiumstudio.befriendmobs.entity.ai.goal.preset.target.BefriendedHurt
 import net.sodiumstudio.befriendmobs.entity.befriended.BefriendedHelper;
 import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.entity.vanillapreset.creeper.AbstractBefriendedCreeper;
-import net.sodiumstudio.befriendmobs.entity.vanillapreset.creeper.BefriendedCreeperSwellGoal;
+import net.sodiumstudio.befriendmobs.inventory.BefriendedInventory;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryMenu;
 import net.sodiumstudio.befriendmobs.inventory.BefriendedInventoryWithEquipment;
 import net.sodiumstudio.dwmg.Dwmg;
@@ -69,20 +69,11 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 	// If owner is closer than this distance, explosion will stop
 	public double explodeSafeDistance = 3.0f;
 	protected boolean isPlayerIgnited = false; 
-	
-	@Override
-	protected void defineSynchedData()
-	{
-		super.defineSynchedData();
-		this.entityData.define(DATA_VARIANT_ID, 0);
-		this.entityData.set(DATA_AISTATE, 1);
-	}
-	
+
 	// Initialization
 	
 	public HmagCreeperGirlEntity(EntityType<? extends HmagCreeperGirlEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);	
-		befriendedInventory = new BefriendedInventoryWithEquipment(7);
 	}
 
 	@Override
@@ -159,17 +150,17 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 		if (!level.isClientSide)
 		{
 			// Update explosion radius by ammo type
-			if (befriendedInventory.getItem(6).is(Items.GUNPOWDER))
+			if (this.getAdditionalInventory().getItem(6).is(Items.GUNPOWDER))
 			{
 				this.explosionRadius = 3;
 				this.shouldDestroyBlocks = false;
 			}
-			else if (befriendedInventory.getItem(6).is(Items.TNT))
+			else if (this.getAdditionalInventory().getItem(6).is(Items.TNT))
 			{
 				this.explosionRadius = 4;
 				this.shouldDestroyBlocks = true;
 			}
-			else if (!befriendedInventory.getItem(6).isEmpty())
+			else if (!this.getAdditionalInventory().getItem(6).isEmpty())
 				throw new IllegalStateException("Befriended Creeper Girl explosive type error");		
 			this.canExplode = !this.getAdditionalInventory().getItem(6).isEmpty();
 			
@@ -266,27 +257,10 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 	// Inventory
 	
 	@Override
-	public int getInventorySize()
-	{
-		return 7;	// the 7th slot is ammo slot ()
-	}
-	
-	@Override
-	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
-			((BefriendedInventoryWithEquipment)getAdditionalInventory()).setMobEquipment(this);
-		}
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventoryWithEquipment(7, this);
 	}
 
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level.isClientSide) {
-			((BefriendedInventoryWithEquipment)getAdditionalInventory()).getFromMob(this);
-		}
-		return;
-	}
-	
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container)
 	{

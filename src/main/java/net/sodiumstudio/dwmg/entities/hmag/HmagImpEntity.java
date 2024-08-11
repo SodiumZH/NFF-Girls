@@ -55,30 +55,6 @@ import net.sodiumstudio.nautils.TagHelper;
 public class HmagImpEntity extends ImpEntity implements IDwmgBefriendedMob, IBlockLocator
 {
 
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagImpEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagImpEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 0);
-	}
-	
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}
-
 	/* Initialization */
 
 	public HmagImpEntity(EntityType<? extends HmagImpEntity> pEntityType, Level pLevel) {
@@ -86,16 +62,6 @@ public class HmagImpEntity extends ImpEntity implements IDwmgBefriendedMob, IBlo
 		this.xpReward = 0;
 		Arrays.fill(this.armorDropChances, 0);
 		Arrays.fill(this.handDropChances, 0);
-	}
-
-	@Deprecated
-	public static Builder createAttributes() {
-		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 40.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.265D)
-				.add(Attributes.ATTACK_DAMAGE, 7.0D)
-				.add(Attributes.ARMOR, 2.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
 	}
 
 	/* AI */
@@ -171,36 +137,9 @@ public class HmagImpEntity extends ImpEntity implements IDwmgBefriendedMob, IBlo
 	
 	/* Inventory */
 
-	// This enables mob armor and hand items by default.
-	// If not needed, use BefriendedInventory class instead.
-	protected BefriendedInventoryWithHandItems additionalInventory = new BefriendedInventoryWithHandItems(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	@Override
-	public int getInventorySize()
-	{
-		return 4;	// 0 - mainhand, 1 - offhand, 23 - baubles
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
-			additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level.isClientSide) {
-			additionalInventory.getFromMob(this);
-		}
-		return;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventoryWithHandItems(4, this);
 	}
 
 	@Override
@@ -234,12 +173,6 @@ public class HmagImpEntity extends ImpEntity implements IDwmgBefriendedMob, IBlo
 	}
 	
 	/* Save and Load */
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
@@ -295,7 +228,6 @@ public class HmagImpEntity extends ImpEntity implements IDwmgBefriendedMob, IBlo
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
 
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //

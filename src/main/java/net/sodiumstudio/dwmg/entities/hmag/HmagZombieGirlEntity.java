@@ -163,40 +163,14 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 
 	/* Inventory */
 
-	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(getInventorySize(), this);
-
 	@Override
-	public BefriendedInventory getAdditionalInventory()
-	{
-		return additionalInventory;
-	}
-	
-	@Override
-	public int getInventorySize()
-	{
-		return 8;
-	}
-
-	@Override
-	public void updateFromInventory() {
-		if (!this.level.isClientSide) {
-			additionalInventory.setMobEquipment(this);
-		}
-	}
-
-	@Override
-	public void setInventoryFromMob()
-	{
-		if (!this.level.isClientSide) {
-			additionalInventory.getFromMob(this);
-		}
-		return;
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventoryWithEquipment(8, this);
 	}
 
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuEquipmentTwoBaubles(containerId, playerInventory, container, this);
-		//return new InventoryMenuZombieGirlNewBaubleTest(containerId, playerInventory, container, this);
 	}
 
 	// Fix an unknown bug that mob spawned from 
@@ -207,16 +181,15 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		BefriendedHelper.addBefriendedCommonSaveData(this, nbt);
-		nbt.put("is_from_husk", ByteTag.valueOf(isFromHusk));
+		nbt.putBoolean("isFromHusk", this.isFromHusk);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		isFromHusk = nbt.getBoolean("is_from_husk");
-		setInit();
+		this.isFromHusk = nbt.getBoolean("isFromHusk") || nbt.getBoolean("is_from_husk");	// TODO: the latter is legacy, remove after 0.x.30
+		this.setInit();
 	}
 
 	/* Convertions */
@@ -259,46 +232,6 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 		return newMob;
 	}
 
-
-	/* Data sync */
-
-	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID = SynchedEntityData
-			.defineId(HmagZombieGirlEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Integer> DATA_AISTATE = SynchedEntityData
-			.defineId(HmagZombieGirlEntity.class, EntityDataSerializers.INT);
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_OWNERUUID, Optional.empty());
-		entityData.define(DATA_AISTATE, 1);
-	}
-
-	@Override
-	public EntityDataAccessor<Optional<UUID>> getOwnerUUIDAccessor() {
-		return DATA_OWNERUUID;
-	}
-
-	@Override
-	public EntityDataAccessor<Integer> getAIStateData() {
-		return DATA_AISTATE;
-	}	
-
-	/* IBaubleEquipable interface */
-/*
-	@Override
-	public HashMap<String, ItemStack> getBaubleSlots() {
-		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
-		map.put("0", this.getAdditionalInventory().getItem(6));
-		map.put("1", this.getAdditionalInventory().getItem(7));
-		return map;
-	}
-
-	@Override
-	public BaubleHandler getBaubleHandler() {
-		return DwmgBaubleHandlers.EMPTY;
-	}
-	*/
 	// Sounds
 	@Override
 	protected SoundEvent getAmbientSound()
