@@ -20,6 +20,6 @@ public class DwmgMeltyMonsterEntityMixin implements NaUtilsMixin<MeltyMonsterEnt
 			target = "Lnet/minecraft/world/level/Level;setBlockAndUpdate(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z"), expect = -1)
 	private boolean canSetFire(Level instance, BlockPos pos, BlockState blockstate)
 	{
-		return !MinecraftForge.EVENT_BUS.post(new DwmgHooks.MeltyMonsterSetFireEvent(get(), pos, blockstate));	
+		return !MinecraftForge.EVENT_BUS.post(new DwmgHooks.MeltyMonsterSetFireEvent(caller(), pos, blockstate));	
 	}
 }

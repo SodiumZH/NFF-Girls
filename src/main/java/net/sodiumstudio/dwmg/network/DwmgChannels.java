@@ -4,11 +4,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.simple.SimpleChannel;
-import net.sodiumstudio.nautils.NetworkHelper;
 import net.sodiumstudio.dwmg.Dwmg;
-import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
-import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
 import net.sodiumstudio.dwmg.entities.vanillatrade.ClientboundDwmgTradeSyncPacket;
+import net.sodiumstudio.nautils.NaNetworkUtils;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DwmgChannels {
@@ -22,11 +20,11 @@ public class DwmgChannels {
 
     @SuppressWarnings("resource")
 	public static void registerMessage() {
-    	SYNC_CHANNEL = NetworkHelper.newChannel(Dwmg.MOD_ID, "dwmg_sync_channel");
+    	SYNC_CHANNEL = NaNetworkUtils.newChannel(Dwmg.MOD_ID, "dwmg_sync_channel");
     	//NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, CFavorabilityHandler.ClientboundSyncPacket.class);
     	//NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, CLevelHandler.ClientboundSyncPacket.class);
-    	NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, ClientboundDwmgMobGeneralSyncPacket.class);
-    	NetworkHelper.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, ClientboundDwmgTradeSyncPacket.class);
+    	NaNetworkUtils.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, ClientboundDwmgMobGeneralSyncPacket.class);
+    	NaNetworkUtils.registerDefaultClientGamePacket(nextID(), SYNC_CHANNEL, ClientboundDwmgTradeSyncPacket.class);
     }
     
     @SubscribeEvent
