@@ -24,11 +24,13 @@ import net.minecraft.world.level.GameRules;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.network.PacketDistributor;
+import net.sodiumstudio.befriendmobs.entity.ai.BefriendedAIState;
 import net.sodiumstudio.befriendmobs.entity.befriended.IBefriendedMob;
 import net.sodiumstudio.befriendmobs.entity.capability.HealingItemTable;
 import net.sodiumstudio.befriendmobs.entity.capability.wrapper.IAttributeMonitor;
 import net.sodiumstudio.befriendmobs.item.MobRespawnerItem;
 import net.sodiumstudio.befriendmobs.item.capability.wrapper.IItemStackMonitor;
+import net.sodiumstudio.dwmg.Dwmg;
 import net.sodiumstudio.dwmg.entities.capabilities.CFavorabilityHandler;
 import net.sodiumstudio.dwmg.entities.capabilities.CLevelHandler;
 import net.sodiumstudio.dwmg.entities.vanillatrade.CDwmgTradeHandler;
@@ -42,6 +44,8 @@ import net.sodiumstudio.nautils.annotation.DontOverride;
 
 public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, */IAttributeMonitor, IItemStackMonitor
 {
+	//public static final BefriendedAIState GUARD = new BefriendedAIState(Dwmg.MOD_ID, "guard");
+	
 	
 	/**
 	 * Check if a mob has a Dwmg BM interface.
@@ -194,58 +198,8 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 	}
 
 	/* Bauble related */
-	
-	/**
-	 * @deprecated Use {@code DwmgBaubleStatics#countBaubles} instead
-	 */
-	@Deprecated
-	public default boolean hasDwmgBauble(String typeName)
-	{
-		/*for (ItemStack stack: this.getBaubleSlots().values())
-		{
-			if (!stack.isEmpty() && stack.getItem() instanceof DwmgBaubleItem bauble && bauble.is(typeName))
-				return true;
-		}
-		return false;*/
-		return DwmgBaubleStatics.countBaubles(this.asMob(), new ResourceLocation(typeName)) > 0;
-	}
-	
-	/**
-	 * @deprecated Use {@code DwmgBaubleStatics#countBaublesWithTier} instead
-	 */
-	@Deprecated
-	public default boolean hasDwmgBaubleWithLevel(String typeName, int level)
-	{
-		/*for (ItemStack stack: this.getBaubleSlots().values())
-		{
-			if (!stack.isEmpty() && stack.getItem() instanceof DwmgBaubleItem bauble && bauble.is(typeName, level))
-				return true;
-		}
-		return false;*/
-		return DwmgBaubleStatics.countBaublesWithTier(this.asMob(), new ResourceLocation(typeName), level) > 0;
-	}
-	
-	/**
-	 * @deprecated Use {@code DwmgBaubleStatics#countBaublesWithMinTier} instead
-	 */
-	@Deprecated
-	public default boolean hasDwmgBaubleWithMinLevel(String typeName, int minLevel)
-	{
-		/*for (ItemStack stack: this.getBaubleSlots().values())
-		{
-			if (!stack.isEmpty() 
-				&& stack.getItem() instanceof DwmgBaubleItem bauble 
-				&& bauble.is(typeName)
-				&& bauble.getLevel() >= minLevel)
-			{
-				return true;
-			}
-		}
-		return false;*/
-		return DwmgBaubleStatics.countBaublesWithMinTier(this.asMob(), new ResourceLocation(typeName), minLevel) > 0;
-	}
-	
 	// === IBefriendedMob interface
+	
 	@Override
 	public default MobRespawnerItem getRespawnerType()
 	{
