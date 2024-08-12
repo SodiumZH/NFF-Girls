@@ -1,5 +1,13 @@
 # Change Log
 
+### 0.x.25
+
+WARNING: This update has save data format changes. Back up before update!
+
+Fixed Dullahan missing variant.
+
+Fixed Melty Monster GUI attribute display error.
+
 ### 0.x.24
 
 Config changes:
