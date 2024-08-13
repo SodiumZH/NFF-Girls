@@ -56,6 +56,7 @@ import net.sodiumstudio.dwmg.registries.DwmgHealingItems;
 import net.sodiumstudio.dwmg.registries.DwmgItems;
 import net.sodiumstudio.dwmg.sounds.DwmgSoundPresets;
 import net.sodiumstudio.dwmg.util.DwmgEntityHelper;
+import net.sodiumstudio.nautils.math.LinearColor;
 
 // Rewritten from HMaG CreeperGirlEntity
 public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements IDwmgBefriendedMob
@@ -75,7 +76,13 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 	public HmagCreeperGirlEntity(EntityType<? extends HmagCreeperGirlEntity> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);	
 	}
-
+	
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(DATA_VARIANT_ID, 0);
+	}
+	
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
