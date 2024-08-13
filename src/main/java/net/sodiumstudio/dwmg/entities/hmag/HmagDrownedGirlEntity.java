@@ -182,28 +182,31 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 
 	/* Inventory */
 
-	protected BefriendedInventoryWithEquipment additionalInventory = new BefriendedInventoryWithEquipment(8, this);
-
+	@Override
+	public BefriendedInventory createAdditionalInventory() {
+		return new BefriendedInventoryWithEquipment(8, this);
+	}
+	
 	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuEquipmentTwoBaubles(containerId, playerInventory, container, this);
 	}
-
+	
 	/* Save and Load */
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		nbt.put("is_from_husk", ByteTag.valueOf(isFromHusk));
-		nbt.put("is_from_zombie", ByteTag.valueOf(isFromZombie));
+		nbt.put("isFromHusk", ByteTag.valueOf(isFromHusk));
+		nbt.put("isFromZombie", ByteTag.valueOf(isFromZombie));
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		BefriendedHelper.readBefriendedCommonSaveData(this, nbt);
-		isFromHusk = nbt.getBoolean("is_from_husk");
-		isFromZombie = nbt.getBoolean("is_from_zombie");
+		isFromHusk = nbt.getBoolean("isFromHusk") || nbt.getBoolean("is_from_husk");
+		isFromZombie = nbt.getBoolean("isFromZombie") || nbt.getBoolean("is_from_zombie");
 		setInit();
 	}
 
@@ -318,13 +321,6 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
-	@Override
-	public BefriendedInventory createAdditionalInventory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
