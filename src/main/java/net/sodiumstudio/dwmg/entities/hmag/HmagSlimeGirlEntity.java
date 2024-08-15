@@ -59,7 +59,7 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 	/* Data sync */
 
 	protected static final EntityDataAccessor<LinearColor> DATA_COLOR = SynchedEntityData
-			.defineId(HmagSlimeGirlEntity.class, NaUtilsEntityDataSerializers.LINEAR_COLOR.get());
+			.defineId(HmagSlimeGirlEntity.class, LinearColor.getEntityDataSerializer());
 	
 	
 	@Override
