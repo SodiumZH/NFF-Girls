@@ -365,7 +365,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedS
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
+/*
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
@@ -380,7 +380,7 @@ public class HmagBansheeEntity extends BansheeEntity implements IDwmgBefriendedS
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 

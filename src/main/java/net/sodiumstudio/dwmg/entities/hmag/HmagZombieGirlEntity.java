@@ -258,7 +258,7 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 	// ------------------ IBefriendedMob interface end ------------------ //
 	
 	// ------------------ Misc ------------------ //
-	
+/*	
 	@Override
 	public String getModId() {
 		return Dwmg.MOD_ID;
@@ -278,7 +278,7 @@ public class HmagZombieGirlEntity extends ZombieGirlEntity implements IDwmgBefri
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 

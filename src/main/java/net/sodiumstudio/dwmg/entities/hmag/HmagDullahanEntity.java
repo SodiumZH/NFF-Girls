@@ -203,7 +203,7 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
+/*
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
@@ -218,7 +218,7 @@ public class HmagDullahanEntity extends DullahanEntity implements IDwmgBefriende
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 

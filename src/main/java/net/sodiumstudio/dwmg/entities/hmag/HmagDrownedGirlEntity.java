@@ -302,7 +302,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 	// ------------------ IBefriendedMob interface end ------------------ //
 
 	// ------------------ Misc ------------------ //
-	
+	/*
 	@Override
 	public String getModId() {
 		return Dwmg.MOD_ID;
@@ -321,7 +321,7 @@ public class HmagDrownedGirlEntity extends DrownedGirlEntity implements IDwmgBef
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 

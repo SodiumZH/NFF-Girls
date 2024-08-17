@@ -534,22 +534,21 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	}
 	
 	// ------------------ Misc ------------------ //
-	
+	/*
 	@Override
 	public String getModId() {
 		return Dwmg.MOD_ID;
 	}
-		
+		*/
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
+/*
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
 	}
 
-	/* add @Override annotation if inheriting Monster class */
 	@Override
 	public boolean isPreventingPlayerRest(Player pPlayer) {
 		return false;
@@ -559,7 +558,7 @@ public class HmagEnderExecutorEntity extends AbstractBefriendedEnderMan implemen
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 

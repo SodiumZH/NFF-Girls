@@ -293,7 +293,7 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
+/*
 	
 	@Override
 	public boolean isPersistenceRequired() {
@@ -309,7 +309,7 @@ public class HmagStrayGirlEntity extends StrayGirlEntity implements IDwmgBefrien
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 	

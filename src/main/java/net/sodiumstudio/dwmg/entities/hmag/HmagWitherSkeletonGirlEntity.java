@@ -222,7 +222,7 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
 
 	
-	@Override
+	/*@Override
 	public boolean isPersistenceRequired() {
 		return true;
 	}
@@ -236,7 +236,7 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 	

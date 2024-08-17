@@ -197,7 +197,7 @@ public class HmagSnowCanineEntity extends SnowCanineEntity implements IDwmgBefri
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
+/*
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
@@ -212,7 +212,7 @@ public class HmagSnowCanineEntity extends SnowCanineEntity implements IDwmgBefri
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 

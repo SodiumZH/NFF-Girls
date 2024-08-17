@@ -219,7 +219,7 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
+/*
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
@@ -233,7 +233,7 @@ public class HmagJiangshiEntity extends JiangshiEntity implements IDwmgBefriende
 	@Override
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
-	}
+	}*/
 
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //

@@ -308,7 +308,7 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 	}
 	
 	
-	// ===== Util ===
+	// === Util === //
 	
 	/**
 	 * @deprecated Only for old bauble system.
@@ -325,5 +325,5 @@ public interface IDwmgBefriendedMob extends IBefriendedMob, /*IBaubleEquipable, 
 		}
 		return map;
 	}
-
+	
 }

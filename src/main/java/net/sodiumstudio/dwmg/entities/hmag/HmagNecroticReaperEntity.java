@@ -271,7 +271,7 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
+/*
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
@@ -286,7 +286,7 @@ public class HmagNecroticReaperEntity extends NecroticReaperEntity implements ID
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 	
