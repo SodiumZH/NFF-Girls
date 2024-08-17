@@ -348,11 +348,11 @@ public class HmagCreeperGirlEntity extends AbstractBefriendedCreeper implements 
 
 	// Misc
 	
-	@Override
+/*	@Override
 	public String getModId() {
 		return Dwmg.MOD_ID;
 	}
-	
+	*/
 	@Override
 	public double getMyRidingOffset()
 	{

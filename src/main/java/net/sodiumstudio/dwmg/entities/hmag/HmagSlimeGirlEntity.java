@@ -255,7 +255,7 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
+/*
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
@@ -270,7 +270,7 @@ public class HmagSlimeGirlEntity extends SlimeGirlEntity implements IDwmgBefrien
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 

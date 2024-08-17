@@ -227,7 +227,7 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
+/*
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
@@ -242,7 +242,7 @@ public class HmagHuskGirlEntity extends HuskGirlEntity implements IDwmgBefriende
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 

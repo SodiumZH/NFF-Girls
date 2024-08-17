@@ -221,7 +221,7 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
+/*
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
@@ -236,7 +236,7 @@ public class HmagCrimsonSlaughtererEntity extends CrimsonSlaughtererEntity imple
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 

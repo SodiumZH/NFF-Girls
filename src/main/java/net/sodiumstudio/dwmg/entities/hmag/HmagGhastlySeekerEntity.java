@@ -238,7 +238,7 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
+/*
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
@@ -247,13 +247,13 @@ public class HmagGhastlySeekerEntity extends GhastlySeekerEntity implements IDwm
 	/*@Override
 	public boolean isPreventingPlayerRest(Player pPlayer) {
 		return false;
-	}*/
+	}
 
 	@Override
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 

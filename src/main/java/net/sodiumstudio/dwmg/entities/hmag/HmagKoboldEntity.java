@@ -228,7 +228,7 @@ public class HmagKoboldEntity extends KoboldEntity implements IDwmgBefriendedMob
 	// ==================================================================== //
 	// ========================= General Settings ========================= //
 	// Generally these can be copy-pasted to other IBefriendedMob classes //
-
+/*
 	@Override
 	public boolean isPersistenceRequired() {
 		return true;
@@ -243,7 +243,7 @@ public class HmagKoboldEntity extends KoboldEntity implements IDwmgBefriendedMob
 	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
-
+*/
 	// ========================= General Settings end ========================= //
 	// ======================================================================== //
 
