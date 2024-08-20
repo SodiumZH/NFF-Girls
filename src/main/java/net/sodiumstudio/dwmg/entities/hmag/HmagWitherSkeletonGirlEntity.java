@@ -170,6 +170,7 @@ public class HmagWitherSkeletonGirlEntity extends WitherSkeletonGirlEntity imple
 		return new BefriendedInventoryWithEquipment(9, this);
 	}
 
+	@Override
 	public BefriendedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
 		return new InventoryMenuSkeleton(containerId, playerInventory, container, this);
 	}

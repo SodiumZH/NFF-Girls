@@ -65,7 +65,7 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 	public void onInit(UUID playerUUID, Mob from)
 	{
 		this.immuneToHotBiomes.putOptional("resistance_amulet", 
-				jf -> DwmgBaubleStatics.countBaubles(jf, new ResourceLocation("dwmg:resistance_amulet")) > 0);
+				jf -> DwmgBaubleStatics.countBaubles(jf, new ResourceLocation(Dwmg.MOD_ID, "resistance_amulet")) > 0);
 	}
 	/* Initialization */
 
@@ -204,7 +204,7 @@ public class HmagJackFrostEntity extends JackFrostEntity implements IDwmgBefrien
 	@SubscribeEvent
 	public static void onCheckMeltingBiome(DwmgHooks.JackFrostCheckMeltingBiomeEvent event)
 	{
-		if (event.getEntity() instanceof HmagJackFrostEntity jf && jf.hasDwmgBauble("courage_amulet"))
+		if (event.getEntity() instanceof HmagJackFrostEntity jf && jf.immuneToHotBiomes.test(jf))
 			event.setCanceled(true);
 	}
 	

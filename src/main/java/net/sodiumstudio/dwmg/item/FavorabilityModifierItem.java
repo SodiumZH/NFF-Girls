@@ -46,7 +46,7 @@ public class FavorabilityModifierItem extends NaUtilsItem
     	if (target.getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).isPresent())
     	{
     		target.getCapability(DwmgCapabilities.CAP_FAVORABILITY_HANDLER).ifPresent(cap -> {
-    			if (!player.level.isClientSide)
+    			if (!player.level().isClientSide)
 	    		{
 	    			if (!player.isShiftKeyDown())
 	    			{
@@ -64,7 +64,7 @@ public class FavorabilityModifierItem extends NaUtilsItem
 	    			}
     			}
     		});
-    		return InteractionResult.sidedSuccess(player.level.isClientSide);
+    		return InteractionResult.sidedSuccess(player.level().isClientSide);
     	}
     	return InteractionResult.PASS;
     }
