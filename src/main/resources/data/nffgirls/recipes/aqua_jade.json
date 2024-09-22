@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	" N ",
+	"NJN",
+	" N "	
+	],
+	
+	"key":{ 
+	
+		"N":{
+		"item": "minecraft:nautilus_shell"
+		},
+		
+		"J":{ 
+		"item": "nffgirls:healing_jade"
+		}		
+	},
+	
+	"result":{ 
+		"item": "nffgirls:aqua_jade",
+		"count": 1
+	}
+}

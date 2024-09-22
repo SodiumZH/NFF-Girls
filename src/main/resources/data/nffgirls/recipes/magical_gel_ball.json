@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	" S ",
+	"SCS",
+	" S "	
+	],
+	
+	"key":{ 
+	
+		"S":{
+		"item": "minecraft:slime_ball"
+		}, 
+		
+		"C":{ 
+		"item": "hmag:cubic_nucleus"
+		}
+	},
+	
+	"result":{ 
+		"item": "nffgirls:magical_gel_ball",
+		"count": 2
+	}
+}

@@ -1,0 +1,44 @@
+{
+  "type" : "minecraft:crafting_shapeless",
+  "ingredients" : [ 
+	  {
+	    "item" : "nffgirls:enderberry"
+	  }, 
+	  
+	  {
+	    "item" : "minecraft:sweet_berries"
+	  }, 
+	  	  
+	  {
+	    "item" : "minecraft:glow_berries"
+	  }, 
+	  	  
+	  {
+	    "tag" : "forge:foods/lemons"
+	  }, 
+	  
+	  {
+	    "tag" : "nffgirls:ender_fruit_jam_optional_fruits"
+	  }, 
+
+	  {
+	    "item" : "hmag:cubic_nucleus"
+	  },
+	  
+	  { 
+	  	"item" : "minecraft:honey_bottle"
+	  },
+	    
+	  {
+	    "item" : "minecraft:honey_bottle"
+	  }, 
+	  
+	  {
+	    "item" : "minecraft:honey_bottle"
+	  }
+  ],
+  "result" : {
+    "item" : "nffgirls:ender_fruit_jam",
+    "count" : 3
+  }
+}

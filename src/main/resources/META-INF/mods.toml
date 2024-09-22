@@ -3,38 +3,37 @@ loaderVersion="[47,)" #mandatory This is typically bumped every Minecraft versio
 license="LGPL-3.0"
 issueTrackerURL="https://github.com/SodiumZH/Days-with-Monster-Girls"
 [[mods]] #mandatory
-modId="dwmg" #mandatory
-version="0.2.24" #mandatory
-displayName="Days with Monster Girls" #mandatory
-#updateJSONURL="https://change.me.example.invalid/updates.json"
-displayURL="https://www.curseforge.com/minecraft/mc-mods/befriendmobs-days-with-monster-girls" 
+modId="nffgirls" #mandatory
+version="0.2.26-snapshot.2" #mandatory
+displayName="NFF: Girls" #mandatory
+displayURL="https://www.curseforge.com/minecraft/mc-mods/nff-girls" 
 #logoFile="examplemod.png" #optional
 credits="SodiumZH" #optional
 authors="SodiumZH" #optional
 description='''Enjoy your Minecraft days with monster girls!'''
 
-[[dependencies.dwmg]] #optional
+[[dependencies.nffgirls]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
     versionRange="[47,)" #mandatory
     ordering="NONE"
     side="BOTH"
     
-[[dependencies.dwmg]]
+[[dependencies.nffgirls]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.20.1, 1.20.2)"
     ordering="NONE"
     side="BOTH"
     
-[[dependencies.dwmg]]
-    modId="befriendmobs"
+[[dependencies.nffgirls]]
+    modId="nffservices"
     mandatory=true
-    versionRange="[0.2.25, 0.2.26)"
+    versionRange="[0.2.26-snapshot.2, 0.2.27)"
     ordering="NONE"
     side="BOTH"  
     
-[[dependencies.dwmg]]
+[[dependencies.nffgirls]]
     modId="hmag"
     mandatory=true
     versionRange="[9.0.20, 10.0)"

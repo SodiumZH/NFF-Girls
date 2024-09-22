@@ -1,0 +1,6 @@
+{
+    "parent": "nffgirls:item/reinforced_fishing_rod",
+    "textures": {
+        "layer0": "nffgirls:item/reinforced_fishing_rod_cast"
+    }
+}

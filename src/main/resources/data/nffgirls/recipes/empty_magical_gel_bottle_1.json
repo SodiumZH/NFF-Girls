@@ -1,0 +1,30 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"GMG",
+	"GMG",
+	"EGE"	
+	],
+	
+	"key":{ 
+	
+		"G":{
+		"item": "minecraft:glass"
+		},
+		
+		"M":{ 
+		"item": "nffgirls:magical_gel_ball"
+		},
+		
+		"E":{ 
+		"item": "hmag:evil_crystal"
+		}		
+	},
+	
+	"result":{ 
+		"item": "nffgirls:empty_magical_gel_bottle",
+		"count": 1
+	}
+}

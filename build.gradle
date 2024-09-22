@@ -181,11 +181,14 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
-	implementation fg.deobf("blank:befriendmobs-${mc_version}:${bm_version}")
-	jarJar(group: 'net.sodiumstudio.befriendmobs', name: 'befriendmobs', version: "[${mc_version}-${bm_version}, ${mc_version}-${bm_version_next})"){
-		jarJar.pin(it, "${mc_version}-${bm_version}")
+	implementation fg.deobf("blank:nffservices-${mc_version}:${services_version}")
+	/*jarJar(group: 'net.sodiumzh.nautils', name: 'nautils', version: "[${mc_version}-${nautils_version},)"){
+		jarJar.pin(it, "${mc_version}-${nautils_version}")
+	}*/
+	jarJar(group: 'net.sodiumzh', name: 'nffservices', version: "[${mc_version}-${services_version},)"){
+		jarJar.pin(it, "${mc_version}-${services_version}")
 	}
-
+	
     implementation fg.deobf("curse.maven:jade-324717:4986594")
     
     implementation fg.deobf("curse.maven:hmag-537613:5391571")
@@ -252,8 +255,8 @@ tasks.build.dependsOn tasks.jarJar
 jar.finalizedBy('reobfJarJar')
 
 mixin {
-    add sourceSets.main, "dwmg.refmap.json"
-    config 'dwmg.mixins.json'
+    add sourceSets.main, "nffgirls.refmap.json"
+    config 'nffgirls.mixins.json'
 }
 
 // Example configuration to allow publishing using the maven-publish plugin

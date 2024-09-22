@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "dwmg:item/empty_magical_gel_bottle"
-  }
-}
