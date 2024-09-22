@@ -119,7 +119,7 @@ minecraft {
         // This run config launches GameTestServer and runs all registered gametests, then exits.
         // By default, the server will crash when no gametests are provided.
         // The gametest system is also enabled by default for other run configs under the /test command.
-        gameTestServer {
+        /*gameTestServer {
             property 'forge.enabledGameTestNamespaces', mod_id
         }
 
@@ -129,7 +129,7 @@ minecraft {
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-        }
+        }*/
     }
 }
 
@@ -188,10 +188,26 @@ dependencies {
 	jarJar(group: 'net.sodiumzh', name: 'nffservices', version: "[${minecraft_version}-${services_version},)"){
 		jarJar.pin(it, "${minecraft_version}-${services_version}")
 	}
+    implementation fg.deobf("curse.maven:hmag-537613:${hmag_curseforge_file_id}")
+
+	implementation fg.deobf("curse.maven:jade-324717:4433884")
+	implementation fg.deobf("curse.maven:tf-227639:4389567")
+	implementation fg.deobf("curse.maven:gog4-228948:4683679")
+	//implementation fg.deobf("curse.maven:mobpets-941037:4907694")
+	implementation fg.deobf("curse.maven:patchouli-306770:4031402")
 	
-    implementation fg.deobf("curse.maven:jade-324717:4986594")
-    
-    implementation fg.deobf("curse.maven:hmag-537613:5391571")
+	// Testing compat mods
+	implementation fg.deobf("curse.maven:moonlight-499980:4312303")
+	implementation fg.deobf("curse.maven:testdummy-225738:4410143")
+	implementation fg.deobf("curse.maven:citadel-331936:4556677")
+	implementation fg.deobf("curse.maven:am-426558:4159154")	
+	implementation fg.deobf("curse.maven:iaf-264231:5037952")
+	implementation fg.deobf("curse.maven:bop-220318:4473556")
+	implementation fg.deobf("curse.maven:terrablender-563928:4618490")
+	implementation fg.deobf("curse.maven:corgilib-693313:4554111")
+	implementation fg.deobf("curse.maven:geckolib-388172:4407241")
+	implementation fg.deobf("curse.maven:byg-247560:5116293")
+	implementation fg.deobf("curse.maven:assortedtools-409802:4651299")
 	implementation fg.deobf("curse.maven:tf-227639:4755494")
 	//implementation fg.deobf("curse.maven:gog4-228948:4683680")
 

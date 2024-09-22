@@ -130,7 +130,7 @@ public class HmagJackFrostEntity extends JackFrostEntity implements INFFGirlTame
 			Runnable action2 = () -> {
 				action1.run();
 				for (int j = 0; j < 3; ++j)
-					action.accept(NaUtilsMathStatics.randomVector().scale(RndUtil.rndRangedDouble(0, 2)));
+					action.accept(NaUtilsMathStatics.randomUnitVector().scale(RndUtil.rndRangedDouble(0, 2)));
 			};
 			action2.run();
 			this.addMultipleDelayedActions(action2, 3, 6, 9, 12);
@@ -141,7 +141,7 @@ public class HmagJackFrostEntity extends JackFrostEntity implements INFFGirlTame
 			Runnable action3 = () -> {
 				action1.run();
 				for (int j = 0; j < 6; ++j)
-					action.accept(NaUtilsMathStatics.randomVector().scale(RndUtil.rndRangedDouble(0, 2)));
+					action.accept(NaUtilsMathStatics.randomUnitVector().scale(RndUtil.rndRangedDouble(0, 2)));
 			};
 			action3.run();
 			this.addMultipleDelayedActions(action3, 3, 6, 9, 12, 15, 18);

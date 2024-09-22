@@ -177,7 +177,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements INFFGi
 			Runnable action2 = () -> {
 				action1.run();
 				for (int j = 0; j < 3; ++j)
-					action.accept(NaUtilsMathStatics.randomVector().scale(RndUtil.rndRangedDouble(0, 2)));
+					action.accept(NaUtilsMathStatics.randomUnitVector().scale(RndUtil.rndRangedDouble(0, 2)));
 			};
 			action2.run();
 			this.addMultipleDelayedActions(action2, 3, 6, 9, 12);
@@ -188,7 +188,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements INFFGi
 			Runnable action3 = () -> {
 				action1.run();
 				for (int j = 0; j < 6; ++j)
-					action.accept(NaUtilsMathStatics.randomVector().scale(RndUtil.rndRangedDouble(0, 2)));
+					action.accept(NaUtilsMathStatics.randomUnitVector().scale(RndUtil.rndRangedDouble(0, 2)));
 			};
 			action3.run();
 			this.addMultipleDelayedActions(action3, 3, 6, 9, 12, 15, 18);
@@ -199,7 +199,7 @@ public class HmagMeltyMonsterEntity extends MeltyMonsterEntity implements INFFGi
 			Runnable action4 = () -> {
 				action1.run();
 				for (int j = 0; j < 9; ++j)
-					action.accept(NaUtilsMathStatics.randomVector().scale(RndUtil.rndRangedDouble(0, 3)));
+					action.accept(NaUtilsMathStatics.randomUnitVector().scale(RndUtil.rndRangedDouble(0, 3)));
 			};
 			action4.run();
 			this.addMultipleDelayedActions(action4, NaUtilsContainerStatics.intRangeArray(2, 20, 2));

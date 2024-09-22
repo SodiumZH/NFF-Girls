@@ -13,6 +13,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.sodiumzh.nautils.savedata.redirector.SaveDataLocationRedirector;
 import net.sodiumzh.nff.girls.registry.NFFGirlsBlocks;
+import net.sodiumzh.nff.girls.registry.NFFGirlsCapabilityAttachment;
 import net.sodiumzh.nff.girls.registry.NFFGirlsConfigs;
 import net.sodiumzh.nff.girls.registry.NFFGirlsEffects;
 import net.sodiumzh.nff.girls.registry.NFFGirlsEntityTypes;
@@ -60,9 +61,17 @@ public class NFFGirls
         
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-        redirectResourceLocations();
+        redirectSaveDataLocations();
 		//NFFServices.setDebugMode(true);
     }
-
+    
+    private static void redirectSaveDataLocations()
+    {
+		SaveDataLocationRedirector.get().redirectNamespace(MOD_ID_LEGACY, MOD_ID)
+		.redirectEntityCapability(new ResourceLocation(NFFGirls.MOD_ID_LEGACY, NFFGirlsCapabilityAttachment.KEY_FAVORABILITY_LEGACY), new ResourceLocation(NFFGirls.MOD_ID, NFFGirlsCapabilityAttachment.KEY_FAVORABILITY))
+		.redirectEntityCapability(new ResourceLocation(NFFGirls.MOD_ID_LEGACY, NFFGirlsCapabilityAttachment.KEY_TRADE_LEGACY), new ResourceLocation(NFFGirls.MOD_ID, NFFGirlsCapabilityAttachment.KEY_TRADE))
+		.redirectEntityCapability(new ResourceLocation(NFFGirls.MOD_ID_LEGACY, NFFGirlsCapabilityAttachment.KEY_UNDEAD_AFFINITY_HANDLER_LEGACY), new ResourceLocation(NFFGirls.MOD_ID, NFFGirlsCapabilityAttachment.KEY_UNDEAD_AFFINITY_HANDLER))
+		.redirectEntityCapability(new ResourceLocation(NFFGirls.MOD_ID_LEGACY, NFFGirlsCapabilityAttachment.KEY_XP_LEVEL_LEGACY), new ResourceLocation(NFFGirls.MOD_ID, NFFGirlsCapabilityAttachment.KEY_XP_LEVEL));
+    }
 
 }
