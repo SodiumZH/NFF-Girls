@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "nffgirls:soul_amulet_iii"
+  },
+  "addition": {
+    "item": "minecraft:music_disc_5"
+  },
+  "result": {
+    "item": "nffgirls:soul_amulet_iv"
+  }
+}

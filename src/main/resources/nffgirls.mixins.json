@@ -1,0 +1,13 @@
+{
+	"required": true,
+	"package": "net.sodiumzh.nff.girls.mixins",
+	"compatibilityLevel": "JAVA_17",
+	"refmap": "nffgirls.refmap.json",
+	"mixins": [
+		"NFFGirlsJackFrostEntityMixin",
+		"NFFGirlsMeltyMonsterEntityMixin"
+	],
+	"client": [
+	],
+	"minVersion": "0.8"
+}

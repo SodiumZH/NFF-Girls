@@ -1,0 +1,31 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"ESE",
+	"SDS",
+	"S S"	
+	],
+	
+	"key":{ 
+	
+		"S":{
+		"item": "nffgirls:soul_cloth"
+		},
+		
+		"D":{ 
+		"item": "nffgirls:death_crystal"
+		},
+		
+		"E":{ 
+		"item": "hmag:evil_crystal"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "nffgirls:necromancer_hat",
+		"count": 1
+	}
+}

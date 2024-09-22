@@ -1,0 +1,34 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"IRI",
+	"EOE",
+	"IRI"	
+	],
+	
+	"key":{ 
+	
+		"I":{
+		"tag": "forge:ingots/iron"
+		},
+		
+		"R":{ 
+		"item": "minecraft:redstone"
+		},
+		
+		"E":{ 
+		"item": "hmag:evil_crystal_fragment"
+		},
+		
+		"O":{ 
+		"item": "minecraft:obsidian"
+		}	
+	},
+	
+	"result":{ 
+		"item": "nffgirls:empty_mob_storage_pod",
+		"count": 1
+	}
+}

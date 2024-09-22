@@ -1,0 +1,39 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	" E ",
+	"GJS",
+	"FFF"	
+	],
+	
+	"key":{ 
+	
+		"E":{
+		"item": "minecraft:ender_eye"
+		},
+		
+		"G":{ 
+		"item": "minecraft:egg"
+		},
+		
+		"J":{ 
+		"item": "nffgirls:ender_fruit_jam"
+		},
+		
+		"S":{ 
+		"item": "minecraft:sugar"
+		},
+		
+		"F":{ 
+		"item": "nffgirls:soul_flour"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "nffgirls:ender_pie",
+		"count": 1
+	}
+}

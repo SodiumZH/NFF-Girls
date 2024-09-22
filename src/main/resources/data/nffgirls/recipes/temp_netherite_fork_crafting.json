@@ -1,0 +1,27 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"N N",
+	"NNN",
+	" S "	
+	],
+	
+	"key":{ 
+	
+		"N":{
+		"item": "minecraft:netherite_ingot"
+		},
+		
+		"S":{ 
+		"item": "minecraft:stick"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "nffgirls:netherite_fork",
+		"count": 1
+	}
+}

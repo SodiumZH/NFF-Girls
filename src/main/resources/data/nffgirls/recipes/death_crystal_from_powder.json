@@ -1,0 +1,37 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	
+  	"ingredients": [
+	    {
+	      "item": "nffgirls:death_crystal_powder"
+	    },
+	    {
+	      "item": "nffgirls:death_crystal_powder"
+	    },
+	    {
+	      "item": "nffgirls:death_crystal_powder"
+	    },
+	    {
+	      "item": "nffgirls:death_crystal_powder"
+	    },
+	    {
+	      "item": "nffgirls:death_crystal_powder"
+	    },
+	    {
+	      "item": "nffgirls:death_crystal_powder"
+	    },
+	    {
+	      "item": "nffgirls:death_crystal_powder"
+	    },
+	    {
+	      "item": "nffgirls:death_crystal_powder"
+	    },
+	    {
+	      "item": "nffgirls:death_crystal_powder"
+	    }
+  	],
+  	"result": {
+	    "item": "nffgirls:death_crystal",
+	    "count": 1
+  }
+}
