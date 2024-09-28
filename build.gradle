@@ -208,7 +208,6 @@ dependencies {
 	implementation fg.deobf("curse.maven:geckolib-388172:4407241")
 	implementation fg.deobf("curse.maven:byg-247560:5116293")
 	implementation fg.deobf("curse.maven:assortedtools-409802:4651299")
-	implementation fg.deobf("curse.maven:tf-227639:4755494")
 	//implementation fg.deobf("curse.maven:gog4-228948:4683680")
 
     // For more info:
