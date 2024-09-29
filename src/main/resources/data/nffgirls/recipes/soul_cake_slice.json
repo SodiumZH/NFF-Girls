@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "nffgirls:soul_cake"
+    }
+  ],
+  "result": {
+    "item": "nffgirls:soul_cake_slice",
+    "count": 2
+  }
+}

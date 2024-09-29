@@ -1,6 +1,0 @@
-{
-    "parent": "dwmg:item/reinforced_fishing_rod",
-    "textures": {
-        "layer0": "dwmg:item/reinforced_fishing_rod_cast"
-    }
-}

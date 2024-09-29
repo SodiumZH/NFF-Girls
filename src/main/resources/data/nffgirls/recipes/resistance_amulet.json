@@ -1,0 +1,35 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"ROR",
+	"DSD",
+	"ROR"	
+	],
+	
+	"key":{ 
+	
+		"R":{
+		"item": "hmag:reinforcing_chain"
+		},
+		
+		"O":{
+		"item": "minecraft:obsidian"
+		},
+		
+		"D":{ 
+		"tag": "forge:gems/diamond"
+		},
+		
+		"S":{ 
+		"item": "hmag:burning_core"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "nffgirls:resistance_amulet",
+		"count": 1
+	}
+}

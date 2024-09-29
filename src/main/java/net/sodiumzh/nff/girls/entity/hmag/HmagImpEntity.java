@@ -1,0 +1,228 @@
+package net.sodiumzh.nff.girls.entity.hmag;
+
+import java.util.Arrays;
+import java.util.Collection;
+
+import com.github.mechalopa.hmag.world.entity.ImpEntity;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.sodiumzh.nautils.statics.NaUtilsContainerStatics;
+import net.sodiumzh.nautils.statics.NaUtilsTagStatics;
+import net.sodiumzh.nff.girls.NFFGirls;
+import net.sodiumzh.nff.girls.entity.INFFGirlsTamed;
+import net.sodiumzh.nff.girls.entity.ai.goal.IBlockLocator;
+import net.sodiumzh.nff.girls.entity.ai.goal.NFFGirlsFollowOwnerGoal;
+import net.sodiumzh.nff.girls.entity.ai.goal.NFFGirlsLocateBlockGoal;
+import net.sodiumzh.nff.girls.entity.ai.goal.target.NFFGirlsNearestHostileToOwnerTargetGoal;
+import net.sodiumzh.nff.girls.entity.ai.goal.target.NFFGirlsNearestHostileToSelfTargetGoal;
+import net.sodiumzh.nff.girls.inventory.HmagImpInventoryMenu;
+import net.sodiumzh.nff.girls.registry.NFFGirlsHealingItems;
+import net.sodiumzh.nff.girls.registry.NFFGirlsItems;
+import net.sodiumzh.nff.girls.sound.NFFGirlsSoundPresets;
+import net.sodiumzh.nff.girls.util.NFFGirlsEntityStatics;
+import net.sodiumzh.nff.services.entity.ai.goal.preset.NFFMeleeAttackGoal;
+import net.sodiumzh.nff.services.entity.ai.goal.preset.NFFWaterAvoidingRandomStrollGoal;
+import net.sodiumzh.nff.services.entity.ai.goal.preset.target.NFFHurtByTargetGoal;
+import net.sodiumzh.nff.services.entity.ai.goal.preset.target.NFFOwnerHurtByTargetGoal;
+import net.sodiumzh.nff.services.entity.ai.goal.preset.target.NFFOwnerHurtTargetGoal;
+import net.sodiumzh.nff.services.entity.capability.HealingItemTable;
+import net.sodiumzh.nff.services.entity.taming.NFFTamedStatics;
+import net.sodiumzh.nff.services.inventory.NFFTamedInventoryMenu;
+import net.sodiumzh.nff.services.inventory.NFFTamedMobInventory;
+import net.sodiumzh.nff.services.inventory.NFFTamedMobInventoryWithHandItems;
+
+public class HmagImpEntity extends ImpEntity implements INFFGirlsTamed, IBlockLocator
+{
+
+	/* Initialization */
+
+	public HmagImpEntity(EntityType<? extends HmagImpEntity> pEntityType, Level pLevel) {
+		super(pEntityType, pLevel);
+		this.xpReward = 0;
+		Arrays.fill(this.armorDropChances, 0);
+		Arrays.fill(this.handDropChances, 0);
+	}
+
+	/* AI */
+
+	@Override
+	protected void registerGoals() {
+		goalSelector.addGoal(1, new FloatGoal(this));
+		goalSelector.addGoal(3, new NFFMeleeAttackGoal(this, 1.0d, true));
+		goalSelector.addGoal(3, new NFFGirlsLocateBlockGoal(this, 6d));
+		goalSelector.addGoal(4, new NFFGirlsFollowOwnerGoal(this, 1.0d, 5.0f, 2.0f, false));
+		goalSelector.addGoal(5, new NFFWaterAvoidingRandomStrollGoal(this, 1.0d));
+		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+		targetSelector.addGoal(1, new NFFOwnerHurtByTargetGoal(this));
+		targetSelector.addGoal(2, new NFFHurtByTargetGoal(this));
+		targetSelector.addGoal(3, new NFFOwnerHurtTargetGoal(this));
+		targetSelector.addGoal(5, new NFFGirlsNearestHostileToSelfTargetGoal(this));
+		targetSelector.addGoal(6, new NFFGirlsNearestHostileToOwnerTargetGoal(this));
+	}
+	
+	/* Interaction */
+
+	// Map items that can heal the mob and healing values here.
+	// Leave it empty if you don't need healing features.
+	@SuppressWarnings("unchecked")
+	@Override
+	public HealingItemTable getHealingItems()
+	{
+		return NFFGirlsHealingItems.GENERAL_HUMANOID_0;
+	}
+
+	@Override
+	public InteractionResult mobInteract(Player player, InteractionHand hand)
+	{
+		if (player.getUUID().equals(getOwnerUUID())) {
+			// For normal interaction
+			if (!player.isShiftKeyDown())
+			{
+				if (!player.level.isClientSide()) 
+				{
+					/* Put checks before healing item check */
+					/* if (....)
+					 {
+					 	....
+					 }
+					else */if (this.tryApplyHealingItems(player.getItemInHand(hand)) != InteractionResult.PASS)
+						return InteractionResult.sidedSuccess(player.level.isClientSide);
+					// The function above returns PASS when the items are not correct. So when not PASS it should stop here
+					else if (hand == InteractionHand.MAIN_HAND && NFFGirlsEntityStatics.isOnEitherHand(player, NFFGirlsItems.COMMANDING_WAND.get()))
+					{
+						switchAIState();
+					}
+					// Here it's main hand but no interaction. Return pass to enable off hand interaction.
+					else return InteractionResult.PASS;
+				}
+				// Interacted
+				return InteractionResult.sidedSuccess(player.level.isClientSide);
+			}
+			// For interaction with shift key down
+			else
+			{
+				// Open inventory and GUI
+				if (hand == InteractionHand.MAIN_HAND && NFFGirlsEntityStatics.isOnEitherHand(player, NFFGirlsItems.COMMANDING_WAND.get()))
+				{
+					NFFTamedStatics.openBefriendedInventory(player, this);
+					return InteractionResult.sidedSuccess(player.level.isClientSide);
+				}
+			}
+		} 
+		// Always pass when not owning this mob
+		return InteractionResult.PASS;
+	}
+	
+	/* Inventory */
+
+	@Override
+	public NFFTamedMobInventory createAdditionalInventory() {
+		return new NFFTamedMobInventoryWithHandItems(4, this);
+	}
+
+	@Override
+	public NFFTamedInventoryMenu makeMenu(int containerId, Inventory playerInventory, Container container) {
+		return new HmagImpInventoryMenu(containerId, playerInventory, container, this);
+	}
+
+	// IBlockLocator interface
+
+	@Override
+	public Collection<Block> getLocatingBlocks() {
+		if (!this.getAdditionalInventory().getItem(0).is(NFFGirlsItems.NETHERITE_FORK.get()))
+			return NaUtilsContainerStatics.listOf();
+		Item offhand = this.getOffhandItem().getItem();
+		if (NaUtilsTagStatics.hasTag(offhand, "forge:nuggets/netherite_scrap"))
+			return NaUtilsTagStatics.getAllBlocksUnderTag("forge:ores/netherite_scrap");
+		return NaUtilsContainerStatics.listOf();
+	}
+
+	@Override
+	public int getFrequency()
+	{
+		return 10 * 20;
+	}
+	
+	@Override
+	public void onStartLocating()
+	{
+		this.getAdditionalInventory().getItem(1).shrink(1);
+		this.updateFromInventory();
+	}
+	
+	/* Save and Load */
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag nbt) {
+		super.readAdditionalSaveData(nbt);
+		NFFTamedStatics.readBefriendedCommonSaveData(this, nbt);
+		setInit();
+	}
+/*
+	@Override
+	public HashMap<String, ItemStack> getBaubleSlots() {
+		HashMap<String, ItemStack> map = new HashMap<String, ItemStack>();
+		map.put("0", this.getAdditionalInventory().getItem(2));
+		map.put("1", this.getAdditionalInventory().getItem(3));
+		return map;
+	}
+
+	@Override
+	public BaubleHandler getBaubleHandler() {
+		return DwmgBaubleHandlers.GENERAL;
+	}
+	*/
+	// Misc
+	
+	// Indicates which mod this mob belongs to
+	@Override
+	public String getModId() {
+		return NFFGirls.MOD_ID;
+	}
+	
+	// Sounds
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return NFFGirlsSoundPresets.generalAmbient(super.getAmbientSound());
+	}
+	
+	// ==================================================================== //
+	// ========================= General Settings ========================= //
+	// Generally these can be copy-pasted to other INFFTamed classes //
+/*
+	@Override
+	public boolean isPersistenceRequired() {
+		return true;
+	}
+
+	@Override
+	public boolean isPreventingPlayerRest(Player pPlayer) {
+		return false;
+	}
+
+	@Override
+	protected boolean shouldDespawnInPeaceful() {
+		return false;
+	}
+*/
+	// ========================= General Settings end ========================= //
+	// ======================================================================== //
+
+}
+

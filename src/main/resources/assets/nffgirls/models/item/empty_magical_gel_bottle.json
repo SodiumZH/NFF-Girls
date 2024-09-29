@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "nffgirls:item/empty_magical_gel_bottle"
+  }
+}

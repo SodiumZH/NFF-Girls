@@ -1,0 +1,38 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	
+	"ingredients":[ 		
+		{ 
+			"tag": "nffgirls:hmag_berries"
+		},
+		{
+			"tag": "nffgirls:enderberry_crafting_ingredients_a"
+		},
+		{
+			"tag": "nffgirls:enderberry_crafting_ingredients_a"
+		},
+		{ 
+			"tag": "nffgirls:enderberry_crafting_ingredients_b"
+		},
+		{ 
+			"tag": "nffgirls:enderberry_crafting_ingredients_b"
+		},
+		{ 
+			"item": "minecraft:ender_eye"
+		},
+		{ 
+			"item": "minecraft:ender_pearl"
+		},
+		{ 
+			"item": "hmag:lightning_particle"
+		},
+		{ 
+			"item": "hmag:ancient_stone"
+		}
+	],
+	
+	"result":{ 
+		"item": "nffgirls:enderberry",
+		"count": 1
+	}
+}

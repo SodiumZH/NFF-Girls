@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"EEE",
+	"EGE",
+	"EEE"	
+	],
+	
+	"key":{ 
+	
+		"G":{
+		"tag": "forge:gems/emerald"
+		},
+		
+		"E":{ 
+		"item": "hmag:evil_crystal_fragment"
+		}		
+	},
+	
+	"result":{ 
+		"item": "nffgirls:evil_gem",
+		"count": 1
+	}
+}

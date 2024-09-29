@@ -1,0 +1,35 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	" PF",
+	"PCP",
+	"IP "	
+	],
+	
+	"key":{ 
+	
+		"F":{ 
+		"item": "hmag:necrofiber"
+		},
+		
+		"C":{ 
+		"item": "minecraft:netherite_scrap"
+		},
+		
+		"P":{ 
+		"item": "nffgirls:death_crystal_powder"
+		},
+		
+		"I":{ 
+		"item": "hmag:lightning_particle"
+		}
+		
+	},
+	
+	"result":{ 
+		"item": "nffgirls:soul_amulet",
+		"count": 1
+	}
+}

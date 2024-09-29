@@ -1,0 +1,27 @@
+{
+	"type": "minecraft:crafting_shaped",
+	
+	"pattern": 
+	[ 
+	"CCC",
+	"CSC",
+	"CCC"	
+	],
+	
+	"key":{ 
+	
+
+		"C":{ 
+		"tag": "minecraft:wool_carpets"
+		},
+		
+		"S":{ 
+		"item": "nffgirls:soul_cloth"
+		}
+	},
+	
+	"result":{ 
+		"item": "nffgirls:soul_carpet",
+		"count": 9
+	}
+}

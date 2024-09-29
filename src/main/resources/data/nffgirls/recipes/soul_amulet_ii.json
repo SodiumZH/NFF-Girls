@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:zombie_head"
+  },
+  "base": {
+    "item": "nffgirls:soul_amulet"
+  },
+  "result": {
+    "item": "nffgirls:soul_amulet_ii"
+  },
+    "template": {
+    "item": "hmag:evil_crystal_upgrade_smithing_template"
+  }
+}
