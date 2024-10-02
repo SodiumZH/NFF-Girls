@@ -41,24 +41,24 @@ public class NFFGirlsConfigs
 	static
 	{
 		BUILDER.push("sound");
-		AMBIENT_SOUND_CHANCE = BUILDER.comment("Befriended mob ambient sound frequency is multiplied by this number.")
+		AMBIENT_SOUND_CHANCE = BUILDER.comment("Friendly mobs in NFF-Girls mods ambient sound frequency is multiplied by this number.")
 				.defineInRange("ambientSoundChance", 1.0d, 0.0d, 1.0d);
-		ZOMBIES_USE_GIRL_SOUND = BUILDER.comment("If true, befriended Zombie Girls and variants will use HMaG default girl sound.")
+		ZOMBIES_USE_GIRL_SOUND = BUILDER.comment("If true, friendly Zombie Girls and variants will use HMaG default girl sound.")
 				.define("zombiesUseGirlSound", false);
-		SKELETONS_USE_GIRL_SOUND = BUILDER.comment("If true, befriended Skeleton Girls and variants will use HMaG default girl sound.")
+		SKELETONS_USE_GIRL_SOUND = BUILDER.comment("If true, friendly Skeleton Girls and variants will use HMaG default girl sound.")
 				.define("skeletonsUseGirlSound", false);
-		GHASTS_USE_GIRL_SOUND = BUILDER.comment("If true, befriended Ghastly Seekers will use HMaG default girl sound.")
+		GHASTS_USE_GIRL_SOUND = BUILDER.comment("If true, friendly Ghastly Seekers will use HMaG default girl sound.")
 				.define("ghastsUseGirlSound", false);
-		ZOMBIES_NO_AMBIENT_SOUND = BUILDER.comment("If true, befriended Zombie Girls and variants will not make ambient sound.")
+		ZOMBIES_NO_AMBIENT_SOUND = BUILDER.comment("If true, friendly Zombie Girls and variants will not make ambient sound.")
 				.define("zombiesNoAmbientSound", false);
-		SKELETONS_NO_AMBIENT_SOUND = BUILDER.comment("If true, befriended Skeleton Girls and variants will not make ambient sound.")
+		SKELETONS_NO_AMBIENT_SOUND = BUILDER.comment("If true, friendly Skeleton Girls and variants will not make ambient sound.")
 				.define("skeletonsNoAmbientSound", false);
-		GHASTS_NO_AMBIENT_SOUND = BUILDER.comment("If true, befriended Ghastly Seekers will not make ambient sound.")
+		GHASTS_NO_AMBIENT_SOUND = BUILDER.comment("If true, friendly Ghastly Seekers will not make ambient sound.")
 				.define("ghastsNoAmbientSound", false);
 		BUILDER.pop();
 		
 		BUILDER.push("combat");
-		ENABLE_PROJECTILE_FRIENDLY_DAMAGE = BUILDER.comment("If true, projectiles from befriended mobs will hurt allies.")
+		ENABLE_PROJECTILE_FRIENDLY_DAMAGE = BUILDER.comment("If true, projectiles from friendly mobs in NFF-Girls mods will hurt allies.")
 				.define("enableProjectileFriendlyDamage", false);
 		MAX_HEALTH_BOOST_BY_LEVEL = BUILDER.comment("Max (max HP) value increase by level upgrade. Zero = no limit.")
 				.defineInRange("maxHealthIncreaseByLevel", 0, 0, 1e+6);
@@ -75,11 +75,11 @@ public class NFFGirlsConfigs
 				.define("allowVanillaConversion", true);
 		ALLOW_REVERSE_CONVERSION = BUILDER.comment("Allow reverting vanilla conversion if true, i.e. Drowned -> Zombie -> Husk; Stray -> Skeleton.")
 				.define("allowReverseConversion", true);
-		ALL_ZOMBIE_GIRLS_CAN_CONVERT_TO_HUSKS = BUILDER.comment("If true, all befriended Zombie Girls can be converted to Husk Girls with Sponge, no matter if they're converted from Husk Girls.")
+		ALL_ZOMBIE_GIRLS_CAN_CONVERT_TO_HUSKS = BUILDER.comment("If true, all friendly Zombie Girls can be converted to Husk Girls with Sponge, no matter if they're converted from Husk Girls.")
 				.define("allZombieGirlsCanConvertToHusks", false);
-		ALL_DROWNED_GIRLS_CAN_CONVERT_TO_ZOMBIES = BUILDER.comment("If true, all befriended Drowned Girls can be converted to Zombie Girls with Sponge, no matter if they're converted from Zombie Girls.")
+		ALL_DROWNED_GIRLS_CAN_CONVERT_TO_ZOMBIES = BUILDER.comment("If true, all friendly Drowned Girls can be converted to Zombie Girls with Sponge, no matter if they're converted from Zombie Girls.")
 				.define("allDrownedGirlsCanConvertToZombies", false);
-		ALL_STRAY_GIRLS_CAN_CONVERT_TO_SKELETONS = BUILDER.comment("If true, all befriended Stray Girls can be converted to Skeleton Girls with Flint and Steel, no matter if they're converted from Skeleton Girls.")
+		ALL_STRAY_GIRLS_CAN_CONVERT_TO_SKELETONS = BUILDER.comment("If true, all friendly Stray Girls can be converted to Skeleton Girls with Flint and Steel, no matter if they're converted from Skeleton Girls.")
 				.define("allStrayGirlsCanConvertToSkeletons", false);
 		BUILDER.pop();
 		
