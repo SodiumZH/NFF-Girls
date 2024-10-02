@@ -112,7 +112,7 @@ public class HmagCursedDollTamingProcess extends NFFTamingProcess
 						NaUtilsParticleStatics.sendHeartParticlesToEntityDefault(mob);
 						ATK_MOD.clear(player, Attributes.ATTACK_DAMAGE);
 						result.setHandled();
-						result.nFFTamed = befriend(player, mob);
+						result.nFFTamed = this.doTaming(player, mob);
 						return result;
 					}
 					else

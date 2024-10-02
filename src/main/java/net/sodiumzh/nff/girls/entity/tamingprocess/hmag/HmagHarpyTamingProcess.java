@@ -11,14 +11,14 @@ public class HmagHarpyTamingProcess extends HmagSnowCanineTamingProcess
 {
 
 	@Override
-	public INFFTamed befriend(Player player, Mob target)
+	public INFFTamed doTaming(Player player, Mob target)
 	{
 		HarpyEntity.Variant variant = HarpyEntity.Variant.byId(0);
 		if (target instanceof HarpyEntity h)
 		{
 			variant = h.getVariant();
 		}
-		INFFTamed mob = super.befriend(player, target);
+		INFFTamed mob = super.doTaming(player, target);
 		if (mob instanceof HmagHarpyEntity h && variant.getId() >= 0)
 		{
 			h.setVariant(variant);

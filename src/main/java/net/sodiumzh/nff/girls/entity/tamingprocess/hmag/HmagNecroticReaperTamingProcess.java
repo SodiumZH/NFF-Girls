@@ -185,7 +185,7 @@ public class HmagNecroticReaperTamingProcess extends NFFTamingProcess
 		{
 			clearModifier(cap);
 			NaUtilsEntityStatics.sendHeartParticlesToLivingDefault(mob);
-			befriend(player, mob);
+			doTaming(player, mob);
 			return true;
 		}
 		// Otherwise just increase the number

@@ -194,7 +194,7 @@ public abstract class NFFGirlsItemDroppingTamingProcess extends NFFTamingProcess
 				{
 					mob.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
 					NaUtilsEntityStatics.sendHeartParticlesToLivingDefault(mob);
-					befriend(player, mob);
+					doTaming(player, mob);
 					return;
 				}
 				else

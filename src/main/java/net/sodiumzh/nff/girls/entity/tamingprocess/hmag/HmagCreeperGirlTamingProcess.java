@@ -30,10 +30,10 @@ public class HmagCreeperGirlTamingProcess extends TamingProcessItemGivingProgres
 {
 	
 	@Override
-	public INFFTamed befriend(Player player, Mob target)
+	public INFFTamed doTaming(Player player, Mob target)
 	{
 		target.setNoAi(false);
-		return super.befriend(player, target);
+		return super.doTaming(player, target);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class HmagCreeperGirlTamingProcess extends TamingProcessItemGivingProgres
 				}
 				else
 				{
-					this.befriend(player, mob);
+					this.doTaming(player, mob);
 					NaUtilsEntityStatics.sendHeartParticlesToLivingDefault(mob);
 				}
 			}

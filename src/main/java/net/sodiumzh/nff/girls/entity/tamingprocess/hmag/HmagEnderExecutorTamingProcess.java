@@ -34,10 +34,10 @@ public class HmagEnderExecutorTamingProcess extends TamingProcessItemGivingProgr
 	}
 
 	@Override
-	public INFFTamed befriend(Player player, Mob target)
+	public INFFTamed doTaming(Player player, Mob target)
 	{
 		((EnderExecutorEntity)target).setCarriedBlock(null);
-		return super.befriend(player, target);
+		return super.doTaming(player, target);
 	}
 	
 	@Override

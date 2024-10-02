@@ -158,7 +158,7 @@ public class HmagJiangshiTamingProcess extends NFFTamingProcess
 				MODIFIERS.apply(mob, 0);
 				thunderEffect(mob);
 				NaUtilsEntityStatics.sendHeartParticlesToLivingDefault(mob);
-				Mob bm = (Mob) befriend(player, mob);
+				Mob bm = (Mob) doTaming(player, mob);
 				bm.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 10 * 20));
 				return;
 			}
