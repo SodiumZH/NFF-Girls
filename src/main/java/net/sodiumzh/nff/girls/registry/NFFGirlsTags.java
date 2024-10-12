@@ -14,7 +14,7 @@ public class NFFGirlsTags
 	public static final TagKey<Block> NIGHTWALKER_MAGIC_BALL_AFFECTS = NaUtilsTagStatics.createBlockTag
 			(NFFGirls.MOD_ID, "nightwalker_magic_ball_affects");
 	public static final TagKey<Block> CAN_BEFRIEND_NIGHTWALKERS_ON = NaUtilsTagStatics.createBlockTag(
-			NFFGirls.MOD_ID, "can_befriend_nightwalkers_on");
+			NFFGirls.MOD_ID, "can_tame_nightwalkers_on");
 	
 	public static final TagKey<Item> DEATH_CRYSTAL_INGREDIENTS = NaUtilsTagStatics.createItemTag(
 			NFFGirls.MOD_ID, "death_crystal_ingredients");
