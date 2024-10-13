@@ -9,9 +9,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.sodiumzh.nautils.Wrapped;
 import net.sodiumzh.nff.girls.entity.projectile.MagicalGelBallEntity;
 import net.sodiumzh.nff.services.registry.NFFCapRegistry;
+import org.apache.commons.lang3.mutable.MutableObject;
 
 public class MagicalGelBallItem extends Item
 {
@@ -24,12 +24,12 @@ public class MagicalGelBallItem extends Item
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
 		ItemStack itemstack = pPlayer.getItemInHand(pHand);
-		Wrapped<Boolean> noUse = new Wrapped<>(false);
+		MutableObject<Boolean> noUse = new MutableObject<>(false);
 		pPlayer.getCapability(NFFCapRegistry.CAP_BM_PLAYER).ifPresent(c -> {
 			if (c.getNbt().contains("magical_gel_ball_no_use"))
-				noUse.set(true);
+				noUse.setValue(true);
 		});
-		if (noUse.get())
+		if (noUse.getValue())
 			return InteractionResultHolder.pass(itemstack);
 		pLevel.playSound((Player) null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.SNOWBALL_THROW,
 				SoundSource.NEUTRAL, 0.5F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));

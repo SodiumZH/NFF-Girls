@@ -14,7 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.sodiumzh.nautils.Wrapped;
+import org.apache.commons.lang3.mutable.MutableObject;
 import net.sodiumzh.nautils.math.RndUtil;
 import net.sodiumzh.nautils.statics.NaUtilsEntityStatics;
 import net.sodiumzh.nff.girls.NFFGirls;
@@ -38,12 +38,12 @@ public class HmagCreeperGirlTamingProcess extends TamingProcessItemGivingProgres
 	@Override
 	public boolean additionalConditions(Player player, Mob mob)
 	{
-		Wrapped<Boolean> res = new Wrapped<Boolean>(false);
+		MutableObject<Boolean> res = new MutableObject<Boolean>(false);
 		mob.getCapability(NFFCapRegistry.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> 
 		{
-			res.set(!cap.hasTimer("final_explosion_fail_cooldown"));
+			res.setValue(!cap.hasTimer("final_explosion_fail_cooldown"));
 		});
-		return res.get();
+		return res.getValue();
 	}
 	
 	@Override

@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.sodiumzh.nautils.Wrapped;
+import org.apache.commons.lang3.mutable.MutableObject;
 import net.sodiumzh.nff.girls.entity.handlers.hmag.HmagJiangshiTamingProcess;
 import net.sodiumzh.nff.services.entity.taming.NFFTamingMapping;
 import net.sodiumzh.nff.services.registry.NFFCapRegistry;
@@ -29,7 +29,7 @@ public class TaoistTalismanItem extends Item
 	{
 		if (!player.level.isClientSide && living.getType() == ModEntityTypes.JIANGSHI.get() && living instanceof JiangshiEntity js)
 		{
-			Wrapped<Boolean> interacted = new Wrapped<>(false);
+			MutableObject<Boolean> interacted = new MutableObject<>(false);
 			if (NFFTamingMapping.getHandler(js) != null && NFFTamingMapping.getHandler(js) instanceof HmagJiangshiTamingProcess handler)
 			{
 				js.getCapability(NFFCapRegistry.CAP_BEFRIENDABLE_MOB).ifPresent(cap ->
@@ -37,13 +37,13 @@ public class TaoistTalismanItem extends Item
 					if (handler.applyTalisman(js));
 					{
 						stack.shrink(1);
-						interacted.set(true);
+						interacted.setValue(true);
 						living.level.playSound(null, living, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundSource.BLOCKS, 2.0f, 1.0f);
 					}
 				});
 				
 			}
-			if (interacted.get())
+			if (interacted.getValue())
 				return InteractionResult.sidedSuccess(player.level.isClientSide);
 		}
 		return InteractionResult.PASS;

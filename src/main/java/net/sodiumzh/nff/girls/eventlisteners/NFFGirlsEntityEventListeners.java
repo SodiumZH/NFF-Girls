@@ -81,7 +81,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-import net.sodiumzh.nautils.Wrapped;
+import org.apache.commons.lang3.mutable.MutableObject;
 import net.sodiumzh.nautils.block.ColoredBlocks;
 import net.sodiumzh.nautils.mixin.events.entity.ItemEntityHurtEvent;
 import net.sodiumzh.nautils.mixin.events.entity.LivingEntitySweepHurtEvent;
@@ -160,7 +160,7 @@ public class NFFGirlsEntityEventListeners
 		@SuppressWarnings("deprecation")
 		LivingEntity target = event.getTarget();		
 		LivingEntity lastHurtBy = event.getEntity().getLastHurtByMob();
-		Wrapped<Boolean> isCancelledByEffect = new Wrapped<Boolean>(Boolean.FALSE);
+		MutableObject<Boolean> isCancelledByEffect = new MutableObject<Boolean>(Boolean.FALSE);
 		
 		// Handle mobs //
 		if (target != null && event.getEntity() instanceof Mob mob)
@@ -176,7 +176,7 @@ public class NFFGirlsEntityEventListeners
         			if (target != null && target.hasEffect(NFFGirlsEffects.UNDEAD_AFFINITY.get()) && lastHurtBy != target && !l.getHatred().contains(target.getUUID()))
         			{
         				mob.setTarget(null);
-        				isCancelledByEffect.set(true);
+        				isCancelledByEffect.setValue(true);
         			}
         			// Hatred will be added in priority-lowest event
         		});
@@ -554,12 +554,12 @@ public class NFFGirlsEntityEventListeners
 				)
 				
 			{
-				Wrapped<Boolean> inHatred = new Wrapped<Boolean>(false);
+				MutableObject<Boolean> inHatred = new MutableObject<Boolean>(false);
 				event.mob.getCapability(NFFCapRegistry.CAP_BEFRIENDABLE_MOB).ifPresent((cap) -> 
 				{
-					inHatred.set(cap.isInHatred(event.toAdd));
+					inHatred.setValue(cap.isInHatred(event.toAdd));
 				});
-				if (!inHatred.get())
+				if (!inHatred.getValue())
 					event.setCanceled(true);
 			}
 		}
