@@ -1,5 +1,19 @@
 # Change Log
 
+### 0.x.26
+
+WARNING: This update has massive save data format changes. Back up before update!
+
+Renamed project name from *Days with Monster Girls* to *NFF: Girls*.
+
+Renamed mod ID from `dwmg` to `nffgirls`.
+
+Fixed mobs not moving on wandering mode.
+
+Renamed tag:
+
+​	- `dwmg:can_befriend_nightwalker_on` -> `nffgirls:can_tame_nightwalker_on`
+
 ### 0.x.25
 
 WARNING: This update has save data format changes. Back up before update!
