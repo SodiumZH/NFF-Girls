@@ -1,5 +1,6 @@
 package net.sodiumzh.nff.girls.registry;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.github.mechalopa.hmag.world.item.ModSwordItem;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -23,22 +25,7 @@ import net.sodiumzh.nautils.statics.NaUtilsInfoStatics;
 import net.sodiumzh.nff.girls.NFFGirls;
 import net.sodiumzh.nff.girls.NFFGirlsTab;
 import net.sodiumzh.nff.girls.entity.INFFGirlTamed;
-import net.sodiumzh.nff.girls.item.NFFTamingProgressProbeItem;
-import net.sodiumzh.nff.girls.item.DwmgRespawnerItem;
-import net.sodiumzh.nff.girls.item.EmptyMagicalGelBottleItem;
-import net.sodiumzh.nff.girls.item.XPModifierItem;
-import net.sodiumzh.nff.girls.item.FavorabilityModifierItem;
-import net.sodiumzh.nff.girls.item.CommandingWandItem;
-import net.sodiumzh.nff.girls.item.EvilMagnetItem;
-import net.sodiumzh.nff.girls.item.NecromancerArmorItem;
-import net.sodiumzh.nff.girls.item.NecromancerWandItem;
-import net.sodiumzh.nff.girls.item.MagicalGelBallItem;
-import net.sodiumzh.nff.girls.item.MagicalGelBottleItem;
-import net.sodiumzh.nff.girls.item.PeachWoodSwordItem;
-import net.sodiumzh.nff.girls.item.ReinforcedFishingRodItem;
-import net.sodiumzh.nff.girls.item.TaoistTalismanItem;
-import net.sodiumzh.nff.girls.item.TradeIntroductionLetterItem;
-import net.sodiumzh.nff.girls.item.TransferringTagItem;
+import net.sodiumzh.nff.girls.item.*;
 import net.sodiumzh.nff.girls.subsystem.baublesystem.baubles.AquaJadeBaubleItem;
 import net.sodiumzh.nff.girls.subsystem.baublesystem.baubles.CourageAmuletBaubleItem;
 import net.sodiumzh.nff.girls.subsystem.baublesystem.baubles.HealingJadeBaubleItem;
@@ -48,11 +35,14 @@ import net.sodiumzh.nff.girls.subsystem.baublesystem.baubles.ResistanceAmuletBau
 import net.sodiumzh.nff.girls.subsystem.baublesystem.baubles.SoulAmuletBaubleItem;
 import net.sodiumzh.nff.services.item.MobCatcherItem;
 import net.sodiumzh.nff.services.item.NFFMobRespawnerItem;
+import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 
 public class NFFGirlsItems {
 	
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, NFFGirls.MOD_ID);
-	
+	public static final DeferredRegister<Item> ITEMS_CITADEL_DEPENDING = DeferredRegister.create(ForgeRegistries.ITEMS, NFFGirls.MOD_ID);
+
+
 	public static final CreativeModeTab TAB = NFFGirlsTab.TAB;
 	// General register function for items
 	
@@ -104,6 +94,13 @@ public class NFFGirlsItems {
 		return () -> NaUtilsInfoStatics.createTranslatable("info.nffgirls.bauble.armor", 
 				String.format("+%.1f", NFFGirlsConfigs.ValueCache.Baubles.BAUBLE_ARMOR_BOOSTING_SCALE * rawValue)).withStyle(ChatFormatting.GRAY); 
 	}
+
+	// Other mod-depending items
+	private static Optional<RegistryObject<Item>> registerDepending(String key, String dependentID, Supplier<? extends Item> itemSupplier)
+	{
+		return Optional.ofNullable(ModList.get().isLoaded(dependentID) ? ITEMS.register(key, itemSupplier) : null);
+	}
+
 	// Registry
 	public static final RegistryObject<SoulAmuletBaubleItem> SOUL_AMULET = ITEMS.register("soul_amulet", () -> new SoulAmuletBaubleItem(
 			"nffgirls:soul_amulet", 1, new Item.Properties().rarity(Rarity.UNCOMMON).tab(TAB))
@@ -217,15 +214,27 @@ public class NFFGirlsItems {
 	
 	// Debug
 	public static final RegistryObject<NFFTamingProgressProbeItem> BEFRIENDING_PROGRESS_PROBE = 
-			ITEMS.register("befriending_progress_probe", () -> new NFFTamingProgressProbeItem(new Item.Properties().rarity(Rarity.EPIC)));
+			ITEMS.register("taming_progress_probe", () -> new NFFTamingProgressProbeItem(new Item.Properties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<XPModifierItem> EXP_MODIFIER = 
 			ITEMS.register("exp_modifier", () -> new XPModifierItem(new Item.Properties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<FavorabilityModifierItem> FAVORABILITY_MODIFIER =
 			ITEMS.register("favorability_modifier", () -> new FavorabilityModifierItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
 	
 	/* Item register end */
-	
-	public static void register(IEventBus eventBus){
-	    ITEMS.register(eventBus);
+
+	// Other mod depending
+
+	public static final Optional<RegistryObject<Item>> CITADEL_MOB_DICT = registerDepending("mob_dictionary_citadel", "citadel",
+			() -> new CitadelBasedMobDictionaryItem(new Item.Properties().stacksTo(1).tab(TAB)));
+
+	/*static
+	{
+		CITADEL_MOB_DICT = Optional.ofNullable(ModList.get().isLoaded("citadel") ?
+				ITEMS.register("mob_dictionary_citadel", () -> new CitadelBasedMobDictionaryItem(new Item.Properties().stacksTo(1).tab(TAB))) : null);
+	}*/
+
+
+	public static void register(IEventBus eventBus) {
+		ITEMS.register(eventBus);
 	}
 }

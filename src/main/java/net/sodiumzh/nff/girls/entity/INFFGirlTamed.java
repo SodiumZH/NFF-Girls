@@ -151,19 +151,19 @@ public interface INFFGirlTamed extends INFFTamed, /*IBaubleEquipable, */IAttribu
 	}
 	
 	@DontOverride
-	public default float getXpLevel()
+	public default int getXpLevel()
 	{
 		return this.getLevelHandler().getExpectedLevel();
 	}
 	
 	@DontOverride
-	public default float getOverallXp()
+	public default long getOverallXp()
 	{
 		return this.getLevelHandler().getExp();
 	}
 	
 	@DontOverride
-	public default float getXpInThisLevel()
+	public default long getXpInThisLevel()
 	{
 		return this.getLevelHandler().getExpInThisLevel();
 	}
